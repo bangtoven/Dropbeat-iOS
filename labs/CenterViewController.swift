@@ -1,0 +1,224 @@
+//
+//  CenterViewController.swift
+//  labs
+//
+//  Created by vulpes on 2015. 5. 15..
+//  Copyright (c) 2015년 dropbeat. All rights reserved.
+//
+
+import UIKit
+import MMDrawerController
+import MediaPlayer
+import AVFoundation
+
+class CenterViewController: UIViewController {
+    
+    @IBOutlet weak var container: UIView!
+    @IBOutlet weak var playerTitle: UILabel!
+    @IBOutlet weak var playerStatus: UILabel!
+    
+    @IBOutlet weak var playlistBtn: UIButton!
+    @IBOutlet weak var playBtn: UIButton!
+    @IBOutlet weak var pauseBtn: UIButton!
+    
+    var audioPlayer: MPMoviePlayerController!
+    
+    private var activeViewController: UIViewController? {
+        didSet {
+            removeInactiveViewController(oldValue)
+            updateActiveViewController()
+        }
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        onMenuSelected(LeftSideViewController.MENU_FEED)
+        
+        var sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
+        
+        var audioSessionError:NSError?
+        if (!sharedInstance.setCategory(AVAudioSessionCategoryPlayback, error: &audioSessionError)) {
+            NSLog("Audio session error \(audioSessionError) \(audioSessionError?.userInfo)")
+        } else {
+            UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
+            becomeFirstResponder()
+        }
+        sharedInstance.setActive(true, error: nil)
+        
+        var error:NSError?
+        var fileUrl = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("BackgroundAudio", ofType: "mp3")!)
+        audioPlayer = MPMoviePlayerController(contentURL: fileUrl)
+        audioPlayer.shouldAutoplay = false
+        audioPlayer.controlStyle = MPMovieControlStyle.Embedded
+        audioPlayer.view.hidden = true
+        audioPlayer.prepareToPlay()
+        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        UIApplication.sharedApplication().endReceivingRemoteControlEvents()
+        resignFirstResponder()
+        super.viewWillDisappear(animated)
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
+    
+    override func remoteControlReceivedWithEvent(event: UIEvent) {
+        switch(event.subtype) {
+        case UIEventSubtype.RemoteControlPlay:
+            handlePlay()
+            break;
+        
+        case UIEventSubtype.RemoteControlPause:
+            handlePause()
+            break;
+        
+        case UIEventSubtype.RemoteControlPreviousTrack:
+            handlePrev()
+            break;
+        
+        case UIEventSubtype.RemoteControlNextTrack:
+            handleNext()
+            break;
+            
+        case UIEventSubtype.RemoteControlStop:
+            handleStop()
+            break;
+            
+        case UIEventSubtype.RemoteControlTogglePlayPause:
+            break;
+        default:
+            break;
+        }
+    }
+    
+    @IBAction func menuBtnClicked(sender: AnyObject) {
+        var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDelegate.centerContainer!.toggleDrawerSide(MMDrawerSide.Left, animated: true, completion: nil)
+    }
+    
+    @IBAction func playBtnClicked(sender: UIButton?) {
+        handlePlay()
+    }
+    
+    @IBAction func pauseBtnClicked(sender: UIButton?) {
+        handlePause()
+    }
+    
+    func handlePlay() {
+        audioPlayer.play()
+        playBtn.hidden = true
+        pauseBtn.hidden = false
+        
+        var playingInfoCenter:AnyClass! = NSClassFromString("MPNowPlayingInfoCenter")
+        if (playingInfoCenter != nil) {
+            var trackInfo:NSMutableDictionary = NSMutableDictionary()
+            var albumArt:MPMediaItemArtwork = MPMediaItemArtwork(image: UIImage(named: "logo"))
+            
+            trackInfo[MPMediaItemPropertyTitle] = "Sample Title"
+            trackInfo[MPMediaItemPropertyArtist] = "Sample artist"
+            trackInfo[MPMediaItemPropertyAlbumTitle] = "Sample album title"
+            trackInfo[MPMediaItemPropertyArtwork] = albumArt
+            trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = audioPlayer.currentPlaybackTime
+            trackInfo[MPMediaItemPropertyPlaybackDuration] = audioPlayer.duration
+            trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = NSNumber(double:1.0)
+            MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo as [NSObject : AnyObject]
+        }
+    }
+    
+    func handlePause() {
+        audioPlayer.pause()
+        playBtn.hidden = false
+        pauseBtn.hidden = true
+        
+        var playingInfoCenter:AnyClass! = NSClassFromString("MPNowPlayingInfoCenter")
+        if (playingInfoCenter != nil) {
+            var trackInfo:NSMutableDictionary = NSMutableDictionary()
+            var albumArt:MPMediaItemArtwork = MPMediaItemArtwork(image: UIImage(named: "logo"))
+            
+            trackInfo[MPMediaItemPropertyTitle] = "Sample Title"
+            trackInfo[MPMediaItemPropertyArtist] = "Sample artist"
+            trackInfo[MPMediaItemPropertyAlbumTitle] = "Sample album title"
+            trackInfo[MPMediaItemPropertyArtwork] = albumArt
+            trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = audioPlayer.currentPlaybackTime
+            trackInfo[MPMediaItemPropertyPlaybackDuration] = audioPlayer.duration
+            trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = NSNumber(double:0.0)
+            MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo as [NSObject : AnyObject]
+        }
+    }
+    
+    func handleNext() {
+        
+    }
+    
+    func handlePrev() {
+        
+    }
+    
+    func handleStop() {
+        
+    }
+    
+    func onMenuSelected(menuIdx: Int) {
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        switch(menuIdx) {
+        case LeftSideViewController.MENU_FEED:
+            activeViewController = mainStoryboard
+                .instantiateViewControllerWithIdentifier("FeedViewController")
+                as? UIViewController
+            break
+        case LeftSideViewController.MENU_SEARCH:
+            activeViewController = mainStoryboard
+                .instantiateViewControllerWithIdentifier("SearchViewController")
+                as? UIViewController
+            break
+        case LeftSideViewController.MENU_SETTINGS:
+            activeViewController = mainStoryboard
+                .instantiateViewControllerWithIdentifier("SettingsViewController")
+                as? UIViewController
+            break
+        default:
+            break
+        }
+    }
+    
+    private func removeInactiveViewController(inactiveViewController:UIViewController?) {
+        if let inactiveVC = inactiveViewController {
+            inactiveVC.willMoveToParentViewController(nil)
+            inactiveVC.view.removeFromSuperview()
+            inactiveVC.removeFromParentViewController()
+        }
+    }
+    
+    private func updateActiveViewController() {
+        if let activeVC = activeViewController {
+            // call before adding child view controller's view as subview
+            addChildViewController(activeVC)
+            
+            activeVC.view.frame = container.bounds
+            container.addSubview(activeVC.view)
+            
+            // call before adding child view controller's view as subview
+            activeVC.didMoveToParentViewController(self)
+        }
+    }
+
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
+
+}

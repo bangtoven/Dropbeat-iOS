@@ -4,3 +4,4 @@ use_frameworks!
 
 pod 'Alamofire', '~> 1.2'
 pod 'MMDrawerController', '~> 0.5.7'
+pod "SwiftyJSON", '>= 2.2'

@@ -63,7 +63,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "148"
             endingLineNumber = "148"
-            landmarkName = "onMenuSelected(_:)"
+            landmarkName = "handlePause()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -159,6 +159,22 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "74"
             endingLineNumber = "74"
+            landmarkName = "remoteControlReceivedWithEvent(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "labs/CenterViewController.swift"
+            timestampString = "453561686.107499"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "80"
+            endingLineNumber = "80"
             landmarkName = "remoteControlReceivedWithEvent(_:)"
             landmarkType = "5">
          </BreakpointContent>

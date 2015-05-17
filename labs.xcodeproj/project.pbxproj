@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		597D265670AB261B0AF2BF3D /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2ABE64F4B0B9F198A41297C /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		FC766BEF1B050D51006FD4FB /* NetworkPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC766BEE1B050D51006FD4FB /* NetworkPath.swift */; };
+		FC766BF51B051AA4006FD4FB /* NetworkRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC766BF41B051AA4006FD4FB /* NetworkRequests.swift */; };
+		FC766BF71B05324E006FD4FB /* NetworkAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC766BF61B05324E006FD4FB /* NetworkAdapter.swift */; };
 		FCD1DA881B04CCB200F9EA70 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD1DA871B04CCB200F9EA70 /* AppDelegate.swift */; };
 		FCD1DA8A1B04CCB200F9EA70 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD1DA891B04CCB200F9EA70 /* ViewController.swift */; };
 		FCD1DA8D1B04CCB200F9EA70 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FCD1DA8B1B04CCB200F9EA70 /* Main.storyboard */; };
@@ -32,6 +34,8 @@
 		C2ABE64F4B0B9F198A41297C /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFA1A3ACE66027AEC6F82BF6 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		FC766BEE1B050D51006FD4FB /* NetworkPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkPath.swift; sourceTree = "<group>"; };
+		FC766BF41B051AA4006FD4FB /* NetworkRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkRequests.swift; sourceTree = "<group>"; };
+		FC766BF61B05324E006FD4FB /* NetworkAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkAdapter.swift; sourceTree = "<group>"; };
 		FCD1DA821B04CCB200F9EA70 /* labs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = labs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FCD1DA861B04CCB200F9EA70 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FCD1DA871B04CCB200F9EA70 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -110,6 +114,8 @@
 				FCD1DA901B04CCB200F9EA70 /* LaunchScreen.xib */,
 				FCD1DA851B04CCB200F9EA70 /* Supporting Files */,
 				FC766BEE1B050D51006FD4FB /* NetworkPath.swift */,
+				FC766BF41B051AA4006FD4FB /* NetworkRequests.swift */,
+				FC766BF61B05324E006FD4FB /* NetworkAdapter.swift */,
 			);
 			path = labs;
 			sourceTree = "<group>";
@@ -292,7 +298,9 @@
 			files = (
 				FC766BEF1B050D51006FD4FB /* NetworkPath.swift in Sources */,
 				FCD1DA8A1B04CCB200F9EA70 /* ViewController.swift in Sources */,
+				FC766BF51B051AA4006FD4FB /* NetworkRequests.swift in Sources */,
 				FCD1DA881B04CCB200F9EA70 /* AppDelegate.swift in Sources */,
+				FC766BF71B05324E006FD4FB /* NetworkAdapter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

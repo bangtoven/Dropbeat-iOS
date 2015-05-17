@@ -5,60 +5,66 @@
 import Foundation
 
 public class ApiPath {
-    static var host = "http://hack.coroutine.io/api/v1/";
+    static var host :String = "http://hack.coroutine.io/api/v1/"
+    
     // User
-    static var user = host + "user/";
-    static var userSignIn = user + "signin_fb_android/";
-    static var userSelf = user + "self/";
-    static var userSignOut = user + "signout/";
-    static var userUnlock = user + "unlock/";
-    static var userChangeEmail = user + "change_email/";
+    static var user :String = host + "user/"
+    static var userSignIn :String = user + "signin_fb_android/"
+    static var userSelf :String = user + "self/"
+    static var userSignOut :String = user + "signout/"
+    static var userUnlock :String = user + "unlock/"
+    static var userChangeEmail :String = user + "change_email/"
     
     // Feed
-    static var feed = host + "feed/";
+    static var feed :String = host + "feed/"
     
     // Playlist
-    static var playlist = host + "playlist/";
-    static var playlistAll = playlist + "all/";
-    static var playlistSet = playlist + "set/";
-    static var playlistIntial = playlist + "initial/";
-    static var playlistShared = playlist + "shared/";
-    static var playlistImport = playlist + "import/";
-    static var playlistDel = playlist + "del/";
+    static var playlist :String = host + "playlist/"
+    static var playlistAll :String = playlist + "all/"
+    static var playlistSet :String = playlist + "set/"
+    static var playlistIntial :String = playlist + "initial/"
+    static var playlistShared :String = playlist + "shared/"
+    static var playlistImport :String = playlist + "import/"
+    static var playlistDel :String = playlist + "del/"
     
     // Log
-    static var log = host + "log/";
-    static var logSearch = log + "search/";
-    static var logResolve = log + "resolve/";
-    static var logTrackAdd = log + "trackadd/";
-    static var logPlay = log + "play/";
+    static var log :String = host + "log/"
+    static var logSearch :String = log + "search/"
+    static var logResolve :String = log + "resolve/"
+    static var logTrackAdd :String = log + "trackadd/"
+    static var logPlay :String = log + "play/"
     
     // Meta
-    static var meta = host + "meta/";
-    static var metaVersion = meta + "version/";
+    static var meta :String = host + "meta/"
+    static var metaVersion :String = meta + "version/"
 }
 
 public class CorePath {
-    static var host = "http://coroutine.io:19070/api/";
+    static var host :String = "http://coroutine.io:19070/api/"
     
     // core.search
-    static var search = host + "search/";
-    static var searchRelated = search + "related/";
+    static var search :String = host + "search/"
+    static var searchRelated :String = search + "related/"
     
     // core.resolve
-    static var resolve = host + "resolve/";
+    static var resolve :String = host + "resolve/"
     
     // core.related
-    static var related = host + "related/";
+    static var related :String = host + "related/"
     
     // core.live
-    static var live = host + "live/";
-    static var liveTracklist = live + "tracklist/";
+    static var live :String = host + "live/"
+    static var liveTracklist :String = live + "tracklist/"
 
     // core.trending
-    static var trending = host + "trending/";
-    static var trendingDj = host + "dj/";
-    static var trendingChart = host + "chart/";
-    static var trendingTopDjs = trending + "top_djs/";
-    static var trendingFeaturedPlaylist = trending + "featured_playlist/";
+    static var trending :String = host + "trending/"
+    static var trendingDj :String = host + "dj/"
+    static var trendingChart :String = host + "chart/"
+    static var trendingTopDjs :String = trending + "top_djs/"
+    static var trendingFeaturedPlaylist :String = trending + "featured_playlist/"
+}
+
+public class ResolvePath {
+    static var host :String = "http://resolve.dropbeat.net/"
+    static var resolveStream :String = "resolve/"
 }

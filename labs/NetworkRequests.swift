@@ -20,8 +20,8 @@ class Requests {
     }
     
     static func send(method: Method, url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        var adapter = WebAdapter(url: url, method: Method.PUT, params: params, auth: auth)
-        adapter.send(respCb)       
+        var adapter = WebAdapter(url: url, method: method, params: params, auth: auth)
+        adapter.send(respCb)
     }
     
     static func userSelf(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
@@ -89,15 +89,15 @@ class Requests {
     }
     
     static func logSearch(keyword: String) {
-        Alamofire.request(Method.GET, ApiPath.logSearch, parameters: ["q": keyword], encoding: .URL)
+        Alamofire.request(Method.GET, ApiPath.logSearch, parameters: ["q": keyword], encoding: .URL).validate()
     }
     
     static func logTrackAdd(title: String) {
-        Alamofire.request(Method.GET, ApiPath.logSearch, parameters: ["t": title], encoding: .URL)
+        Alamofire.request(Method.GET, ApiPath.logSearch, parameters: ["t": title], encoding: .URL).validate()
     }
     
     static func logPlay(title: String) {
-        Alamofire.request(Method.GET, ApiPath.logSearch, parameters: ["t": title], encoding: .URL)
+        Alamofire.request(Method.GET, ApiPath.logSearch, parameters: ["t": title], encoding: .URL).validate()
     }
     
     static func getClientVersion(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
@@ -138,6 +138,6 @@ class WebAdapter {
         } else {
             enc = .JSON
         }
-        Alamofire.request(self.method!, self.url!, parameters: self.params, encoding: enc!).responseJSON(completionHandler: respCb)
+        Alamofire.request(self.method!, self.url!, parameters: self.params, encoding: enc!).validate().responseJSON(completionHandler: respCb)
     }
 }

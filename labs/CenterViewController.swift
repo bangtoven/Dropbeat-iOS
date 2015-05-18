@@ -46,7 +46,7 @@ class CenterViewController: UIViewController {
         sharedInstance.setActive(true, error: nil)
         
         var error:NSError?
-        var fileUrl = NSURL(fileURLWithPath: NSBundle.mainBundle().pathForResource("BackgroundAudio", ofType: "mp3")!)
+        var fileUrl = NSURL(string: "http://r2---sn-3u-bh2d.googlevideo.com/videoplayback?id=acb31ab3751215b0&itag=141&source=youtube&mm=31&pl=20&mv=m&ms=au&ratebypass=yes&mime=audio/mp4&gir=yes&clen=10702429&lmt=1429685838913555&dur=335.667&key=dg_yt0&upn=QCNuDBh__Z4&fexp=919330,9405967,9406841,9407992,9408142,9408707,9408710,9408713,9412471,9413010,9413103,945137,948124,952612,952637,952642&mt=1431923939&signature=5ED42D3F07C0F4454732FD946A1C5A7B345BD1BD.35A1A30E6529DDAB59723587C0306B349383B518&sver=3&ip=14.63.224.95&ipbits=0&expire=1431945644&sparams=ip,ipbits,expire,id,itag,source,mm,pl,mv,ms,ratebypass,mime,gir,clen,lmt,dur")
         audioPlayer = MPMoviePlayerController(contentURL: fileUrl)
         audioPlayer.shouldAutoplay = false
         audioPlayer.controlStyle = MPMovieControlStyle.Embedded

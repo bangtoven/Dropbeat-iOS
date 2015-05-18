@@ -10,7 +10,7 @@ import UIKit
 
 class PlaylistTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var iconView: UIView!
+    @IBOutlet weak var iconView: UIImageView!
     @IBOutlet weak var trackTitle: UILabel!
     @IBOutlet weak var deleteBtn: UIButton!
     

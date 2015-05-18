@@ -133,13 +133,13 @@
                                 <rect key="frame" x="0.0" y="51" width="320" height="451"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" restorationIdentifier="PlaylistTableViewCell" selectionStyle="default" indentationWidth="10" id="2Wm-eO-nkk" customClass="PlaylistTableViewCell" customModule="labs" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" restorationIdentifier="PlaylistTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="PlaylistTableViewCell" id="2Wm-eO-nkk" customClass="PlaylistTableViewCell" customModule="labs" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2Wm-eO-nkk" id="y5X-66-guF">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="music-25.png" highlightedImage="play_thumbnail.png" translatesAutoresizingMaskIntoConstraints="NO" id="6AU-BR-44Z">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="play_thumbnail.png" highlightedImage="play_thumbnail.png" translatesAutoresizingMaskIntoConstraints="NO" id="6AU-BR-44Z">
                                                     <rect key="frame" x="13" y="8" width="25" height="25"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="25" id="8Pv-6y-BbF"/>
@@ -177,8 +177,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="deleteBtn" destination="5Mw-2I-pJg" id="XFa-dR-ujy"/>
-                                            <outlet property="icon" destination="y5X-66-guF" id="Wuv-HT-ap8"/>
-                                            <outlet property="iconView" destination="6AU-BR-44Z" id="afL-q3-XwO"/>
+                                            <outlet property="iconView" destination="6AU-BR-44Z" id="EhF-AL-kAd"/>
                                             <outlet property="trackTitle" destination="Q4z-ZE-b8T" id="DLI-Bw-S8Y"/>
                                         </connections>
                                     </tableViewCell>
@@ -512,7 +511,6 @@
         <image name="btn_pause_normal.png" width="207" height="207"/>
         <image name="btn_play_normal.png" width="207" height="207"/>
         <image name="glyphicons_playlist.png" width="85" height="71"/>
-        <image name="music-25.png" width="25" height="25"/>
         <image name="play_thumbnail.png" width="100" height="100"/>
     </resources>
 </document>

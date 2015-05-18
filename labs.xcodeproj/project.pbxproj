@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		580621331B08CBAA009012D5 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580621321B08CBAA009012D5 /* FeedViewController.swift */; };
+		580621351B08DE74009012D5 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 580621341B08DE74009012D5 /* FBSDKCoreKit.framework */; };
+		580621371B08DE79009012D5 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 580621361B08DE79009012D5 /* FBSDKLoginKit.framework */; };
+		581D4C9E1B09FA120036BEBF /* PlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581D4C9D1B09FA120036BEBF /* PlaylistViewController.swift */; };
+		581D4CA01B0A0CCF0036BEBF /* PlaylistTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581D4C9F1B0A0CCF0036BEBF /* PlaylistTableViewCell.swift */; };
+		582AFA1E1B09200B001ADEED /* SigninViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582AFA1D1B09200B001ADEED /* SigninViewController.swift */; };
 		5890D6121B052B8000AAEAE5 /* LeftSideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5890D6111B052B8000AAEAE5 /* LeftSideViewController.swift */; };
 		5890D6141B0530AE00AAEAE5 /* SideMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5890D6131B0530AE00AAEAE5 /* SideMenuTableViewCell.swift */; };
 		5890D6161B0538CD00AAEAE5 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5890D6151B0538CD00AAEAE5 /* SearchViewController.swift */; };
@@ -15,7 +20,6 @@
 		5890D61A1B05484A00AAEAE5 /* CenterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5890D6191B05484A00AAEAE5 /* CenterViewController.swift */; };
 		5890D61D1B05FB4000AAEAE5 /* black in Resources */ = {isa = PBXBuildFile; fileRef = 5890D61B1B05FB4000AAEAE5 /* black */; };
 		5890D61E1B05FB4000AAEAE5 /* purple in Resources */ = {isa = PBXBuildFile; fileRef = 5890D61C1B05FB4000AAEAE5 /* purple */; };
-		5890D6261B06761E00AAEAE5 /* PlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5890D6251B06761E00AAEAE5 /* PlaylistViewController.swift */; };
 		5890D6281B081C0800AAEAE5 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5890D6271B081C0800AAEAE5 /* AVFoundation.framework */; };
 		5890D62A1B081C1100AAEAE5 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5890D6291B081C1100AAEAE5 /* MediaPlayer.framework */; };
 		5890D6541B081DD200AAEAE5 /* btn_add.png in Resources */ = {isa = PBXBuildFile; fileRef = 5890D62D1B081DD200AAEAE5 /* btn_add.png */; };
@@ -86,6 +90,11 @@
 /* Begin PBXFileReference section */
 		3372C44287021A7AD7EDADFB /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		580621321B08CBAA009012D5 /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
+		580621341B08DE74009012D5 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "Pods/../build/Debug-iphoneos/Pods/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
+		580621361B08DE79009012D5 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "Pods/../build/Debug-iphoneos/Pods/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
+		581D4C9D1B09FA120036BEBF /* PlaylistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewController.swift; sourceTree = "<group>"; };
+		581D4C9F1B0A0CCF0036BEBF /* PlaylistTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistTableViewCell.swift; sourceTree = "<group>"; };
+		582AFA1D1B09200B001ADEED /* SigninViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SigninViewController.swift; sourceTree = "<group>"; };
 		5890D6111B052B8000AAEAE5 /* LeftSideViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftSideViewController.swift; sourceTree = "<group>"; };
 		5890D6131B0530AE00AAEAE5 /* SideMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuTableViewCell.swift; sourceTree = "<group>"; };
 		5890D6151B0538CD00AAEAE5 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
@@ -93,7 +102,6 @@
 		5890D6191B05484A00AAEAE5 /* CenterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CenterViewController.swift; sourceTree = "<group>"; };
 		5890D61B1B05FB4000AAEAE5 /* black */ = {isa = PBXFileReference; lastKnownFileType = folder; path = black; sourceTree = "<group>"; };
 		5890D61C1B05FB4000AAEAE5 /* purple */ = {isa = PBXFileReference; lastKnownFileType = folder; path = purple; sourceTree = "<group>"; };
-		5890D6251B06761E00AAEAE5 /* PlaylistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewController.swift; sourceTree = "<group>"; };
 		5890D6271B081C0800AAEAE5 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		5890D6291B081C1100AAEAE5 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		5890D62D1B081DD200AAEAE5 /* btn_add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btn_add.png; sourceTree = "<group>"; };
@@ -161,6 +169,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				580621371B08DE79009012D5 /* FBSDKLoginKit.framework in Frameworks */,
+				580621351B08DE74009012D5 /* FBSDKCoreKit.framework in Frameworks */,
 				5890D62A1B081C1100AAEAE5 /* MediaPlayer.framework in Frameworks */,
 				5890D6281B081C0800AAEAE5 /* AVFoundation.framework in Frameworks */,
 				597D265670AB261B0AF2BF3D /* Pods.framework in Frameworks */,
@@ -247,6 +257,8 @@
 		F98F65D2D15412F7828AF298 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				580621361B08DE79009012D5 /* FBSDKLoginKit.framework */,
+				580621341B08DE74009012D5 /* FBSDKCoreKit.framework */,
 				5890D6291B081C1100AAEAE5 /* MediaPlayer.framework */,
 				5890D6271B081C0800AAEAE5 /* AVFoundation.framework */,
 				C2ABE64F4B0B9F198A41297C /* Pods.framework */,
@@ -287,11 +299,13 @@
 				5890D6151B0538CD00AAEAE5 /* SearchViewController.swift */,
 				5890D6171B053F4900AAEAE5 /* SettingsViewController.swift */,
 				5890D6191B05484A00AAEAE5 /* CenterViewController.swift */,
-				5890D6251B06761E00AAEAE5 /* PlaylistViewController.swift */,
 				FC766BEE1B050D51006FD4FB /* NetworkPath.swift */,
 				FC766BF41B051AA4006FD4FB /* NetworkRequests.swift */,
 				FCCAFE5F1B08BF920027F9D4 /* Models.swift */,
 				580621321B08CBAA009012D5 /* FeedViewController.swift */,
+				582AFA1D1B09200B001ADEED /* SigninViewController.swift */,
+				581D4C9D1B09FA120036BEBF /* PlaylistViewController.swift */,
+				581D4C9F1B0A0CCF0036BEBF /* PlaylistTableViewCell.swift */,
 			);
 			path = labs;
 			sourceTree = "<group>";
@@ -522,14 +536,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5890D6261B06761E00AAEAE5 /* PlaylistViewController.swift in Sources */,
 				5890D6161B0538CD00AAEAE5 /* SearchViewController.swift in Sources */,
 				5890D6121B052B8000AAEAE5 /* LeftSideViewController.swift in Sources */,
+				581D4CA01B0A0CCF0036BEBF /* PlaylistTableViewCell.swift in Sources */,
 				5890D61A1B05484A00AAEAE5 /* CenterViewController.swift in Sources */,
 				FC766BEF1B050D51006FD4FB /* NetworkPath.swift in Sources */,
 				FC766BF51B051AA4006FD4FB /* NetworkRequests.swift in Sources */,
 				FCCAFE601B08BF920027F9D4 /* Models.swift in Sources */,
 				580621331B08CBAA009012D5 /* FeedViewController.swift in Sources */,
+				582AFA1E1B09200B001ADEED /* SigninViewController.swift in Sources */,
+				581D4C9E1B09FA120036BEBF /* PlaylistViewController.swift in Sources */,
 				FCD1DA881B04CCB200F9EA70 /* AppDelegate.swift in Sources */,
 				5890D6141B0530AE00AAEAE5 /* SideMenuTableViewCell.swift in Sources */,
 				5890D6181B053F4900AAEAE5 /* SettingsViewController.swift in Sources */,
@@ -658,6 +674,10 @@
 			baseConfigurationReference = CFA1A3ACE66027AEC6F82BF6 /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos/Pods",
+				);
 				INFOPLIST_FILE = labs/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -670,6 +690,10 @@
 			baseConfigurationReference = 3372C44287021A7AD7EDADFB /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos/Pods",
+				);
 				INFOPLIST_FILE = labs/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";

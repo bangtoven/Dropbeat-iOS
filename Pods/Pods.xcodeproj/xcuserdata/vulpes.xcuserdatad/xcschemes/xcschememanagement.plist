@@ -9,6 +9,26 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-Bolts.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-FBSDKCoreKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-FBSDKLoginKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Pods-FBSDKShareKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-MMDrawerController.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,22 +47,42 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>6802B89E1407F17BB9E57521</key>
+		<key>3AC9E711902839256899DF4C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>69D3E08EF7887E5CE51B2ABF</key>
+		<key>44BE4A2C1373DA9DAB29909D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>870048FBE748976FB4A35690</key>
+		<key>69A4024AB23130F2BDFE5F05</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>CBBE50562C5D1F79D5D8849F</key>
+		<key>8D63B84E05ECC99D7CFE9D8C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8DA00082EA71C157FDF10FEE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9AD717208755CF1853C2F226</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CA9ED8ABEB3C40ECE04F41EC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E1026CEEBD2A32F7C25D8458</key>
 		<dict>
 			<key>primary</key>
 			<true/>

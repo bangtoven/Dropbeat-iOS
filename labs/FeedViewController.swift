@@ -15,18 +15,15 @@ class FeedViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        // Do any additional setup after loading the view, typically from a nib.
-//        Alamofire.request(.GET, "http://httpbin.org/get").responseJSON{ (_,_,JSON,_) in
-//            println(JSON)
-//        }
-//        /*
-//        Requests.search("alesso", respCb: { (_,_,JSON,_) in
-//        println(JSON)
-//        })
-//        */
-//        Requests.userSelf({ (_,_,JSON,_) in
-//            println(JSON)
-//        })
+        /*
+        Requests.search("alesso", respCb: { (_,_,JSON,_) in
+            Search.fromJson(JSON!)
+        })
+        Requests.getPlaylist("78",respCb: { (_,_,JSON,_) in
+            var playlist: Playlist = Playlist.fromJson(JSON!)
+            playlist.toJson()
+        })
+        */
         
     }
     

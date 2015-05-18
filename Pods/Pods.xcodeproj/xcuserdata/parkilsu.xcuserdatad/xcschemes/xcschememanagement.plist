@@ -8,11 +8,25 @@
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
+		<key>Pods-MMDrawerController.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>3</integer>
+		</dict>
+		<key>Pods-SwiftyJSON.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>4</integer>
 		</dict>
 		<key>Pods.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
+			<key>orderHint</key>
+			<integer>1</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
@@ -22,7 +36,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>6802B89E1407F17BB9E57521</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>69D3E08EF7887E5CE51B2ABF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>7A3D0AD95D71D4351EE1EDD5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>870048FBE748976FB4A35690</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CBBE50562C5D1F79D5D8849F</key>
 		<dict>
 			<key>primary</key>
 			<true/>

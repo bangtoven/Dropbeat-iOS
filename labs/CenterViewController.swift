@@ -116,6 +116,31 @@ class CenterViewController: UIViewController {
         handlePause()
     }
     
+    @IBAction func playlistBtnClicked(sender: UIButton) {
+        showPlaylistView()
+    }
+    
+    func showSigninView() {
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        var signinVC = mainStoryboard.instantiateViewControllerWithIdentifier("SigninViewController") as! SigninViewController
+        
+//        addChildViewController(signinVC)
+//        view.addSubview(signinVC.view)
+//        signinVC?.didMoveToParentViewController(nil)
+        signinVC.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
+        presentViewController(signinVC, animated: true, completion: nil)
+    }
+    
+    func showPlaylistView() {
+        
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        var playlistVC = mainStoryboard.instantiateViewControllerWithIdentifier("PlaylistViewController") as! PlaylistViewController
+        
+        playlistVC.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
+        presentViewController(playlistVC, animated: true, completion: nil)
+    }
+    
     func handlePlay(track: Track, playlistId: String) {
         audioPlayer.play()
         playBtn.hidden = true

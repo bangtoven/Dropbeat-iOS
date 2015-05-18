@@ -7,6 +7,8 @@
 //
 import UIKit
 import MMDrawerController
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 class LeftSideViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
     
@@ -18,12 +20,13 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        navigationController?.setNavigationBarHidden(true, animated: false)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    
     
     func tableView(tableView: UITableView,
             numberOfRowsInSection section: Int) -> Int {
@@ -44,5 +47,12 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
         var centerViewController:CenterViewController = centerNav.visibleViewController as! CenterViewController
         centerViewController.onMenuSelected(indexPath.row)
         appDelegate.centerContainer!.toggleDrawerSide(MMDrawerSide.Left, animated: true, completion: nil)
+    }
+    
+    @IBAction func onSigninBtnClicked(sender: AnyObject) {
+        var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        var centerNav:UINavigationController = appDelegate.centerContainer!.centerViewController as! UINavigationController
+        var centerViewController:CenterViewController = centerNav.visibleViewController as! CenterViewController
+        centerViewController.showSigninView()
     }
 }

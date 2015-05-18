@@ -116,10 +116,10 @@ class Playlist {
 
 class StreamSource {
     var url: String
-    var formatNote: String
-    var type: String
+    var formatNote: String?
+    var type: String?
     
-    init(url: String, formatNote: String, type: String) {
+    init(url: String, type: String? = nil, formatNote: String? = nil) {
         self.url = url
         self.formatNote = formatNote
         self.type = type
@@ -151,17 +151,17 @@ class Search {
                 tag: s["tag"].stringValue
             )
             var drop = s["drop"]
-            if (drop.error == nil) {
+            if drop.error == nil {
                 track.drop = s["drop"].stringValue
             }
             
             var dref = s["dref"]
-            if (dref.error == nil) {
+            if dref.error == nil {
                 track.dref = s["dref"].stringValue
             }
             
             var tag = s["tag"]
-            if (tag.error == nil) {
+            if tag.error == nil {
                 track.tag = s["tag"].stringValue
             }
             

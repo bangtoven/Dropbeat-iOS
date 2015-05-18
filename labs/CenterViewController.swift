@@ -52,6 +52,7 @@ class CenterViewController: UIViewController {
         audioPlayer.controlStyle = MPMovieControlStyle.Embedded
         audioPlayer.view.hidden = true
         audioPlayer.prepareToPlay()
+        audioPlayer.be
         // Do any additional setup after loading the view.
     }
     
@@ -73,7 +74,7 @@ class CenterViewController: UIViewController {
     override func remoteControlReceivedWithEvent(event: UIEvent) {
         switch(event.subtype) {
         case UIEventSubtype.RemoteControlPlay:
-            handlePlay()
+            //handlePlay()
             break;
         
         case UIEventSubtype.RemoteControlPause:
@@ -105,53 +106,28 @@ class CenterViewController: UIViewController {
     }
     
     @IBAction func playBtnClicked(sender: UIButton?) {
-        handlePlay()
+        if PlayerContext.currentTrack == nil {
+            return
+        }
+        
     }
     
     @IBAction func pauseBtnClicked(sender: UIButton?) {
         handlePause()
     }
     
-    func handlePlay() {
+    func handlePlay(track: Track, playlistId: String) {
         audioPlayer.play()
         playBtn.hidden = true
         pauseBtn.hidden = false
         
-        var playingInfoCenter:AnyClass! = NSClassFromString("MPNowPlayingInfoCenter")
-        if (playingInfoCenter != nil) {
-            var trackInfo:NSMutableDictionary = NSMutableDictionary()
-            var albumArt:MPMediaItemArtwork = MPMediaItemArtwork(image: UIImage(named: "logo"))
-            
-            trackInfo[MPMediaItemPropertyTitle] = "Sample Title"
-            trackInfo[MPMediaItemPropertyArtist] = "Sample artist"
-            trackInfo[MPMediaItemPropertyAlbumTitle] = "Sample album title"
-            trackInfo[MPMediaItemPropertyArtwork] = albumArt
-            trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = audioPlayer.currentPlaybackTime
-            trackInfo[MPMediaItemPropertyPlaybackDuration] = audioPlayer.duration
-            trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = NSNumber(double:1.0)
-            MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo as [NSObject : AnyObject]
-        }
+        updatePlayingInfo(track)
     }
     
     func handlePause() {
         audioPlayer.pause()
         playBtn.hidden = false
         pauseBtn.hidden = true
-        
-        var playingInfoCenter:AnyClass! = NSClassFromString("MPNowPlayingInfoCenter")
-        if (playingInfoCenter != nil) {
-            var trackInfo:NSMutableDictionary = NSMutableDictionary()
-            var albumArt:MPMediaItemArtwork = MPMediaItemArtwork(image: UIImage(named: "logo"))
-            
-            trackInfo[MPMediaItemPropertyTitle] = "Sample Title"
-            trackInfo[MPMediaItemPropertyArtist] = "Sample artist"
-            trackInfo[MPMediaItemPropertyAlbumTitle] = "Sample album title"
-            trackInfo[MPMediaItemPropertyArtwork] = albumArt
-            trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = audioPlayer.currentPlaybackTime
-            trackInfo[MPMediaItemPropertyPlaybackDuration] = audioPlayer.duration
-            trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = NSNumber(double:0.0)
-            MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo as [NSObject : AnyObject]
-        }
     }
     
     func handleNext() {
@@ -164,6 +140,24 @@ class CenterViewController: UIViewController {
     
     func handleStop() {
         
+    }
+    
+    func updatePlayingInfo(track: Track) {
+        var playingInfoCenter:AnyClass! = NSClassFromString("MPNowPlayingInfoCenter")
+        if (playingInfoCenter != nil) {
+            var trackInfo:NSMutableDictionary = NSMutableDictionary()
+            var albumArt:MPMediaItemArtwork = MPMediaItemArtwork(image: UIImage(named: "logo"))
+            trackInfo[MPMediaItemPropertyTitle] = track.title
+            trackInfo[MPMediaItemPropertyArtist] = "Dropbeat"
+            trackInfo[MPMediaItemPropertyAlbumTitle] = "Dropbeat"
+            // TODO
+            trackInfo[MPMediaItemPropertyArtwork] = albumArt
+            
+            trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = audioPlayer.currentPlaybackTime
+            trackInfo[MPMediaItemPropertyPlaybackDuration] = audioPlayer.duration
+            trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = NSNumber(double:0.0)
+            MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo as [NSObject : AnyObject]
+        }       
     }
     
     func onMenuSelected(menuIdx: Int) {

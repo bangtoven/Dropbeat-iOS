@@ -72,21 +72,27 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @IBAction func onShuffleBtnClicked(sender: UIButton) {
+        println("shuffle")
     }
     
     @IBAction func onPrevBtnClicked(sender: UIButton) {
+        println("prev")
     }
     
     @IBAction func onPlayBtnClicked(sender: UIButton) {
+        println("play")
     }
     
     @IBAction func onPauseBtnClicked(sender: UIButton) {
+        println("pause")
     }
     
     @IBAction func onNextBtnClicked(sender: UIButton) {
+        println("next")
     }
     
     @IBAction func onRepeatBtnClicked(sender: UIButton) {
+        println("repeat")
     }
 
     /*

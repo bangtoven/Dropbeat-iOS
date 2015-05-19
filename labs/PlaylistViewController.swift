@@ -12,13 +12,19 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
 
     @IBOutlet weak var playlistView: UITableView!
     
-    var currentPlaylist:Playlist?
+    var currentPlaylist:Playlist!
+    
+    static var pipeKey = "playPipe"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         loadInitialPlaylist()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sender", name: PlaylistViewController.pipeKey, object: nil)
     }
-
+    
+    func sender() {}
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -27,17 +33,30 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     func loadInitialPlaylist() {
         // Some how load playlist
         var tracks = Array<Track>()
-        let sampleTrackId = "L1yRgeh9Ojc"
-        for idx in 0...10 {
-            let trackName:String = "test track \(idx)"
-            var track = Track(
-                id: sampleTrackId,
-                title: trackName,
-                type:"youtube"
-            )
-            tracks.append(track)
-        }
+        
+        var track = Track(
+            id: "rLMas3USFbA",
+            title: "Bassjackers - Mush Mush (Original Mix)",
+            type: "youtube"
+        )
+        tracks.append(track)
+        
+        track = Track(
+            id: "O0vf2EfesOA",
+            title: "Coldplay - Paradise (Fedde le Grand Remix)",
+            type: "youtube"
+        )
+        tracks.append(track)
+        
+        track = Track(
+            id: "PsO6ZnUZI0g",
+            title: "Kanye West - Stronger",
+            type: "youtube"
+        )
+        tracks.append(track)
+        
         currentPlaylist = Playlist(id: "-1", name: "test playlist", tracks: tracks)
+        PlayerContext.playlists = [currentPlaylist]
         playlistView.reloadData()
     }
     
@@ -54,8 +73,14 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var selectedTrack =  currentPlaylist?.tracks[indexPath.row]
+        var selectedTrack: Track = currentPlaylist!.tracks[indexPath.row] as Track
         // DO SOMETHING with selected track
+        var params: Dictionary<String, AnyObject> = [
+            "track": selectedTrack,
+            "playlistId": currentPlaylist!.id
+        ]
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            PlaylistViewController.pipeKey, object: params)
     }
     
     func dismiss() {
@@ -88,15 +113,4 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func onRepeatBtnClicked(sender: UIButton) {
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

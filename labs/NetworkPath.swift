@@ -66,5 +66,5 @@ public class CorePath {
 
 public class ResolvePath {
     static var host :String = "http://resolve.dropbeat.net/"
-    static var resolveStream :String = "resolve/"
+    static var resolveStream :String = host + "resolve/"
 }

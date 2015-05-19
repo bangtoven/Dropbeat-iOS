@@ -36,7 +36,7 @@ class PlayerContext {
         var playlist :Playlist? = getPlaylist(currentPlaylistId)
         let size = playlist?.tracks.count
         
-        if currentTrackIdx == -1 {
+        if currentTrackIdx == -1 || currentPlaylistId == nil{
             return nil;
         }
         
@@ -66,7 +66,7 @@ class PlayerContext {
         var playlist :Playlist? = getPlaylist(currentPlaylistId)
         let size = playlist?.tracks.count
         
-        if currentTrackIdx == -1 {
+        if currentTrackIdx == -1 || currentPlaylistId == nil {
             return nil;
         }
         

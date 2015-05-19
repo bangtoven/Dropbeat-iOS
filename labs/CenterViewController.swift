@@ -29,7 +29,7 @@ class CenterViewController: UIViewController {
             updateActiveViewController()
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -44,73 +44,22 @@ class CenterViewController: UIViewController {
         }
         sharedInstance.setActive(true, error: nil)
         
-        var error:NSError?
-        var fileUrl = NSURL(string: "http://r2---sn-3u-bh2d.googlevideo.com/videoplayback?id=acb31ab3751215b0&itag=141&source=youtube&mm=31&pl=20&mv=m&ms=au&ratebypass=yes&mime=audio/mp4&gir=yes&clen=10702429&lmt=1429685838913555&dur=335.667&key=dg_yt0&upn=QCNuDBh__Z4&fexp=919330,9405967,9406841,9407992,9408142,9408707,9408710,9408713,9412471,9413010,9413103,945137,948124,952612,952637,952642&mt=1431923939&signature=5ED42D3F07C0F4454732FD946A1C5A7B345BD1BD.35A1A30E6529DDAB59723587C0306B349383B518&sver=3&ip=14.63.224.95&ipbits=0&expire=1431945644&sparams=ip,ipbits,expire,id,itag,source,mm,pl,mv,ms,ratebypass,mime,gir,clen,lmt,dur")
-        audioPlayer = MPMoviePlayerController(contentURL: fileUrl)
-        audioPlayer.shouldAutoplay = false
-        audioPlayer.controlStyle = MPMovieControlStyle.Embedded
-        audioPlayer.view.hidden = true
-        audioPlayer.prepareToPlay()
-        // Do any additional setup after loading the view.
+        // Observe remote input.
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "remotePlay:", name: "playPipe", object: nil)
+        
+        // Observe internal player state change.
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackStateDidChange:", name: "MPMoviePlayerPlaybackStateDidChangeNotification", object: nil)
+    }
+    
+    func MPMoviePlayerPlaybackStateDidChange(noti: NSNotification) {
+        println("changed!")
+        println(self.audioPlayer.playbackState)
     }
     
     override func viewWillDisappear(animated: Bool) {
         UIApplication.sharedApplication().endReceivingRemoteControlEvents()
         resignFirstResponder()
         super.viewWillDisappear(animated)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    override func canBecomeFirstResponder() -> Bool {
-        return true
-    }
-    
-    override func remoteControlReceivedWithEvent(event: UIEvent) {
-        switch(event.subtype) {
-        case UIEventSubtype.RemoteControlPlay:
-            //handlePlay()
-            break;
-        
-        case UIEventSubtype.RemoteControlPause:
-            handlePause()
-            break;
-        
-        case UIEventSubtype.RemoteControlPreviousTrack:
-            handlePrev()
-            break;
-        
-        case UIEventSubtype.RemoteControlNextTrack:
-            handleNext()
-            break;
-            
-        case UIEventSubtype.RemoteControlStop:
-            handleStop()
-            break;
-            
-        case UIEventSubtype.RemoteControlTogglePlayPause:
-            break;
-        default:
-            break;
-        }
-    }
-    
-    @IBAction func playBtnClicked(sender: UIButton?) {
-        if PlayerContext.currentTrack == nil {
-            return
-        }
-        
-    }
-    
-    @IBAction func pauseBtnClicked(sender: UIButton?) {
-        handlePause()
-    }
-    
-    @IBAction func playlistBtnClicked(sender: UIButton) {
-        showPlaylistView()
     }
     
     func showSigninView() {
@@ -134,30 +83,172 @@ class CenterViewController: UIViewController {
         presentViewController(playlistVC, animated: true, completion: nil)
     }
     
-    func handlePlay(track: Track, playlistId: String) {
-        audioPlayer.play()
-        playBtn.hidden = true
-        pauseBtn.hidden = false
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
+    
+    override func remoteControlReceivedWithEvent(event: UIEvent) {
+        switch(event.subtype) {
+        case UIEventSubtype.RemoteControlPlay:
+            println("play clicked")
+            //handlePlay()
+            break;
         
-        updatePlayingInfo(track)
+        case UIEventSubtype.RemoteControlPause:
+            println("pause clicked")
+            handlePause()
+            break;
+        
+        case UIEventSubtype.RemoteControlPreviousTrack:
+            println("prev clicked")
+            handlePrev()
+            break;
+        
+        case UIEventSubtype.RemoteControlNextTrack:
+            println("next clicked")
+            handleNext()
+            break;
+            
+        case UIEventSubtype.RemoteControlStop:
+            println("stop clicked")
+            handleStop()
+            break;
+        case UIEventSubtype.RemoteControlTogglePlayPause:
+            println("toggle clicked")
+            break;
+        default:
+            break;
+        }
+    }
+    
+    func playParam(track: Track, playlistId: String) -> Dictionary<String, AnyObject> {
+        var params: Dictionary<String, AnyObject> = [
+            "track": track,
+            "playlistId": playlistId
+        ]
+        return params
+    }
+    
+    @IBAction func menuBtnClicked(sender: AnyObject) {
+        var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDelegate.centerContainer!.toggleDrawerSide(MMDrawerSide.Left, animated: true, completion: nil)
+    }
+    
+    @IBAction func playBtnClicked(sender: UIButton?) {
+        println("play!")
+        handlePlay(PlayerContext.currentTrack!, playlistId: PlayerContext.currentPlaylistId!)
+    }
+    
+    @IBAction func pauseBtnClicked(sender: UIButton?) {
+        println("pause!")
+        handlePause()
+    }
+    
+    @IBAction func playlistBtnClicked(sender: UIButton) {
+        showPlaylistView()
+    }
+    
+    func remotePlay(noti: NSNotification) {
+        var params = noti.object as! Dictionary<String, AnyObject>
+        var track = params["track"] as! Track?
+        var playlistId = params["playlistId"] as! String
+        handlePlay(track, playlistId: playlistId)
+    }
+    
+    func handlePlay(track: Track?, playlistId: String?) {
+        // Fetch stream urls.
+        if track == nil {
+            return
+        }
+        
+        println("gogo!")
+        if audioPlayer != nil && PlayerContext.currentTrack != nil && PlayerContext.currentTrack!.id == track!.id {
+            if audioPlayer.playbackState == MPMoviePlaybackState.Paused {
+                // Resume
+                println("resume!!")
+                playAudioPlayer()
+                return
+            } else if audioPlayer.playbackState == MPMoviePlaybackState.Playing {
+                // Same music is clicked when it is being played.
+                return
+            }
+        }
+        
+        println(track!.title)
+        PlayerContext.currentTrack = track
+        PlayerContext.currentPlaylistId = playlistId
+        PlayerContext.currentTrackIdx = -1
+        
+        if (PlayerContext.currentPlaylistId != nil) {
+            var playlist :Playlist? = PlayerContext.getPlaylist(playlistId)!
+            for (idx: Int, t: Track) in enumerate(playlist!.tracks) {
+                if t.id == track!.id {
+                    PlayerContext.currentTrackIdx = idx
+                    break
+                }
+            }
+        }
+        
+        resolve(track!.id, track!.type, { (req, resp, json, err) in
+            if err == nil {
+                println("FIN RESOLVE")
+                var streamSources :[StreamSource] = getStreamUrls(json!)
+                
+                // Do we need multiple candidates?
+                PlayerContext.currentStreamUrls = streamSources
+                if streamSources.isEmpty {
+                    println("empty")
+                    // XXX: Cannot play.
+                    return
+                }
+                PlayerContext.currentStreamCandidate = streamSources[0]
+                
+                var url = NSURL(string: streamSources[0].url)
+                self.audioPlayer = MPMoviePlayerController(contentURL: url)
+                self.audioPlayer.controlStyle = MPMovieControlStyle.Embedded
+                self.audioPlayer.view.hidden = true
+                self.playAudioPlayer()
+                self.updatePlayingInfo(track!)
+            } else {
+                // XXX: Cannot play.
+                println(err)
+            }
+        })
     }
     
     func handlePause() {
-        audioPlayer.pause()
-        playBtn.hidden = false
-        pauseBtn.hidden = true
+        if (audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
+            pauseAudioPlayer()
+        }
     }
     
     func handleNext() {
-        
+        handlePlay(PlayerContext.pickNextTrack(), playlistId: PlayerContext.currentPlaylistId)
     }
     
     func handlePrev() {
-        
+        handlePlay(PlayerContext.pickPrevTrack(), playlistId: PlayerContext.currentPlaylistId)
     }
     
     func handleStop() {
-        
+        // Do we have a stop btn?
+    }
+    
+    func playAudioPlayer() {
+        self.audioPlayer.play()
+        self.playBtn.hidden = true
+        self.pauseBtn.hidden = false
+    }
+    
+    func pauseAudioPlayer() {
+        audioPlayer.pause()
+        playBtn.hidden = false
+        pauseBtn.hidden = true       
     }
     
     func updatePlayingInfo(track: Track) {
@@ -222,15 +313,4 @@ class CenterViewController: UIViewController {
             activeVC.didMoveToParentViewController(self)
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

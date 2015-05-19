@@ -4,6 +4,7 @@ use_frameworks!
 
 pod 'Alamofire', '~> 1.2'
 pod 'MMDrawerController', '~> 0.5.7'
+pod 'MMDrawerController-Storyboard', :podspec => 'https://raw.github.com/TomSwift/MMDrawerController-Storyboard/1.0.0/MMDrawerController-Storyboard.podspec'
 pod 'SwiftyJSON', '>= 2.2'
 pod 'FBSDKCoreKit'
 pod 'FBSDKLoginKit'

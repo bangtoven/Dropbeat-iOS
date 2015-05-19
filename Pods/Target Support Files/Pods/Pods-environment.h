@@ -66,6 +66,12 @@
 #define COCOAPODS_VERSION_MINOR_MMDrawerController 5
 #define COCOAPODS_VERSION_PATCH_MMDrawerController 7
 
+// MMDrawerController-Storyboard
+#define COCOAPODS_POD_AVAILABLE_MMDrawerController_Storyboard
+#define COCOAPODS_VERSION_MAJOR_MMDrawerController_Storyboard 0
+#define COCOAPODS_VERSION_MINOR_MMDrawerController_Storyboard 0
+#define COCOAPODS_VERSION_PATCH_MMDrawerController_Storyboard 1
+
 // MMDrawerController/Core
 #define COCOAPODS_POD_AVAILABLE_MMDrawerController_Core
 #define COCOAPODS_VERSION_MAJOR_MMDrawerController_Core 0

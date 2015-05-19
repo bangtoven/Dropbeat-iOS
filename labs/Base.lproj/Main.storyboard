@@ -691,6 +691,10 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="Bac-ob-HQV" id="CUw-Tn-zyn"/>
+                                    <outlet property="delegate" destination="Bac-ob-HQV" id="iwE-8A-dT0"/>
+                                </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -704,6 +708,9 @@
                         </barButtonItem>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="feedTableView" destination="5aV-Jz-Gnd" id="aoO-20-Owk"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8ER-Dm-AVv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

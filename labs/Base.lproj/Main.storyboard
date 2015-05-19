@@ -555,30 +555,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="whZ-zV-pSM">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="whZ-zV-pSM">
                                 <rect key="frame" x="65" y="184" width="191" height="200"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="200" id="B67-3N-dnk"/>
                                     <constraint firstAttribute="width" constant="191" id="CYK-oF-Y5b"/>
                                 </constraints>
                             </imageView>
-                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="sT0-UL-JwA">
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="sT0-UL-JwA">
                                 <rect key="frame" x="150" y="392" width="20" height="20"/>
                             </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstItem="whZ-zV-pSM" firstAttribute="centerY" secondItem="F8j-lf-uZX" secondAttribute="centerY" id="EJ3-zZ-iBH"/>
-                            <constraint firstItem="whZ-zV-pSM" firstAttribute="centerX" secondItem="sT0-UL-JwA" secondAttribute="centerX" id="PjN-Jn-hRX"/>
-                            <constraint firstItem="sT0-UL-JwA" firstAttribute="centerX" secondItem="F8j-lf-uZX" secondAttribute="centerX" id="Z0C-YO-woi"/>
-                            <constraint firstItem="whZ-zV-pSM" firstAttribute="top" secondItem="kTl-pP-O95" secondAttribute="bottom" constant="164" id="b0O-Kd-sda"/>
-                            <constraint firstItem="sT0-UL-JwA" firstAttribute="top" secondItem="whZ-zV-pSM" secondAttribute="bottom" constant="8" symbolic="YES" id="loS-VU-oVD"/>
-                            <constraint firstItem="whZ-zV-pSM" firstAttribute="leading" secondItem="F8j-lf-uZX" secondAttribute="leadingMargin" constant="49" id="yKP-pq-mjq"/>
-                        </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
-                        <segue destination="1rQ-Dl-lNh" kind="show" identifier="DrawerSegue" id="ICS-Ua-hDK"/>
+                        <segue destination="1rQ-Dl-lNh" kind="show" identifier="DrawerSegue" id="V2U-hf-xrf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wan-k8-h9m" userLabel="First Responder" sceneMemberID="firstResponder"/>

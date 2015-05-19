@@ -8,17 +8,62 @@
 import UIKit
 import MMDrawerController
 
+enum MenuType:Int{
+    case FEED
+    case SEARCH
+    case SETTINGS
+}
+
+class MenuItem {
+    var name:String
+    var iconName:String
+    var type:MenuType
+    
+    init(name:String, iconName:String, type:MenuType) {
+        self.name = name
+        self.iconName = iconName
+        self.type = type
+    }
+}
+
 class LeftSideViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
+    var currentMenu:MenuItem?
+    var menuItems:Array<MenuItem>?
     
-    static let MENU_FEED = 0;
-    static let MENU_SEARCH = 1;
-    static let MENU_SETTINGS = 2;
+    private let authMenuItems = [
+        MenuItem(name: "FEED", iconName: "btn_shuffle_disabled.png", type: MenuType.FEED),
+        MenuItem(name: "SEARCH", iconName: "btn_shuffle_disabled.png", type: MenuType.SEARCH),
+        MenuItem(name: "SETTINGS", iconName: "btn_shuffle_disabled.png", type: MenuType.SETTINGS),
+    ]
     
-    var nonAuthMeuItems:[String] = ["Feed", "Search", "Settings"]
+    private let nonauthMenuItems = [
+        MenuItem(name: "FEED", iconName: "btn_shuffle_disabled.png", type: MenuType.FEED),
+        MenuItem(name: "SEARCH", iconName: "btn_shuffle_disabled.png", type: MenuType.SEARCH),
+        MenuItem(name: "SETTINGS", iconName: "btn_shuffle_disabled.png", type: MenuType.SETTINGS),
+    ]
+    
+    @IBOutlet weak var accountView: UIView!
+    @IBOutlet weak var signinBtn: UIButton!
+    @IBOutlet weak var accountPhotoView: UIImageView!
+    @IBOutlet weak var accountEmailView: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: false)
+        let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        if (appDelegate.account != nil) {
+            menuItems = authMenuItems
+            accountView.hidden = false
+            signinBtn.hidden = true
+            accountEmailView.text = appDelegate.account!.user!.email
+            let profileUrl = "https://graph.facebook.com/\(appDelegate.account!.user!.fbId)/picture?type=small"
+            let profileData = NSData(contentsOfURL: NSURL(string: profileUrl)!)
+            accountPhotoView.image = UIImage(data: profileData!)
+        } else {
+            menuItems = nonauthMenuItems
+            accountView.hidden = true
+            signinBtn.hidden = false
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -28,29 +73,35 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
     
     func tableView(tableView: UITableView,
             numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return menuItems!.count
     }
     
     func tableView(tableView: UITableView,
             cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier(
                     "SideMenuCell", forIndexPath: indexPath) as! SideMenuTableViewCell
-        cell.menuItemLabel.text = nonAuthMeuItems[indexPath.row]
+        let menuItem = menuItems![indexPath.row]
+        cell.menuItemIcon.image = UIImage(named: menuItem.iconName)
+        cell.menuItemLabel.text = menuItem.name
+                
+        if (currentMenu == nil) {
+            tableView.selectRowAtIndexPath(indexPath, animated: true, scrollPosition: UITableViewScrollPosition.None)
+            tableView.delegate?.tableView!(tableView, didSelectRowAtIndexPath: indexPath)
+        }
         return cell
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        var centerNav:UINavigationController = appDelegate.centerContainer!.centerViewController as! UINavigationController
-        var centerViewController:CenterViewController = centerNav.visibleViewController as! CenterViewController
-        centerViewController.onMenuSelected(indexPath.row)
-        appDelegate.centerContainer!.toggleDrawerSide(MMDrawerSide.Left, animated: true, completion: nil)
+        currentMenu = menuItems![indexPath.row]
+        let drawerContainer = self.mm_drawerController
+        var centerViewController = drawerContainer.centerViewController as! CenterViewController
+        centerViewController.onMenuSelected(currentMenu!.type)
+        drawerContainer!.toggleDrawerSide(MMDrawerSide.Left, animated: true, completion: nil)
     }
     
     @IBAction func onSigninBtnClicked(sender: AnyObject) {
         var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        var centerNav:UINavigationController = appDelegate.centerContainer!.centerViewController as! UINavigationController
-        var centerViewController:CenterViewController = centerNav.visibleViewController as! CenterViewController
+        var centerViewController = appDelegate.centerContainer!.centerViewController as! CenterViewController
         centerViewController.showSigninView()
     }
 }

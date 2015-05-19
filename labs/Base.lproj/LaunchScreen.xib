@@ -13,7 +13,9 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="J5h-G4-8Lo">
                     <rect key="frame" x="65" y="184" width="191" height="200"/>
                     <constraints>
+                        <constraint firstAttribute="width" constant="191" id="Jc9-i4-6lb"/>
                         <constraint firstAttribute="height" constant="200" id="MCq-qc-eMB"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="Ng4-5i-0yr"/>
                     </constraints>
                 </imageView>
             </subviews>

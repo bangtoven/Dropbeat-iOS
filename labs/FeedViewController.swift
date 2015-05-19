@@ -11,7 +11,7 @@ import Alamofire
 import MMDrawerController
 
 
-class FeedViewController: UIViewController {
+class FeedViewController: BaseContentViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()

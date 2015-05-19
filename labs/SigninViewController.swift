@@ -117,6 +117,8 @@ class SigninViewController: UIViewController {
                 return
             }
             self.dismiss()
+            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            appDelegate.resetAppToFirstController()
         })
     }
     

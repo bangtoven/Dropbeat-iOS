@@ -241,7 +241,7 @@ class Account {
             var userObj = res.objectForKey("user") as! NSDictionary
             let user = User(
                 id: String(userObj.valueForKey("id") as! Int),
-                email: userObj.valueForKey("last_name") as! String,
+                email: userObj.valueForKey("email") as! String,
                 firstName: userObj.valueForKey("first_name") as! String,
                 lastName: userObj.valueForKey("last_name") as! String,
                 unlocked: userObj.valueForKey("unlocked") as! Bool,

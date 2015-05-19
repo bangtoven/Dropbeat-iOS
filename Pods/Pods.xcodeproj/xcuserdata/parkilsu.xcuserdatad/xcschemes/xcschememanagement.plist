@@ -11,6 +11,26 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
+		<key>Pods-Bolts.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
+		<key>Pods-FBSDKCoreKit.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
+		<key>Pods-FBSDKLoginKit.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
+		<key>Pods-FBSDKShareKit.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>8</integer>
+		</dict>
 		<key>Pods-MMDrawerController.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -31,12 +51,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>3AC9E711902839256899DF4C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>44BE4A2C1373DA9DAB29909D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>45295F4E083FF3DAB939B86A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>6802B89E1407F17BB9E57521</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>69A4024AB23130F2BDFE5F05</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -56,7 +91,32 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>8D63B84E05ECC99D7CFE9D8C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8DA00082EA71C157FDF10FEE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9AD717208755CF1853C2F226</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CA9ED8ABEB3C40ECE04F41EC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>CBBE50562C5D1F79D5D8849F</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E1026CEEBD2A32F7C25D8458</key>
 		<dict>
 			<key>primary</key>
 			<true/>

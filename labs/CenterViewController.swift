@@ -52,7 +52,6 @@ class CenterViewController: UIViewController {
         audioPlayer.controlStyle = MPMovieControlStyle.Embedded
         audioPlayer.view.hidden = true
         audioPlayer.prepareToPlay()
-        audioPlayer.be
         // Do any additional setup after loading the view.
     }
     

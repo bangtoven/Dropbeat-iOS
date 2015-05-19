@@ -1,14 +1,15 @@
 //
-//  SearchViewController.swift
+//  BaseContentViewController.swift
 //  labs
 //
-//  Created by vulpes on 2015. 5. 15..
+//  Created by vulpes on 2015. 5. 20..
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
 import UIKit
+import MMDrawerController
 
-class SearchViewController: BaseContentViewController {
+class BaseContentViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +20,11 @@ class SearchViewController: BaseContentViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func menuBtnClicked(sender: AnyObject) {
+        var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDelegate.centerContainer!.toggleDrawerSide(MMDrawerSide.Left, animated: true, completion: nil)
     }
     
 

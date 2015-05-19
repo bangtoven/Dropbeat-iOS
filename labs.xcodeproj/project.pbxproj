@@ -12,6 +12,7 @@
 		580621371B08DE79009012D5 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 580621361B08DE79009012D5 /* FBSDKLoginKit.framework */; };
 		581D4C9E1B09FA120036BEBF /* PlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581D4C9D1B09FA120036BEBF /* PlaylistViewController.swift */; };
 		581D4CA01B0A0CCF0036BEBF /* PlaylistTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581D4C9F1B0A0CCF0036BEBF /* PlaylistTableViewCell.swift */; };
+		582709F71B0A8605003C44DA /* KeychainItemWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582709F61B0A8605003C44DA /* KeychainItemWrapper.swift */; };
 		582AFA1E1B09200B001ADEED /* SigninViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582AFA1D1B09200B001ADEED /* SigninViewController.swift */; };
 		5890D6121B052B8000AAEAE5 /* LeftSideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5890D6111B052B8000AAEAE5 /* LeftSideViewController.swift */; };
 		5890D6141B0530AE00AAEAE5 /* SideMenuTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5890D6131B0530AE00AAEAE5 /* SideMenuTableViewCell.swift */; };
@@ -94,6 +95,7 @@
 		580621361B08DE79009012D5 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "Pods/../build/Debug-iphoneos/Pods/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
 		581D4C9D1B09FA120036BEBF /* PlaylistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewController.swift; sourceTree = "<group>"; };
 		581D4C9F1B0A0CCF0036BEBF /* PlaylistTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistTableViewCell.swift; sourceTree = "<group>"; };
+		582709F61B0A8605003C44DA /* KeychainItemWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainItemWrapper.swift; sourceTree = "<group>"; };
 		582AFA1D1B09200B001ADEED /* SigninViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SigninViewController.swift; sourceTree = "<group>"; };
 		5890D6111B052B8000AAEAE5 /* LeftSideViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeftSideViewController.swift; sourceTree = "<group>"; };
 		5890D6131B0530AE00AAEAE5 /* SideMenuTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SideMenuTableViewCell.swift; sourceTree = "<group>"; };
@@ -308,6 +310,7 @@
 				582AFA1D1B09200B001ADEED /* SigninViewController.swift */,
 				581D4C9D1B09FA120036BEBF /* PlaylistViewController.swift */,
 				581D4C9F1B0A0CCF0036BEBF /* PlaylistTableViewCell.swift */,
+				582709F61B0A8605003C44DA /* KeychainItemWrapper.swift */,
 			);
 			path = labs;
 			sourceTree = "<group>";
@@ -538,6 +541,7 @@
 				5890D6121B052B8000AAEAE5 /* LeftSideViewController.swift in Sources */,
 				581D4CA01B0A0CCF0036BEBF /* PlaylistTableViewCell.swift in Sources */,
 				5890D61A1B05484A00AAEAE5 /* CenterViewController.swift in Sources */,
+				582709F71B0A8605003C44DA /* KeychainItemWrapper.swift in Sources */,
 				FC0D9D551B09A70300E048CC /* PlayerContext.swift in Sources */,
 				FC766BEF1B050D51006FD4FB /* NetworkPath.swift in Sources */,
 				FC766BF51B051AA4006FD4FB /* NetworkRequests.swift in Sources */,

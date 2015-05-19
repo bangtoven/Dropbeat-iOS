@@ -122,7 +122,9 @@ class WebAdapter {
         var manager = Manager.sharedInstance
         if (auth == true) {
             // TODO: Get global session key.
-            var key :String = "0osyggg96aogbrb0vk820kcb9v8i3nv5"
+            let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup: nil)
+            var key :String = keychainItemWrapper["auth_token"] as! String
+//            var key :String = "0osyggg96aogbrb0vk820kcb9v8i3nv5"
             manager.session.configuration.HTTPAdditionalHeaders = [
                 "Cookie": "sessionid=" + key
             ]

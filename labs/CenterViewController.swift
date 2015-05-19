@@ -32,7 +32,6 @@ class CenterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        onMenuSelected(LeftSideViewController.MENU_FEED)
         
         var sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
         
@@ -270,23 +269,23 @@ class CenterViewController: UIViewController {
         }       
     }
     
-    func onMenuSelected(menuIdx: Int) {
+    func onMenuSelected(menuType: MenuType) {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         
-        switch(menuIdx) {
-        case LeftSideViewController.MENU_FEED:
+        switch(menuType) {
+        case .FEED:
             activeViewController = mainStoryboard
-                .instantiateViewControllerWithIdentifier("FeedViewController")
+                .instantiateViewControllerWithIdentifier("FeedNavigationController")
                 as? UIViewController
             break
-        case LeftSideViewController.MENU_SEARCH:
+        case .SEARCH:
             activeViewController = mainStoryboard
-                .instantiateViewControllerWithIdentifier("SearchViewController")
+                .instantiateViewControllerWithIdentifier("SearchNavigationController")
                 as? UIViewController
             break
-        case LeftSideViewController.MENU_SETTINGS:
+        case .SETTINGS:
             activeViewController = mainStoryboard
-                .instantiateViewControllerWithIdentifier("SettingsViewController")
+                .instantiateViewControllerWithIdentifier("SettingsNavigationController")
                 as? UIViewController
             break
         default:

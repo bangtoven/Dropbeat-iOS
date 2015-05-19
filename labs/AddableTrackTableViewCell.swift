@@ -1,18 +1,17 @@
 //
-//  PlaylistTableViewCell.swift
+//  AddableTrackTableViewCell.swift
 //  labs
 //
-//  Created by vulpes on 2015. 5. 18..
+//  Created by vulpes on 2015. 5. 20..
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
 import UIKit
 
-class PlaylistTableViewCell: UITableViewCell {
+class AddableTrackTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var trackTitle: UILabel!
-    
-    @IBOutlet weak var iconView: UIImageView!
+    @IBOutlet weak var nameView: UILabel!
+    @IBOutlet weak var thumbView: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -23,8 +22,8 @@ class PlaylistTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
-    @IBAction func onDeleteBtnClicked(sender: UIButton) {
-    }
 
+    @IBAction func onAddBtnClicked(sender: UIButton) {
+        
+    }
 }

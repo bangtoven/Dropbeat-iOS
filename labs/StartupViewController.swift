@@ -15,14 +15,14 @@ class StartupViewController: UIViewController {
         super.viewDidLoad()
 
         
-        Account.getAccountWithCompletionHandler({(account:Account?, error:NSError?) -> Void in
-            if (error != nil) {
-                println("failed to get account due to \(error!.description)")
-            }
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            appDelegate.account = account
-            self.performSegueWithIdentifier("DrawerSegue", sender: self)
-        })
+//        Account.getAccountWithCompletionHandler({(account:Account?, error:NSError?) -> Void in
+//            if (error != nil) {
+//                println("failed to get account due to \(error!.description)")
+//            }
+//            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+//            appDelegate.account = account
+//        })
+        self.performSegueWithIdentifier("DrawerSegue", sender: self)
         
         
     }

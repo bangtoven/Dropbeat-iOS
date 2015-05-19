@@ -219,6 +219,7 @@ class Account {
     
     static func getAccountWithCompletionHandler(handler:(account: Account?, error: NSError?) -> Void) {
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
+        keychainItemWrapper["auth_token"] = nil
         let token:String? = keychainItemWrapper["auth_token"] as! String?
         if (token == nil) {
             handler(account: nil, error: NSError(domain: "account", code: 100, userInfo: nil))

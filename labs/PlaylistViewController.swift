@@ -10,6 +10,13 @@ import UIKit
 
 class PlaylistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource{
 
+    @IBOutlet weak var nextBtn: UIButton!
+    @IBOutlet weak var prevBtn: UIButton!
+    @IBOutlet weak var shuffleBtn: UIButton!
+    @IBOutlet weak var repeatBtn: UIButton!
+    @IBOutlet weak var loadingView: UILabel!
+    @IBOutlet weak var playBtn: UIButton!
+    @IBOutlet weak var pauseBtn: UIButton!
     @IBOutlet weak var playlistView: UITableView!
     
     var currentPlaylist:Playlist!
@@ -21,6 +28,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         loadInitialPlaylist()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "sender", name: PlaylistViewController.pipeKey, object: nil)
+        updatePlayerView()
     }
     
     func sender() {}
@@ -28,6 +36,56 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func updatePlayerView() {
+        updateRepeatView()
+        updateShuffleView()
+        updatePlayView()
+    }
+    
+    func updateRepeatView() {
+        switch(PlayerContext.repeatState) {
+        case RepeatState.NOT_REPEAT:
+            repeatBtn.titleLabel?.text = "no repeat"
+            break
+        case RepeatState.REPEAT_ONE:
+            repeatBtn.titleLabel?.text = "repeat one"
+            break
+        case RepeatState.REPEAT_PLAYLIST:
+            repeatBtn.titleLabel?.text = "repeat"
+            break
+        default:
+            break
+        }
+    }
+    
+    func updateShuffleView() {
+        if (PlayerContext.shuffleState == ShuffleState.NOT_SHUFFLE) {
+            shuffleBtn.titleLabel?.text = "no shuffle"
+        } else {
+            shuffleBtn.titleLabel?.text = "shuffle"
+        }
+    }
+    
+    func updatePlayView() {
+        if (PlayerContext.playState == PlayState.LOADING) {
+            playBtn.hidden = true
+            pauseBtn.hidden = true
+            loadingView.hidden = false
+        } else if (PlayerContext.playState == PlayState.PAUSED) {
+            playBtn.hidden = false
+            pauseBtn.hidden = true
+            loadingView.hidden = true
+        } else if (PlayerContext.playState == PlayState.PLAYING) {
+            playBtn.hidden = true
+            pauseBtn.hidden = false
+            loadingView.hidden = true
+        } else if (PlayerContext.playState == PlayState.STOPPED) {
+            playBtn.hidden = false
+            pauseBtn.hidden = true
+            loadingView.hidden = true
+        }
     }
     
     func loadInitialPlaylist() {
@@ -110,6 +168,8 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func onPauseBtnClicked(sender: UIButton) {
         println("pause")
+        playBtn.hidden = false
+        pauseBtn.hidden = true
     }
     
     @IBAction func onNextBtnClicked(sender: UIButton) {

@@ -13,18 +13,17 @@ class StartupViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
-//        Account.getAccountWithCompletionHandler({(account:Account?, error:NSError?) -> Void in
-//            if (error != nil) {
-//                println("failed to get account due to \(error!.description)")
-//            }
-//            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//            appDelegate.account = account
-//        })
-        self.performSegueWithIdentifier("DrawerSegue", sender: self)
-        
-        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        Account.getAccountWithCompletionHandler({(account:Account?, error:NSError?) -> Void in
+            if (error != nil) {
+                println("failed to get account due to \(error!.description)")
+            }
+            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            appDelegate.account = account
+            self.showMainController()
+        })
     }
 
     override func didReceiveMemoryWarning() {
@@ -46,6 +45,10 @@ class StartupViewController: UIViewController {
             var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             appDelegate.centerContainer = drawerController
         }
+    }
+    
+    func showMainController() {
+        performSegueWithIdentifier("DrawerSegue", sender: self)
     }
     
 

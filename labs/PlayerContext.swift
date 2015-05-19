@@ -15,6 +15,7 @@ class PlayerContext {
     static var currentTrack: Track?
     static var repeatState = RepeatState.NOT_REPEAT
     static var shuffleState = ShuffleState.NOT_SHUFFLE
+    static var playState = PlayState.STOPPED
     static var currentStreamUrls: [StreamSource] = []
     static var currentStreamCandidate: StreamSource?
     static var playlists: [Playlist] = []

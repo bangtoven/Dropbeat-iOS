@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="1rQ-Dl-lNh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ejL-By-Wwd">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -270,12 +270,25 @@
                                     <action selector="onShuffleBtnClicked:" destination="ATs-9y-TgU" eventType="touchUpInside" id="bmS-In-nwX"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K5O-l3-GTu">
+                                <rect key="frame" x="142" y="529" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
+                        <outlet property="loadingView" destination="K5O-l3-GTu" id="fnf-1v-2bv"/>
+                        <outlet property="nextBtn" destination="Uad-bp-giQ" id="G4L-qR-OHW"/>
+                        <outlet property="pauseBtn" destination="UgX-Ys-9k3" id="8Th-6P-iss"/>
+                        <outlet property="playBtn" destination="O8j-VO-GoD" id="fv4-or-NXu"/>
                         <outlet property="playlistView" destination="g4s-vl-X4b" id="KIB-XS-sZS"/>
+                        <outlet property="prevBtn" destination="7aW-O2-d4X" id="lQC-Sw-3oX"/>
+                        <outlet property="repeatBtn" destination="xL3-uN-g7m" id="xJE-mh-Ynd"/>
+                        <outlet property="shuffleBtn" destination="26r-j7-veC" id="dMK-F7-iOh"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZtQ-WG-i8B" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -600,10 +613,13 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <segue destination="1rQ-Dl-lNh" kind="show" identifier="DrawerSegue" id="eZ1-PR-koG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wan-k8-h9m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="253" y="-537"/>
+            <point key="canvasLocation" x="275" y="-550"/>
         </scene>
         <!--Drawer View Controller-->
         <scene sceneID="few-pl-jiS">

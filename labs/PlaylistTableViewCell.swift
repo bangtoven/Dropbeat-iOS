@@ -10,10 +10,9 @@ import UIKit
 
 class PlaylistTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var iconView: UIImageView!
     @IBOutlet weak var trackTitle: UILabel!
-    @IBOutlet weak var deleteBtn: UIButton!
     
+    @IBOutlet weak var iconView: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

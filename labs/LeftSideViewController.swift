@@ -7,8 +7,6 @@
 //
 import UIKit
 import MMDrawerController
-import FBSDKCoreKit
-import FBSDKLoginKit
 
 class LeftSideViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
     

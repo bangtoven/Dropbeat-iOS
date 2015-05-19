@@ -51,6 +51,19 @@ class User {
         self.createdAt = createdAt
         self.fbId = fbId
     }
+    
+    static func fromJson(data: AnyObject) -> User {
+        var json = JSON(data)
+        return User(
+                id: json["id"].string!,
+                email: json["email"].string!,
+                firstName: json["firstName"].string!,
+                lastName: json["lastName"].string!,
+                unlocked: json["unlock"].boolValue,
+                createdAt: json["createdAt"].string!,
+                fbId: json["fb_id"].string!
+        )
+    }
 }
 
 
@@ -192,5 +205,51 @@ class Track {
         self.tag = tag
         self.thumbnailUrl = thumbnailUrl
         self.isTopMatch = isTopMatch
+    }
+}
+
+class Account {
+    var user:User?
+    var token:String
+    
+    init(token:String, user:User?) {
+        self.user = user
+        self.token = token
+    }
+    
+    static func getAccountWithCompletionHandler(handler:(account: Account?, error: NSError?) -> Void) {
+        let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
+        let token:String? = keychainItemWrapper["auth_token"] as! String?
+        if (token == nil) {
+            handler(account: nil, error: NSError(domain: "account", code: 100, userInfo: nil))
+            return
+        }
+        Requests.userSelf({ (request: NSURLRequest, response: NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if (error != nil) {
+                handler(account: nil, error:error)
+                return
+            }
+            
+            let res = result as! NSDictionary
+            var success:Bool = res.objectForKey("success") as! Bool? ?? false
+            if (!success) {
+                var errorMsg:String? = res.objectForKey("error") as! String?
+                handler(account:nil, error: NSError(domain: "account", code: 101, userInfo: nil))
+                return
+            }
+            
+            var userObj = res.objectForKey("user") as! NSDictionary
+            let user = User(
+                id: String(userObj.valueForKey("id") as! Int),
+                email: userObj.valueForKey("last_name") as! String,
+                firstName: userObj.valueForKey("first_name") as! String,
+                lastName: userObj.valueForKey("last_name") as! String,
+                unlocked: userObj.valueForKey("unlocked") as! Bool,
+                createdAt: userObj.valueForKey("created_at") as! String,
+                fbId: userObj.valueForKey("fb_id") as! String
+            )
+            var account = Account(token:token!, user:user)
+            handler(account:account, error:nil)
+        })
     }
 }

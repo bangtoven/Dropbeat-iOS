@@ -32,7 +32,7 @@ class SigninViewController: UIViewController {
         fbManager.logInWithReadPermissions(["email"], handler: { (result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
             if (error != nil) {
                 // Process error
-                self.showSignupFailureAlert(errorText: error!.description)
+                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: error!.description)
                 return
             }
             if (result.isCancelled) {
@@ -42,7 +42,7 @@ class SigninViewController: UIViewController {
             if (result.grantedPermissions.contains("email")) {
                 self.requestProfileInfos()
             } else {
-                self.showSignupFailureAlert(errorText: "Email permission required for Dropbeat signin")
+                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Email permission required for Dropbeat signin")
             }
         })
     }
@@ -52,7 +52,7 @@ class SigninViewController: UIViewController {
         let request:FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
         request.startWithCompletionHandler({ (connection:FBSDKGraphRequestConnection!, result:AnyObject!, error:NSError!) -> Void in
             if (error != nil) {
-                self.showSignupFailureAlert(errorText: error!.description)
+                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: error!.description)
                 fbManager.logOut()
                 return
             }
@@ -74,14 +74,14 @@ class SigninViewController: UIViewController {
             Requests.userSignin(userParam, respCb: {
                     (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                 if (error != nil) {
-                    self.showSignupFailureAlert(errorText: error!.description)
+                    ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: error!.description)
                     return
                 }
                 let res = result as! NSDictionary
                 var success:Bool = res.objectForKey("success") as! Bool? ?? false
                 if (!success) {
-                    var errorMsg:String? = res.objectForKey("error") as! String?
-                    self.showSignupFailureAlert(errorText: errorMsg)
+                    var errorMsg:String = res.objectForKey("error") as? String ?? "undefined error"
+                    ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: errorMsg)
                     return
                 }
                 
@@ -106,14 +106,13 @@ class SigninViewController: UIViewController {
     func afterSignin(user:User, token:String) {
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
         keychainItemWrapper["auth_token"] = token
-        var testToken:String? = keychainItemWrapper["auth_token"] as! String?
         Account.getAccountWithCompletionHandler({ (account:Account?, error:NSError?) -> Void in
             if (error != nil) {
-                self.showSignupFailureAlert(errorText: error?.description)
+                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: error!.description)
                 return
             }
             if (account == nil) {
-                self.showSignupFailureAlert(errorText: "Account is nil")
+                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Account is nil")
                 return
             }
             self.dismiss()
@@ -122,26 +121,6 @@ class SigninViewController: UIViewController {
         })
     }
     
-    func showSignupFailureAlert(errorText:String?=nil) {
-        let title = "Failed to signin"
-        var message = "Failed to signin with facebook. "
-        if (errorText != nil) {
-            message += errorText!
-        }
-        let btnText = "confirm"
-        
-        if NSClassFromString("UIAlertController") != nil {
-            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: btnText, style: UIAlertActionStyle.Default, handler: nil))
-            self.presentViewController(alert, animated: true, completion: nil)
-        } else {
-            let  alert = UIAlertView()
-            alert.title = title
-            alert.message = message
-            alert.addButtonWithTitle(btnText)
-            alert.show()
-        }
-    }
 
     @IBAction func onCloseBtnClicked(sender: AnyObject) {
         dismiss()

@@ -30,7 +30,9 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
         let cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
         let track:Track = tracks[indexPath.row]
         cell.nameView.text = track.title
-        cell.thumbView.image = UIImage(data: NSData(contentsOfURL: NSURL(string: track.thumbnailUrl!)!)!)
+        if (track.thumbnailUrl != nil) {
+            cell.thumbView.image = UIImage(data: NSData(contentsOfURL: NSURL(string: track.thumbnailUrl!)!)!)
+        }
         return cell
     }
     
@@ -43,7 +45,16 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
     }
     
     func loadFeed() {
-        
+        Requests.fetchFeed({(request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if (error != nil) {
+                ViewUtils.showNoticeAlert(self, title: "Failed to fetch feed", message: error!.description)
+                return
+            }
+            let parser = Parser()
+            var fetchedTracks = parser.parseFeed(result!)
+            self.tracks = fetchedTracks.result
+            self.feedTableView.reloadData()
+        })
     }
     
 }

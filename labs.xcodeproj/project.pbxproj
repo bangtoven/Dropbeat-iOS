@@ -69,6 +69,8 @@
 		5890D6851B08460600AAEAE5 /* ButtonAudio.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5890D6831B08460600AAEAE5 /* ButtonAudio.wav */; };
 		58D3EBDC1B0BAAD4000C6374 /* BaseContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D3EBDB1B0BAAD4000C6374 /* BaseContentViewController.swift */; };
 		58D3EBDE1B0BBC00000C6374 /* AddableTrackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D3EBDD1B0BBC00000C6374 /* AddableTrackTableViewCell.swift */; };
+		58EAB3DD1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EAB3DC1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift */; };
+		58EAB3DF1B0D11110075304E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EAB3DE1B0D11110075304E /* Utils.swift */; };
 		597D265670AB261B0AF2BF3D /* Pods.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2ABE64F4B0B9F198A41297C /* Pods.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		FC0D9D551B09A70300E048CC /* PlayerContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0D9D541B09A70300E048CC /* PlayerContext.swift */; };
 		FC0D9D571B09F4F500E048CC /* Stream.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0D9D561B09F4F500E048CC /* Stream.swift */; };
@@ -156,6 +158,8 @@
 		5890D6831B08460600AAEAE5 /* ButtonAudio.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ButtonAudio.wav; sourceTree = "<group>"; };
 		58D3EBDB1B0BAAD4000C6374 /* BaseContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseContentViewController.swift; sourceTree = "<group>"; };
 		58D3EBDD1B0BBC00000C6374 /* AddableTrackTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddableTrackTableViewCell.swift; sourceTree = "<group>"; };
+		58EAB3DC1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistSelectTableViewCell.swift; sourceTree = "<group>"; };
+		58EAB3DE1B0D11110075304E /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		C2ABE64F4B0B9F198A41297C /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CFA1A3ACE66027AEC6F82BF6 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		FC0D9D541B09A70300E048CC /* PlayerContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerContext.swift; sourceTree = "<group>"; };
@@ -323,6 +327,8 @@
 				586D166D1B0B972400C5147F /* StartupViewController.swift */,
 				58D3EBDB1B0BAAD4000C6374 /* BaseContentViewController.swift */,
 				58D3EBDD1B0BBC00000C6374 /* AddableTrackTableViewCell.swift */,
+				58EAB3DC1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift */,
+				58EAB3DE1B0D11110075304E /* Utils.swift */,
 			);
 			path = labs;
 			sourceTree = "<group>";
@@ -553,8 +559,10 @@
 				5890D6121B052B8000AAEAE5 /* LeftSideViewController.swift in Sources */,
 				586D166A1B0B65AF00C5147F /* MMSparkDrawerVisualStateManager.swift in Sources */,
 				581D4CA01B0A0CCF0036BEBF /* PlaylistTableViewCell.swift in Sources */,
+				58EAB3DD1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift in Sources */,
 				586D166E1B0B972400C5147F /* StartupViewController.swift in Sources */,
 				5890D61A1B05484A00AAEAE5 /* CenterViewController.swift in Sources */,
+				58EAB3DF1B0D11110075304E /* Utils.swift in Sources */,
 				582709F71B0A8605003C44DA /* KeychainItemWrapper.swift in Sources */,
 				58D3EBDE1B0BBC00000C6374 /* AddableTrackTableViewCell.swift in Sources */,
 				FC0D9D551B09A70300E048CC /* PlayerContext.swift in Sources */,

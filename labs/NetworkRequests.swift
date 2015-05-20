@@ -83,8 +83,9 @@ class Requests {
     }
     
     static func fetchFeed(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        // TODO: Get global session key.
-        var authenticated = false;
+        let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup: nil)
+        var key :String? = keychainItemWrapper["auth_token"] as? String
+        var authenticated = key != nil
         sendGet(ApiPath.feed, auth: authenticated, respCb: respCb)
     }
     
@@ -141,5 +142,116 @@ class WebAdapter {
             enc = .JSON
         }
         Alamofire.request(self.method!, self.url!, parameters: self.params, encoding: enc!).validate().responseJSON(completionHandler: respCb)
+    }
+}
+
+class AutocompleteRequester {
+    let youtubeApiPath = "https://clients1.google.com/complete/search"
+    let funcRegexPattern = "[a-zA-Z0-9\\.]+\\(([^\\)]+)\\)"
+    let koreanRegexPattern = ".*[ㄱ-ㅎㅏ-ㅣ가-힣]+."
+    
+    var defaultParams:[String:String]
+    var onTheFlyRequests:Dictionary<String, Request> = [String:Request]()
+    
+    var handler:(keywords:Array<String>?, error:NSError?) -> Void
+    
+    init (handler:(keywords:Array<String>?, error:NSError?) -> Void) {
+        self.handler = handler
+        self.defaultParams = [
+            "client": "youtube",
+            "hl": "en",
+            "gl": "us",
+            "gs_rn": "23",
+            "gs_ri": "youtube",
+            "tok": "I9KDmvOmJAg1Xq-coNjwGg",
+            "ds": "yt",
+            "cp": "3",
+            "gs_gbg": "K111AA607"
+        ]
+    }
+    
+    func send(keyword:String) {
+        if (count(keyword) == 0) {
+            self.handler(keywords: [], error: nil)
+            return
+        }
+        var params = Dictionary<String, String>()
+        for key in defaultParams.keys {
+            params[key] = defaultParams[key]
+        }
+        
+        var id:String?
+        
+        do {
+            id = makeRandId()
+        } while(onTheFlyRequests[id!] != nil)
+        
+        params["q"] = keyword
+        params["gs_id"] = id!
+        
+        var request = Alamofire.request(Method.GET, self.youtubeApiPath, parameters: params)
+        .responseString(encoding: NSUTF8StringEncoding,
+            completionHandler: {
+                    (request:NSURLRequest, response:NSHTTPURLResponse?, result:String?, error:NSError?) -> Void in
+                self.onTheFlyRequests.removeValueForKey(id!)
+                if (error != nil) {
+                    self.handler(keywords: nil, error:error)
+                    return
+                }
+                let funcRegex = NSRegularExpression(pattern: self.funcRegexPattern, options: nil, error: nil)!
+                let koreanRegex = NSRegularExpression(pattern: self.koreanRegexPattern, options: nil, error: nil)!
+                
+                let matches = funcRegex.matchesInString(result!,
+                    options: nil,
+                    range:NSMakeRange(0, count(result!))) as! [NSTextCheckingResult]
+                if (matches.count > 0) {
+                    let substring = (result! as NSString).substringWithRange(matches[0].rangeAtIndex(1))
+                    var data:NSData = substring.dataUsingEncoding(NSUTF8StringEncoding)!
+                    var error: NSError?
+                    
+                    // convert NSData to 'AnyObject'
+                    let anyObj: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0),
+                        error: &error)
+                    
+                    if (error != nil) {
+                        self.handler(keywords:nil, error:error)
+                        return
+                    }
+                    if (anyObj is Array<AnyObject>) {
+                        let argArray = anyObj as! Array<AnyObject>
+                        if (argArray.count > 2) {
+                            let q:String = argArray[0] as! String
+                            let words = argArray[1] as! Array<AnyObject>
+                            let appendix: AnyObject = argArray[2] as AnyObject
+                            
+                            var keywords = [String]()
+                            for word in words {
+                                let entries = word as! Array<AnyObject>
+                                let keyword = entries[0] as! String
+                                keywords.append(keyword)
+                            }
+                            self.handler(keywords: keywords, error: nil)
+                            return
+                        }
+                    }
+                }
+                self.handler(keywords: nil, error: NSError(domain: "autocom", code: 0, userInfo: nil))
+        })
+        onTheFlyRequests[id!] = request
+    }
+    
+    func cancelAll() {
+        for request in onTheFlyRequests.values {
+            request.cancel()
+        }
+    }
+    
+    private func makeRandId()->String {
+        let possible = Array("abcdefghijklmnopqrstuvwxyz0123456789")
+        var id = ""
+        for i in 0...1 {
+            id.append(possible[random() % possible.count])
+        }
+        return id
     }
 }

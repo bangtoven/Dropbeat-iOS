@@ -79,8 +79,7 @@ class Playlist {
     }
     
     static func fromJson(data: AnyObject) -> Playlist {
-        var json = JSON(data)
-        var playlistDict = json["playlist"]
+        var playlistDict = JSON(data)
         var playlistId: Int = playlistDict["id"].intValue
         var playlistName: String = playlistDict["name"].stringValue
         var tracks: [Track] = []
@@ -217,9 +216,14 @@ class Account {
         self.token = token
     }
     
+    static private var account:Account?
+    
+    static func getCachedAccount() -> Account? {
+        return account
+    }
+    
     static func getAccountWithCompletionHandler(handler:(account: Account?, error: NSError?) -> Void) {
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
-        keychainItemWrapper["auth_token"] = nil
         let token:String? = keychainItemWrapper["auth_token"] as! String?
         if (token == nil) {
             handler(account: nil, error: NSError(domain: "account", code: 100, userInfo: nil))
@@ -250,6 +254,7 @@ class Account {
                 fbId: userObj.valueForKey("fb_id") as! String
             )
             var account = Account(token:token!, user:user)
+            self.account = account
             handler(account:account, error:nil)
         })
     }

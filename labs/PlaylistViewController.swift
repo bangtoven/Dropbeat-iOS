@@ -111,10 +111,15 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     func loadInitialPlaylist() {
         // Some how load playlist
         var tracks = Array<Track>()
-        
+        /*
         var track = Track(
             id: "rLMas3USFbA",
             title: "Bassjackers - Mush Mush (Original Mix)",
+            type: "youtube"
+        )*/
+        var track = Track(
+            id: "z5lUegVJvGM",
+            title: "test",
             type: "youtube"
         )
         tracks.append(track)
@@ -127,9 +132,9 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         tracks.append(track)
         
         track = Track(
-            id: "PsO6ZnUZI0g",
-            title: "Kanye West - Stronger",
-            type: "youtube"
+            id: "164138555",
+            title: "Alesso - Coolr",
+            type: "soundcloud"
         )
         tracks.append(track)
         

@@ -19,6 +19,7 @@ class PlayerContext {
     static var currentStreamUrls: [StreamSource] = []
     static var currentStreamCandidate: StreamSource?
     static var playlists: [Playlist] = []
+    static var correctDuration: Double?
     
     static func resetPlaylist(playlists: [Playlist]) {
         PlayerContext.playlists = playlists

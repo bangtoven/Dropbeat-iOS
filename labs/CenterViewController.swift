@@ -23,6 +23,8 @@ class CenterViewController: UIViewController {
     
     var audioPlayer: MPMoviePlayerController!
     
+    var remoteProgressTimer: NSTimer?
+    
     private var activeViewController: UIViewController? {
         didSet {
             removeInactiveViewController(oldValue)
@@ -61,6 +63,55 @@ class CenterViewController: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackDidFinish:", name: "MPMoviePlayerPlaybackDidFinishNotification", object: nil)
     }
     
+    func updateProgress () {
+        var currentTrack :Track? = PlayerContext.currentTrack
+        if (currentTrack != nil) {
+            if (audioPlayer.duration == 0.0) {
+                // Audio meta has not been loaded.
+                return
+            }
+            
+            // Youtube duration hack.
+            if (currentTrack?.type == "youtube") {
+                if (PlayerContext.correctDuration == nil) {
+                    // Prevent race condition between timer and UIThread.
+                    return
+                }
+                
+                if (audioPlayer.duration != PlayerContext.correctDuration) {
+                    // To find a end of the track that has corrected duration.
+                    if (audioPlayer.currentPlaybackTime > PlayerContext.correctDuration) {
+                        var success :Bool = handleNext()
+                        if (!success) {
+                            handleStop()
+                        }
+                        PlayerContext.correctDuration = nil
+                        return
+                    }
+                }
+                
+                if (PlayerContext.correctDuration == -1.0) {
+                    // URL has no duration info.
+                    PlayerContext.correctDuration = audioPlayer.duration / 2.0
+                } else {
+                    var buffer :Double = audioPlayer.duration * 0.75
+                    if (buffer <= PlayerContext.correctDuration) {
+                        // Cannot sure if it's wrong. So, let's return back original value.
+                        PlayerContext.correctDuration = audioPlayer.duration
+                    }
+                }
+            } else {
+                PlayerContext.correctDuration = audioPlayer.duration
+            }
+            
+            // TODO: This method isn't necessarily called periodically.
+            // Update remote control progress
+            updatePlayingInfo(currentTrack!)
+            
+            // Update custom progress
+        }
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
@@ -81,13 +132,29 @@ class CenterViewController: UIViewController {
     }
     
     func MPMoviePlayerPlaybackStateDidChange (noti: NSNotification) {
-        println("changed!")
         if (audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
             PlayerContext.playState = PlayState.PLAYING
+            // Periodic timer for progress update.
+            if remoteProgressTimer == nil {
+                remoteProgressTimer = NSTimer.scheduledTimerWithTimeInterval(
+                    1.0, target: self, selector: Selector("updateProgress"), userInfo: nil, repeats: true)
+            }
         } else if (audioPlayer.playbackState == MPMoviePlaybackState.Stopped) {
             PlayerContext.playState = PlayState.STOPPED
+            
+            updatePlayingInfo(PlayerContext.currentTrack!, rate: 0.0)
+            if remoteProgressTimer != nil {
+                remoteProgressTimer?.invalidate()
+                remoteProgressTimer = nil
+            }
         } else if (audioPlayer.playbackState == MPMoviePlaybackState.Paused) {
             PlayerContext.playState = PlayState.PAUSED
+            
+            updatePlayingInfo(PlayerContext.currentTrack!, rate: 0.0)
+            if remoteProgressTimer != nil {
+                remoteProgressTimer?.invalidate()
+                remoteProgressTimer = nil
+            }
         } else if (audioPlayer.playbackState == MPMoviePlaybackState.Interrupted) {
             
         } else if (audioPlayer.playbackState == MPMoviePlaybackState.SeekingForward) {
@@ -99,6 +166,7 @@ class CenterViewController: UIViewController {
     }
     
     func MPMoviePlayerPlaybackDidFinish (noti: NSNotification) {
+        println("fin!!!!")
         var success :Bool = handleNext()
         if (!success) {
             handleStop()
@@ -203,6 +271,11 @@ class CenterViewController: UIViewController {
         PlayerContext.playState = PlayState.LOADING
         playlistPlayerUpdate()
         
+        // Init correct duration.
+        PlayerContext.correctDuration = nil
+        
+        initPlayingInfo(track!.title)
+        
         resolve(track!.id, track!.type, { (req, resp, json, err) in
             if err == nil {
                 println("FIN RESOLVE")
@@ -216,13 +289,46 @@ class CenterViewController: UIViewController {
                     return
                 }
                 PlayerContext.currentStreamCandidate = streamSources[0]
+                if (track!.type == "youtube" && streamSources[0].type == "webm") {
+                    // Should notify that we can't play it.
+                    return;
+                }
                 
                 var url = NSURL(string: streamSources[0].url)
+                if (PlayerContext.currentTrack?.type == "youtube" && streamSources[0].type == "m4a") {
+                    // Youtube duration hack.
+                    var q :String = url!.query!
+                    println(q)
+                    var qa = split(q) {$0 == "&"}
+                    var dur :String = ""
+                    for i :String in qa {
+                        var subq :[String] = split(i) {$0 == "="}
+                        if subq.count >= 2 {
+                            var key :String = subq[0]
+                            var value :String = subq[1]
+                            if key == "dur" {
+                                dur = value
+                            }
+                        } else {
+                            continue
+                        }
+                    }
+                    
+                    if (dur != "") {
+                        PlayerContext.correctDuration = (dur as NSString).doubleValue
+                    } else {
+                        // To indicate that we should devide youtube duration into 2.
+                        PlayerContext.correctDuration = -1.0
+                    }
+                } else {
+                    PlayerContext.correctDuration = nil
+                }
+                
+                // Play it!
                 self.audioPlayer = MPMoviePlayerController(contentURL: url)
                 self.audioPlayer.controlStyle = MPMovieControlStyle.Embedded
                 self.audioPlayer.view.hidden = true
                 self.playAudioPlayer()
-                self.updatePlayingInfo(track!)
             } else {
                 // XXX: Cannot play.
                 println(err)
@@ -238,6 +344,11 @@ class CenterViewController: UIViewController {
     
     func handleNext() -> Bool{
         println("handleNext")
+        if remoteProgressTimer != nil {
+            remoteProgressTimer?.invalidate()
+            remoteProgressTimer = nil
+        }
+        
         var track: Track? = PlayerContext.pickNextTrack()
         if (track == nil) {
             return false;
@@ -248,6 +359,11 @@ class CenterViewController: UIViewController {
     
     func handlePrev() -> Bool {
         println("handlePrev")
+        if remoteProgressTimer != nil {
+            remoteProgressTimer?.invalidate()
+            remoteProgressTimer = nil
+        }
+        
         var track: Track? = PlayerContext.pickPrevTrack()
         if (track == nil) {
             return false;
@@ -275,7 +391,7 @@ class CenterViewController: UIViewController {
         pauseBtn.hidden = true       
     }
     
-    func updatePlayingInfo(track: Track) {
+    func updatePlayingInfo(track: Track, rate: Float? = 1.0) {
         var playingInfoCenter:AnyClass! = NSClassFromString("MPNowPlayingInfoCenter")
         if (playingInfoCenter != nil) {
             var trackInfo:NSMutableDictionary = NSMutableDictionary()
@@ -285,10 +401,28 @@ class CenterViewController: UIViewController {
             trackInfo[MPMediaItemPropertyArtwork] = albumArt
             
             trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = audioPlayer.currentPlaybackTime
-            trackInfo[MPMediaItemPropertyPlaybackDuration] = audioPlayer.duration
-            trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = NSNumber(double:0.0)
+            trackInfo[MPMediaItemPropertyPlaybackDuration] = PlayerContext.correctDuration
+            trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = rate
             MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo as [NSObject : AnyObject]
         }
+    }
+    
+    func initPlayingInfo(title: String) {
+        var playingInfoCenter:AnyClass! = NSClassFromString("MPNowPlayingInfoCenter")
+        if (playingInfoCenter != nil) {
+            var trackInfo:NSMutableDictionary = NSMutableDictionary()
+            var albumArt:MPMediaItemArtwork = MPMediaItemArtwork(image: UIImage(named: "logo"))
+            trackInfo[MPMediaItemPropertyTitle] = title
+            trackInfo[MPMediaItemPropertyArtist] = "LOADING.."
+            
+            // TODO
+            trackInfo[MPMediaItemPropertyArtwork] = albumArt
+            
+            trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0.0
+            trackInfo[MPMediaItemPropertyPlaybackDuration] = 0.0
+            trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1.0
+            MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo as [NSObject : AnyObject]
+        }       
     }
     
     func onMenuSelected(menuType: MenuType) {

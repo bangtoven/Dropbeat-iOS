@@ -21,10 +21,75 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
-        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.playerPrev, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.playerPause, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.playerNext, object: nil)
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
-
+    
+    func sender () {}
+    
+    override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
+    
+    override func remoteControlReceivedWithEvent(event: UIEvent) {
+        switch(event.subtype) {
+        case UIEventSubtype.RemoteControlPlay:
+            println("play clicked")
+            var params: Dictionary<String, AnyObject> = [
+                "track": PlayerContext.currentTrack!,
+                "playlistId": PlayerContext.currentPlaylistId!
+            ]
+            NSNotificationCenter.defaultCenter().postNotificationName(
+                NotifyKey.playerPlay, object: params)
+            break;
+        
+        case UIEventSubtype.RemoteControlPause:
+            println("pause clicked")
+            NSNotificationCenter.defaultCenter().postNotificationName(
+                NotifyKey.playerPause, object: nil)
+            break;
+        
+        case UIEventSubtype.RemoteControlPreviousTrack:
+            println("prev clicked")
+            NSNotificationCenter.defaultCenter().postNotificationName(
+                NotifyKey.playerPrev, object: nil)
+            break;
+        
+        case UIEventSubtype.RemoteControlNextTrack:
+            println("next clicked")
+            NSNotificationCenter.defaultCenter().postNotificationName(
+                NotifyKey.playerNext, object: nil)
+            break;
+            
+        case UIEventSubtype.RemoteControlStop:
+            println("stop clicked")
+            break;
+        case UIEventSubtype.RemoteControlTogglePlayPause:
+            // XXX: For IOS 6 compat.
+            if (PlayerContext.playState == PlayState.PLAYING) {
+                NSNotificationCenter.defaultCenter().postNotificationName(
+                    NotifyKey.playerPause, object: nil)
+            } else {
+                var params: Dictionary<String, AnyObject> = [
+                    "track": PlayerContext.currentTrack!,
+                    "playlistId": PlayerContext.currentPlaylistId!
+                ]
+                NSNotificationCenter.defaultCenter().postNotificationName(
+                    NotifyKey.playerPlay, object: params)               
+            }
+            break;
+        default:
+            break;
+        }
+    }
+    
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.

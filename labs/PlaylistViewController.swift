@@ -21,16 +21,36 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     
     var currentPlaylist:Playlist!
     
-    static var pipeKey = "playPipe"
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         loadInitialPlaylist()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sender", name: PlaylistViewController.pipeKey, object: nil)
+        // Notify player actions to CenterViewController
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.playerPrev, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.playerPause, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.playerNext, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "updatePlayView", name: NotifyKey.updatePlaylistView, object: nil)
+               
         updatePlayerView()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
+        becomeFirstResponder()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.sharedApplication().endReceivingRemoteControlEvents()
+        resignFirstResponder()
+    }   
     func sender() {}
     
     override func didReceiveMemoryWarning() {
@@ -137,15 +157,15 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             "track": selectedTrack,
             "playlistId": currentPlaylist!.id
         ]
+        
         NSNotificationCenter.defaultCenter().postNotificationName(
-            PlaylistViewController.pipeKey, object: params)
+            NotifyKey.playerPlay, object: params)
     }
     
     func dismiss() {
         presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
     }
     
-
     @IBAction func onCloseBtnClicked(sender: UIButton) {
         dismiss()
     }
@@ -154,29 +174,38 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         
     }
     
-    @IBAction func onShuffleBtnClicked(sender: UIButton) {
-        println("shuffle")
-    }
-    
     @IBAction func onPrevBtnClicked(sender: UIButton) {
         println("prev")
-    }
-    
-    @IBAction func onPlayBtnClicked(sender: UIButton) {
-        println("play")
-    }
-    
-    @IBAction func onPauseBtnClicked(sender: UIButton) {
-        println("pause")
-        playBtn.hidden = false
-        pauseBtn.hidden = true
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            NotifyKey.playerPrev, object: nil)
     }
     
     @IBAction func onNextBtnClicked(sender: UIButton) {
         println("next")
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            NotifyKey.playerNext, object: nil)
+    }
+    
+    @IBAction func onPlayBtnClicked(sender: UIButton) {
+        var params: Dictionary<String, AnyObject> = [
+            "track": PlayerContext.currentTrack!,
+            "playlistId": currentPlaylist!.id
+        ]
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            NotifyKey.playerPlay, object: params)
+    }
+    
+    @IBAction func onPauseBtnClicked(sender: UIButton) {
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            NotifyKey.playerPause, object: nil)
+    }
+    
+    @IBAction func onShuffleBtnClicked(sender: UIButton) {
+        PlayerContext.changeShuffleState()
     }
     
     @IBAction func onRepeatBtnClicked(sender: UIButton) {
-        println("repeat")
+        PlayerContext.changeRepeatState()
     }
 }

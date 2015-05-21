@@ -19,6 +19,7 @@ class PlayerContext {
     static var currentStreamUrls: [StreamSource] = []
     static var currentStreamCandidate: StreamSource?
     static var playlists: [Playlist] = []
+    static var correctDuration: Double?
     
     static func resetPlaylist(playlists: [Playlist]) {
         PlayerContext.playlists = playlists
@@ -42,8 +43,7 @@ class PlayerContext {
         }
         
         if PlayerContext.shuffleState == ShuffleState.SHUFFLE {
-            var idx = Int(arc4random_uniform(UInt32(size!)))
-            track = playlist!.tracks[idx] as Track
+            track = randomPick()
         } else {
             var nextIdx :Int
             
@@ -72,8 +72,7 @@ class PlayerContext {
         }
         
         if PlayerContext.shuffleState == ShuffleState.SHUFFLE {
-            var idx = Int(arc4random_uniform(UInt32(size!)))
-            track = playlist!.tracks[idx] as Track
+            track = randomPick()
         } else {
             var prevIdx :Int
             
@@ -95,6 +94,23 @@ class PlayerContext {
         return track       
     }
     
+    static func randomPick() -> Track? {
+        // Randomly pick next track in shuffle mode.
+        // NOTE that this method should exclude current track in next candidates.
+        var playlist :Playlist? = getPlaylist(currentPlaylistId)
+        let size = playlist?.tracks.count
+        if size <= 1 {
+            return nil
+        }
+        
+        while (true) {
+            var idx = Int(arc4random_uniform(UInt32(size!)))
+            if idx != currentTrackIdx {
+                return playlist!.tracks[idx] as Track
+            }
+        }
+    }
+    
     static func getPlaylist(playlistId: String?) -> Playlist? {
         for playlist: Playlist in PlayerContext.playlists {
             if playlist.id == playlistId {
@@ -113,12 +129,13 @@ class RepeatState {
 }
 
 
-enum ShuffleState {
+class ShuffleState {
     static var NOT_SHUFFLE = 0
     static var SHUFFLE = 1
 }
 
-enum PlayState {
+
+class PlayState {
     static var STOPPED = 0
     static var LOADING = 1
     static var PLAYING = 2

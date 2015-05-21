@@ -12,14 +12,15 @@ import Foundation
 
 func resolve(uid: String, type: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
     if type == "soundcloud" {
-        var url :String = String(format: "https://api.soundcloud.com/tracks/%s/stream?client_id=b45b1aa10f1ac2941910a7f0d10f8e28", uid)
+        var url :String = "https://api.soundcloud.com/tracks/\(uid)/stream?client_id=b45b1aa10f1ac2941910a7f0d10f8e28"
 
         var raw: Dictionary<String, AnyObject> = [String: AnyObject]()
         var data: [Dictionary<String, AnyObject>] = Array<[String: AnyObject]>()
-        raw["urls"] = data
         data.append([
-            "url": url
+            "url": url,
+            "ext": "mp3"
         ])
+        raw["urls"] = data
         respCb(NSURLRequest(), nil, raw, nil)
     } else if type == "youtube" {
         Requests.streamResolve(uid, respCb: respCb)

@@ -21,7 +21,7 @@ class CenterViewController: UIViewController {
     @IBOutlet weak var playBtn: UIButton!
     @IBOutlet weak var pauseBtn: UIButton!
     
-    var audioPlayer: MPMoviePlayerController!
+    var audioPlayer: MPMoviePlayerController = MPMoviePlayerController()
     
     var remoteProgressTimer: NSTimer?
     
@@ -132,6 +132,8 @@ class CenterViewController: UIViewController {
     }
     
     func MPMoviePlayerPlaybackStateDidChange (noti: NSNotification) {
+        println("changed!")
+        println(audioPlayer.playbackState)
         if (audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
             PlayerContext.playState = PlayState.PLAYING
             // Periodic timer for progress update.
@@ -235,12 +237,13 @@ class CenterViewController: UIViewController {
     }
     
     func handlePlay(track: Track?, playlistId: String?) {
+        println("handle play")
         // Fetch stream urls.
         if track == nil {
             return
         }
         
-        if audioPlayer != nil && PlayerContext.currentTrack != nil && PlayerContext.currentTrack!.id == track!.id {
+        if PlayerContext.currentTrack != nil && PlayerContext.currentTrack!.id == track!.id {
             if audioPlayer.playbackState == MPMoviePlaybackState.Paused {
                 // Resume
                 println("resume!!")
@@ -295,10 +298,10 @@ class CenterViewController: UIViewController {
                 }
                 
                 var url = NSURL(string: streamSources[0].url)
+                
                 if (PlayerContext.currentTrack?.type == "youtube" && streamSources[0].type == "m4a") {
                     // Youtube duration hack.
                     var q :String = url!.query!
-                    println(q)
                     var qa = split(q) {$0 == "&"}
                     var dur :String = ""
                     for i :String in qa {
@@ -325,9 +328,12 @@ class CenterViewController: UIViewController {
                 }
                 
                 // Play it!
-                self.audioPlayer = MPMoviePlayerController(contentURL: url)
+                self.audioPlayer = MPMoviePlayerController()
+                self.audioPlayer.movieSourceType = MPMovieSourceType.Streaming
+                self.audioPlayer.contentURL = url
                 self.audioPlayer.controlStyle = MPMovieControlStyle.Embedded
                 self.audioPlayer.view.hidden = true
+                println("call play")
                 self.playAudioPlayer()
             } else {
                 // XXX: Cannot play.

@@ -7,8 +7,14 @@
 //
 
 import UIKit
+    
+protocol AddableTrackCellDelegate {
+    func onAddBtnClicked(sender:AddableTrackTableViewCell)
+}
 
 class AddableTrackTableViewCell: UITableViewCell {
+    
+    var delegate:AddableTrackCellDelegate?
 
     @IBOutlet weak var nameView: UILabel!
     @IBOutlet weak var thumbView: UIImageView!
@@ -24,6 +30,6 @@ class AddableTrackTableViewCell: UITableViewCell {
     }
 
     @IBAction func onAddBtnClicked(sender: UIButton) {
-        
+        delegate?.onAddBtnClicked(self)
     }
 }

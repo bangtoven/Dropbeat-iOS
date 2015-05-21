@@ -218,6 +218,15 @@ class Account {
     
     static private var account:Account?
     
+    static func signout() {
+        let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
+        keychainItemWrapper["auth_token"] = nil
+        Account.account = nil
+        let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDelegate.account = nil
+        appDelegate.resetAppToFirstController()
+    }
+    
     static func getCachedAccount() -> Account? {
         return account
     }

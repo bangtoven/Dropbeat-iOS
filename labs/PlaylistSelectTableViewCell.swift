@@ -8,9 +8,19 @@
 
 import UIKit
 
-class PlaylistSelectTableViewCell: UITableViewCell {
+protocol PlaylistSelectTableViewDelegate {
+    func onRenameBtnClicked(sender:PlaylistSelectTableViewCell, btn:UIButton)
+    func onDeleteBtnClicked(sender:PlaylistSelectTableViewCell, btn:UIButton)
+}
 
+class PlaylistSelectTableViewCell: UITableViewCell {
+    
+    var delegate:PlaylistSelectTableViewDelegate?
+
+    @IBOutlet weak var renameBtn: UIButton!
+    @IBOutlet weak var deleteBtn: UIButton!
     @IBOutlet weak var nameView: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -23,8 +33,10 @@ class PlaylistSelectTableViewCell: UITableViewCell {
     }
 
     @IBAction func onRenameBtnClicked(sender: UIButton) {
+        delegate?.onRenameBtnClicked(self, btn: sender)
     }
     
     @IBAction func onDeleteBtnClicked(sender: UIButton) {
+        delegate?.onDeleteBtnClicked(self, btn: sender)
     }
 }

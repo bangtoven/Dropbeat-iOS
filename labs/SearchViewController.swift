@@ -133,15 +133,14 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
     
     func doSearch(keyword:String) {
         hideAutocomplete()
-        // TODO
-        // show progress
+        
+        let progressHud = ViewUtils.showProgress(self, message: "Searching..")
         keywordView.endEditing(true)
         resultTableView.hidden = false
         
         Requests.search(keyword, respCb: {
                 (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            // TODO 
-            // hide progress
+            progressHud.hide(true)
             if (error != nil || result == nil) {
                 let errorText = error?.description ?? "undefined error"
                 ViewUtils.showNoticeAlert(self, title: "Failed to search", message: errorText)

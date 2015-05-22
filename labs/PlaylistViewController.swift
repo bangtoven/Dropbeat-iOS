@@ -208,7 +208,8 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewWillDisappear(animated)
         UIApplication.sharedApplication().endReceivingRemoteControlEvents()
         resignFirstResponder()
-    }   
+    }
+    
     func sender() {}
     
     override func didReceiveMemoryWarning() {
@@ -607,13 +608,15 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @IBAction func onPlayBtnClicked(sender: UIButton) {
-        var params: Dictionary<String, AnyObject> = [
-            "track": PlayerContext.currentTrack!,
-            "playlistId": PlaylistViewController.currentPlaylist!.id
-        ]
-        
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            NotifyKey.playerPlay, object: params)
+        if (PlayerContext.currentTrack != nil) {
+            var params: Dictionary<String, AnyObject> = [
+                "track": PlayerContext.currentTrack!,
+                "playlistId": PlaylistViewController.currentPlaylist!.id
+            ]
+            
+            NSNotificationCenter.defaultCenter().postNotificationName(
+                NotifyKey.playerPlay, object: params)
+        }
     }
     
     @IBAction func onPauseBtnClicked(sender: UIButton) {
@@ -623,9 +626,11 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func onShuffleBtnClicked(sender: UIButton) {
         PlayerContext.changeShuffleState()
+        println(PlayerContext.shuffleState)
     }
     
     @IBAction func onRepeatBtnClicked(sender: UIButton) {
         PlayerContext.changeRepeatState()
+        println(PlayerContext.repeatState)
     }
 }

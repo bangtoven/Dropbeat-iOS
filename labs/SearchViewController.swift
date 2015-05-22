@@ -26,7 +26,11 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
         resultTableView.hidden = true
         keywordView.text = ""
         // Do any additional setup after loading the view.
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
     }
+    
+    func sender () {}
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -103,7 +107,12 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if (tableView == resultTableView) {
-            
+            var params: Dictionary<String, AnyObject> = [
+                "track": tracks[indexPath.row],
+                "playlistId": "-1"
+            ]
+            NSNotificationCenter.defaultCenter().postNotificationName(
+                NotifyKey.playerPlay, object: params)
         } else {
             let keyword = autocomKeywords[indexPath.row]
             keywordView.text = keyword

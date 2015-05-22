@@ -150,10 +150,7 @@ class CenterViewController: UIViewController {
                     if (audioPlayer.currentPlaybackTime > PlayerContext.correctDuration) {
                         PlayerContext.correctDuration = nil
                         PlayerContext.currentPlaybackTime = nil
-                        var success :Bool = handleNext()
-                        if (!success) {
-                            handleStop()
-                        }
+                        audioPlayer.stop()
                         return
                     }
                 }
@@ -326,14 +323,22 @@ class CenterViewController: UIViewController {
                 // Same music is clicked when it is being played.
                 return
             }
+            // In case of repeating one track.
         }
         
         println(track!.title)
+        if audioPlayer.playbackState == MPMoviePlaybackState.Playing {
+            // Pause previous track.
+            // We do not use `stop` here because calling `stop` will trigger MPMoviePlaybackDidFinish.
+            audioPlayer.pause()
+        }
+        
         PlayerContext.currentTrack = track
         PlayerContext.currentPlaylistId = playlistId
         PlayerContext.currentTrackIdx = -1
+        var closureTrack :Track? = track
         
-        if (PlayerContext.currentPlaylistId != nil) {
+        if (PlayerContext.currentPlaylistId != "-1") {
             var playlist :Playlist? = PlayerContext.getPlaylist(playlistId)!
             for (idx: Int, t: Track) in enumerate(playlist!.tracks) {
                 if t.id == track!.id {
@@ -359,6 +364,10 @@ class CenterViewController: UIViewController {
         resolve(track!.id, track!.type, { (req, resp, json, err) in
             if err == nil {
                 println("FIN RESOLVE")
+                if (closureTrack != nil && closureTrack!.id != PlayerContext.currentTrack?.id) {
+                    return
+                }
+                
                 var streamSources :[StreamSource] = getStreamUrls(json!)
                 
                 // Do we need multiple candidates?
@@ -371,7 +380,7 @@ class CenterViewController: UIViewController {
                 PlayerContext.currentStreamCandidate = streamSources[0]
                 if (track!.type == "youtube" && streamSources[0].type == "webm") {
                     // Should notify that we can't play it.
-                    return;
+                    return
                 }
                 
                 var url = NSURL(string: streamSources[0].url)
@@ -405,12 +414,13 @@ class CenterViewController: UIViewController {
                 }
                 
                 // Play it!
+                println("play it!")
                 self.audioPlayer = MPMoviePlayerController()
                 self.audioPlayer.movieSourceType = MPMovieSourceType.Streaming
+                println(streamSources[0].url)
                 self.audioPlayer.contentURL = url
                 self.audioPlayer.controlStyle = MPMovieControlStyle.Embedded
                 self.audioPlayer.view.hidden = true
-                println("call play")
                 self.playAudioPlayer()
             } else {
                 // XXX: Cannot play.
@@ -434,8 +444,10 @@ class CenterViewController: UIViewController {
         
         var track: Track? = PlayerContext.pickNextTrack()
         if (track == nil) {
+            println("track null")
             return false;
         }
+        
         handlePlay(track, playlistId: PlayerContext.currentPlaylistId)
         return true;
     }
@@ -451,6 +463,7 @@ class CenterViewController: UIViewController {
         if (track == nil) {
             return false;
         }
+        
         handlePlay(track, playlistId: PlayerContext.currentPlaylistId)
         return true;
     }

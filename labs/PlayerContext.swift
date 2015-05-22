@@ -11,7 +11,7 @@ import Foundation
 
 class PlayerContext {
     static var currentTrackIdx: Int = -1
-    static var currentPlaylistId: String?
+    static var currentPlaylistId: String? = "-1"
     static var currentTrack: Track?
     static var repeatState = RepeatState.NOT_REPEAT
     static var shuffleState = ShuffleState.NOT_SHUFFLE
@@ -39,7 +39,7 @@ class PlayerContext {
         var playlist :Playlist? = getPlaylist(currentPlaylistId)
         let size = playlist?.tracks.count
         
-        if currentTrackIdx == -1 || currentPlaylistId == nil{
+        if currentTrackIdx == -1 || currentPlaylistId == "-1" {
             return nil;
         }
         
@@ -68,7 +68,7 @@ class PlayerContext {
         var playlist :Playlist? = getPlaylist(currentPlaylistId)
         let size = playlist?.tracks.count
         
-        if currentTrackIdx == -1 || currentPlaylistId == nil {
+        if currentTrackIdx == -1 || currentPlaylistId == "-1" {
             return nil;
         }
         

@@ -29,6 +29,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self, selector: "sender", name: NotifyKey.playerPause, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "sender", name: NotifyKey.playerNext, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.playerSeek, object: nil)
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     

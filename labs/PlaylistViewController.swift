@@ -11,6 +11,11 @@ import SwiftyJSON
 
 class PlaylistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PlaylistSelectTableViewDelegate, PlaylistTableViewDelegate{
 
+    @IBOutlet weak var playerStatus: UILabel!
+    @IBOutlet weak var playerTitle: UILabel!
+    @IBOutlet weak var progressBar: UISlider!
+    @IBOutlet weak var totalTextView: UILabel!
+    @IBOutlet weak var progressTextView: UILabel!
     @IBOutlet weak var createPlaylistBtn: UIButton!
     @IBOutlet weak var nextBtn: UIButton!
     @IBOutlet weak var prevBtn: UIButton!
@@ -21,6 +26,9 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var pauseBtn: UIButton!
     @IBOutlet weak var playlistView: UITableView!
     @IBOutlet weak var playlistSelectView: UITableView!
+    
+    var prevShuffleBtnState = ShuffleState.NOT_SHUFFLE
+    var prevRepeatBtnState = RepeatState.NOT_REPEAT
     
     // Prevent outside configuration of currentPlaylist
     // currentPlaylist can only be updated with updateCurrentPlaylist() from outside
@@ -182,9 +190,12 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "sender", name: NotifyKey.playerNext, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "updatePlayView", name: NotifyKey.updatePlaylistView, object: nil)
+            self, selector: "sender", name: NotifyKey.playerSeek, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "updatePlayerViews", name: NotifyKey.updatePlaylistView, object: nil)
                
-        updatePlayerView()
+        updatePlayerViews()
+        progressBar.continuous = false
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -205,13 +216,36 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         // Dispose of any resources that can be recreated.
     }
     
-    func updatePlayerView() {
+    func updatePlayerViews() {
         updateRepeatView()
         updateShuffleView()
         updatePlayView()
+        updateProgressView()
+        updateStatusView()
+    }
+    
+    func updateStatusView() {
+        let defaultText = "CHOOSE TRACK"
+        if (PlayerContext.playState == PlayState.LOADING) {
+            playerStatus.text = "LOADING"
+            playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
+        } else if (PlayerContext.playState == PlayState.PAUSED) {
+            playerStatus.text = "PAUSED"
+            playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
+        } else if (PlayerContext.playState == PlayState.PLAYING) {
+            playerStatus.text = "PLAYING"
+            playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
+        } else if (PlayerContext.playState == PlayState.STOPPED) {
+            playerStatus.text = "STOPPED"
+            playerTitle.text = defaultText
+        }
     }
     
     func updateRepeatView() {
+        if (prevRepeatBtnState == PlayerContext.repeatState) {
+            return
+        }
+        prevRepeatBtnState = PlayerContext.repeatState
         switch(PlayerContext.repeatState) {
         case RepeatState.NOT_REPEAT:
             repeatBtn.titleLabel?.text = "no repeat"
@@ -224,14 +258,6 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             break
         default:
             break
-        }
-    }
-    
-    func updateShuffleView() {
-        if (PlayerContext.shuffleState == ShuffleState.NOT_SHUFFLE) {
-            shuffleBtn.titleLabel?.text = "no shuffle"
-        } else {
-            shuffleBtn.titleLabel?.text = "shuffle"
         }
     }
     
@@ -252,6 +278,47 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             playBtn.hidden = false
             pauseBtn.hidden = true
             loadingView.hidden = true
+        }
+    }
+    
+    func updateProgressView() {
+        var total:Float = Float(PlayerContext.correctDuration ?? 0)
+        var curr:Float = Float(PlayerContext.currentPlaybackTime ?? 0)
+        if (total == 0) {
+            progressBar.value = 0
+            progressBar.enabled = false
+            progressTextView.text = getTimeFormatText(0)
+            totalTextView.text = getTimeFormatText(0)
+        } else {
+            progressBar.value = (curr * 100) / total
+            if (PlayerContext.playState == PlayState.PLAYING) {
+                progressBar.enabled = true
+            } else {
+                progressBar.enabled = false
+            }
+            progressTextView.text = getTimeFormatText(PlayerContext.currentPlaybackTime ?? 0)
+            totalTextView.text = getTimeFormatText(PlayerContext.correctDuration ?? 0)
+        }
+    }
+    
+    func getTimeFormatText(time:NSTimeInterval) -> String {
+        let ti = Int(time)
+        let seconds = ti % 60
+        let minutes = ti / 60
+        var text = minutes < 10 ? "0\(minutes):" : String(minutes)
+        text += seconds < 10 ? "0\(seconds)" : String(seconds)
+        return text
+    }
+    
+    func updateShuffleView() {
+        if (prevShuffleBtnState == PlayerContext.shuffleState) {
+            return
+        }
+        prevShuffleBtnState = PlayerContext.shuffleState
+        if (PlayerContext.shuffleState == ShuffleState.NOT_SHUFFLE) {
+            shuffleBtn.titleLabel?.text = "no shuffle"
+        } else {
+            shuffleBtn.titleLabel?.text = "shuffle"
         }
     }
     
@@ -310,7 +377,6 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (tableView == playlistView) {
-            println("current track count \(PlaylistViewController.currentPlaylist?.tracks.count)")
             return PlaylistViewController.currentPlaylist?.tracks.count ?? 0
         } else {
             return PlayerContext.playlists.count
@@ -457,6 +523,14 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
                 self.playlistView.reloadData()
             }
         })
+    }
+    
+    @IBAction func progressBarChanged(sender: UISlider) {
+        var params: Dictionary<String, AnyObject> = [
+            "value": sender.value,
+        ]
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            NotifyKey.playerSeek, object: params)
     }
     
     @IBAction func onCreatePlaylistBtnClicked(sender: UIButton) {

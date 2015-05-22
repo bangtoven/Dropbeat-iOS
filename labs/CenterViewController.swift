@@ -13,6 +13,8 @@ import AVFoundation
 
 class CenterViewController: UIViewController {
     
+    @IBOutlet weak var loadingView: UIImageView!
+    @IBOutlet weak var progressBar: UISlider!
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var playerTitle: UILabel!
     @IBOutlet weak var playerStatus: UILabel!
@@ -56,12 +58,76 @@ class CenterViewController: UIViewController {
             self, selector: "handlePause", name: NotifyKey.playerPause, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "handleNext", name: NotifyKey.playerNext, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "remoteSeek:", name: NotifyKey.playerSeek, object: nil)
         
         
         // Observe internal player.
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackStateDidChange:", name: "MPMoviePlayerPlaybackStateDidChangeNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackDidFinish:", name: "MPMoviePlayerPlaybackDidFinishNotification", object: nil)
         
+        progressBar.continuous = false
+        updatePlayerViews()
+        
+    }
+    
+    func updatePlayerViews() {
+        updatePlayView()
+        updateStatusView()
+        updateProgressView()
+    }
+    
+    func updatePlayView() {
+        if (PlayerContext.playState == PlayState.LOADING) {
+            playBtn.hidden = true
+            pauseBtn.hidden = true
+            loadingView.hidden = false
+        } else if (PlayerContext.playState == PlayState.PAUSED) {
+            playBtn.hidden = false
+            pauseBtn.hidden = true
+            loadingView.hidden = true
+        } else if (PlayerContext.playState == PlayState.PLAYING) {
+            playBtn.hidden = true
+            pauseBtn.hidden = false
+            loadingView.hidden = true
+        } else if (PlayerContext.playState == PlayState.STOPPED) {
+            playBtn.hidden = false
+            pauseBtn.hidden = true
+            loadingView.hidden = true
+        }
+    }
+    
+    func updateStatusView() {
+        let defaultText = "CHOOSE TRACK"
+        if (PlayerContext.playState == PlayState.LOADING) {
+            playerStatus.text = "LOADING"
+            playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
+        } else if (PlayerContext.playState == PlayState.PAUSED) {
+            playerStatus.text = "PAUSED"
+            playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
+        } else if (PlayerContext.playState == PlayState.PLAYING) {
+            playerStatus.text = "PLAYING"
+            playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
+        } else if (PlayerContext.playState == PlayState.STOPPED) {
+            playerStatus.text = "STOPPED"
+            playerTitle.text = defaultText
+        }
+    }
+    
+    func updateProgressView() {
+        var total:Float = Float(PlayerContext.correctDuration ?? 0)
+        var curr:Float = Float(PlayerContext.currentPlaybackTime ?? 0)
+        if (total == 0) {
+            progressBar.value = 0
+            progressBar.enabled = false
+        } else {
+            progressBar.value = (curr * 100) / total
+            if (PlayerContext.playState == PlayState.PLAYING) {
+                progressBar.enabled = true
+            } else {
+                progressBar.enabled = false
+            }
+        }
     }
     
     func updateProgress () {
@@ -82,11 +148,12 @@ class CenterViewController: UIViewController {
                 if (audioPlayer.duration != PlayerContext.correctDuration) {
                     // To find a end of the track that has corrected duration.
                     if (audioPlayer.currentPlaybackTime > PlayerContext.correctDuration) {
+                        PlayerContext.correctDuration = nil
+                        PlayerContext.currentPlaybackTime = nil
                         var success :Bool = handleNext()
                         if (!success) {
                             handleStop()
                         }
-                        PlayerContext.correctDuration = nil
                         return
                     }
                 }
@@ -104,12 +171,15 @@ class CenterViewController: UIViewController {
             } else {
                 PlayerContext.correctDuration = audioPlayer.duration
             }
+            PlayerContext.currentPlaybackTime = audioPlayer.currentPlaybackTime
             
             // TODO: This method isn't necessarily called periodically.
             // Update remote control progress
             updatePlayingInfo(currentTrack!)
             
             // Update custom progress
+            updateProgressView()
+            playlistPlayerUpdate()
         }
     }
     
@@ -137,6 +207,7 @@ class CenterViewController: UIViewController {
         println(audioPlayer.playbackState)
         if (audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
             PlayerContext.playState = PlayState.PLAYING
+            updatePlayerViews()
             // Periodic timer for progress update.
             if remoteProgressTimer == nil {
                 remoteProgressTimer = NSTimer.scheduledTimerWithTimeInterval(
@@ -144,6 +215,7 @@ class CenterViewController: UIViewController {
             }
         } else if (audioPlayer.playbackState == MPMoviePlaybackState.Stopped) {
             PlayerContext.playState = PlayState.STOPPED
+            updatePlayerViews()
             
             updatePlayingInfo(PlayerContext.currentTrack!, rate: 0.0)
             if remoteProgressTimer != nil {
@@ -152,6 +224,7 @@ class CenterViewController: UIViewController {
             }
         } else if (audioPlayer.playbackState == MPMoviePlaybackState.Paused) {
             PlayerContext.playState = PlayState.PAUSED
+            updatePlayerViews()
             
             updatePlayingInfo(PlayerContext.currentTrack!, rate: 0.0)
             if remoteProgressTimer != nil {
@@ -214,8 +287,10 @@ class CenterViewController: UIViewController {
     
     @IBAction func playBtnClicked(sender: UIButton?) {
         println("play!")
-        var playlistId :String? = PlayerContext.currentPlaylistId
-        handlePlay(PlayerContext.currentTrack!, playlistId: playlistId)
+        if (PlayerContext.currentTrack != nil) {
+            var playlistId :String? = PlayerContext.currentPlaylistId
+            handlePlay(PlayerContext.currentTrack!, playlistId: playlistId)
+        }
     }
     
     @IBAction func pauseBtnClicked(sender: UIButton?) {
@@ -223,8 +298,8 @@ class CenterViewController: UIViewController {
         handlePause()
     }
     
-    @IBAction func playlistBtnClicked(sender: UIButton) {
-        showPlaylistView()
+    @IBAction func onProgressValueChanged(sender: UISlider) {
+        handleSeek(sender.value)
     }
     
     func remotePlay(noti: NSNotification) {
@@ -268,8 +343,12 @@ class CenterViewController: UIViewController {
             }
         }
         
+        if (PlayerContext.playState == PlayState.PLAYING) {
+            audioPlayer.stop()
+        }
         // Indicate loading status.
         PlayerContext.playState = PlayState.LOADING
+        updatePlayerViews()
         playlistPlayerUpdate()
         
         // Init correct duration.
@@ -383,16 +462,27 @@ class CenterViewController: UIViewController {
         audioPlayer.stop()
     }
     
+    func remoteSeek(noti: NSNotification) {
+        var params = noti.object as! Dictionary<String, AnyObject>
+        var value = params["value"] as? Float ?? 0
+        handleSeek(value)
+    }
+    
+    func handleSeek(value:Float) {
+        if (PlayerContext.playState != PlayState.PLAYING) {
+            return
+        }
+        let duration = PlayerContext.correctDuration ?? 0
+        let newPlaybackTime:Double = (duration * Double(value)) / 100
+        audioPlayer.currentPlaybackTime = newPlaybackTime
+    }
+    
     func playAudioPlayer() {
-        self.audioPlayer.play()
-        self.playBtn.hidden = true
-        self.pauseBtn.hidden = false
+        audioPlayer.play()
     }
     
     func pauseAudioPlayer() {
         audioPlayer.pause()
-        playBtn.hidden = false
-        pauseBtn.hidden = true       
     }
     
     func updatePlayingInfo(track: Track, rate: Float? = 1.0) {

@@ -543,7 +543,6 @@
         <!--Settings View Controller-->
         <scene sceneID="A7h-KB-iUa">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="RLI-RE-a1z" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tableViewController id="yBG-E3-hnI" customClass="SettingsViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="osm-e0-5Yi">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
@@ -661,6 +660,7 @@
                         <outlet property="versionView" destination="e7s-2A-JEy" id="qyK-Yz-sYf"/>
                     </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RLI-RE-a1z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2686" y="169"/>
         </scene>

@@ -83,6 +83,7 @@ class CenterViewController: UIViewController {
             playBtn.hidden = true
             pauseBtn.hidden = true
             loadingView.hidden = false
+            loadingView.rotate360Degrees(duration: 0.7, completionDelegate: self)
         } else if (PlayerContext.playState == PlayState.PAUSED) {
             playBtn.hidden = false
             pauseBtn.hidden = true
@@ -95,6 +96,12 @@ class CenterViewController: UIViewController {
             playBtn.hidden = false
             pauseBtn.hidden = true
             loadingView.hidden = true
+        }
+    }
+    
+    override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
+        if (PlayerContext.playState == PlayState.LOADING) {
+            loadingView.rotate360Degrees(duration: 1.0, completionDelegate: self)
         }
     }
     

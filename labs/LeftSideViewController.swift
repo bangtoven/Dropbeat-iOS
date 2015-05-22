@@ -31,21 +31,24 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
     var menuItems:Array<MenuItem>?
     
     private let authMenuItems = [
-        MenuItem(name: "FEED", iconName: "btn_shuffle_disabled.png", type: MenuType.FEED),
-        MenuItem(name: "SEARCH", iconName: "btn_shuffle_disabled.png", type: MenuType.SEARCH),
-        MenuItem(name: "SETTINGS", iconName: "btn_shuffle_disabled.png", type: MenuType.SETTINGS),
+        MenuItem(name: "FEED", iconName: "ic_home.png", type: MenuType.FEED),
+        MenuItem(name: "SEARCH", iconName: "ic_search.png", type: MenuType.SEARCH),
+        MenuItem(name: "SETTINGS", iconName: "ic_cogwheel.png", type: MenuType.SETTINGS),
     ]
     
     private let nonauthMenuItems = [
-        MenuItem(name: "FEED", iconName: "btn_shuffle_disabled.png", type: MenuType.FEED),
-        MenuItem(name: "SEARCH", iconName: "btn_shuffle_disabled.png", type: MenuType.SEARCH),
-        MenuItem(name: "SETTINGS", iconName: "btn_shuffle_disabled.png", type: MenuType.SETTINGS),
+        MenuItem(name: "FEED", iconName: "ic_home.png", type: MenuType.FEED),
+        MenuItem(name: "SEARCH", iconName: "ic_search.png", type: MenuType.SEARCH),
+        MenuItem(name: "SETTINGS", iconName: "ic_cogwheel.png", type: MenuType.SETTINGS),
     ]
+    
+    
     
     @IBOutlet weak var accountView: UIView!
     @IBOutlet weak var signinBtn: UIButton!
     @IBOutlet weak var accountPhotoView: UIImageView!
     @IBOutlet weak var accountEmailView: UILabel!
+    @IBOutlet weak var nameView: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +60,8 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
             menuItems = authMenuItems
             accountView.hidden = false
             signinBtn.hidden = true
+            let account = appDelegate.account!
+            nameView.text = "\(account.user!.firstName) \(account.user!.lastName)"
             accountEmailView.text = appDelegate.account!.user!.email
             let profileUrl = "https://graph.facebook.com/\(appDelegate.account!.user!.fbId)/picture?type=small"
             let profileData = NSData(contentsOfURL: NSURL(string: profileUrl)!)

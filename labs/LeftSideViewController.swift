@@ -76,7 +76,6 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
         super.didReceiveMemoryWarning()
     }
     
-    
     func tableView(tableView: UITableView,
             numberOfRowsInSection section: Int) -> Int {
         return menuItems!.count

@@ -8,12 +8,31 @@
 
 import UIKit
 
-class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, AddableTrackCellDelegate{
+class SearchResultSections {
+    static var RELEASED = "released"
+    static var FEATURED_LIVESET = "featured_liveset"
+    static var TRENDING = "trending"
+    static var RELEVANT = "relevant"
+    static var allValues = [RELEASED, FEATURED_LIVESET, TRENDING, RELEVANT]
+}
+
+class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, AddableTrackCellDelegate, ScrollPagerDelegate{
     
-    var tracks:[Track] = []
+    private static var sectionTitles = [
+        SearchResultSections.RELEASED: "RELEASED",
+        SearchResultSections.FEATURED_LIVESET: "FEATURED LIVESETS",
+        SearchResultSections.TRENDING: "TRENDING LIVESETS",
+        SearchResultSections.RELEVANT: "OTHER"
+    ]
+    
+    var sectionedTracks = [String:[Track]]()
+    var currentSections:[String]?
+    var currentSection:String?
+    var useTopMatch = false
     var autocomKeywords:[String] = []
     var autocomRequester:AutocompleteRequester?
     
+    @IBOutlet weak var scrollPager: ScrollPager!
     @IBOutlet weak var autocomTableView: UITableView!
     @IBOutlet weak var resultTableView: UITableView!
     @IBOutlet weak var keywordView: UITextField!
@@ -25,6 +44,12 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
         autocomTableView.hidden = true
         resultTableView.hidden = true
         keywordView.text = ""
+        
+        scrollPager.delegate = self
+        for section in SearchResultSections.allValues {
+            sectionedTracks[section] = [Track]()
+        }
+        
         // Do any additional setup after loading the view.
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
@@ -79,9 +104,26 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
         resultTableView.hidden = false
     }
     
+    func hasTopMatch() -> Bool{
+        if (self.currentSection == nil ||
+                self.currentSection != SearchResultSections.RELEVANT) {
+            return false
+        }
+        if (self.sectionedTracks[self.currentSection!]!.count == 0) {
+            return false
+        }
+        let tracks:[Track] = self.sectionedTracks[self.currentSection!]!
+        let firstResult:Track = tracks[0]
+        if (firstResult.topMatch ?? false) {
+            return true
+        }
+        return false
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (tableView == resultTableView) {
             var cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
+            let tracks:[Track] = sectionedTracks[currentSection!]!
             let track = tracks[indexPath.row]
             cell.delegate = self
             cell.nameView.text = track.title
@@ -107,6 +149,7 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if (tableView == resultTableView) {
+            let tracks:[Track] = sectionedTracks[currentSection!]!
             var params: Dictionary<String, AnyObject> = [
                 "track": tracks[indexPath.row],
                 "playlistId": "-1"
@@ -120,9 +163,43 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
         }
     }
     
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if (tableView == resultTableView && useTopMatch) {
+            return 2
+        }
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if (tableView == resultTableView && useTopMatch) {
+            if (section == 0) {
+                return "TOP MATCH"
+            } else {
+                return "OTHER RESULTS"
+            }
+        }
+        return nil
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (tableView == resultTableView) {
-            return tracks.count
+            if (currentSection == nil) {
+                return 0
+            }
+            let tracks:[Track]? = sectionedTracks[currentSection!]
+            if (tracks == nil) {
+                return 0
+            }
+            if (useTopMatch) {
+                var count = 0
+                for t in tracks! {
+                    if (t.topMatch ?? false) {
+                        count += 1
+                    }
+                }
+                return section == 0 ? count : tracks!.count - count
+            }
+            return tracks!.count
         } else {
             return autocomKeywords.count
         }
@@ -130,6 +207,7 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
     
     func onAddBtnClicked(sender: AddableTrackTableViewCell) {
         let indexPath:NSIndexPath = resultTableView.indexPathForCell(sender)!
+        let tracks:[Track] = sectionedTracks[currentSection!]!
         let track = tracks[indexPath.row]
         if (Account.getCachedAccount() == nil) {
             var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -186,13 +264,60 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
             }
             let parser = Parser()
             let search = parser.parseSearch(result!)
-            self.tracks.removeAll(keepCapacity: false)
-            for track in search.result {
-                self.tracks.append(track)
+            
+            
+            // clear sectionedTracks
+            for section in SearchResultSections.allValues {
+                self.sectionedTracks[section]!.removeAll(keepCapacity: false)
             }
+            
+            // sectionize
+            var foundSections:[String] = [String]()
+            
+            for track in search.result {
+                if (track.tag == nil) {
+                    return
+                }
+                var tracks:[Track]? = self.sectionedTracks[track.tag!]
+                if (tracks != nil) {
+                    self.sectionedTracks[track.tag!]!.append(track)
+                    if (find(foundSections, track.tag!) == nil) {
+                        foundSections.append(track.tag!)
+                    }
+                }
+            }
+            self.currentSections = foundSections
+            var foundTitles:[String] = foundSections.map {
+                return SearchViewController.sectionTitles[$0]!
+            }
+            if (foundSections.count > 0) {
+                self.currentSection = foundSections[0]
+            } else {
+                self.currentSection = nil
+            }
+            self.useTopMatch = self.hasTopMatch()
+            
+            if (self.currentSection == nil ||
+                self.currentSection == SearchResultSections.RELEVANT) {
+                
+                self.scrollPager.hidden = true
+            } else {
+                self.scrollPager.addSegmentsWithTitles(foundTitles)
+                self.scrollPager.hidden = false
+            }
+            
             self.resultTableView.reloadData()
             self.resultTableView.hidden = false
         })
+    }
+    
+    func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
+        if (self.currentSections == nil) {
+            return
+        }
+        self.currentSection = self.currentSections![changedIndex]
+        self.useTopMatch = hasTopMatch()
+        self.resultTableView.reloadData()
     }
     
     override func menuBtnClicked(sender: AnyObject) {

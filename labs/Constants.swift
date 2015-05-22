@@ -16,3 +16,4 @@ class NotifyKey {
     static var playerSeek = "seekPlaylistView"
     static var updatePlaylistView = "updatePlaylistView"
 }
+

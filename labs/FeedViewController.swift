@@ -19,7 +19,11 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         loadFeed()
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
     }
+    
+    func sender () {}
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -37,7 +41,12 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        var params: Dictionary<String, AnyObject> = [
+            "track": tracks[indexPath.row],
+            "playlistId": "-1"
+        ]
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            NotifyKey.playerPlay, object: params)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

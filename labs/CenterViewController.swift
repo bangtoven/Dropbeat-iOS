@@ -260,7 +260,7 @@ class CenterViewController: UIViewController {
         PlayerContext.currentPlaylistId = playlistId
         PlayerContext.currentTrackIdx = -1
         
-        if (PlayerContext.currentPlaylistId != nil) {
+        if (PlayerContext.currentPlaylistId != "-1") {
             var playlist :Playlist? = PlayerContext.getPlaylist(playlistId)!
             for (idx: Int, t: Track) in enumerate(playlist!.tracks) {
                 if t.id == track!.id {

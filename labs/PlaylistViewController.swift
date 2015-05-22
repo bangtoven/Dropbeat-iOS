@@ -58,7 +58,8 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewWillDisappear(animated)
         UIApplication.sharedApplication().endReceivingRemoteControlEvents()
         resignFirstResponder()
-    }   
+    }
+    
     func sender() {}
     
     override func didReceiveMemoryWarning() {

@@ -29,6 +29,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     
     var prevShuffleBtnState = ShuffleState.NOT_SHUFFLE
     var prevRepeatBtnState = RepeatState.NOT_REPEAT
+    var isProgressUpdatable = true
     
     // Prevent outside configuration of currentPlaylist
     // currentPlaylist can only be updated with updateCurrentPlaylist() from outside
@@ -195,7 +196,6 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             self, selector: "updatePlayerViews", name: NotifyKey.updatePlaylistView, object: nil)
                
         updatePlayerViews()
-        progressBar.continuous = false
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -283,6 +283,9 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func updateProgressView() {
+        if (!isProgressUpdatable) {
+            return
+        }
         var total:Float = Float(PlayerContext.correctDuration ?? 0)
         var curr:Float = Float(PlayerContext.currentPlaybackTime ?? 0)
         if (total == 0) {
@@ -527,6 +530,35 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     @IBAction func progressBarChanged(sender: UISlider) {
+        var total:Double = PlayerContext.correctDuration ?? 0
+        if (total == 0) {
+            return
+        }
+        let newPlaybackTime:Double = (Double(progressBar.value) * total) / 100
+        progressTextView.text = getTimeFormatText(newPlaybackTime)
+    }
+    
+    @IBAction func onProgressBarDown(sender: UISlider) {
+        self.isProgressUpdatable = false
+    }
+    
+    
+    @IBAction func onProgressBarUpInside(sender: UISlider) {
+        onProgressBarUp(sender)
+    }
+    
+    @IBAction func onProgressBarUpOutside(sender: UISlider) {
+        onProgressBarUp(sender)
+    }
+    
+    func onProgressBarUp(sender: UISlider) {
+        
+        // update progress after 1 sec
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            self.isProgressUpdatable = true
+        }
+        
         var params: Dictionary<String, AnyObject> = [
             "value": sender.value,
         ]

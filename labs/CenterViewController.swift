@@ -26,6 +26,7 @@ class CenterViewController: UIViewController {
     var audioPlayer: MPMoviePlayerController = MPMoviePlayerController()
     
     var remoteProgressTimer: NSTimer?
+    var isProgressUpdatable = true
     
     private var activeViewController: UIViewController? {
         didSet {
@@ -115,6 +116,9 @@ class CenterViewController: UIViewController {
     }
     
     func updateProgressView() {
+        if (!isProgressUpdatable) {
+            return
+        }
         var total:Float = Float(PlayerContext.correctDuration ?? 0)
         var curr:Float = Float(PlayerContext.currentPlaybackTime ?? 0)
         if (total == 0) {
@@ -297,6 +301,26 @@ class CenterViewController: UIViewController {
     
     @IBAction func onProgressValueChanged(sender: UISlider) {
         handleSeek(sender.value)
+    }
+    
+    @IBAction func onProgressDown(sender: UISlider) {
+        isProgressUpdatable = false
+    }
+    
+    @IBAction func onProgressUpInside(sender: UISlider) {
+        onProgressUp(sender)
+    }
+    
+    @IBAction func onProgressUpOutside(sender: UISlider) {
+        onProgressUp(sender)
+    }
+    
+    func onProgressUp(sender:UISlider) {
+        // update progress after 1 sec
+        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))
+        dispatch_after(time, dispatch_get_main_queue()) {
+            self.isProgressUpdatable = true
+        }
     }
     
     func remotePlay(noti: NSNotification) {
@@ -507,8 +531,8 @@ class CenterViewController: UIViewController {
             // TODO
             trackInfo[MPMediaItemPropertyArtwork] = albumArt
             
-            trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = audioPlayer.currentPlaybackTime
-            trackInfo[MPMediaItemPropertyPlaybackDuration] = PlayerContext.correctDuration
+            trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = audioPlayer.currentPlaybackTime ?? 0
+            trackInfo[MPMediaItemPropertyPlaybackDuration] = PlayerContext.correctDuration ?? 0
             trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = rate
             MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo as [NSObject : AnyObject]
         }

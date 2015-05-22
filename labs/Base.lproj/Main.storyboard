@@ -73,6 +73,9 @@
                                     <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="daU-o8-m5t">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="31"/>
                                         <connections>
+                                            <action selector="onProgressDown:" destination="BYZ-38-t0r" eventType="touchDown" id="V8w-3g-m72"/>
+                                            <action selector="onProgressUpInside:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hZk-RM-pVn"/>
+                                            <action selector="onProgressUpOutside:" destination="BYZ-38-t0r" eventType="touchUpOutside" id="pQb-ll-Ooy"/>
                                             <action selector="onProgressValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="bhI-vm-zy4"/>
                                         </connections>
                                     </slider>
@@ -244,6 +247,9 @@
                                     <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="V6L-Sp-qfT">
                                         <rect key="frame" x="0.0" y="34" width="320" height="31"/>
                                         <connections>
+                                            <action selector="onProgressBarDown:" destination="ATs-9y-TgU" eventType="touchDown" id="UV6-qK-54K"/>
+                                            <action selector="onProgressBarUpInside:" destination="ATs-9y-TgU" eventType="touchUpInside" id="OMB-fu-vN5"/>
+                                            <action selector="onProgressBarUpOutside:" destination="ATs-9y-TgU" eventType="touchUpOutside" id="ZDO-XR-8jb"/>
                                             <action selector="progressBarChanged:" destination="ATs-9y-TgU" eventType="valueChanged" id="YpJ-AX-0wk"/>
                                         </connections>
                                     </slider>

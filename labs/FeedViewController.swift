@@ -71,13 +71,22 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
             return
         }
         
-        var currentPlaylist:Playlist? = PlaylistViewController.currentPlaylist
-        if (currentPlaylist == nil) {
-            ViewUtils.showNoticeAlert(self, title: "Failed to add", message: "Failed to find proper playlist to add")
-            return
-        }
-        currentPlaylist!.tracks.append(track)
-        ViewUtils.showToast(self, message: "Track added")
+        PlaylistViewController.addTrack(track, afterAdd: { (needRefresh, error) -> Void in
+            if (error != nil) {
+                if (error!.domain == "addTrack") {
+                    if (error!.code == 100) {
+                        ViewUtils.showNoticeAlert(self, title: "Failed to add", message: "Failed to find playlist to add")
+                        return
+                    }
+                    ViewUtils.showToast(self, message: "Already in playlist")
+                    return
+                }
+                ViewUtils.showNoticeAlert(self, title: "Failed to add", message: error!.description)
+                return
+            }
+
+            ViewUtils.showToast(self, message: "Track added")
+        })
     }
     
 }

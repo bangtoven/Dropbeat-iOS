@@ -9,7 +9,7 @@
 import UIKit
 import SwiftyJSON
 
-class PlaylistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PlaylistSelectTableViewDelegate{
+class PlaylistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PlaylistSelectTableViewDelegate, PlaylistTableViewDelegate{
 
     @IBOutlet weak var createPlaylistBtn: UIButton!
     @IBOutlet weak var nextBtn: UIButton!
@@ -49,6 +49,115 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
+    static func addTrack(track:Track, afterAdd: (needRefresh:Bool, error:NSError?) -> Void) {
+        if (PlaylistViewController.currentPlaylist == nil) {
+            afterAdd(needRefresh: true, error: NSError(domain: "addTrack", code:100, userInfo: nil))
+            return
+        }
+        let currentPlaylist:Playlist = PlaylistViewController.currentPlaylist!
+        var tracks = currentPlaylist.tracks
+        
+        var dummyTracks = [[String:AnyObject]]()
+        for t in tracks {
+            if (track.id == t.id) {
+                afterAdd(needRefresh: false, error: NSError(domain: "addTrack", code:101, userInfo: nil))
+                return
+            }
+            dummyTracks.append(["title": t.title, "id": t.id, "type": t.type])
+        }
+        dummyTracks.append(["title": track.title, "id": track.id, "type": track.type])
+        
+        Requests.setPlaylist(currentPlaylist.id, data: dummyTracks) {
+                (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            
+            if (error != nil) {
+                afterAdd(needRefresh: true, error: error)
+                return
+            }
+            var playlist:Playlist? = nil
+            for p in PlayerContext.playlists {
+                if (p.id == currentPlaylist.id) {
+                    playlist = p
+                    break
+                }
+            }
+            if (playlist == nil) {
+                afterAdd(needRefresh: false, error: nil)
+                return
+            }
+            for t in playlist!.tracks {
+                if (t.id == track.id) {
+                    afterAdd(needRefresh: false, error: nil)
+                    return
+                }
+            }
+            playlist!.tracks.append(track)
+            afterAdd(needRefresh: true, error: nil)
+        }
+    }
+    
+    static func deleteTrack(selectedTrack:Track, afterDelete:(needRefresh:Bool, error:NSError?) -> Void) {
+        if (PlaylistViewController.currentPlaylist == nil) {
+            afterDelete(needRefresh: true, error: NSError(domain: "deleteTrack", code:100, userInfo: nil))
+            return
+        }
+        let currentPlaylist:Playlist = PlaylistViewController.currentPlaylist!
+        var tracks = currentPlaylist.tracks
+        
+        var dummyTracks = [[String:AnyObject]]()
+        for t in tracks {
+            if (t.id != selectedTrack.id) {
+                dummyTracks.append(["title": t.title, "id": t.id, "type": t.type])
+            }
+        }
+        
+        Requests.setPlaylist(currentPlaylist.id, data: dummyTracks) {
+            (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if (error != nil) {
+                afterDelete(needRefresh: true, error: error)
+                return
+            }
+            var playlist:Playlist? = nil
+            for p in PlayerContext.playlists {
+                if (p.id == currentPlaylist.id) {
+                    playlist = p
+                    break
+                }
+            }
+            if (playlist == nil) {
+                afterDelete(needRefresh: false, error: nil)
+                return
+            }
+            var foundIdx:Int?
+            for (idx, track) in enumerate(playlist!.tracks) {
+                if (track.id == selectedTrack.id) {
+                    foundIdx = idx
+                }
+            }
+            if (foundIdx == nil) {
+                afterDelete(needRefresh: false, error: nil)
+                return
+            }
+            playlist!.tracks.removeAtIndex(foundIdx!)
+            
+            // Update current PlayerContext with new index
+            let playingTrack:Track? = PlayerContext.currentTrack
+            if (playingTrack != nil &&
+                    PlayerContext.currentPlaylistId != nil &&
+                    PlayerContext.currentPlaylistId == currentPlaylist.id) {
+                for (idx, track) in enumerate(playlist!.tracks) {
+                    if (track.id == playingTrack!.id) {
+                        PlayerContext.currentTrackIdx = idx
+                        break
+                    }
+                }
+            }
+            let needRefresh = PlaylistViewController.currentPlaylist == nil ||
+                    currentPlaylist.id == PlaylistViewController.currentPlaylist!.id
+            afterDelete(needRefresh: needRefresh, error: nil)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if (PlayerContext.playlists.count == 0) {
@@ -59,6 +168,8 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             }
         } else {
             PlaylistViewController.updateCurrentPlaylist()
+            playlistView.reloadData()
+            playlistSelectView.reloadData()
         }
         
         // Notify player actions to CenterViewController
@@ -199,6 +310,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (tableView == playlistView) {
+            println("current track count \(PlaylistViewController.currentPlaylist?.tracks.count)")
             return PlaylistViewController.currentPlaylist?.tracks.count ?? 0
         } else {
             return PlayerContext.playlists.count
@@ -207,10 +319,22 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (tableView == playlistView) {
-            let track = PlaylistViewController.currentPlaylist?.tracks[indexPath.row]
+            let track:Track = PlaylistViewController.currentPlaylist!.tracks[indexPath.row]
             var cell:PlaylistTableViewCell = tableView.dequeueReusableCellWithIdentifier(
                     "PlaylistTableViewCell", forIndexPath: indexPath) as! PlaylistTableViewCell
-            cell.trackTitle.text = track?.title
+            if (Account.getCachedAccount() == nil) {
+                cell.deleteBtn.hidden = true
+            } else {
+                cell.deleteBtn.hidden = false
+            }
+            if (PlayerContext.currentPlaylistId != nil &&
+                    PlaylistViewController.currentPlaylist!.id == PlayerContext.currentPlaylistId &&
+                    PlayerContext.currentTrack != nil &&
+                    PlayerContext.currentTrack!.id == track.id) {
+                    
+            }
+            cell.trackTitle.text = track.title
+            cell.delegate = self
             return cell
         } else {
             let playlist = PlayerContext.playlists[indexPath.row]
@@ -316,11 +440,32 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             })
     }
     
+    func onDeleteBtnClicked(sender: PlaylistTableViewCell) {
+        let indexPath:NSIndexPath = playlistView.indexPathForCell(sender)!
+        if (Account.getCachedAccount() == nil) {
+            return
+        }
+        let currentPlaylist:Playlist = PlaylistViewController.currentPlaylist!
+        var tracks = currentPlaylist.tracks
+        let selectedTrack = tracks[indexPath.row]
+        PlaylistViewController.deleteTrack(selectedTrack, afterDelete: { (needRefresh:Bool, error:NSError?) -> Void in
+            if (error != nil) {
+                ViewUtils.showNoticeAlert(self, title: "Failed to update playlist", message: error!.description)
+                return
+            }
+            if (needRefresh) {
+                self.playlistView.reloadData()
+            }
+        })
+    }
+    
     @IBAction func onCreatePlaylistBtnClicked(sender: UIButton) {
         if (Account.getCachedAccount() == nil) {
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var centerViewController = appDelegate.centerContainer!.centerViewController as! CenterViewController
-            centerViewController.showSigninView()
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            var signinVC = mainStoryboard.instantiateViewControllerWithIdentifier("SigninViewController") as! SigninViewController
+            
+            signinVC.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
+            presentViewController(signinVC, animated: true, completion: nil)
             return
         }
         ViewUtils.showTextInputAlert(

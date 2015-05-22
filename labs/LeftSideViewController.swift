@@ -50,6 +50,8 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.navigationBar.translucent = false
+        
         let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         if (appDelegate.account != nil) {
             menuItems = authMenuItems

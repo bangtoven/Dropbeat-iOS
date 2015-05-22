@@ -30,7 +30,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="playlistBtnClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ngg-t9-4Lg"/>
+                                    <segue destination="ATs-9y-TgU" kind="show" id="sC1-Fb-42c"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QjG-gy-hw0">
@@ -181,7 +181,8 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <outlet property="iconView" destination="PMH-Pw-BFA" id="Bwn-dZ-q0H"/>
+                                            <outlet property="deleteBtn" destination="x4R-LX-Y9h" id="Etb-vu-7dI"/>
+                                            <outlet property="icon" destination="PMH-Pw-BFA" id="yMf-6A-p1s"/>
                                             <outlet property="trackTitle" destination="LhQ-8e-KNA" id="Bn5-4a-9Te"/>
                                         </connections>
                                     </tableViewCell>

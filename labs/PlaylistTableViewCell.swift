@@ -8,11 +8,18 @@
 
 import UIKit
 
-class PlaylistTableViewCell: UITableViewCell {
+protocol PlaylistTableViewDelegate {
+    func onDeleteBtnClicked(sender:PlaylistTableViewCell)
+}
 
+class PlaylistTableViewCell: UITableViewCell {
+    
+    var delegate:PlaylistTableViewDelegate?
+
+    @IBOutlet weak var deleteBtn: UIButton!
+    @IBOutlet weak var icon: UIImageView!
     @IBOutlet weak var trackTitle: UILabel!
     
-    @IBOutlet weak var iconView: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -25,6 +32,7 @@ class PlaylistTableViewCell: UITableViewCell {
     }
     
     @IBAction func onDeleteBtnClicked(sender: UIButton) {
+        delegate?.onDeleteBtnClicked(self)
     }
 
 }

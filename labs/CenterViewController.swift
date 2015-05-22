@@ -61,6 +61,7 @@ class CenterViewController: UIViewController {
         // Observe internal player.
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackStateDidChange:", name: "MPMoviePlayerPlaybackStateDidChangeNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackDidFinish:", name: "MPMoviePlayerPlaybackDidFinishNotification", object: nil)
+        
     }
     
     func updateProgress () {
@@ -180,9 +181,6 @@ class CenterViewController: UIViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         var signinVC = mainStoryboard.instantiateViewControllerWithIdentifier("SigninViewController") as! SigninViewController
         
-//        addChildViewController(signinVC)
-//        view.addSubview(signinVC.view)
-//        signinVC?.didMoveToParentViewController(nil)
         signinVC.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
         presentViewController(signinVC, animated: true, completion: nil)
     }

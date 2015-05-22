@@ -43,7 +43,7 @@ class Requests {
     
     // `data` should be JsonArray.
     static func setPlaylist(id: String, data: AnyObject, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        sendPost(ApiPath.playlist, params: ["id": id, "data": data], auth: true, respCb: respCb)
+        sendPost(ApiPath.playlistSet, params: ["playlist_id": id, "data": data], auth: true, respCb: respCb)
     }   
     
     static func deletePlaylist(id: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void))  {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate{
+class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, AddableTrackCellDelegate{
     
     var tracks:[Track] = []
     var autocomKeywords:[String] = []
@@ -79,6 +79,7 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
         if (tableView == resultTableView) {
             var cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
             let track = tracks[indexPath.row]
+            cell.delegate = self
             cell.nameView.text = track.title
             var image:UIImage?
             if (track.thumbnailUrl != nil) {
@@ -116,6 +117,34 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
         } else {
             return autocomKeywords.count
         }
+    }
+    
+    func onAddBtnClicked(sender: AddableTrackTableViewCell) {
+        let indexPath:NSIndexPath = resultTableView.indexPathForCell(sender)!
+        let track = tracks[indexPath.row]
+        if (Account.getCachedAccount() == nil) {
+            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            var centerViewController = appDelegate.centerContainer!.centerViewController as! CenterViewController
+            centerViewController.showSigninView()
+            return
+        }
+        
+        PlaylistViewController.addTrack(track, afterAdd: { (needRefresh, error) -> Void in
+            if (error != nil) {
+                if (error!.domain == "addTrack") {
+                    if (error!.code == 100) {
+                        ViewUtils.showNoticeAlert(self, title: "Failed to add", message: "Failed to find playlist to add")
+                        return
+                    }
+                    ViewUtils.showToast(self, message: "Already in playlist")
+                    return
+                }
+                ViewUtils.showNoticeAlert(self, title: "Failed to add", message: error!.description)
+                return
+            }
+
+            ViewUtils.showToast(self, message: "Track added")
+        })
     }
     
     func hideAutocomplete() {

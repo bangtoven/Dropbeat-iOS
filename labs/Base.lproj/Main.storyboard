@@ -452,6 +452,21 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="56" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Qli-Sc-q1N">
                                 <rect key="frame" x="0.0" y="110" width="320" height="458"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <view key="tableHeaderView" contentMode="scaleToFill" id="Xyd-4d-nf4">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="53"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <tabBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bIZ-ae-10c">
+                                            <rect key="frame" x="0.0" y="-4" width="320" height="49"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                            <items>
+                                                <tabBarItem systemItem="favorites" id="pfg-O3-abe"/>
+                                                <tabBarItem systemItem="more" id="odK-3b-Vuj"/>
+                                            </items>
+                                        </tabBar>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </view>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AutocomItem" textLabel="pjD-RA-CVl" rowHeight="56" style="IBUITableViewCellStyleDefault" id="NiK-YT-0Mn">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -880,7 +895,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wan-k8-h9m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="275" y="-550"/>
+            <point key="canvasLocation" x="271" y="-537"/>
         </scene>
         <!--Drawer View Controller-->
         <scene sceneID="few-pl-jiS">

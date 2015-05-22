@@ -50,6 +50,8 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.navigationBar.translucent = false
+        
         let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         if (appDelegate.account != nil) {
             menuItems = authMenuItems
@@ -58,7 +60,11 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
             accountEmailView.text = appDelegate.account!.user!.email
             let profileUrl = "https://graph.facebook.com/\(appDelegate.account!.user!.fbId)/picture?type=small"
             let profileData = NSData(contentsOfURL: NSURL(string: profileUrl)!)
-            accountPhotoView.image = UIImage(data: profileData!)
+            if (profileData == nil) {
+                accountPhotoView.image = UIImage(named: "default_profile.png")
+            } else {
+                accountPhotoView.image = UIImage(data: profileData!)
+            }
         } else {
             menuItems = nonauthMenuItems
             accountView.hidden = true

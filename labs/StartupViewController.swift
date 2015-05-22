@@ -8,21 +8,28 @@
 
 import UIKit
 import MMDrawerController
+import SwiftyJSON
+import MBProgressHUD
 
 class StartupViewController: UIViewController {
 
+    var progressHud:MBProgressHUD?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     override func viewDidAppear(animated: Bool) {
+        self.progressHud = ViewUtils.showProgress(self, message: "Initializing..")
+        
         Account.getAccountWithCompletionHandler({(account:Account?, error:NSError?) -> Void in
             if (error != nil) {
                 println("failed to get account due to \(error!.description)")
             }
             var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             appDelegate.account = account
-            self.showMainController()
+            
+            self.fetchUserInfo()
         })
     }
 
@@ -45,6 +52,62 @@ class StartupViewController: UIViewController {
             var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             appDelegate.centerContainer = drawerController
         }
+    }
+    
+    func fetchUserInfo() {
+        let callback = { (error:NSError?) -> Void in
+            self.progressHud?.hide(true)
+            self.showMainController()
+        }
+        if (Account.getCachedAccount() != nil) {
+            loadPlaylist(callback)
+        } else {
+            loadInitialPlaylist(callback)
+        }
+    }
+    
+    func loadPlaylist(callback:(error:NSError?) -> Void) {
+        Requests.fetchAllPlaylists({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if (error != nil || result == nil) {
+                ViewUtils.showNoticeAlert(self, title: "Failed to fetch playlists", message: error!.description)
+                callback(error: error)
+                return
+            }
+            let playlists = Parser().parsePlaylists(result!).reverse()
+            if (playlists.count == 0) {
+                ViewUtils.showNoticeAlert(self, title: "Failed to fetch playlists", message: "At least one playlist should exist")
+                callback(error: error)
+                return
+            }
+            PlayerContext.playlists.removeAll(keepCapacity: false)
+            for playlist in playlists {
+                PlayerContext.playlists.append(playlist)
+            }
+            PlaylistViewController.updateCurrentPlaylist()
+            callback(error:nil)
+        })
+    }
+    
+    func loadInitialPlaylist(callback:(error:NSError?) -> Void) {
+        Requests.fetchInitialPlaylist({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if (error != nil || result == nil) {
+                ViewUtils.showNoticeAlert(self, title: "Failed to fetch playlists", message: error!.description)
+                callback(error: error)
+                return
+            }
+            
+            let json = JSON(result!)
+            let playlistJson = json["playlist"]
+            var playlists = [Playlist]()
+            playlists.append(Playlist.fromJson(playlistJson.rawValue))
+            
+            PlayerContext.playlists.removeAll(keepCapacity: false)
+            for playlist in playlists {
+                PlayerContext.playlists.append(playlist)
+            }
+            PlaylistViewController.updateCurrentPlaylist()
+            callback(error:nil)
+        })
     }
     
     func showMainController() {

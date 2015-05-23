@@ -86,6 +86,10 @@
 		58CF0C351B10E12900AD4BF0 /* search-100-hi.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CF0C321B10E12900AD4BF0 /* search-100-hi.png */; };
 		58CF0C361B10E12900AD4BF0 /* home-100-hi.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CF0C331B10E12900AD4BF0 /* home-100-hi.png */; };
 		58CF0C381B11025500AD4BF0 /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CF0C371B11025500AD4BF0 /* empty.png */; };
+		58CF0C3A1B1109D100AD4BF0 /* SparkSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58CF0C391B1109D100AD4BF0 /* SparkSlider.swift */; };
+		58CF0C3F1B110CF500AD4BF0 /* slider_min.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CF0C3C1B110CF500AD4BF0 /* slider_min.png */; };
+		58CF0C401B110CF500AD4BF0 /* slider_max.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CF0C3D1B110CF500AD4BF0 /* slider_max.png */; };
+		58CF0C441B110E2200AD4BF0 /* slider_thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CF0C431B110E2200AD4BF0 /* slider_thumb.png */; };
 		58D3EBDC1B0BAAD4000C6374 /* BaseContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D3EBDB1B0BAAD4000C6374 /* BaseContentViewController.swift */; };
 		58D3EBDE1B0BBC00000C6374 /* AddableTrackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D3EBDD1B0BBC00000C6374 /* AddableTrackTableViewCell.swift */; };
 		58EAB3DD1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EAB3DC1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift */; };
@@ -195,6 +199,10 @@
 		58CF0C321B10E12900AD4BF0 /* search-100-hi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search-100-hi.png"; sourceTree = "<group>"; };
 		58CF0C331B10E12900AD4BF0 /* home-100-hi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "home-100-hi.png"; sourceTree = "<group>"; };
 		58CF0C371B11025500AD4BF0 /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = "<group>"; };
+		58CF0C391B1109D100AD4BF0 /* SparkSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SparkSlider.swift; sourceTree = "<group>"; };
+		58CF0C3C1B110CF500AD4BF0 /* slider_min.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_min.png; sourceTree = "<group>"; };
+		58CF0C3D1B110CF500AD4BF0 /* slider_max.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_max.png; sourceTree = "<group>"; };
+		58CF0C431B110E2200AD4BF0 /* slider_thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_thumb.png; sourceTree = "<group>"; };
 		58D3EBDB1B0BAAD4000C6374 /* BaseContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseContentViewController.swift; sourceTree = "<group>"; };
 		58D3EBDD1B0BBC00000C6374 /* AddableTrackTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddableTrackTableViewCell.swift; sourceTree = "<group>"; };
 		58EAB3DC1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistSelectTableViewCell.swift; sourceTree = "<group>"; };
@@ -245,6 +253,9 @@
 		5890D62C1B081DB500AAEAE5 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				58CF0C431B110E2200AD4BF0 /* slider_thumb.png */,
+				58CF0C3C1B110CF500AD4BF0 /* slider_min.png */,
+				58CF0C3D1B110CF500AD4BF0 /* slider_max.png */,
 				58CF0C371B11025500AD4BF0 /* empty.png */,
 				58CF0C311B10E12900AD4BF0 /* settings-100-hi.png */,
 				58CF0C321B10E12900AD4BF0 /* search-100-hi.png */,
@@ -365,6 +376,7 @@
 				FCD1DA901B04CCB200F9EA70 /* LaunchScreen.xib */,
 				FCD1DA851B04CCB200F9EA70 /* Supporting Files */,
 				5890D6111B052B8000AAEAE5 /* LeftSideViewController.swift */,
+				58CF0C391B1109D100AD4BF0 /* SparkSlider.swift */,
 				5890D6131B0530AE00AAEAE5 /* SideMenuTableViewCell.swift */,
 				5890D6151B0538CD00AAEAE5 /* SearchViewController.swift */,
 				5890D6171B053F4900AAEAE5 /* SettingsViewController.swift */,
@@ -536,12 +548,14 @@
 				5890D6701B081DD200AAEAE5 /* ic_edit.png in Resources */,
 				5890D66A1B081DD200AAEAE5 /* default_profile.png in Resources */,
 				5890D67E1B081EE400AAEAE5 /* glyphicons_playlist.png in Resources */,
+				58CF0C401B110CF500AD4BF0 /* slider_max.png in Resources */,
 				582E7DA01B10D5F200AB76A2 /* next-96.png in Resources */,
 				5890D6761B081DD200AAEAE5 /* ic_presence_offline.png in Resources */,
 				5890D65C1B081DD200AAEAE5 /* btn_play_disabled.png in Resources */,
 				5890D66F1B081DD200AAEAE5 /* ic_edit_gray.png in Resources */,
 				5890D6561B081DD200AAEAE5 /* btn_backward_normal.png in Resources */,
 				5890D6551B081DD200AAEAE5 /* btn_backward_disabled.png in Resources */,
+				58CF0C3F1B110CF500AD4BF0 /* slider_min.png in Resources */,
 				58CF0C341B10E12900AD4BF0 /* settings-100-hi.png in Resources */,
 				582E7D8F1B107F6100AB76A2 /* home-100.png in Resources */,
 				5890D6671B081DD200AAEAE5 /* btn_volume_mid.png in Resources */,
@@ -561,6 +575,7 @@
 				5890D6641B081DD200AAEAE5 /* btn_video_disabled.png in Resources */,
 				5890D6581B081DD200AAEAE5 /* btn_forward_disabled.png in Resources */,
 				5890D6801B081EE400AAEAE5 /* glyphicons_show_thumbnails.png in Resources */,
+				58CF0C441B110E2200AD4BF0 /* slider_thumb.png in Resources */,
 				5890D6691B081DD200AAEAE5 /* btn_volume_mute.png in Resources */,
 				5890D6661B081DD200AAEAE5 /* btn_volume_max.png in Resources */,
 				5890D6851B08460600AAEAE5 /* ButtonAudio.wav in Resources */,
@@ -641,6 +656,7 @@
 				58EAB3DF1B0D11110075304E /* Utils.swift in Sources */,
 				582709F71B0A8605003C44DA /* KeychainItemWrapper.swift in Sources */,
 				58D3EBDE1B0BBC00000C6374 /* AddableTrackTableViewCell.swift in Sources */,
+				58CF0C3A1B1109D100AD4BF0 /* SparkSlider.swift in Sources */,
 				FC0D9D551B09A70300E048CC /* PlayerContext.swift in Sources */,
 				FC766BEF1B050D51006FD4FB /* NetworkPath.swift in Sources */,
 				FC766BF51B051AA4006FD4FB /* NetworkRequests.swift in Sources */,

@@ -17,7 +17,6 @@ class PlaylistSelectTableViewCell: UITableViewCell {
     
     var delegate:PlaylistSelectTableViewDelegate?
 
-    @IBOutlet weak var iconView: UIImageView!
     @IBOutlet weak var renameBtn: UIButton!
     @IBOutlet weak var deleteBtn: UIButton!
     @IBOutlet weak var nameView: UILabel!

@@ -28,8 +28,8 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var playlistSelectView: UITableView!
     @IBOutlet weak var playlistNameView: UILabel!
     
-    var prevShuffleBtnState = ShuffleState.NOT_SHUFFLE
-    var prevRepeatBtnState = RepeatState.NOT_REPEAT
+    var prevShuffleBtnState:Int?
+    var prevRepeatBtnState:Int?
     var isProgressUpdatable = true
     
     // Prevent outside configuration of currentPlaylist
@@ -249,13 +249,15 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     func updateRepeatView() {
-        if (prevRepeatBtnState == PlayerContext.repeatState) {
+        if (prevRepeatBtnState != nil &&
+                prevRepeatBtnState == PlayerContext.repeatState) {
             return
         }
         prevRepeatBtnState = PlayerContext.repeatState
         switch(PlayerContext.repeatState) {
         case RepeatState.NOT_REPEAT:
-            repeatBtn.setImage(UIImage(named: "btn_repeat_disabled.png"), forState: UIControlState.Normal)
+            var image:UIImage = UIImage(named: "btn_repeat_disabled.png")!
+            repeatBtn.setImage(image, forState: UIControlState.Normal)
             break
         case RepeatState.REPEAT_ONE:
             repeatBtn.setImage(UIImage(named: "btn_repeat_one.png"), forState: UIControlState.Normal)
@@ -690,11 +692,13 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func onShuffleBtnClicked(sender: UIButton) {
         PlayerContext.changeShuffleState()
+        updateShuffleView()
         println(PlayerContext.shuffleState)
     }
     
     @IBAction func onRepeatBtnClicked(sender: UIButton) {
         PlayerContext.changeRepeatState()
+        updateRepeatView()
         println(PlayerContext.repeatState)
     }
     

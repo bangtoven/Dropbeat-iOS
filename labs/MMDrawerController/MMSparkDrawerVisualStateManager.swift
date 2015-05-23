@@ -25,7 +25,7 @@ class MMSparkDrawerVisualStateManager {
             static var instance: MMSparkDrawerVisualStateManager? = nil
         }
         dispatch_once(&Static.onceToken) {
-            Static.instance = MMSparkDrawerVisualStateManager(left: MMDrawerAnimationType.Parallax, right: MMDrawerAnimationType.Parallax)
+            Static.instance = MMSparkDrawerVisualStateManager(left: MMDrawerAnimationType.Slide, right: MMDrawerAnimationType.Slide)
         }
         return Static.instance!
     }

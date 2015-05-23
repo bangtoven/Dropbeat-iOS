@@ -128,7 +128,6 @@ import UIKit
         
         addButtons(segments.map { $0.image })
         addViews(segments.map { $0.view })
-        
         redrawComponents()
     }
     
@@ -155,6 +154,8 @@ import UIKit
             view.removeFromSuperview()
         }
         
+        selectedIndex = 0
+        
         for i in 0..<segmentViews.count {
             let view = segmentViews[i]
             scrollView!.addSubview(view)
@@ -168,6 +169,7 @@ import UIKit
         }
         
         buttons.removeAll(keepCapacity: true)
+        selectedIndex = 0
         
         for i in 0..<titleOrImages.count {
             let button = UIButton.buttonWithType(.Custom) as! UIButton

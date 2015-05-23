@@ -31,15 +31,15 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
     var menuItems:Array<MenuItem>?
     
     private let authMenuItems = [
-        MenuItem(name: "FEED", iconName: "ic_home.png", type: MenuType.FEED),
-        MenuItem(name: "SEARCH", iconName: "ic_search.png", type: MenuType.SEARCH),
-        MenuItem(name: "SETTINGS", iconName: "ic_cogwheel.png", type: MenuType.SETTINGS),
+        MenuItem(name: "FEED", iconName: "home-100.png", type: MenuType.FEED),
+        MenuItem(name: "SEARCH", iconName: "search-100.png", type: MenuType.SEARCH),
+        MenuItem(name: "SETTINGS", iconName: "settings-100.png", type: MenuType.SETTINGS),
     ]
     
     private let nonauthMenuItems = [
-        MenuItem(name: "FEED", iconName: "ic_home.png", type: MenuType.FEED),
-        MenuItem(name: "SEARCH", iconName: "ic_search.png", type: MenuType.SEARCH),
-        MenuItem(name: "SETTINGS", iconName: "ic_cogwheel.png", type: MenuType.SETTINGS),
+        MenuItem(name: "FEED", iconName: "home-100.png", type: MenuType.FEED),
+        MenuItem(name: "SEARCH", iconName: "search-100.png", type: MenuType.SEARCH),
+        MenuItem(name: "SETTINGS", iconName: "settings-100.png", type: MenuType.SETTINGS),
     ]
     
     

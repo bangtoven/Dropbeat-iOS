@@ -32,6 +32,7 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
     var autocomKeywords:[String] = []
     var autocomRequester:AutocompleteRequester?
     
+    @IBOutlet weak var searchResultView: UIView!
     @IBOutlet weak var scrollPager: ScrollPager!
     @IBOutlet weak var autocomTableView: UITableView!
     @IBOutlet weak var resultTableView: UITableView!
@@ -40,9 +41,23 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
     override func viewDidLoad() {
         super.viewDidLoad()
         autocomRequester = AutocompleteRequester(handler: onHandleAutocomplete)
+        
+//        var keywordBgImage = UIImage(named: "search_bar.png")
+//        keywordBgImage = keywordBgImage?.resizableImageWithCapInsets(UIEdgeInsetsMake(0, 10, 0, 10))
+//        keywordView.background = keywordBgImage
+//        keywordView.leftViewMode = UITextFieldViewMode.Always
+//        var searchIcon = UIImageView(image:UIImage(named:"search-100.png"))
+//        searchIcon.frame = CGRectMake(0, 0, 30, 30)
+//        searchIcon.contentMode = UIViewContentMode.ScaleAspectFit
+//        keywordView.leftView = searchIcon
+        
+        scrollPager.font = UIFont.systemFontOfSize(11)
+        scrollPager.selectedFont = UIFont.systemFontOfSize(11)
+        
+        
         keywordView.becomeFirstResponder()
         autocomTableView.hidden = true
-        resultTableView.hidden = true
+        searchResultView.hidden = true
         keywordView.text = ""
         
         scrollPager.delegate = self
@@ -88,20 +103,16 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
     @IBAction func onKeywordChanged(sender: UITextField) {
         if (count(sender.text) == 0) {
             hideAutocomplete()
+            searchResultView.hidden = false
         } else {
             autocomRequester?.send(sender.text)
+            searchResultView.hidden = true
         }
-        resultTableView.hidden = true
     }
     
     @IBAction func onKeywordBeginEditing(sender: UITextField) {
-        hideAutocomplete()
-        resultTableView.hidden = true
-    }
-    
-    @IBAction func onKeywordEndEditing(sender: UITextField) {
-        hideAutocomplete()
-        resultTableView.hidden = false
+        showAutocomplete(clear: true)
+        searchResultView.hidden = true
     }
     
     func hasTopMatch() -> Bool{
@@ -140,9 +151,9 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
             cell.thumbView.image = image!
             return cell
         } else {
-            var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("AutocomItem", forIndexPath: indexPath) as! UITableViewCell
+            var cell:AutocomTableViewCell = tableView.dequeueReusableCellWithIdentifier("AutocomItem", forIndexPath: indexPath) as! AutocomTableViewCell
             let keyword = autocomKeywords[indexPath.row]
-            cell.textLabel?.text = keyword
+            cell.keywordView?.text = keyword
             return cell
         }
     }
@@ -205,6 +216,24 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
         }
     }
     
+//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let title:String? = self.tableView(tableView, titleForHeaderInSection:section)
+//        if (title == nil || count(title!) == 0) {
+//            let headerView = UIView()
+//            headerView.frame = CGRectMake(0, 0, 0, 0)
+//            return headerView
+//        }
+//        let label:UILabel = UILabel(frame: CGRectMake(16, 0, UIScreen.mainScreen().bounds.size.width, 24))
+//        label.font = UIFont.boldSystemFontOfSize(18)
+//        label.text = title
+//        label.textColor = UIColor(netHex:0xffffff)
+//        let headerView = UIView()
+//        headerView.addSubview(label)
+//        headerView.backgroundColor = UIColor(netHex:0x111111)
+//        
+//        return headerView
+//    }
+    
     func onAddBtnClicked(sender: AddableTrackTableViewCell) {
         let indexPath:NSIndexPath = resultTableView.indexPathForCell(sender)!
         let tracks:[Track] = sectionedTracks[currentSection!]!
@@ -252,7 +281,7 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
         
         let progressHud = ViewUtils.showProgress(self, message: "Searching..")
         keywordView.endEditing(true)
-        resultTableView.hidden = false
+        searchResultView.hidden = false
         
         Requests.search(keyword, respCb: {
                 (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
@@ -301,13 +330,33 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
                 self.currentSection == SearchResultSections.RELEVANT) {
                 
                 self.scrollPager.hidden = true
+                let constraint = NSLayoutConstraint(
+                        item: self.scrollPager,
+                        attribute: NSLayoutAttribute.Height,
+                        relatedBy: NSLayoutRelation.Equal,
+                        toItem: self.scrollPager,
+                        attribute: NSLayoutAttribute.Height,
+                        multiplier: 1,
+                        constant: 0)
+                self.scrollPager.addConstraint(constraint)
+                self.view.layoutIfNeeded()
             } else {
                 self.scrollPager.addSegmentsWithTitles(foundTitles)
                 self.scrollPager.hidden = false
+                let constraint = NSLayoutConstraint(
+                        item: self.scrollPager,
+                        attribute: NSLayoutAttribute.Height,
+                        relatedBy: NSLayoutRelation.Equal,
+                        toItem: self.scrollPager,
+                        attribute: NSLayoutAttribute.Height,
+                        multiplier: 1,
+                        constant: 40)
+                self.scrollPager.addConstraint(constraint)
+                self.view.layoutIfNeeded()
             }
             
             self.resultTableView.reloadData()
-            self.resultTableView.hidden = false
+            self.searchResultView.hidden = false
         })
     }
     

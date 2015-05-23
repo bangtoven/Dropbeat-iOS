@@ -182,6 +182,16 @@ class Search {
                 track.topMatch = s["top_match"].boolValue
             }
             
+            if (track.type == "youtube") {
+                track.thumbnailUrl = "http://img.youtube.com/vi/\(track.id)/mqdefault.jpg"
+            } else {
+                var artwork = s["artwork"]
+                if artwork.error == nil {
+                    track.thumbnailUrl = s["artwork"].stringValue
+                }
+            }
+            
+            
             tracks.append(track)
         }
         var search = Search(tracks: tracks)

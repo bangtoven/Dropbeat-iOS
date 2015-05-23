@@ -21,11 +21,12 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     @IBOutlet weak var prevBtn: UIButton!
     @IBOutlet weak var shuffleBtn: UIButton!
     @IBOutlet weak var repeatBtn: UIButton!
-    @IBOutlet weak var loadingView: UILabel!
+    @IBOutlet weak var loadingView: UIImageView!
     @IBOutlet weak var playBtn: UIButton!
     @IBOutlet weak var pauseBtn: UIButton!
     @IBOutlet weak var playlistView: UITableView!
     @IBOutlet weak var playlistSelectView: UITableView!
+    @IBOutlet weak var playlistNameView: UILabel!
     
     var prevShuffleBtnState = ShuffleState.NOT_SHUFFLE
     var prevRepeatBtnState = RepeatState.NOT_REPEAT
@@ -169,6 +170,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        createPlaylistBtn.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
         if (PlayerContext.playlists.count == 0) {
             if (Account.getCachedAccount() != nil) {
                 reloadPlaylist(true, callback:nil)
@@ -177,6 +179,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             }
         } else {
             PlaylistViewController.updateCurrentPlaylist()
+            playlistNameView.text = PlaylistViewController.currentPlaylist?.name
             playlistView.reloadData()
             playlistSelectView.reloadData()
         }
@@ -249,13 +252,13 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         prevRepeatBtnState = PlayerContext.repeatState
         switch(PlayerContext.repeatState) {
         case RepeatState.NOT_REPEAT:
-            repeatBtn.titleLabel?.text = "no repeat"
+            repeatBtn.setImage(UIImage(named: "btn_repeat_disabled.png"), forState: UIControlState.Normal)
             break
         case RepeatState.REPEAT_ONE:
-            repeatBtn.titleLabel?.text = "repeat one"
+            repeatBtn.setImage(UIImage(named: "btn_repeat_one.png"), forState: UIControlState.Normal)
             break
         case RepeatState.REPEAT_PLAYLIST:
-            repeatBtn.titleLabel?.text = "repeat"
+            repeatBtn.setImage(UIImage(named: "btn_repeat_normal.png"), forState: UIControlState.Normal)
             break
         default:
             break
@@ -267,6 +270,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             playBtn.hidden = true
             pauseBtn.hidden = true
             loadingView.hidden = false
+            loadingView.rotate360Degrees(duration: 0.7, completionDelegate: self)
         } else if (PlayerContext.playState == PlayState.PAUSED) {
             playBtn.hidden = false
             pauseBtn.hidden = true
@@ -279,6 +283,12 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             playBtn.hidden = false
             pauseBtn.hidden = true
             loadingView.hidden = true
+        }
+    }
+    
+    override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
+        if (PlayerContext.playState == PlayState.LOADING) {
+            loadingView.rotate360Degrees(duration: 1.0, completionDelegate: self)
         }
     }
     
@@ -320,9 +330,9 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         }
         prevShuffleBtnState = PlayerContext.shuffleState
         if (PlayerContext.shuffleState == ShuffleState.NOT_SHUFFLE) {
-            shuffleBtn.titleLabel?.text = "no shuffle"
+            shuffleBtn.setImage(UIImage(named: "btn_shuffle_disabled.png"), forState: UIControlState.Normal)
         } else {
-            shuffleBtn.titleLabel?.text = "shuffle"
+            shuffleBtn.setImage(UIImage(named: "btn_shuffle_normal.png"), forState: UIControlState.Normal)
         }
     }
     
@@ -345,6 +355,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             }
             if (forceRefresh) {
                 PlaylistViewController.updateCurrentPlaylist()
+                self.playlistNameView.text = PlaylistViewController.currentPlaylist?.name
                 self.playlistView.reloadData()
                 self.playlistSelectView.reloadData()
             }
@@ -372,6 +383,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             }
             if (forceRefresh) {
                 PlaylistViewController.updateCurrentPlaylist()
+                self.playlistNameView.text = PlaylistViewController.currentPlaylist?.name
                 self.playlistView.reloadData()
                 self.playlistSelectView.reloadData()
             }
@@ -435,6 +447,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
                 NotifyKey.playerPlay, object: params)
         } else {
             PlaylistViewController._currentPlaylist = PlayerContext.playlists[indexPath.row]
+            playlistNameView.text = PlaylistViewController.currentPlaylist?.name
             playlistView.reloadData()
             playlistSelectView.hidden = true
             playlistView.hidden = false

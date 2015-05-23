@@ -1,29 +1,22 @@
 //
-//  AddableTrackTableViewCell.swift
+//  AutocomTableViewCell.swift
 //  labs
 //
-//  Created by vulpes on 2015. 5. 20..
+//  Created by vulpes on 2015. 5. 23..
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
 import UIKit
-    
-protocol AddableTrackCellDelegate {
-    func onAddBtnClicked(sender:AddableTrackTableViewCell)
-}
 
-class AddableTrackTableViewCell: UITableViewCell {
-    
-    var delegate:AddableTrackCellDelegate?
+class AutocomTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var nameView: UILabel!
-    @IBOutlet weak var thumbView: UIImageView!
+    @IBOutlet weak var keywordView: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         var selectedBgView = UIView(frame: self.bounds)
         selectedBgView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
-        selectedBgView.backgroundColor = UIColor(netHex: 0x333333)
+        selectedBgView.backgroundColor = UIColor(netHex: 0x444444)
         self.selectedBackgroundView = selectedBgView
     }
 
@@ -33,8 +26,4 @@ class AddableTrackTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    @IBAction func onAddBtnClicked(sender: UIButton) {
-        delegate?.onAddBtnClicked(self)
-    }
-    
 }

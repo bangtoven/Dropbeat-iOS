@@ -17,11 +17,13 @@ enum MenuType:Int{
 class MenuItem {
     var name:String
     var iconName:String
+    var hightlightIconName:String
     var type:MenuType
     
-    init(name:String, iconName:String, type:MenuType) {
+    init(name:String, iconName:String, hightlightIconName:String, type:MenuType) {
         self.name = name
         self.iconName = iconName
+        self.hightlightIconName = hightlightIconName
         self.type = type
     }
 }
@@ -31,21 +33,24 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
     var menuItems:Array<MenuItem>?
     
     private let authMenuItems = [
-        MenuItem(name: "FEED", iconName: "btn_shuffle_disabled.png", type: MenuType.FEED),
-        MenuItem(name: "SEARCH", iconName: "btn_shuffle_disabled.png", type: MenuType.SEARCH),
-        MenuItem(name: "SETTINGS", iconName: "btn_shuffle_disabled.png", type: MenuType.SETTINGS),
+        MenuItem(name: "FEED", iconName: "home-100.png", hightlightIconName: "home-100-hi.png", type: MenuType.FEED),
+        MenuItem(name: "SEARCH", iconName: "search-100.png", hightlightIconName: "search-100-hi.png", type: MenuType.SEARCH),
+        MenuItem(name: "SETTINGS", iconName: "settings-100.png", hightlightIconName: "settings-100-hi.png", type: MenuType.SETTINGS),
     ]
     
     private let nonauthMenuItems = [
-        MenuItem(name: "FEED", iconName: "btn_shuffle_disabled.png", type: MenuType.FEED),
-        MenuItem(name: "SEARCH", iconName: "btn_shuffle_disabled.png", type: MenuType.SEARCH),
-        MenuItem(name: "SETTINGS", iconName: "btn_shuffle_disabled.png", type: MenuType.SETTINGS),
+        MenuItem(name: "FEED", iconName: "home-100.png", hightlightIconName: "home-100-hi.png", type: MenuType.FEED),
+        MenuItem(name: "SEARCH", iconName: "search-100.png", hightlightIconName: "search-100-hi.png", type: MenuType.SEARCH),
+        MenuItem(name: "SETTINGS", iconName: "settings-100.png", hightlightIconName: "settings-100-hi.png", type: MenuType.SETTINGS),
     ]
+    
+    
     
     @IBOutlet weak var accountView: UIView!
     @IBOutlet weak var signinBtn: UIButton!
     @IBOutlet weak var accountPhotoView: UIImageView!
     @IBOutlet weak var accountEmailView: UILabel!
+    @IBOutlet weak var nameView: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +62,8 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
             menuItems = authMenuItems
             accountView.hidden = false
             signinBtn.hidden = true
+            let account = appDelegate.account!
+            nameView.text = "\(account.user!.firstName) \(account.user!.lastName)"
             accountEmailView.text = appDelegate.account!.user!.email
             let profileUrl = "https://graph.facebook.com/\(appDelegate.account!.user!.fbId)/picture?type=small"
             let profileData = NSData(contentsOfURL: NSURL(string: profileUrl)!)
@@ -76,7 +83,6 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
         super.didReceiveMemoryWarning()
     }
     
-    
     func tableView(tableView: UITableView,
             numberOfRowsInSection section: Int) -> Int {
         return menuItems!.count
@@ -88,6 +94,7 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
                     "SideMenuCell", forIndexPath: indexPath) as! SideMenuTableViewCell
         let menuItem = menuItems![indexPath.row]
         cell.menuItemIcon.image = UIImage(named: menuItem.iconName)
+        cell.menuItemIcon.highlightedImage = UIImage(named: menuItem.hightlightIconName)
         cell.menuItemLabel.text = menuItem.name
                 
         if (currentMenu == nil) {

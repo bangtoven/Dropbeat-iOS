@@ -12,8 +12,13 @@ import FBSDKLoginKit
 
 class SigninViewController: UIViewController {
 
+    @IBOutlet weak var signinBtn: UIButton!
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        var signinBgImage = UIImage(named: "facebook_btn_bg.png")
+        signinBgImage = signinBgImage!.resizableImageWithCapInsets(UIEdgeInsetsMake(14, 14, 14, 14))
+        signinBtn.setBackgroundImage(signinBgImage, forState: UIControlState.Normal)
 
         // Do any additional setup after loading the view.
     }

@@ -10,9 +10,20 @@ import UIKit
 import MMDrawerController
 
 class BaseContentViewController: UIViewController {
+    
+    var navDrawerBtn:UIBarButtonItem {
+        let menuImage = UIImage(named: "menu-100.png")
+        let menuBtn = UIButton(frame: CGRectMake(0,0,30,30))
+        menuBtn.addTarget(self, action: "menuBtnClicked:", forControlEvents: UIControlEvents.TouchUpInside)
+        menuBtn.setImage(menuImage, forState: UIControlState.Normal)
+        menuBtn.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        return UIBarButtonItem(customView: menuBtn)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController!.navigationBar.barStyle = UIBarStyle.Black
+        self.navigationItem.leftBarButtonItem = self.navDrawerBtn
 
         // Do any additional setup after loading the view.
     }

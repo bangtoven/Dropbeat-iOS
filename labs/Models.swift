@@ -177,6 +177,21 @@ class Search {
                 track.tag = s["tag"].stringValue
             }
             
+            var topMatch = s["top_match"]
+            if topMatch.error == nil {
+                track.topMatch = s["top_match"].boolValue
+            }
+            
+            if (track.type == "youtube") {
+                track.thumbnailUrl = "http://img.youtube.com/vi/\(track.id)/mqdefault.jpg"
+            } else {
+                var artwork = s["artwork"]
+                if artwork.error == nil {
+                    track.thumbnailUrl = s["artwork"].stringValue
+                }
+            }
+            
+            
             tracks.append(track)
         }
         var search = Search(tracks: tracks)
@@ -193,9 +208,9 @@ class Track {
     var drop: String?
     var dref: String?
     var thumbnailUrl: String?
-    var isTopMatch: Bool?
+    var topMatch: Bool?
     
-    init(id: String, title: String, type: String, tag: String? = nil, thumbnailUrl: String? = nil, drop: String? = nil, dref: String? = nil, isTopMatch: Bool? = false) {
+    init(id: String, title: String, type: String, tag: String? = nil, thumbnailUrl: String? = nil, drop: String? = nil, dref: String? = nil, topMatch: Bool? = false) {
         self.id = id
         self.title = title
         self.drop = drop
@@ -203,7 +218,7 @@ class Track {
         self.dref = dref
         self.tag = tag
         self.thumbnailUrl = thumbnailUrl
-        self.isTopMatch = isTopMatch
+        self.topMatch = topMatch
     }
 }
 

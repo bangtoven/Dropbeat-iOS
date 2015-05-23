@@ -15,4 +15,6 @@ class NotifyKey {
     static var playerNext = "nextPlaylistView"
     static var playerSeek = "seekPlaylistView"
     static var updatePlaylistView = "updatePlaylistView"
+    static var updatePlay = "updatePlay"
 }
+

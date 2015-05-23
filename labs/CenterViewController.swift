@@ -50,6 +50,10 @@ class CenterViewController: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "sender", name: NotifyKey.updatePlaylistView, object: nil)
         
+        // Used for track list play / nonplay ui update
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.updatePlay, object: nil)
+        
         // Observe remote input.
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "remotePlay:", name: NotifyKey.playerPlay, object: nil)
@@ -83,6 +87,7 @@ class CenterViewController: UIViewController {
             playBtn.hidden = true
             pauseBtn.hidden = true
             loadingView.hidden = false
+            loadingView.rotate360Degrees(duration: 0.7, completionDelegate: self)
         } else if (PlayerContext.playState == PlayState.PAUSED) {
             playBtn.hidden = false
             pauseBtn.hidden = true
@@ -95,6 +100,12 @@ class CenterViewController: UIViewController {
             playBtn.hidden = false
             pauseBtn.hidden = true
             loadingView.hidden = true
+        }
+    }
+    
+    override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
+        if (PlayerContext.playState == PlayState.LOADING) {
+            loadingView.rotate360Degrees(duration: 1.0, completionDelegate: self)
         }
     }
     
@@ -335,6 +346,21 @@ class CenterViewController: UIViewController {
         // Fetch stream urls.
         if track == nil {
             return
+        }
+        
+        if (PlayerContext.currentTrack == nil ||
+            PlayerContext.currentTrack!.id != track!.id ||
+            PlayerContext.currentPlaylistId != playlistId) { 
+            
+            var params: Dictionary<String, AnyObject> = [
+                "track": track!
+            ]
+            if playlistId != nil {
+                params["playlistId"] = playlistId!
+            }
+            
+            NSNotificationCenter.defaultCenter().postNotificationName(
+                NotifyKey.updatePlay, object: params)
         }
         
         if PlayerContext.currentTrack != nil && PlayerContext.currentTrack!.id == track!.id {

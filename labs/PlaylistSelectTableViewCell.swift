@@ -24,6 +24,10 @@ class PlaylistSelectTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        var selectedBgView = UIView(frame: self.bounds)
+        selectedBgView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
+        selectedBgView.backgroundColor = UIColor(netHex: 0x1A1A1A)
+        self.selectedBackgroundView = selectedBgView
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

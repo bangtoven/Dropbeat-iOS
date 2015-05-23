@@ -8,12 +8,32 @@
 
 import UIKit
 
-class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, AddableTrackCellDelegate{
+class SearchResultSections {
+    static var RELEASED = "released"
+    static var FEATURED_LIVESET = "featured_liveset"
+    static var TRENDING = "trending"
+    static var RELEVANT = "relevant"
+    static var allValues = [RELEASED, FEATURED_LIVESET, TRENDING, RELEVANT]
+}
+
+class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, AddableTrackCellDelegate, ScrollPagerDelegate{
     
-    var tracks:[Track] = []
+    private static var sectionTitles = [
+        SearchResultSections.RELEASED: "RELEASED",
+        SearchResultSections.FEATURED_LIVESET: "FEATURED LIVESETS",
+        SearchResultSections.TRENDING: "TRENDING LIVESETS",
+        SearchResultSections.RELEVANT: "OTHER"
+    ]
+    
+    var sectionedTracks = [String:[Track]]()
+    var currentSections:[String]?
+    var currentSection:String?
+    var useTopMatch = false
     var autocomKeywords:[String] = []
     var autocomRequester:AutocompleteRequester?
     
+    @IBOutlet weak var searchResultView: UIView!
+    @IBOutlet weak var scrollPager: ScrollPager!
     @IBOutlet weak var autocomTableView: UITableView!
     @IBOutlet weak var resultTableView: UITableView!
     @IBOutlet weak var keywordView: UITextField!
@@ -21,11 +41,35 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
     override func viewDidLoad() {
         super.viewDidLoad()
         autocomRequester = AutocompleteRequester(handler: onHandleAutocomplete)
+        
+//        var keywordBgImage = UIImage(named: "search_bar.png")
+//        keywordBgImage = keywordBgImage?.resizableImageWithCapInsets(UIEdgeInsetsMake(0, 10, 0, 10))
+//        keywordView.background = keywordBgImage
+//        keywordView.leftViewMode = UITextFieldViewMode.Always
+//        var searchIcon = UIImageView(image:UIImage(named:"search-100.png"))
+//        searchIcon.frame = CGRectMake(0, 0, 30, 30)
+//        searchIcon.contentMode = UIViewContentMode.ScaleAspectFit
+//        keywordView.leftView = searchIcon
+        
+        scrollPager.font = UIFont.systemFontOfSize(11)
+        scrollPager.selectedFont = UIFont.systemFontOfSize(11)
+        
+        
         keywordView.becomeFirstResponder()
         autocomTableView.hidden = true
-        resultTableView.hidden = true
+        searchResultView.hidden = true
         keywordView.text = ""
+        
+        scrollPager.delegate = self
+        for section in SearchResultSections.allValues {
+            sectionedTracks[section] = [Track]()
+        }
+        
         // Do any additional setup after loading the view.
+        
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "updatePlay:", name: NotifyKey.updatePlay, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
     }
@@ -63,25 +107,38 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
     @IBAction func onKeywordChanged(sender: UITextField) {
         if (count(sender.text) == 0) {
             hideAutocomplete()
+            searchResultView.hidden = false
         } else {
             autocomRequester?.send(sender.text)
+            searchResultView.hidden = true
         }
-        resultTableView.hidden = true
     }
     
     @IBAction func onKeywordBeginEditing(sender: UITextField) {
-        hideAutocomplete()
-        resultTableView.hidden = true
+        showAutocomplete(clear: true)
+        searchResultView.hidden = true
     }
     
-    @IBAction func onKeywordEndEditing(sender: UITextField) {
-        hideAutocomplete()
-        resultTableView.hidden = false
+    func hasTopMatch() -> Bool{
+        if (self.currentSection == nil ||
+                self.currentSection != SearchResultSections.RELEVANT) {
+            return false
+        }
+        if (self.sectionedTracks[self.currentSection!]!.count == 0) {
+            return false
+        }
+        let tracks:[Track] = self.sectionedTracks[self.currentSection!]!
+        let firstResult:Track = tracks[0]
+        if (firstResult.topMatch ?? false) {
+            return true
+        }
+        return false
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (tableView == resultTableView) {
             var cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
+            let tracks:[Track] = sectionedTracks[currentSection!]!
             let track = tracks[indexPath.row]
             cell.delegate = self
             cell.nameView.text = track.title
@@ -98,15 +155,16 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
             cell.thumbView.image = image!
             return cell
         } else {
-            var cell:UITableViewCell = tableView.dequeueReusableCellWithIdentifier("AutocomItem", forIndexPath: indexPath) as! UITableViewCell
+            var cell:AutocomTableViewCell = tableView.dequeueReusableCellWithIdentifier("AutocomItem", forIndexPath: indexPath) as! AutocomTableViewCell
             let keyword = autocomKeywords[indexPath.row]
-            cell.textLabel?.text = keyword
+            cell.keywordView?.text = keyword
             return cell
         }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if (tableView == resultTableView) {
+            let tracks:[Track] = sectionedTracks[currentSection!]!
             var params: Dictionary<String, AnyObject> = [
                 "track": tracks[indexPath.row],
                 "playlistId": "-1"
@@ -120,16 +178,69 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
         }
     }
     
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if (tableView == resultTableView && useTopMatch) {
+            return 2
+        }
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if (tableView == resultTableView && useTopMatch) {
+            if (section == 0) {
+                return "TOP MATCH"
+            } else {
+                return "OTHER RESULTS"
+            }
+        }
+        return nil
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (tableView == resultTableView) {
-            return tracks.count
+            if (currentSection == nil) {
+                return 0
+            }
+            let tracks:[Track]? = sectionedTracks[currentSection!]
+            if (tracks == nil) {
+                return 0
+            }
+            if (useTopMatch) {
+                var count = 0
+                for t in tracks! {
+                    if (t.topMatch ?? false) {
+                        count += 1
+                    }
+                }
+                return section == 0 ? count : tracks!.count - count
+            }
+            return tracks!.count
         } else {
             return autocomKeywords.count
         }
     }
     
+//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        let title:String? = self.tableView(tableView, titleForHeaderInSection:section)
+//        if (title == nil || count(title!) == 0) {
+//            let headerView = UIView()
+//            headerView.frame = CGRectMake(0, 0, 0, 0)
+//            return headerView
+//        }
+//        let label:UILabel = UILabel(frame: CGRectMake(16, 0, UIScreen.mainScreen().bounds.size.width, 24))
+//        label.font = UIFont.boldSystemFontOfSize(18)
+//        label.text = title
+//        label.textColor = UIColor(netHex:0xffffff)
+//        let headerView = UIView()
+//        headerView.addSubview(label)
+//        headerView.backgroundColor = UIColor(netHex:0x111111)
+//        
+//        return headerView
+//    }
+    
     func onAddBtnClicked(sender: AddableTrackTableViewCell) {
         let indexPath:NSIndexPath = resultTableView.indexPathForCell(sender)!
+        let tracks:[Track] = sectionedTracks[currentSection!]!
         let track = tracks[indexPath.row]
         if (Account.getCachedAccount() == nil) {
             var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -174,7 +285,7 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
         
         let progressHud = ViewUtils.showProgress(self, message: "Searching..")
         keywordView.endEditing(true)
-        resultTableView.hidden = false
+        searchResultView.hidden = false
         
         Requests.search(keyword, respCb: {
                 (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
@@ -186,18 +297,119 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
             }
             let parser = Parser()
             let search = parser.parseSearch(result!)
-            self.tracks.removeAll(keepCapacity: false)
-            for track in search.result {
-                self.tracks.append(track)
+            
+            
+            // clear sectionedTracks
+            for section in SearchResultSections.allValues {
+                self.sectionedTracks[section]!.removeAll(keepCapacity: false)
             }
+            
+            // sectionize
+            var foundSections:[String] = [String]()
+            
+            for track in search.result {
+                if (track.tag == nil) {
+                    return
+                }
+                var tracks:[Track]? = self.sectionedTracks[track.tag!]
+                if (tracks != nil) {
+                    self.sectionedTracks[track.tag!]!.append(track)
+                    if (find(foundSections, track.tag!) == nil) {
+                        foundSections.append(track.tag!)
+                    }
+                }
+            }
+            self.currentSections = foundSections
+            var foundTitles:[String] = foundSections.map {
+                return SearchViewController.sectionTitles[$0]!
+            }
+            if (foundSections.count > 0) {
+                self.currentSection = foundSections[0]
+            } else {
+                self.currentSection = nil
+            }
+            self.useTopMatch = self.hasTopMatch()
+            
+            if (self.currentSection == nil ||
+                self.currentSection == SearchResultSections.RELEVANT) {
+                
+                self.scrollPager.hidden = true
+                let constraint = NSLayoutConstraint(
+                        item: self.scrollPager,
+                        attribute: NSLayoutAttribute.Height,
+                        relatedBy: NSLayoutRelation.Equal,
+                        toItem: self.scrollPager,
+                        attribute: NSLayoutAttribute.Height,
+                        multiplier: 1,
+                        constant: 0)
+                self.scrollPager.addConstraint(constraint)
+                self.view.layoutIfNeeded()
+            } else {
+                self.scrollPager.addSegmentsWithTitles(foundTitles)
+                self.scrollPager.hidden = false
+                let constraint = NSLayoutConstraint(
+                        item: self.scrollPager,
+                        attribute: NSLayoutAttribute.Height,
+                        relatedBy: NSLayoutRelation.Equal,
+                        toItem: self.scrollPager,
+                        attribute: NSLayoutAttribute.Height,
+                        multiplier: 1,
+                        constant: 40)
+                self.scrollPager.addConstraint(constraint)
+                self.view.layoutIfNeeded()
+            }
+            
             self.resultTableView.reloadData()
-            self.resultTableView.hidden = false
+            self.searchResultView.hidden = false
         })
+    }
+    
+    func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
+        if (self.currentSections == nil) {
+            return
+        }
+        self.currentSection = self.currentSections![changedIndex]
+        self.useTopMatch = hasTopMatch()
+        self.resultTableView.reloadData()
     }
     
     override func menuBtnClicked(sender: AnyObject) {
         keywordView.endEditing(true)
         super.menuBtnClicked(sender)
+    }
+    
+    func updatePlay(noti: NSNotification) {
+        var params = noti.object as! Dictionary<String, AnyObject>
+        var track = params["track"] as! Track
+        var playlistId:String? = params["playlistId"] as? String
+        
+        var indexPath = resultTableView.indexPathForSelectedRow()
+        if (indexPath != nil) {
+            var preSelectedTrack:Track?
+            var tracks = sectionedTracks[currentSection!]!
+            preSelectedTrack = tracks[indexPath!.row]
+            if (preSelectedTrack != nil &&
+                (preSelectedTrack!.id != track.id ||
+                (playlistId != nil && playlistId!.toInt() >= 0))) {
+                resultTableView.deselectRowAtIndexPath(indexPath!, animated: false)
+            }
+        }
+        
+        // NOTE
+        // we have to handle re select case when user search agian with same keyword etc.
+        // but we will ignore this case because we have only one week for iphone
+        
+//        if (playlistId == nil || playlistId!.toInt() >= 0) {
+//            return
+//        }
+//        
+//        for (idx, t) in enumerate(tracks) {
+//            if (t.id == track.id) {
+//                feedTableView.selectRowAtIndexPath(NSIndexPath(index: idx),
+//                    animated: false, scrollPosition: UITableViewScrollPosition.None)
+//                break
+//            }
+//        }
     }
     
 

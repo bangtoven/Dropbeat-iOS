@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "labs/CenterViewController.swift"
-            timestampString = "454008624.473672"
+            timestampString = "454094722.281491"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "235"
-            endingLineNumber = "235"
+            startingLineNumber = "239"
+            endingLineNumber = "239"
             landmarkName = "MPMoviePlayerPlaybackStateDidChange(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -100,11 +100,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "labs/PlaylistViewController.swift"
-            timestampString = "454087943.280745"
+            timestampString = "454098824.191493"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "347"
-            endingLineNumber = "347"
+            startingLineNumber = "350"
+            endingLineNumber = "350"
             landmarkName = "reloadPlaylist(_:callback:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -244,11 +244,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "labs/PlaylistViewController.swift"
-            timestampString = "454087943.280745"
+            timestampString = "454098824.191493"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "526"
-            endingLineNumber = "526"
+            startingLineNumber = "532"
+            endingLineNumber = "532"
             landmarkName = "onDeleteBtnClicked(_:)"
             landmarkType = "5">
             <Locations>
@@ -260,11 +260,11 @@
                   moduleName = "labs"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vulpes/Documents/iphone/labs/labs/PlaylistViewController.swift"
-                  timestampString = "454089230.779648"
+                  timestampString = "454099167.28907"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "527"
-                  endingLineNumber = "527"
+                  startingLineNumber = "533"
+                  endingLineNumber = "533"
                   offsetFromSymbolStart = "19">
                </Location>
                <Location
@@ -275,11 +275,11 @@
                   moduleName = "labs"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vulpes/Documents/iphone/labs/labs/PlaylistViewController.swift"
-                  timestampString = "454089230.780004"
+                  timestampString = "454099167.289872"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "526"
-                  endingLineNumber = "526"
+                  startingLineNumber = "532"
+                  endingLineNumber = "532"
                   offsetFromSymbolStart = "4">
                </Location>
             </Locations>
@@ -292,11 +292,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "labs/PlaylistViewController.swift"
-            timestampString = "454087943.280745"
+            timestampString = "454098824.191493"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "534"
-            endingLineNumber = "534"
+            startingLineNumber = "540"
+            endingLineNumber = "540"
             landmarkName = "onDeleteBtnClicked(_:)"
             landmarkType = "5">
             <Locations>
@@ -308,11 +308,11 @@
                   moduleName = "labs"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vulpes/Documents/iphone/labs/labs/PlaylistViewController.swift"
-                  timestampString = "454089230.781748"
+                  timestampString = "454099167.30133"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "534"
-                  endingLineNumber = "534"
+                  startingLineNumber = "540"
+                  endingLineNumber = "540"
                   offsetFromSymbolStart = "706">
                </Location>
                <Location
@@ -323,11 +323,11 @@
                   moduleName = "labs"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vulpes/Documents/iphone/labs/labs/PlaylistViewController.swift"
-                  timestampString = "454089230.782164"
+                  timestampString = "454099167.301626"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "535"
-                  endingLineNumber = "535"
+                  startingLineNumber = "541"
+                  endingLineNumber = "541"
                   offsetFromSymbolStart = "30">
                </Location>
             </Locations>
@@ -340,11 +340,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "labs/PlaylistViewController.swift"
-            timestampString = "454087943.280745"
+            timestampString = "454098824.191493"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "334"
-            endingLineNumber = "334"
+            startingLineNumber = "337"
+            endingLineNumber = "337"
             landmarkName = "updateShuffleView()"
             landmarkType = "5">
          </BreakpointContent>
@@ -356,12 +356,44 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "labs/PlaylistViewController.swift"
-            timestampString = "454087943.280745"
+            timestampString = "454098824.191493"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "332"
-            endingLineNumber = "332"
+            startingLineNumber = "335"
+            endingLineNumber = "335"
             landmarkName = "updateShuffleView()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "labs/PlaylistViewController.swift"
+            timestampString = "454099166.80434"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "729"
+            endingLineNumber = "729"
+            landmarkName = "updatePlayTrack(_:playlistId:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "labs/PlaylistViewController.swift"
+            timestampString = "454099156.486286"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "644"
+            endingLineNumber = "644"
+            landmarkName = "onPlaylistChangeBtnClicked(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

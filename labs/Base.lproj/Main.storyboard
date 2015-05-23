@@ -459,7 +459,7 @@
                                     </variation>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PlaylistSelectTableViewCell" rowHeight="50" id="etR-an-y86" customClass="PlaylistSelectTableViewCell" customModule="labs" customModuleProvider="target">
+                                    <tableViewCell hidden="YES" contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="PlaylistSelectTableViewCell" rowHeight="50" id="etR-an-y86" customClass="PlaylistSelectTableViewCell" customModule="labs" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="330" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="etR-an-y86" id="sYi-s1-6dJ">
@@ -472,7 +472,7 @@
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                     <color key="textColor" red="0.70081676140000004" green="0.70081676140000004" blue="0.70081676140000004" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
+                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zUf-ld-9vL">
                                                     <rect key="frame" x="247" y="10" width="30" height="30"/>
@@ -502,7 +502,7 @@
                                                         <action selector="onDeleteBtnClicked:" destination="etR-an-y86" eventType="touchUpInside" id="vfd-YQ-McS"/>
                                                     </connections>
                                                 </button>
-                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="ic_ok.png" translatesAutoresizingMaskIntoConstraints="NO" id="BiK-vz-CMF">
+                                                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="empty.png" highlightedImage="ic_ok.png" translatesAutoresizingMaskIntoConstraints="NO" id="BiK-vz-CMF">
                                                     <rect key="frame" x="8" y="10" width="20" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="20" id="Wh3-hX-i9u"/>
@@ -532,6 +532,7 @@
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <outlet property="deleteBtn" destination="aD0-Vr-EQk" id="hzc-Eq-MF9"/>
+                                            <outlet property="iconView" destination="BiK-vz-CMF" id="f5a-6Y-fJB"/>
                                             <outlet property="nameView" destination="J95-S3-j7D" id="ud3-hm-ziT"/>
                                             <outlet property="renameBtn" destination="zUf-ld-9vL" id="Mam-Ci-CTx"/>
                                         </connections>
@@ -554,7 +555,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="X29-M6-89Z" id="d9n-8L-2hN">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_music_gray.png" translatesAutoresizingMaskIntoConstraints="NO" id="PMH-Pw-BFA">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_music_gray.png" highlightedImage="btn_volume_max.png" translatesAutoresizingMaskIntoConstraints="NO" id="PMH-Pw-BFA">
                                                     <rect key="frame" x="8" y="12" width="20" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="20" id="6F4-2v-dra"/>
@@ -576,7 +577,7 @@
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" red="0.62494081439393945" green="0.62494081439393945" blue="0.62494081439393945" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
+                                                    <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x4R-LX-Y9h">
                                                     <rect key="frame" x="290" y="7" width="30" height="30"/>
@@ -831,7 +832,7 @@
                                         <color key="sectionIndexBackgroundColor" red="0.26235006313131315" green="0.26235006313131315" blue="0.26235006313131315" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="sectionIndexTrackingBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <prototypes>
-                                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AddableTrackTableViewCell" rowHeight="76" id="eYx-8G-TaG" customClass="AddableTrackTableViewCell" customModule="labs" customModuleProvider="target">
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AddableTrackTableViewCell" rowHeight="76" id="eYx-8G-TaG" customClass="AddableTrackTableViewCell" customModule="labs" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eYx-8G-TaG" id="HHu-OI-Pfo">
@@ -858,7 +859,7 @@
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
+                                                            <color key="highlightedColor" red="1" green="0.70016677778983305" blue="0.97242804286097628" alpha="1" colorSpace="calibratedRGB"/>
                                                         </label>
                                                         <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mzq-bl-jH3">
                                                             <rect key="frame" x="8" y="10" width="56" height="56"/>
@@ -890,7 +891,7 @@
                                                         <constraint firstAttribute="centerY" secondItem="akS-r2-uxB" secondAttribute="centerY" id="sau-2h-5TD"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
-                                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="backgroundColor" red="0.1019607843" green="0.1019607843" blue="0.1019607843" alpha="1" colorSpace="calibratedRGB"/>
                                                 <connections>
                                                     <outlet property="nameView" destination="akS-r2-uxB" id="bfY-a1-XOW"/>
                                                     <outlet property="thumbView" destination="aUB-59-ZPD" id="3dd-q7-rEw"/>
@@ -1323,7 +1324,7 @@
                                                     <rect key="frame" x="50" y="10" width="260" height="30"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
+                                                    <color key="highlightedColor" red="0.35661300509999999" green="0.35661300509999999" blue="0.35661300509999999" alpha="1" colorSpace="calibratedRGB"/>
                                                 </label>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home-100.png" translatesAutoresizingMaskIntoConstraints="NO" id="32a-Sc-aF4">
                                                     <rect key="frame" x="11" y="11" width="28" height="28"/>
@@ -1566,7 +1567,7 @@
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" bounces="NO" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="5aV-Jz-Gnd">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
-                                <color key="backgroundColor" red="0.10196078431372549" green="0.10196078431372549" blue="0.10196078431372549" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.1019607843" green="0.1019607843" blue="0.1019607843" alpha="1" colorSpace="calibratedRGB"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="W1E-s2-scF">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1593,7 +1594,7 @@
                                     </constraints>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="AddableTrackTableViewCell" rowHeight="76" id="NNq-Oe-VQt" customClass="AddableTrackTableViewCell" customModule="labs" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" indentationWidth="10" reuseIdentifier="AddableTrackTableViewCell" rowHeight="76" id="NNq-Oe-VQt" customClass="AddableTrackTableViewCell" customModule="labs" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NNq-Oe-VQt" id="S7x-YJ-kCV">
@@ -1639,7 +1640,7 @@
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <nil key="highlightedColor"/>
+                                                    <color key="highlightedColor" red="1" green="0.70016677780000003" blue="0.97242804289999996" alpha="1" colorSpace="calibratedRGB"/>
                                                     <variation key="default">
                                                         <mask key="constraints">
                                                             <exclude reference="jP7-qi-tMt"/>
@@ -1647,7 +1648,7 @@
                                                     </variation>
                                                 </label>
                                             </subviews>
-                                            <color key="backgroundColor" red="0.1019607843" green="0.1019607843" blue="0.1019607843" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="backgroundColor" red="0.10196078431372549" green="0.10196078431372549" blue="0.10196078431372549" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <constraints>
                                                 <constraint firstItem="Z07-eG-gjt" firstAttribute="leading" secondItem="S7x-YJ-kCV" secondAttribute="leadingMargin" id="1wz-H5-iS2"/>
                                                 <constraint firstAttribute="centerY" secondItem="Qj3-nc-9TM" secondAttribute="centerY" id="GiH-Fe-J8c"/>
@@ -1658,7 +1659,7 @@
                                                 <constraint firstItem="aOA-Qh-rb4" firstAttribute="leading" secondItem="Z07-eG-gjt" secondAttribute="trailing" constant="8" id="zd9-JA-P4O"/>
                                             </constraints>
                                         </tableViewCellContentView>
-                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <color key="backgroundColor" red="0.1019607843" green="0.1019607843" blue="0.1019607843" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
                                             <outlet property="nameView" destination="aOA-Qh-rb4" id="Iak-Ij-HDQ"/>
                                             <outlet property="thumbView" destination="hy7-3o-03f" id="pMN-NJ-7sq"/>
@@ -1742,8 +1743,10 @@
         <image name="btn_progress.png" width="207" height="207"/>
         <image name="btn_repeat_disabled.png" width="125" height="132"/>
         <image name="btn_shuffle_disabled.png" width="108" height="108"/>
+        <image name="btn_volume_max.png" width="121" height="119"/>
         <image name="cancel-100.png" width="100" height="100"/>
         <image name="default_profile.png" width="80" height="80"/>
+        <image name="empty.png" width="100" height="100"/>
         <image name="glyphicons_playlist.png" width="85" height="71"/>
         <image name="home-100.png" width="100" height="100"/>
         <image name="ic_bin.png" width="60" height="84"/>

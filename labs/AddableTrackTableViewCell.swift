@@ -21,6 +21,10 @@ class AddableTrackTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        var selectedBgView = UIView(frame: self.bounds)
+        selectedBgView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
+        selectedBgView.backgroundColor = UIColor(netHex: 0x333333)
+        self.selectedBackgroundView = selectedBgView
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -32,4 +36,5 @@ class AddableTrackTableViewCell: UITableViewCell {
     @IBAction func onAddBtnClicked(sender: UIButton) {
         delegate?.onAddBtnClicked(self)
     }
+    
 }

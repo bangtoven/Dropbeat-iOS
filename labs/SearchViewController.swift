@@ -66,6 +66,10 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
         }
         
         // Do any additional setup after loading the view.
+        
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "updatePlay:", name: NotifyKey.updatePlay, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
     }
@@ -372,6 +376,40 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
     override func menuBtnClicked(sender: AnyObject) {
         keywordView.endEditing(true)
         super.menuBtnClicked(sender)
+    }
+    
+    func updatePlay(noti: NSNotification) {
+        var params = noti.object as! Dictionary<String, AnyObject>
+        var track = params["track"] as! Track
+        var playlistId:String? = params["playlistId"] as? String
+        
+        var indexPath = resultTableView.indexPathForSelectedRow()
+        if (indexPath != nil) {
+            var preSelectedTrack:Track?
+            var tracks = sectionedTracks[currentSection!]!
+            preSelectedTrack = tracks[indexPath!.row]
+            if (preSelectedTrack != nil &&
+                (preSelectedTrack!.id != track.id ||
+                (playlistId != nil && playlistId!.toInt() >= 0))) {
+                resultTableView.deselectRowAtIndexPath(indexPath!, animated: false)
+            }
+        }
+        
+        // NOTE
+        // we have to handle re select case when user search agian with same keyword etc.
+        // but we will ignore this case because we have only one week for iphone
+        
+//        if (playlistId == nil || playlistId!.toInt() >= 0) {
+//            return
+//        }
+//        
+//        for (idx, t) in enumerate(tracks) {
+//            if (t.id == track.id) {
+//                feedTableView.selectRowAtIndexPath(NSIndexPath(index: idx),
+//                    animated: false, scrollPosition: UITableViewScrollPosition.None)
+//                break
+//            }
+//        }
     }
     
 

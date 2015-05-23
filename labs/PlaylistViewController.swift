@@ -182,6 +182,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             playlistNameView.text = PlaylistViewController.currentPlaylist?.name
             playlistView.reloadData()
             playlistSelectView.reloadData()
+            updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
         }
         
         // Notify player actions to CenterViewController
@@ -197,6 +198,8 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             self, selector: "sender", name: NotifyKey.playerSeek, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "updatePlayerViews", name: NotifyKey.updatePlaylistView, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "updatePlayTrack:", name: NotifyKey.updatePlay, object: nil)
                
         updatePlayerViews()
     }
@@ -358,6 +361,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
                 self.playlistNameView.text = PlaylistViewController.currentPlaylist?.name
                 self.playlistView.reloadData()
                 self.playlistSelectView.reloadData()
+                self.updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
             }
             
             callback?(error: nil)
@@ -386,6 +390,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
                 self.playlistNameView.text = PlaylistViewController.currentPlaylist?.name
                 self.playlistView.reloadData()
                 self.playlistSelectView.reloadData()
+                self.updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
             }
             callback?(error: nil)
         })
@@ -449,6 +454,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             PlaylistViewController._currentPlaylist = PlayerContext.playlists[indexPath.row]
             playlistNameView.text = PlaylistViewController.currentPlaylist?.name
             playlistView.reloadData()
+            updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
             playlistSelectView.hidden = true
             playlistView.hidden = false
         }
@@ -538,6 +544,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             }
             if (needRefresh) {
                 self.playlistView.reloadData()
+                self.updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
             }
         })
     }
@@ -612,6 +619,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
                         PlaylistViewController.updateCurrentPlaylist()
                         self.playlistView.reloadData()
                         self.playlistSelectView.reloadData()
+                        self.updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
                     })
                 })
             })
@@ -632,6 +640,17 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     
     @IBAction func onPlaylistChangeBtnClicked(sender: UIButton) {
         if (playlistSelectView.hidden) {
+            
+            if (PlaylistViewController.currentPlaylist != nil) {
+                for (idx, playlist) in enumerate(PlayerContext.playlists) {
+                    if (playlist.id == PlaylistViewController.currentPlaylist!.id) {
+                        playlistSelectView.selectRowAtIndexPath(
+                            NSIndexPath(forRow: idx, inSection: 0), animated: false,
+                            scrollPosition: UITableViewScrollPosition.None)
+                        break
+                    }
+                }
+            }
             playlistSelectView.hidden = false
             playlistView.hidden = true
         } else {
@@ -677,5 +696,40 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     @IBAction func onRepeatBtnClicked(sender: UIButton) {
         PlayerContext.changeRepeatState()
         println(PlayerContext.repeatState)
+    }
+    
+    func updatePlayTrack(noti: NSNotification) {
+        var params = noti.object as! Dictionary<String, AnyObject>
+        var track = params["track"] as! Track
+        var playlistId:String? = params["playlistId"] as? String
+        updatePlayTrack(track, playlistId: playlistId)
+    }
+    
+    func updatePlayTrack(track:Track?, playlistId:String?) {
+        var currentPlaylist = PlaylistViewController.currentPlaylist
+        if (currentPlaylist == nil) {
+            return
+        }
+        var indexPath = playlistView.indexPathForSelectedRow()
+        if (indexPath != nil) {
+            var tracks = currentPlaylist!.tracks
+            var preSelectedTrack:Track = tracks[indexPath!.row]
+            if (preSelectedTrack.id != track!.id ||
+                (playlistId == nil && playlistId != currentPlaylist!.id)) {
+                playlistView.deselectRowAtIndexPath(indexPath!, animated: false)
+            }
+        }
+        
+        if (playlistId == nil || playlistId != currentPlaylist!.id) {
+            return
+        }
+        
+        for (idx, t) in enumerate(currentPlaylist!.tracks) {
+            if (t.id == track!.id) {
+                playlistView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
+                    animated: true, scrollPosition: UITableViewScrollPosition.None)
+                break
+            }
+        }
     }
 }

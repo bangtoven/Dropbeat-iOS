@@ -17,11 +17,13 @@ enum MenuType:Int{
 class MenuItem {
     var name:String
     var iconName:String
+    var hightlightIconName:String
     var type:MenuType
     
-    init(name:String, iconName:String, type:MenuType) {
+    init(name:String, iconName:String, hightlightIconName:String, type:MenuType) {
         self.name = name
         self.iconName = iconName
+        self.hightlightIconName = hightlightIconName
         self.type = type
     }
 }
@@ -31,15 +33,15 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
     var menuItems:Array<MenuItem>?
     
     private let authMenuItems = [
-        MenuItem(name: "FEED", iconName: "home-100.png", type: MenuType.FEED),
-        MenuItem(name: "SEARCH", iconName: "search-100.png", type: MenuType.SEARCH),
-        MenuItem(name: "SETTINGS", iconName: "settings-100.png", type: MenuType.SETTINGS),
+        MenuItem(name: "FEED", iconName: "home-100.png", hightlightIconName: "home-100-hi.png", type: MenuType.FEED),
+        MenuItem(name: "SEARCH", iconName: "search-100.png", hightlightIconName: "search-100-hi.png", type: MenuType.SEARCH),
+        MenuItem(name: "SETTINGS", iconName: "settings-100.png", hightlightIconName: "settings-100-hi.png", type: MenuType.SETTINGS),
     ]
     
     private let nonauthMenuItems = [
-        MenuItem(name: "FEED", iconName: "home-100.png", type: MenuType.FEED),
-        MenuItem(name: "SEARCH", iconName: "search-100.png", type: MenuType.SEARCH),
-        MenuItem(name: "SETTINGS", iconName: "settings-100.png", type: MenuType.SETTINGS),
+        MenuItem(name: "FEED", iconName: "home-100.png", hightlightIconName: "home-100-hi.png", type: MenuType.FEED),
+        MenuItem(name: "SEARCH", iconName: "search-100.png", hightlightIconName: "search-100-hi.png", type: MenuType.SEARCH),
+        MenuItem(name: "SETTINGS", iconName: "settings-100.png", hightlightIconName: "settings-100-hi.png", type: MenuType.SETTINGS),
     ]
     
     
@@ -92,6 +94,7 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
                     "SideMenuCell", forIndexPath: indexPath) as! SideMenuTableViewCell
         let menuItem = menuItems![indexPath.row]
         cell.menuItemIcon.image = UIImage(named: menuItem.iconName)
+        cell.menuItemIcon.highlightedImage = UIImage(named: menuItem.hightlightIconName)
         cell.menuItemLabel.text = menuItem.name
                 
         if (currentMenu == nil) {

@@ -21,7 +21,10 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
         super.viewDidLoad()
         loadFeed()
         NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "updatePlay:", name: NotifyKey.updatePlay, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
+        
     }
     
     func sender () {}
@@ -67,6 +70,7 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
             var fetchedTracks = parser.parseFeed(result!)
             self.tracks = fetchedTracks.result
             self.feedTableView.reloadData()
+            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
         })
     }
     
@@ -96,6 +100,41 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
 
             ViewUtils.showToast(self, message: "Track added")
         })
+    }
+    
+    func updatePlay(noti: NSNotification) {
+        var params = noti.object as! Dictionary<String, AnyObject>
+        var track = params["track"] as! Track
+        var playlistId:String? = params["playlistId"] as? String
+        
+        updatePlay(track, playlistId: playlistId)
+    }
+    
+    func updatePlay(track:Track?, playlistId: String?) {
+        if (track == nil) {
+            return
+        }
+        var indexPath = feedTableView.indexPathForSelectedRow()
+        if (indexPath != nil) {
+            var preSelectedTrack = tracks[indexPath!.row]
+            if (preSelectedTrack.id != track!.id ||
+                (playlistId != nil && playlistId!.toInt() >= 0)) {
+                feedTableView.deselectRowAtIndexPath(indexPath!, animated: false)
+            }
+        }
+        
+        
+        if (playlistId == nil || playlistId!.toInt() >= 0) {
+            return
+        }
+        
+        for (idx, t) in enumerate(tracks) {
+            if (t.id == track!.id) {
+                feedTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
+                    animated: false, scrollPosition: UITableViewScrollPosition.None)
+                break
+            }
+        }
     }
     
 }

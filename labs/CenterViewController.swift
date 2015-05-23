@@ -50,6 +50,10 @@ class CenterViewController: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "sender", name: NotifyKey.updatePlaylistView, object: nil)
         
+        // Used for track list play / nonplay ui update
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.updatePlay, object: nil)
+        
         // Observe remote input.
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "remotePlay:", name: NotifyKey.playerPlay, object: nil)
@@ -342,6 +346,21 @@ class CenterViewController: UIViewController {
         // Fetch stream urls.
         if track == nil {
             return
+        }
+        
+        if (PlayerContext.currentTrack == nil ||
+            PlayerContext.currentTrack!.id != track!.id ||
+            PlayerContext.currentPlaylistId != playlistId) { 
+            
+            var params: Dictionary<String, AnyObject> = [
+                "track": track!
+            ]
+            if playlistId != nil {
+                params["playlistId"] = playlistId!
+            }
+            
+            NSNotificationCenter.defaultCenter().postNotificationName(
+                NotifyKey.updatePlay, object: params)
         }
         
         if PlayerContext.currentTrack != nil && PlayerContext.currentTrack!.id == track!.id {

@@ -75,6 +75,12 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
             self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.screenName = "SearchViewScreen"
+    }
+    
+    
     override func viewWillDisappear(animated: Bool) {
         keywordView.resignFirstResponder()
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
@@ -256,7 +262,7 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
             return
         }
         
-        PlaylistViewController.addTrack(track, afterAdd: { (needRefresh, error) -> Void in
+        PlaylistViewController.addTrack(track, section:"search", afterAdd: { (needRefresh, error) -> Void in
             if (error != nil) {
                 if (error!.domain == "addTrack") {
                     if (error!.code == 100) {
@@ -302,9 +308,20 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
         keywordView.endEditing(true)
         searchResultView.hidden = false
         
+        // Log to Us
         if (Account.getCachedAccount() != nil) {
             Requests.logSearch(keyword)
         }
+        // Log to GA
+        let tracker = GAI.sharedInstance().defaultTracker
+        let event = GAIDictionaryBuilder.createEventWithCategory(
+                "search-sectio",
+                action: "search-with-keyword",
+                label: keyword,
+                value: nil
+            ).build()
+        tracker.send(event as [NSObject: AnyObject]!)
+        
         Requests.search(keyword, respCb: {
                 (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(true)

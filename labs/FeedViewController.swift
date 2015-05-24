@@ -27,6 +27,11 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
         
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.screenName = "FeedViewScreen"
+    }
+    
     override func viewWillDisappear(animated: Bool) {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
@@ -106,7 +111,7 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
             return
         }
         
-        PlaylistViewController.addTrack(track, afterAdd: { (needRefresh, error) -> Void in
+        PlaylistViewController.addTrack(track, section: "feed", afterAdd: { (needRefresh, error) -> Void in
             if (error != nil) {
                 if (error!.domain == "addTrack") {
                     if (error!.code == 100) {

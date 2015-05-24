@@ -11,7 +11,7 @@ import MMDrawerController
 import MBProgressHUD
 import Raygun4iOS
 
-class StartupViewController: UIViewController {
+class StartupViewController: GAITrackedViewController {
 
     var progressHud:MBProgressHUD?
     
@@ -24,6 +24,11 @@ class StartupViewController: UIViewController {
         checkVersion() {
             self.initialize()
         }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.screenName = "StartupScreen"
     }
 
     override func didReceiveMemoryWarning() {
@@ -133,6 +138,11 @@ class StartupViewController: UIViewController {
             if (account != nil) {
                 let email:String = account!.user!.email
                 Raygun.sharedReporter().identify(email)
+                
+                // GA
+                let tracker = GAI.sharedInstance().defaultTracker
+                let userId:String = account!.user!.id
+                tracker.set("&uid", value:userId)
             }
             self.fetchUserInfo()
         })

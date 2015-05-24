@@ -33,6 +33,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "sender", name: NotifyKey.playerSeek, object: nil)
         
+        // GA settings
+        let gai = GAI.sharedInstance()
+        // optional
+        gai.trackUncaughtExceptions = true
+        gai.dispatchInterval = 20
+        gai.logger.logLevel = GAILogLevel.Verbose
+        
+        gai.trackerWithTrackingId("UA-49094112-1")
+        
+        
         Raygun.sharedReporterWithApiKey("5vjswgUxxTkQxkoeNzkJeg==")
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }

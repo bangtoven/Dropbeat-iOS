@@ -9,7 +9,7 @@
 import UIKit
 import MMDrawerController
 
-class BaseContentViewController: UIViewController {
+class BaseContentViewController: BaseViewController {
     
     var navDrawerBtn:UIBarButtonItem {
         let menuImage = UIImage(named: "menu-100.png")

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PlaylistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PlaylistSelectTableViewDelegate, PlaylistTableViewDelegate{
+class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource, PlaylistSelectTableViewDelegate, PlaylistTableViewDelegate{
 
     @IBOutlet weak var playerStatus: UILabel!
     @IBOutlet weak var playerTitle: UILabel!
@@ -58,7 +58,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         }
     }
     
-    static func addTrack(track:Track, afterAdd: (needRefresh:Bool, error:NSError?) -> Void) {
+    static func addTrack(track:Track, section:String, afterAdd: (needRefresh:Bool, error:NSError?) -> Void) {
         if (PlaylistViewController.currentPlaylist == nil) {
             afterAdd(needRefresh: true, error: NSError(domain: "addTrack", code:100, userInfo: nil))
             return
@@ -75,7 +75,19 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             dummyTracks.append(["title": t.title, "id": t.id, "type": t.type])
         }
         dummyTracks.append(["title": track.title, "id": track.id, "type": track.type])
+        
+        // Log to us
         Requests.logTrackAdd(track.title)
+        // Log to GA
+        let tracker = GAI.sharedInstance().defaultTracker
+        let event = GAIDictionaryBuilder.createEventWithCategory(
+                "playlist-add-from-\(section)",
+                action: "add-\(track.type)",
+                label: track.title,
+                value: nil
+            ).build()
+        
+        tracker.send(event as [NSObject: AnyObject]!)
         
         Requests.setPlaylist(currentPlaylist.id, data: dummyTracks) {
                 (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
@@ -202,6 +214,11 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             self, selector: "updatePlayTrack:", name: NotifyKey.updatePlay, object: nil)
                
         updatePlayerViews()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.screenName = "PlaylistViewScreen"
     }
     
     override func viewDidAppear(animated: Bool) {

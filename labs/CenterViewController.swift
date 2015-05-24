@@ -229,7 +229,9 @@ class CenterViewController: UIViewController {
             PlayerContext.playState = PlayState.STOPPED
             updatePlayerViews()
             
-            updatePlayingInfo(PlayerContext.currentTrack!, rate: 0.0)
+            if (PlayerContext.currentTrack != nil) {
+                updatePlayingInfo(PlayerContext.currentTrack!, rate: 0.0)
+            }
             if remoteProgressTimer != nil {
                 remoteProgressTimer?.invalidate()
                 remoteProgressTimer = nil
@@ -472,7 +474,9 @@ class CenterViewController: UIViewController {
                 self.audioPlayer.controlStyle = MPMovieControlStyle.Embedded
                 self.audioPlayer.view.hidden = true
                 self.playAudioPlayer()
-                Requests.logPlay(PlayerContext.currentTrack!.title)
+                if (Account.getCachedAccount() != nil) {
+                    Requests.logPlay(PlayerContext.currentTrack!.title)
+                }
             } else {
                 // XXX: Cannot play.
                 println(err)

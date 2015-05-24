@@ -94,11 +94,11 @@ class Requests {
     }
     
     static func logTrackAdd(title: String) {
-        Alamofire.request(Method.GET, ApiPath.logSearch, parameters: ["t": title], encoding: .URL).validate()
+        Alamofire.request(Method.GET, ApiPath.logTrackAdd, parameters: ["t": title], encoding: .URL).validate()
     }
     
     static func logPlay(title: String) {
-        Alamofire.request(Method.GET, ApiPath.logSearch, parameters: ["t": title], encoding: .URL).validate()
+        Alamofire.request(Method.GET, ApiPath.logPlay, parameters: ["t": title], encoding: .URL).validate()
     }
     
     static func getClientVersion(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {

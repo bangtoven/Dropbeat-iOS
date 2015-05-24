@@ -41,16 +41,28 @@ extension UIColor {
 }
 
 class ViewUtils {
-    static func showNoticeAlert(viewController:UIViewController, title:String, message:String, btnText:String="confirm") {
+    static func showNoticeAlert(viewController:UIViewController, title:String,
+            message:String, btnText:String="confirm", callback:(() -> Void)?=nil) {
+                
         if (NSClassFromString("UIAlertController") != nil) {
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: btnText, style: UIAlertActionStyle.Default, handler: nil))
+            alert.addAction(UIAlertAction(title: btnText, style: UIAlertActionStyle.Default,
+                handler:{ (action:UIAlertAction!) -> Void in
+                    callback?()
+                }))
             viewController.presentViewController(alert, animated: true, completion: nil)
         } else {
+            let alertDelegate = AlertViewDelegate()
+            alertDelegate.onClickedButtonAtIndex = { (alertView:UIAlertView, buttonIndex:Int) -> Void in
+                if (buttonIndex == 0) {
+                    callback?()
+                }
+            }
             let  alert = UIAlertView()
             alert.title = title
             alert.message = message
             alert.addButtonWithTitle(btnText)
+            alert.delegate = alertDelegate
             alert.show()
         }
     }

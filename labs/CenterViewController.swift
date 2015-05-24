@@ -27,6 +27,15 @@ class CenterViewController: UIViewController {
     
     var remoteProgressTimer: NSTimer?
     var isProgressUpdatable = true
+    var backgroundTaskId:UIBackgroundTaskIdentifier?
+    var isBackgroundTaskSuppored:Bool = {
+        var support = false
+        let device = UIDevice.currentDevice()
+        if (device.respondsToSelector("isMultitaskingSupported")) {
+            support = device.multitaskingSupported
+        }
+        return support
+    }()
     
     var hookingBackground: Bool = false
     // Used only for video playback recovery.
@@ -243,6 +252,13 @@ class CenterViewController: UIViewController {
         println("changed!")
         println(audioPlayer.playbackState)
         if (audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
+            
+            // Release background task
+            if (self.backgroundTaskId != nil && self.isBackgroundTaskSuppored) {
+                UIApplication.sharedApplication().endBackgroundTask(self.backgroundTaskId!)
+                self.backgroundTaskId = nil
+            }
+            
             PlayerContext.playState = PlayState.PLAYING
             updatePlayerViews()
             // Periodic timer for progress update.
@@ -251,6 +267,13 @@ class CenterViewController: UIViewController {
                     1.0, target: self, selector: Selector("updateProgress"), userInfo: nil, repeats: true)
             }
         } else if (audioPlayer.playbackState == MPMoviePlaybackState.Stopped) {
+            
+            // Release background task
+            if (self.backgroundTaskId != nil && self.isBackgroundTaskSuppored) {
+                UIApplication.sharedApplication().endBackgroundTask(self.backgroundTaskId!)
+                self.backgroundTaskId = nil
+            }
+            
             PlayerContext.playState = PlayState.STOPPED
             updatePlayerViews()
             
@@ -287,6 +310,24 @@ class CenterViewController: UIViewController {
     }
     
     func MPMoviePlayerPlaybackDidFinish (noti: NSNotification) {
+        
+        var userInfo = noti.userInfo as! [String:AnyObject]
+        var resultValue:NSNumber? = userInfo[MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] as? NSNumber
+        if (resultValue != nil) {
+            var reason = Int(resultValue!)
+            if (reason == MPMovieFinishReason.PlaybackError.rawValue) {
+                // Finished with error
+                var err:NSError? = userInfo["error"] as? NSError
+                println("playback failed with error description: \(err!.description)")
+                
+                // Release background task
+                if (self.backgroundTaskId != nil && isBackgroundTaskSuppored) {
+                    UIApplication.sharedApplication().endBackgroundTask(self.backgroundTaskId!)
+                    self.backgroundTaskId = nil
+                }
+            }
+        }
+        
         println("fin!!!!")
         var success :Bool = handleNext()
         if (!success) {
@@ -444,6 +485,18 @@ class CenterViewController: UIViewController {
         
         initPlayingInfo(track!.title)
         
+        // register background task
+        var app = UIApplication.sharedApplication()
+        if (self.backgroundTaskId != nil && self.isBackgroundTaskSuppored) {
+            app.endBackgroundTask(self.backgroundTaskId!)
+            self.backgroundTaskId = nil
+        }
+        if (self.isBackgroundTaskSuppored) {
+            self.backgroundTaskId = app.beginBackgroundTaskWithExpirationHandler({ () -> Void in
+                self.backgroundTaskId = nil
+            })
+        }
+        
         resolve(track!.id, track!.type, { (req, resp, json, err) in
             if err == nil {
                 println("FIN RESOLVE")
@@ -457,12 +510,16 @@ class CenterViewController: UIViewController {
                 PlayerContext.currentStreamUrls = streamSources
                 if streamSources.isEmpty {
                     println("empty")
+                    ViewUtils.showNoticeAlert(self, title: "Failed to play",
+                        message: "Failed to find proper source")
                     // XXX: Cannot play.
                     return
                 }
                 PlayerContext.currentStreamCandidate = streamSources[0]
                 if (track!.type == "youtube" && streamSources[0].type == "webm") {
                     // Should notify that we can't play it.
+                    ViewUtils.showNoticeAlert(self, title: "Failed to play",
+                        message: "Failed to find proper source (webm)")
                     return
                 }
                 
@@ -510,8 +567,20 @@ class CenterViewController: UIViewController {
                     Requests.logPlay(PlayerContext.currentTrack!.title)
                 }
             } else {
+                if (self.backgroundTaskId != nil && self.isBackgroundTaskSuppored) {
+                    app.endBackgroundTask(self.backgroundTaskId!)
+                    self.backgroundTaskId = nil
+                }
                 // XXX: Cannot play.
                 println(err)
+                var message:String?
+                if (err!.domain == NSURLErrorDomain &&
+                        err!.code == NSURLErrorNotConnectedToInternet) {
+                    message = "Internet is not connected"
+                } else {
+                    message = "Failed to play because of undefined error. (\(err!.domain):\(err!.code))"
+                }
+                ViewUtils.showNoticeAlert(self, title: "Failed to play", message: message!)
             }
         })
     }

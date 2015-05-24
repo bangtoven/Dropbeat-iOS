@@ -215,7 +215,15 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewWillDisappear(animated)
         UIApplication.sharedApplication().endReceivingRemoteControlEvents()
         resignFirstResponder()
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPrev, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerNext, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerSeek, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlaylistView, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
     }
+    
     
     func sender() {}
     
@@ -482,8 +490,15 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
                         (request:NSURLRequest, response: NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                     if (error != nil || result == nil) {
                         progressHud.hide(true)
-                        let errorMsg = error?.description ?? "undefined error"
-                        ViewUtils.showNoticeAlert(self, title: "Failed to delete", message: errorMsg)
+                        var message:String?
+                        if (error != nil && error!.domain == NSURLErrorDomain &&
+                                error!.code == NSURLErrorNotConnectedToInternet) {
+                            message = "Internet is not connected"
+                        }
+                        if (message == nil) {
+                            message = "undefined error (\(error!.domain),\(error!.code))"
+                        }
+                        ViewUtils.showNoticeAlert(self, title: "Failed to update playlist", message: message!)
                         return
                     }
                     let res = result as! NSDictionary
@@ -522,7 +537,15 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
                         (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                     if (error != nil) {
                         progressHud.hide(true)
-                        ViewUtils.showNoticeAlert(self, title: "Failed to change", message: error!.description)
+                        var message:String?
+                        if (error != nil && error!.domain == NSURLErrorDomain &&
+                                error!.code == NSURLErrorNotConnectedToInternet) {
+                            message = "Internet is not connected"
+                        }
+                        if (message == nil) {
+                            message = "undefined error (\(error!.domain),\(error!.code))"
+                        }
+                        ViewUtils.showNoticeAlert(self, title: "Failed to change", message: message!)
                         return
                     }
                     self.reloadPlaylist(true, callback: { (error:NSError?) -> Void in
@@ -542,7 +565,15 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         let selectedTrack = tracks[indexPath.row]
         PlaylistViewController.deleteTrack(selectedTrack, afterDelete: { (needRefresh:Bool, error:NSError?) -> Void in
             if (error != nil) {
-                ViewUtils.showNoticeAlert(self, title: "Failed to update playlist", message: error!.description)
+                var message:String?
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    message = "Internet is not connected"
+                }
+                if (message == nil) {
+                    message = "undefined error (\(error!.domain),\(error!.code))"
+                }
+                ViewUtils.showNoticeAlert(self, title: "Failed to update playlist", message: message!)
                 return
             }
             if (needRefresh) {
@@ -610,7 +641,15 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
                         (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                     if (error != nil) {
                         progressHud.hide(true)
-                        ViewUtils.showNoticeAlert(self, title: "Failed to create playlist", message: error!.description)
+                        var message:String?
+                        if (error != nil && error!.domain == NSURLErrorDomain &&
+                                error!.code == NSURLErrorNotConnectedToInternet) {
+                            message = "Internet is not connected"
+                        }
+                        if (message == nil) {
+                            message = "undefined error (\(error!.domain),\(error!.code))"
+                        }
+                        ViewUtils.showNoticeAlert(self, title: "Failed to create playlist", message: message!)
                         return
                     }
                     self.reloadPlaylist(false, callback: { (error:NSError?) -> Void in

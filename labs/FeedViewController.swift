@@ -28,6 +28,11 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
         
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
+    }
+    
     func sender () {}
     
     override func didReceiveMemoryWarning() {
@@ -71,8 +76,17 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
         let progressHud = ViewUtils.showProgress(self, message: "loading feed..")
         Requests.fetchFeed({(request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(true)
-            if (error != nil) {
-                ViewUtils.showNoticeAlert(self, title: "Failed to fetch feed", message: error!.description)
+            if (error != nil || result == nil) {
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    ViewUtils.showNoticeAlert(self, title: "Failed to fetch feed", message: "Internet is not connected")
+                    return
+                }
+                var message = "Failed to fetch feed caused by undefined error."
+                if (error != nil) {
+                    message += " (\(error!.domain):\(error!.code))"
+                }
+                ViewUtils.showNoticeAlert(self, title: "Failed to fetch feed", message: message)
                 return
             }
             let parser = Parser()
@@ -103,7 +117,15 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
                     ViewUtils.showToast(self, message: "Already in playlist")
                     return
                 }
-                ViewUtils.showNoticeAlert(self, title: "Failed to add", message: error!.description)
+                var message:String?
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    message = "Internet is not connected"
+                }
+                if (message == nil) {
+                    message = "undefined error (\(error!.domain),\(error!.code))"
+                }
+                ViewUtils.showNoticeAlert(self, title: "Failed to add", message: message!)
                 return
             }
 

@@ -40,6 +40,7 @@ class CenterViewController: UIViewController {
     var hookingBackground: Bool = false
     // Used only for video playback recovery.
     var lastPlaybackTime: Double = 0.0
+    var userPaused: Bool = false
     
     private var activeViewController: UIViewController? {
         didSet {
@@ -87,7 +88,6 @@ class CenterViewController: UIViewController {
         
         // For video background playback
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "backgroundHook", name: UIApplicationDidEnterBackgroundNotification, object: nil)
-
         
         progressBar.continuous = false
         updatePlayerViews()
@@ -97,7 +97,7 @@ class CenterViewController: UIViewController {
     func backgroundHook () {
         if (PlayerContext.currentTrack != nil && PlayerContext.currentStreamCandidate != nil) {
             // Check whether it is video and stopped when it entered into background.
-            if (PlayerContext.currentTrack!.type == "youtube" && PlayerContext.currentStreamCandidate?.type == "mp4" && PlayerContext.playState == PlayState.PAUSED) {
+            if (PlayerContext.currentTrack!.type == "youtube" && PlayerContext.currentStreamCandidate?.type == "mp4" && PlayerContext.playState == PlayState.PAUSED && userPaused == false) {
                 hookingBackground = true
                 lastPlaybackTime = audioPlayer.currentPlaybackTime
                 handlePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
@@ -448,6 +448,8 @@ class CenterViewController: UIViewController {
             return
         }
         
+        userPaused = false
+        
         if (PlayerContext.currentTrack == nil ||
             PlayerContext.currentTrack!.id != track!.id ||
             PlayerContext.currentPlaylistId != playlistId) { 
@@ -627,6 +629,7 @@ class CenterViewController: UIViewController {
     }
     
     func handlePause() {
+        userPaused = true
         if (audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
             pauseAudioPlayer()
         }

@@ -21,8 +21,8 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
     
     private static var sectionTitles = [
         SearchResultSections.RELEASED: "RELEASED",
-        SearchResultSections.FEATURED_LIVESET: "FEATURED LIVESETS",
-        SearchResultSections.TRENDING: "TRENDING LIVESETS",
+        SearchResultSections.FEATURED_LIVESET: "LIVESETS",
+        SearchResultSections.TRENDING: "TRENDING",
         SearchResultSections.RELEVANT: "OTHER"
     ]
     

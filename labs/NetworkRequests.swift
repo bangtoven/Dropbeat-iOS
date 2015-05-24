@@ -77,7 +77,7 @@ class Requests {
     }
     
     static func streamResolve(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        sendGet(ResolvePath.resolveStream, params: ["uid": uid], auth: false, respCb: respCb)
+        sendGet(ResolvePath.resolveStream, params: ["uid": uid, "t": "ios"], auth: false, respCb: respCb)
     }
     
     static func fetchFeed(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {

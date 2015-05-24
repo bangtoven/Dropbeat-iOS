@@ -17,13 +17,12 @@ class StartupViewController: GAITrackedViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self, selector: "appDidBecomeActive:",
+            name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.progressHud = ViewUtils.showProgress(self, message: "Initializing..")
-        checkVersion() {
-            self.initialize()
-        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -34,6 +33,20 @@ class StartupViewController: GAITrackedViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewDidDisappear(animated: Bool) {
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
+    }
+    
+    func appDidBecomeActive(noti:NSNotification) {
+        if (self.progressHud == nil || self.progressHud?.alpha == 0) {
+            self.progressHud = ViewUtils.showProgress(self, message: "Initializing..")
+            checkVersion() {
+                self.initialize()
+            }
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -56,7 +69,6 @@ class StartupViewController: GAITrackedViewController {
         Requests.getClientVersion {
                 (reuqest: NSURLRequest, response: NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil || result == nil) {
-                self.progressHud?.hide(true)
                 var message:String?
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -72,6 +84,7 @@ class StartupViewController: GAITrackedViewController {
                     message: message!,
                     btnText: "Retry",
                     callback: { () -> Void in
+                        self.progressHud?.hide(true)
                         self.checkVersion(callback)
                     })
                 return
@@ -85,6 +98,7 @@ class StartupViewController: GAITrackedViewController {
                     message: "Inproper data format",
                     btnText: "Retry",
                     callback: { () -> Void in
+                        self.progressHud?.hide(true)
                         self.checkVersion(callback)
                     })
                 return
@@ -100,6 +114,7 @@ class StartupViewController: GAITrackedViewController {
                     message: "We have released a new version of DROPBEAT. Please download on AppStore",
                     btnText: "Download",
                     callback: { () -> Void in
+                        self.progressHud?.hide(true)
                         let url = NSURL(string: "http://itunes.apple.com/app/id981451656")
                         (UIApplication).sharedApplication().openURL(url!)
                     })
@@ -112,7 +127,6 @@ class StartupViewController: GAITrackedViewController {
     func initialize() {
         Account.getAccountWithCompletionHandler({(account:Account?, error:NSError?) -> Void in
             if (error != nil) {
-                self.progressHud?.hide(true)
                 var message:String?
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -128,6 +142,7 @@ class StartupViewController: GAITrackedViewController {
                     message: message!,
                     btnText: "Retry",
                     callback: { () -> Void in
+                        self.progressHud?.hide(true)
                         self.initialize()
                     })
                 return
@@ -178,6 +193,7 @@ class StartupViewController: GAITrackedViewController {
                     message: message!,
                     btnText: "Retry",
                     callback: { () -> Void in
+                        self.progressHud?.hide(true)
                         self.loadPlaylist(callback)
                     })
                 return
@@ -215,6 +231,7 @@ class StartupViewController: GAITrackedViewController {
                     message: message!,
                     btnText: "Retry",
                     callback: { () -> Void in
+                        self.progressHud?.hide(true)
                         self.loadInitialPlaylist(callback)
                     })
                 return

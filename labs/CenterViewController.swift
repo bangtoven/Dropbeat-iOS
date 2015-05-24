@@ -480,6 +480,14 @@ class CenterViewController: UIViewController {
             } else {
                 // XXX: Cannot play.
                 println(err)
+                var message:String?
+                if (err!.domain == NSURLErrorDomain &&
+                        err!.code == NSURLErrorNotConnectedToInternet) {
+                    message = "Internet is not connected"
+                } else {
+                    message = "Failed to play because of undefined error. (\(err!.domain):\(err!.code))"
+                }
+                ViewUtils.showNoticeAlert(self, title: "Failed to play", message: message!)
             }
         })
     }

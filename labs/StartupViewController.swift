@@ -21,21 +21,7 @@ class StartupViewController: UIViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.progressHud = ViewUtils.showProgress(self, message: "Initializing..")
-        
-        Account.getAccountWithCompletionHandler({(account:Account?, error:NSError?) -> Void in
-            if (error != nil) {
-                println("failed to get account due to \(error!.description)")
-            }
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            appDelegate.account = account
-            
-            if (account != nil) {
-                let email:String = account!.user!.email
-                Raygun.sharedReporter().identify(email)
-            }
-            self.fetchUserInfo()
-        })
+        initialize()
     }
 
     override func didReceiveMemoryWarning() {
@@ -59,6 +45,42 @@ class StartupViewController: UIViewController {
         }
     }
     
+    func initialize() {
+        self.progressHud = ViewUtils.showProgress(self, message: "Initializing..")
+        
+        Account.getAccountWithCompletionHandler({(account:Account?, error:NSError?) -> Void in
+            if (error != nil) {
+                self.progressHud?.hide(true)
+                var message:String?
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    message = "Internet is not connected. Please try again."
+                } else {
+                    message = "Failed to fetch user info becuase of undefined error."
+                    if (error != nil) {
+                        message! += " (\(error!.domain):\(error!.code))"
+                    }
+                }
+                ViewUtils.showNoticeAlert(self,
+                    title: "Failed to fetch user info",
+                    message: message!,
+                    btnText: "Retry",
+                    callback: { () -> Void in
+                        self.initialize()
+                    })
+                return
+            }
+            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            appDelegate.account = account
+            
+            if (account != nil) {
+                let email:String = account!.user!.email
+                Raygun.sharedReporter().identify(email)
+            }
+            self.fetchUserInfo()
+        })
+    }
+    
     func fetchUserInfo() {
         let callback = { (error:NSError?) -> Void in
             self.progressHud?.hide(true)
@@ -74,8 +96,23 @@ class StartupViewController: UIViewController {
     func loadPlaylist(callback:(error:NSError?) -> Void) {
         Requests.fetchAllPlaylists({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil || result == nil) {
-                ViewUtils.showNoticeAlert(self, title: "Failed to fetch playlists", message: error!.description)
-                callback(error: error)
+                var message:String?
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    message = "Internet is not connected"
+                } else {
+                    message = "Failed to fetch playlists caused by undefined error."
+                    if (error != nil) {
+                        message! += " (\(error!.domain):\(error!.code))"
+                    }
+                }
+                ViewUtils.showNoticeAlert(self,
+                    title: "Failed to fetch playlists",
+                    message: message!,
+                    btnText: "Retry",
+                    callback: { () -> Void in
+                        self.loadPlaylist(callback)
+                    })
                 return
             }
             let playlists = Parser().parsePlaylists(result!).reverse()
@@ -96,8 +133,23 @@ class StartupViewController: UIViewController {
     func loadInitialPlaylist(callback:(error:NSError?) -> Void) {
         Requests.fetchInitialPlaylist({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil || result == nil) {
-                ViewUtils.showNoticeAlert(self, title: "Failed to fetch playlists", message: error!.description)
-                callback(error: error)
+                var message:String?
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    message = "Internet is not connected"
+                } else {
+                    message = "Failed to fetch playlists caused by undefined error."
+                    if (error != nil) {
+                        message! += " (\(error!.domain):\(error!.code))"
+                    }
+                }
+                ViewUtils.showNoticeAlert(self,
+                    title: "Failed to fetch playlists",
+                    message: message!,
+                    btnText: "Retry",
+                    callback: { () -> Void in
+                        self.loadInitialPlaylist(callback)
+                    })
                 return
             }
             

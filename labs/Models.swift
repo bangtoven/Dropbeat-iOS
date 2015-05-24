@@ -250,7 +250,7 @@ class Account {
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
         let token:String? = keychainItemWrapper["auth_token"] as! String?
         if (token == nil) {
-            handler(account: nil, error: NSError(domain: "account", code: 100, userInfo: nil))
+            handler(account: nil, error: nil)
             return
         }
         Requests.userSelf({ (request: NSURLRequest, response: NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in

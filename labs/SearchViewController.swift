@@ -260,7 +260,15 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
                     ViewUtils.showToast(self, message: "Already in playlist")
                     return
                 }
-                ViewUtils.showNoticeAlert(self, title: "Failed to add", message: error!.description)
+                var message:String?
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    message = "Internet is not connected"
+                }
+                if (message == nil) {
+                    message = "undefined error (\(error!.domain),\(error!.code))"
+                }
+                ViewUtils.showNoticeAlert(self, title: "Failed to add", message: message!)
                 return
             }
 
@@ -295,8 +303,16 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
                 (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(true)
             if (error != nil || result == nil) {
-                let errorText = error?.description ?? "undefined error"
-                ViewUtils.showNoticeAlert(self, title: "Failed to search", message: errorText)
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    ViewUtils.showNoticeAlert(self, title: "Failed to search", message: "Internet is not connected")
+                    return
+                }
+                var message = "Failed to search caused by undefined error."
+                if (error != nil) {
+                    message += " (\(error!.domain):\(error!.code))"
+                }
+                ViewUtils.showNoticeAlert(self, title: "Failed to search", message: message)
                 return
             }
             let parser = Parser()

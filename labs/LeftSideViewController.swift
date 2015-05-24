@@ -54,8 +54,6 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.setNavigationBarHidden(true, animated: false)
-        navigationController?.navigationBar.translucent = false
         
         let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         if (appDelegate.account != nil) {
@@ -106,7 +104,8 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
         let drawerContainer = self.mm_drawerController
         var centerViewController = drawerContainer.centerViewController as! CenterViewController
         centerViewController.onMenuSelected(currentMenu!.type)
-        drawerContainer!.toggleDrawerSide(MMDrawerSide.Left, animated: true, completion: nil)
+        drawerContainer.closeDrawerAnimated(true, completion: nil)
+//        drawerContainer!.toggleDrawerSide(MMDrawerSide.Left, animated: true, completion: nil)
     }
     
     @IBAction func onSigninBtnClicked(sender: AnyObject) {

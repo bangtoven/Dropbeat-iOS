@@ -56,7 +56,6 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
         scrollPager.selectedFont = UIFont.systemFontOfSize(11)
         
         
-        keywordView.becomeFirstResponder()
         autocomTableView.hidden = true
         searchResultView.hidden = true
         keywordView.text = ""
@@ -68,6 +67,7 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
         
         // Do any additional setup after loading the view.
         
+        keywordView.becomeFirstResponder()
         
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "updatePlay:", name: NotifyKey.updatePlay, object: nil)

@@ -9,7 +9,7 @@
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
-	<string>XGLQXMFR26.net.dropbeat.prod.$(PRODUCT_NAME:rfc1034identifier)</string>
+	<string>XGLQXMFR26.net.dropbeat.prod</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>

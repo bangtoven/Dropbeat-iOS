@@ -23,6 +23,12 @@ class StartupViewController: GAITrackedViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
+        if (self.progressHud == nil || self.progressHud?.alpha == 0) {
+            self.progressHud = ViewUtils.showProgress(self, message: "Initializing..")
+            checkVersion() {
+                self.initialize()
+            }
+        }
     }
     
     override func viewWillAppear(animated: Bool) {

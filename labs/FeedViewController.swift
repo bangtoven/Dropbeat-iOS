@@ -10,6 +10,7 @@ import UIKit
 import Alamofire
 import MMDrawerController
 import MBProgressHUD
+import SDWebImage
 
 
 class FeedViewController: BaseContentViewController, UITableViewDelegate, UITableViewDataSource, AddableTrackCellDelegate{
@@ -40,7 +41,15 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
         cell.delegate = self
         cell.nameView.text = track.title
         if (track.thumbnailUrl != nil) {
-            cell.thumbView.image = UIImage(data: NSData(contentsOfURL: NSURL(string: track.thumbnailUrl!)!)!)
+            cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
+                    placeholderImage: UIImage(named: "btn_play_disabled.png"), completed: {
+                    (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
+                if (error != nil) {
+                    cell.thumbView.image = UIImage(named: "btn_play_disabled.png")
+                }
+            })
+        } else {
+            cell.thumbView.image = UIImage(named: "btn_play_disabled.png")
         }
         return cell
     }

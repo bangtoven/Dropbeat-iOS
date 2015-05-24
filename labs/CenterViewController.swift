@@ -104,7 +104,7 @@ class CenterViewController: UIViewController {
     }
     
     override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
-        if (PlayerContext.playState == PlayState.LOADING) {
+        if (flag && PlayerContext.playState == PlayState.LOADING) {
             loadingView.rotate360Degrees(duration: 1.0, completionDelegate: self)
         }
     }
@@ -229,7 +229,9 @@ class CenterViewController: UIViewController {
             PlayerContext.playState = PlayState.STOPPED
             updatePlayerViews()
             
-            updatePlayingInfo(PlayerContext.currentTrack!, rate: 0.0)
+            if (PlayerContext.currentTrack != nil) {
+                updatePlayingInfo(PlayerContext.currentTrack!, rate: 0.0)
+            }
             if remoteProgressTimer != nil {
                 remoteProgressTimer?.invalidate()
                 remoteProgressTimer = nil
@@ -472,6 +474,9 @@ class CenterViewController: UIViewController {
                 self.audioPlayer.controlStyle = MPMovieControlStyle.Embedded
                 self.audioPlayer.view.hidden = true
                 self.playAudioPlayer()
+                if (Account.getCachedAccount() != nil) {
+                    Requests.logPlay(PlayerContext.currentTrack!.title)
+                }
             } else {
                 // XXX: Cannot play.
                 println(err)
@@ -552,7 +557,7 @@ class CenterViewController: UIViewController {
         var playingInfoCenter:AnyClass! = NSClassFromString("MPNowPlayingInfoCenter")
         if (playingInfoCenter != nil) {
             var trackInfo:NSMutableDictionary = NSMutableDictionary()
-            var albumArt:MPMediaItemArtwork = MPMediaItemArtwork(image: UIImage(named: "logo"))
+            var albumArt:MPMediaItemArtwork = MPMediaItemArtwork(image: UIImage(named: "logo_512x512.png"))
             trackInfo[MPMediaItemPropertyTitle] = track.title
             // TODO
             trackInfo[MPMediaItemPropertyArtwork] = albumArt

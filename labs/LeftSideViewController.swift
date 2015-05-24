@@ -65,13 +65,10 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
             let account = appDelegate.account!
             nameView.text = "\(account.user!.firstName) \(account.user!.lastName)"
             accountEmailView.text = appDelegate.account!.user!.email
+            
             let profileUrl = "https://graph.facebook.com/\(appDelegate.account!.user!.fbId)/picture?type=small"
-            let profileData = NSData(contentsOfURL: NSURL(string: profileUrl)!)
-            if (profileData == nil) {
-                accountPhotoView.image = UIImage(named: "default_profile.png")
-            } else {
-                accountPhotoView.image = UIImage(data: profileData!)
-            }
+            accountPhotoView.sd_setImageWithURL(NSURL(string:profileUrl),
+                placeholderImage: UIImage(named: "default_profile.png"))
         } else {
             menuItems = nonauthMenuItems
             accountView.hidden = true

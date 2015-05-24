@@ -34,6 +34,10 @@ PODS:
     - MMDrawerController/Core
   - MMDrawerController/Subclass (0.5.7):
     - MMDrawerController/Core
+  - Raygun4iOS (2.0.0)
+  - SDWebImage (3.7.2):
+    - SDWebImage/Core (= 3.7.2)
+  - SDWebImage/Core (3.7.2)
   - SwiftyJSON (2.2.0)
 
 DEPENDENCIES:
@@ -44,6 +48,8 @@ DEPENDENCIES:
   - MBProgressHUD (~> 0.9.1)
   - MMDrawerController (~> 0.5.7)
   - MMDrawerController-Storyboard (from `https://raw.github.com/TomSwift/MMDrawerController-Storyboard/1.0.0/MMDrawerController-Storyboard.podspec`)
+  - Raygun4iOS
+  - SDWebImage (~> 3.7)
   - SwiftyJSON (>= 2.2)
 
 EXTERNAL SOURCES:
@@ -59,6 +65,8 @@ SPEC CHECKSUMS:
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   MMDrawerController: 7a4cf8e25596bf2434e03ce50d22a8608ddee6a1
   MMDrawerController-Storyboard: 64021041eb4f7bc75cc21b1ec82cf445988ba71c
+  Raygun4iOS: 1a9c4df9106638ae7ba8c13d1cd2089b1ec2472d
+  SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   SwiftyJSON: 0b3e6c07af17ff745e77e8e9984097b55c956e5c
 
 COCOAPODS: 0.37.1

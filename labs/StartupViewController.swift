@@ -100,7 +100,7 @@ class StartupViewController: GAITrackedViewController {
                     message: "We have released a new version of DROPBEAT. Please download on AppStore",
                     btnText: "Download",
                     callback: { () -> Void in
-                        let url = NSURL(string: "http://itunes.apple.com/app/[our app id]")
+                        let url = NSURL(string: "http://itunes.apple.com/app/id981451656")
                         (UIApplication).sharedApplication().openURL(url!)
                     })
                 return

@@ -10,6 +10,7 @@ import UIKit
 import MMDrawerController
 import SwiftyJSON
 import MBProgressHUD
+import Raygun4iOS
 
 class StartupViewController: UIViewController {
 
@@ -29,6 +30,10 @@ class StartupViewController: UIViewController {
             var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             appDelegate.account = account
             
+            if (account != nil) {
+                let email:String = account!.user!.email
+                Raygun.sharedReporter().identify(email)
+            }
             self.fetchUserInfo()
         })
     }

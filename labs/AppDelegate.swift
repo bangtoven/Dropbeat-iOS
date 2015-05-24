@@ -10,6 +10,7 @@ import UIKit
 import MMDrawerController
 import FBSDKCoreKit
 import FBSDKLoginKit
+import Raygun4iOS
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -31,6 +32,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self, selector: "sender", name: NotifyKey.playerNext, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "sender", name: NotifyKey.playerSeek, object: nil)
+        
+        Raygun.sharedReporterWithApiKey("5vjswgUxxTkQxkoeNzkJeg==")
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     

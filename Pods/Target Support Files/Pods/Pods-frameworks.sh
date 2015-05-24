@@ -56,6 +56,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework 'MBProgressHUD.framework'
   install_framework 'MMDrawerController.framework'
   install_framework 'MMDrawerController_Storyboard.framework'
+  install_framework 'SDWebImage.framework'
   install_framework 'SwiftyJSON.framework'
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -67,5 +68,6 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework 'MBProgressHUD.framework'
   install_framework 'MMDrawerController.framework'
   install_framework 'MMDrawerController_Storyboard.framework'
+  install_framework 'SDWebImage.framework'
   install_framework 'SwiftyJSON.framework'
 fi

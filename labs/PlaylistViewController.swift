@@ -76,6 +76,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
             dummyTracks.append(["title": t.title, "id": t.id, "type": t.type])
         }
         dummyTracks.append(["title": track.title, "id": track.id, "type": track.type])
+        Requests.logTrackAdd(track.title)
         
         Requests.setPlaylist(currentPlaylist.id, data: dummyTracks) {
                 (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
@@ -292,7 +293,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
     }
     
     override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
-        if (PlayerContext.playState == PlayState.LOADING) {
+        if (flag && PlayerContext.playState == PlayState.LOADING) {
             loadingView.rotate360Degrees(duration: 1.0, completionDelegate: self)
         }
     }
@@ -324,7 +325,7 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         let ti = Int(time)
         let seconds = ti % 60
         let minutes = ti / 60
-        var text = minutes < 10 ? "0\(minutes):" : String(minutes)
+        var text = minutes < 10 ? "0\(minutes):" : "\(String(minutes)):"
         text += seconds < 10 ? "0\(seconds)" : String(seconds)
         return text
     }

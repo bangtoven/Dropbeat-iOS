@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class SearchResultSections {
     static var RELEASED = "released"
@@ -142,17 +143,17 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
             let track = tracks[indexPath.row]
             cell.delegate = self
             cell.nameView.text = track.title
-            var image:UIImage?
             if (track.thumbnailUrl != nil) {
-                var data:NSData? = NSData(contentsOfURL: NSURL(string:track.thumbnailUrl!)!)
-                if (data != nil) {
-                    image = UIImage(data: data!)
-                }
+                cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
+                        placeholderImage: UIImage(named: "btn_play_disabled.png"), completed: {
+                        (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
+                    if (error != nil) {
+                        cell.thumbView.image = UIImage(named: "btn_play_disabled.png")
+                    }
+                })
+            } else {
+                cell.thumbView.image = UIImage(named: "btn_play_disabled.png")
             }
-            if (image == nil) {
-                image = UIImage(named: "btn_play_disabled")
-            }
-            cell.thumbView.image = image!
             return cell
         } else {
             var cell:AutocomTableViewCell = tableView.dequeueReusableCellWithIdentifier("AutocomItem", forIndexPath: indexPath) as! AutocomTableViewCell
@@ -287,6 +288,9 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
         keywordView.endEditing(true)
         searchResultView.hidden = false
         
+        if (Account.getCachedAccount() != nil) {
+            Requests.logSearch(keyword)
+        }
         Requests.search(keyword, respCb: {
                 (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(true)

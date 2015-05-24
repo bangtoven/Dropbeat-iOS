@@ -42,6 +42,8 @@ class CenterViewController: UIViewController {
     var lastPlaybackTime: Double = 0.0
     var userPaused: Bool = false
     
+    static var observerAttached: Bool = false
+    
     private var activeViewController: UIViewController? {
         didSet {
             removeInactiveViewController(oldValue)
@@ -60,34 +62,38 @@ class CenterViewController: UIViewController {
         }
         sharedInstance.setActive(true, error: nil)
         
-        // Used for playlistView bottom controller update.
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.updatePlaylistView, object: nil)
-        
-        // Used for track list play / nonplay ui update
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.updatePlay, object: nil)
-        
-        // Observe remote input.
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "remotePlay:", name: NotifyKey.playerPlay, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "handlePrev", name: NotifyKey.playerPrev, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "handlePause", name: NotifyKey.playerPause, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "handleNext", name: NotifyKey.playerNext, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "remoteSeek:", name: NotifyKey.playerSeek, object: nil)
-        
-        
-        // Observe internal player.
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerContentPreloadDidFinishNotification:", name: "MPMoviePlayerContentPreloadDidFinishNotification", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackStateDidChange:", name: "MPMoviePlayerPlaybackStateDidChangeNotification", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackDidFinish:", name: "MPMoviePlayerPlaybackDidFinishNotification", object: nil)
-        
-        // For video background playback
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "backgroundHook", name: UIApplicationDidEnterBackgroundNotification, object: nil)
+        if (CenterViewController.observerAttached == false) {
+            // Used for playlistView bottom controller update.
+            NSNotificationCenter.defaultCenter().addObserver(
+                self, selector: "sender", name: NotifyKey.updatePlaylistView, object: nil)
+            
+            // Used for track list play / nonplay ui update
+            NSNotificationCenter.defaultCenter().addObserver(
+                self, selector: "sender", name: NotifyKey.updatePlay, object: nil)
+            
+            // Observe remote input.
+            NSNotificationCenter.defaultCenter().addObserver(
+                self, selector: "remotePlay:", name: NotifyKey.playerPlay, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(
+                self, selector: "handlePrev", name: NotifyKey.playerPrev, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(
+                self, selector: "handlePause", name: NotifyKey.playerPause, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(
+                self, selector: "handleNext", name: NotifyKey.playerNext, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(
+                self, selector: "remoteSeek:", name: NotifyKey.playerSeek, object: nil)
+            
+            
+            // Observe internal player.
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerContentPreloadDidFinishNotification:", name: "MPMoviePlayerContentPreloadDidFinishNotification", object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackStateDidChange:", name: "MPMoviePlayerPlaybackStateDidChangeNotification", object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackDidFinish:", name: "MPMoviePlayerPlaybackDidFinishNotification", object: nil)
+            
+            // For video background playback
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "backgroundHook", name: UIApplicationDidEnterBackgroundNotification, object: nil)
+            
+            CenterViewController.observerAttached = true
+        }
         
         progressBar.continuous = false
         updatePlayerViews()
@@ -503,6 +509,7 @@ class CenterViewController: UIViewController {
         if (PlayerContext.playState == PlayState.PLAYING) {
             audioPlayer.stop()
         }
+        
         // Indicate loading status.
         PlayerContext.playState = PlayState.LOADING
         updatePlayerViews()
@@ -591,11 +598,11 @@ class CenterViewController: UIViewController {
                 self.audioPlayer.controlStyle = MPMovieControlStyle.Embedded
                 self.audioPlayer.view.hidden = true
                 self.playAudioPlayer()
-                
                 // Log to us
                 if (Account.getCachedAccount() != nil) {
                     Requests.logPlay(PlayerContext.currentTrack!.title)
                 }
+                
                 // Log to ga
                 let currentTrack = PlayerContext.currentTrack
                 if (currentTrack != nil) {
@@ -619,11 +626,15 @@ class CenterViewController: UIViewController {
                 var message:String?
                 if (err!.domain == NSURLErrorDomain &&
                         err!.code == NSURLErrorNotConnectedToInternet) {
-                    message = "Internet is not connected"
+                    message = "Internet is not connected."
                 } else {
-                    message = "Failed to play because of undefined error. (\(err!.domain):\(err!.code))"
+                    message = "Stream source is not available."
                 }
                 ViewUtils.showNoticeAlert(self, title: "Failed to play", message: message!)
+                PlayerContext.playState = PlayState.STOPPED
+                self.playlistPlayerUpdate()
+                self.updatePlayerViews()
+                self.initPlayingInfo("")
             }
         })
     }

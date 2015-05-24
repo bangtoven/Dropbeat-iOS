@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "labs/CenterViewController.swift"
-            timestampString = "454154773.46478"
+            timestampString = "454163830.379105"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "241"
-            endingLineNumber = "241"
+            startingLineNumber = "264"
+            endingLineNumber = "264"
             landmarkName = "MPMoviePlayerPlaybackStateDidChange(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -228,55 +228,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "labs/PlaylistViewController.swift"
-            timestampString = "454152476.373875"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "550"
-            endingLineNumber = "550"
-            landmarkName = "onDeleteBtnClicked(_:)"
-            landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "labs.PlaylistViewController.onDeleteBtnClicked (labs.PlaylistViewController)(labs.PlaylistTableViewCell) -&gt; ()"
-                  moduleName = "labs"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vulpes/Documents/iphone/labs/labs/PlaylistViewController.swift"
-                  timestampString = "454157790.668548"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "551"
-                  endingLineNumber = "551"
-                  offsetFromSymbolStart = "19">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "protocol witness for labs.PlaylistTableViewDelegate.onDeleteBtnClicked &lt;A : labs.PlaylistTableViewDelegate&gt;(labs.PlaylistTableViewDelegate.Self)(labs.PlaylistTableViewCell) -&gt; () in conformance labs.PlaylistViewController : labs.PlaylistTableViewDelegate in labs"
-                  moduleName = "labs"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vulpes/Documents/iphone/labs/labs/PlaylistViewController.swift"
-                  timestampString = "454157790.668754"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "550"
-                  endingLineNumber = "550"
-                  offsetFromSymbolStart = "4">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "labs/PlaylistViewController.swift"
-            timestampString = "454152476.373875"
+            timestampString = "454163265.191203"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "558"
@@ -292,27 +244,27 @@
                   moduleName = "labs"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vulpes/Documents/iphone/labs/labs/PlaylistViewController.swift"
-                  timestampString = "454157790.670324"
+                  timestampString = "454163980.298426"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "558"
-                  endingLineNumber = "558"
-                  offsetFromSymbolStart = "706">
+                  startingLineNumber = "559"
+                  endingLineNumber = "559"
+                  offsetFromSymbolStart = "19">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "labs.PlaylistViewController.(onDeleteBtnClicked (labs.PlaylistViewController) -&gt; (labs.PlaylistTableViewCell) -&gt; ()).(closure #1)"
+                  symbolName = "protocol witness for labs.PlaylistTableViewDelegate.onDeleteBtnClicked &lt;A : labs.PlaylistTableViewDelegate&gt;(labs.PlaylistTableViewDelegate.Self)(labs.PlaylistTableViewCell) -&gt; () in conformance labs.PlaylistViewController : labs.PlaylistTableViewDelegate in labs"
                   moduleName = "labs"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vulpes/Documents/iphone/labs/labs/PlaylistViewController.swift"
-                  timestampString = "454157790.670599"
+                  timestampString = "454163980.298713"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "559"
-                  endingLineNumber = "559"
-                  offsetFromSymbolStart = "33">
+                  startingLineNumber = "558"
+                  endingLineNumber = "558"
+                  offsetFromSymbolStart = "4">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -323,14 +275,46 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "labs/CenterViewController.swift"
-            timestampString = "454153783.257571"
+            filePath = "labs/PlaylistViewController.swift"
+            timestampString = "454163265.191203"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
-            landmarkName = "animationDidStop(_:finished:)"
+            startingLineNumber = "566"
+            endingLineNumber = "566"
+            landmarkName = "onDeleteBtnClicked(_:)"
             landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "labs.PlaylistViewController.onDeleteBtnClicked (labs.PlaylistViewController)(labs.PlaylistTableViewCell) -&gt; ()"
+                  moduleName = "labs"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vulpes/Documents/iphone/labs/labs/PlaylistViewController.swift"
+                  timestampString = "454163980.299636"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "566"
+                  endingLineNumber = "566"
+                  offsetFromSymbolStart = "706">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "labs.PlaylistViewController.(onDeleteBtnClicked (labs.PlaylistViewController) -&gt; (labs.PlaylistTableViewCell) -&gt; ()).(closure #1)"
+                  moduleName = "labs"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/vulpes/Documents/iphone/labs/labs/PlaylistViewController.swift"
+                  timestampString = "454163980.29988"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "567"
+                  endingLineNumber = "567"
+                  offsetFromSymbolStart = "33">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

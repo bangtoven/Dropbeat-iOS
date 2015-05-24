@@ -28,6 +28,11 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
         
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
+    }
+    
     func sender () {}
     
     override func didReceiveMemoryWarning() {

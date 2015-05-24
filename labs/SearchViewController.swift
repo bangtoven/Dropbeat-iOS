@@ -75,6 +75,12 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
             self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        keywordView.resignFirstResponder()
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
+    }
+    
     func sender () {}
 
     override func didReceiveMemoryWarning() {

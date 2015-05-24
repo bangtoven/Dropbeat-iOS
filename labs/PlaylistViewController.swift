@@ -215,7 +215,15 @@ class PlaylistViewController: UIViewController, UITableViewDelegate, UITableView
         super.viewWillDisappear(animated)
         UIApplication.sharedApplication().endReceivingRemoteControlEvents()
         resignFirstResponder()
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPrev, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerNext, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerSeek, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlaylistView, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
     }
+    
     
     func sender() {}
     

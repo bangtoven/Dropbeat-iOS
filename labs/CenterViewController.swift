@@ -28,6 +28,8 @@ class CenterViewController: UIViewController {
     var remoteProgressTimer: NSTimer?
     var isProgressUpdatable = true
     var backgroundTaskId:UIBackgroundTaskIdentifier?
+    var signinVC:SigninViewController?
+    var playlistVC:PlaylistViewController?
     var isBackgroundTaskSuppored:Bool = {
         var support = false
         let device = UIDevice.currentDevice()
@@ -53,6 +55,9 @@ class CenterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.signinVC = nil
+        self.playlistVC = nil
         
         // Init audioSession
         var sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
@@ -370,20 +375,25 @@ class CenterViewController: UIViewController {
     func showSigninView() {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        var signinVC = mainStoryboard.instantiateViewControllerWithIdentifier("SigninViewController") as! SigninViewController
+        self.signinVC = mainStoryboard.instantiateViewControllerWithIdentifier("SigninViewController") as! SigninViewController
         
-        signinVC.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
-        presentViewController(signinVC, animated: true, completion: nil)
+        self.signinVC!.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
+        presentViewController(self.signinVC!, animated: true, completion: nil)
     }
     
     func showPlaylistView() {
         
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        var playlistVC = mainStoryboard.instantiateViewControllerWithIdentifier("PlaylistViewController") as! PlaylistViewController
+        self.playlistVC = mainStoryboard.instantiateViewControllerWithIdentifier("PlaylistViewController") as! PlaylistViewController
         
-        playlistVC.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
-        presentViewController(playlistVC, animated: true, completion: nil)
+        self.playlistVC!.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
+        presentViewController(self.playlistVC!, animated: true, completion: nil)
     }
+    
+    @IBAction func onPlaylistBtnClicked(sender: AnyObject) {
+        showPlaylistView()
+    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -545,7 +555,7 @@ class CenterViewController: UIViewController {
                 PlayerContext.currentStreamUrls = streamSources
                 if streamSources.isEmpty {
                     println("empty")
-                    ViewUtils.showNoticeAlert(self, title: "Failed to play",
+                    ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play",
                         message: "Failed to find proper source")
                     // XXX: Cannot play.
                     return
@@ -553,7 +563,7 @@ class CenterViewController: UIViewController {
                 PlayerContext.currentStreamCandidate = streamSources[0]
                 if (track!.type == "youtube" && streamSources[0].type == "webm") {
                     // Should notify that we can't play it.
-                    ViewUtils.showNoticeAlert(self, title: "Failed to play",
+                    ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play",
                         message: "Failed to find proper source (webm)")
                     return
                 }
@@ -630,7 +640,7 @@ class CenterViewController: UIViewController {
                 } else {
                     message = "Stream source is not available."
                 }
-                ViewUtils.showNoticeAlert(self, title: "Failed to play", message: message!)
+                ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play", message: message!)
                 PlayerContext.playState = PlayState.STOPPED
                 self.playlistPlayerUpdate()
                 self.updatePlayerViews()
@@ -767,6 +777,17 @@ class CenterViewController: UIViewController {
         }
     }
     
+    func getCurrentVisibleViewController()-> UIViewController {
+        var vc:UIViewController = self
+        if (self.playlistVC != nil && self.playlistVC!.isVisible) {
+            vc = self.playlistVC!
+        }
+        if (self.signinVC != nil && self.signinVC!.isVisible) {
+            vc = self.signinVC!
+        }
+        return vc
+    }
+    
     private func removeInactiveViewController(inactiveViewController:UIViewController?) {
         if let inactiveVC = inactiveViewController {
             inactiveVC.willMoveToParentViewController(nil)
@@ -787,4 +808,5 @@ class CenterViewController: UIViewController {
             activeVC.didMoveToParentViewController(self)
         }
     }
+    
 }

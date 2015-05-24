@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "labs/CenterViewController.swift"
-            timestampString = "454178851.591607"
+            timestampString = "454183470.685909"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "265"
-            endingLineNumber = "265"
+            startingLineNumber = "270"
+            endingLineNumber = "270"
             landmarkName = "MPMoviePlayerPlaybackStateDidChange(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -131,70 +131,6 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "labs/Utils.swift"
-            timestampString = "454151084.612902"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "90"
-            endingLineNumber = "90"
-            landmarkName = "showConfirmAlert(_:title:message:positiveBtnText:positiveBtnCallback:negativeBtnText:negativeBtnCallback:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "labs/Utils.swift"
-            timestampString = "454151084.612902"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
-            landmarkName = "showConfirmAlert(_:title:message:positiveBtnText:positiveBtnCallback:negativeBtnText:negativeBtnCallback:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "labs/Utils.swift"
-            timestampString = "454151084.612902"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "83"
-            endingLineNumber = "83"
-            landmarkName = "showConfirmAlert(_:title:message:positiveBtnText:positiveBtnCallback:negativeBtnText:negativeBtnCallback:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "labs/Utils.swift"
-            timestampString = "454151084.612902"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "79"
-            endingLineNumber = "79"
-            landmarkName = "showConfirmAlert(_:title:message:positiveBtnText:positiveBtnCallback:negativeBtnText:negativeBtnCallback:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "labs/PlaylistViewController.swift"
             timestampString = "454178225.264108"
             startingColumnNumber = "9223372036854775807"
@@ -244,11 +180,11 @@
                   moduleName = "labs"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vulpes/Documents/iphone/labs/labs/PlaylistViewController.swift"
-                  timestampString = "454174937.297423"
+                  timestampString = "454186733.635898"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "558"
-                  endingLineNumber = "558"
+                  startingLineNumber = "575"
+                  endingLineNumber = "575"
                   offsetFromSymbolStart = "19">
                </Location>
                <Location
@@ -259,11 +195,11 @@
                   moduleName = "labs"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vulpes/Documents/iphone/labs/labs/PlaylistViewController.swift"
-                  timestampString = "454174937.297584"
+                  timestampString = "454186733.636083"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "557"
-                  endingLineNumber = "557"
+                  startingLineNumber = "574"
+                  endingLineNumber = "574"
                   offsetFromSymbolStart = "4">
                </Location>
             </Locations>
@@ -292,11 +228,11 @@
                   moduleName = "labs"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vulpes/Documents/iphone/labs/labs/PlaylistViewController.swift"
-                  timestampString = "454174937.298459"
+                  timestampString = "454186733.637003"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "565"
-                  endingLineNumber = "565"
+                  startingLineNumber = "582"
+                  endingLineNumber = "582"
                   offsetFromSymbolStart = "706">
                </Location>
                <Location
@@ -307,11 +243,11 @@
                   moduleName = "labs"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/vulpes/Documents/iphone/labs/labs/PlaylistViewController.swift"
-                  timestampString = "454174937.298631"
+                  timestampString = "454186733.637145"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "566"
-                  endingLineNumber = "566"
+                  startingLineNumber = "583"
+                  endingLineNumber = "583"
                   offsetFromSymbolStart = "33">
                </Location>
             </Locations>
@@ -324,12 +260,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "labs/CenterViewController.swift"
-            timestampString = "454178851.591607"
+            timestampString = "454183470.685909"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "305"
-            endingLineNumber = "305"
-            landmarkName = "MPMoviePlayerPlaybackStateDidChange(_:)"
+            startingLineNumber = "330"
+            endingLineNumber = "330"
+            landmarkName = "MPMoviePlayerContentPreloadDidFinishNotification(_:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "labs/SigninViewController.swift"
+            timestampString = "454180836.3535"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "41"
+            endingLineNumber = "41"
+            landmarkName = "onSigninBtnClicked(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

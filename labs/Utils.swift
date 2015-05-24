@@ -50,6 +50,7 @@ class ViewUtils {
                 handler:{ (action:UIAlertAction!) -> Void in
                     callback?()
                 }))
+            var app = UIApplication.sharedApplication()
             viewController.presentViewController(alert, animated: true, completion: nil)
         } else {
             let alertDelegate = AlertViewDelegate()

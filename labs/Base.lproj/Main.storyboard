@@ -44,7 +44,7 @@
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
-                                            <segue destination="ATs-9y-TgU" kind="show" id="sC1-Fb-42c"/>
+                                            <action selector="onPlaylistBtnClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Cxp-oo-21f"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QjG-gy-hw0">

@@ -9,12 +9,23 @@
 import UIKit
 
 class BaseViewController: GAITrackedViewController {
+    
+    var isVisible:Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.isVisible = true
+        
 
         // Do any additional setup after loading the view.
     }
+    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.isVisible = false
+    }
+    
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

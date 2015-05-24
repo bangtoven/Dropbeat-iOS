@@ -10,7 +10,7 @@ import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 
-class SigninViewController: UIViewController {
+class SigninViewController: BaseViewController {
 
     @IBOutlet weak var signinBtn: UIButton!
     override func viewDidLoad() {

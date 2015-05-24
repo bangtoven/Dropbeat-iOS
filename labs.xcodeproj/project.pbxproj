@@ -82,6 +82,15 @@
 		5890D6801B081EE400AAEAE5 /* glyphicons_show_thumbnails.png in Resources */ = {isa = PBXBuildFile; fileRef = 5890D67D1B081EE400AAEAE5 /* glyphicons_show_thumbnails.png */; };
 		5890D6841B08460600AAEAE5 /* BackgroundAudio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5890D6821B08460600AAEAE5 /* BackgroundAudio.mp3 */; };
 		5890D6851B08460600AAEAE5 /* ButtonAudio.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5890D6831B08460600AAEAE5 /* ButtonAudio.wav */; };
+		58BB0ADC1B12211E00B07279 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0ADB1B12211E00B07279 /* SwiftyJSON.swift */; };
+		58BB0AE61B12222C00B07279 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0ADE1B12222B00B07279 /* Alamofire.swift */; };
+		58BB0AE71B12222C00B07279 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0ADF1B12222B00B07279 /* Download.swift */; };
+		58BB0AE81B12222C00B07279 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0AE01B12222B00B07279 /* Manager.swift */; };
+		58BB0AE91B12222C00B07279 /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0AE11B12222B00B07279 /* ParameterEncoding.swift */; };
+		58BB0AEA1B12222C00B07279 /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0AE21B12222B00B07279 /* Request.swift */; };
+		58BB0AEB1B12222C00B07279 /* ResponseSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0AE31B12222B00B07279 /* ResponseSerialization.swift */; };
+		58BB0AEC1B12222C00B07279 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0AE41B12222B00B07279 /* Upload.swift */; };
+		58BB0AED1B12222C00B07279 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0AE51B12222C00B07279 /* Validation.swift */; };
 		58CDE2EC1B119BFD009C8AA2 /* logo_512x512.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CDE2EB1B119BFD009C8AA2 /* logo_512x512.png */; };
 		58CF0C341B10E12900AD4BF0 /* settings-100-hi.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CF0C311B10E12900AD4BF0 /* settings-100-hi.png */; };
 		58CF0C351B10E12900AD4BF0 /* search-100-hi.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CF0C321B10E12900AD4BF0 /* search-100-hi.png */; };
@@ -196,6 +205,15 @@
 		5890D67D1B081EE400AAEAE5 /* glyphicons_show_thumbnails.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glyphicons_show_thumbnails.png; sourceTree = "<group>"; };
 		5890D6821B08460600AAEAE5 /* BackgroundAudio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = BackgroundAudio.mp3; sourceTree = "<group>"; };
 		5890D6831B08460600AAEAE5 /* ButtonAudio.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ButtonAudio.wav; sourceTree = "<group>"; };
+		58BB0ADB1B12211E00B07279 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
+		58BB0ADE1B12222B00B07279 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
+		58BB0ADF1B12222B00B07279 /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
+		58BB0AE01B12222B00B07279 /* Manager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
+		58BB0AE11B12222B00B07279 /* ParameterEncoding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParameterEncoding.swift; sourceTree = "<group>"; };
+		58BB0AE21B12222B00B07279 /* Request.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
+		58BB0AE31B12222B00B07279 /* ResponseSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseSerialization.swift; sourceTree = "<group>"; };
+		58BB0AE41B12222B00B07279 /* Upload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
+		58BB0AE51B12222C00B07279 /* Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
 		58CDE2EB1B119BFD009C8AA2 /* logo_512x512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_512x512.png; sourceTree = "<group>"; };
 		58CF0C311B10E12900AD4BF0 /* settings-100-hi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-100-hi.png"; sourceTree = "<group>"; };
 		58CF0C321B10E12900AD4BF0 /* search-100-hi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search-100-hi.png"; sourceTree = "<group>"; };
@@ -328,6 +346,21 @@
 			name = sample_music;
 			sourceTree = "<group>";
 		};
+		58BB0ADD1B12221B00B07279 /* Alamofire */ = {
+			isa = PBXGroup;
+			children = (
+				58BB0ADE1B12222B00B07279 /* Alamofire.swift */,
+				58BB0ADF1B12222B00B07279 /* Download.swift */,
+				58BB0AE01B12222B00B07279 /* Manager.swift */,
+				58BB0AE11B12222B00B07279 /* ParameterEncoding.swift */,
+				58BB0AE21B12222B00B07279 /* Request.swift */,
+				58BB0AE31B12222B00B07279 /* ResponseSerialization.swift */,
+				58BB0AE41B12222B00B07279 /* Upload.swift */,
+				58BB0AE51B12222C00B07279 /* Validation.swift */,
+			);
+			name = Alamofire;
+			sourceTree = "<group>";
+		};
 		781AE8564719EDEB64E2ABD6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -373,6 +406,8 @@
 		FCD1DA841B04CCB200F9EA70 /* labs */ = {
 			isa = PBXGroup;
 			children = (
+				58BB0ADD1B12221B00B07279 /* Alamofire */,
+				58BB0ADB1B12211E00B07279 /* SwiftyJSON.swift */,
 				FCD1DA871B04CCB200F9EA70 /* AppDelegate.swift */,
 				FCD1DA8B1B04CCB200F9EA70 /* Main.storyboard */,
 				FCD1DA8E1B04CCB200F9EA70 /* Images.xcassets */,
@@ -654,11 +689,14 @@
 				5890D6121B052B8000AAEAE5 /* LeftSideViewController.swift in Sources */,
 				586D166A1B0B65AF00C5147F /* MMSparkDrawerVisualStateManager.swift in Sources */,
 				581D4CA01B0A0CCF0036BEBF /* PlaylistTableViewCell.swift in Sources */,
+				58BB0AEA1B12222C00B07279 /* Request.swift in Sources */,
 				58EAB3DD1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift in Sources */,
 				586D166E1B0B972400C5147F /* StartupViewController.swift in Sources */,
 				5890D61A1B05484A00AAEAE5 /* CenterViewController.swift in Sources */,
 				58EAB3DF1B0D11110075304E /* Utils.swift in Sources */,
+				58BB0AEB1B12222C00B07279 /* ResponseSerialization.swift in Sources */,
 				582709F71B0A8605003C44DA /* KeychainItemWrapper.swift in Sources */,
+				58BB0AE71B12222C00B07279 /* Download.swift in Sources */,
 				58D3EBDE1B0BBC00000C6374 /* AddableTrackTableViewCell.swift in Sources */,
 				58CF0C3A1B1109D100AD4BF0 /* SparkSlider.swift in Sources */,
 				FC0D9D551B09A70300E048CC /* PlayerContext.swift in Sources */,
@@ -668,10 +706,16 @@
 				FCCAFE601B08BF920027F9D4 /* Models.swift in Sources */,
 				580621331B08CBAA009012D5 /* FeedViewController.swift in Sources */,
 				587CDD221B0E4EC100D23CCC /* CopyrightViewController.swift in Sources */,
+				58BB0AEC1B12222C00B07279 /* Upload.swift in Sources */,
+				58BB0AED1B12222C00B07279 /* Validation.swift in Sources */,
 				FC0D9D571B09F4F500E048CC /* Stream.swift in Sources */,
+				58BB0ADC1B12211E00B07279 /* SwiftyJSON.swift in Sources */,
+				58BB0AE61B12222C00B07279 /* Alamofire.swift in Sources */,
 				582E7D961B109B3100AB76A2 /* AutocomTableViewCell.swift in Sources */,
 				582AFA1E1B09200B001ADEED /* SigninViewController.swift in Sources */,
 				581D4C9E1B09FA120036BEBF /* PlaylistViewController.swift in Sources */,
+				58BB0AE81B12222C00B07279 /* Manager.swift in Sources */,
+				58BB0AE91B12222C00B07279 /* ParameterEncoding.swift in Sources */,
 				58D3EBDC1B0BAAD4000C6374 /* BaseContentViewController.swift in Sources */,
 				5853A7EA1B0F44560068C6DF /* ScrollPager.swift in Sources */,
 				FCD1DA881B04CCB200F9EA70 /* AppDelegate.swift in Sources */,

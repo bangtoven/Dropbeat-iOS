@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Alamofire
 import MMDrawerController
 import MBProgressHUD
 import SDWebImage

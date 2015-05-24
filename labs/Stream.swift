@@ -6,7 +6,6 @@
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
-import SwiftyJSON
 import Foundation
 
 

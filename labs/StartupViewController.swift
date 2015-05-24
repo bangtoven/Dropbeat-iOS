@@ -8,7 +8,6 @@
 
 import UIKit
 import MMDrawerController
-import SwiftyJSON
 import MBProgressHUD
 import Raygun4iOS
 
@@ -21,7 +20,10 @@ class StartupViewController: UIViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        initialize()
+        self.progressHud = ViewUtils.showProgress(self, message: "Initializing..")
+        checkVersion() {
+            self.initialize()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -45,9 +47,64 @@ class StartupViewController: UIViewController {
         }
     }
     
+    func checkVersion(callback: ()->Void) {
+        Requests.getClientVersion {
+                (reuqest: NSURLRequest, response: NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if (error != nil || result == nil) {
+                self.progressHud?.hide(true)
+                var message:String?
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    message = "Internet is not connected. Please try again."
+                } else {
+                    message = "Failed to fetch version info becuase of undefined error."
+                    if (error != nil) {
+                        message! += " (\(error!.domain):\(error!.code))"
+                    }
+                }
+                ViewUtils.showNoticeAlert(self,
+                    title: "Failed to fetch version info",
+                    message: message!,
+                    btnText: "Retry",
+                    callback: { () -> Void in
+                        self.checkVersion(callback)
+                    })
+                return
+            }
+            
+            let res = result as! NSDictionary
+            var iosVersion:String? = res.objectForKey("ios_version") as! String?
+            if (iosVersion == nil) {
+                ViewUtils.showNoticeAlert(self,
+                    title: "Failed to fetch version info",
+                    message: "Inproper data format",
+                    btnText: "Retry",
+                    callback: { () -> Void in
+                        self.checkVersion(callback)
+                    })
+                return
+            }
+            let verObject: AnyObject? = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"]
+            let currVersion = verObject as? String
+            
+            let cmpResult = iosVersion!.compare(currVersion!, options:NSStringCompareOptions.NumericSearch)
+            if (cmpResult == NSComparisonResult.OrderedDescending) {
+                ViewUtils.showNoticeAlert(self,
+                    title: "Get new version",
+                    
+                    message: "We have released a new version of DROPBEAT. Please download on AppStore",
+                    btnText: "Download",
+                    callback: { () -> Void in
+                        let url = NSURL(string: "http://itunes.apple.com/app/[our app id]")
+                        (UIApplication).sharedApplication().openURL(url!)
+                    })
+                return
+            }
+            callback()
+        }
+    }
+    
     func initialize() {
-        self.progressHud = ViewUtils.showProgress(self, message: "Initializing..")
-        
         Account.getAccountWithCompletionHandler({(account:Account?, error:NSError?) -> Void in
             if (error != nil) {
                 self.progressHud?.hide(true)

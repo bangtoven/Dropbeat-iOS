@@ -77,6 +77,7 @@ class CenterViewController: UIViewController {
         
         
         // Observe internal player.
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerContentPreloadDidFinishNotification:", name: "MPMoviePlayerContentPreloadDidFinishNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackStateDidChange:", name: "MPMoviePlayerPlaybackStateDidChangeNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackDidFinish:", name: "MPMoviePlayerPlaybackDidFinishNotification", object: nil)
         
@@ -278,21 +279,46 @@ class CenterViewController: UIViewController {
         playlistPlayerUpdate()
     }
     
-    func MPMoviePlayerPlaybackDidFinish (noti: NSNotification) {
-        
-        var userInfo = noti.userInfo as! [String:AnyObject]
-        var resultValue:NSNumber? = userInfo[MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] as? NSNumber
-        if (resultValue != nil) {
-            var reason = Int(resultValue!)
-            if (reason == MPMovieFinishReason.PlaybackError.rawValue) {
-                // Finished with error
-                var err:NSError? = userInfo["error"] as? NSError
-                println("playback failed with error description: \(err!.description)")
+    func MPMoviePlayerContentPreloadDidFinishNotification (noti:NSNotification) {
+        var userInfo = noti.userInfo as? [String:AnyObject]
+        if (userInfo != nil) {
+            var reason:NSError? = userInfo!["error"] as? NSError
+            if (reason != nil) {
+                println("playback failed with error description: \(reason!.description)")
                 
                 // Release background task
                 if (self.backgroundTaskId != nil && isBackgroundTaskSuppored) {
                     UIApplication.sharedApplication().endBackgroundTask(self.backgroundTaskId!)
                     self.backgroundTaskId = nil
+                }
+                var success :Bool = handleNext()
+                if (!success) {
+                    handleStop()
+                }
+            }
+        }
+    }
+    
+    
+    func MPMoviePlayerPlaybackDidFinish (noti: NSNotification) {
+        
+        var userInfo = noti.userInfo as? [String:AnyObject]
+        if (userInfo != nil) {
+            var resultValue:NSNumber? = userInfo![MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] as? NSNumber
+            if (resultValue != nil) {
+                var reason = Int(resultValue!)
+                if (reason == MPMovieFinishReason.PlaybackError.rawValue) {
+                    // Finished with error
+                    var err:NSError? = userInfo!["error"] as? NSError
+                    if (err != nil) {
+                        println("playback failed with error description: \(err!.description)")
+                    }
+                    
+                    // Release background task
+                    if (self.backgroundTaskId != nil && isBackgroundTaskSuppored) {
+                        UIApplication.sharedApplication().endBackgroundTask(self.backgroundTaskId!)
+                        self.backgroundTaskId = nil
+                    }
                 }
             }
         }
@@ -526,7 +552,7 @@ class CenterViewController: UIViewController {
                 println("play it!")
                 self.audioPlayer = MPMoviePlayerController()
                 self.audioPlayer.movieSourceType = MPMovieSourceType.Streaming
-                println(streamSources[0].url)
+//                println(streamSources[0].url)
                 self.audioPlayer.contentURL = url
                 self.audioPlayer.controlStyle = MPMovieControlStyle.Embedded
                 self.audioPlayer.view.hidden = true

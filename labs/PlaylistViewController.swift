@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftyJSON
 
 class PlaylistViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PlaylistSelectTableViewDelegate, PlaylistTableViewDelegate{
 

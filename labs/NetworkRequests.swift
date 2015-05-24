@@ -2,9 +2,7 @@
 //  NetworkRequests.swift
 //  labs
 
-
-import Alamofire
-
+import Foundation
 
 class Requests {
     static func sendGet(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
@@ -90,15 +88,15 @@ class Requests {
     }
     
     static func logSearch(keyword: String) {
-        Alamofire.request(Method.GET, ApiPath.logSearch, parameters: ["q": keyword], encoding: .URL).validate()
+        request(Method.GET, ApiPath.logSearch, parameters: ["q": keyword], encoding: .URL).validate()
     }
     
     static func logTrackAdd(title: String) {
-        Alamofire.request(Method.GET, ApiPath.logTrackAdd, parameters: ["t": title], encoding: .URL).validate()
+        request(Method.GET, ApiPath.logTrackAdd, parameters: ["t": title], encoding: .URL).validate()
     }
     
     static func logPlay(title: String) {
-        Alamofire.request(Method.GET, ApiPath.logPlay, parameters: ["t": title], encoding: .URL).validate()
+        request(Method.GET, ApiPath.logPlay, parameters: ["t": title], encoding: .URL).validate()
     }
     
     static func getClientVersion(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
@@ -141,7 +139,7 @@ class WebAdapter {
         } else {
             enc = .JSON
         }
-        Alamofire.request(self.method!, self.url!, parameters: self.params, encoding: enc!).validate().responseJSON(completionHandler: respCb)
+        request(self.method!, self.url!, parameters: self.params, encoding: enc!).validate().responseJSON(completionHandler: respCb)
     }
 }
 
@@ -151,7 +149,7 @@ class AutocompleteRequester {
     let koreanRegexPattern = ".*[ㄱ-ㅎㅏ-ㅣ가-힣]+."
     
     var defaultParams:[String:String]
-    var onTheFlyRequests:Dictionary<String, Request> = [String:Request]()
+    var onTheFlyRequests = [String:Request]()
     
     var handler:(keywords:Array<String>?, error:NSError?) -> Void
     
@@ -189,7 +187,7 @@ class AutocompleteRequester {
         params["q"] = keyword
         params["gs_id"] = id!
         
-        var request = Alamofire.request(Method.GET, self.youtubeApiPath, parameters: params)
+        var req = request(Method.GET, self.youtubeApiPath, parameters: params)
         .responseString(encoding: NSUTF8StringEncoding,
             completionHandler: {
                     (request:NSURLRequest, response:NSHTTPURLResponse?, result:String?, error:NSError?) -> Void in
@@ -237,7 +235,7 @@ class AutocompleteRequester {
                 }
                 self.handler(keywords: nil, error: NSError(domain: "autocom", code: 0, userInfo: nil))
         })
-        onTheFlyRequests[id!] = request
+        onTheFlyRequests[id!] = req
     }
     
     func cancelAll() {

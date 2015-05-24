@@ -12,6 +12,8 @@
 	<dict>
 		<key>564053DFAFC6546FAB97563771DAFC60BF1220BB</key>
 		<string>https://bitbucket.org/syncport/labs.git</string>
+		<key>C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3</key>
+		<string>github.com:SwiftyJSON/SwiftyJSON.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>labs.xcworkspace</string>
@@ -19,6 +21,8 @@
 	<dict>
 		<key>564053DFAFC6546FAB97563771DAFC60BF1220BB</key>
 		<string>..</string>
+		<key>C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3</key>
+		<string>../labs/SwiftyJSON</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>https://bitbucket.org/syncport/labs.git</string>
@@ -35,6 +39,14 @@
 			<string>564053DFAFC6546FAB97563771DAFC60BF1220BB</string>
 			<key>IDESourceControlWCCName</key>
 			<string>labs</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>C861FC00CEE0F6A6BE81FCFF6785FAA78C58EBB3</string>
+			<key>IDESourceControlWCCName</key>
+			<string>SwiftyJSON</string>
 		</dict>
 	</array>
 </dict>

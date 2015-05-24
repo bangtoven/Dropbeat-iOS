@@ -6,8 +6,7 @@
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
-import Foundation
-import SwiftyJSON
+import UIKit
 
 class Parser {
     // Called with `fetchAllPlaylists`.

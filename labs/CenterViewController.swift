@@ -28,6 +28,10 @@ class CenterViewController: UIViewController {
     var remoteProgressTimer: NSTimer?
     var isProgressUpdatable = true
     
+    var hookingBackground: Bool = false
+    // Used only for video playback recovery.
+    var lastPlaybackTime: Double = 0.0
+    
     private var activeViewController: UIViewController? {
         didSet {
             removeInactiveViewController(oldValue)
@@ -71,9 +75,24 @@ class CenterViewController: UIViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackStateDidChange:", name: "MPMoviePlayerPlaybackStateDidChangeNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackDidFinish:", name: "MPMoviePlayerPlaybackDidFinishNotification", object: nil)
         
+        // For video background playback
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "backgroundHook", name: UIApplicationDidEnterBackgroundNotification, object: nil)
+
+        
         progressBar.continuous = false
         updatePlayerViews()
         
+    }
+    
+    func backgroundHook () {
+        if (PlayerContext.currentTrack != nil && PlayerContext.currentStreamCandidate != nil) {
+            // Check whether it is video and stopped when it entered into background.
+            if (PlayerContext.currentTrack!.type == "youtube" && PlayerContext.currentStreamCandidate?.type == "mp4" && PlayerContext.playState == PlayState.PAUSED) {
+                hookingBackground = true
+                lastPlaybackTime = audioPlayer.currentPlaybackTime
+                handlePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+            }
+        }
     }
     
     func updatePlayerViews() {
@@ -153,11 +172,17 @@ class CenterViewController: UIViewController {
                 return
             }
             
+            if (hookingBackground && lastPlaybackTime != audioPlayer.currentPlaybackTime) {
+                // Video starts playing again!
+                hookingBackground = false
+                lastPlaybackTime = 0.0
+                println("playing again")
+            }
+            
             // Youtube duration hack.
             if (currentTrack?.type == "youtube") {
                 if (PlayerContext.correctDuration == nil) {
-                    // Prevent race condition between timer and UIThread.
-                    return
+                    PlayerContext.correctDuration = audioPlayer.duration
                 }
                 
                 if (audioPlayer.duration != PlayerContext.correctDuration) {
@@ -244,6 +269,12 @@ class CenterViewController: UIViewController {
             if remoteProgressTimer != nil {
                 remoteProgressTimer?.invalidate()
                 remoteProgressTimer = nil
+            }
+            
+            // Against background playback stopping.
+            // We are checking extension here to minimize a number of excepional cases.
+            if (hookingBackground && PlayerContext.currentStreamCandidate?.type == "mp4") {
+                handlePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
             }
         } else if (audioPlayer.playbackState == MPMoviePlaybackState.Interrupted) {
             
@@ -461,7 +492,8 @@ class CenterViewController: UIViewController {
                         // To indicate that we should devide youtube duration into 2.
                         PlayerContext.correctDuration = -1.0
                     }
-                } else {
+                } else if (PlayerContext.currentTrack?.type == "youtube") {
+                    // Received video or other audio extension.
                     PlayerContext.correctDuration = nil
                 }
                 

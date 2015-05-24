@@ -60,6 +60,9 @@ class StartupViewController: GAITrackedViewController {
             var drawerController:MMDrawerController = segue.destinationViewController as! MMDrawerController
             drawerController.openDrawerGestureModeMask = MMOpenDrawerGestureMode.PanningCenterView
             drawerController.closeDrawerGestureModeMask = MMCloseDrawerGestureMode.PanningCenterView
+            drawerController.showsStatusBarBackgroundView = true
+            drawerController.statusBarViewBackgroundColor = UIColor(netHex: 0x505050)
+            drawerController.shouldStretchDrawer = false
             drawerController.setDrawerVisualStateBlock({ (drawerController:MMDrawerController!, drawerSide:MMDrawerSide, percentVisible:CGFloat) -> Void in
                 var block:MMDrawerControllerDrawerVisualStateBlock
                 block = MMSparkDrawerVisualStateManager.sharedMaanger.drawerVisualStateBlockForDrawerSide(drawerSide)

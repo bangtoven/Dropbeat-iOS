@@ -25,16 +25,16 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1567477583501709</string>
+				<string>fb754181154701901</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>
-	<string>1567477583501709</string>
+	<string>754181154701901</string>
 	<key>FacebookDisplayName</key>
-	<string>dropbeat - spark.coroutine.io</string>
+	<string>DROPBEAT</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UIBackgroundModes</key>

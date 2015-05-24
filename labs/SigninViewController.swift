@@ -37,7 +37,7 @@ class SigninViewController: UIViewController {
         fbManager.logInWithReadPermissions(["email"], handler: { (result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
             if (error != nil) {
                 // Process error
-                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: error!.description)
+                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Failed to request user info permission")
                 return
             }
             if (result.isCancelled) {
@@ -57,7 +57,7 @@ class SigninViewController: UIViewController {
         let request:FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
         request.startWithCompletionHandler({ (connection:FBSDKGraphRequestConnection!, result:AnyObject!, error:NSError!) -> Void in
             if (error != nil) {
-                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: error!.description)
+                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Failed to fetch user profile")
                 fbManager.logOut()
                 return
             }
@@ -79,7 +79,18 @@ class SigninViewController: UIViewController {
             Requests.userSignin(userParam, respCb: {
                     (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                 if (error != nil) {
-                    ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: error!.description)
+                    var message:String?
+                    if (error != nil && error!.domain == NSURLErrorDomain &&
+                            error!.code == NSURLErrorNotConnectedToInternet) {
+                        message = "Internet is not connected. Please try again."
+                    } else {
+                        message = "Failed to signin caused by undefined error."
+                        if (error != nil) {
+                            message! += " (\(error!.domain):\(error!.code))"
+                        }
+                    }
+                    ViewUtils.showNoticeAlert(self, title: "Failed to sign in",
+                        message: message!)
                     return
                 }
                 let res = result as! NSDictionary
@@ -113,7 +124,7 @@ class SigninViewController: UIViewController {
         keychainItemWrapper["auth_token"] = token
         Account.getAccountWithCompletionHandler({ (account:Account?, error:NSError?) -> Void in
             if (error != nil) {
-                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: error!.description)
+                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "failed to get user info")
                 return
             }
             if (account == nil) {

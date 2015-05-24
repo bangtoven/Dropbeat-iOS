@@ -28,7 +28,7 @@ class MenuItem {
     }
 }
 
-class LeftSideViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
+class LeftSideViewController: BaseViewController, UITableViewDataSource, UITableViewDelegate{
     var currentMenu:MenuItem?
     var menuItems:Array<MenuItem>?
     
@@ -72,6 +72,11 @@ class LeftSideViewController: UIViewController, UITableViewDataSource, UITableVi
             accountView.hidden = true
             signinBtn.hidden = false
         }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.screenName = "leftSideScreen"
     }
     
     override func didReceiveMemoryWarning() {

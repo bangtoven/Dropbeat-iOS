@@ -91,6 +91,12 @@
 		58BB0AEB1B12222C00B07279 /* ResponseSerialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0AE31B12222B00B07279 /* ResponseSerialization.swift */; };
 		58BB0AEC1B12222C00B07279 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0AE41B12222B00B07279 /* Upload.swift */; };
 		58BB0AED1B12222C00B07279 /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0AE51B12222C00B07279 /* Validation.swift */; };
+		58BB0AF21B122A6300B07279 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58BB0AF11B122A6300B07279 /* CoreData.framework */; };
+		58BB0AF41B122A6D00B07279 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58BB0AF31B122A6D00B07279 /* SystemConfiguration.framework */; };
+		58BB0AF61B122A7900B07279 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 58BB0AF51B122A7900B07279 /* libz.dylib */; };
+		58BB0AF81B122A8600B07279 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 58BB0AF71B122A8600B07279 /* libsqlite3.dylib */; };
+		58BB0AFA1B122AB400B07279 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58BB0AF91B122AB400B07279 /* libGoogleAnalyticsServices.a */; };
+		58BB0B161B12308000B07279 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0B151B12308000B07279 /* BaseViewController.swift */; };
 		58CDE2EC1B119BFD009C8AA2 /* logo_512x512.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CDE2EB1B119BFD009C8AA2 /* logo_512x512.png */; };
 		58CF0C341B10E12900AD4BF0 /* settings-100-hi.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CF0C311B10E12900AD4BF0 /* settings-100-hi.png */; };
 		58CF0C351B10E12900AD4BF0 /* search-100-hi.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CF0C321B10E12900AD4BF0 /* search-100-hi.png */; };
@@ -214,6 +220,23 @@
 		58BB0AE31B12222B00B07279 /* ResponseSerialization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseSerialization.swift; sourceTree = "<group>"; };
 		58BB0AE41B12222B00B07279 /* Upload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
 		58BB0AE51B12222C00B07279 /* Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Validation.swift; sourceTree = "<group>"; };
+		58BB0AF11B122A6300B07279 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		58BB0AF31B122A6D00B07279 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		58BB0AF51B122A7900B07279 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		58BB0AF71B122A8600B07279 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		58BB0AF91B122AB400B07279 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalyticsServices.a; path = ../../../Downloads/GoogleAnalyticsServicesiOS_3.12/libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
+		58BB0B071B122D7400B07279 /* GAI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAI.h; sourceTree = "<group>"; };
+		58BB0B081B122D7400B07279 /* GAIDictionaryBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIDictionaryBuilder.h; sourceTree = "<group>"; };
+		58BB0B091B122D7400B07279 /* GAIEcommerceFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceFields.h; sourceTree = "<group>"; };
+		58BB0B0A1B122D7400B07279 /* GAIEcommerceProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceProduct.h; sourceTree = "<group>"; };
+		58BB0B0B1B122D7400B07279 /* GAIEcommerceProductAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommerceProductAction.h; sourceTree = "<group>"; };
+		58BB0B0C1B122D7400B07279 /* GAIEcommercePromotion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIEcommercePromotion.h; sourceTree = "<group>"; };
+		58BB0B0D1B122D7400B07279 /* GAIFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAIFields.h; sourceTree = "<group>"; };
+		58BB0B0E1B122D7400B07279 /* GAILogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAILogger.h; sourceTree = "<group>"; };
+		58BB0B0F1B122D7400B07279 /* GAITrackedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITrackedViewController.h; sourceTree = "<group>"; };
+		58BB0B101B122D7400B07279 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
+		58BB0B121B122DCB00B07279 /* labs-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "labs-Bridging-Header.h"; sourceTree = "<group>"; };
+		58BB0B151B12308000B07279 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		58CDE2EB1B119BFD009C8AA2 /* logo_512x512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_512x512.png; sourceTree = "<group>"; };
 		58CF0C311B10E12900AD4BF0 /* settings-100-hi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "settings-100-hi.png"; sourceTree = "<group>"; };
 		58CF0C321B10E12900AD4BF0 /* search-100-hi.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "search-100-hi.png"; sourceTree = "<group>"; };
@@ -251,6 +274,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58BB0AFA1B122AB400B07279 /* libGoogleAnalyticsServices.a in Frameworks */,
+				58BB0AF81B122A8600B07279 /* libsqlite3.dylib in Frameworks */,
+				58BB0AF61B122A7900B07279 /* libz.dylib in Frameworks */,
+				58BB0AF41B122A6D00B07279 /* SystemConfiguration.framework in Frameworks */,
+				58BB0AF21B122A6300B07279 /* CoreData.framework in Frameworks */,
 				582E7D861B0F9A2D00AB76A2 /* QuartzCore.framework in Frameworks */,
 				580621371B08DE79009012D5 /* FBSDKLoginKit.framework in Frameworks */,
 				580621351B08DE74009012D5 /* FBSDKCoreKit.framework in Frameworks */,
@@ -361,6 +389,23 @@
 			name = Alamofire;
 			sourceTree = "<group>";
 		};
+		58BB0B111B122D8200B07279 /* GAI */ = {
+			isa = PBXGroup;
+			children = (
+				58BB0B071B122D7400B07279 /* GAI.h */,
+				58BB0B081B122D7400B07279 /* GAIDictionaryBuilder.h */,
+				58BB0B091B122D7400B07279 /* GAIEcommerceFields.h */,
+				58BB0B0A1B122D7400B07279 /* GAIEcommerceProduct.h */,
+				58BB0B0B1B122D7400B07279 /* GAIEcommerceProductAction.h */,
+				58BB0B0C1B122D7400B07279 /* GAIEcommercePromotion.h */,
+				58BB0B0D1B122D7400B07279 /* GAIFields.h */,
+				58BB0B0E1B122D7400B07279 /* GAILogger.h */,
+				58BB0B0F1B122D7400B07279 /* GAITrackedViewController.h */,
+				58BB0B101B122D7400B07279 /* GAITracker.h */,
+			);
+			name = GAI;
+			sourceTree = "<group>";
+		};
 		781AE8564719EDEB64E2ABD6 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -373,6 +418,11 @@
 		F98F65D2D15412F7828AF298 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				58BB0AF91B122AB400B07279 /* libGoogleAnalyticsServices.a */,
+				58BB0AF71B122A8600B07279 /* libsqlite3.dylib */,
+				58BB0AF51B122A7900B07279 /* libz.dylib */,
+				58BB0AF31B122A6D00B07279 /* SystemConfiguration.framework */,
+				58BB0AF11B122A6300B07279 /* CoreData.framework */,
 				582E7D851B0F9A2D00AB76A2 /* QuartzCore.framework */,
 				580621361B08DE79009012D5 /* FBSDKLoginKit.framework */,
 				580621341B08DE74009012D5 /* FBSDKCoreKit.framework */,
@@ -406,6 +456,7 @@
 		FCD1DA841B04CCB200F9EA70 /* labs */ = {
 			isa = PBXGroup;
 			children = (
+				58BB0B111B122D8200B07279 /* GAI */,
 				58BB0ADD1B12221B00B07279 /* Alamofire */,
 				58BB0ADB1B12211E00B07279 /* SwiftyJSON.swift */,
 				FCD1DA871B04CCB200F9EA70 /* AppDelegate.swift */,
@@ -417,6 +468,8 @@
 				58CF0C391B1109D100AD4BF0 /* SparkSlider.swift */,
 				5890D6131B0530AE00AAEAE5 /* SideMenuTableViewCell.swift */,
 				5890D6151B0538CD00AAEAE5 /* SearchViewController.swift */,
+				58BB0B151B12308000B07279 /* BaseViewController.swift */,
+				58BB0B121B122DCB00B07279 /* labs-Bridging-Header.h */,
 				5890D6171B053F4900AAEAE5 /* SettingsViewController.swift */,
 				586D16691B0B65AF00C5147F /* MMSparkDrawerVisualStateManager.swift */,
 				5890D6191B05484A00AAEAE5 /* CenterViewController.swift */,
@@ -696,6 +749,7 @@
 				58EAB3DF1B0D11110075304E /* Utils.swift in Sources */,
 				58BB0AEB1B12222C00B07279 /* ResponseSerialization.swift in Sources */,
 				582709F71B0A8605003C44DA /* KeychainItemWrapper.swift in Sources */,
+				58BB0B161B12308000B07279 /* BaseViewController.swift in Sources */,
 				58BB0AE71B12222C00B07279 /* Download.swift in Sources */,
 				58D3EBDE1B0BBC00000C6374 /* AddableTrackTableViewCell.swift in Sources */,
 				58CF0C3A1B1109D100AD4BF0 /* SparkSlider.swift in Sources */,
@@ -853,8 +907,12 @@
 				INFOPLIST_FILE = labs/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/vulpes/Downloads/GoogleAnalyticsServicesiOS_3.12,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "labs/labs-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -870,8 +928,12 @@
 				INFOPLIST_FILE = labs/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/vulpes/Downloads/GoogleAnalyticsServicesiOS_3.12,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "labs/labs-Bridging-Header.h";
 			};
 			name = Release;
 		};

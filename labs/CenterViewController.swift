@@ -589,8 +589,23 @@ class CenterViewController: UIViewController {
                 self.audioPlayer.controlStyle = MPMovieControlStyle.Embedded
                 self.audioPlayer.view.hidden = true
                 self.playAudioPlayer()
+                
+                // Log to us
                 if (Account.getCachedAccount() != nil) {
                     Requests.logPlay(PlayerContext.currentTrack!.title)
+                }
+                // Log to ga
+                let currentTrack = PlayerContext.currentTrack
+                if (currentTrack != nil) {
+                    let tracker = GAI.sharedInstance().defaultTracker
+                    let event = GAIDictionaryBuilder.createEventWithCategory(
+                            "player-play-from-ios",
+                            action: "play-\(currentTrack!.type)",
+                            label: currentTrack!.title,
+                            value: nil
+                        ).build()
+                    
+                    tracker.send(event as [NSObject: AnyObject]!)
                 }
             } else {
                 if (self.backgroundTaskId != nil && self.isBackgroundTaskSuppored) {

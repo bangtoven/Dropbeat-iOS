@@ -8,7 +8,6 @@
 
 import Foundation
 import QuartzCore
-import MMDrawerController
 
 enum MMDrawerAnimationType: NSInteger {
     case None

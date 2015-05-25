@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import MBProgressHUD
 
 extension UIView {
     func rotate360Degrees(duration: CFTimeInterval = 1.0, completionDelegate: AnyObject? = nil) {

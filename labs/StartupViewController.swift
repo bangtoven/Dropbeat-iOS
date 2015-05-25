@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import MMDrawerController
-import MBProgressHUD
 import Raygun4iOS
 
 class StartupViewController: GAITrackedViewController {

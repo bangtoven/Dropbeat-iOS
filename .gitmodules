@@ -1,0 +1,3 @@
+[submodule "Libraries/MBProgressHUD"]
+	path = Libraries/MBProgressHUD
+	url = git@github.com:jdg/MBProgressHUD.git

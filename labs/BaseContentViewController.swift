@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MMDrawerController
 
 class BaseContentViewController: BaseViewController {
     

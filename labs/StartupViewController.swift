@@ -124,7 +124,7 @@ class StartupViewController: GAITrackedViewController {
                     btnText: "Download",
                     callback: { () -> Void in
                         self.progressHud?.hide(true)
-                        let url = NSURL(string: "http://itunes.apple.com/app/id981451656")
+                        let url = NSURL(string: "http://itunes.apple.com/app/id998263412")
                         (UIApplication).sharedApplication().openURL(url!)
                     })
                 return

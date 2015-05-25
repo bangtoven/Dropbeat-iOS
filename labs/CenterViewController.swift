@@ -59,13 +59,6 @@ class CenterViewController: UIViewController {
         self.signinVC = nil
         self.playlistVC = nil
         
-        // Init audioSession
-        var sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
-        var audioSessionError:NSError?
-        if (!sharedInstance.setCategory(AVAudioSessionCategoryPlayback, error: &audioSessionError)) {
-            NSLog("Audio session error \(audioSessionError) \(audioSessionError?.userInfo)")
-        }
-        sharedInstance.setActive(true, error: nil)
         
         if (CenterViewController.observerAttached == false) {
             // Used for playlistView bottom controller update.
@@ -91,11 +84,14 @@ class CenterViewController: UIViewController {
             
             // Observe internal player.
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerContentPreloadDidFinishNotification:", name: "MPMoviePlayerContentPreloadDidFinishNotification", object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackStateDidChange:", name: "MPMoviePlayerPlaybackStateDidChangeNotification", object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackDidFinish:", name: "MPMoviePlayerPlaybackDidFinishNotification", object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackStateDidChange:",
+                name: MPMoviePlayerPlaybackStateDidChangeNotification, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackDidFinish:",
+                name: MPMoviePlayerPlaybackDidFinishNotification, object: nil)
             
             // For video background playback
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "backgroundHook", name: UIApplicationDidEnterBackgroundNotification, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "backgroundHook",
+                name: UIApplicationDidEnterBackgroundNotification, object: nil)
             
             CenterViewController.observerAttached = true
         }
@@ -111,7 +107,12 @@ class CenterViewController: UIViewController {
             if (PlayerContext.currentTrack!.type == "youtube" && PlayerContext.currentStreamCandidate?.type == "mp4" && PlayerContext.playState == PlayState.PAUSED && userPaused == false) {
                 hookingBackground = true
                 lastPlaybackTime = audioPlayer.currentPlaybackTime
-                handlePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+                
+                startBackgroundTask()
+                var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
+                dispatch_after(popTime, dispatch_get_main_queue()) {
+                    self.handlePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+                }
             }
         }
     }
@@ -262,15 +263,10 @@ class CenterViewController: UIViewController {
     
     func MPMoviePlayerPlaybackStateDidChange (noti: NSNotification) {
         println("changed!")
-        println(audioPlayer.playbackState)
+        println(audioPlayer.playbackState.rawValue)
         if (audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
             
-            // Release background task
-            if (self.backgroundTaskId != nil && self.isBackgroundTaskSuppored) {
-                UIApplication.sharedApplication().endBackgroundTask(self.backgroundTaskId!)
-                self.backgroundTaskId = nil
-            }
-            
+            stopBackgroundTask()
             PlayerContext.playState = PlayState.PLAYING
             updatePlayerViews()
             // Periodic timer for progress update.
@@ -280,12 +276,7 @@ class CenterViewController: UIViewController {
             }
         } else if (audioPlayer.playbackState == MPMoviePlaybackState.Stopped) {
             
-            // Release background task
-            if (self.backgroundTaskId != nil && self.isBackgroundTaskSuppored) {
-                UIApplication.sharedApplication().endBackgroundTask(self.backgroundTaskId!)
-                self.backgroundTaskId = nil
-            }
-            
+            stopBackgroundTask(forceStop: true)
             PlayerContext.playState = PlayState.STOPPED
             updatePlayerViews()
             
@@ -329,12 +320,7 @@ class CenterViewController: UIViewController {
                 println("playback failed with error description: \(reason!.description)")
                 ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play",
                     message: "caused by undefined exception (\(reason!.domain), \(reason!.code))")
-                
-                // Release background task
-                if (self.backgroundTaskId != nil && isBackgroundTaskSuppored) {
-                    UIApplication.sharedApplication().endBackgroundTask(self.backgroundTaskId!)
-                    self.backgroundTaskId = nil
-                }
+                stopBackgroundTask(forceStop: true)
             }
         }
     }
@@ -356,11 +342,7 @@ class CenterViewController: UIViewController {
                             message: "caused by undefined exception (\(err!.domain), \(err!.code))")
                     }
                     
-                    // Release background task
-                    if (self.backgroundTaskId != nil && isBackgroundTaskSuppored) {
-                        UIApplication.sharedApplication().endBackgroundTask(self.backgroundTaskId!)
-                        self.backgroundTaskId = nil
-                    }
+                    stopBackgroundTask(forceStop: true)
                     return
                 }
             }
@@ -531,18 +513,7 @@ class CenterViewController: UIViewController {
         
         initPlayingInfo(track!.title)
         
-        // register background task
-        var app = UIApplication.sharedApplication()
-        if (self.backgroundTaskId != nil && self.isBackgroundTaskSuppored) {
-            app.endBackgroundTask(self.backgroundTaskId!)
-            self.backgroundTaskId = nil
-        }
-        if (self.isBackgroundTaskSuppored) {
-            self.backgroundTaskId = app.beginBackgroundTaskWithExpirationHandler({ () -> Void in
-                self.backgroundTaskId = nil
-            })
-        }
-        
+        startBackgroundTask()
         resolve(track!.id, track!.type, { (req, resp, json, err) in
             if err == nil {
                 println("FIN RESOLVE")
@@ -628,10 +599,7 @@ class CenterViewController: UIViewController {
                     tracker.send(event as [NSObject: AnyObject]!)
                 }
             } else {
-                if (self.backgroundTaskId != nil && self.isBackgroundTaskSuppored) {
-                    app.endBackgroundTask(self.backgroundTaskId!)
-                    self.backgroundTaskId = nil
-                }
+                self.stopBackgroundTask()
                 // XXX: Cannot play.
                 println(err)
                 var message:String?
@@ -713,6 +681,13 @@ class CenterViewController: UIViewController {
     }
     
     func playAudioPlayer() {
+        // Init audioSession
+        var sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
+        var audioSessionError:NSError?
+        if (!sharedInstance.setCategory(AVAudioSessionCategoryPlayback, error: &audioSessionError)) {
+            println("Audio session error \(audioSessionError) \(audioSessionError?.userInfo)")
+        }
+        sharedInstance.setActive(true, error: nil)
         audioPlayer.play()
     }
     
@@ -787,6 +762,32 @@ class CenterViewController: UIViewController {
             vc = self.signinVC!
         }
         return vc
+    }
+    
+    func startBackgroundTask() {
+        // register background task
+        stopBackgroundTask()
+        if (self.backgroundTaskId == nil && self.isBackgroundTaskSuppored) {
+            self.backgroundTaskId = UIApplication.sharedApplication()
+                    .beginBackgroundTaskWithExpirationHandler({ () -> Void in
+                self.backgroundTaskId = nil
+            })
+        }
+    }
+    
+    // We will not stop background task for ios7
+    // ios call this function with forceStop only when music stopped
+    func stopBackgroundTask(forceStop:Bool=false) {
+        let systemVersion = UIDevice.currentDevice().systemVersion
+        let cmpResult = systemVersion.compare("8.0", options:NSStringCompareOptions.NumericSearch)
+        if (forceStop || cmpResult == NSComparisonResult.OrderedDescending ||
+            cmpResult == NSComparisonResult.OrderedSame) {
+            var app = UIApplication.sharedApplication()
+            if (self.backgroundTaskId != nil && self.isBackgroundTaskSuppored) {
+                app.endBackgroundTask(self.backgroundTaskId!)
+                self.backgroundTaskId = nil
+            }
+        }
     }
     
     private func removeInactiveViewController(inactiveViewController:UIViewController?) {

@@ -327,6 +327,8 @@ class CenterViewController: UIViewController {
             var reason:NSError? = userInfo!["error"] as? NSError
             if (reason != nil) {
                 println("playback failed with error description: \(reason!.description)")
+                ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play",
+                    message: "caused by undefined exception (\(reason!.domain), \(reason!.code))")
                 
                 // Release background task
                 if (self.backgroundTaskId != nil && isBackgroundTaskSuppored) {
@@ -354,6 +356,8 @@ class CenterViewController: UIViewController {
                     var err:NSError? = userInfo!["error"] as? NSError
                     if (err != nil) {
                         println("playback failed with error description: \(err!.description)")
+                        ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play",
+                            message: "caused by undefined exception (\(err!.domain), \(err!.code))")
                     }
                     
                     // Release background task

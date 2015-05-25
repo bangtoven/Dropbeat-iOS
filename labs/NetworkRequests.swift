@@ -77,7 +77,12 @@ class Requests {
     }
     
     static func streamResolve(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        sendGet(ResolvePath.resolveStream, params: ["uid": uid, "t": "ios"], auth: false, respCb: respCb)
+        let systemVersion = UIDevice.currentDevice().systemVersion
+        var firstDigit = "-1"
+        if (count(systemVersion) > 0) {
+            firstDigit = systemVersion.substringToIndex(advance(systemVersion.startIndex, 1))
+        }
+        sendGet(ResolvePath.resolveStream, params: ["uid": uid, "t": "ios", "v": firstDigit], auth: false, respCb: respCb)
     }
     
     static func fetchFeed(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {

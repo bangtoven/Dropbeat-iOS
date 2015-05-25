@@ -53,13 +53,15 @@ class ViewUtils {
             var app = UIApplication.sharedApplication()
             viewController.presentViewController(alert, animated: true, completion: nil)
         } else {
-            let alertDelegate = AlertViewDelegate()
+            let alert = UIAlertView()
+            let alertDelegate = AlertViewDelegate.sharedInstance
             alertDelegate.onClickedButtonAtIndex = { (alertView:UIAlertView, buttonIndex:Int) -> Void in
                 if (buttonIndex == 0) {
                     callback?()
                 }
+                alert.delegate = nil
+                alertDelegate.onClickedButtonAtIndex = nil
             }
-            let  alert = UIAlertView()
             alert.title = title
             alert.message = message
             alert.addButtonWithTitle(btnText)
@@ -85,15 +87,17 @@ class ViewUtils {
                     }))
             viewController.presentViewController(alert, animated: true, completion: nil)
         } else {
-            let alertDelegate = AlertViewDelegate()
+            let alert = UIAlertView()
+            let alertDelegate = AlertViewDelegate.sharedInstance
             alertDelegate.onClickedButtonAtIndex = { (alertView:UIAlertView, buttonIndex:Int) -> Void in
                 if (buttonIndex == 0) {
                     positiveBtnCallback?()
                 } else {
                     negativeBtnCallback?()
                 }
+                alert.delegate = nil
+                alertDelegate.onClickedButtonAtIndex = nil
             }
-            let alert = UIAlertView()
             alert.title = title
             alert.message = message
             alert.addButtonWithTitle(positiveBtnText)
@@ -127,7 +131,8 @@ class ViewUtils {
             
         } else {
             
-            let alertDelegate = AlertViewDelegate()
+            let alert = UIAlertView()
+            let alertDelegate = AlertViewDelegate.sharedInstance
             alertDelegate.onClickedButtonAtIndex = { (alertView:UIAlertView, buttonIndex:Int) -> Void in
                 if (buttonIndex == 0) {
                     let textField = alertView.textFieldAtIndex(0)!
@@ -135,8 +140,9 @@ class ViewUtils {
                 } else {
                     negativeBtnCallback?()
                 }
+                alert.delegate = nil
+                alertDelegate.onClickedButtonAtIndex = nil
             }
-            let alert = UIAlertView()
             alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
             let alertTextField = alert.textFieldAtIndex(0)
             alertTextField?.placeholder = placeholder
@@ -176,10 +182,16 @@ class ViewUtils {
 }
 
 class AlertViewDelegate: NSObject, UIAlertViewDelegate{
+    private static var sharedInstance = AlertViewDelegate()
+    
     var onClickedButtonAtIndex: ((alertView:UIAlertView, buttonIndex:Int) -> Void)?
     var onDidDismissWithButtonIndex: ((alertView:UIAlertView, buttonIndex:Int) -> Void)?
     var onCancel: ((alertView:UIAlertView) -> Void)?
     var onWillDismissWithButtonIndex: ((alertView:UIAlertView, buttonIndex:Int) -> Void)?
+    
+    private override init() {
+        super.init()
+    }
     
     func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
         onClickedButtonAtIndex?(alertView: alertView, buttonIndex: buttonIndex)

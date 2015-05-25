@@ -10,6 +10,7 @@
 		580621331B08CBAA009012D5 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580621321B08CBAA009012D5 /* FeedViewController.swift */; };
 		580621351B08DE74009012D5 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 580621341B08DE74009012D5 /* FBSDKCoreKit.framework */; };
 		580621371B08DE79009012D5 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 580621361B08DE79009012D5 /* FBSDKLoginKit.framework */; };
+		5813390D1B12F9F300509879 /* default_artwork.png in Resources */ = {isa = PBXBuildFile; fileRef = 5813390C1B12F9F300509879 /* default_artwork.png */; };
 		581D4C9E1B09FA120036BEBF /* PlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581D4C9D1B09FA120036BEBF /* PlaylistViewController.swift */; };
 		581D4CA01B0A0CCF0036BEBF /* PlaylistTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581D4C9F1B0A0CCF0036BEBF /* PlaylistTableViewCell.swift */; };
 		582709F71B0A8605003C44DA /* KeychainItemWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582709F61B0A8605003C44DA /* KeychainItemWrapper.swift */; };
@@ -139,6 +140,7 @@
 		580621321B08CBAA009012D5 /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		580621341B08DE74009012D5 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "Pods/../build/Debug-iphoneos/Pods/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
 		580621361B08DE79009012D5 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "Pods/../build/Debug-iphoneos/Pods/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
+		5813390C1B12F9F300509879 /* default_artwork.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_artwork.png; sourceTree = "<group>"; };
 		581D4C9D1B09FA120036BEBF /* PlaylistViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistViewController.swift; sourceTree = "<group>"; };
 		581D4C9F1B0A0CCF0036BEBF /* PlaylistTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistTableViewCell.swift; sourceTree = "<group>"; };
 		582709F61B0A8605003C44DA /* KeychainItemWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainItemWrapper.swift; sourceTree = "<group>"; };
@@ -302,6 +304,7 @@
 		5890D62C1B081DB500AAEAE5 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				5813390C1B12F9F300509879 /* default_artwork.png */,
 				58CDE2EB1B119BFD009C8AA2 /* logo_512x512.png */,
 				58CF0C431B110E2200AD4BF0 /* slider_thumb.png */,
 				58CF0C3C1B110CF500AD4BF0 /* slider_min.png */,
@@ -636,6 +639,7 @@
 				5890D6751B081DD200AAEAE5 /* ic_option_menu.png in Resources */,
 				58CF0C361B10E12900AD4BF0 /* home-100-hi.png in Resources */,
 				5890D6591B081DD200AAEAE5 /* btn_forward_normal.png in Resources */,
+				5813390D1B12F9F300509879 /* default_artwork.png in Resources */,
 				5890D6631B081DD200AAEAE5 /* btn_shuffle_normal.png in Resources */,
 				FCD1DA921B04CCB200F9EA70 /* LaunchScreen.xib in Resources */,
 				5890D6701B081DD200AAEAE5 /* ic_edit.png in Resources */,

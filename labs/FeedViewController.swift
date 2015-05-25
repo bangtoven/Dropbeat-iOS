@@ -51,14 +51,14 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
         cell.nameView.text = track.title
         if (track.thumbnailUrl != nil) {
             cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "btn_play_disabled.png"), completed: {
+                    placeholderImage: UIImage(named: "default_artwork.png"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                 if (error != nil) {
-                    cell.thumbView.image = UIImage(named: "btn_play_disabled.png")
+                    cell.thumbView.image = UIImage(named: "default_artwork.png")
                 }
             })
         } else {
-            cell.thumbView.image = UIImage(named: "btn_play_disabled.png")
+            cell.thumbView.image = UIImage(named: "default_artwork.png")
         }
         return cell
     }

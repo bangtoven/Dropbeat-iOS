@@ -333,10 +333,6 @@ class CenterViewController: UIViewController {
                     UIApplication.sharedApplication().endBackgroundTask(self.backgroundTaskId!)
                     self.backgroundTaskId = nil
                 }
-                var success :Bool = handleNext()
-                if (!success) {
-                    handleStop()
-                }
             }
         }
     }
@@ -361,6 +357,7 @@ class CenterViewController: UIViewController {
                         UIApplication.sharedApplication().endBackgroundTask(self.backgroundTaskId!)
                         self.backgroundTaskId = nil
                     }
+                    return
                 }
             }
         }

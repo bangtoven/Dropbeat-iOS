@@ -78,7 +78,7 @@ class Requests {
     
     static func streamResolve(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
         let systemVersion = UIDevice.currentDevice().systemVersion
-        var firstDigit = "-1"
+        var firstDigit = ""
         if (count(systemVersion) > 0) {
             firstDigit = systemVersion.substringToIndex(advance(systemVersion.startIndex, 1))
         }

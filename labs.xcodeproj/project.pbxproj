@@ -81,8 +81,6 @@
 		5890D67E1B081EE400AAEAE5 /* glyphicons_playlist.png in Resources */ = {isa = PBXBuildFile; fileRef = 5890D67B1B081EE400AAEAE5 /* glyphicons_playlist.png */; };
 		5890D67F1B081EE400AAEAE5 /* glyphicons_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 5890D67C1B081EE400AAEAE5 /* glyphicons_share.png */; };
 		5890D6801B081EE400AAEAE5 /* glyphicons_show_thumbnails.png in Resources */ = {isa = PBXBuildFile; fileRef = 5890D67D1B081EE400AAEAE5 /* glyphicons_show_thumbnails.png */; };
-		5890D6841B08460600AAEAE5 /* BackgroundAudio.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5890D6821B08460600AAEAE5 /* BackgroundAudio.mp3 */; };
-		5890D6851B08460600AAEAE5 /* ButtonAudio.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5890D6831B08460600AAEAE5 /* ButtonAudio.wav */; };
 		58BB0ADC1B12211E00B07279 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0ADB1B12211E00B07279 /* SwiftyJSON.swift */; };
 		58BB0AE61B12222C00B07279 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0ADE1B12222B00B07279 /* Alamofire.swift */; };
 		58BB0AE71B12222C00B07279 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0ADF1B12222B00B07279 /* Download.swift */; };
@@ -211,8 +209,6 @@
 		5890D67B1B081EE400AAEAE5 /* glyphicons_playlist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glyphicons_playlist.png; sourceTree = "<group>"; };
 		5890D67C1B081EE400AAEAE5 /* glyphicons_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glyphicons_share.png; sourceTree = "<group>"; };
 		5890D67D1B081EE400AAEAE5 /* glyphicons_show_thumbnails.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glyphicons_show_thumbnails.png; sourceTree = "<group>"; };
-		5890D6821B08460600AAEAE5 /* BackgroundAudio.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = BackgroundAudio.mp3; sourceTree = "<group>"; };
-		5890D6831B08460600AAEAE5 /* ButtonAudio.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ButtonAudio.wav; sourceTree = "<group>"; };
 		58BB0ADB1B12211E00B07279 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		58BB0ADE1B12222B00B07279 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
 		58BB0ADF1B12222B00B07279 /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
@@ -369,15 +365,6 @@
 			name = images;
 			sourceTree = "<group>";
 		};
-		5890D6811B0845FB00AAEAE5 /* sample_music */ = {
-			isa = PBXGroup;
-			children = (
-				5890D6821B08460600AAEAE5 /* BackgroundAudio.mp3 */,
-				5890D6831B08460600AAEAE5 /* ButtonAudio.wav */,
-			);
-			name = sample_music;
-			sourceTree = "<group>";
-		};
 		58BB0ADD1B12221B00B07279 /* Alamofire */ = {
 			isa = PBXGroup;
 			children = (
@@ -504,7 +491,6 @@
 		FCD1DA851B04CCB200F9EA70 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				5890D6811B0845FB00AAEAE5 /* sample_music */,
 				5890D62C1B081DB500AAEAE5 /* images */,
 				FCD1DA861B04CCB200F9EA70 /* Info.plist */,
 				587CDD231B0E4FA900D23CCC /* copyright.html */,
@@ -662,7 +648,6 @@
 				5890D6711B081DD200AAEAE5 /* ic_facebook.png in Resources */,
 				5890D6791B081DD200AAEAE5 /* logo.png in Resources */,
 				5890D6731B081DD200AAEAE5 /* ic_music_gray.png in Resources */,
-				5890D6841B08460600AAEAE5 /* BackgroundAudio.mp3 in Resources */,
 				5890D67F1B081EE400AAEAE5 /* glyphicons_share.png in Resources */,
 				5890D65E1B081DD200AAEAE5 /* btn_progress.png in Resources */,
 				582E7D9C1B10A7CD00AB76A2 /* search_bar.png in Resources */,
@@ -676,7 +661,6 @@
 				58CF0C441B110E2200AD4BF0 /* slider_thumb.png in Resources */,
 				5890D6691B081DD200AAEAE5 /* btn_volume_mute.png in Resources */,
 				5890D6661B081DD200AAEAE5 /* btn_volume_max.png in Resources */,
-				5890D6851B08460600AAEAE5 /* ButtonAudio.wav in Resources */,
 				5890D6601B081DD200AAEAE5 /* btn_repeat_normal.png in Resources */,
 				5890D6571B081DD200AAEAE5 /* btn_close.png in Resources */,
 			);

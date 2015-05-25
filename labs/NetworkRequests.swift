@@ -82,7 +82,7 @@ class Requests {
         if (count(systemVersion) > 0) {
             firstDigit = systemVersion.substringToIndex(advance(systemVersion.startIndex, 1))
         }
-        sendGet(ResolvePath.resolveStream, params: ["uid": uid, "t": "ios", "v": firstDigit], auth: false, respCb: respCb)
+        sendGet(ResolvePath.resolveStream, params: ["uid": uid, "t": "ios\(firstDigit)"], auth: false, respCb: respCb)
     }
     
     static func fetchFeed(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {

@@ -108,10 +108,18 @@ class CenterViewController: UIViewController {
                 lastPlaybackTime = audioPlayer.currentPlaybackTime
                 
                 startBackgroundTask()
-                var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
-                dispatch_after(popTime, dispatch_get_main_queue()) {
-                    self.handlePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
-                }
+                triggerBackgroundPlay(1)
+            }
+        }
+    }
+    
+    func triggerBackgroundPlay(retry:Int) {
+        var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
+        dispatch_after(popTime, dispatch_get_main_queue()) {
+            if (PlayerContext.playState == PlayState.PAUSED) {
+                self.handlePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+            } else if (retry > 0) {
+                self.triggerBackgroundPlay(retry - 1)
             }
         }
     }
@@ -231,10 +239,6 @@ class CenterViewController: UIViewController {
             }
             PlayerContext.currentPlaybackTime = audioPlayer.currentPlaybackTime
             
-            // TODO: This method isn't necessarily called periodically.
-            // Update remote control progress
-            updatePlayingInfo(currentTrack!)
-            
             // Update custom progress
             updateProgressView()
             playlistPlayerUpdate()
@@ -266,8 +270,7 @@ class CenterViewController: UIViewController {
         if (audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
             
             stopBackgroundTask()
-            PlayerContext.playState = PlayState.PLAYING
-            updatePlayerViews()
+            updatePlayingInfo(PlayState.PLAYING)
             // Periodic timer for progress update.
             if remoteProgressTimer == nil {
                 remoteProgressTimer = NSTimer.scheduledTimerWithTimeInterval(
@@ -276,21 +279,14 @@ class CenterViewController: UIViewController {
         } else if (audioPlayer.playbackState == MPMoviePlaybackState.Stopped) {
             
             stopBackgroundTask(forceStop: true)
-            PlayerContext.playState = PlayState.STOPPED
-            updatePlayerViews()
+            updatePlayingInfo(PlayState.STOPPED)
             
-            if (PlayerContext.currentTrack != nil) {
-                updatePlayingInfo(PlayerContext.currentTrack!, rate: 0.0)
-            }
             if remoteProgressTimer != nil {
                 remoteProgressTimer?.invalidate()
                 remoteProgressTimer = nil
             }
         } else if (audioPlayer.playbackState == MPMoviePlaybackState.Paused) {
-            PlayerContext.playState = PlayState.PAUSED
-            updatePlayerViews()
-            
-            updatePlayingInfo(PlayerContext.currentTrack!, rate: 0.0)
+            updatePlayingInfo(PlayState.PAUSED)
             if remoteProgressTimer != nil {
                 remoteProgressTimer?.invalidate()
                 remoteProgressTimer = nil
@@ -503,14 +499,10 @@ class CenterViewController: UIViewController {
         }
         
         // Indicate loading status.
-        PlayerContext.playState = PlayState.LOADING
-        updatePlayerViews()
-        playlistPlayerUpdate()
+        updatePlayingInfo(PlayState.LOADING)
         
         // Init correct duration.
         PlayerContext.correctDuration = nil
-        
-        initPlayingInfo(track!.title)
         
         startBackgroundTask()
         resolve(track!.id, track!.type, { (req, resp, json, err) in
@@ -609,10 +601,7 @@ class CenterViewController: UIViewController {
                     message = "Stream source is not available."
                 }
                 ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play", message: message!)
-                PlayerContext.playState = PlayState.STOPPED
-                self.playlistPlayerUpdate()
-                self.updatePlayerViews()
-                self.initPlayingInfo("")
+                self.updatePlayingInfo(PlayState.STOPPED)
             }
         })
     }
@@ -694,13 +683,37 @@ class CenterViewController: UIViewController {
         audioPlayer.pause()
     }
     
-    func updatePlayingInfo(track: Track, rate: Float? = 1.0) {
+    func updatePlayingInfo(playingState: Int) {
+        PlayerContext.playState = playingState
+        var track: Track? = PlayerContext.currentTrack
+        var rate: Float = 1.0
+        if (playingState == PlayState.PAUSED || playingState == PlayState.STOPPED) {
+            rate = 0
+        }
         var playingInfoCenter:AnyClass! = NSClassFromString("MPNowPlayingInfoCenter")
-        if (playingInfoCenter != nil) {
+        if (playingInfoCenter != nil && track != nil) {
             var trackInfo:NSMutableDictionary = NSMutableDictionary()
             var albumArt:MPMediaItemArtwork = MPMediaItemArtwork(image: UIImage(named: "logo_512x512.png"))
-            trackInfo[MPMediaItemPropertyTitle] = track.title
-            // TODO
+            trackInfo[MPMediaItemPropertyTitle] = track!.title
+            
+            var stateText:String?
+            switch(playingState) {
+                case PlayState.LOADING:
+                    stateText = "LOADING.."
+                    break
+                case PlayState.PAUSED:
+                    stateText = "PAUSED"
+                    break
+                case PlayState.STOPPED:
+                    stateText = "STOPPED"
+                    break
+                case PlayState.PLAYING:
+                    stateText = "PLAYING"
+                    break
+                default:
+                    stateText = ""
+            }
+            trackInfo[MPMediaItemPropertyArtist] = stateText
             trackInfo[MPMediaItemPropertyArtwork] = albumArt
             
             trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = audioPlayer.currentPlaybackTime ?? 0
@@ -708,24 +721,8 @@ class CenterViewController: UIViewController {
             trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = rate
             MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo as [NSObject : AnyObject]
         }
-    }
-    
-    func initPlayingInfo(title: String) {
-        var playingInfoCenter:AnyClass! = NSClassFromString("MPNowPlayingInfoCenter")
-        if (playingInfoCenter != nil) {
-            var trackInfo:NSMutableDictionary = NSMutableDictionary()
-            var albumArt:MPMediaItemArtwork = MPMediaItemArtwork(image: UIImage(named: "logo"))
-            trackInfo[MPMediaItemPropertyTitle] = title
-            trackInfo[MPMediaItemPropertyArtist] = "LOADING.."
-            
-            // TODO
-            trackInfo[MPMediaItemPropertyArtwork] = albumArt
-            
-            trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = 0.0
-            trackInfo[MPMediaItemPropertyPlaybackDuration] = 0.0
-            trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1.0
-            MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo as [NSObject : AnyObject]
-        }       
+        updatePlayerViews()
+        playlistPlayerUpdate()
     }
     
     func onMenuSelected(menuType: MenuType) {

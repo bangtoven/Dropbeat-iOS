@@ -42,6 +42,7 @@ class CenterViewController: UIViewController {
     // Used only for video playback recovery.
     var lastPlaybackTime: Double = 0.0
     var userPaused: Bool = false
+    var prevResolveReq:Request? = nil
     
     static var observerAttached: Bool = false
     
@@ -60,6 +61,8 @@ class CenterViewController: UIViewController {
         
         
         if (CenterViewController.observerAttached == false) {
+            CenterViewController.observerAttached = true
+            
             // Used for playlistView bottom controller update.
             NSNotificationCenter.defaultCenter().addObserver(
                 self, selector: "sender", name: NotifyKey.updatePlaylistView, object: nil)
@@ -79,24 +82,25 @@ class CenterViewController: UIViewController {
                 self, selector: "handleNext", name: NotifyKey.playerNext, object: nil)
             NSNotificationCenter.defaultCenter().addObserver(
                 self, selector: "remoteSeek:", name: NotifyKey.playerSeek, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(
+                self, selector: "repeatStateUpdated", name: NotifyKey.updateRepeatState, object: nil)
             
             
             // Observe internal player.
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerContentPreloadDidFinishNotification:", name: "MPMoviePlayerContentPreloadDidFinishNotification", object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerContentPreloadDidFinish:", name: "MPMoviePlayerContentPreloadDidFinishNotification", object: nil)
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackStateDidChange:",
                 name: MPMoviePlayerPlaybackStateDidChangeNotification, object: nil)
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackDidFinish:",
                 name: MPMoviePlayerPlaybackDidFinishNotification, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerTimedMetadataUpdated:",
+                name: MPMoviePlayerTimedMetadataUpdatedNotification, object: nil)
             
             // For video background playback
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "backgroundHook",
                 name: UIApplicationDidEnterBackgroundNotification, object: nil)
-            
-            CenterViewController.observerAttached = true
         }
         
         progressBar.continuous = false
-        updatePlayerViews()
         
     }
     
@@ -153,7 +157,7 @@ class CenterViewController: UIViewController {
     
     override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
         if (flag && PlayerContext.playState == PlayState.LOADING) {
-            loadingView.rotate360Degrees(duration: 1.0, completionDelegate: self)
+            loadingView.rotate360Degrees(duration: 0.7, completionDelegate: self)
         }
     }
     
@@ -245,6 +249,11 @@ class CenterViewController: UIViewController {
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        updatePlayerViews()
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
@@ -294,9 +303,9 @@ class CenterViewController: UIViewController {
             
             // Against background playback stopping.
             // We are checking extension here to minimize a number of excepional cases.
-            if (hookingBackground && PlayerContext.currentStreamCandidate?.type == "mp4") {
-                handlePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
-            }
+//            if (hookingBackground && PlayerContext.currentStreamCandidate?.type == "mp4") {
+//                handlePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+//            }
         } else if (audioPlayer.playbackState == MPMoviePlaybackState.Interrupted) {
             
         } else if (audioPlayer.playbackState == MPMoviePlaybackState.SeekingForward) {
@@ -307,7 +316,7 @@ class CenterViewController: UIViewController {
         playlistPlayerUpdate()
     }
     
-    func MPMoviePlayerContentPreloadDidFinishNotification (noti:NSNotification) {
+    func MPMoviePlayerContentPreloadDidFinish (noti:NSNotification) {
         var userInfo = noti.userInfo as? [String:AnyObject]
         if (userInfo != nil) {
             var reason:NSError? = userInfo!["error"] as? NSError
@@ -348,6 +357,10 @@ class CenterViewController: UIViewController {
         if (!success) {
             handleStop()
         }
+    }
+    
+    func MPMoviePlayerTimedMetadataUpdated(noti: NSNotification) {
+        println("time meta updated")
     }
     
     func showSigninView() {
@@ -460,9 +473,12 @@ class CenterViewController: UIViewController {
         }
         
         if PlayerContext.currentTrack != nil && PlayerContext.currentTrack!.id == track!.id {
+            if PlayerContext.playState == PlayState.LOADING {
+                return
+            }
             if audioPlayer.playbackState == MPMoviePlaybackState.Paused {
                 // Resume
-                println("resume!!")
+                updateFakePlayingInfo(PlayState.PLAYING)
                 playAudioPlayer()
                 return
             } else if audioPlayer.playbackState == MPMoviePlaybackState.Playing {
@@ -472,11 +488,10 @@ class CenterViewController: UIViewController {
             // In case of repeating one track.
         }
         
-        println(track!.title)
         if audioPlayer.playbackState == MPMoviePlaybackState.Playing {
             // Pause previous track.
             // We do not use `stop` here because calling `stop` will trigger MPMoviePlaybackDidFinish.
-            audioPlayer.pause()
+            pauseAudioPlayer()
         }
         
         PlayerContext.currentTrack = track
@@ -498,14 +513,19 @@ class CenterViewController: UIViewController {
             audioPlayer.stop()
         }
         
-        // Indicate loading status.
-        updatePlayingInfo(PlayState.LOADING)
-        
         // Init correct duration.
         PlayerContext.correctDuration = nil
         
+        // Indicate loading status.
+        updatePlayingInfo(PlayState.LOADING)
+        
         startBackgroundTask()
-        resolve(track!.id, track!.type, { (req, resp, json, err) in
+        if (self.prevResolveReq != nil) {
+            self.prevResolveReq!.cancel()
+            self.prevResolveReq = nil
+        }
+        self.prevResolveReq = resolve(track!.id, track!.type, { (req, resp, json, err) in
+            self.prevResolveReq = nil
             if err == nil {
                 println("FIN RESOLVE")
                 if (closureTrack != nil && closureTrack!.id != PlayerContext.currentTrack?.id) {
@@ -570,6 +590,11 @@ class CenterViewController: UIViewController {
                 self.audioPlayer.contentURL = url
                 self.audioPlayer.controlStyle = MPMovieControlStyle.Embedded
                 self.audioPlayer.view.hidden = true
+                if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
+                    self.audioPlayer.repeatMode = MPMovieRepeatMode.One
+                } else {
+                    self.audioPlayer.repeatMode = MPMovieRepeatMode.None
+                }
                 self.playAudioPlayer()
                 // Log to us
                 if (Account.getCachedAccount() != nil) {
@@ -610,6 +635,7 @@ class CenterViewController: UIViewController {
         userPaused = true
         if (audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
             pauseAudioPlayer()
+            updateFakePlayingInfo(PlayState.PAUSED)
         }
     }
     
@@ -651,6 +677,7 @@ class CenterViewController: UIViewController {
         PlayerContext.currentTrack = nil
         PlayerContext.currentTrackIdx = -1
         audioPlayer.stop()
+        updateFakePlayingInfo(PlayState.STOPPED)
     }
     
     func remoteSeek(noti: NSNotification) {
@@ -668,14 +695,15 @@ class CenterViewController: UIViewController {
         audioPlayer.currentPlaybackTime = newPlaybackTime
     }
     
-    func playAudioPlayer() {
-        // Init audioSession
-        var sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
-        var audioSessionError:NSError?
-        if (!sharedInstance.setCategory(AVAudioSessionCategoryPlayback, error: &audioSessionError)) {
-            println("Audio session error \(audioSessionError) \(audioSessionError?.userInfo)")
+    func repeatStateUpdated() {
+        if PlayerContext.repeatState == RepeatState.REPEAT_ONE {
+            audioPlayer.repeatMode = MPMovieRepeatMode.One
+        } else {
+            audioPlayer.repeatMode = MPMovieRepeatMode.None
         }
-        sharedInstance.setActive(true, error: nil)
+    }
+    
+    func playAudioPlayer() {
         audioPlayer.play()
     }
     
@@ -684,6 +712,12 @@ class CenterViewController: UIViewController {
     }
     
     func updatePlayingInfo(playingState: Int) {
+        if (playingState == PlayState.STOPPED) {
+            deactivateAudioSession()
+        } else {
+            activateAudioSession()
+        }
+        
         PlayerContext.playState = playingState
         var track: Track? = PlayerContext.currentTrack
         var rate: Float = 1.0
@@ -713,6 +747,13 @@ class CenterViewController: UIViewController {
                 default:
                     stateText = ""
             }
+            
+            if floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_7_0 {
+                var sharedCommandCenter = MPRemoteCommandCenter.sharedCommandCenter()
+                sharedCommandCenter.pauseCommand.enabled = playingState != PlayState.LOADING
+                sharedCommandCenter.playCommand.enabled = playingState != PlayState.LOADING
+            }
+            
             trackInfo[MPMediaItemPropertyArtist] = stateText
             trackInfo[MPMediaItemPropertyArtwork] = albumArt
             
@@ -723,6 +764,68 @@ class CenterViewController: UIViewController {
         }
         updatePlayerViews()
         playlistPlayerUpdate()
+    }
+    
+    // Fake playing info update for lock screen
+    func updateFakePlayingInfo(playingState:Int) {
+        if (playingState == PlayState.STOPPED) {
+            deactivateAudioSession()
+        } else {
+            activateAudioSession()
+        }
+        var track: Track? = PlayerContext.currentTrack
+        var playingInfoCenter:AnyClass! = NSClassFromString("MPNowPlayingInfoCenter")
+        if (playingInfoCenter != nil && track != nil) {
+            var trackInfo:NSMutableDictionary = NSMutableDictionary()
+            var albumArt:MPMediaItemArtwork = MPMediaItemArtwork(image: UIImage(named: "logo_512x512.png"))
+            trackInfo[MPMediaItemPropertyTitle] = track!.title
+            
+            var stateText:String?
+            var rate:Float?
+            switch(playingState) {
+                case PlayState.LOADING:
+                    stateText = "LOADING.."
+                    rate = 1.0
+                    break
+                case PlayState.PAUSED:
+                    stateText = "PAUSED"
+                    rate = 0
+                    break
+                case PlayState.STOPPED:
+                    stateText = "STOPPED"
+                    rate = 0
+                    break
+                case PlayState.PLAYING:
+                    stateText = "PLAYING"
+                    rate = 1.0
+                    break
+                default:
+                    stateText = ""
+            }
+            trackInfo[MPMediaItemPropertyArtist] = stateText
+            trackInfo[MPMediaItemPropertyArtwork] = albumArt
+            
+            trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = audioPlayer.currentPlaybackTime ?? 0
+            trackInfo[MPMediaItemPropertyPlaybackDuration] = PlayerContext.correctDuration ?? 0
+            trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = rate
+            MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo as [NSObject : AnyObject]
+        }
+    }
+    
+    func activateAudioSession() {
+        // Init audioSession
+        var sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
+        var audioSessionError:NSError?
+        if (!sharedInstance.setCategory(AVAudioSessionCategoryPlayback, error: &audioSessionError)) {
+            println("Audio session error \(audioSessionError) \(audioSessionError?.userInfo)")
+        }
+        sharedInstance.setActive(true, error: nil)
+    }
+    
+    func deactivateAudioSession() {
+        // Init audioSession
+        var sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
+        sharedInstance.setActive(false, error: nil)
     }
     
     func onMenuSelected(menuType: MenuType) {

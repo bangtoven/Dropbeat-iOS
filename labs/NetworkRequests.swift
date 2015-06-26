@@ -5,107 +5,107 @@
 import Foundation
 
 class Requests {
-    static func sendGet(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        send(Method.GET, url: url, params: params, auth: auth, respCb: respCb)
+    static func sendGet(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, background: Bool = false, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return send(Method.GET, url: url, params: params, auth: auth, background:background, respCb: respCb)
     }
    
-    static func sendPost(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        send(Method.POST, url: url, params: params, auth: auth, respCb: respCb)
+    static func sendPost(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return send(Method.POST, url: url, params: params, auth: auth, respCb: respCb)
     }
     
-    static func sendPut(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        send(Method.PUT, url: url, params: params, auth: auth, respCb: respCb)
+    static func sendPut(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return send(Method.PUT, url: url, params: params, auth: auth, respCb: respCb)
     }
     
-    static func send(method: Method, url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        var adapter = WebAdapter(url: url, method: method, params: params, auth: auth)
-        adapter.send(respCb)
+    static func send(method: Method, url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, background: Bool = false,respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        var adapter = WebAdapter(url: url, method: method, params: params, auth: auth, background:background)
+        return adapter.send(respCb)
     }
     
-    static func userSelf(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        sendGet(ApiPath.userSelf, auth: true, respCb: respCb)
+    static func userSelf(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(ApiPath.userSelf, auth: true, respCb: respCb)
     }
     
-    static func userSignin(params: Dictionary<String, String>, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        sendPost(ApiPath.userSignIn, params: params, auth: false, respCb: respCb)
+    static func userSignin(params: Dictionary<String, String>, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendPost(ApiPath.userSignIn, params: params, auth: false, respCb: respCb)
     }
     
-    static func getPlaylist(id: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        sendGet(ApiPath.playlist, params: ["id": id], auth: true, respCb: respCb)
+    static func getPlaylist(id: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(ApiPath.playlist, params: ["id": id], auth: true, respCb: respCb)
     }
     
-    static func createPlaylist(name: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        sendPost(ApiPath.playlist, params: ["name": name], auth: true, respCb: respCb)
+    static func createPlaylist(name: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+        return sendPost(ApiPath.playlist, params: ["name": name], auth: true, respCb: respCb)
     }
     
     
     // `data` should be JsonArray.
-    static func setPlaylist(id: String, data: AnyObject, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        sendPost(ApiPath.playlistSet, params: ["playlist_id": id, "data": data], auth: true, respCb: respCb)
+    static func setPlaylist(id: String, data: AnyObject, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+        return sendPost(ApiPath.playlistSet, params: ["playlist_id": id, "data": data], auth: true, respCb: respCb)
     }   
     
-    static func deletePlaylist(id: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void))  {
-        sendPost(ApiPath.playlistDel, params: ["id": id], auth: true, respCb: respCb)
+    static func deletePlaylist(id: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+        return sendPost(ApiPath.playlistDel, params: ["id": id], auth: true, respCb: respCb)
     }
     
-    static func changePlaylistName(id: String, name: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void))  {
-        sendPut(ApiPath.playlist, params: ["id": id, "name": name], auth: true, respCb: respCb)
+    static func changePlaylistName(id: String, name: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void))  -> Request {
+        return sendPut(ApiPath.playlist, params: ["id": id, "name": name], auth: true, respCb: respCb)
     }
     
-    static func fetchAllPlaylists(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        sendGet(ApiPath.playlistAll, auth: true, respCb: respCb)
+    static func fetchAllPlaylists(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+        return sendGet(ApiPath.playlistAll, auth: true, respCb: respCb)
     }
     
-    static func fetchInitialPlaylist(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        sendGet(ApiPath.playlistIntial, auth: false, respCb: respCb)
+    static func fetchInitialPlaylist(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(ApiPath.playlistIntial, auth: false, respCb: respCb)
     }
     
-    static func getSharedPlaylist(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        sendGet(ApiPath.playlistShared, params: ["uid": uid], auth: false, respCb: respCb)
+    static func getSharedPlaylist(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+        return sendGet(ApiPath.playlistShared, params: ["uid": uid], auth: false, respCb: respCb)
     }
     
-    static func sharePlaylist(name: String, data: AnyObject, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        sendPost(ApiPath.playlistShared, params: ["name": name, "data": data], auth: true, respCb: respCb)
+    static func sharePlaylist(name: String, data: AnyObject, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendPost(ApiPath.playlistShared, params: ["name": name, "data": data], auth: true, respCb: respCb)
     }
     
-    static func importPlaylist(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        sendGet(ApiPath.playlistShared, params: ["uid": uid], auth: false, respCb: respCb)
+    static func importPlaylist(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+        return sendGet(ApiPath.playlistShared, params: ["uid": uid], auth: false, respCb: respCb)
     }
     
-    static func search(q: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        sendGet(CorePath.search, params: ["q": q], auth: false, respCb: respCb)
+    static func search(q: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+        return sendGet(CorePath.search, params: ["q": q], auth: false, respCb: respCb)
     }
     
-    static func streamResolve(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
+    static func streamResolve(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
         let systemVersion = UIDevice.currentDevice().systemVersion
         var firstDigit = ""
         if (count(systemVersion) > 0) {
             firstDigit = systemVersion.substringToIndex(advance(systemVersion.startIndex, 1))
         }
-        sendGet(ResolvePath.resolveStream, params: ["uid": uid, "t": "ios\(firstDigit)"], auth: false, respCb: respCb)
+        return sendGet(ResolvePath.resolveStream, params: ["uid": uid, "t": "ios\(firstDigit)"], auth: false, background: false, respCb: respCb)
     }
     
-    static func fetchFeed(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
+    static func fetchFeed(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup: nil)
         var key :String? = keychainItemWrapper["auth_token"] as? String
         var authenticated = key != nil
-        sendGet(ApiPath.feed, auth: authenticated, respCb: respCb)
+        return sendGet(ApiPath.feed, auth: authenticated, respCb: respCb)
     }
     
-    static func logSearch(keyword: String) {
-        request(Method.GET, ApiPath.logSearch, parameters: ["q": keyword], encoding: .URL).validate()
+    static func logSearch(keyword: String) -> Request{
+        return request(Method.GET, ApiPath.logSearch, parameters: ["q": keyword], encoding: .URL).validate()
     }
     
-    static func logTrackAdd(title: String) {
-        request(Method.GET, ApiPath.logTrackAdd, parameters: ["t": title], encoding: .URL).validate()
+    static func logTrackAdd(title: String) -> Request{
+        return request(Method.GET, ApiPath.logTrackAdd, parameters: ["t": title], encoding: .URL).validate()
     }
     
-    static func logPlay(title: String) {
-        request(Method.GET, ApiPath.logPlay, parameters: ["t": title], encoding: .URL).validate()
+    static func logPlay(title: String) -> Request{
+        return request(Method.GET, ApiPath.logPlay, parameters: ["t": title], encoding: .URL).validate()
     }
     
-    static func getClientVersion(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
-        sendGet(ApiPath.metaVersion, auth: false, respCb: respCb)
+    static func getClientVersion(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(ApiPath.metaVersion, auth: false, respCb: respCb)
     }
 }
 
@@ -114,16 +114,29 @@ class WebAdapter {
     var method :Method?
     var params :Dictionary<String, AnyObject>?
     var auth: Bool?
+    var background: Bool?
+    var manager:Manager
+    class var backgroundManager:Manager {
+        let sessionId = "net.dropbeat.labs.background"
+        let config = NSURLSessionConfiguration.backgroundSessionConfiguration(sessionId)
+        let manager = Manager(configuration: config)
+        manager.startRequestsImmediately = true
+        return manager
+    }
     
-    init(url :String, method :Method, params: Dictionary<String, AnyObject>?, auth :Bool) {
+    init(url :String, method :Method, params: Dictionary<String, AnyObject>?, auth :Bool, background :Bool = false) {
         self.url = url
         self.method = method
         self.params = params
         self.auth = auth
+        if (background) {
+            self.manager = WebAdapter.backgroundManager
+        } else {
+            self.manager = Manager.sharedInstance
+        }
     }
     
     func prepare() {
-        var manager = Manager.sharedInstance
         if (auth == true) {
             // TODO: Get global session key.
             let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup: nil)
@@ -135,7 +148,7 @@ class WebAdapter {
         }
     }
     
-    func send(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
+    func send(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         prepare()
         
         var enc :ParameterEncoding?
@@ -144,7 +157,9 @@ class WebAdapter {
         } else {
             enc = .JSON
         }
-        request(self.method!, self.url!, parameters: self.params, encoding: enc!).validate().responseJSON(completionHandler: respCb)
+        var req = manager.request(self.method!, self.url!, parameters: self.params, encoding: enc!)
+        req.validate().responseJSON(completionHandler: respCb)
+        return req
     }
 }
 

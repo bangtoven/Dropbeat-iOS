@@ -728,6 +728,7 @@
 				TargetAttributes = {
 					FCD1DA811B04CCB200F9EA70 = {
 						CreatedOnToolsVersion = 6.0.1;
+						DevelopmentTeam = XGLQXMFR26;
 					};
 					FCD1DA961B04CCB200F9EA70 = {
 						CreatedOnToolsVersion = 6.0.1;
@@ -1029,6 +1030,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos/Pods",
@@ -1045,6 +1048,7 @@
 					"$(PROJECT_DIR)/Libraries/GA",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "labs/labs-Bridging-Header.h";
 			};
 			name = Debug;
@@ -1054,6 +1058,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/build/Debug-iphoneos/Pods",
@@ -1070,6 +1076,7 @@
 					"$(PROJECT_DIR)/Libraries/GA",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "labs/labs-Bridging-Header.h";
 			};
 			name = Release;

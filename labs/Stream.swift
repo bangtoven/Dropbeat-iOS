@@ -9,7 +9,7 @@
 import Foundation
 
 
-func resolve(uid: String, type: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) {
+func resolve(uid: String, type: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request? {
     if type == "soundcloud" {
         var url :String = "https://api.soundcloud.com/tracks/\(uid)/stream?client_id=b45b1aa10f1ac2941910a7f0d10f8e28"
 
@@ -22,8 +22,9 @@ func resolve(uid: String, type: String, respCb: ((NSURLRequest, NSHTTPURLRespons
         raw["urls"] = data
         respCb(NSURLRequest(), nil, raw, nil)
     } else if type == "youtube" {
-        Requests.streamResolve(uid, respCb: respCb)
+        return Requests.streamResolve(uid, respCb: respCb)
     }
+    return nil
 }
 
 

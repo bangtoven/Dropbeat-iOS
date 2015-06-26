@@ -209,16 +209,17 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "sender", name: NotifyKey.playerSeek, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.updateRepeatState, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "updatePlayerViews", name: NotifyKey.updatePlaylistView, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "updatePlayTrack:", name: NotifyKey.updatePlay, object: nil)
-               
-        updatePlayerViews()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "PlaylistViewScreen"
+        updatePlayerViews()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -238,6 +239,7 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerSeek, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlaylistView, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updateRepeatState, object: nil)
     }
     
     
@@ -293,6 +295,8 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
         default:
             break
         }
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            NotifyKey.updateRepeatState, object: nil)
     }
     
     func updatePlayView() {
@@ -318,7 +322,7 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
     
     override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
         if (flag && PlayerContext.playState == PlayState.LOADING) {
-            loadingView.rotate360Degrees(duration: 1.0, completionDelegate: self)
+            loadingView.rotate360Degrees(duration: 0.7, completionDelegate: self)
         }
     }
     

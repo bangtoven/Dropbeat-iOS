@@ -17,10 +17,11 @@ extension UIView {
         rotateAnimation.duration = duration
         rotateAnimation.cumulative = true
         
+        self.layer.removeAllAnimations()
+        
         if let delegate: AnyObject = completionDelegate {
             rotateAnimation.delegate = delegate
         }
-        self.layer.removeAllAnimations()
         self.layer.addAnimation(rotateAnimation, forKey: nil)
     }
 }

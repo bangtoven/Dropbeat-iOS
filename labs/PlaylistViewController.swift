@@ -327,7 +327,7 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
     }
     
     func updateProgressView() {
-        if (!isProgressUpdatable) {
+        if (PlayerContext.playState == PlayState.PLAYING && !isProgressUpdatable) {
             return
         }
         var total:Float = Float(PlayerContext.correctDuration ?? 0)

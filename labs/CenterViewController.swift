@@ -226,7 +226,9 @@ class CenterViewController: UIViewController {
 
             if (audioPlayer.duration != PlayerContext.correctDuration) {
                 // To find a end of the track that has corrected duration.
-                if (audioPlayer.currentPlaybackTime > PlayerContext.correctDuration) {
+                // - 0.5 is hacky way to prevent repeatedly gain pause / play event from player
+                // player gain repeatedly pasuse / play event after correntDuration
+                if (audioPlayer.currentPlaybackTime > PlayerContext.correctDuration! - 0.5) {
                     if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
                         handleSeek(0)
                     } else {
@@ -295,11 +297,6 @@ class CenterViewController: UIViewController {
         println("changed!")
         println(audioPlayer.playbackState.rawValue)
         
-        if (!forceStopPlayer) {
-            // We should check video duration first for
-            // checking playing video should be stopped or not
-            updateProgress()
-        }
         if (forceStopPlayer && (
                 audioPlayer.playbackState == MPMoviePlaybackState.Paused ||
                 audioPlayer.playbackState == MPMoviePlaybackState.Playing)) {
@@ -735,7 +732,13 @@ class CenterViewController: UIViewController {
             return
         }
         let duration = PlayerContext.correctDuration ?? 0
-        let newPlaybackTime:Double = (duration * Double(value)) / 100
+        var newPlaybackTime:Double = (duration * Double(value)) / 100
+        
+        // - 1 is hacky way to prevent player exceed correct duration
+        // player gain repeatedly pasuse / play event after correntDuration
+        if (newPlaybackTime >= duration && duration > 0) {
+            newPlaybackTime = duration - 1
+        }
         audioPlayer.currentPlaybackTime = newPlaybackTime
     }
     

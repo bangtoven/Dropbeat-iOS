@@ -104,10 +104,6 @@ class Requests {
         return request(Method.GET, ApiPath.logPlay, parameters: ["t": title], encoding: .URL).validate()
     }
     
-    static func logDebug(msg: String) -> Request{
-        return request(Method.GET, ApiPath.logDebug, parameters: ["msg": msg], encoding: .URL).validate()
-    }
-    
     static func getClientVersion(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         return sendGet(ApiPath.metaVersion, auth: false, respCb: respCb)
     }

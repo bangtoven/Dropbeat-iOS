@@ -26,17 +26,10 @@ class CenterViewController: UIViewController {
     
     var remoteProgressTimer: NSTimer?
     var isProgressUpdatable = true
-    var backgroundTaskId:UIBackgroundTaskIdentifier?
+    var bgTaskId:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+    var removedId:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     var signinVC:SigninViewController?
     var playlistVC:PlaylistViewController?
-    var isBackgroundTaskSuppored:Bool = {
-        var support = false
-        let device = UIDevice.currentDevice()
-        if (device.respondsToSelector("isMultitaskingSupported")) {
-            support = device.multitaskingSupported
-        }
-        return support
-    }()
     
     var hookingBackground: Bool = false
     // Used only for video playback recovery.
@@ -89,7 +82,10 @@ class CenterViewController: UIViewController {
             
             
             // Observe internal player.
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerContentPreloadDidFinish:", name: "MPMoviePlayerContentPreloadDidFinishNotification", object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerContentPreloadDidFinish:",
+                name: "MPMoviePlayerContentPreloadDidFinishNotification", object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerLoadStateDidChange:",
+                name: MPMoviePlayerLoadStateDidChangeNotification, object: nil)
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackStateDidChange:",
                 name: MPMoviePlayerPlaybackStateDidChangeNotification, object: nil)
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackDidFinish:",
@@ -232,9 +228,9 @@ class CenterViewController: UIViewController {
 
             if (audioPlayer.duration != PlayerContext.correctDuration) {
                 // To find a end of the track that has corrected duration.
-                // - 0.5 is hacky way to prevent repeatedly gain pause / play event from player
+                // - This is hacky way to prevent repeatedly gain pause / play event from player
                 // player gain repeatedly pasuse / play event after correntDuration
-                if (audioPlayer.currentPlaybackTime > PlayerContext.correctDuration! - 0.5) {
+                if (audioPlayer.currentPlaybackTime >= PlayerContext.correctDuration!) {
                     if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
                         handleSeek(0)
                     } else {
@@ -299,6 +295,50 @@ class CenterViewController: UIViewController {
             NotifyKey.updatePlaylistView, object: nil)
     }
     
+    func MPMoviePlayerLoadStateDidChange (noti: NSNotification) {
+        if (audioPlayer.loadState == MPMovieLoadState.Playable) {
+            println("load state = playable")
+        } else if (audioPlayer.loadState == MPMovieLoadState.PlaythroughOK) {
+            println("load state = playthroughOk")
+        } else if (audioPlayer.loadState == MPMovieLoadState.allZeros) {
+            println("load state = allzeros")
+        } else if (audioPlayer.loadState == MPMovieLoadState.Stalled) {
+            println("load state = Stalled")
+        }
+        if (audioPlayer.loadState == MPMovieLoadState.Stalled) {
+            startBackgroundTask()
+            return
+        }
+        if (audioPlayer.loadState == MPMovieLoadState.Playable ||
+            audioPlayer.loadState == MPMovieLoadState.PlaythroughOK) {
+            audioPlayer.play()
+            return
+        }
+        
+        if (audioPlayer.loadState == MPMovieLoadState.allZeros) {
+            // If youtube which has double duration length will be get here
+            // when it play over original duration (:1/2) length
+            if (PlayerContext.currentTrack != nil &&
+                PlayerContext.currentTrack!.type == "youtube" &&
+                PlayerContext.correctDuration != nil){
+                if (audioPlayer.currentPlaybackTime >= PlayerContext.correctDuration! - 1) {
+                    if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
+                        handleSeek(0)
+                    } else if (audioPlayer.playbackState != MPMoviePlaybackState.Stopped) {
+                        if remoteProgressTimer != nil {
+                            remoteProgressTimer?.invalidate()
+                            remoteProgressTimer = nil
+                        }
+                        if (audioPlayer.playbackState != MPMoviePlaybackState.Stopped) {
+                            self.forceStopPlayer = true
+                            audioPlayer.stop()
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
     func MPMoviePlayerPlaybackStateDidChange (noti: NSNotification) {
         println("changed!")
         println(audioPlayer.playbackState.rawValue)
@@ -314,7 +354,7 @@ class CenterViewController: UIViewController {
             // Periodic timer for progress update.
             if remoteProgressTimer == nil {
                 remoteProgressTimer = NSTimer.scheduledTimerWithTimeInterval(
-                    1.0, target: self, selector: Selector("updateProgress"), userInfo: nil, repeats: true)
+                    0.5, target: self, selector: Selector("updateProgress"), userInfo: nil, repeats: true)
             }
         } else if (audioPlayer.playbackState == MPMoviePlaybackState.Stopped) {
             if remoteProgressTimer != nil {
@@ -331,6 +371,7 @@ class CenterViewController: UIViewController {
 //          We are checking extension here to minimize a number of excepional cases.
             if (hookingBackground && PlayerContext.currentStreamCandidate?.type == "mp4") {
                 handlePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+                return
             }
         } else if (audioPlayer.playbackState == MPMoviePlaybackState.Interrupted) {
 
@@ -352,6 +393,7 @@ class CenterViewController: UIViewController {
                 deactivateAudioSession()
             }
         }
+        println("preload finished")
     }
     
     
@@ -382,7 +424,6 @@ class CenterViewController: UIViewController {
         var success :Bool = handleNext()
         if (!success) {
             handleStop()
-            println("here")
             updatePlayState(PlayState.STOPPED)
             deactivateAudioSession()
         }
@@ -628,7 +669,14 @@ class CenterViewController: UIViewController {
                 } else {
                     self.audioPlayer.repeatMode = MPMovieRepeatMode.None
                 }
-                self.playAudioPlayer()
+                
+                // NOTE:
+                // Not start play here 
+                // audioPlayer.play will be called on MPMoviePlayerLoadStateDidChange func
+                // receive Playable or PlaythroughOK
+                // see http://macromeez.tumblr.com/post/91330737652/continuous-background-media-playback-on-ios-using
+                
+                self.audioPlayer.prepareToPlay()
                 // Log to us
                 if (Account.getCachedAccount() != nil) {
                     Requests.logPlay(PlayerContext.currentTrack!.title)
@@ -751,7 +799,6 @@ class CenterViewController: UIViewController {
     
     func playAudioPlayer() {
         println("playAudio")
-        audioPlayer.prepareToPlay()
         audioPlayer.play()
     }
     
@@ -872,28 +919,25 @@ class CenterViewController: UIViewController {
     
     func startBackgroundTask() {
         // register background task
-        stopBackgroundTask()
-        if (self.backgroundTaskId == nil && self.isBackgroundTaskSuppored) {
-            self.backgroundTaskId = UIApplication.sharedApplication()
-                    .beginBackgroundTaskWithExpirationHandler({ () -> Void in
-                self.backgroundTaskId = nil
-                Requests.logDebug("background task expired")
-            })
+        let sharedApplication = UIApplication.sharedApplication()
+        bgTaskId = sharedApplication.beginBackgroundTaskWithExpirationHandler({ () -> Void in
+            sharedApplication.endBackgroundTask(self.removedId)
+            self.bgTaskId = UIBackgroundTaskInvalid
+        })
+        
+        if (bgTaskId != UIBackgroundTaskInvalid && removedId == 0 ? true : (removedId != UIBackgroundTaskInvalid)) {
+            sharedApplication.endBackgroundTask(removedId)
         }
+        removedId = bgTaskId;
     }
     
     // We will not stop background task for ios7
     // ios call this function with forceStop only when music stopped
-    func stopBackgroundTask(forceStop:Bool=false) {
-        let systemVersion = UIDevice.currentDevice().systemVersion
-        let cmpResult = systemVersion.compare("8.0", options:NSStringCompareOptions.NumericSearch)
-        if (forceStop || cmpResult == NSComparisonResult.OrderedDescending ||
-            cmpResult == NSComparisonResult.OrderedSame) {
-            var app = UIApplication.sharedApplication()
-            if (self.backgroundTaskId != nil && self.isBackgroundTaskSuppored) {
-                app.endBackgroundTask(self.backgroundTaskId!)
-                self.backgroundTaskId = nil
-            }
+    func stopBackgroundTask() {
+        let sharedApplication = UIApplication.sharedApplication()
+        if (bgTaskId != UIBackgroundTaskInvalid && removedId != bgTaskId) {
+            sharedApplication.endBackgroundTask(bgTaskId);
+            removedId = bgTaskId;
         }
     }
     

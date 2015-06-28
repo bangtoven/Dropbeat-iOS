@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // optional
         gai.trackUncaughtExceptions = true
         gai.dispatchInterval = 20
-        gai.logger.logLevel = GAILogLevel.Verbose
+        gai.logger.logLevel = GAILogLevel.Error
         
         gai.trackerWithTrackingId("UA-49094112-1")
         

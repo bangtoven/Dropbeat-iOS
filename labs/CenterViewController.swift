@@ -310,7 +310,6 @@ class CenterViewController: UIViewController {
         }
         
         if (audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
-            stopBackgroundTask()
             updatePlayState(PlayState.PLAYING)
             // Periodic timer for progress update.
             if remoteProgressTimer == nil {
@@ -318,8 +317,6 @@ class CenterViewController: UIViewController {
                     1.0, target: self, selector: Selector("updateProgress"), userInfo: nil, repeats: true)
             }
         } else if (audioPlayer.playbackState == MPMoviePlaybackState.Stopped) {
-
-            stopBackgroundTask(forceStop: true)
             if remoteProgressTimer != nil {
                 remoteProgressTimer?.invalidate()
                 remoteProgressTimer = nil
@@ -352,7 +349,7 @@ class CenterViewController: UIViewController {
                 println("playback failed with error description: \(reason!.description)")
                 ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play",
                     message: "caused by undefined exception (\(reason!.domain), \(reason!.code))")
-                stopBackgroundTask(forceStop: true)
+                deactivateAudioSession()
             }
         }
     }
@@ -375,7 +372,7 @@ class CenterViewController: UIViewController {
                             message: "caused by undefined exception (\(err!.domain), \(err!.code))")
                     }
                     
-                    stopBackgroundTask(forceStop: true)
+                    deactivateAudioSession()
                     return
                 }
             }
@@ -542,9 +539,6 @@ class CenterViewController: UIViewController {
             }
         }
         
-        self.activateAudioSession()
-       
-        
         // Init correct duration.
         PlayerContext.correctDuration = nil
         
@@ -621,6 +615,8 @@ class CenterViewController: UIViewController {
                 if (self.audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
                     self.audioPlayer.pause()
                 }
+        
+                self.activateAudioSession()
                 self.audioPlayer = MPMoviePlayerController()
                 self.audioPlayer.movieSourceType = MPMovieSourceType.Streaming
                 self.audioPlayer.contentURL = url
@@ -652,7 +648,6 @@ class CenterViewController: UIViewController {
                     tracker.send(event as [NSObject: AnyObject]!)
                 }
             } else {
-                self.stopBackgroundTask()
                 // XXX: Cannot play.
                 println(err)
                 var message:String?
@@ -756,7 +751,6 @@ class CenterViewController: UIViewController {
     
     func playAudioPlayer() {
         println("playAudio")
-        self.activateAudioSession()
         audioPlayer.prepareToPlay()
         audioPlayer.play()
     }
@@ -830,6 +824,7 @@ class CenterViewController: UIViewController {
         }
         sharedInstance.setActive(true, error: nil)
         UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
+        startBackgroundTask()
     }
     
     func deactivateAudioSession() {
@@ -837,6 +832,7 @@ class CenterViewController: UIViewController {
         var sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
         sharedInstance.setActive(false, error: nil)
         UIApplication.sharedApplication().endReceivingRemoteControlEvents()
+        stopBackgroundTask()
     }
     
     func onMenuSelected(menuType: MenuType) {

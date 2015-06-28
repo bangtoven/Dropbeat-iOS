@@ -34,6 +34,7 @@ public class ApiPath {
     static var logResolve :String = log + "resolve/"
     static var logTrackAdd :String = log + "trackadd/"
     static var logPlay :String = log + "play/"
+    static var logDebug :String = log + "debug/"
     
     // Meta
     static var meta :String = host + "meta/"

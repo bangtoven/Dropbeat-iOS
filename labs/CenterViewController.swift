@@ -100,6 +100,8 @@ class CenterViewController: UIViewController {
             // For video background playback
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "backgroundHook",
                 name: UIApplicationDidEnterBackgroundNotification, object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "appWillEnterForeground",
+                name: UIApplicationWillEnterForegroundNotification, object: nil)
         }
         
         progressBar.continuous = false
@@ -119,6 +121,10 @@ class CenterViewController: UIViewController {
                 triggerBackgroundPlay(1)
             }
         }
+    }
+    
+    func appWillEnterForeground () {
+        updatePlayerViews()
     }
     
     func triggerBackgroundPlay(retry:Int) {
@@ -276,13 +282,13 @@ class CenterViewController: UIViewController {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
+//        UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
         becomeFirstResponder()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        UIApplication.sharedApplication().endReceivingRemoteControlEvents()
+//        UIApplication.sharedApplication().endReceivingRemoteControlEvents()
         resignFirstResponder()
     }
     
@@ -354,12 +360,6 @@ class CenterViewController: UIViewController {
     
     func MPMoviePlayerPlaybackDidFinish (noti: NSNotification) {
         var player:MPMoviePlayerController = noti.object as! MPMoviePlayerController;
-        if player != self.audioPlayer {
-            player.initialPlaybackTime = -1
-            player.stop()
-            player.view.removeFromSuperview()
-            return
-        }
         
         var userInfo = noti.userInfo as? [String:AnyObject]
         if (userInfo != nil) {
@@ -618,12 +618,14 @@ class CenterViewController: UIViewController {
                 
                 // Play it!
                 println("play it!")
-                self.audioPlayer.stop()
+                if (self.audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
+                    self.audioPlayer.pause()
+                }
                 self.audioPlayer = MPMoviePlayerController()
                 self.audioPlayer.movieSourceType = MPMovieSourceType.Streaming
-//                println(streamSources[0].url)
                 self.audioPlayer.contentURL = url
                 self.audioPlayer.controlStyle = MPMovieControlStyle.Embedded
+//                self.audioPlayer.shouldAutoplay = true
                 self.audioPlayer.view.hidden = true
                 if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
                     self.audioPlayer.repeatMode = MPMovieRepeatMode.One
@@ -660,7 +662,9 @@ class CenterViewController: UIViewController {
                 } else {
                     message = "Stream source is not available."
                 }
-                self.audioPlayer.stop()
+                if (self.audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
+                    self.audioPlayer.pause()
+                }
                 self.audioPlayer = MPMoviePlayerController()
                 ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play", message: message!)
                 self.updatePlayState(PlayState.STOPPED)
@@ -751,6 +755,9 @@ class CenterViewController: UIViewController {
     }
     
     func playAudioPlayer() {
+        println("playAudio")
+        self.activateAudioSession()
+        audioPlayer.prepareToPlay()
         audioPlayer.play()
     }
     
@@ -822,12 +829,14 @@ class CenterViewController: UIViewController {
             println("Audio session error \(audioSessionError) \(audioSessionError?.userInfo)")
         }
         sharedInstance.setActive(true, error: nil)
+        UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
     }
     
     func deactivateAudioSession() {
         // Init audioSession
         var sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
         sharedInstance.setActive(false, error: nil)
+        UIApplication.sharedApplication().endReceivingRemoteControlEvents()
     }
     
     func onMenuSelected(menuType: MenuType) {
@@ -872,6 +881,7 @@ class CenterViewController: UIViewController {
             self.backgroundTaskId = UIApplication.sharedApplication()
                     .beginBackgroundTaskWithExpirationHandler({ () -> Void in
                 self.backgroundTaskId = nil
+                Requests.logDebug("background task expired")
             })
         }
     }

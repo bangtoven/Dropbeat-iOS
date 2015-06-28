@@ -214,18 +214,23 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
             self, selector: "updatePlayerViews", name: NotifyKey.updatePlaylistView, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "updatePlayTrack:", name: NotifyKey.updatePlay, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "updatePlayTrack:", name: NotifyKey.updatePlay, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "appWillEnterForeground",
+            name: UIApplicationWillEnterForegroundNotification, object: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "PlaylistViewScreen"
-        updatePlayerViews()
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
         becomeFirstResponder()
+        updatePlayerViews()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -240,8 +245,12 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlaylistView, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updateRepeatState, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
     }
     
+    func appWillEnterForeground () {
+        updatePlayerViews()
+    }
     
     func sender() {}
     

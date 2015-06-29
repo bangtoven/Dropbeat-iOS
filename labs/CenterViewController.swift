@@ -586,7 +586,7 @@ class CenterViewController: UIViewController {
         // Indicate loading status.
         updatePlayState(PlayState.LOADING)
         
-        startBackgroundTask()
+        self.activateAudioSession()
         if (self.prevResolveReq != nil) {
             self.prevResolveReq!.cancel()
             self.prevResolveReq = nil
@@ -651,13 +651,10 @@ class CenterViewController: UIViewController {
                     PlayerContext.correctDuration = nil
                 }
                 
-                // Play it!
-                println("play it!")
                 if (self.audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
                     self.audioPlayer.pause()
                 }
         
-                self.activateAudioSession()
                 self.audioPlayer = MPMoviePlayerController()
                 self.audioPlayer.movieSourceType = MPMovieSourceType.Streaming
                 self.audioPlayer.contentURL = url
@@ -676,6 +673,7 @@ class CenterViewController: UIViewController {
                 // receive Playable or PlaythroughOK
                 // see http://macromeez.tumblr.com/post/91330737652/continuous-background-media-playback-on-ios-using
                 
+                println("prepare to play")
                 self.audioPlayer.prepareToPlay()
                 // Log to us
                 if (Account.getCachedAccount() != nil) {
@@ -920,24 +918,24 @@ class CenterViewController: UIViewController {
     func startBackgroundTask() {
         // register background task
         let sharedApplication = UIApplication.sharedApplication()
+        var prevBgTaskId = bgTaskId
         bgTaskId = sharedApplication.beginBackgroundTaskWithExpirationHandler({ () -> Void in
-            sharedApplication.endBackgroundTask(self.removedId)
+            sharedApplication.endBackgroundTask(self.bgTaskId)
             self.bgTaskId = UIBackgroundTaskInvalid
+            println("expired background task")
         })
-        
-        if (bgTaskId != UIBackgroundTaskInvalid && removedId == 0 ? true : (removedId != UIBackgroundTaskInvalid)) {
-            sharedApplication.endBackgroundTask(removedId)
+        if (prevBgTaskId != UIBackgroundTaskInvalid) {
+            sharedApplication.endBackgroundTask(prevBgTaskId)
         }
-        removedId = bgTaskId;
     }
     
     // We will not stop background task for ios7
     // ios call this function with forceStop only when music stopped
     func stopBackgroundTask() {
         let sharedApplication = UIApplication.sharedApplication()
-        if (bgTaskId != UIBackgroundTaskInvalid && removedId != bgTaskId) {
-            sharedApplication.endBackgroundTask(bgTaskId);
-            removedId = bgTaskId;
+        if (bgTaskId != UIBackgroundTaskInvalid) {
+            sharedApplication.endBackgroundTask(bgTaskId)
+            bgTaskId = UIBackgroundTaskInvalid
         }
     }
     

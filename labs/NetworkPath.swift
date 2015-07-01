@@ -48,6 +48,8 @@ public class CorePath {
     // core.search
     static var search :String = host + "search/"
     static var searchRelated :String = search + "related/"
+    static var searchLiveset :String = search + "liveset/"
+    static var searchOther :String = search + "other/"
     
     // core.resolve
     static var resolve :String = host + "resolve/"
@@ -65,6 +67,12 @@ public class CorePath {
     static var trendingChart :String = host + "chart/"
     static var trendingTopDjs :String = trending + "top_djs/"
     static var trendingFeaturedPlaylist :String = trending + "featured_playlist/"
+    
+    // core.podcast
+    static var podcast :String = host + "podcast/"
+    
+    // core.event
+    static var event :String = host + "event/"
 }
 
 public class ResolvePath {

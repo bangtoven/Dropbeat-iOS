@@ -25,8 +25,8 @@ class Parser {
         return Search.fromJson(data, key: "data")
     }
     
-    func parseFeed(data: AnyObject) -> Search {
-        return Search.fromJson(data, key: "feed")
+    func parseFeed(data: AnyObject) -> Feed {
+        return Feed.fromJson(data, key: "feed")
     }
 }
 
@@ -137,14 +137,322 @@ class StreamSource {
     }
 }
 
+class SearchShowType {
+    static var ROW = 0
+    static var TAB = 1
+}
+
+class SearchSections {
+    static var TOP_MATCH = "top_match"
+    static var OFFICIAL = "released"
+    static var PODCAST = "podcast"
+    static var LIVESET = "liveset"
+    static var RELEVANT = "relevant"
+}
+
 
 class Search {
+    static var availableSections = [
+        SearchSections.OFFICIAL,
+        SearchSections.PODCAST,
+        SearchSections.LIVESET,
+        SearchSections.TOP_MATCH,
+        SearchSections.RELEVANT
+    ]
+    
+    var hasEvent:Bool = false
+    var hasPodcast:Bool = false
+    var hasLiveset:Bool = false
+    var artistImage:String?
+    var artistName:String?
+    var sectionedTracks: [String:[Track]] = [String:[Track]]()
+    var showType:Int = SearchShowType.ROW
+    
+    init (artistName:String?, artistImage:String?) {
+        self.artistImage = artistImage
+        self.artistName = artistName
+        if (artistName == nil) {
+            self.showType = SearchShowType.ROW
+        } else {
+            self.showType = SearchShowType.TAB
+        }
+    }
+    
+    func getConcatedSectionTracks () -> [Track] {
+        var tracks = [Track]()
+        if (sectionedTracks[SearchSections.TOP_MATCH] != nil) {
+            for track in sectionedTracks[SearchSections.TOP_MATCH]! {
+                tracks.append(track)
+            }
+        }
+        if (sectionedTracks[SearchSections.RELEVANT] != nil) {
+            for track in sectionedTracks[SearchSections.RELEVANT]! {
+                tracks.append(track)
+            }
+        }
+        return tracks
+    }
+    
+    
+    func fetchRelevant(callback:((tracks:[Track]?, error:NSError?) -> Void)) {
+        let sectionTracks = sectionedTracks[SearchSections.RELEVANT]
+        if (sectionTracks != nil) {
+            callback(tracks: sectionTracks!, error: nil)
+            return
+        }
+        if (artistName == nil) {
+            callback(tracks: nil, error: NSError(domain: "search", code: 1, userInfo: nil))
+            return
+        }
+        Requests.searchOther(artistName!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if (error != nil) {
+                callback(tracks: nil, error: error)
+                return
+            }
+            if (result == nil) {
+                callback(tracks: [], error: nil)
+                return
+            }
+            self.sectionedTracks[SearchSections.RELEVANT] = Search.parseTracks(result!, key: "data", secondKey:"tracks")
+            callback(tracks:self.sectionedTracks[SearchSections.RELEVANT], error:nil)
+        })
+    }
+    
+    func fetchListset(callback:((tracks:[Track]?, error:NSError?) -> Void)) {
+        let sectionTracks = sectionedTracks[SearchSections.LIVESET]
+        if (sectionTracks != nil) {
+            callback(tracks: sectionTracks!, error: nil)
+            return
+        }
+        if (artistName == nil) {
+            callback(tracks: nil, error: NSError(domain: "search", code: 1, userInfo: nil))
+            return
+        }
+        if (!hasLiveset) {
+            callback(tracks: [], error: nil)
+            return
+        }
+        Requests.searchLiveset(artistName!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if (error != nil) {
+                callback(tracks: nil, error: error)
+                return
+            }
+            if (result == nil) {
+                callback(tracks: [], error: nil)
+                return
+            }
+            self.sectionedTracks[SearchSections.LIVESET] = Search.parseTracks(result!, key: "data")
+            callback(tracks:self.sectionedTracks[SearchSections.LIVESET], error:nil)
+        })
+    }
+    
+    func fetchPodcast(callback:((tracks:[Track]?, error:NSError?) -> Void)) {
+        let sectionTracks = sectionedTracks[SearchSections.PODCAST]
+        if (sectionTracks != nil) {
+            callback(tracks: sectionTracks!, error: nil)
+            return
+        }
+        if (artistName == nil) {
+            callback(tracks: nil, error: NSError(domain: "search", code: 1, userInfo: nil))
+            return
+        }
+        if (!hasPodcast) {
+            callback(tracks: [], error: nil)
+            return
+        }
+        Requests.searchPodcast(artistName!, page: -1, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if (error != nil) {
+                callback(tracks: nil, error: error)
+                return
+            }
+            if (result == nil) {
+                callback(tracks: [], error: nil)
+                return
+            }
+            var t = JSON(result!)
+            if !t["success"].boolValue {
+                callback(tracks: [], error: nil)
+                return
+            }
+            
+            var tracks = [Track]()
+            for (idx: String, s:JSON) in t["data"] {
+                var id = s["stream_url"].string
+                var title = s["title"].string
+                if (id == nil || title == nil) {
+                    continue
+                }
+                var track = Track(
+                    id: id!,
+                    title: title!,
+                    type: "podcast",
+                    tag:nil
+                )
+                tracks.append(track)
+            }
+            self.sectionedTracks[SearchSections.PODCAST] = tracks
+            callback(tracks:self.sectionedTracks[SearchSections.PODCAST], error:nil)
+        })
+    }
+    
+    static func fromJson(data: AnyObject, key: String) -> Search {
+        
+        var json = JSON(data)
+        var artistImage:String?
+        var artistName:String?
+        var hasEvent:Bool
+        var hasPodcast:Bool
+        var hasLiveset:Bool
+        var s = json[key]
+        
+        artistName = s["artist_name"].string
+        artistImage = s["artist_image"].string
+        hasEvent = s["has_event"].boolValue
+        hasPodcast = s["has_podcast"].boolValue
+        hasLiveset = artistName != nil
+        
+        var search = Search(artistName: artistName, artistImage: artistImage)
+        search.hasEvent = hasEvent
+        search.hasPodcast = hasPodcast
+        search.hasLiveset = hasLiveset
+       
+        for (idx:String, s:JSON) in s["tracks"] {
+            var id: AnyObject
+            if s["id"].string == nil {
+                if s["id"].int == nil {
+                    continue
+                }
+                id = String(s["id"].int!)
+            } else {
+                id = s["id"].string!
+            }
+            
+            var track = Track(
+                id: id as! String,
+                title: s["title"].stringValue,
+                type: s["type"].stringValue,
+                tag: s["tag"].stringValue
+            )
+            var drop = s["drop"]
+            if drop.error == nil {
+                track.drop = s["drop"].stringValue
+            }
+            
+            var dref = s["dref"]
+            if dref.error == nil {
+                track.dref = s["dref"].stringValue
+            }
+            
+            var tag = s["tag"]
+            if tag.error == nil {
+                track.tag = s["tag"].stringValue
+            }
+            
+            var topMatch = s["top_match"]
+            if topMatch.error == nil {
+                track.topMatch = s["top_match"].boolValue ?? false
+            }
+            
+            if (track.type == "youtube") {
+                track.thumbnailUrl = "http://img.youtube.com/vi/\(track.id)/mqdefault.jpg"
+            } else {
+                var artwork = s["artwork"]
+                if artwork.error == nil {
+                    track.thumbnailUrl = s["artwork"].stringValue
+                }
+            }
+            
+            if (track.tag == nil) {
+                continue
+            }
+            
+            var sectionName = track.tag!
+            if track.topMatch! {
+                sectionName = SearchSections.TOP_MATCH
+            }
+            if (search.sectionedTracks[sectionName] == nil) {
+                search.sectionedTracks[sectionName] = []
+            }
+            search.sectionedTracks[sectionName]!.append(track)
+        }
+        return search
+    }
+    
+    static func parseTracks(data: AnyObject, key: String, secondKey: String?=nil) -> [Track] {
+        var tracks = [Track]()
+        var t = JSON(data)
+        var tracksObj:JSON
+        if (!t["success"].boolValue || t[key] == nil) {
+            return []
+        }
+        if (secondKey != nil) {
+            tracksObj = t[key][secondKey!]
+        } else {
+            tracksObj = t[key]
+        }
+        for (idx:String, s:JSON) in tracksObj {
+            var id: AnyObject
+            if s["id"].string == nil {
+                if s["id"].int != nil {
+                    id = String(s["id"].int!)
+                } else {
+                    continue
+                }
+            } else {
+                id = s["id"].string!
+            }
+            
+            var track = Track(
+                id: id as! String,
+                title: s["title"].stringValue,
+                type: s["type"].stringValue,
+                tag: s["tag"].stringValue
+            )
+            var drop = s["drop"]
+            if drop.error == nil {
+                track.drop = s["drop"].stringValue
+            }
+            
+            var dref = s["dref"]
+            if dref.error == nil {
+                track.dref = s["dref"].stringValue
+            }
+            
+            var tag = s["tag"]
+            if tag.error == nil {
+                track.tag = s["tag"].stringValue
+            }
+            
+            var topMatch = s["top_match"]
+            if topMatch.error == nil {
+                track.topMatch = s["top_match"].boolValue ?? false
+            }
+            
+            if (track.type == "youtube") {
+                track.thumbnailUrl = "http://img.youtube.com/vi/\(track.id)/mqdefault.jpg"
+            } else {
+                var artwork = s["artwork"]
+                if artwork.error == nil {
+                    track.thumbnailUrl = s["artwork"].stringValue
+                }
+            }
+            
+            if (track.tag == nil) {
+                continue
+            }
+            tracks.append(track)
+        }
+        return tracks
+    }
+}
+
+class Feed {
     var result: [Track] = []
     init (tracks: [Track]) {
         self.result = tracks
     }
     
-    static func fromJson(data: AnyObject, key: String) -> Search {
+    static func fromJson(data: AnyObject, key: String) -> Feed {
         var json = JSON(data)
         var tracks: [Track] = []
         for (idx: String, s: JSON) in json[key] {
@@ -193,8 +501,8 @@ class Search {
             
             tracks.append(track)
         }
-        var search = Search(tracks: tracks)
-        return search
+        var feed = Feed(tracks: tracks)
+        return feed
     }
 }
 

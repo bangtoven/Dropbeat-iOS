@@ -77,7 +77,19 @@ class Requests {
     }
     
     static func search(q: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
-        return sendGet(CorePath.search, params: ["q": q], auth: false, respCb: respCb)
+        return sendGet(CorePath.search, params: ["q": q, "snippet": 1], auth: false, respCb: respCb)
+    }
+    
+    static func searchOther(q: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+        return sendGet(CorePath.searchOther, params: ["q": q], auth: false, respCb: respCb)
+    }
+    
+    static func searchLiveset(q: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+        return sendGet(CorePath.searchLiveset, params: ["q": q], auth: false, respCb: respCb)
+    }
+    
+    static func searchPodcast(q: String, page: Int, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+        return sendGet(CorePath.podcast, params: ["q": q, "p": page], auth: false, respCb: respCb)
     }
     
     static func streamResolve(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{

@@ -9,26 +9,31 @@
 import UIKit
 
 class SearchResultSections {
+    static var TOP_MATCH = "top_match"
     static var RELEASED = "released"
-    static var FEATURED_LIVESET = "featured_liveset"
-    static var TRENDING = "trending"
+    static var PODCAST = "podcast"
+    static var LIVESET = "liveset"
     static var RELEVANT = "relevant"
-    static var allValues = [RELEASED, FEATURED_LIVESET, TRENDING, RELEVANT]
+    static var allValues = [RELEASED, PODCAST, LIVESET, TOP_MATCH, RELEVANT]
 }
 
-class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate, AddableTrackCellDelegate, ScrollPagerDelegate{
+class SearchViewController: BaseContentViewController,
+    UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate,
+    AddableTrackCellDelegate, ScrollPagerDelegate{
     
     private static var sectionTitles = [
         SearchResultSections.RELEASED: "RELEASED",
-        SearchResultSections.FEATURED_LIVESET: "LIVESETS",
-        SearchResultSections.TRENDING: "TRENDING",
+        SearchResultSections.PODCAST: "PODCAST",
+        SearchResultSections.LIVESET: "LIVESETS",
+        SearchResultSections.TOP_MATCH: "TOP_MATCH",
         SearchResultSections.RELEVANT: "OTHER"
     ]
     
+    var searchResult:Search?
     var sectionedTracks = [String:[Track]]()
     var currentSections:[String]?
     var currentSection:String?
-    var useTopMatch = false
+    var showAsRowSection = false
     var autocomKeywords:[String] = []
     var autocomRequester:AutocompleteRequester?
     
@@ -131,22 +136,6 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
         searchResultView.hidden = true
     }
     
-    func hasTopMatch() -> Bool{
-        if (self.currentSection == nil ||
-                self.currentSection != SearchResultSections.RELEVANT) {
-            return false
-        }
-        if (self.sectionedTracks[self.currentSection!]!.count == 0) {
-            return false
-        }
-        let tracks:[Track] = self.sectionedTracks[self.currentSection!]!
-        let firstResult:Track = tracks[0]
-        if (firstResult.topMatch ?? false) {
-            return true
-        }
-        return false
-    }
-    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (tableView == resultTableView) {
             var cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
@@ -191,14 +180,14 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if (tableView == resultTableView && useTopMatch) {
+        if (tableView == resultTableView && showAsRowSection) {
             return 2
         }
         return 1
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if (tableView == resultTableView && useTopMatch) {
+        if (tableView == resultTableView && showAsRowSection) {
             if (section == 0) {
                 return "TOP MATCH"
             } else {
@@ -217,7 +206,7 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
             if (tracks == nil) {
                 return 0
             }
-            if (useTopMatch) {
+            if (showAsRowSection) {
                 var count = 0
                 for t in tracks! {
                     if (t.topMatch ?? false) {
@@ -335,33 +324,51 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
                     message += " (\(error!.domain):\(error!.code))"
                 }
                 ViewUtils.showNoticeAlert(self, title: "Failed to search", message: message)
+                self.searchResult = nil
+                self.sectionedTracks = [String:[Track]]()
+                self.currentSections = nil
+                self.currentSection = nil
                 return
             }
             let parser = Parser()
-            let search = parser.parseSearch(result!)
+            self.searchResult = parser.parseSearch(result!)
             
             
             // clear sectionedTracks
-            for section in SearchResultSections.allValues {
-                self.sectionedTracks[section]!.removeAll(keepCapacity: false)
+            self.showAsRowSection = self.searchResult!.showType == SearchShowType.ROW
+            if (self.showAsRowSection) {
+                self.sectionedTracks = [String:[Track]]()
+                self.sectionedTracks[SearchSections.RELEVANT] = self.searchResult!.getConcatedSectionTracks()
+            } else {
+                self.sectionedTracks = self.searchResult!.sectionedTracks
             }
             
             // sectionize
-            var foundSections:[String] = [String]()
-            
-            for track in search.result {
-                if (track.tag == nil) {
-                    return
-                }
-                var tracks:[Track]? = self.sectionedTracks[track.tag!]
-                if (tracks != nil) {
-                    self.sectionedTracks[track.tag!]!.append(track)
-                    if (find(foundSections, track.tag!) == nil) {
-                        foundSections.append(track.tag!)
-                    }
-                }
+            var foundSections:[String] = self.sectionedTracks.keys.array
+            if (self.searchResult!.hasPodcast) {
+                foundSections.append(SearchSections.PODCAST)
             }
-            self.currentSections = foundSections
+            if (self.searchResult!.hasLiveset) {
+                foundSections.append(SearchSections.LIVESET)
+            }
+            if (find(foundSections, SearchSections.RELEVANT) ?? -1 == -1) {
+                foundSections.append(SearchSections.RELEVANT)
+            }
+            
+            foundSections.sort({ (lhs:String, rhs:String) -> Bool in
+                var lhsIdx:Int = find(Search.availableSections, lhs) ?? -1
+                var rhsIdx:Int = find(Search.availableSections, rhs) ?? -1
+                if lhsIdx > -1 && rhsIdx > -1 {
+                    return lhsIdx < rhsIdx
+                }
+                if lhsIdx > -1 {
+                    return true
+                }
+                if rhsIdx > -1 {
+                    return false
+                }
+                return true
+            })
             var foundTitles:[String] = foundSections.map {
                 return SearchViewController.sectionTitles[$0]!
             }
@@ -369,11 +376,11 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
                 self.currentSection = foundSections[0]
             } else {
                 self.currentSection = nil
+                return
             }
-            self.useTopMatch = self.hasTopMatch()
+            self.currentSections = foundSections
             
-            if (self.currentSection == nil ||
-                self.currentSection == SearchResultSections.RELEVANT) {
+            if (self.searchResult!.showType == SearchShowType.ROW) {
                 
                 self.scrollPager.hidden = true
                 let constraint = NSLayoutConstraint(
@@ -407,12 +414,47 @@ class SearchViewController: BaseContentViewController, UITextFieldDelegate, UITa
     }
     
     func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
-        if (self.currentSections == nil) {
+        if (self.currentSections == nil || self.searchResult == nil) {
             return
         }
         self.currentSection = self.currentSections![changedIndex]
-        self.useTopMatch = hasTopMatch()
-        self.resultTableView.reloadData()
+        var tracks = self.sectionedTracks[self.currentSection!]
+        if (tracks == nil) {
+            var progress = ViewUtils.showProgress(self, message: "Loading..")
+            let callback = { (tracks: [Track]?, error:NSError?) -> Void in
+                progress.hide(false)
+                if (error != nil || tracks == nil) {
+                    if (error != nil && error!.domain == NSURLErrorDomain &&
+                            error!.code == NSURLErrorNotConnectedToInternet) {
+                        ViewUtils.showNoticeAlert(self, title: "Failed to fetch data", message: "Internet is not connected")
+                        return
+                    }
+                    var message = "Failed to fetch data caused by undefined error."
+                    if (error != nil) {
+                        message += " (\(error!.domain):\(error!.code))"
+                    }
+                    ViewUtils.showNoticeAlert(self, title: "Failed to fetch data", message: message)
+                    return
+                }
+                if (tracks!.count == 0) {
+                    ViewUtils.showToast(self, message: "empty result")
+                }
+                self.sectionedTracks[self.currentSection!] = tracks
+                self.resultTableView.reloadData()
+            }
+            if (self.currentSection == SearchSections.LIVESET) {
+                self.searchResult!.fetchListset(callback)
+            } else if (self.currentSection == SearchSections.PODCAST) {
+                self.searchResult!.fetchPodcast(callback)
+            } else if (self.currentSection == SearchSections.RELEVANT) {
+                self.searchResult!.fetchRelevant(callback)
+            }
+        } else {
+            if (tracks!.count == 0) {
+                ViewUtils.showToast(self, message: "empty result")
+            }
+            self.resultTableView.reloadData()
+        }
     }
     
     override func menuBtnClicked(sender: AnyObject) {

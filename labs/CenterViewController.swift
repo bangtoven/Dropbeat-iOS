@@ -387,10 +387,18 @@ class CenterViewController: UIViewController {
         if (userInfo != nil) {
             var reason:NSError? = userInfo!["error"] as? NSError
             if (reason != nil) {
-                println("playback failed with error description: \(reason!.description)")
-                ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play",
-                    message: "caused by undefined exception (\(reason!.domain), \(reason!.code))")
-                deactivateAudioSession()
+//                var idx:Int = -1
+//                for idx in range(PlayerContext.streamCandidates.count) {
+//                    
+//                }
+//                let idx =  PlayerContext.currentStreamCandidate)
+//                if (idx < PlayerContext.streamCandidates.count - 1){
+//                } else {
+                    println("playback failed with error description: \(reason!.description)")
+                    ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play",
+                        message: "caused by undefined exception (\(reason!.domain), \(reason!.code))")
+                    deactivateAudioSession()
+//                }
             }
         }
         println("preload finished")
@@ -602,7 +610,6 @@ class CenterViewController: UIViewController {
                 var streamSources :[StreamSource] = getStreamUrls(json!)
                 
                 // Do we need multiple candidates?
-                PlayerContext.currentStreamUrls = streamSources
                 if streamSources.isEmpty {
                     println("empty")
                     ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play",
@@ -611,6 +618,8 @@ class CenterViewController: UIViewController {
                     self.deactivateAudioSession()
                     return
                 }
+                
+                PlayerContext.streamCandidates = streamSources
                 PlayerContext.currentStreamCandidate = streamSources[0]
                 if (track!.type == "youtube" && streamSources[0].type == "webm") {
                     // Should notify that we can't play it.

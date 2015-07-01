@@ -172,7 +172,6 @@ class StartupViewController: GAITrackedViewController {
     
     func fetchUserInfo() {
         let callback = { (error:NSError?) -> Void in
-            self.progressHud?.hide(true)
             self.showMainController()
         }
         if (Account.getCachedAccount() != nil) {
@@ -259,7 +258,11 @@ class StartupViewController: GAITrackedViewController {
     }
     
     func showMainController() {
-        performSegueWithIdentifier("DrawerSegue", sender: self)
+        var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
+        dispatch_after(popTime, dispatch_get_main_queue()) {
+            self.progressHud?.hide(true)
+            self.performSegueWithIdentifier("DrawerSegue", sender: self)
+        }
     }
     
 

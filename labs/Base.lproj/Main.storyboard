@@ -74,7 +74,7 @@
                                             <action selector="pauseBtnClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="siT-ef-aMa"/>
                                         </connections>
                                     </button>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="daU-o8-m5t" customClass="SparkSlider" customModule="labs" customModuleProvider="target">
+                                    <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="daU-o8-m5t" customClass="SparkSlider" customModule="labs" customModuleProvider="target">
                                         <rect key="frame" x="-2" y="-4" width="324" height="31"/>
                                         <connections>
                                             <action selector="onProgressDown:" destination="BYZ-38-t0r" eventType="touchDown" id="V8w-3g-m72"/>
@@ -83,7 +83,7 @@
                                             <action selector="onProgressValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="bhI-vm-zy4"/>
                                         </connections>
                                     </slider>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="status" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fJG-Gx-Eed">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="READY" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fJG-Gx-Eed">
                                         <rect key="frame" x="5" y="30" width="321" height="23"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="23" id="vgO-Jg-Q7e"/>
@@ -241,7 +241,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCw-GW-d8p" userLabel="Player View">
                                 <rect key="frame" x="0.0" y="448" width="320" height="120"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_progress.png" translatesAutoresizingMaskIntoConstraints="NO" id="fOM-IS-GZB">
+                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_progress.png" translatesAutoresizingMaskIntoConstraints="NO" id="fOM-IS-GZB">
                                         <rect key="frame" x="136" y="68" width="44" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="44" id="KQ2-Ex-oKl"/>
@@ -342,7 +342,7 @@
                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="V6L-Sp-qfT" customClass="SparkSlider" customModule="labs" customModuleProvider="target">
+                                    <slider opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="V6L-Sp-qfT" customClass="SparkSlider" customModule="labs" customModuleProvider="target">
                                         <rect key="frame" x="50" y="49" width="220" height="31"/>
                                         <connections>
                                             <action selector="onProgressBarDown:" destination="ATs-9y-TgU" eventType="touchDown" id="UV6-qK-54K"/>

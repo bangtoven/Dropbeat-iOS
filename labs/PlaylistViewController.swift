@@ -279,7 +279,7 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
             playerStatus.text = "PLAYING"
             playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
         } else if (PlayerContext.playState == PlayState.STOPPED) {
-            playerStatus.text = "STOPPED"
+            playerStatus.text = "READY"
             playerTitle.text = defaultText
         }
     }

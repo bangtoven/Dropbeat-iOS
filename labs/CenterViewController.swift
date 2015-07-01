@@ -829,7 +829,7 @@ class CenterViewController: UIViewController {
                     rate = 0
                     break
                 case PlayState.STOPPED:
-                    stateText = "STOPPED"
+                    stateText = "READY"
                     rate = 0
                     break
                 case PlayState.PLAYING:

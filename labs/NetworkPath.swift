@@ -42,8 +42,8 @@ public class ApiPath {
 }
 
 public class CorePath {
-//    static var host :String = "http://coroutine.io:19070/api/"
-    static var host :String = "http://core.dropbeat.net/api/"
+    static var host :String = "http://coroutine.io:19070/api/"
+//    static var host :String = "http://core.dropbeat.net/api/"
     
     // core.search
     static var search :String = host + "search/"

@@ -48,16 +48,14 @@ class PlayerContext {
         } else {
             var nextIdx :Int
             
-            if PlayerContext.repeatState == RepeatState.NOT_REPEAT {
+            if PlayerContext.repeatState == RepeatState.REPEAT_PLAYLIST {
+                nextIdx = (currentTrackIdx + 1) % size!
+                track = playlist!.tracks[nextIdx] as Track
+            } else {
                 nextIdx = currentTrackIdx + 1
                 if (nextIdx < size) {
                     track = playlist!.tracks[nextIdx] as Track
                 }
-            } else if PlayerContext.repeatState == RepeatState.REPEAT_PLAYLIST {
-                nextIdx = (currentTrackIdx + 1) % size!
-                track = playlist!.tracks[nextIdx] as Track
-            } else if PlayerContext.repeatState == RepeatState.REPEAT_ONE {
-                track = playlist!.tracks[currentTrackIdx] as Track
             }
         }
         return track
@@ -77,19 +75,17 @@ class PlayerContext {
         } else {
             var prevIdx :Int
             
-            if PlayerContext.repeatState == RepeatState.NOT_REPEAT {
-                prevIdx = currentTrackIdx - 1
-                if prevIdx >= 0 {
-                    track = playlist!.tracks[prevIdx] as Track
-                }
-            } else if PlayerContext.repeatState == RepeatState.REPEAT_PLAYLIST {
+            if PlayerContext.repeatState == RepeatState.REPEAT_PLAYLIST {
                 prevIdx = currentTrackIdx - 1
                 if prevIdx <= 0 {
                     prevIdx = size! - 1
                 }
                 track = playlist!.tracks[prevIdx] as Track
-            } else if PlayerContext.repeatState == RepeatState.REPEAT_ONE {
-                track = playlist!.tracks[currentTrackIdx] as Track
+            } else {
+                prevIdx = currentTrackIdx - 1
+                if prevIdx >= 0 {
+                    track = playlist!.tracks[prevIdx] as Track
+                }
             }
         }
         return track       

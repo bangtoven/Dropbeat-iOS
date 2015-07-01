@@ -17,6 +17,10 @@ class Requests {
         return send(Method.PUT, url: url, params: params, auth: auth, respCb: respCb)
     }
     
+    static func sendHead(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return send(Method.HEAD, url: url, params: params, auth: auth, respCb: respCb)
+    }
+    
     static func send(method: Method, url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, background: Bool = false,respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         var adapter = WebAdapter(url: url, method: method, params: params, auth: auth, background:background)
         return adapter.send(respCb)
@@ -82,7 +86,7 @@ class Requests {
         if (count(systemVersion) > 0) {
             firstDigit = systemVersion.substringToIndex(advance(systemVersion.startIndex, 1))
         }
-        return sendGet(ResolvePath.resolveStream, params: ["uid": uid, "t": "ios\(firstDigit)"], auth: false, background: false, respCb: respCb)
+        return sendGet(ResolvePath.resolveStream, params: ["uid": uid, "v": 1, "t": "ios\(firstDigit)"], auth: false, background: false, respCb: respCb)
     }
     
     static func fetchFeed(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
@@ -106,6 +110,14 @@ class Requests {
     
     static func getClientVersion(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         return sendGet(ApiPath.metaVersion, auth: false, respCb: respCb)
+    }
+    
+    static func soundcloudHead(url: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+        let manager =  Manager.sharedInstance
+        let enc = ParameterEncoding.URL
+        var req = manager.request(Method.HEAD, url, parameters: Dictionary<String, AnyObject>(), encoding: enc)
+        req.validate().response(respCb)
+        return req
     }
 }
 

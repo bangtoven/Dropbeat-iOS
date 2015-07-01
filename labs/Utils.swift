@@ -42,7 +42,7 @@ extension UIColor {
 
 class ViewUtils {
     static func showNoticeAlert(viewController:UIViewController, title:String,
-            message:String, btnText:String="confirm", callback:(() -> Void)?=nil) {
+            message:String, btnText:String="Confirm", callback:(() -> Void)?=nil) {
                 
         if (NSClassFromString("UIAlertController") != nil) {
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)

@@ -29,6 +29,9 @@
 		5853A7EA1B0F44560068C6DF /* ScrollPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5853A7E91B0F44560068C6DF /* ScrollPager.swift */; };
 		586D166A1B0B65AF00C5147F /* MMSparkDrawerVisualStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D16691B0B65AF00C5147F /* MMSparkDrawerVisualStateManager.swift */; };
 		586D166E1B0B972400C5147F /* StartupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D166D1B0B972400C5147F /* StartupViewController.swift */; };
+		5878379E1B43D977008DF480 /* ic_hq_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 5878379C1B43D977008DF480 /* ic_hq_on.png */; };
+		587837A01B43E6F8008DF480 /* ic_hq_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 5878379F1B43E6F8008DF480 /* ic_hq_off.png */; };
+		587837A41B4402D0008DF480 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 587837A31B4402D0008DF480 /* Reachability.m */; };
 		587CDD221B0E4EC100D23CCC /* CopyrightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587CDD211B0E4EC100D23CCC /* CopyrightViewController.swift */; };
 		587CDD241B0E4FA900D23CCC /* copyright.html in Resources */ = {isa = PBXBuildFile; fileRef = 587CDD231B0E4FA900D23CCC /* copyright.html */; };
 		588693761B13B4ED00566124 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 588693751B13B4ED00566124 /* libGoogleAnalyticsServices.a */; };
@@ -183,6 +186,10 @@
 		5853A7E91B0F44560068C6DF /* ScrollPager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollPager.swift; sourceTree = "<group>"; };
 		586D16691B0B65AF00C5147F /* MMSparkDrawerVisualStateManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MMSparkDrawerVisualStateManager.swift; path = MMDrawerController/MMSparkDrawerVisualStateManager.swift; sourceTree = "<group>"; };
 		586D166D1B0B972400C5147F /* StartupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupViewController.swift; sourceTree = "<group>"; };
+		5878379C1B43D977008DF480 /* ic_hq_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_hq_on.png; sourceTree = "<group>"; };
+		5878379F1B43E6F8008DF480 /* ic_hq_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_hq_off.png; sourceTree = "<group>"; };
+		587837A21B4402D0008DF480 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Libraries/Reachability/Reachability.h; sourceTree = SOURCE_ROOT; };
+		587837A31B4402D0008DF480 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Libraries/Reachability/Reachability.m; sourceTree = SOURCE_ROOT; };
 		587CDD211B0E4EC100D23CCC /* CopyrightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyrightViewController.swift; sourceTree = "<group>"; };
 		587CDD231B0E4FA900D23CCC /* copyright.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = copyright.html; sourceTree = "<group>"; };
 		588693751B13B4ED00566124 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalyticsServices.a; path = Libraries/GA/libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
@@ -371,6 +378,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		587837A11B440225008DF480 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				587837A21B4402D0008DF480 /* Reachability.h */,
+				587837A31B4402D0008DF480 /* Reachability.m */,
+			);
+			name = Reachability;
+			sourceTree = "<group>";
+		};
 		588693771B13B51300566124 /* SDWebImage */ = {
 			isa = PBXGroup;
 			children = (
@@ -470,6 +486,8 @@
 		5890D62C1B081DB500AAEAE5 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				5878379F1B43E6F8008DF480 /* ic_hq_off.png */,
+				5878379C1B43D977008DF480 /* ic_hq_on.png */,
 				5813390C1B12F9F300509879 /* default_artwork.png */,
 				58CDE2EB1B119BFD009C8AA2 /* logo_512x512.png */,
 				58CF0C431B110E2200AD4BF0 /* slider_thumb.png */,
@@ -608,6 +626,7 @@
 		FCD1DA841B04CCB200F9EA70 /* labs */ = {
 			isa = PBXGroup;
 			children = (
+				587837A11B440225008DF480 /* Reachability */,
 				588693BF1B13B7A800566124 /* MBProgressHUD */,
 				588693A81B13B52700566124 /* MMDrawerController */,
 				588693B51B13B52700566124 /* MMDrawerController-Storyboard */,
@@ -766,6 +785,7 @@
 				5890D65F1B081DD200AAEAE5 /* btn_repeat_disabled.png in Resources */,
 				582E7D9E1B10BCA500AB76A2 /* facebook_btn_bg.png in Resources */,
 				5890D66D1B081DD200AAEAE5 /* ic_cogwheel.png in Resources */,
+				587837A01B43E6F8008DF480 /* ic_hq_off.png in Resources */,
 				582E7D941B108AC200AB76A2 /* plus-96.png in Resources */,
 				5890D6541B081DD200AAEAE5 /* btn_add.png in Resources */,
 				5890D6621B081DD200AAEAE5 /* btn_shuffle_disabled.png in Resources */,
@@ -798,6 +818,7 @@
 				58CF0C401B110CF500AD4BF0 /* slider_max.png in Resources */,
 				582E7DA01B10D5F200AB76A2 /* next-96.png in Resources */,
 				5890D6761B081DD200AAEAE5 /* ic_presence_offline.png in Resources */,
+				5878379E1B43D977008DF480 /* ic_hq_on.png in Resources */,
 				5890D65C1B081DD200AAEAE5 /* btn_play_disabled.png in Resources */,
 				5890D66F1B081DD200AAEAE5 /* ic_edit_gray.png in Resources */,
 				5890D6561B081DD200AAEAE5 /* btn_backward_normal.png in Resources */,
@@ -894,6 +915,7 @@
 				581D4C9E1B09FA120036BEBF /* PlaylistViewController.swift in Sources */,
 				588693A31B13B51300566124 /* UIImage+GIF.m in Sources */,
 				58BB0AE81B12222C00B07279 /* Manager.swift in Sources */,
+				587837A41B4402D0008DF480 /* Reachability.m in Sources */,
 				5886939A1B13B51300566124 /* NSData+ImageContentType.m in Sources */,
 				58BB0AE91B12222C00B07279 /* ParameterEncoding.swift in Sources */,
 				588693A11B13B51300566124 /* SDWebImagePrefetcher.m in Sources */,

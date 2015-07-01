@@ -21,6 +21,7 @@ class PlayerContext {
     static var playlists: [Playlist] = []
     static var correctDuration: Double?
     static var currentPlaybackTime: Double?
+    static var qualityState = QualityState.LQ
     
     static func resetPlaylist(playlists: [Playlist]) {
         PlayerContext.playlists = playlists
@@ -32,6 +33,10 @@ class PlayerContext {
     
     static func changeShuffleState() {
         PlayerContext.shuffleState = (PlayerContext.shuffleState + 1) % 2
+    }
+    
+    static func changeQualityState() {
+        PlayerContext.qualityState = (PlayerContext.qualityState + 1) % 2
     }
     
     static func pickNextTrack() -> Track? {
@@ -137,4 +142,11 @@ class PlayState {
     static var LOADING = 1
     static var PLAYING = 2
     static var PAUSED = 3
+    static var SWITCHING = 4
+    static var BUFFERING = 5
+}
+
+class QualityState {
+    static var LQ = 0
+    static var HQ = 1
 }

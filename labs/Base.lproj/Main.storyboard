@@ -241,6 +241,20 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MCw-GW-d8p" userLabel="Player View">
                                 <rect key="frame" x="0.0" y="448" width="320" height="120"/>
                                 <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="27o-89-IvM">
+                                        <rect key="frame" x="270" y="72" width="42" height="34"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="46" id="FXB-bP-f6E"/>
+                                            <constraint firstAttribute="height" constant="34" id="o5F-Nw-Nk9"/>
+                                        </constraints>
+                                        <inset key="contentEdgeInsets" minX="5" minY="7" maxX="5" maxY="7"/>
+                                        <state key="normal" title="HQ" image="ic_hq_off.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="onQualityBtnClicked:" destination="ATs-9y-TgU" eventType="touchUpInside" id="Yjy-R4-B8s"/>
+                                        </connections>
+                                    </button>
                                     <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_progress.png" translatesAutoresizingMaskIntoConstraints="NO" id="fOM-IS-GZB">
                                         <rect key="frame" x="136" y="68" width="44" height="44"/>
                                         <constraints>
@@ -374,6 +388,7 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="27o-89-IvM" secondAttribute="bottom" constant="13" id="0Zd-4q-NHS"/>
                                     <constraint firstItem="UgX-Ys-9k3" firstAttribute="leading" secondItem="7aW-O2-d4X" secondAttribute="trailing" constant="5" id="0ra-an-gFD"/>
                                     <constraint firstAttribute="trailing" secondItem="wTv-dk-XgE" secondAttribute="trailing" constant="8" id="3wM-T4-e3a"/>
                                     <constraint firstAttribute="bottom" secondItem="7aW-O2-d4X" secondAttribute="bottom" constant="15" id="6gk-xF-6IM"/>
@@ -388,6 +403,7 @@
                                     <constraint firstAttribute="trailing" secondItem="WiD-qm-jbq" secondAttribute="trailing" constant="8" id="MiQ-bQ-5qK"/>
                                     <constraint firstItem="bzj-9s-me8" firstAttribute="top" secondItem="MCw-GW-d8p" secondAttribute="top" constant="5" id="NDF-2v-ri3"/>
                                     <constraint firstItem="Uad-bp-giQ" firstAttribute="leading" secondItem="fOM-IS-GZB" secondAttribute="trailing" constant="5" id="Nua-LV-UVe"/>
+                                    <constraint firstAttribute="trailing" secondItem="27o-89-IvM" secondAttribute="trailing" constant="5" id="P67-ua-fAj"/>
                                     <constraint firstAttribute="bottom" secondItem="O8j-VO-GoD" secondAttribute="bottom" constant="8" id="Tmg-zd-mBd"/>
                                     <constraint firstAttribute="trailing" secondItem="bzj-9s-me8" secondAttribute="trailing" constant="8" id="WLi-z1-Gbl"/>
                                     <constraint firstAttribute="centerX" secondItem="UgX-Ys-9k3" secondAttribute="centerX" constant="2" id="ZDt-zH-ETW"/>
@@ -616,6 +632,7 @@
                         <outlet property="prevBtn" destination="7aW-O2-d4X" id="lQC-Sw-3oX"/>
                         <outlet property="progressBar" destination="V6L-Sp-qfT" id="8Gn-3p-gBb"/>
                         <outlet property="progressTextView" destination="3t4-fh-k24" id="QbZ-Jv-GrE"/>
+                        <outlet property="qualityBtn" destination="27o-89-IvM" id="HFT-yF-XcU"/>
                         <outlet property="repeatBtn" destination="xL3-uN-g7m" id="xJE-mh-Ynd"/>
                         <outlet property="shuffleBtn" destination="26r-j7-veC" id="dMK-F7-iOh"/>
                         <outlet property="totalTextView" destination="WiD-qm-jbq" id="Vun-th-uxe"/>
@@ -1629,6 +1646,7 @@
         <image name="home-100.png" width="100" height="100"/>
         <image name="ic_bin.png" width="60" height="84"/>
         <image name="ic_edit_gray.png" width="72" height="72"/>
+        <image name="ic_hq_off.png" width="105" height="64"/>
         <image name="ic_music_gray.png" width="63" height="73"/>
         <image name="logo.png" width="860" height="860"/>
         <image name="next-96.png" width="96" height="96"/>

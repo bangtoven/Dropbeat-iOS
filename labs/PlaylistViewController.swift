@@ -26,6 +26,7 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var playlistView: UITableView!
     @IBOutlet weak var playlistSelectView: UITableView!
     @IBOutlet weak var playlistNameView: UILabel!
+    @IBOutlet weak var qualityBtn: UIButton!
     
     var prevShuffleBtnState:Int?
     var prevRepeatBtnState:Int?
@@ -215,7 +216,7 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "updatePlayTrack:", name: NotifyKey.updatePlay, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "updatePlayTrack:", name: NotifyKey.updatePlay, object: nil)
+            self, selector: "networkStatusUpdated", name: NotifyKey.networkStatusChanged, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "appWillEnterForeground",
             name: UIApplicationWillEnterForegroundNotification, object: nil)
@@ -242,9 +243,10 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPrev, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerNext, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerSeek, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlaylistView, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updateRepeatState, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlaylistView, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.networkStatusChanged, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
     }
     
@@ -259,17 +261,40 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
         // Dispose of any resources that can be recreated.
     }
     
+    func networkStatusUpdated() {
+        if (PlayerContext.playState == PlayState.STOPPED) {
+            updateQualityView()
+        }
+    }
+    
     func updatePlayerViews() {
         updateRepeatView()
         updateShuffleView()
         updatePlayView()
         updateProgressView()
         updateStatusView()
+        updateQualityView()
+    }
+    
+    func updateQualityView() {
+        switch(PlayerContext.qualityState) {
+        case QualityState.LQ:
+            var image:UIImage = UIImage(named: "ic_hq_off")!
+            qualityBtn.setImage(image, forState: UIControlState.Normal)
+            break
+        case QualityState.HQ:
+            var image:UIImage = UIImage(named: "ic_hq_on")!
+            qualityBtn.setImage(image, forState: UIControlState.Normal)
+            break
+        default:
+            break
+        }
     }
     
     func updateStatusView() {
         let defaultText = "CHOOSE TRACK"
-        if (PlayerContext.playState == PlayState.LOADING) {
+        if (PlayerContext.playState == PlayState.LOADING ||
+                PlayerContext.playState == PlayState.SWITCHING) {
             playerStatus.text = "LOADING"
             playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
         } else if (PlayerContext.playState == PlayState.PAUSED) {
@@ -281,6 +306,9 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
         } else if (PlayerContext.playState == PlayState.STOPPED) {
             playerStatus.text = "READY"
             playerTitle.text = defaultText
+        } else if (PlayerContext.playState == PlayState.BUFFERING) {
+            playerStatus.text = "BUFFERING"
+            playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
         }
     }
     
@@ -309,7 +337,9 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
     }
     
     func updatePlayView() {
-        if (PlayerContext.playState == PlayState.LOADING) {
+        if (PlayerContext.playState == PlayState.LOADING ||
+                PlayerContext.playState == PlayState.BUFFERING ||
+                PlayerContext.playState == PlayState.SWITCHING) {
             playBtn.hidden = true
             pauseBtn.hidden = true
             loadingView.hidden = false
@@ -330,7 +360,9 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
     }
     
     override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
-        if (flag && PlayerContext.playState == PlayState.LOADING) {
+        if (flag && (PlayerContext.playState == PlayState.LOADING ||
+                PlayerContext.playState == PlayState.BUFFERING ||
+                PlayerContext.playState == PlayState.SWITCHING)) {
             loadingView.rotate360Degrees(duration: 0.7, completionDelegate: self)
         }
     }
@@ -762,13 +794,39 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
     @IBAction func onShuffleBtnClicked(sender: UIButton) {
         PlayerContext.changeShuffleState()
         updateShuffleView()
-        println(PlayerContext.shuffleState)
     }
     
     @IBAction func onRepeatBtnClicked(sender: UIButton) {
         PlayerContext.changeRepeatState()
         updateRepeatView()
-        println(PlayerContext.repeatState)
+    }
+    @IBAction func onQualityBtnClicked(sender: UIButton) {
+        onQualityBtnClicked(sender, forceChange: false)
+    }
+    
+    func onQualityBtnClicked(sender: UIButton, forceChange:Bool) {
+        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        var networkStatus = appDelegate.networkStatus
+        if (PlayerContext.playState == PlayState.SWITCHING) {
+            return
+        }
+        //  we should confirm here for data usage
+        if (!forceChange &&
+                networkStatus == NetworkStatus.OTHER &&
+                PlayerContext.qualityState == QualityState.LQ) {
+            ViewUtils.showConfirmAlert(self, title: "Data usage warning",
+                    message: "Streaming music in High Quality can use significant network data",
+                    positiveBtnText: "Proceed", positiveBtnCallback: { () -> Void in
+                self.onQualityBtnClicked(sender, forceChange:true)
+            }, negativeBtnText: "Cancel", negativeBtnCallback: { () -> Void in
+                return
+            })
+            return
+        }
+        appDelegate.futureQuality = nil
+        PlayerContext.changeQualityState()
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            NotifyKey.updateQualityState, object: nil)
     }
     
     func updatePlayTrack(noti: NSNotification) {

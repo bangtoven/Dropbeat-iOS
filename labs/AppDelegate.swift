@@ -9,12 +9,23 @@
 import UIKit
 import Raygun4iOS
 
+class NetworkStatus {
+    static var NOT_REACHABLE = 0
+    static var WIFI = 1
+    static var OTHER = 2
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     var centerContainer: MMDrawerController?
     var account: Account?
+    // 0 is NotReachable
+    var networkStatus: Int = NetworkStatus.NOT_REACHABLE
+    var shouldInitializeQualityState = true
+    var futureQuality:Int? = nil
+    var reachability: Reachability?
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -29,6 +40,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self, selector: "sender", name: NotifyKey.playerNext, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "sender", name: NotifyKey.playerSeek, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.networkStatusChanged, object: nil)
         
         // GA settings
         let gai = GAI.sharedInstance()
@@ -39,6 +52,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         gai.trackerWithTrackingId("UA-49094112-1")
         
+        
+        reachability = Reachability(hostName: "www.google.com")
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "networkReachabilityChanged:", name: kReachabilityChangedNotification, object: reachability)
+        reachability!.startNotifier()
         
         Raygun.sharedReporterWithApiKey("5vjswgUxxTkQxkoeNzkJeg==")
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
@@ -133,6 +151,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         let startupViewController = mainStoryboard.instantiateViewControllerWithIdentifier("StartupViewController") as! StartupViewController
         self.window!.rootViewController = startupViewController
+    }
+    
+    func networkReachabilityChanged (noti: NSNotification) {
+        var status = reachability!.currentReachabilityStatus()
+        networkStatus = status.value
+        if (networkStatus != NetworkStatus.NOT_REACHABLE) {
+            let quality = networkStatus == NetworkStatus.WIFI ?
+                    QualityState.HQ : QualityState.LQ
+            if (shouldInitializeQualityState || PlayerContext.playState == PlayState.STOPPED) {
+                shouldInitializeQualityState = false
+                PlayerContext.qualityState = quality
+            } else {
+                futureQuality = quality
+            }
+        }
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            NotifyKey.networkStatusChanged, object: nil)
+        
+        switch (networkStatus) {
+        case 0:
+            println("networkReachability: NotReachable")
+            break
+        case 1:
+            println("networkReachability: ReachableViaWiFi")
+            break
+        case 2:
+            println("networkReachability: ReachableViaWWAN")
+            break
+        default:
+            break
+        }
     }
 }
 

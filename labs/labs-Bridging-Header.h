@@ -48,4 +48,6 @@
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <FBSDKShareKit/FBSDKShareKit.h>
 
+#import "Reachability.h"
+
 #endif

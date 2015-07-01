@@ -13,16 +13,34 @@ func resolve(uid: String, type: String, respCb: ((NSURLRequest, NSHTTPURLRespons
     if type == "soundcloud" {
         var url :String = "https://api.soundcloud.com/tracks/\(uid)/stream?client_id=b45b1aa10f1ac2941910a7f0d10f8e28"
 
+        Requests.soundcloudHead(url, respCb: {(request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            var statusCode = response?.statusCode ?? 999
+            var raw: Dictionary<String, AnyObject> = [String: AnyObject]()
+            var data: [Dictionary<String, AnyObject>] = Array<[String: AnyObject]>()
+            if (response == nil || Int(response!.statusCode / 100) > 2) {
+                raw["urls"] = data
+                respCb(NSURLRequest(), nil, raw, nil)
+            }
+            data.append([
+                "url": url,
+                "ext": "mp3"
+            ])
+            raw["urls"] = data
+            respCb(NSURLRequest(), nil, raw, nil)
+        })
+    } else if type == "youtube" {
+        return Requests.streamResolve(uid, respCb: respCb)
+    } else if (startsWith(uid, "http")) {
         var raw: Dictionary<String, AnyObject> = [String: AnyObject]()
         var data: [Dictionary<String, AnyObject>] = Array<[String: AnyObject]>()
+        var url = uid.stringByRemovingPercentEncoding!
+        
         data.append([
             "url": url,
             "ext": "mp3"
         ])
         raw["urls"] = data
         respCb(NSURLRequest(), nil, raw, nil)
-    } else if type == "youtube" {
-        return Requests.streamResolve(uid, respCb: respCb)
     }
     return nil
 }

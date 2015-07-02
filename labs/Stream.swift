@@ -9,6 +9,15 @@
 import Foundation
 
 
+func resolveLocal(uid: String, type: String) -> String? {
+    if type == "soundcloud" {
+        return "https://api.soundcloud.com/tracks/\(uid)/stream?client_id=b45b1aa10f1ac2941910a7f0d10f8e28"
+    } else if (type != "youtube" && startsWith(uid, "http")) {
+        return uid.stringByRemovingPercentEncoding!
+    }
+    return nil
+}
+
 func resolve(uid: String, type: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request? {
     if type == "soundcloud" {
         var url :String = "https://api.soundcloud.com/tracks/\(uid)/stream?client_id=b45b1aa10f1ac2941910a7f0d10f8e28"

@@ -22,7 +22,7 @@ class CenterViewController: UIViewController {
     @IBOutlet weak var playBtn: UIButton!
     @IBOutlet weak var pauseBtn: UIButton!
     
-    var audioPlayer: MPMoviePlayerController = MPMoviePlayerController()
+    var audioPlayerControl: XCDYouTubeVideoPlayerViewController = XCDYouTubeVideoPlayerViewController()
     
     var remoteProgressTimer: NSTimer?
     var isProgressUpdatable = true
@@ -52,7 +52,6 @@ class CenterViewController: UIViewController {
         
         self.signinVC = nil
         self.playlistVC = nil
-        
         
         if (CenterViewController.observerAttached == false) {
             CenterViewController.observerAttached = true
@@ -108,7 +107,7 @@ class CenterViewController: UIViewController {
     }
     
     func backgroundHook () {
-        if (PlayerContext.currentTrack != nil && PlayerContext.currentStreamCandidate != nil) {
+        if (PlayerContext.currentTrack != nil) {
             // Check whether it is video and stopped when it entered into background.
             if (hookingBackground) {
                 return
@@ -224,7 +223,7 @@ class CenterViewController: UIViewController {
         if (currentTrack == nil) {
             return
         }
-        if (audioPlayer.duration == 0.0) {
+        if (audioPlayerControl.moviePlayer.duration == 0.0) {
             // Audio meta has not been loaded.
             return
         }
@@ -232,14 +231,14 @@ class CenterViewController: UIViewController {
         // Youtube duration hack.
         if (currentTrack?.type == "youtube") {
             if (PlayerContext.correctDuration == nil) {
-                PlayerContext.correctDuration = audioPlayer.duration
+                PlayerContext.correctDuration = audioPlayerControl.moviePlayer.duration
             }
 
-            if (audioPlayer.duration != PlayerContext.correctDuration) {
+            if (audioPlayerControl.moviePlayer.duration != PlayerContext.correctDuration) {
                 // To find a end of the track that has corrected duration.
                 // - This is hacky way to prevent repeatedly gain pause / play event from player
                 // player gain repeatedly pasuse / play event after correntDuration
-                if (audioPlayer.currentPlaybackTime >= PlayerContext.correctDuration!) {
+                if (audioPlayerControl.moviePlayer.currentPlaybackTime >= PlayerContext.correctDuration!) {
                     if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
                         handleSeek(0)
                     } else {
@@ -247,9 +246,9 @@ class CenterViewController: UIViewController {
                             remoteProgressTimer?.invalidate()
                             remoteProgressTimer = nil
                         }
-                        if (audioPlayer.playbackState != MPMoviePlaybackState.Stopped) {
+                        if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
                             self.forceStopPlayer = true
-                            audioPlayer.stop()
+                            audioPlayerControl.moviePlayer.stop()
                         }
                     }
                     return
@@ -258,18 +257,18 @@ class CenterViewController: UIViewController {
 
             if (PlayerContext.correctDuration == -1.0) {
                 // URL has no duration info.
-                PlayerContext.correctDuration = audioPlayer.duration / 2.0
+                PlayerContext.correctDuration = audioPlayerControl.moviePlayer.duration / 2.0
             } else {
-                var buffer :Double = audioPlayer.duration * 0.75
+                var buffer :Double = audioPlayerControl.moviePlayer.duration * 0.75
                 if (buffer <= PlayerContext.correctDuration) {
                     // Cannot sure if it's wrong. So, let's return back original value.
-                    PlayerContext.correctDuration = audioPlayer.duration
+                    PlayerContext.correctDuration = audioPlayerControl.moviePlayer.duration
                 }
             }
         } else {
-            PlayerContext.correctDuration = audioPlayer.duration
+            PlayerContext.correctDuration = audioPlayerControl.moviePlayer.duration
         }
-        PlayerContext.currentPlaybackTime = audioPlayer.currentPlaybackTime
+        PlayerContext.currentPlaybackTime = audioPlayerControl.moviePlayer.currentPlaybackTime
         
         // update playinginfo duration
         if (!self.playingInfoDisplayDuration) {
@@ -305,52 +304,51 @@ class CenterViewController: UIViewController {
     }
     
     func MPMoviePlayerLoadStateDidChange (noti: NSNotification) {
-        if (audioPlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue) != 0 {
+        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue) != 0 {
             println("load state = playable")
         }
-        if (audioPlayer.loadState.rawValue & MPMovieLoadState.PlaythroughOK.rawValue != 0) {
+        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.PlaythroughOK.rawValue != 0) {
             println("load state = playthroughOk")
         }
-        if (audioPlayer.loadState.rawValue & MPMovieLoadState.allZeros.rawValue != 0) {
+        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.allZeros.rawValue != 0) {
             println("load state = allzeros")
         }
-        if (audioPlayer.loadState.rawValue & MPMovieLoadState.Stalled.rawValue != 0) {
+        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Stalled.rawValue != 0) {
             println("load state = Stalled")
         }
-        if (audioPlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0 &&
-                audioPlayer.loadState.rawValue & MPMovieLoadState.Stalled.rawValue != 0) {
+        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0 &&
+                audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Stalled.rawValue != 0) {
             startBackgroundTask()
             updatePlayState(PlayState.BUFFERING)
             return
         }
-        if (audioPlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0 &&
-            audioPlayer.loadState.rawValue & MPMovieLoadState.PlaythroughOK.rawValue != 0) {
+        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0) {
             if (PlayerContext.playState == PlayState.SWITCHING &&
                     PlayerContext.currentPlaybackTime != nil &&
                     PlayerContext.currentPlaybackTime > 0) {
-                audioPlayer.currentPlaybackTime = PlayerContext.currentPlaybackTime!
+                audioPlayerControl.moviePlayer.currentPlaybackTime = PlayerContext.currentPlaybackTime!
             }
-            audioPlayer.play()
+            audioPlayerControl.moviePlayer.play()
             return
         }
         
-        if (audioPlayer.loadState.rawValue & MPMovieLoadState.allZeros.rawValue != 0) {
+        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.allZeros.rawValue != 0) {
             // If youtube which has double duration length will be get here
             // when it play over original duration (:1/2) length
             if (PlayerContext.currentTrack != nil &&
                 PlayerContext.currentTrack!.type == "youtube" &&
                 PlayerContext.correctDuration != nil){
-                if (audioPlayer.currentPlaybackTime >= PlayerContext.correctDuration! - 1) {
+                if (audioPlayerControl.moviePlayer.currentPlaybackTime >= PlayerContext.correctDuration! - 1) {
                     if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
                         handleSeek(0)
-                    } else if (audioPlayer.playbackState != MPMoviePlaybackState.Stopped) {
+                    } else if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
                         if remoteProgressTimer != nil {
                             remoteProgressTimer?.invalidate()
                             remoteProgressTimer = nil
                         }
-                        if (audioPlayer.playbackState != MPMoviePlaybackState.Stopped) {
+                        if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
                             self.forceStopPlayer = true
-                            audioPlayer.stop()
+                            audioPlayerControl.moviePlayer.stop()
                         }
                     }
                 }
@@ -359,29 +357,30 @@ class CenterViewController: UIViewController {
     }
     
     func MPMoviePlayerPlaybackStateDidChange (noti: NSNotification) {
-        println("changed! \(audioPlayer.playbackState.rawValue)")
+        println("changed! \(audioPlayerControl.moviePlayer.playbackState.rawValue)")
         
         if (forceStopPlayer && (
-                audioPlayer.playbackState == MPMoviePlaybackState.Paused ||
-                audioPlayer.playbackState == MPMoviePlaybackState.Playing)) {
+                audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Paused ||
+                audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Playing)) {
             return
         }
         
-        if (audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
+        if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Playing) {
+            println("playing URL : \(audioPlayerControl.moviePlayer.contentURL)")
             updatePlayState(PlayState.PLAYING)
             // Periodic timer for progress update.
             if remoteProgressTimer == nil {
                 remoteProgressTimer = NSTimer.scheduledTimerWithTimeInterval(
                     0.5, target: self, selector: Selector("updateProgress"), userInfo: nil, repeats: true)
             }
-        } else if (audioPlayer.playbackState == MPMoviePlaybackState.Stopped) {
+        } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Stopped) {
             if remoteProgressTimer != nil {
                 remoteProgressTimer?.invalidate()
                 remoteProgressTimer = nil
             }
-        } else if (audioPlayer.playbackState == MPMoviePlaybackState.Paused) {
-            if ((audioPlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0 &&
-                audioPlayer.loadState.rawValue & MPMovieLoadState.Stalled.rawValue != 0) ||
+        } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Paused) {
+            if ((audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0 &&
+                audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Stalled.rawValue != 0) ||
                 PlayerContext.playState == PlayState.SWITCHING ||
                 PlayerContext.playState == PlayState.BUFFERING) {
                 // buffering
@@ -396,15 +395,15 @@ class CenterViewController: UIViewController {
 //                startBackgroundTask()
 //                triggerBackgroundPlay(100)
 //            }
-        } else if (audioPlayer.playbackState == MPMoviePlaybackState.Interrupted) {
+        } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Interrupted) {
 
-        } else if (audioPlayer.playbackState == MPMoviePlaybackState.SeekingForward) {
+        } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.SeekingForward) {
             if remoteProgressTimer != nil {
                 remoteProgressTimer?.invalidate()
                 remoteProgressTimer = nil
             }
             updatePlayState(PlayState.BUFFERING)
-        } else if (audioPlayer.playbackState == MPMoviePlaybackState.SeekingBackward) {
+        } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.SeekingBackward) {
             if remoteProgressTimer != nil {
                 remoteProgressTimer?.invalidate()
                 remoteProgressTimer = nil
@@ -421,7 +420,7 @@ class CenterViewController: UIViewController {
                 println("playback failed with error description: \(reason!.description)")
                 ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play",
                     message: "caused by undefined exception (\(reason!.domain), \(reason!.code))")
-                deactivateAudioSession()
+                handleStop()
             }
         }
         println("preload finished")
@@ -437,18 +436,19 @@ class CenterViewController: UIViewController {
                 if (reason == MPMovieFinishReason.PlaybackError.rawValue) {
                     // Finished with error
                     var err:NSError? = userInfo!["error"] as? NSError
+                    var errMsg = "caused by undefined exception "
                     if (err != nil) {
                         println("playback failed with error description: \(err!.description)")
-                        ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play",
-                            message: "caused by undefined exception (\(err!.domain), \(err!.code))")
+                        errMsg += "\(err!.domain):\(err!.code)"
                     }
-                    
-                    deactivateAudioSession()
+                    ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play",
+                        message: errMsg)
+                    handleStop()
                     return
                 }
             }
         }
-        if (self.audioPlayer.contentURL == nil) {
+        if (self.audioPlayerControl.moviePlayer.contentURL == nil) {
             return
         }
         
@@ -456,8 +456,6 @@ class CenterViewController: UIViewController {
         var success :Bool = handleNext()
         if (!success) {
             handleStop()
-            updatePlayState(PlayState.STOPPED)
-            deactivateAudioSession()
         }
     }
     
@@ -581,22 +579,16 @@ class CenterViewController: UIViewController {
                 PlayerContext.playState == PlayState.SWITCHING {
                 return
             }
-            if audioPlayer.playbackState == MPMoviePlaybackState.Paused {
+            if audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Paused {
                 // Resume
                 updatePlayStateView(PlayState.PLAYING)
                 playAudioPlayer()
                 return
-            } else if audioPlayer.playbackState == MPMoviePlaybackState.Playing {
+            } else if audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Playing {
                 // Same music is clicked when it is being played.
                 return
             }
             // In case of repeating one track.
-        }
-        
-        if audioPlayer.playbackState == MPMoviePlaybackState.Playing {
-            // Pause previous track.
-            // We do not use `stop` here because calling `stop` will trigger MPMoviePlaybackDidFinish.
-            pauseAudioPlayer()
         }
         
         PlayerContext.currentTrack = track
@@ -621,177 +613,70 @@ class CenterViewController: UIViewController {
         updatePlayState(PlayState.LOADING)
         
         self.activateAudioSession()
-        if (self.prevResolveReq != nil) {
-            self.prevResolveReq!.cancel()
-            self.prevResolveReq = nil
-        }
-        self.prevResolveReq = resolve(track!.id, track!.type, { (req, resp, json, err) in
-            self.prevResolveReq = nil
-            if (closureTrack != nil && closureTrack!.id != PlayerContext.currentTrack?.id) {
-                return
-            }
-            if err == nil {
-                println("FIN RESOLVE")
-                
-                var streamSources :[StreamSource] = getStreamUrls(json!)
-                
-                // Do we need multiple candidates?
-                if streamSources.isEmpty {
-                    println("empty")
-                    ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play",
-                        message: "Failed to find proper source")
-                    // XXX: Cannot play.
-                    if (self.audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
-                        self.audioPlayer.pause()
-                    }
-                    self.audioPlayer.contentURL = nil
-                    self.updatePlayState(PlayState.STOPPED)
-                    self.deactivateAudioSession()
-                    return
-                }
-                PlayerContext.streamCandidates = streamSources
-                var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-                if (appDelegate.futureQuality != nil &&
-                        appDelegate.futureQuality != PlayerContext.qualityState) {
-                    PlayerContext.qualityState = appDelegate.futureQuality!
-                }
-                self.switchPlayerWithQuality(PlayerContext.streamCandidates,
-                    qualityState: PlayerContext.qualityState, isInitial: true)
-                
-                // Log to us
-                if (Account.getCachedAccount() != nil) {
-                    Requests.logPlay(PlayerContext.currentTrack!.title)
-                }
-                
-                // Log to ga
-                let currentTrack = PlayerContext.currentTrack
-                if (currentTrack != nil) {
-                    let tracker = GAI.sharedInstance().defaultTracker
-                    let event = GAIDictionaryBuilder.createEventWithCategory(
-                            "player-play-from-ios",
-                            action: "play-\(currentTrack!.type)",
-                            label: currentTrack!.title,
-                            value: nil
-                        ).build()
-                    
-                    tracker.send(event as [NSObject: AnyObject]!)
-                }
-            } else {
-                // XXX: Cannot play.
-                println(err)
-                var message:String?
-                if (err!.domain == NSURLErrorDomain &&
-                        err!.code == NSURLErrorNotConnectedToInternet) {
-                    message = "Internet is not connected."
-                } else {
-                    message = "Stream source is not available."
-                }
-                if (self.audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
-                    self.audioPlayer.pause()
-                }
-                self.audioPlayer.contentURL = nil
-                ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play", message: message!)
-                self.updatePlayState(PlayState.STOPPED)
-                self.deactivateAudioSession()
-            }
-        })
+        switchPlayerWithQuality(track!, qualityState: PlayerContext.qualityState, isInitial: true)
     }
     
-    func fetchCandidate(candidates:[StreamSource], qualityState: Int) -> StreamSource?{
-        var candidate:StreamSource?
-        if (candidates.count >= 2) {
-            switch(qualityState) {
-            case QualityState.LQ:
-                candidate = candidates[1]
-                break
-            case QualityState.HQ:
-                candidate = candidates[0]
-                break
-            default:
-                break
-            }
-        } else if (candidates.count == 1){
-            candidate = candidates[0]
-        }
-        return candidate
-    }
-    
-    func switchPlayerWithQuality(candidates:[StreamSource], qualityState: Int, isInitial: Bool = false) {
-        var candidate:StreamSource? =
-            self.fetchCandidate(candidates, qualityState: PlayerContext.qualityState)
-        
-        if (candidate == nil) {
-            return
-        }
-        
-        PlayerContext.currentStreamCandidate = candidate!
-        var url = NSURL(string: candidate!.url)
-        
-        if (PlayerContext.currentTrack?.type == "youtube" && candidate!.type == "m4a") {
-            // Youtube duration hack.
-            var q :String = url!.query!
-            var qa = split(q) {$0 == "&"}
-            var dur :String = ""
-            for i :String in qa {
-                var subq :[String] = split(i) {$0 == "="}
-                if subq.count >= 2 {
-                    var key :String = subq[0]
-                    var value :String = subq[1]
-                    if key == "dur" {
-                        dur = value
-                    }
-                } else {
-                    continue
-                }
-            }
-            
-            if (dur != "") {
-                PlayerContext.correctDuration = (dur as NSString).doubleValue
-            } else {
-                // To indicate that we should devide youtube duration into 2.
-                PlayerContext.correctDuration = -1.0
-            }
-        } else if (PlayerContext.currentTrack?.type == "youtube") {
-            // Received video or other audio extension.
-            PlayerContext.correctDuration = nil
-        }
+    func switchPlayerWithQuality(track:Track, qualityState: Int, isInitial: Bool = false) {
+        PlayerContext.correctDuration = nil
        
-        if (self.audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
-            self.audioPlayer.pause()
-        }
+        audioPlayerControl.moviePlayer.contentURL = nil
+        audioPlayerControl.videoIdentifier = nil
+        userPaused = false
+        audioPlayerControl.moviePlayer.stop()
 
         if (isInitial) {
             PlayerContext.currentPlaybackTime = 0
+            PlayerContext.correctDuration = nil
         } else {
             updatePlayState(PlayState.SWITCHING)
             userPaused = false
         }
         
-        // We dont need to create new player
-//        self.audioPlayer = MPMoviePlayerController()
-//        self.audioPlayer.movieSourceType = MPMovieSourceType.Streaming
-        self.audioPlayer.contentURL = url
-        self.audioPlayer.controlStyle = MPMovieControlStyle.Embedded
-        self.audioPlayer.view.hidden = true
-        if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
-            self.audioPlayer.repeatMode = MPMovieRepeatMode.One
+        if (PlayerContext.qualityState == QualityState.LQ) {
+            var qualities = [AnyObject]()
+            qualities.append(XCDYouTubeVideoQuality.Small240.rawValue)
+            qualities.append(XCDYouTubeVideoQuality.Medium360.rawValue)
+            audioPlayerControl.preferredVideoQualities = qualities
         } else {
-            self.audioPlayer.repeatMode = MPMovieRepeatMode.None
+            audioPlayerControl.preferredVideoQualities = nil
+        }
+        
+        if (track.type == "youtube") {
+            audioPlayerControl.videoIdentifier = track.id
+        } else {
+            let url = resolveLocal(track.id, track.type)
+            if (url == nil) {
+                ViewUtils.showNoticeAlert(getCurrentVisibleViewController(), title: "Failed to play",
+                    message: "Unsupported track type")
+                // XXX: Cannot play.
+                handleStop()
+                return
+            }
+            audioPlayerControl.moviePlayer.contentURL = NSURL(string:url!)
+            audioPlayerControl.videoIdentifier = nil
+        }
+        
+        audioPlayerControl.moviePlayer.controlStyle = MPMovieControlStyle.Embedded
+        audioPlayerControl.moviePlayer.view.hidden = true
+        if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
+            audioPlayerControl.moviePlayer.repeatMode = MPMovieRepeatMode.One
+        } else {
+            audioPlayerControl.moviePlayer.repeatMode = MPMovieRepeatMode.None
         }
         
         // NOTE:
         // Not start play here 
-        // audioPlayer.play will be called on MPMoviePlayerLoadStateDidChange func
+        // audioPlayerControl.moviePlayer.play will be called on MPMoviePlayerLoadStateDidChange func
         // receive Playable or PlaythroughOK
         // see http://macromeez.tumblr.com/post/91330737652/continuous-background-media-playback-on-ios-using
         
         println("prepare to play")
-        self.audioPlayer.prepareToPlay()
+        audioPlayerControl.moviePlayer.prepareToPlay()
     }
     
     func handlePause() {
         userPaused = true
-        if (audioPlayer.playbackState == MPMoviePlaybackState.Playing) {
+        if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Playing) {
             pauseAudioPlayer()
             updatePlayStateView(PlayState.PAUSED)
         }
@@ -835,10 +720,13 @@ class CenterViewController: UIViewController {
         PlayerContext.currentTrack = nil
         PlayerContext.currentTrackIdx = -1
         PlayerContext.correctDuration = nil
-        if (audioPlayer.playbackState != MPMoviePlaybackState.Stopped) {
-            audioPlayer.stop()
+        audioPlayerControl.videoIdentifier = nil
+        audioPlayerControl.moviePlayer.contentURL = nil
+        if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
+            audioPlayerControl.moviePlayer.stop()
         }
         updatePlayStateView(PlayState.STOPPED)
+        deactivateAudioSession()
     }
     
     func remoteSeek(noti: NSNotification) {
@@ -859,27 +747,26 @@ class CenterViewController: UIViewController {
         if (newPlaybackTime >= duration && duration > 0) {
             newPlaybackTime = duration - 1
         }
-        audioPlayer.currentPlaybackTime = newPlaybackTime
+        audioPlayerControl.moviePlayer.currentPlaybackTime = newPlaybackTime
     }
     
     func repeatStateUpdated() {
         if PlayerContext.repeatState == RepeatState.REPEAT_ONE {
-            audioPlayer.repeatMode = MPMovieRepeatMode.One
+            audioPlayerControl.moviePlayer.repeatMode = MPMovieRepeatMode.One
         } else {
-            audioPlayer.repeatMode = MPMovieRepeatMode.None
+            audioPlayerControl.moviePlayer.repeatMode = MPMovieRepeatMode.None
         }
     }
     
     func qualityStateUpdated() {
-        if (PlayerContext.streamCandidates.isEmpty ||
-            PlayerContext.playState == PlayState.PAUSED ||
+        if (PlayerContext.playState == PlayState.PAUSED ||
             PlayerContext.playState == PlayState.SWITCHING ||
-            PlayerContext.playState == PlayState.STOPPED) {
+            PlayerContext.playState == PlayState.STOPPED ||
+            PlayerContext.currentTrack == nil) {
                 return
         }
         startBackgroundTask()
-        switchPlayerWithQuality(PlayerContext.streamCandidates,
-            qualityState: PlayerContext.qualityState)
+        switchPlayerWithQuality(PlayerContext.currentTrack!, qualityState: PlayerContext.qualityState)
     }
     
     func networkStatusUpdated() {
@@ -887,11 +774,11 @@ class CenterViewController: UIViewController {
     
     func playAudioPlayer() {
         println("playAudio")
-        audioPlayer.play()
+        audioPlayerControl.moviePlayer.play()
     }
     
     func pauseAudioPlayer() {
-        audioPlayer.pause()
+        audioPlayerControl.moviePlayer.pause()
     }
     
     func updatePlayState(playingState: Int) {
@@ -942,10 +829,10 @@ class CenterViewController: UIViewController {
             
             let duration = PlayerContext.correctDuration ?? 0
             var currentPlayback:NSTimeInterval?
-            if audioPlayer.currentPlaybackTime.isNaN {
+            if audioPlayerControl.moviePlayer.currentPlaybackTime.isNaN {
                 currentPlayback = 0
             } else {
-                currentPlayback = audioPlayer.currentPlaybackTime ?? 0
+                currentPlayback = audioPlayerControl.moviePlayer.currentPlaybackTime ?? 0
             }
             playingInfoDisplayDuration = duration > 0 && currentPlayback >= 0
             

@@ -225,6 +225,7 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "PlaylistViewScreen"
+        updatePlayerViews()
     }
     
     override func viewDidAppear(animated: Bool) {

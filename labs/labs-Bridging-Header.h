@@ -49,5 +49,6 @@
 #import <FBSDKShareKit/FBSDKShareKit.h>
 
 #import "Reachability.h"
+#import <XCDYouTubeKit/XCDYouTubeKit.h>
 
 #endif

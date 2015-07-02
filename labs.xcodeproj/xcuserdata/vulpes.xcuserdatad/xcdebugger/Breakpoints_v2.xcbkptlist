@@ -6,97 +6,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "labs/CenterViewController.swift"
-            timestampString = "457473580.079189"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "701"
-            endingLineNumber = "701"
-            landmarkName = "fetchCandidate(_:qualityState:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "labs/Stream.swift"
-            timestampString = "457462785.271736"
+            timestampString = "457517913.9946"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "17"
-            endingLineNumber = "17"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
             landmarkName = "resolve(_:_:_:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "function signature specialization &lt;Arg[5] = Dead, Arg[6] = Value Promoted from InOut&gt; of labs.(resolve (Swift.String, Swift.String, (ObjectiveC.NSURLRequest, Swift.Optional&lt;ObjectiveC.NSHTTPURLResponse&gt;, Swift.Optional&lt;Swift.AnyObject&gt;, Swift.Optional&lt;ObjectiveC.NSError&gt;) -&gt; ()) -&gt; Swift.Optional&lt;labs.Request&gt;).(closure #1)"
-                  moduleName = "labs"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vulpes/Documents/iphone/labs/labs/Stream.swift"
-                  timestampString = "457480785.150869"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "17"
-                  endingLineNumber = "17"
-                  offsetFromSymbolStart = "88">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "labs.(resolve (Swift.String, Swift.String, (ObjectiveC.NSURLRequest, Swift.Optional&lt;ObjectiveC.NSHTTPURLResponse&gt;, Swift.Optional&lt;Swift.AnyObject&gt;, Swift.Optional&lt;ObjectiveC.NSError&gt;) -&gt; ()) -&gt; Swift.Optional&lt;labs.Request&gt;).(closure #1).(implicit closure #1)"
-                  moduleName = "labs"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/vulpes/Documents/iphone/labs/labs/Stream.swift"
-                  timestampString = "457480785.151204"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "17"
-                  endingLineNumber = "17"
-                  offsetFromSymbolStart = "4">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "labs/CenterViewController.swift"
-            timestampString = "457473580.079189"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "416"
-            endingLineNumber = "416"
-            landmarkName = "MPMoviePlayerContentPreloadDidFinish(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "labs/CenterViewController.swift"
-            timestampString = "457473580.079189"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "432"
-            endingLineNumber = "432"
-            landmarkName = "MPMoviePlayerPlaybackDidFinish(_:)"
-            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy

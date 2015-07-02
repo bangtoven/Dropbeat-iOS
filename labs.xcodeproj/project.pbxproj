@@ -32,8 +32,8 @@
 		5878379E1B43D977008DF480 /* ic_hq_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 5878379C1B43D977008DF480 /* ic_hq_on.png */; };
 		587837A01B43E6F8008DF480 /* ic_hq_off.png in Resources */ = {isa = PBXBuildFile; fileRef = 5878379F1B43E6F8008DF480 /* ic_hq_off.png */; };
 		587837A41B4402D0008DF480 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 587837A31B4402D0008DF480 /* Reachability.m */; };
-		587837E21B451DDE008DF480 /* libXCDYouTubeKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 587837E11B451DDE008DF480 /* libXCDYouTubeKit.a */; };
 		587837E41B451DE7008DF480 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 587837E31B451DE7008DF480 /* JavaScriptCore.framework */; };
+		587837E81B45C66E008DF480 /* libXCDYouTubeKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 587837E71B45C66E008DF480 /* libXCDYouTubeKit.a */; };
 		587CDD221B0E4EC100D23CCC /* CopyrightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587CDD211B0E4EC100D23CCC /* CopyrightViewController.swift */; };
 		587CDD241B0E4FA900D23CCC /* copyright.html in Resources */ = {isa = PBXBuildFile; fileRef = 587CDD231B0E4FA900D23CCC /* copyright.html */; };
 		588693761B13B4ED00566124 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 588693751B13B4ED00566124 /* libGoogleAnalyticsServices.a */; };
@@ -192,8 +192,8 @@
 		5878379F1B43E6F8008DF480 /* ic_hq_off.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_hq_off.png; sourceTree = "<group>"; };
 		587837A21B4402D0008DF480 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Libraries/Reachability/Reachability.h; sourceTree = SOURCE_ROOT; };
 		587837A31B4402D0008DF480 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Libraries/Reachability/Reachability.m; sourceTree = SOURCE_ROOT; };
-		587837E11B451DDE008DF480 /* libXCDYouTubeKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libXCDYouTubeKit.a; path = "../XCDYouTubeKit/build/Debug-iphoneos/libXCDYouTubeKit.a"; sourceTree = "<group>"; };
 		587837E31B451DE7008DF480 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		587837E71B45C66E008DF480 /* libXCDYouTubeKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libXCDYouTubeKit.a; path = "../../../../Library/Developer/Xcode/DerivedData/labsWorkspace-enlawibbbrwbfxaarobsinbrlhgb/Build/Products/Debug-iphoneos/libXCDYouTubeKit.a"; sourceTree = "<group>"; };
 		587CDD211B0E4EC100D23CCC /* CopyrightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CopyrightViewController.swift; sourceTree = "<group>"; };
 		587CDD231B0E4FA900D23CCC /* copyright.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = copyright.html; sourceTree = "<group>"; };
 		588693751B13B4ED00566124 /* libGoogleAnalyticsServices.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libGoogleAnalyticsServices.a; path = Libraries/GA/libGoogleAnalyticsServices.a; sourceTree = "<group>"; };
@@ -357,8 +357,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				587837E81B45C66E008DF480 /* libXCDYouTubeKit.a in Frameworks */,
 				587837E41B451DE7008DF480 /* JavaScriptCore.framework in Frameworks */,
-				587837E21B451DDE008DF480 /* libXCDYouTubeKit.a in Frameworks */,
 				588693CE1B13C4C500566124 /* Raygun4iOS.framework in Frameworks */,
 				588693CA1B13C3F600566124 /* Bolts.framework in Frameworks */,
 				588693CB1B13C3F600566124 /* FBSDKCoreKit.framework in Frameworks */,
@@ -594,8 +594,8 @@
 		F98F65D2D15412F7828AF298 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				587837E71B45C66E008DF480 /* libXCDYouTubeKit.a */,
 				587837E31B451DE7008DF480 /* JavaScriptCore.framework */,
-				587837E11B451DDE008DF480 /* libXCDYouTubeKit.a */,
 				588693CD1B13C4C500566124 /* Raygun4iOS.framework */,
 				588693C71B13C3F600566124 /* Bolts.framework */,
 				588693C81B13C3F600566124 /* FBSDKCoreKit.framework */,
@@ -1077,10 +1077,12 @@
 					"/Users/parkilsu/dev/xcode-repo",
 					"$(PROJECT_DIR)/Libraries/GA",
 					"/Users/vulpes/Documents/iphone/XCDYouTubeKit/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/Libraries",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/labsWorkspace-enlawibbbrwbfxaarobsinbrlhgb/Build/Products/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "labs/labs-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/labs/labs-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -1106,10 +1108,12 @@
 					"/Users/parkilsu/dev/xcode-repo",
 					"$(PROJECT_DIR)/Libraries/GA",
 					"/Users/vulpes/Documents/iphone/XCDYouTubeKit/build/Debug-iphoneos",
+					"$(PROJECT_DIR)/Libraries",
+					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/labsWorkspace-enlawibbbrwbfxaarobsinbrlhgb/Build/Products/Debug-iphoneos",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "labs/labs-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/labs/labs-Bridging-Header.h";
 			};
 			name = Release;
 		};

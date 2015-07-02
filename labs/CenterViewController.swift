@@ -417,7 +417,7 @@ class CenterViewController: UIViewController {
         if (userInfo != nil) {
             var reason:NSError? = userInfo!["error"] as? NSError
             if (reason != nil) {
-                println("Playback failed with error description: \(reason!.description)")
+                println("playback failed with error : \(reason!.description)")
                 ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play",
                     message: "Caused by undefined exception (\(reason!.domain), \(reason!.code))")
                 handleStop()

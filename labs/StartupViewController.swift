@@ -143,6 +143,8 @@ class StartupViewController: GAITrackedViewController {
                     if (error != nil) {
                         message! += " (\(error!.domain):\(error!.code))"
                     }
+                    let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
+                    keychainItemWrapper["auth_token"] = nil
                 }
                 ViewUtils.showNoticeAlert(self,
                     title: "Failed to fetch user info",

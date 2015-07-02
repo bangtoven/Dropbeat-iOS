@@ -26,7 +26,7 @@ class SearchViewController: BaseContentViewController,
         SearchResultSections.PODCAST: "PODCAST",
         SearchResultSections.LIVESET: "LIVESETS",
         SearchResultSections.TOP_MATCH: "TOP_MATCH",
-        SearchResultSections.RELEVANT: "OTHER"
+        SearchResultSections.RELEVANT: "OTHERS"
     ]
     
     var searchResult:Search?

@@ -546,7 +546,9 @@ class Account {
         Account.account = nil
         let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         appDelegate.account = nil
-        appDelegate.resetAppToFirstController()
+        CenterViewController.sharedInstance!.resignObservers()
+        var navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
+        navController.popToRootViewControllerAnimated(false)
     }
     
     static func getCachedAccount() -> Account? {

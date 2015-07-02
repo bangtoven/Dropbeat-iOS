@@ -533,7 +533,7 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
         }
     }
     
-    func onDeleteBtnClicked(sender: PlaylistSelectTableViewCell, btn: UIButton) {
+    func onDeletePlaylistBtnClicked(sender: PlaylistSelectTableViewCell, btn: UIButton) {
         let indexPath:NSIndexPath = playlistSelectView.indexPathForCell(sender)!
         if (Account.getCachedAccount() == nil) {
             return
@@ -541,6 +541,10 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
         
         
         let playlists = PlayerContext.playlists
+        if (playlists.count == 1) {
+            ViewUtils.showNoticeAlert(self, title: "Failed to delete", message: "At least one playlist should exist")
+            return
+        }
         let removePlaylist = playlists[indexPath.row]
         
         ViewUtils.showConfirmAlert(
@@ -578,7 +582,7 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
             })
     }
     
-    func onRenameBtnClicked(sender: PlaylistSelectTableViewCell, btn: UIButton) {
+    func onRenamePlaylistBtnClicked(sender: PlaylistSelectTableViewCell, btn: UIButton) {
         let indexPath:NSIndexPath = playlistSelectView.indexPathForCell(sender)!
         if (Account.getCachedAccount() == nil) {
             return

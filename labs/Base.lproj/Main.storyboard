@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ejL-By-Wwd">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="uW7-Xh-PXN">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
@@ -555,7 +555,7 @@
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
-                                                        <action selector="onRenameBtnClicked:" destination="etR-an-y86" eventType="touchUpInside" id="DnP-XD-qwX"/>
+                                                        <action selector="onRenamePlaylistBtnClicked:" destination="etR-an-y86" eventType="touchUpInside" id="kHv-bq-zHB"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aD0-Vr-EQk">
@@ -569,7 +569,7 @@
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
-                                                        <action selector="onDeleteBtnClicked:" destination="etR-an-y86" eventType="touchUpInside" id="vfd-YQ-McS"/>
+                                                        <action selector="onDeletePlaylistBtnClicked:" destination="etR-an-y86" eventType="touchUpInside" id="SkI-fZ-NyV"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -587,9 +587,9 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
-                                            <outlet property="deleteBtn" destination="aD0-Vr-EQk" id="hzc-Eq-MF9"/>
+                                            <outlet property="deleteBtn" destination="aD0-Vr-EQk" id="7Z7-Ai-5DN"/>
                                             <outlet property="nameView" destination="J95-S3-j7D" id="ud3-hm-ziT"/>
-                                            <outlet property="renameBtn" destination="zUf-ld-9vL" id="Mam-Ci-CTx"/>
+                                            <outlet property="renameBtn" destination="zUf-ld-9vL" id="v73-yK-Dsi"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -1360,6 +1360,23 @@
             </objects>
             <point key="canvasLocation" x="1766" y="-572"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="42Q-fE-RHJ">
+            <objects>
+                <navigationController navigationBarHidden="YES" id="uW7-Xh-PXN" sceneMemberID="viewController">
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="qwL-v8-yqL">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="ejL-By-Wwd" kind="relationship" relationship="rootViewController" id="tmD-nk-Wp2"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="AF2-H8-OHs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-170" y="-537"/>
+        </scene>
         <!--Startup View Controller-->
         <scene sceneID="6Fb-VE-9E5">
             <objects>
@@ -1387,6 +1404,7 @@
                             <constraint firstAttribute="centerX" secondItem="whZ-zV-pSM" secondAttribute="centerX" id="iX9-lL-p9p"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="NfY-P8-ZEG"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <segue destination="1rQ-Dl-lNh" kind="show" identifier="DrawerSegue" id="eZ1-PR-koG"/>

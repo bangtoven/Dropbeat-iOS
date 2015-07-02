@@ -11,6 +11,8 @@ import UIKit
 class SigninViewController: BaseViewController {
 
     @IBOutlet weak var signinBtn: UIButton!
+    var progressHud:MBProgressHUD?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -32,20 +34,25 @@ class SigninViewController: BaseViewController {
     
     @IBAction func onSigninBtnClicked(sender: UIButton) {
         var fbManager:FBSDKLoginManager = FBSDKLoginManager()
+        progressHud = ViewUtils.showProgress(self, message: "Signining in..")
+        fbManager.logOut()
         fbManager.logInWithReadPermissions(["email"], handler: { (result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
             if (error != nil) {
                 // Process error
                 ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Failed to acquire user info permission")
+                self.progressHud?.hide(false)
                 return
             }
             if (result.isCancelled) {
                 // Do nothing
+                self.progressHud?.hide(false)
                 return
             }
             if (result.grantedPermissions.contains("email")) {
                 self.requestProfileInfos()
             } else {
                 ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Email permission required for Dropbeat signin")
+                self.progressHud?.hide(false)
             }
         })
     }
@@ -56,6 +63,7 @@ class SigninViewController: BaseViewController {
         request.startWithCompletionHandler({ (connection:FBSDKGraphRequestConnection!, result:AnyObject!, error:NSError!) -> Void in
             if (error != nil) {
                 ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Failed to fetch user profile")
+                self.progressHud?.hide(false)
                 fbManager.logOut()
                 return
             }
@@ -89,6 +97,7 @@ class SigninViewController: BaseViewController {
                     }
                     ViewUtils.showNoticeAlert(self, title: "Failed to sign in",
                         message: message!)
+                    self.progressHud?.hide(false)
                     return
                 }
                 let res = result as! NSDictionary
@@ -96,6 +105,7 @@ class SigninViewController: BaseViewController {
                 if (!success) {
                     var errorMsg:String = res.objectForKey("error") as? String ?? "Undefined error"
                     ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: errorMsg)
+                    self.progressHud?.hide(false)
                     return
                 }
                 
@@ -130,8 +140,10 @@ class SigninViewController: BaseViewController {
                 return
             }
             self.dismiss()
+            CenterViewController.sharedInstance!.resignObservers()
             var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            appDelegate.resetAppToFirstController()
+            var navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
+            navController.popToRootViewControllerAnimated(false)
         })
     }
     

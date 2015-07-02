@@ -39,6 +39,7 @@ class CenterViewController: UIViewController {
     var playingInfoDisplayDuration = false
     
     static var observerAttached: Bool = false
+    static var sharedInstance:CenterViewController?
     
     private var activeViewController: UIViewController? {
         didSet {
@@ -54,6 +55,7 @@ class CenterViewController: UIViewController {
         self.playlistVC = nil
         
         if (CenterViewController.observerAttached == false) {
+            CenterViewController.sharedInstance = self
             CenterViewController.observerAttached = true
             
             // Used for playlistView bottom controller update.
@@ -104,6 +106,30 @@ class CenterViewController: UIViewController {
         
         progressBar.continuous = false
         
+    }
+    
+    func resignObservers() {
+        CenterViewController.observerAttached = false
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlaylistView, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPrev, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPause, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerNext, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerSeek, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updateRepeatState, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updateQualityState, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.networkStatusChanged, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "MPMoviePlayerContentPreloadDidFinishNotification", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: MPMoviePlayerLoadStateDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: MPMoviePlayerPlaybackStateDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: MPMoviePlayerPlaybackDidFinishNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: MPMoviePlayerTimedMetadataUpdatedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidEnterBackgroundNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
+        
+        handleStop()
     }
     
     func backgroundHook () {
@@ -725,7 +751,7 @@ class CenterViewController: UIViewController {
         if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
             audioPlayerControl.moviePlayer.stop()
         }
-        updatePlayStateView(PlayState.STOPPED)
+        updatePlayState(PlayState.STOPPED)
         deactivateAudioSession()
     }
     

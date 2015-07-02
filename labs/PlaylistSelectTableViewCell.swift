@@ -9,8 +9,8 @@
 import UIKit
 
 protocol PlaylistSelectTableViewDelegate {
-    func onRenameBtnClicked(sender:PlaylistSelectTableViewCell, btn:UIButton)
-    func onDeleteBtnClicked(sender:PlaylistSelectTableViewCell, btn:UIButton)
+    func onRenamePlaylistBtnClicked(sender:PlaylistSelectTableViewCell, btn:UIButton)
+    func onDeletePlaylistBtnClicked(sender:PlaylistSelectTableViewCell, btn:UIButton)
 }
 
 class PlaylistSelectTableViewCell: UITableViewCell {
@@ -36,11 +36,11 @@ class PlaylistSelectTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    @IBAction func onRenameBtnClicked(sender: UIButton) {
-        delegate?.onRenameBtnClicked(self, btn: sender)
+    @IBAction func onRenamePlaylistBtnClicked(sender: UIButton) {
+        delegate?.onRenamePlaylistBtnClicked(self, btn: sender)
     }
     
-    @IBAction func onDeleteBtnClicked(sender: UIButton) {
-        delegate?.onDeleteBtnClicked(self, btn: sender)
+    @IBAction func onDeletePlaylistBtnClicked(sender: UIButton) {
+        delegate?.onDeletePlaylistBtnClicked(self, btn: sender)
     }
 }

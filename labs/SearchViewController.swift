@@ -22,9 +22,9 @@ class SearchViewController: BaseContentViewController,
     AddableTrackCellDelegate, ScrollPagerDelegate{
     
     private static var sectionTitles = [
-        SearchResultSections.RELEASED: "RELEASED",
-        SearchResultSections.PODCAST: "PODCAST",
-        SearchResultSections.LIVESET: "LIVESETS",
+        SearchResultSections.RELEASED: "OFFICIAL",
+        SearchResultSections.PODCAST: "PODCASTS",
+        SearchResultSections.LIVESET: "LIVE SETS",
         SearchResultSections.TOP_MATCH: "TOP_MATCH",
         SearchResultSections.RELEVANT: "OTHERS"
     ]
@@ -140,11 +140,17 @@ class SearchViewController: BaseContentViewController,
         if (tableView == resultTableView) {
             var cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
             let tracks:[Track] = sectionedTracks[currentSection!]!
-            let track = tracks[indexPath.row]
+            var track:Track?
+            if (indexPath.section == 0) {
+                track = tracks[indexPath.row]
+            } else {
+                var firstSectionCount:Int = self.tableView(tableView, numberOfRowsInSection: 0)
+                track = tracks[indexPath.row + firstSectionCount]
+            }
             cell.delegate = self
-            cell.nameView.text = track.title
-            if (track.thumbnailUrl != nil) {
-                cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
+            cell.nameView.text = track!.title
+            if (track!.thumbnailUrl != nil) {
+                cell.thumbView.sd_setImageWithURL(NSURL(string: track!.thumbnailUrl!),
                         placeholderImage: UIImage(named: "default_artwork.png"), completed: {
                         (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                     if (error != nil) {
@@ -254,7 +260,7 @@ class SearchViewController: BaseContentViewController,
             if (error != nil) {
                 if (error!.domain == "addTrack") {
                     if (error!.code == 100) {
-                        ViewUtils.showNoticeAlert(self, title: "Failed to add", message: "Failed to find playlist to add")
+                        ViewUtils.showNoticeAlert(self, title: "Failed to add", message: "Failed to find playlist")
                         return
                     }
                     ViewUtils.showToast(self, message: "Already in playlist")
@@ -437,7 +443,7 @@ class SearchViewController: BaseContentViewController,
                     return
                 }
                 if (tracks!.count == 0) {
-                    ViewUtils.showToast(self, message: "empty result")
+                    ViewUtils.showToast(self, message: "No search results")
                 }
                 self.sectionedTracks[self.currentSection!] = tracks
                 self.resultTableView.reloadData()
@@ -451,7 +457,7 @@ class SearchViewController: BaseContentViewController,
             }
         } else {
             if (tracks!.count == 0) {
-                ViewUtils.showToast(self, message: "empty result")
+                ViewUtils.showToast(self, message: "No search results")
             }
             self.resultTableView.reloadData()
         }

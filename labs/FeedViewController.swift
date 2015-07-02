@@ -112,7 +112,7 @@ class FeedViewController: BaseContentViewController, UITableViewDelegate, UITabl
             if (error != nil) {
                 if (error!.domain == "addTrack") {
                     if (error!.code == 100) {
-                        ViewUtils.showNoticeAlert(self, title: "Failed to add", message: "Failed to find playlist to add")
+                        ViewUtils.showNoticeAlert(self, title: "Failed to add", message: "Failed to find playlist")
                         return
                     }
                     ViewUtils.showToast(self, message: "Already in playlist")

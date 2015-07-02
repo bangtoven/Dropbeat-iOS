@@ -35,7 +35,7 @@ class SigninViewController: BaseViewController {
         fbManager.logInWithReadPermissions(["email"], handler: { (result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
             if (error != nil) {
                 // Process error
-                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Failed to request user info permission")
+                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Failed to acquire user info permission")
                 return
             }
             if (result.isCancelled) {
@@ -94,7 +94,7 @@ class SigninViewController: BaseViewController {
                 let res = result as! NSDictionary
                 var success:Bool = res.objectForKey("success") as! Bool? ?? false
                 if (!success) {
-                    var errorMsg:String = res.objectForKey("error") as? String ?? "undefined error"
+                    var errorMsg:String = res.objectForKey("error") as? String ?? "Undefined error"
                     ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: errorMsg)
                     return
                 }
@@ -122,11 +122,11 @@ class SigninViewController: BaseViewController {
         keychainItemWrapper["auth_token"] = token
         Account.getAccountWithCompletionHandler({ (account:Account?, error:NSError?) -> Void in
             if (error != nil) {
-                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "failed to get user info")
+                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Failed to get user info")
                 return
             }
             if (account == nil) {
-                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Account is nil")
+                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Account is undefined")
                 return
             }
             self.dismiss()

@@ -102,7 +102,7 @@ class StartupViewController: GAITrackedViewController {
             if (iosVersion == nil) {
                 ViewUtils.showNoticeAlert(self,
                     title: "Failed to fetch version info",
-                    message: "Inproper data format",
+                    message: "Improper data format",
                     btnText: "Retry",
                     callback: { () -> Void in
                         self.progressHud?.hide(true)
@@ -139,7 +139,7 @@ class StartupViewController: GAITrackedViewController {
                         error!.code == NSURLErrorNotConnectedToInternet) {
                     message = "Internet is not connected. Please try again."
                 } else {
-                    message = "Failed to fetch user info becuase of undefined error."
+                    message = "Failed to fetch user info because of undefined error."
                     if (error != nil) {
                         message! += " (\(error!.domain):\(error!.code))"
                     }

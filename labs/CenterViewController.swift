@@ -417,9 +417,9 @@ class CenterViewController: UIViewController {
         if (userInfo != nil) {
             var reason:NSError? = userInfo!["error"] as? NSError
             if (reason != nil) {
-                println("playback failed with error description: \(reason!.description)")
+                println("Playback failed with error description: \(reason!.description)")
                 ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play",
-                    message: "caused by undefined exception (\(reason!.domain), \(reason!.code))")
+                    message: "Caused by undefined exception (\(reason!.domain), \(reason!.code))")
                 handleStop()
             }
         }
@@ -436,9 +436,9 @@ class CenterViewController: UIViewController {
                 if (reason == MPMovieFinishReason.PlaybackError.rawValue) {
                     // Finished with error
                     var err:NSError? = userInfo!["error"] as? NSError
-                    var errMsg = "caused by undefined exception "
+                    var errMsg = "Caused by undefined exception "
                     if (err != nil) {
-                        println("playback failed with error description: \(err!.description)")
+                        println("Playback failed with error description: \(err!.description)")
                         errMsg += "\(err!.domain):\(err!.code)"
                     }
                     ViewUtils.showNoticeAlert(self.getCurrentVisibleViewController(), title: "Failed to play",

@@ -70,7 +70,11 @@ class SearchViewController: BaseContentViewController,
         }
         
         // Do any additional setup after loading the view.
-        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.screenName = "SearchViewScreen"
         keywordView.becomeFirstResponder()
         
         NSNotificationCenter.defaultCenter().addObserver(
@@ -79,13 +83,7 @@ class SearchViewController: BaseContentViewController,
             self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        self.screenName = "SearchViewScreen"
-    }
-    
-    
-    override func viewWillDisappear(animated: Bool) {
+    override func viewDidDisappear(animated: Bool) {
         keywordView.resignFirstResponder()
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
@@ -172,8 +170,13 @@ class SearchViewController: BaseContentViewController,
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if (tableView == resultTableView) {
             let tracks:[Track] = sectionedTracks[currentSection!]!
+            var index:Int = indexPath.row
+            if (indexPath.section != 0) {
+                index += self.tableView(tableView, numberOfRowsInSection: 0)
+            }
+            var track = tracks[index]
             var params: Dictionary<String, AnyObject> = [
-                "track": tracks[indexPath.row],
+                "track": track,
                 "playlistId": "-1"
             ]
             NSNotificationCenter.defaultCenter().postNotificationName(
@@ -412,6 +415,8 @@ class SearchViewController: BaseContentViewController,
                         constant: 40)
                 self.scrollPager.addConstraint(constraint)
                 self.view.layoutIfNeeded()
+                
+                self.selectTab(self.currentSection!)
             }
             
             self.resultTableView.reloadData()
@@ -419,11 +424,8 @@ class SearchViewController: BaseContentViewController,
         })
     }
     
-    func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
-        if (self.currentSections == nil || self.searchResult == nil) {
-            return
-        }
-        self.currentSection = self.currentSections![changedIndex]
+    func selectTab(section:String) {
+        self.currentSection = section
         var tracks = self.sectionedTracks[self.currentSection!]
         if (tracks == nil) {
             var progress = ViewUtils.showProgress(self, message: "Loading..")
@@ -461,6 +463,13 @@ class SearchViewController: BaseContentViewController,
             }
             self.resultTableView.reloadData()
         }
+    }
+    
+    func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
+        if (self.currentSections == nil || self.searchResult == nil) {
+            return
+        }
+        selectTab(self.currentSections![changedIndex])
     }
     
     override func menuBtnClicked(sender: AnyObject) {

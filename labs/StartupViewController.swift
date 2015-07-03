@@ -174,6 +174,7 @@ class StartupViewController: GAITrackedViewController {
     
     func fetchUserInfo() {
         let callback = { (error:NSError?) -> Void in
+            PlaylistViewController.hasAccount = Account.getCachedAccount() != nil
             self.showMainController()
         }
         if (Account.getCachedAccount() != nil) {
@@ -185,30 +186,34 @@ class StartupViewController: GAITrackedViewController {
     
     func loadPlaylist(callback:(error:NSError?) -> Void) {
         Requests.fetchAllPlaylists({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            self.progressHud?.hide(true)
             if (error != nil || result == nil) {
-                var message:String?
-                if (error != nil && error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                    message = "Internet is not connected"
-                } else {
-                    message = "Failed to fetch playlists caused by undefined error."
-                    if (error != nil) {
-                        message! += " (\(error!.domain):\(error!.code))"
-                    }
-                }
-                ViewUtils.showNoticeAlert(self,
-                    title: "Failed to fetch playlists",
-                    message: message!,
-                    btnText: "Retry",
-                    callback: { () -> Void in
-                        self.progressHud?.hide(true)
-                        self.loadPlaylist(callback)
-                    })
+                // proceed launch app although failed to fetch playlist
+                // we will fetch playlist agian in playlist view
+                callback(error: error)
                 return
+//                var message:String?
+//                if (error != nil && error!.domain == NSURLErrorDomain &&
+//                        error!.code == NSURLErrorNotConnectedToInternet) {
+//                    message = "Internet is not connected"
+//                } else {
+//                    message = "Failed to fetch playlists caused by undefined error."
+//                    if (error != nil) {
+//                        message! += " (\(error!.domain):\(error!.code))"
+//                    }
+//                }
+//                ViewUtils.showNoticeAlert(self,
+//                    title: "Failed to fetch playlists",
+//                    message: message!,
+//                    btnText: "Retry",
+//                    callback: { () -> Void in
+//                        self.progressHud?.hide(true)
+//                        self.loadPlaylist(callback)
+//                    })
+//                return
             }
             let playlists = Parser().parsePlaylists(result!).reverse()
             if (playlists.count == 0) {
-                ViewUtils.showNoticeAlert(self, title: "Failed to fetch playlists", message: "At least one playlist should exist")
                 callback(error: error)
                 return
             }
@@ -223,26 +228,31 @@ class StartupViewController: GAITrackedViewController {
     
     func loadInitialPlaylist(callback:(error:NSError?) -> Void) {
         Requests.fetchInitialPlaylist({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            self.progressHud?.hide(true)
             if (error != nil || result == nil) {
-                var message:String?
-                if (error != nil && error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                    message = "Internet is not connected"
-                } else {
-                    message = "Failed to fetch playlists caused by undefined error."
-                    if (error != nil) {
-                        message! += " (\(error!.domain):\(error!.code))"
-                    }
-                }
-                ViewUtils.showNoticeAlert(self,
-                    title: "Failed to fetch playlists",
-                    message: message!,
-                    btnText: "Retry",
-                    callback: { () -> Void in
-                        self.progressHud?.hide(true)
-                        self.loadInitialPlaylist(callback)
-                    })
+                // proceed launch app although failed to fetch playlist
+                // we will fetch playlist agian in playlist view
+                callback(error: error)
                 return
+//                var message:String?
+//                if (error != nil && error!.domain == NSURLErrorDomain &&
+//                        error!.code == NSURLErrorNotConnectedToInternet) {
+//                    message = "Internet is not connected"
+//                } else {
+//                    message = "Failed to fetch playlists caused by undefined error."
+//                    if (error != nil) {
+//                        message! += " (\(error!.domain):\(error!.code))"
+//                    }
+//                }
+//                ViewUtils.showNoticeAlert(self,
+//                    title: "Failed to fetch playlists",
+//                    message: message!,
+//                    btnText: "Retry",
+//                    callback: { () -> Void in
+//                        self.progressHud?.hide(true)
+//                        self.loadInitialPlaylist(callback)
+//                    })
+//                return
             }
             
             let json = JSON(result!)

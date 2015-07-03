@@ -19,5 +19,7 @@ class NotifyKey {
     static var updateRepeatState = "updateRepeatState"
     static var updateQualityState = "updateQualityState"
     static var networkStatusChanged = "networkStatusChanged"
+    static var appSignout = "appSignout"
+    static var appSignin = "appSignin"
 }
 

@@ -17,6 +17,7 @@ class SettingsViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         let account = Account.getCachedAccount()
         if (account != nil) {
             emailView.text = account!.user!.email
@@ -32,10 +33,21 @@ class SettingsViewController: UITableViewController {
 
         // Do any additional setup after loading the view.
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sender", name: NotifyKey.appSignout, object: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.appSignout, object: nil)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func sender() {
     }
     
     @IBAction func onSigninBtnClicked(sender: UIButton) {
@@ -47,7 +59,9 @@ class SettingsViewController: UITableViewController {
     @IBAction func onSignoutBtnClicked(sender: UIButton) {
         ViewUtils.showConfirmAlert(self, title: "Are you sure?", message: "Are you sure you want to sign out?",
                 positiveBtnText: "Sign out", positiveBtnCallback: { () -> Void in
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.appSignout, object: nil)
             Account.signout()
+            PlaylistViewController.hasAccount = false
         })
     }
     

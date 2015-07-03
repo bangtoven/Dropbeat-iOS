@@ -35,6 +35,7 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
     // Prevent outside configuration of currentPlaylist
     // currentPlaylist can only be updated with updateCurrentPlaylist() from outside
     static private var _currentPlaylist:Playlist?
+    static var hasAccount:Bool?
     
     static var currentPlaylist:Playlist? {
         get {
@@ -184,19 +185,28 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         createPlaylistBtn.imageView?.contentMode = UIViewContentMode.ScaleAspectFit
-        if (PlayerContext.playlists.count == 0) {
-            if (Account.getCachedAccount() != nil) {
-                reloadPlaylist(true, callback:nil)
-            } else {
-                reloadInitialPlaylist(true, callback:nil)
-            }
-        } else {
+        if (PlayerContext.playlists.count > 0) {
             PlaylistViewController.updateCurrentPlaylist()
             playlistNameView.text = PlaylistViewController.currentPlaylist?.name
             playlistView.reloadData()
             playlistSelectView.reloadData()
             updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
         }
+        
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        var account = Account.getCachedAccount()
+        if (PlaylistViewController.hasAccount != nil &&
+            ((PlaylistViewController.hasAccount! && account == nil) ||
+            (!PlaylistViewController.hasAccount! && account != nil))) {
+            dismiss()
+            return
+        }
+        
+        PlaylistViewController.hasAccount = account != nil
         
         // Notify player actions to CenterViewController
         NSNotificationCenter.defaultCenter().addObserver(
@@ -220,12 +230,14 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "appWillEnterForeground",
             name: UIApplicationWillEnterForegroundNotification, object: nil)
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+        
         self.screenName = "PlaylistViewScreen"
         updatePlayerViews()
+        if (Account.getCachedAccount() != nil) {
+            initAuthPlaylists(PlayerContext.playlists.count == 0)
+        } else if (PlayerContext.playlists.count == 0){
+            initNonAuthPlaylists()
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -251,8 +263,49 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
     }
     
+    func initAuthPlaylists(closeOnFailure:Bool) {
+        let progressHud = ViewUtils.showProgress(self, message: "Loading playlists..")
+        reloadPlaylists(true, callback: { (error:NSError?) -> Void in
+            progressHud.hide(true)
+            if (error != nil) {
+                ViewUtils.showConfirmAlert(self, title: "Failed to fetch", message: "Failed to fetch playlists.",
+                    positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                    self.initAuthPlaylists(closeOnFailure)
+                }, negativeBtnText: "Cancel", negativeBtnCallback: { () -> Void in
+                    if (closeOnFailure) {
+                        self.playlistSelectView.hidden = true
+                        self.playlistView.hidden = false
+                        self.dismiss()
+                    }
+                })
+            }
+        })
+    }
+    
+    func initNonAuthPlaylists() {
+        let progressHud = ViewUtils.showProgress(self, message: "Loading playlists..")
+        reloadInitialPlaylist(true, callback: { (error:NSError?) -> Void in
+            progressHud.hide(true)
+            if (error != nil) {
+                ViewUtils.showConfirmAlert(self, title: "Failed to fetch playlists", message: "Failed to fetch playlists.",
+                    positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                    self.initNonAuthPlaylists()
+                }, negativeBtnText: "Cancel", negativeBtnCallback: { () -> Void in
+                    self.playlistSelectView.hidden = true
+                    self.playlistView.hidden = false
+                    self.dismiss()
+                })
+            }
+        })
+    }
+    
     func appWillEnterForeground () {
         updatePlayerViews()
+        if (Account.getCachedAccount() != nil) {
+            initAuthPlaylists(PlayerContext.playlists.count == 0)
+        } else if (PlayerContext.playlists.count == 0){
+            initNonAuthPlaylists()
+        }
     }
     
     func sender() {}
@@ -412,7 +465,7 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
         }
     }
     
-    func reloadPlaylist(forceRefresh:Bool, callback: ((error:NSError?) -> Void)?) {
+    func reloadPlaylists(forceRefresh:Bool, callback: ((error:NSError?) -> Void)?) {
         Requests.fetchAllPlaylists({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil || result == nil) {
                 ViewUtils.showNoticeAlert(self, title: "Failed to fetch playlists", message: error!.description)
@@ -421,7 +474,6 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
             }
             let playlists = Parser().parsePlaylists(result!).reverse()
             if (playlists.count == 0) {
-                ViewUtils.showNoticeAlert(self, title: "Failed to fetch playlists", message: "At least one playlist should exist")
                 callback?(error: NSError(domain: "reloadPlaylist", code: 101, userInfo: nil))
                 return
             }
@@ -524,13 +576,148 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
             NSNotificationCenter.defaultCenter().postNotificationName(
                 NotifyKey.playerPlay, object: params)
         } else {
-            PlaylistViewController._currentPlaylist = PlayerContext.playlists[indexPath.row]
+            selectPlaylist(indexPath.row)
+        }
+    }
+    
+    func selectPlaylist(idx:Int) {
+        if (Account.getCachedAccount() == nil) {
+            PlaylistViewController._currentPlaylist = PlayerContext.playlists[idx]
             playlistNameView.text = PlaylistViewController.currentPlaylist?.name
             playlistView.reloadData()
             updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
             playlistSelectView.hidden = true
             playlistView.hidden = false
+            return
         }
+        let nextPlaylist = PlayerContext.playlists[idx]
+        let playlistId:String = nextPlaylist.id
+        let progressHud = ViewUtils.showProgress(self, message: "Loading playlist..")
+        fetchPlaylist(idx, callback: {(success:Bool, newIdx:Int, error:NSError?)-> Void in
+            progressHud.hide(false)
+            if (!success) {
+                var message:String?
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    message = "Internet is not connected. Please try again."
+                } else {
+                    message = "Failed to fetch playlist"
+                }
+                ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: message!, btnText: "Retry", callback: { () -> Void in
+                    var foundPlaylistIdx:Int = -1
+                    for (idx:Int, playlist:Playlist) in enumerate(PlayerContext.playlists) {
+                        if (playlistId == playlist.id) {
+                            foundPlaylistIdx = idx
+                            break
+                        }
+                    }
+                    if (foundPlaylistIdx == -1) {
+                        return
+                    }
+                    self.selectPlaylist(foundPlaylistIdx)
+                })
+                return
+            }
+            PlaylistViewController._currentPlaylist = nextPlaylist
+            self.playlistNameView.text = PlaylistViewController.currentPlaylist?.name
+            self.playlistView.reloadData()
+            self.updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+            self.playlistSelectView.hidden = true
+            self.playlistView.hidden = false
+        })
+    }
+    
+    func refreshPlaylist() {
+        if (Account.getCachedAccount() == nil) {
+            return
+        }
+        if (PlaylistViewController._currentPlaylist == nil) {
+            return
+        }
+        let currPlaylist = PlaylistViewController._currentPlaylist!
+        var foundPlaylistIdx:Int = -1
+        for (idx:Int, playlist:Playlist) in enumerate(PlayerContext.playlists) {
+            if (currPlaylist.id == playlist.id) {
+                foundPlaylistIdx = idx
+                break
+            }
+        }
+        if (foundPlaylistIdx == -1) {
+            ViewUtils.showToast(self, message: "Failed to find current playlist")
+            return
+        }
+        let progressHud = ViewUtils.showProgress(self, message: "Loading playlist..")
+        fetchPlaylist(foundPlaylistIdx, callback: {(success:Bool, newIdx:Int, error:NSError?) -> Void in
+            progressHud.hide(false)
+            if (!success) {
+                var message:String?
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    message = "Internet is not connected. Please try again."
+                } else {
+                    message = "Failed to fetch playlist"
+                }
+                ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: message!, btnText: "Retry", callback: { () -> Void in
+                    self.refreshPlaylist()
+                })
+                return
+            }
+            // check currplaylist is not changed
+            if (PlaylistViewController._currentPlaylist != nil &&
+                    PlaylistViewController._currentPlaylist!.id != currPlaylist.id) {
+                return
+            }
+            
+            if (newIdx == -1) {
+                ViewUtils.showToast(self, message: "Failed to find current playlist")
+                return
+            }
+            
+            self.playlistNameView.text = PlaylistViewController.currentPlaylist?.name
+            self.playlistView.reloadData()
+            self.updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+        })
+    }
+    
+    func fetchPlaylist(idx:Int, callback:(success:Bool, newIdx:Int, error:NSError?) -> Void) {
+        var nextPlaylist = PlayerContext.playlists[idx]
+        Requests.getPlaylist(nextPlaylist.id, respCb: { (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if (error != nil || result == nil) {
+                callback(success: false, newIdx: -1, error: error)
+                return
+            }
+            var foundPlaylistIdx = -1
+            for (idx:Int, playlist:Playlist) in enumerate(PlayerContext.playlists) {
+                if (nextPlaylist.id == playlist.id) {
+                    foundPlaylistIdx = idx
+                    break
+                }
+            }
+            
+            if (foundPlaylistIdx == -1) {
+                callback(success: false, newIdx: -1, error: nil)
+                return
+            }
+           
+            var res = JSON(result!)
+            if !res["success"].boolValue {
+                callback(success: false, newIdx: -1, error: nil)
+                return
+            }
+            var playlist:Playlist? = Playlist.fromJson(res["playlist"].rawValue)
+            if (playlist == nil) {
+                callback(success: false, newIdx: -1, error: nil)
+                return
+            }
+            
+            var original = PlayerContext.playlists[foundPlaylistIdx]
+            original.name = playlist!.name
+            original.tracks.removeAll(keepCapacity: false)
+            for track:Track in playlist!.tracks {
+                original.tracks.append(track)
+            }
+            callback(success: true, newIdx: foundPlaylistIdx, error: nil)
+        })
     }
     
     func onDeletePlaylistBtnClicked(sender: PlaylistSelectTableViewCell, btn: UIButton) {
@@ -575,7 +762,7 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
                         ViewUtils.showNoticeAlert(self, title: "Failed to delete", message: errorMsg)
                         return
                     }
-                    self.reloadPlaylist(true, callback: { (error:NSError?) -> Void in
+                    self.reloadPlaylists(true, callback: { (error:NSError?) -> Void in
                         progressHud.hide(true)
                     })
                 })
@@ -614,7 +801,7 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
                         ViewUtils.showNoticeAlert(self, title: "Failed to change", message: message!)
                         return
                     }
-                    self.reloadPlaylist(true, callback: { (error:NSError?) -> Void in
+                    self.reloadPlaylists(true, callback: { (error:NSError?) -> Void in
                         progressHud.hide(true)
                     })
                 })
@@ -718,7 +905,7 @@ class PlaylistViewController: BaseViewController, UITableViewDelegate, UITableVi
                         ViewUtils.showNoticeAlert(self, title: "Failed to create playlist", message: message!)
                         return
                     }
-                    self.reloadPlaylist(false, callback: { (error:NSError?) -> Void in
+                    self.reloadPlaylists(false, callback: { (error:NSError?) -> Void in
                         progressHud.hide(true)
                         if (error != nil) {
                             return

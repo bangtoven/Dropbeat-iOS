@@ -22,10 +22,23 @@ class SigninViewController: BaseViewController {
 
         // Do any additional setup after loading the view.
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sender", name: NotifyKey.appSignin, object: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.appSignin, object: nil)
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func sender() {
+        
     }
     
     func dismiss() {
@@ -139,6 +152,7 @@ class SigninViewController: BaseViewController {
                 ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Account is undefined")
                 return
             }
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.appSignin, object: nil)
             self.dismiss()
             CenterViewController.sharedInstance!.resignObservers()
             var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate

@@ -639,6 +639,17 @@ class CenterViewController: UIViewController {
         // Indicate loading status.
         updatePlayState(PlayState.LOADING)
         
+        // Log to us
+        Requests.logPlay(track!.title)
+        // Log to GA
+        let tracker = GAI.sharedInstance().defaultTracker
+        let event = GAIDictionaryBuilder.createEventWithCategory(
+                "player-play-from-ios",
+                action: "play-\(track!.type)",
+                label: track!.title,
+                value: nil
+            ).build()
+        
         self.activateAudioSession()
         switchPlayerWithQuality(track!, qualityState: PlayerContext.qualityState, isInitial: true)
     }

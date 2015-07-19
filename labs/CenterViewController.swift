@@ -640,7 +640,9 @@ class CenterViewController: UIViewController {
         updatePlayState(PlayState.LOADING)
         
         // Log to us
-        Requests.logPlay(track!.title)
+        if Account.getCachedAccount() != nil {
+            Requests.logPlay(track!.title)
+        }
         // Log to GA
         let tracker = GAI.sharedInstance().defaultTracker
         let event = GAIDictionaryBuilder.createEventWithCategory(

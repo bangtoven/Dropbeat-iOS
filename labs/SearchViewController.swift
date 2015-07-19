@@ -97,7 +97,7 @@ class SearchViewController: BaseContentViewController,
     }
     
     func onHandleAutocomplete(keywords:Array<String>?, error:NSError?) {
-        if (error != nil) {
+        if (error != nil || keywords == nil) {
             println("Failed to get autocomplete:\(error?.description)")
             return
         }

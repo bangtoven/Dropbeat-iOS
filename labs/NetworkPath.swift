@@ -5,7 +5,7 @@
 import Foundation
 
 public class ApiPath {
-//    static var host :String = "http://spark.coroutine.io/api/v1/"
+//    static var host :String = "http://coroutine.io:19050/api/v1/"
     static var host :String = "http://dropbeat.net/api/v1/"
     
     // User

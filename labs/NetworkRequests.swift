@@ -240,6 +240,10 @@ class AutocompleteRequester {
                     self.handler(keywords: nil, error:error)
                     return
                 }
+                if (result == nil) {
+                    self.handler(keywords: nil, error:nil)
+                    return
+                }
                 let funcRegex = NSRegularExpression(pattern: self.funcRegexPattern, options: nil, error: nil)!
                 let koreanRegex = NSRegularExpression(pattern: self.koreanRegexPattern, options: nil, error: nil)!
                 

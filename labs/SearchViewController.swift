@@ -37,6 +37,7 @@ class SearchViewController: BaseContentViewController,
     var autocomKeywords:[String] = []
     var autocomRequester:AutocompleteRequester?
     
+    @IBOutlet weak var scrollPagerConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchResultView: UIView!
     @IBOutlet weak var scrollPager: ScrollPager!
     @IBOutlet weak var autocomTableView: UITableView!
@@ -46,15 +47,6 @@ class SearchViewController: BaseContentViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         autocomRequester = AutocompleteRequester(handler: onHandleAutocomplete)
-        
-//        var keywordBgImage = UIImage(named: "search_bar.png")
-//        keywordBgImage = keywordBgImage?.resizableImageWithCapInsets(UIEdgeInsetsMake(0, 10, 0, 10))
-//        keywordView.background = keywordBgImage
-//        keywordView.leftViewMode = UITextFieldViewMode.Always
-//        var searchIcon = UIImageView(image:UIImage(named:"search-100.png"))
-//        searchIcon.frame = CGRectMake(0, 0, 30, 30)
-//        searchIcon.contentMode = UIViewContentMode.ScaleAspectFit
-//        keywordView.leftView = searchIcon
         
         scrollPager.font = UIFont.systemFontOfSize(11)
         scrollPager.selectedFont = UIFont.systemFontOfSize(11)
@@ -75,7 +67,6 @@ class SearchViewController: BaseContentViewController,
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "SearchViewScreen"
-        keywordView.becomeFirstResponder()
         
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "updatePlay:", name: NotifyKey.updatePlay, object: nil)
@@ -84,7 +75,6 @@ class SearchViewController: BaseContentViewController,
     }
     
     override func viewDidDisappear(animated: Bool) {
-        keywordView.resignFirstResponder()
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
     }
@@ -130,8 +120,6 @@ class SearchViewController: BaseContentViewController,
     }
     
     @IBAction func onKeywordBeginEditing(sender: UITextField) {
-        showAutocomplete(clear: true)
-        searchResultView.hidden = true
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -229,24 +217,6 @@ class SearchViewController: BaseContentViewController,
             return autocomKeywords.count
         }
     }
-    
-//    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-//        let title:String? = self.tableView(tableView, titleForHeaderInSection:section)
-//        if (title == nil || count(title!) == 0) {
-//            let headerView = UIView()
-//            headerView.frame = CGRectMake(0, 0, 0, 0)
-//            return headerView
-//        }
-//        let label:UILabel = UILabel(frame: CGRectMake(16, 0, UIScreen.mainScreen().bounds.size.width, 24))
-//        label.font = UIFont.boldSystemFontOfSize(18)
-//        label.text = title
-//        label.textColor = UIColor(netHex:0xffffff)
-//        let headerView = UIView()
-//        headerView.addSubview(label)
-//        headerView.backgroundColor = UIColor(netHex:0x111111)
-//        
-//        return headerView
-//    }
     
     func onAddBtnClicked(sender: AddableTrackTableViewCell) {
         let indexPath:NSIndexPath = resultTableView.indexPathForCell(sender)!
@@ -390,33 +360,12 @@ class SearchViewController: BaseContentViewController,
             self.currentSections = foundSections
             
             if (self.searchResult!.showType == SearchShowType.ROW) {
-                
+                self.scrollPagerConstraint.constant = 0
                 self.scrollPager.hidden = true
-                let constraint = NSLayoutConstraint(
-                        item: self.scrollPager,
-                        attribute: NSLayoutAttribute.Height,
-                        relatedBy: NSLayoutRelation.Equal,
-                        toItem: self.scrollPager,
-                        attribute: NSLayoutAttribute.Height,
-                        multiplier: 1,
-                        constant: 0)
-                self.scrollPager.addConstraint(constraint)
-                self.view.layoutIfNeeded()
             } else {
+                self.scrollPagerConstraint.constant = 40
                 self.scrollPager.addSegmentsWithTitles(foundTitles)
                 self.scrollPager.hidden = false
-                let constraint = NSLayoutConstraint(
-                        item: self.scrollPager,
-                        attribute: NSLayoutAttribute.Height,
-                        relatedBy: NSLayoutRelation.Equal,
-                        toItem: self.scrollPager,
-                        attribute: NSLayoutAttribute.Height,
-                        multiplier: 1,
-                        constant: 40)
-                self.scrollPager.addConstraint(constraint)
-                self.view.layoutIfNeeded()
-                
-                self.selectTab(self.currentSection!)
             }
             
             self.resultTableView.reloadData()
@@ -463,6 +412,7 @@ class SearchViewController: BaseContentViewController,
             }
             self.resultTableView.reloadData()
         }
+        resultTableView.setContentOffset(CGPointZero, animated:false)
     }
     
     func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {

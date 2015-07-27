@@ -23,3 +23,6 @@ class NotifyKey {
     static var appSignin = "appSignin"
 }
 
+class ApiKey {
+    static var google = "AIzaSyCoieDdwxgy01P7MBIdR48tFxAtyEYHPmA"
+}

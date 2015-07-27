@@ -529,6 +529,93 @@ class Track {
     }
 }
 
+class ChannelPlaylist {
+    var name:String
+    var uid: String
+    init (uid: String, name: String) {
+        self.name = name
+        self.uid = uid
+    }
+}
+
+class Channel {
+    var uid: String?
+    var thumbnail: String?
+    var name :String
+    var genre: [String]
+    var playlists: [ChannelPlaylist]
+    var isBookmarked:Bool
+    
+    init(uid: String, name: String, thumbnail: String? = nil) {
+        self.uid = uid
+        self.name = name
+        self.thumbnail = thumbnail
+        self.playlists = [ChannelPlaylist]()
+        self.genre = []
+        self.isBookmarked = false
+    }
+    
+    init(name: String, thumbnail: String? = nil, genre: [String],
+            playlists: [ChannelPlaylist]) {
+        self.uid = nil
+        self.name = name
+        self.thumbnail = thumbnail
+        self.playlists = playlists
+        self.genre = genre
+        self.isBookmarked = false
+    }
+    
+    static func fromListJson(data: AnyObject, key: String) -> [Channel] {
+        var json = JSON(data)
+        var channels: [Channel] = []
+        for (idx: String, s: JSON) in json[key] {
+            if (s["uid"].error != nil || s["name"].error != nil) {
+                continue
+            }
+            var uid: String = s["uid"].stringValue
+            var name: String = s["name"].stringValue
+            var thumbnail: String? = nil
+            if (s["thumbnail"].error == nil) {
+                thumbnail = s["thumbnail"].stringValue
+            }
+            channels.append(Channel(uid:uid, name: name, thumbnail: thumbnail))
+        }
+        return channels
+    }
+    
+    static func fromDetailJson(data: AnyObject, key: String) -> Channel? {
+        var json = JSON(data)
+        var detail = json[key]
+        if (detail["channel_name"].error != nil) {
+            return nil
+        }
+        var name = detail["channel_name"].stringValue
+        var thumbnail:String?
+        if (detail["channel_thumbnail"].error == nil) {
+            thumbnail = detail["channel_thumbnail"].stringValue
+        }
+        var genreArray:[String] = []
+        if (detail["genre"].error == nil) {
+            var genres = detail["genre"]
+            for (idx: String, g: JSON) in genres {
+                genreArray.append(g.stringValue)
+            }
+        }
+        var playlists = [ChannelPlaylist]()
+        if (detail["uploads"].error == nil) {
+            playlists.append(ChannelPlaylist(uid: detail["uploads"].stringValue, name: "RECENT"))
+        }
+        if (detail["playlist"].error == nil) {
+            for (idx: String, s:JSON) in detail["playlist"] {
+                if (s["uid"].error == nil && s["title"].error == nil) {
+                    playlists.append(ChannelPlaylist(uid:s["uid"].stringValue, name: s["title"].stringValue))
+                }
+            }
+        }
+        return Channel(name:name, thumbnail: thumbnail, genre:genreArray, playlists: playlists)
+    }
+}
+
 class Account {
     var user:User?
     var token:String

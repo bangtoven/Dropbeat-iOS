@@ -131,7 +131,37 @@ class Requests {
         req.validate().response(respCb)
         return req
     }
+    
+    static func getChannelList(genre: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(CorePath.channelList, params: ["genre": genre], auth: false, respCb: respCb)
+    }
+    
+    static func getChannelDetail(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(CorePath.channelDetail, params: ["uid": uid], auth: false, respCb: respCb)
+    }
+    
+    static func getBookmarkList(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(ApiPath.bookmark, auth: true, respCb: respCb)
+    }
+    
+    static func updateBookmarkList(ids: [String], respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendPost(ApiPath.bookmark, params: ["data": ids], auth: true, respCb: respCb)
+    }
+    
+    static func getChannelPlaylist(uid: String, pageToken: String?, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        var params:[String:AnyObject] = [
+            "part": "id,snippet",
+            "key" : ApiKey.google,
+            "maxResults" : 50,
+            "playlistId": uid
+        ]
+        if pageToken != nil {
+            params["pageToken"] = pageToken!
+        }
+        return sendGet(YoutubeApiPath.playlistItems, params: params, auth:false, respCb: respCb)
+    }
 }
+
 
 class WebAdapter {
     var url: String?
@@ -236,12 +266,13 @@ class AutocompleteRequester {
             completionHandler: {
                     (request:NSURLRequest, response:NSHTTPURLResponse?, result:String?, error:NSError?) -> Void in
                 self.onTheFlyRequests.removeValueForKey(id!)
+                
                 if (error != nil) {
                     self.handler(keywords: nil, error:error)
                     return
                 }
                 if (result == nil) {
-                    self.handler(keywords: nil, error:nil)
+                    self.handler(keywords: nil, error:NSError(domain: "autocompleteRequester", code: 0, userInfo: nil))
                     return
                 }
                 let funcRegex = NSRegularExpression(pattern: self.funcRegexPattern, options: nil, error: nil)!

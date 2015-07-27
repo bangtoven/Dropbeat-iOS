@@ -11,6 +11,7 @@ enum MenuType:Int{
     case FEED
     case SEARCH
     case SETTINGS
+    case CHANNEL
 }
 
 class MenuItem {
@@ -34,12 +35,14 @@ class LeftSideViewController: BaseViewController, UITableViewDataSource, UITable
     private let authMenuItems = [
         MenuItem(name: "FEED", iconName: "home-100.png", hightlightIconName: "home-100-hi.png", type: MenuType.FEED),
         MenuItem(name: "SEARCH", iconName: "search-100.png", hightlightIconName: "search-100-hi.png", type: MenuType.SEARCH),
+        MenuItem(name: "CHANNEL", iconName: "home-100.png", hightlightIconName: "home-100-hi.png", type: MenuType.CHANNEL),
         MenuItem(name: "SETTINGS", iconName: "settings-100.png", hightlightIconName: "settings-100-hi.png", type: MenuType.SETTINGS),
     ]
     
     private let nonauthMenuItems = [
         MenuItem(name: "FEED", iconName: "home-100.png", hightlightIconName: "home-100-hi.png", type: MenuType.FEED),
         MenuItem(name: "SEARCH", iconName: "search-100.png", hightlightIconName: "search-100-hi.png", type: MenuType.SEARCH),
+        MenuItem(name: "CHANNEL", iconName: "home-100.png", hightlightIconName: "home-100-hi.png", type: MenuType.CHANNEL),
         MenuItem(name: "SETTINGS", iconName: "settings-100.png", hightlightIconName: "settings-100-hi.png", type: MenuType.SETTINGS),
     ]
     

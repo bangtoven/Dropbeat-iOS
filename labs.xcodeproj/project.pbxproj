@@ -27,6 +27,7 @@
 		582E7D9E1B10BCA500AB76A2 /* facebook_btn_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 582E7D9D1B10BCA500AB76A2 /* facebook_btn_bg.png */; };
 		582E7DA01B10D5F200AB76A2 /* next-96.png in Resources */ = {isa = PBXBuildFile; fileRef = 582E7D9F1B10D5F200AB76A2 /* next-96.png */; };
 		5853A7EA1B0F44560068C6DF /* ScrollPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5853A7E91B0F44560068C6DF /* ScrollPager.swift */; };
+		5858CC111B656BE4003EA698 /* GenreTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5858CC101B656BE4003EA698 /* GenreTableViewCell.swift */; };
 		586D166A1B0B65AF00C5147F /* MMSparkDrawerVisualStateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D16691B0B65AF00C5147F /* MMSparkDrawerVisualStateManager.swift */; };
 		586D166E1B0B972400C5147F /* StartupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586D166D1B0B972400C5147F /* StartupViewController.swift */; };
 		5878379E1B43D977008DF480 /* ic_hq_on.png in Resources */ = {isa = PBXBuildFile; fileRef = 5878379C1B43D977008DF480 /* ic_hq_on.png */; };
@@ -115,6 +116,14 @@
 		5890D67E1B081EE400AAEAE5 /* glyphicons_playlist.png in Resources */ = {isa = PBXBuildFile; fileRef = 5890D67B1B081EE400AAEAE5 /* glyphicons_playlist.png */; };
 		5890D67F1B081EE400AAEAE5 /* glyphicons_share.png in Resources */ = {isa = PBXBuildFile; fileRef = 5890D67C1B081EE400AAEAE5 /* glyphicons_share.png */; };
 		5890D6801B081EE400AAEAE5 /* glyphicons_show_thumbnails.png in Resources */ = {isa = PBXBuildFile; fileRef = 5890D67D1B081EE400AAEAE5 /* glyphicons_show_thumbnails.png */; };
+		58933A551B6618D400452EAB /* SectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58933A541B6618D400452EAB /* SectionTableViewCell.swift */; };
+		58933A571B661D6A00452EAB /* ic_arrow_reverse.png in Resources */ = {isa = PBXBuildFile; fileRef = 58933A561B661D6A00452EAB /* ic_arrow_reverse.png */; };
+		58933A591B662D7700452EAB /* AddableChannelTrackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58933A581B662D7700452EAB /* AddableChannelTrackTableViewCell.swift */; };
+		58946E5B1B63AFCE005B4712 /* ChannelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58946E5A1B63AFCE005B4712 /* ChannelViewController.swift */; };
+		58946E5E1B63F173005B4712 /* ic_star_filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 58946E5C1B63F173005B4712 /* ic_star_filled.png */; };
+		58946E5F1B63F173005B4712 /* ic_star.png in Resources */ = {isa = PBXBuildFile; fileRef = 58946E5D1B63F173005B4712 /* ic_star.png */; };
+		58946E611B6412E5005B4712 /* ChannelTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58946E601B6412E5005B4712 /* ChannelTableViewCell.swift */; };
+		58946E631B64E7FE005B4712 /* ChannelDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58946E621B64E7FE005B4712 /* ChannelDetailViewController.swift */; };
 		58BB0ADC1B12211E00B07279 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0ADB1B12211E00B07279 /* SwiftyJSON.swift */; };
 		58BB0AE61B12222C00B07279 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0ADE1B12222B00B07279 /* Alamofire.swift */; };
 		58BB0AE71B12222C00B07279 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0ADF1B12222B00B07279 /* Download.swift */; };
@@ -140,6 +149,7 @@
 		58CF0C441B110E2200AD4BF0 /* slider_thumb.png in Resources */ = {isa = PBXBuildFile; fileRef = 58CF0C431B110E2200AD4BF0 /* slider_thumb.png */; };
 		58D3EBDC1B0BAAD4000C6374 /* BaseContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D3EBDB1B0BAAD4000C6374 /* BaseContentViewController.swift */; };
 		58D3EBDE1B0BBC00000C6374 /* AddableTrackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D3EBDD1B0BBC00000C6374 /* AddableTrackTableViewCell.swift */; };
+		58E41BEB1B6554FF00684941 /* ic_arrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 58E41BEA1B6554FF00684941 /* ic_arrow.png */; };
 		58EAB3DD1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EAB3DC1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift */; };
 		58EAB3DF1B0D11110075304E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EAB3DE1B0D11110075304E /* Utils.swift */; };
 		58EE1E2A1B46FBD100976FD0 /* restart_filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 58EE1E291B46FBD100976FD0 /* restart_filled.png */; };
@@ -187,6 +197,7 @@
 		582E7D9D1B10BCA500AB76A2 /* facebook_btn_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebook_btn_bg.png; sourceTree = "<group>"; };
 		582E7D9F1B10D5F200AB76A2 /* next-96.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "next-96.png"; sourceTree = "<group>"; };
 		5853A7E91B0F44560068C6DF /* ScrollPager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollPager.swift; sourceTree = "<group>"; };
+		5858CC101B656BE4003EA698 /* GenreTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenreTableViewCell.swift; sourceTree = "<group>"; };
 		586D16691B0B65AF00C5147F /* MMSparkDrawerVisualStateManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MMSparkDrawerVisualStateManager.swift; path = MMDrawerController/MMSparkDrawerVisualStateManager.swift; sourceTree = "<group>"; };
 		586D166D1B0B972400C5147F /* StartupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartupViewController.swift; sourceTree = "<group>"; };
 		5878379C1B43D977008DF480 /* ic_hq_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_hq_on.png; sourceTree = "<group>"; };
@@ -298,6 +309,14 @@
 		5890D67B1B081EE400AAEAE5 /* glyphicons_playlist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glyphicons_playlist.png; sourceTree = "<group>"; };
 		5890D67C1B081EE400AAEAE5 /* glyphicons_share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glyphicons_share.png; sourceTree = "<group>"; };
 		5890D67D1B081EE400AAEAE5 /* glyphicons_show_thumbnails.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = glyphicons_show_thumbnails.png; sourceTree = "<group>"; };
+		58933A541B6618D400452EAB /* SectionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SectionTableViewCell.swift; sourceTree = "<group>"; };
+		58933A561B661D6A00452EAB /* ic_arrow_reverse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_arrow_reverse.png; sourceTree = "<group>"; };
+		58933A581B662D7700452EAB /* AddableChannelTrackTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddableChannelTrackTableViewCell.swift; sourceTree = "<group>"; };
+		58946E5A1B63AFCE005B4712 /* ChannelViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelViewController.swift; sourceTree = "<group>"; };
+		58946E5C1B63F173005B4712 /* ic_star_filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_star_filled.png; sourceTree = "<group>"; };
+		58946E5D1B63F173005B4712 /* ic_star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_star.png; sourceTree = "<group>"; };
+		58946E601B6412E5005B4712 /* ChannelTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelTableViewCell.swift; sourceTree = "<group>"; };
+		58946E621B64E7FE005B4712 /* ChannelDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelDetailViewController.swift; sourceTree = "<group>"; };
 		58BB0ADB1B12211E00B07279 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		58BB0ADE1B12222B00B07279 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
 		58BB0ADF1B12222B00B07279 /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
@@ -334,6 +353,7 @@
 		58CF0C431B110E2200AD4BF0 /* slider_thumb.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slider_thumb.png; sourceTree = "<group>"; };
 		58D3EBDB1B0BAAD4000C6374 /* BaseContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseContentViewController.swift; sourceTree = "<group>"; };
 		58D3EBDD1B0BBC00000C6374 /* AddableTrackTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddableTrackTableViewCell.swift; sourceTree = "<group>"; };
+		58E41BEA1B6554FF00684941 /* ic_arrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_arrow.png; sourceTree = "<group>"; };
 		58EAB3DC1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistSelectTableViewCell.swift; sourceTree = "<group>"; };
 		58EAB3DE1B0D11110075304E /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		58EE1E291B46FBD100976FD0 /* restart_filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = restart_filled.png; sourceTree = "<group>"; };
@@ -494,6 +514,10 @@
 		5890D62C1B081DB500AAEAE5 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				58933A561B661D6A00452EAB /* ic_arrow_reverse.png */,
+				58E41BEA1B6554FF00684941 /* ic_arrow.png */,
+				58946E5C1B63F173005B4712 /* ic_star_filled.png */,
+				58946E5D1B63F173005B4712 /* ic_star.png */,
 				58EE1E291B46FBD100976FD0 /* restart_filled.png */,
 				5878379F1B43E6F8008DF480 /* ic_hq_off.png */,
 				5878379C1B43D977008DF480 /* ic_hq_on.png */,
@@ -647,6 +671,8 @@
 				58BB0ADB1B12211E00B07279 /* SwiftyJSON.swift */,
 				FCD1DA871B04CCB200F9EA70 /* AppDelegate.swift */,
 				FCD1DA8B1B04CCB200F9EA70 /* Main.storyboard */,
+				5858CC101B656BE4003EA698 /* GenreTableViewCell.swift */,
+				58933A541B6618D400452EAB /* SectionTableViewCell.swift */,
 				FCD1DA8E1B04CCB200F9EA70 /* Images.xcassets */,
 				FCD1DA901B04CCB200F9EA70 /* LaunchScreen.xib */,
 				FCD1DA851B04CCB200F9EA70 /* Supporting Files */,
@@ -654,7 +680,6 @@
 				58CF0C391B1109D100AD4BF0 /* SparkSlider.swift */,
 				5890D6131B0530AE00AAEAE5 /* SideMenuTableViewCell.swift */,
 				5890D6151B0538CD00AAEAE5 /* SearchViewController.swift */,
-				58BB0B151B12308000B07279 /* BaseViewController.swift */,
 				58BB0B121B122DCB00B07279 /* labs-Bridging-Header.h */,
 				5890D6171B053F4900AAEAE5 /* SettingsViewController.swift */,
 				586D16691B0B65AF00C5147F /* MMSparkDrawerVisualStateManager.swift */,
@@ -671,13 +696,18 @@
 				581D4C9F1B0A0CCF0036BEBF /* PlaylistTableViewCell.swift */,
 				582709F61B0A8605003C44DA /* KeychainItemWrapper.swift */,
 				586D166D1B0B972400C5147F /* StartupViewController.swift */,
+				58BB0B151B12308000B07279 /* BaseViewController.swift */,
 				58D3EBDB1B0BAAD4000C6374 /* BaseContentViewController.swift */,
 				58D3EBDD1B0BBC00000C6374 /* AddableTrackTableViewCell.swift */,
+				58933A581B662D7700452EAB /* AddableChannelTrackTableViewCell.swift */,
 				58EAB3DC1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift */,
 				58EAB3DE1B0D11110075304E /* Utils.swift */,
 				FC0D9D581B0CC4DE00E048CC /* Constants.swift */,
 				587CDD211B0E4EC100D23CCC /* CopyrightViewController.swift */,
 				5853A7E91B0F44560068C6DF /* ScrollPager.swift */,
+				58946E621B64E7FE005B4712 /* ChannelDetailViewController.swift */,
+				58946E5A1B63AFCE005B4712 /* ChannelViewController.swift */,
+				58946E601B6412E5005B4712 /* ChannelTableViewCell.swift */,
 			);
 			path = labs;
 			sourceTree = "<group>";
@@ -792,6 +822,7 @@
 			files = (
 				5890D66B1B081DD200AAEAE5 /* default_thumb.png in Resources */,
 				5890D66E1B081DD200AAEAE5 /* ic_down.png in Resources */,
+				58933A571B661D6A00452EAB /* ic_arrow_reverse.png in Resources */,
 				5890D6721B081DD200AAEAE5 /* ic_home.png in Resources */,
 				5890D65F1B081DD200AAEAE5 /* btn_repeat_disabled.png in Resources */,
 				582E7D9E1B10BCA500AB76A2 /* facebook_btn_bg.png in Resources */,
@@ -823,6 +854,7 @@
 				5813390D1B12F9F300509879 /* default_artwork.png in Resources */,
 				5890D6631B081DD200AAEAE5 /* btn_shuffle_normal.png in Resources */,
 				FCD1DA921B04CCB200F9EA70 /* LaunchScreen.xib in Resources */,
+				58E41BEB1B6554FF00684941 /* ic_arrow.png in Resources */,
 				5890D6701B081DD200AAEAE5 /* ic_edit.png in Resources */,
 				5890D66A1B081DD200AAEAE5 /* default_profile.png in Resources */,
 				5890D67E1B081EE400AAEAE5 /* glyphicons_playlist.png in Resources */,
@@ -844,9 +876,11 @@
 				5890D6611B081DD200AAEAE5 /* btn_repeat_one.png in Resources */,
 				5890D6711B081DD200AAEAE5 /* ic_facebook.png in Resources */,
 				5890D6791B081DD200AAEAE5 /* logo.png in Resources */,
+				58946E5F1B63F173005B4712 /* ic_star.png in Resources */,
 				5890D6731B081DD200AAEAE5 /* ic_music_gray.png in Resources */,
 				5890D67F1B081EE400AAEAE5 /* glyphicons_share.png in Resources */,
 				5890D65E1B081DD200AAEAE5 /* btn_progress.png in Resources */,
+				58946E5E1B63F173005B4712 /* ic_star_filled.png in Resources */,
 				582E7D9C1B10A7CD00AB76A2 /* search_bar.png in Resources */,
 				FCD1DA8F1B04CCB200F9EA70 /* Images.xcassets in Resources */,
 				5890D65A1B081DD200AAEAE5 /* btn_pause_diabled.png in Resources */,
@@ -890,6 +924,7 @@
 				586D166E1B0B972400C5147F /* StartupViewController.swift in Sources */,
 				588693BE1B13B52700566124 /* MMDrawerController+Storyboard.m in Sources */,
 				588693BB1B13B52700566124 /* MMDrawerVisualState.m in Sources */,
+				58933A591B662D7700452EAB /* AddableChannelTrackTableViewCell.swift in Sources */,
 				588693BC1B13B52700566124 /* UIViewController+MMDrawerController.m in Sources */,
 				5886939B1B13B51300566124 /* SDImageCache.m in Sources */,
 				5886939F1B13B51300566124 /* SDWebImageDownloaderOperation.m in Sources */,
@@ -899,11 +934,13 @@
 				582709F71B0A8605003C44DA /* KeychainItemWrapper.swift in Sources */,
 				58BB0B161B12308000B07279 /* BaseViewController.swift in Sources */,
 				588693BD1B13B52700566124 /* README.md in Sources */,
+				58946E631B64E7FE005B4712 /* ChannelDetailViewController.swift in Sources */,
 				58BB0AE71B12222C00B07279 /* Download.swift in Sources */,
 				58D3EBDE1B0BBC00000C6374 /* AddableTrackTableViewCell.swift in Sources */,
 				588693A21B13B51300566124 /* UIButton+WebCache.m in Sources */,
 				5886939E1B13B51300566124 /* SDWebImageDownloader.m in Sources */,
 				588693A51B13B51300566124 /* UIImageView+HighlightedWebCache.m in Sources */,
+				58933A551B6618D400452EAB /* SectionTableViewCell.swift in Sources */,
 				58CF0C3A1B1109D100AD4BF0 /* SparkSlider.swift in Sources */,
 				FC0D9D551B09A70300E048CC /* PlayerContext.swift in Sources */,
 				5886939D1B13B51300566124 /* SDWebImageDecoder.m in Sources */,
@@ -916,6 +953,7 @@
 				587CDD221B0E4EC100D23CCC /* CopyrightViewController.swift in Sources */,
 				58BB0AEC1B12222C00B07279 /* Upload.swift in Sources */,
 				58BB0AED1B12222C00B07279 /* Validation.swift in Sources */,
+				58946E5B1B63AFCE005B4712 /* ChannelViewController.swift in Sources */,
 				FC0D9D571B09F4F500E048CC /* Stream.swift in Sources */,
 				588693A61B13B51300566124 /* UIImageView+WebCache.m in Sources */,
 				58BB0ADC1B12211E00B07279 /* SwiftyJSON.swift in Sources */,
@@ -936,7 +974,9 @@
 				5886939C1B13B51300566124 /* SDWebImageCompat.m in Sources */,
 				5853A7EA1B0F44560068C6DF /* ScrollPager.swift in Sources */,
 				588693B91B13B52700566124 /* MMDrawerBarButtonItem.m in Sources */,
+				58946E611B6412E5005B4712 /* ChannelTableViewCell.swift in Sources */,
 				FCD1DA881B04CCB200F9EA70 /* AppDelegate.swift in Sources */,
+				5858CC111B656BE4003EA698 /* GenreTableViewCell.swift in Sources */,
 				5890D6141B0530AE00AAEAE5 /* SideMenuTableViewCell.swift in Sources */,
 				5890D6181B053F4900AAEAE5 /* SettingsViewController.swift in Sources */,
 			);

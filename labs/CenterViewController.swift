@@ -924,6 +924,11 @@ class CenterViewController: UIViewController {
                 .instantiateViewControllerWithIdentifier("SettingsNavigationController")
                 as? UIViewController
             break
+        case .CHANNEL:
+            activeViewController = mainStoryboard
+                .instantiateViewControllerWithIdentifier("ChannelNavigationController")
+                as? UIViewController
+            break
         default:
             break
         }

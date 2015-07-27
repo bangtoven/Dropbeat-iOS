@@ -39,6 +39,9 @@ public class ApiPath {
     // Meta
     static var meta :String = host + "meta/"
     static var metaVersion :String = meta + "version/"
+    
+    // Bookmark
+    static var bookmark :String = host + "channelbookmark/"
 }
 
 public class CorePath {
@@ -73,10 +76,21 @@ public class CorePath {
     
     // core.event
     static var event :String = host + "event/"
+    
+    // core.channel
+    static var channel :String = host + "channel/"
+    static var channelList: String = channel + "list/"
+    static var channelDetail: String = channel + "detail/"
+    static var channelDescExtractUrl: String = channel + "extract/"
 }
 
 public class ResolvePath {
 //    static var host :String = "http://14.63.224.95:19001/"
     static var host :String = "http://resolve.dropbeat.net/"
     static var resolveStream :String = host + "resolve/"
+}
+
+public class YoutubeApiPath {
+    static var host :String = "https://www.googleapis.com/youtube/v3/"
+    static var playlistItems :String = host + "playlistItems/"
 }

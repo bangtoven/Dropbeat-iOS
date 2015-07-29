@@ -111,6 +111,8 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             break
         case .PLAYER:
             showPlayerView()
+            let lastTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
+            tabBar.selectedItem = lastTab
             break
         default:
             break

@@ -20,7 +20,8 @@ class ChannelTrack : Track {
 
 
 class ChannelDetailViewController: BaseViewController,
-        UITableViewDelegate, UITableViewDataSource, AddableTrackCellDelegate{
+        UITableViewDelegate, UITableViewDataSource, AddableTrackCellDelegate,
+        UIActionSheetDelegate {
     
     @IBOutlet var channelInfoView: UIView!
     @IBOutlet weak var sectionSelector: UIButton!
@@ -34,6 +35,7 @@ class ChannelDetailViewController: BaseViewController,
     @IBOutlet weak var loadMoreSpinnerWrapper: UIView!
     @IBOutlet weak var loadMoreSpinner: UIActivityIndicatorView!
     
+    var actionSheetTargetTrack:Track?
     var isLoading:Bool = false
     var listEnd:Bool = false
     var currSection:ChannelPlaylist?
@@ -256,14 +258,14 @@ class ChannelDetailViewController: BaseViewController,
         sectionSelectMode = true
         self.tableView.hidden = true
         self.sectionSelectTableView.hidden = false
-        sectionSelector.setImage(UIImage(named: "ic_arrow_reverse.png"), forState: UIControlState.Normal)
+        sectionSelector.setImage(UIImage(named: "ic_arrow_up.png"), forState: UIControlState.Normal)
     }
     
     func switchToNonSectionSelectMode() {
         sectionSelectMode = false
         self.tableView.hidden = false
         self.sectionSelectTableView.hidden = true
-        sectionSelector.setImage(UIImage(named: "ic_arrow.png"), forState: UIControlState.Normal)
+        sectionSelector.setImage(UIImage(named: "ic_arrow_down.png"), forState: UIControlState.Normal)
     }
     
     @IBAction func onSectionSelectorClicked(sender: AnyObject) {
@@ -277,7 +279,7 @@ class ChannelDetailViewController: BaseViewController,
     @IBAction func onBookmarkBtnClicked(sender: AnyObject) {
         if (Account.getCachedAccount() == nil) {
             var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var centerViewController = appDelegate.centerContainer!.centerViewController as! CenterViewController
+            var centerViewController = appDelegate.centerContainer!
             centerViewController.showSigninView()
             return
         }
@@ -407,12 +409,7 @@ class ChannelDetailViewController: BaseViewController,
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if tableView == self.tableView {
-            var params: Dictionary<String, AnyObject> = [
-                "track": tracks[indexPath.row],
-                "playlistId": "-1"
-            ]
-            NSNotificationCenter.defaultCenter().postNotificationName(
-                NotifyKey.playerPlay, object: params)
+            onPlayBtnClicked(tracks[indexPath.row])
         } else {
             switchToNonSectionSelectMode()
             selectSection(self.channel!.playlists[indexPath.row])
@@ -426,40 +423,78 @@ class ChannelDetailViewController: BaseViewController,
         return self.channel?.playlists.count ?? 0
     }
     
-    func onAddBtnClicked(sender: AddableTrackTableViewCell) {
-        let indexPath:NSIndexPath = tableView.indexPathForCell(sender)!
-        let track = tracks[indexPath.row]
+    func onPlayBtnClicked(track:Track) {
+        var params: Dictionary<String, AnyObject> = [
+            "track": track,
+            "playlistId": "-1"
+        ]
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            NotifyKey.playerPlay, object: params)
+    }
+    
+    func onShareBtnClicked(track:Track) {
+        // TODO
+    }
+    
+    func onAddBtnClicked(track:Track) {
         if (Account.getCachedAccount() == nil) {
             var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var centerViewController = appDelegate.centerContainer!.centerViewController as! CenterViewController
+            var centerViewController = appDelegate.centerContainer!
             centerViewController.showSigninView()
             return
         }
+        // TODO show playlist select
+    }
+    
+    func onMenuBtnClicked(sender: AddableTrackTableViewCell) {
+        let indexPath:NSIndexPath = tableView.indexPathForCell(sender)!
+        let track = tracks[indexPath.row]
+        actionSheetTargetTrack = track
         
-        PlaylistViewController.addTrack(track, section: "feed", afterAdd: { (needRefresh, error) -> Void in
-            if (error != nil) {
-                if (error!.domain == "addTrack") {
-                    if (error!.code == 100) {
-                        ViewUtils.showNoticeAlert(self, title: "Failed to add", message: "Failed to find playlist")
-                        return
-                    }
-                    ViewUtils.showToast(self, message: "Already in playlist")
-                    return
+        let actionSheet = UIActionSheet()
+        actionSheet.title = "Track menu"
+        actionSheet.addButtonWithTitle("Add to playlist")
+        actionSheet.addButtonWithTitle("Play")
+        actionSheet.addButtonWithTitle("Share")
+        actionSheet.addButtonWithTitle("Cancel")
+        actionSheet.cancelButtonIndex = 3
+        actionSheet.delegate = self
+        actionSheet.showInView(self.view)
+    }
+    
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        var track:Track? = actionSheetTargetTrack
+        var foundIdx = -1
+        if track != nil {
+            for (idx, t)  in enumerate(tracks) {
+                if t.id == track!.id {
+                    foundIdx = idx
+                    break
                 }
-                var message:String?
-                if (error != nil && error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                    message = "Internet is not connected"
-                }
-                if (message == nil) {
-                    message = "undefined error (\(error!.domain),\(error!.code))"
-                }
-                ViewUtils.showNoticeAlert(self, title: "Failed to add", message: message!)
-                return
             }
-
-            ViewUtils.showToast(self, message: "Track added")
-        })
+        }
+        if track == nil || foundIdx == -1 {
+            ViewUtils.showToast(self, message: "Track is not in feed")
+            return
+        }
+        
+        switch(buttonIndex) {
+        case 1:
+            onPlayBtnClicked(track!)
+            break
+        case 0:
+            onAddBtnClicked(track!)
+            break
+        case 2:
+            onShareBtnClicked(track!)
+            break
+        default:
+            break
+        }
+    }
+    
+    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
+        actionSheetTargetTrack = nil
     }
     
     func updatePlay(noti: NSNotification) {

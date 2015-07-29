@@ -154,7 +154,7 @@ class SigninViewController: BaseViewController {
             }
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.appSignin, object: nil)
             self.dismiss()
-            CenterViewController.sharedInstance!.resignObservers()
+            PlayerViewController.sharedInstance!.resignObservers()
             var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             var navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
             navController.popToRootViewControllerAnimated(false)

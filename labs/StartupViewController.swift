@@ -54,19 +54,8 @@ class StartupViewController: GAITrackedViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if (segue.identifier == "DrawerSegue") {
-            var drawerController:MMDrawerController = segue.destinationViewController as! MMDrawerController
-            drawerController.openDrawerGestureModeMask = MMOpenDrawerGestureMode.PanningCenterView
-            drawerController.closeDrawerGestureModeMask = MMCloseDrawerGestureMode.PanningCenterView
-            drawerController.showsStatusBarBackgroundView = true
-            drawerController.statusBarViewBackgroundColor = UIColor(netHex: 0x505050)
-            drawerController.shouldStretchDrawer = false
-            drawerController.setDrawerVisualStateBlock({ (drawerController:MMDrawerController!, drawerSide:MMDrawerSide, percentVisible:CGFloat) -> Void in
-                var block:MMDrawerControllerDrawerVisualStateBlock
-                block = MMSparkDrawerVisualStateManager.sharedMaanger.drawerVisualStateBlockForDrawerSide(drawerSide)
-                block(drawerController, drawerSide, percentVisible)
-            })
-        
+        if segue.identifier == "DrawerSegue" {
+            var drawerController:CenterViewController = segue.destinationViewController as! CenterViewController
             var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             appDelegate.centerContainer = drawerController
         }
@@ -173,100 +162,7 @@ class StartupViewController: GAITrackedViewController {
     }
     
     func fetchUserInfo() {
-        let callback = { (error:NSError?) -> Void in
-            PlaylistViewController.hasAccount = Account.getCachedAccount() != nil
-            self.showMainController()
-        }
-        if (Account.getCachedAccount() != nil) {
-            loadPlaylist(callback)
-        } else {
-            loadInitialPlaylist(callback)
-        }
-    }
-    
-    func loadPlaylist(callback:(error:NSError?) -> Void) {
-        Requests.fetchAllPlaylists({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            self.progressHud?.hide(true)
-            if (error != nil || result == nil) {
-                // proceed launch app although failed to fetch playlist
-                // we will fetch playlist agian in playlist view
-                callback(error: error)
-                return
-//                var message:String?
-//                if (error != nil && error!.domain == NSURLErrorDomain &&
-//                        error!.code == NSURLErrorNotConnectedToInternet) {
-//                    message = "Internet is not connected"
-//                } else {
-//                    message = "Failed to fetch playlists caused by undefined error."
-//                    if (error != nil) {
-//                        message! += " (\(error!.domain):\(error!.code))"
-//                    }
-//                }
-//                ViewUtils.showNoticeAlert(self,
-//                    title: "Failed to fetch playlists",
-//                    message: message!,
-//                    btnText: "Retry",
-//                    callback: { () -> Void in
-//                        self.progressHud?.hide(true)
-//                        self.loadPlaylist(callback)
-//                    })
-//                return
-            }
-            let playlists = Parser().parsePlaylists(result!).reverse()
-            if (playlists.count == 0) {
-                callback(error: error)
-                return
-            }
-            PlayerContext.playlists.removeAll(keepCapacity: false)
-            for playlist in playlists {
-                PlayerContext.playlists.append(playlist)
-            }
-            PlaylistViewController.updateCurrentPlaylist()
-            callback(error:nil)
-        })
-    }
-    
-    func loadInitialPlaylist(callback:(error:NSError?) -> Void) {
-        Requests.fetchInitialPlaylist({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            self.progressHud?.hide(true)
-            if (error != nil || result == nil) {
-                // proceed launch app although failed to fetch playlist
-                // we will fetch playlist agian in playlist view
-                callback(error: error)
-                return
-//                var message:String?
-//                if (error != nil && error!.domain == NSURLErrorDomain &&
-//                        error!.code == NSURLErrorNotConnectedToInternet) {
-//                    message = "Internet is not connected"
-//                } else {
-//                    message = "Failed to fetch playlists caused by undefined error."
-//                    if (error != nil) {
-//                        message! += " (\(error!.domain):\(error!.code))"
-//                    }
-//                }
-//                ViewUtils.showNoticeAlert(self,
-//                    title: "Failed to fetch playlists",
-//                    message: message!,
-//                    btnText: "Retry",
-//                    callback: { () -> Void in
-//                        self.progressHud?.hide(true)
-//                        self.loadInitialPlaylist(callback)
-//                    })
-//                return
-            }
-            
-            let json = JSON(result!)
-            let playlistJson = json["playlist"]
-            var playlists = [Playlist]()
-            playlists.append(Playlist.fromJson(playlistJson.rawValue))
-            
-            PlayerContext.playlists.removeAll(keepCapacity: false)
-            for playlist in playlists {
-                PlayerContext.playlists.append(playlist)
-            }
-            PlaylistViewController.updateCurrentPlaylist()
-            callback(error:nil)
-        })
+        self.showMainController()
     }
     
     func showMainController() {
@@ -276,16 +172,4 @@ class StartupViewController: GAITrackedViewController {
             self.performSegueWithIdentifier("DrawerSegue", sender: self)
         }
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

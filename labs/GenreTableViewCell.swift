@@ -16,7 +16,7 @@ class GenreTableViewCell: UITableViewCell {
         // Initialization code
         var selectedBgView = UIView(frame: self.bounds)
         selectedBgView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
-        selectedBgView.backgroundColor = UIColor(netHex: 0x444444)
+        selectedBgView.backgroundColor = UIColor(netHex: 0xdddddd)
         self.selectedBackgroundView = selectedBgView
     }
 

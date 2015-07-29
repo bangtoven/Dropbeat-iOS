@@ -9,7 +9,7 @@
 import UIKit
     
 protocol AddableTrackCellDelegate {
-    func onAddBtnClicked(sender:AddableTrackTableViewCell)
+    func onMenuBtnClicked(sender:AddableTrackTableViewCell)
 }
 
 class AddableTrackTableViewCell: UITableViewCell {
@@ -23,7 +23,7 @@ class AddableTrackTableViewCell: UITableViewCell {
         // Initialization code
         var selectedBgView = UIView(frame: self.bounds)
         selectedBgView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
-        selectedBgView.backgroundColor = UIColor(netHex: 0x333333)
+        selectedBgView.backgroundColor = UIColor(netHex: 0xdddddd)
         self.selectedBackgroundView = selectedBgView
     }
 
@@ -33,8 +33,8 @@ class AddableTrackTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    @IBAction func onAddBtnClicked(sender: UIButton) {
-        delegate?.onAddBtnClicked(self)
+    @IBAction func onMenuBtnClicked(sender: UIButton) {
+        delegate?.onMenuBtnClicked(self)
     }
     
 }

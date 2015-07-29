@@ -17,9 +17,9 @@ class SearchResultSections {
     static var allValues = [RELEASED, PODCAST, LIVESET, TOP_MATCH, RELEVANT]
 }
 
-class SearchViewController: BaseContentViewController,
+class SearchViewController: BaseViewController,
     UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate,
-    AddableTrackCellDelegate, ScrollPagerDelegate{
+    UISearchBarDelegate, UIActionSheetDelegate, AddableTrackCellDelegate, ScrollPagerDelegate{
     
     private static var sectionTitles = [
         SearchResultSections.RELEASED: "OFFICIAL",
@@ -36,25 +36,43 @@ class SearchViewController: BaseContentViewController,
     var showAsRowSection = false
     var autocomKeywords:[String] = []
     var autocomRequester:AutocompleteRequester?
+    var searchBar:UISearchBar?
+    var actionSheetTargetTrack:Track?
     
+//    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet var tabGestureRecognizer: UITapGestureRecognizer!
     @IBOutlet weak var scrollPagerConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchResultView: UIView!
     @IBOutlet weak var scrollPager: ScrollPager!
     @IBOutlet weak var autocomTableView: UITableView!
     @IBOutlet weak var resultTableView: UITableView!
-    @IBOutlet weak var keywordView: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Search bar initialize as code 
+        // cause in storyboard cannot set searchbar with full width
+        searchBar = UISearchBar()
+        searchBar!.delegate = self
+        navigationItem.titleView = searchBar!
+        searchBar!.sizeToFit()
+        searchBar!.placeholder = "Artist or Track"
+        searchBar!.searchBarStyle = UISearchBarStyle.Minimal
+        searchBar!.barStyle = UIBarStyle.Default
+        searchBar!.translucent = false
+        searchBar!.returnKeyType = UIReturnKeyType.Search
+        navigationItem.titleView!.autoresizingMask = UIViewAutoresizing.FlexibleWidth
+        navigationItem.rightBarButtonItem = nil
+        
         autocomRequester = AutocompleteRequester(handler: onHandleAutocomplete)
         
         scrollPager.font = UIFont.systemFontOfSize(11)
         scrollPager.selectedFont = UIFont.systemFontOfSize(11)
         
-        
         autocomTableView.hidden = true
         searchResultView.hidden = true
-        keywordView.text = ""
+        
+        
         
         scrollPager.delegate = self
         for section in SearchResultSections.allValues {
@@ -81,6 +99,10 @@ class SearchViewController: BaseContentViewController,
     
     func sender () {}
 
+    @IBAction func onTabed(sender: AnyObject) {
+        searchBar!.endEditing(true)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -101,25 +123,27 @@ class SearchViewController: BaseContentViewController,
         }
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        let keyword = textField.text
-        if (count(keyword) > 0) {
-            doSearch(keyword)
-        }
-        return true
-    }
-    
-    @IBAction func onKeywordChanged(sender: UITextField) {
-        if (count(sender.text) == 0) {
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        if (count(searchText) == 0) {
             hideAutocomplete()
             searchResultView.hidden = false
         } else {
-            autocomRequester?.send(sender.text)
+            autocomRequester?.send(searchText)
             searchResultView.hidden = true
         }
     }
     
-    @IBAction func onKeywordBeginEditing(sender: UITextField) {
+    func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+        searchBar.endEditing(true)
+    }
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        searchBar.endEditing(true)
+        let keyword = searchBar.text
+        if count(keyword) == 0 {
+            return
+        }
+        doSearch(keyword)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -162,16 +186,11 @@ class SearchViewController: BaseContentViewController,
             if (indexPath.section != 0) {
                 index += self.tableView(tableView, numberOfRowsInSection: 0)
             }
-            var track = tracks[index]
-            var params: Dictionary<String, AnyObject> = [
-                "track": track,
-                "playlistId": "-1"
-            ]
-            NSNotificationCenter.defaultCenter().postNotificationName(
-                NotifyKey.playerPlay, object: params)
+            onPlayBtnClicked(tracks[index])
         } else {
             let keyword = autocomKeywords[indexPath.row]
-            keywordView.text = keyword
+            searchBar!.text = keyword
+            searchBar!.endEditing(true)
             doSearch(keyword)
         }
     }
@@ -218,42 +237,89 @@ class SearchViewController: BaseContentViewController,
         }
     }
     
-    func onAddBtnClicked(sender: AddableTrackTableViewCell) {
-        let indexPath:NSIndexPath = resultTableView.indexPathForCell(sender)!
-        let tracks:[Track] = sectionedTracks[currentSection!]!
-        let track = tracks[indexPath.row]
+    func onPlayBtnClicked(track:Track) {
+        var params: Dictionary<String, AnyObject> = [
+            "track": track,
+            "playlistId": "-1"
+        ]
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            NotifyKey.playerPlay, object: params)
+    }
+    
+    func onShareBtnClicked(track:Track) {
+        // TODO
+    }
+    
+    func onAddBtnClicked(track:Track) {
         if (Account.getCachedAccount() == nil) {
             var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var centerViewController = appDelegate.centerContainer!.centerViewController as! CenterViewController
+            var centerViewController = appDelegate.centerContainer!
             centerViewController.showSigninView()
             return
         }
-        
-        PlaylistViewController.addTrack(track, section:"search", afterAdd: { (needRefresh, error) -> Void in
-            if (error != nil) {
-                if (error!.domain == "addTrack") {
-                    if (error!.code == 100) {
-                        ViewUtils.showNoticeAlert(self, title: "Failed to add", message: "Failed to find playlist")
-                        return
-                    }
-                    ViewUtils.showToast(self, message: "Already in playlist")
-                    return
-                }
-                var message:String?
-                if (error != nil && error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                    message = "Internet is not connected"
-                }
-                if (message == nil) {
-                    message = "undefined error (\(error!.domain),\(error!.code))"
-                }
-                ViewUtils.showNoticeAlert(self, title: "Failed to add", message: message!)
-                return
-            }
-
-            ViewUtils.showToast(self, message: "Track added")
-        })
+        // TODO show playlist select
     }
+    
+    func onMenuBtnClicked(sender: AddableTrackTableViewCell) {
+        let indexPath:NSIndexPath = resultTableView.indexPathForCell(sender)!
+        let tracks:[Track] = sectionedTracks[currentSection!]!
+        var index:Int = indexPath.row
+        if (indexPath.section != 0) {
+            index += self.tableView(resultTableView, numberOfRowsInSection: 0)
+        }
+        
+        var track = tracks[index]
+        actionSheetTargetTrack = track
+        
+        let actionSheet = UIActionSheet()
+        actionSheet.title = "Track menu"
+        actionSheet.addButtonWithTitle("Add to playlist")
+        actionSheet.addButtonWithTitle("Play")
+        actionSheet.addButtonWithTitle("Share")
+        actionSheet.addButtonWithTitle("Cancel")
+        actionSheet.cancelButtonIndex = 3
+        actionSheet.delegate = self
+        actionSheet.showInView(self.view)
+    }
+    
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        var track:Track? = actionSheetTargetTrack
+        var foundIdx = -1
+        
+        let tracks:[Track] = sectionedTracks[currentSection!]!
+        if track != nil {
+            for (idx, t)  in enumerate(tracks) {
+                if t.id == track!.id {
+                    foundIdx = idx
+                    break
+                }
+            }
+        }
+        if track == nil || foundIdx == -1 {
+            ViewUtils.showToast(self, message: "Track is not in feed")
+            return
+        }
+        
+        switch(buttonIndex) {
+        case 1:
+            onPlayBtnClicked(track!)
+            break
+        case 0:
+            onAddBtnClicked(track!)
+            break
+        case 2:
+            onShareBtnClicked(track!)
+            break
+        default:
+            break
+        }
+    }
+    
+    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
+        actionSheetTargetTrack = nil
+    }
+    
+    
     
     func hideAutocomplete() {
         autocomTableView.hidden = true
@@ -272,7 +338,6 @@ class SearchViewController: BaseContentViewController,
         hideAutocomplete()
         
         let progressHud = ViewUtils.showProgress(self, message: "Searching..")
-        keywordView.endEditing(true)
         searchResultView.hidden = false
         
         // Log to Us
@@ -420,11 +485,6 @@ class SearchViewController: BaseContentViewController,
             return
         }
         selectTab(self.currentSections![changedIndex])
-    }
-    
-    override func menuBtnClicked(sender: AnyObject) {
-        keywordView.endEditing(true)
-        super.menuBtnClicked(sender)
     }
     
     func updatePlay(noti: NSNotification) {

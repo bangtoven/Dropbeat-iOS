@@ -9,14 +9,16 @@
 import Foundation
 
 class NotifyKey {
-    static var playerPlay = "playPlaylistView"
-    static var playerPrev = "prevPlaylistView"
-    static var playerPause = "pausePlaylistView"
-    static var playerNext = "nextPlaylistView"
-    static var playerSeek = "seekPlaylistView"
+    static var playerPlay = "playPlayer"
+    static var playerPrev = "prevPlayer"
+    static var playerPause = "pausePlayer"
+    static var playerNext = "nextPlayer"
+    static var playerSeek = "seekPlayer"
+    static var playerStop = "stopPlayer"
     static var updatePlaylistView = "updatePlaylistView"
     static var updatePlay = "updatePlay"
     static var updateRepeatState = "updateRepeatState"
+    static var updateShuffleState = "updateShuffleState"
     static var updateQualityState = "updateQualityState"
     static var networkStatusChanged = "networkStatusChanged"
     static var appSignout = "appSignout"

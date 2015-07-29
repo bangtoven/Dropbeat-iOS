@@ -633,7 +633,7 @@ class Account {
         Account.account = nil
         let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         appDelegate.account = nil
-        CenterViewController.sharedInstance!.resignObservers()
+        PlayerViewController.sharedInstance!.resignObservers()
         var navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
         navController.popToRootViewControllerAnimated(false)
     }

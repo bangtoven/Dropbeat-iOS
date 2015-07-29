@@ -19,7 +19,7 @@ class NetworkStatus {
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var centerContainer: MMDrawerController?
+    var centerContainer: CenterViewController?
     var account: Account?
     // 0 is NotReachable
     var networkStatus: Int = NetworkStatus.NOT_REACHABLE

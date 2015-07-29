@@ -9,14 +9,14 @@
 import UIKit
 
 protocol PlaylistTableViewDelegate {
-    func onDeleteBtnClicked(sender:PlaylistTableViewCell)
+    func onMenuBtnClicked(sender:PlaylistTableViewCell)
 }
 
 class PlaylistTableViewCell: UITableViewCell {
     
     var delegate:PlaylistTableViewDelegate?
 
-    @IBOutlet weak var deleteBtn: UIButton!
+    @IBOutlet weak var menuBtn: UIButton!
     @IBOutlet weak var icon: UIImageView!
     @IBOutlet weak var trackTitle: UILabel!
     
@@ -25,7 +25,7 @@ class PlaylistTableViewCell: UITableViewCell {
         // Initialization code
         var selectedBgView = UIView(frame: self.bounds)
         selectedBgView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
-        selectedBgView.backgroundColor = UIColor(netHex: 0x1A1A1A)
+        selectedBgView.backgroundColor = UIColor(netHex: 0xdddddd)
         self.selectedBackgroundView = selectedBgView
     }
 
@@ -35,8 +35,8 @@ class PlaylistTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    @IBAction func onDeleteBtnClicked(sender: UIButton) {
-        delegate?.onDeleteBtnClicked(self)
+    @IBAction func onMenuBtnClicked(sender: UIButton) {
+        delegate?.onMenuBtnClicked(self)
     }
 
 }

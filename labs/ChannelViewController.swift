@@ -17,8 +17,8 @@ class Genre {
     }
 }
 
-class ChannelViewController: BaseContentViewController,
-        UITableViewDelegate, UITableViewDataSource, ScrollPagerDelegate, ChannelTableViewCellDelegate{
+class ChannelViewController: BaseViewController,
+        UITableViewDelegate, UITableViewDataSource, ScrollPagerDelegate, ChannelTableViewCellDelegate {
     
     var channels : [Channel] = [Channel]()
     var bookmarkedChannels : [Channel] = [Channel]()
@@ -120,6 +120,9 @@ class ChannelViewController: BaseContentViewController,
             self, selector: "appWillEnterForeground",
             name: UIApplicationWillEnterForegroundNotification, object: nil)
         
+        if tableView.indexPathForSelectedRow() != nil {
+            tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: false)
+        }
         if (channelLoaded) {
             loadBookmarks()
         } else {
@@ -193,13 +196,7 @@ class ChannelViewController: BaseContentViewController,
         if tableView == self.genreTableView {
             var genre = self.genres[indexPath.row]
             loadChannels(genre, loadBookmarks: false)
-            self.tableView.hidden = false
-            self.genreTableView.hidden = true
-            if selectedTabIdx == 0 {
-                self.emptyBookmarkView.hidden = bookmarkedChannels.count != 0
-            } else if selectedTabIdx == 1 {
-                self.emptyChannelView.hidden = channels.count != 0
-            }
+            toNonGenreSelectMode()
         }
     }
     
@@ -253,12 +250,13 @@ class ChannelViewController: BaseContentViewController,
                 }
             }
             self.tableView.reloadData()
-            
-            if self.bookmarkedChannels.count == 0 &&
-                    self.selectedTabIdx == 0 && !self.tableView.hidden {
-                self.emptyBookmarkView.hidden = false
-            } else {
-                self.emptyBookmarkView.hidden = true
+            if !self.isGenreSelectMode {
+                if self.bookmarkedChannels.count == 0 &&
+                        self.selectedTabIdx == 0 && !self.tableView.hidden {
+                    self.emptyBookmarkView.hidden = false
+                } else {
+                    self.emptyBookmarkView.hidden = true
+                }
             }
         })
     }
@@ -297,28 +295,51 @@ class ChannelViewController: BaseContentViewController,
             } else {
                 self.tableView.reloadData()
             }
-            if self.channels.count == 0 &&
-                    self.selectedTabIdx == 1 && !self.tableView.hidden {
-                self.emptyChannelView.hidden = false
-            } else {
-                self.emptyChannelView.hidden = true
+            if !self.isGenreSelectMode {
+                if self.channels.count == 0 &&
+                        self.selectedTabIdx == 1 && !self.tableView.hidden {
+                    self.emptyChannelView.hidden = false
+                } else {
+                    self.emptyChannelView.hidden = true
+                }
             }
         })
     }
     
     @IBAction func onGenreSelectBtnClicked(sender: AnyObject) {
+        if isGenreSelectMode {
+            toNonGenreSelectMode()
+        } else {
+            toGenreSelectMode()
+        }
+    }
+    
+    func toGenreSelectMode() {
         isGenreSelectMode = true
-        self.tableView.hidden = true
-        self.genreTableView.hidden = false
-        self.emptyChannelView.hidden = true
-        self.emptyBookmarkView.hidden = true
+        tableView.hidden = true
+        genreTableView.hidden = false
+        emptyChannelView.hidden = true
+        emptyBookmarkView.hidden = true
+        genreSelectBtn.setImage(UIImage(named:"ic_arrow_up.png"), forState: UIControlState.Normal)
+    }
+    
+    func toNonGenreSelectMode() {
+        isGenreSelectMode = false
+        tableView.hidden = false
+        genreTableView.hidden = true
+        if selectedTabIdx == 0 && bookmarkedChannels.count == 0 {
+            emptyBookmarkView.hidden = false
+        } else if selectedTabIdx == 1 && channels.count == 0 {
+            emptyChannelView.hidden = false
+        }
+        genreSelectBtn.setImage(UIImage(named:"ic_arrow_down.png"), forState: UIControlState.Normal)
     }
     
     func onBookmarkBtnClicked(sender: ChannelTableViewCell) {
         let indexPath:NSIndexPath = tableView.indexPathForCell(sender)!
         if (Account.getCachedAccount() == nil) {
             var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var centerViewController = appDelegate.centerContainer!.centerViewController as! CenterViewController
+            var centerViewController = appDelegate.centerContainer!
             centerViewController.showSigninView()
             return
         }

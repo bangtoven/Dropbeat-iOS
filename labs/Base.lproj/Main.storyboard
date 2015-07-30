@@ -173,11 +173,10 @@
                     </view>
                     <navigationItem key="navigationItem" title="Playlist" id="7my-8c-LT9">
                         <barButtonItem key="backBarButtonItem" title=" " id="hNc-lm-3d9"/>
-                        <barButtonItem key="rightBarButtonItem" title="edit" id="IVE-iv-lKV"/>
                     </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
-                        <outlet property="editBtn" destination="IVE-iv-lKV" id="0m0-0y-fOD"/>
                         <outlet property="playlistNameView" destination="3q1-uZ-muX" id="Ymd-3g-GEN"/>
                         <outlet property="playlistTableView" destination="g4s-vl-X4b" id="cto-wz-iaE"/>
                         <outlet property="playlistTrackCountView" destination="Jqc-9T-Qcc" id="fr2-K5-gIu"/>
@@ -185,7 +184,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZtQ-WG-i8B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1898" y="274"/>
+            <point key="canvasLocation" x="973" y="-362"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="yGL-1L-Up8">
@@ -599,6 +598,9 @@
                                                         <state key="normal" title="Button" image="ic_list.png">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="onPlaylistBtnClicked:" destination="784-QY-VPr" eventType="touchUpInside" id="Bpr-yK-3Os"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B1U-Rq-rY4" userLabel="next">
                                                         <rect key="frame" x="187" y="14" width="34" height="34"/>
@@ -662,6 +664,9 @@
                                                         <state key="normal" image="ic_share.png">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="onTrackShareBtnClicked:" destination="784-QY-VPr" eventType="touchUpInside" id="hng-eg-ftG"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <constraints>
@@ -704,6 +709,9 @@
                                                 <state key="normal" image="ic_dotdotdot_horizontal.png">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
+                                                <connections>
+                                                    <action selector="onMenuBtnClicked:" destination="784-QY-VPr" eventType="touchUpInside" id="IM3-DP-IzT"/>
+                                                </connections>
                                             </button>
                                             <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3ye-KH-GOt" userLabel="player option view">
                                                 <rect key="frame" x="14" y="192" width="126" height="40"/>
@@ -729,7 +737,7 @@
                                                             <constraint firstAttribute="width" constant="46" id="yZJ-Fe-5SY"/>
                                                         </constraints>
                                                         <inset key="contentEdgeInsets" minX="2" minY="9" maxX="2" maxY="9"/>
-                                                        <state key="normal" title="HQ" image="BA0267B0-2749-4679-ACEE-833A9984AE3F">
+                                                        <state key="normal" title="HQ" image="955C3F91-86A0-4C1B-95A8-65E95C858168">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -881,6 +889,9 @@
                             <constraint firstItem="SXP-bO-PWs" firstAttribute="leading" secondItem="zqX-Ab-Rh2" secondAttribute="leading" id="xIm-ts-R8X"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="H2C-t8-tWx">
+                        <barButtonItem key="backBarButtonItem" title=" " id="7SU-Dv-5eb"/>
+                    </navigationItem>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
@@ -902,6 +913,7 @@
                         <outlet property="playerTitle" destination="Cam-eZ-6F3" id="jhL-Kg-SPY"/>
                         <outlet property="playerView" destination="SXP-bO-PWs" id="BU3-2D-dho"/>
                         <outlet property="playerViewHeightConstraint" destination="QfG-k4-emr" id="DL0-gd-HNH"/>
+                        <outlet property="playlistBtn" destination="SSY-AR-tk6" id="Rk2-zR-fU6"/>
                         <outlet property="prevBtn" destination="lh1-8s-HF0" id="OcD-FA-eqM"/>
                         <outlet property="progressBar" destination="9Cm-Ax-dWd" id="WMJ-6G-8dy"/>
                         <outlet property="progressTextView" destination="idL-gJ-kgf" id="2qE-XT-VK8"/>
@@ -913,6 +925,7 @@
                         <outlet property="tabBarHeightConstraint" destination="hJa-cC-Wcf" id="bCd-e1-fnv"/>
                         <outlet property="totalTextView" destination="8Ni-2V-p0m" id="DOZ-Ti-7iy"/>
                         <outlet property="videoView" destination="5ah-Rp-12s" id="knw-JI-Lhy"/>
+                        <segue destination="ATs-9y-TgU" kind="show" identifier="PlaylistSegue" id="HiJ-qO-nKe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nGc-Mu-1CP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1327,9 +1340,10 @@
             <objects>
                 <navigationController navigationBarHidden="YES" id="uW7-Xh-PXN" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="qwL-v8-yqL">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="qwL-v8-yqL">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <connections>
                         <segue destination="ejL-By-Wwd" kind="relationship" relationship="rootViewController" id="tmD-nk-Wp2"/>
@@ -1348,7 +1362,7 @@
                         <viewControllerLayoutGuide type="bottom" id="Xsf-RH-yo4"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="F8j-lf-uZX">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="logo_without_text.png" translatesAutoresizingMaskIntoConstraints="NO" id="whZ-zV-pSM">
@@ -2245,7 +2259,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="BA0267B0-2749-4679-ACEE-833A9984AE3F" width="105" height="64">
+        <image name="955C3F91-86A0-4C1B-95A8-65E95C858168" width="105" height="64">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -2806,6 +2820,7 @@ AAACAQAAAAAAAAA/AAAAAAAAAAAAAAAAAAB3ug
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="bVc-Yf-og9"/>
+        <segue reference="HiJ-qO-nKe"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

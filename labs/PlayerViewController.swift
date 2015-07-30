@@ -10,7 +10,7 @@ import UIKit
 import MediaPlayer
 import AVFoundation
 
-class PlayerViewController: BaseViewController {
+class PlayerViewController: BaseViewController, UIActionSheetDelegate {
 
     @IBOutlet weak var loadingView: UIImageView!
     @IBOutlet weak var progressBar: UISlider!
@@ -30,6 +30,7 @@ class PlayerViewController: BaseViewController {
     @IBOutlet weak var coverImageView: UIImageView!
     @IBOutlet weak var qualityBtn: UIButton!
     @IBOutlet weak var coverBgImageView: UIImageView!
+    @IBOutlet weak var playlistBtn: UIButton!
     
     static var observerAttached: Bool = false
     static var sharedInstance:PlayerViewController?
@@ -52,6 +53,8 @@ class PlayerViewController: BaseViewController {
     var playingInfoDisplayDuration = false
     var hookingBackground: Bool = false
     
+    var actionSheetTargetTrack:Track?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -69,6 +72,7 @@ class PlayerViewController: BaseViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.navigationController?.navigationBarHidden = true
         updatePlayerViews()
     }
     
@@ -173,6 +177,28 @@ class PlayerViewController: BaseViewController {
         
         handleStop()
     }
+    
+    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+        if buttonIndex < 2 && actionSheetTargetTrack == nil {
+            ViewUtils.showToast(self, message: "No track selected")
+            return
+        }
+        
+        switch(buttonIndex) {
+        case 0:
+            onAddToPlaylistBtnClicked(actionSheetTargetTrack!)
+            break
+        case 1:
+            onTrackShareBtnClicked(actionSheetTargetTrack!)
+            break
+        default:
+            break
+        }
+    }
+    
+    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
+        actionSheetTargetTrack = nil
+    }
 
     func backgroundHook () {
         if (PlayerContext.currentTrack != nil) {
@@ -215,6 +241,17 @@ class PlayerViewController: BaseViewController {
         updateRepeatView()
         updateShuffleView()
         updateQualityView()
+        updatePlayerPlaylistBtn()
+    }
+    
+    func updatePlayerPlaylistBtn () {
+        if PlayerContext.currentPlaylistId == nil || PlayerContext.currentPlaylistId!.toInt() < 0 {
+            playlistBtn.setImage(UIImage(named:"ic_list_gray.png"), forState: UIControlState.Normal)
+            playlistBtn.enabled = false
+        } else {
+            playlistBtn.setImage(UIImage(named:"ic_list.png"), forState: UIControlState.Normal)
+            playlistBtn.enabled = true
+        }
     }
     
     func updatePlayView() {
@@ -570,6 +607,16 @@ class PlayerViewController: BaseViewController {
         return params
     }
     
+    @IBAction func onMenuBtnClicked(sender: AnyObject) {
+        var actionSheet = UIActionSheet()
+        actionSheet.addButtonWithTitle("Add to playlist")
+        actionSheet.addButtonWithTitle("Share")
+        actionSheet.addButtonWithTitle("Cancel")
+        actionSheet.cancelButtonIndex = 2
+        actionSheet.showInView(self.view)
+        actionSheet.delegate = self
+    }
+    
     @IBAction func playBtnClicked(sender: UIButton?) {
         println("play!")
         if (PlayerContext.currentTrack != nil) {
@@ -623,6 +670,30 @@ class PlayerViewController: BaseViewController {
         PlayerContext.changeQualityState()
         NSNotificationCenter.defaultCenter().postNotificationName(
             NotifyKey.updateQualityState, object: nil)
+    }
+    
+    func onTrackShareBtnClicked(track:Track) {
+        
+    }
+    
+    func onAddToPlaylistBtnClicked(track:Track) {
+        
+    }
+    
+    @IBAction func onTrackShareBtnClicked(sender: UIButton) {
+        if PlayerContext.currentTrack == nil {
+            ViewUtils.showToast(self, message: "No track selected")
+            return
+        }
+        onTrackShareBtnClicked(PlayerContext.currentTrack!)
+    }
+    
+    @IBAction func onPlaylistBtnClicked(sender: UIButton) {
+        // this will be handle on CenterViewController
+        if PlayerContext.currentPlaylistId == nil || PlayerContext.currentPlaylistId!.toInt() < 0 {
+            return
+        }
+        performSegueWithIdentifier("PlaylistSegue", sender: sender)
     }
     
     @IBAction func pauseBtnClicked(sender: UIButton?) {
@@ -771,6 +842,7 @@ class PlayerViewController: BaseViewController {
         
         // Indicate loading status.
         updatePlayState(PlayState.LOADING)
+        updatePlayerPlaylistBtn()
         
         // Log to us
         Requests.logPlay(track!.title)
@@ -1032,5 +1104,35 @@ class PlayerViewController: BaseViewController {
         }
     }
     
+    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+        if identifier == "PlaylistSegue" {
+            var playlist:Playlist?
+            for p in PlayerContext.playlists {
+                if p.id == PlayerContext.currentPlaylistId {
+                    playlist = p
+                }
+            }
+            if playlist == nil {
+                return false
+            }
+        }
+        return true
+    }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "PlaylistSegue" {
+            let playlistVC:PlaylistViewController = segue.destinationViewController as! PlaylistViewController
+            var playlist:Playlist?
+            for p in PlayerContext.playlists {
+                if p.id == PlayerContext.currentPlaylistId {
+                    playlist = p
+                    break
+                }
+            }
+            playlistVC.currentPlaylist = playlist!
+            playlistVC.fromPlayer = true
+            navigationController?.navigationBarHidden = false
+            UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
+        }
+    }
 }

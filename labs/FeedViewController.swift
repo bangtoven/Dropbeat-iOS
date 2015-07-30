@@ -99,7 +99,6 @@ class FeedViewController: BaseViewController,
         selectedTrack = track
         
         let actionSheet = UIActionSheet()
-        actionSheet.title = "Track menu"
         actionSheet.addButtonWithTitle("Add to playlist")
         actionSheet.addButtonWithTitle("Play")
         actionSheet.addButtonWithTitle("Share")

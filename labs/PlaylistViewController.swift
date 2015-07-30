@@ -21,6 +21,7 @@ class PlaylistViewController: BaseViewController,
     var tracks:[Track] = [Track]()
     var playlistActionSheet:UIActionSheet?
     var menuSelectedTrack:Track?
+    var fromPlayer:Bool = false
     
     static func addTrack(playlist: Playlist, track:Track, section:String, afterAdd: (error:NSError?) -> Void) {
         var tracks = playlist.tracks
@@ -220,13 +221,7 @@ class PlaylistViewController: BaseViewController,
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         var selectedTrack: Track = tracks[indexPath.row] as Track
-        // DO SOMETHING with selected track
-        var params: Dictionary<String, AnyObject> = [
-            "track": selectedTrack,
-            "playlistId": currentPlaylist!.id
-        ]
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            NotifyKey.playerPlay, object: params)
+        onPlayTrackBtnClicked(selectedTrack)
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -350,7 +345,6 @@ class PlaylistViewController: BaseViewController,
     
     @IBAction func onPlaylistMenuBtnClicked(sender: AnyObject) {
         playlistActionSheet = UIActionSheet()
-        playlistActionSheet!.title = "Playlist menu"
         playlistActionSheet!.addButtonWithTitle("Shuffle Play")
         playlistActionSheet!.addButtonWithTitle("Share")
         playlistActionSheet!.addButtonWithTitle("Rename")
@@ -430,6 +424,10 @@ class PlaylistViewController: BaseViewController,
         
         NSNotificationCenter.defaultCenter().postNotificationName(
             NotifyKey.playerPlay, object: params)
+        
+        if fromPlayer {
+            navigationController?.popToRootViewControllerAnimated(true)
+        }
     }
     
     func onShareTrackBtnClicked(track: Track) {
@@ -578,7 +576,6 @@ class PlaylistViewController: BaseViewController,
         menuSelectedTrack = tracks[indexPath.row]
         
         let actionSheet = UIActionSheet()
-        actionSheet.title = "Track menu"
         actionSheet.addButtonWithTitle("Play")
         actionSheet.addButtonWithTitle("Share")
         actionSheet.addButtonWithTitle("Add to other playlist")

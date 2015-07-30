@@ -41,6 +41,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     @IBOutlet weak var tabBar: UITabBar!
     
     var currentMenu:MenuType = MenuType.FEED
+    var isPlayerVisible:Bool = false
     
     private var activeViewController: UIViewController? {
         didSet {
@@ -74,6 +75,13 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         let firstTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
         tabBar.selectedItem = firstTab
         onMenuSelected(currentMenu)
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        if isPlayerVisible {
+            UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.None)
+        }
     }
     
     override func remotePlay(noti: NSNotification) {
@@ -168,6 +176,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     }
     
     func showPlayerView() {
+        isPlayerVisible = true
         self.view.layoutIfNeeded()
         UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
         UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
@@ -182,6 +191,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     func hidePlayerView() {
         self.view.layoutIfNeeded()
         
+        isPlayerVisible = false
         UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.Fade)
         UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
             self.containerTopConstraint.constant = -1 * UIApplication.sharedApplication().statusBarFrame.size.height

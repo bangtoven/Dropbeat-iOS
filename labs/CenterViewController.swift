@@ -34,6 +34,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     @IBOutlet weak var tabBarHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var playerViewHeightConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var menuBtn: UIButton!
     @IBOutlet weak var hideBtn: UIButton!
     @IBOutlet weak var playerView: UIView!
     @IBOutlet weak var containerView: UIView!
@@ -51,6 +52,15 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        hideBtn.layer.cornerRadius = 3.0
+        hideBtn.layer.borderWidth = 1
+        hideBtn.layer.borderColor = UIColor(netHex: 0x4f525a).CGColor
+        
+        menuBtn.layer.cornerRadius = 3.0
+        menuBtn.layer.borderWidth = 1
+        menuBtn.layer.borderColor = UIColor(netHex: 0x4f525a).CGColor
+    
         let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
         containerHeightConstraint.constant = self.view.bounds.size.height
             - tabBarHeightConstraint.constant
@@ -60,15 +70,15 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         
         playerViewHeightConstraint.constant = self.view.bounds.size.height
         
-        
-        hideBtn.layer.borderWidth = 1.0
-        hideBtn.layer.borderColor = UIColor.whiteColor().CGColor
-        hideBtn.layer.cornerRadius = 3.0
-        
         // set first item
         let firstTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
         tabBar.selectedItem = firstTab
         onMenuSelected(currentMenu)
+    }
+    
+    override func remotePlay(noti: NSNotification) {
+        super.remotePlay(noti)
+        showPlayerView()
     }
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem!) {

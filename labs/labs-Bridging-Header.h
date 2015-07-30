@@ -51,4 +51,6 @@
 #import "Reachability.h"
 #import <XCDYouTubeKit/XCDYouTubeKit.h>
 
+#import "MarqueeLabel.h"
+
 #endif

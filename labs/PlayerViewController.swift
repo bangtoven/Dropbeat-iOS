@@ -18,10 +18,18 @@ class PlayerViewController: BaseViewController {
     @IBOutlet weak var playerTitle: UILabel!
     @IBOutlet weak var playerStatus: UILabel!
     
+    @IBOutlet weak var repeatBtn: UIButton!
+    @IBOutlet weak var shuffleBtn: UIButton!
+    @IBOutlet weak var totalTextView: UILabel!
+    @IBOutlet weak var progressTextView: UILabel!
+    @IBOutlet weak var nextBtn: UIButton!
+    @IBOutlet weak var prevBtn: UIButton!
     @IBOutlet weak var playBtn: UIButton!
     @IBOutlet weak var pauseBtn: UIButton!
     @IBOutlet weak var videoView: UIView!
-    @IBOutlet weak var gradientView: UIView!
+    @IBOutlet weak var coverImageView: UIImageView!
+    @IBOutlet weak var qualityBtn: UIButton!
+    @IBOutlet weak var coverBgImageView: UIImageView!
     
     static var observerAttached: Bool = false
     static var sharedInstance:PlayerViewController?
@@ -29,7 +37,11 @@ class PlayerViewController: BaseViewController {
     var audioPlayerControl: XCDYouTubeVideoPlayerViewController = XCDYouTubeVideoPlayerViewController()
     
     var remoteProgressTimer: NSTimer?
+    
     var isProgressUpdatable = true
+    var prevShuffleBtnState:Int?
+    var prevRepeatBtnState:Int?
+    
     var bgTaskId:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     var removedId:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     
@@ -42,11 +54,13 @@ class PlayerViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         if (PlayerViewController.observerAttached == false) {
             PlayerViewController.sharedInstance = self
             asignObservers()
         }
+        
+        audioPlayerControl.presentInView(videoView)
     }
 
     override func didReceiveMemoryWarning() {
@@ -200,6 +214,7 @@ class PlayerViewController: BaseViewController {
         updateProgressView()
         updateRepeatView()
         updateShuffleView()
+        updateQualityView()
     }
     
     func updatePlayView() {
@@ -226,11 +241,37 @@ class PlayerViewController: BaseViewController {
     }
     
     func updateShuffleView() {
-        
+        if (prevShuffleBtnState == PlayerContext.shuffleState) {
+            return
+        }
+        prevShuffleBtnState = PlayerContext.shuffleState
+        if (PlayerContext.shuffleState == ShuffleState.NOT_SHUFFLE) {
+            shuffleBtn.setImage(UIImage(named: "ic_shuffle_gray.png"), forState: UIControlState.Normal)
+        } else {
+            shuffleBtn.setImage(UIImage(named: "ic_shuffle.png"), forState: UIControlState.Normal)
+        }
     }
     
     func updateRepeatView() {
-        
+        if (prevRepeatBtnState != nil &&
+            prevRepeatBtnState == PlayerContext.repeatState) {
+                return
+        }
+        prevRepeatBtnState = PlayerContext.repeatState
+        switch(PlayerContext.repeatState) {
+        case RepeatState.NOT_REPEAT:
+            var image:UIImage = UIImage(named: "ic_repeat_gray.png")!
+            repeatBtn.setImage(image, forState: UIControlState.Normal)
+            break
+        case RepeatState.REPEAT_ONE:
+            repeatBtn.setImage(UIImage(named: "ic_repeat_one.png"), forState: UIControlState.Normal)
+            break
+        case RepeatState.REPEAT_PLAYLIST:
+            repeatBtn.setImage(UIImage(named: "ic_repeat.png"), forState: UIControlState.Normal)
+            break
+        default:
+            break
+        }
     }
     
     func updateStatusView() {
@@ -253,6 +294,21 @@ class PlayerViewController: BaseViewController {
             playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
         }
     }
+    
+    func updateQualityView() {
+        switch(PlayerContext.qualityState) {
+        case QualityState.LQ:
+            var image:UIImage = UIImage(named: "ic_hq_off")!
+            qualityBtn.setImage(image, forState: UIControlState.Normal)
+            break
+        case QualityState.HQ:
+            var image:UIImage = UIImage(named: "ic_hq_on")!
+            qualityBtn.setImage(image, forState: UIControlState.Normal)
+            break
+        default:
+            break
+        }
+    }
 
     func updateProgressView() {
         if (PlayerContext.playState == PlayState.PLAYING && !isProgressUpdatable) {
@@ -271,7 +327,18 @@ class PlayerViewController: BaseViewController {
             } else {
                 progressBar.enabled = false
             }
+            progressTextView.text = getTimeFormatText(PlayerContext.currentPlaybackTime ?? 0)
+            totalTextView.text = getTimeFormatText(PlayerContext.correctDuration ?? 0)
         }
+    }
+    
+    func getTimeFormatText(time:NSTimeInterval) -> String {
+        let ti = Int(time)
+        let seconds = ti % 60
+        let minutes = ti / 60
+        var text = minutes < 10 ? "0\(minutes):" : "\(String(minutes)):"
+        text += seconds < 10 ? "0\(seconds)" : String(seconds)
+        return text
     }
     
     func updateProgress () {
@@ -511,6 +578,53 @@ class PlayerViewController: BaseViewController {
         }
     }
     
+    @IBAction func onNextBtnClicked(sender: UIButton) {
+        handleNext()
+    }
+    
+    @IBAction func onPrevBtnClicked(sender: UIButton) {
+        handlePrev()
+    }
+    
+    @IBAction func onRepeatBtnClicked(sender: UIButton) {
+        PlayerContext.changeRepeatState()
+        repeatStateUpdated()
+    }
+    
+    @IBAction func onShuffleBtnClicked(sender: UIButton) {
+        PlayerContext.changeShuffleState()
+        shuffleStateUpdated()
+    }
+    
+    @IBAction func onQualityBtnClicked(sender: UIButton) {
+        onQualityBtnClicked(sender, forceChange: false)
+    }
+    
+    func onQualityBtnClicked(sender: UIButton, forceChange:Bool) {
+        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        var networkStatus = appDelegate.networkStatus
+        if (PlayerContext.playState == PlayState.SWITCHING) {
+            return
+        }
+        //  we should confirm here for data usage
+        if (!forceChange &&
+            networkStatus == NetworkStatus.OTHER &&
+            PlayerContext.qualityState == QualityState.LQ) {
+                ViewUtils.showConfirmAlert(self, title: "Data usage warning",
+                    message: "Streaming music in High Quality can use significant network data",
+                    positiveBtnText: "Proceed", positiveBtnCallback: { () -> Void in
+                        self.onQualityBtnClicked(sender, forceChange:true)
+                    }, negativeBtnText: "Cancel", negativeBtnCallback: { () -> Void in
+                        return
+                })
+                return
+        }
+        appDelegate.futureQuality = nil
+        PlayerContext.changeQualityState()
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            NotifyKey.updateQualityState, object: nil)
+    }
+    
     @IBAction func pauseBtnClicked(sender: UIButton?) {
         println("pause!")
         handlePause()
@@ -559,6 +673,7 @@ class PlayerViewController: BaseViewController {
         } else {
             audioPlayerControl.moviePlayer.repeatMode = MPMovieRepeatMode.None
         }
+        updateRepeatView()
     }
     
     func shuffleStateUpdated() {
@@ -577,6 +692,9 @@ class PlayerViewController: BaseViewController {
     }
     
     func networkStatusUpdated() {
+        if (PlayerContext.playState == PlayState.STOPPED) {
+            updateQualityView()
+        }
     }
     
     func handlePlay(track: Track?, playlistId: String?) {
@@ -637,6 +755,17 @@ class PlayerViewController: BaseViewController {
             }
         }
         
+        if track!.type == "youtube" {
+            videoView.hidden = false
+            audioPlayerControl.view.hidden = false
+            audioPlayerControl.view.frame = CGRectMake(0, 0, videoView.frame.width, videoView.frame.height)
+            audioPlayerControl.presentInView(videoView)
+            coverImageView.hidden = true
+        } else {
+            videoView.hidden = true
+            coverImageView.hidden = false
+        }
+        
         // Init correct duration.
         PlayerContext.correctDuration = nil
         
@@ -644,9 +773,8 @@ class PlayerViewController: BaseViewController {
         updatePlayState(PlayState.LOADING)
         
         // Log to us
-        if Account.getCachedAccount() != nil {
-            Requests.logPlay(track!.title)
-        }
+        Requests.logPlay(track!.title)
+        
         // Log to GA
         let tracker = GAI.sharedInstance().defaultTracker
         let event = GAIDictionaryBuilder.createEventWithCategory(
@@ -700,8 +828,7 @@ class PlayerViewController: BaseViewController {
             audioPlayerControl.videoIdentifier = nil
         }
         
-        audioPlayerControl.moviePlayer.controlStyle = MPMovieControlStyle.Embedded
-        audioPlayerControl.moviePlayer.view.hidden = true
+        audioPlayerControl.moviePlayer.controlStyle = MPMovieControlStyle.None
         if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
             audioPlayerControl.moviePlayer.repeatMode = MPMovieRepeatMode.One
         } else {
@@ -764,6 +891,7 @@ class PlayerViewController: BaseViewController {
         PlayerContext.currentTrack = nil
         PlayerContext.currentTrackIdx = -1
         PlayerContext.correctDuration = nil
+        videoView.hidden = true
         audioPlayerControl.videoIdentifier = nil
         audioPlayerControl.moviePlayer.contentURL = nil
         if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {

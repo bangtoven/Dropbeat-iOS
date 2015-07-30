@@ -426,7 +426,7 @@ class PlaylistViewController: BaseViewController,
             NotifyKey.playerPlay, object: params)
         
         if fromPlayer {
-            navigationController?.popToRootViewControllerAnimated(true)
+            navigationController?.popViewControllerAnimated(true)
         }
     }
     

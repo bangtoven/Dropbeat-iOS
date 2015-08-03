@@ -75,7 +75,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         // set first item
         let firstTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
         tabBar.selectedItem = firstTab
-        onMenuSelected(currentMenu)
+        onMenuSelected(currentMenu, forceUpdate:true)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -86,6 +86,10 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         } else {
             UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
         }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
     }
     
     override func remotePlay(noti: NSNotification) {
@@ -100,7 +104,10 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         }
     }
     
-    func onMenuSelected(type:MenuType) {
+    func onMenuSelected(type:MenuType, forceUpdate:Bool=false) {
+        if !forceUpdate && currentMenu == type {
+            return
+        }
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         switch(type) {
         case .FEED:

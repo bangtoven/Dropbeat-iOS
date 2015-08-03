@@ -59,8 +59,6 @@ class PlaylistViewController: BaseViewController,
             playlistTableView.reloadData()
         }
         
-        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
-        
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "sender", name: NotifyKey.playerStop, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(

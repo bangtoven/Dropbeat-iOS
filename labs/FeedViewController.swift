@@ -400,7 +400,7 @@ class FeedViewController: BaseViewController,
         cell.nameView.text = track.trackName
         if (track.thumbnailUrl != nil) {
             cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_artwork.png"), completed: {
+                    placeholderImage: UIImage(named: "default_cover_big.png"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                 if (error != nil) {
                     cell.thumbView.image = UIImage(named: "default_cover_big.png")
@@ -425,7 +425,7 @@ class FeedViewController: BaseViewController,
         cell.nameView.text = track.trackName
         if (track.thumbnailUrl != nil) {
             cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_artwork.png"), completed: {
+                    placeholderImage: UIImage(named: "default_cover_big.png"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                 if (error != nil) {
                     cell.thumbView.image = UIImage(named: "default_cover_big.png")
@@ -505,6 +505,9 @@ class FeedViewController: BaseViewController,
     }
     
     func getPlaylistId() -> String? {
+        if selectedGenre == nil {
+            return nil
+        }
         switch (selectedFeedMenu.type) {
         case .BEATPORT_CHART:
             return "beatport_chart_\(selectedGenre!.key)"
@@ -521,6 +524,10 @@ class FeedViewController: BaseViewController,
     }
     
     func getPlaylistName() -> String? {
+        if selectedGenre == nil {
+            return nil
+        }
+        
         switch (selectedFeedMenu.type) {
         case .BEATPORT_CHART:
             return "Beatport Chart - \(selectedGenre!.name)"

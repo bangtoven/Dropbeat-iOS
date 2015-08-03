@@ -142,7 +142,7 @@ class ProfileViewController: BaseViewController,
     }
     
     func loadPlaylist() {
-        let progressHud = ViewUtils.showProgress(self, message: "Loading playlists..")
+        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
         Requests.fetchAllPlaylists({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(true)
             if (error != nil || result == nil) {

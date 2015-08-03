@@ -37,8 +37,6 @@ class PlaylistSelectViewController: BaseViewController,
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "PlaylistSelectScreen"
-        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
-        
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "appWillEnterForeground", name: UIApplicationWillEnterForegroundNotification, object: nil)
         

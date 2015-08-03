@@ -411,21 +411,8 @@ class ChannelViewController: BaseViewController,
             }
             let shareUrl = "http://dropbeat.net/?track=" + uid!
             let shareTitle = track.title
-            var shareImage:UIImage?
-            
-            var e:NSError?
-            if track.thumbnailUrl != nil {
-                var data = NSData(contentsOfURL:
-                    NSURL(string:track.thumbnailUrl!)!, options: NSDataReadingOptions.UncachedRead, error: &e)
-                if e == nil && data != nil {
-                    shareImage = UIImage(data: data!)
-                }
-            }
             
             var items:[AnyObject] = [shareTitle, shareUrl]
-            if shareImage != nil {
-                items.append(shareImage!)
-            }
             
             let activityController = UIActivityViewController(
                     activityItems: items, applicationActivities: nil)

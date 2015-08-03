@@ -57,6 +57,10 @@ class Parser {
         return SearchArtist.fromJson(data, key:"data")
     }
     
+    func parseGenre(data: AnyObject) -> GenreList {
+        return GenreList.fromJson(data)
+    }
+    
 }
 
 
@@ -832,23 +836,15 @@ class Track {
     var thumbnailUrl: String?
     var topMatch: Bool?
     var rank: Int
-    var hqImage:UIImage? {
+    var hasHqThumbnail:Bool {
         get {
             if self.thumbnailUrl == nil {
-                return nil
+                return false
             }
             if self.thumbnailUrl!.indexOf("http://img.youtube.com") >= 0 {
-                return nil
+                return false
             }
-            
-            var error:NSError?
-            var data:NSData? = NSData(contentsOfURL: NSURL(string: self.thumbnailUrl!)!, options: NSDataReadingOptions.DataReadingUncached, error: &error)
-            
-            if data == nil || error != nil {
-                return nil
-            }
-            
-            return UIImage(data: data!)
+            return true
         }
     }
     
@@ -1306,6 +1302,64 @@ class Genre {
         self.key = key
     }
 }
+
+class GenreList {
+    var success:Bool
+    var results: [String:[Genre]]?
+    init (success:Bool, results:[String:[Genre]]?) {
+        self.success = success
+        self.results = results
+    }
+    
+    static func fromJson(data:AnyObject) -> GenreList {
+        var json = JSON(data)
+        
+        if !(json["success"].bool ?? false) {
+            return GenreList(success: false, results: nil)
+        }
+        
+        var genres = [String:[Genre]]()
+        var defaultGenres = [Genre]()
+        var trendingGenres = [Genre]()
+        
+        
+        defaultGenres.append(Genre(key:"", name:"ALL"))
+        for (idx:String, s:JSON) in json["default"] {
+            if s["id"].int == nil {
+                continue
+            }
+            let key = s["id"].intValue
+            
+            if s["name"].string == nil {
+                continue
+            }
+            
+            let name = s["name"].stringValue
+            defaultGenres.append(Genre(key:"\(key)", name:name))
+        }
+        
+        trendingGenres.append(Genre(key:"", name:"NOW TRENDING"))
+        for (idx:String, s:JSON) in json["trending"] {
+            if s["key"].string == nil {
+                continue
+            }
+            let key = s["key"].stringValue
+            
+            if s["name"].string == nil {
+                continue
+            }
+            
+            let name = s["name"].stringValue
+            trendingGenres.append(Genre(key:key, name:name))
+        }
+        
+        genres["default"] = defaultGenres
+        genres["trending"] = trendingGenres
+        
+        return GenreList(success: true, results: genres)
+    }
+}
+
 
 class Following {
     var name:String

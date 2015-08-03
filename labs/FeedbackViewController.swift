@@ -40,6 +40,13 @@ class FeedbackViewController: BaseViewController {
         self.screenName = "FeedbackScreen"
     }
     
+    func isValidEmail(testStr:String) -> Bool {
+        let emailRegEx = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluateWithObject(testStr)
+    }
+    
     @IBAction func onSubmitBtnClicked(sender: AnyObject) {
         var senderEmail:String?
         if Account.getCachedAccount() != nil {
@@ -49,13 +56,18 @@ class FeedbackViewController: BaseViewController {
         }
         
         if senderEmail == nil || count(senderEmail!) == 0 {
-            ViewUtils.showToast(self, message: "Email is required")
+            ViewUtils.showNoticeAlert(self, title: "Invalid format", message: "Email is required")
+            return
+        }
+        
+        if !isValidEmail(senderEmail!) {
+            ViewUtils.showNoticeAlert(self, title: "Invalid format", message: "Email is not proper format")
             return
         }
         
         let text = textView.text
         if text == nil || count(text) == 0 {
-            ViewUtils.showToast(self, message: "Empty message cannot be sent")
+            ViewUtils.showNoticeAlert(self, title: "Invalid format", message: "Empty message cannot be sent")
             return
         }
         let progressHud = ViewUtils.showProgress(self, message: "Sending..")

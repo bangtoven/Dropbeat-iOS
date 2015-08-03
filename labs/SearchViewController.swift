@@ -30,6 +30,7 @@ class SearchViewController: BaseViewController,
     ]
     
     var searchResult:Search?
+    var tracks:[Track] = []
     var sectionedTracks = [String:[Track]]()
     var currentSections:[String]?
     var currentSection:String?
@@ -40,6 +41,7 @@ class SearchViewController: BaseViewController,
     var actionSheetTargetTrack:Track?
     
 //    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var noSearchResultView: UILabel!
     @IBOutlet var tabGestureRecognizer: UITapGestureRecognizer!
     @IBOutlet weak var scrollPagerConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchResultView: UIView!
@@ -149,7 +151,6 @@ class SearchViewController: BaseViewController,
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (tableView == resultTableView) {
             var cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
-            let tracks:[Track] = sectionedTracks[currentSection!]!
             var track:Track?
             if (indexPath.section == 0) {
                 track = tracks[indexPath.row]
@@ -181,7 +182,6 @@ class SearchViewController: BaseViewController,
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if (tableView == resultTableView) {
-            let tracks:[Track] = sectionedTracks[currentSection!]!
             var index:Int = indexPath.row
             if (indexPath.section != 0) {
                 index += self.tableView(tableView, numberOfRowsInSection: 0)
@@ -218,20 +218,16 @@ class SearchViewController: BaseViewController,
             if (currentSection == nil) {
                 return 0
             }
-            let tracks:[Track]? = sectionedTracks[currentSection!]
-            if (tracks == nil) {
-                return 0
-            }
             if (showAsRowSection) {
                 var count = 0
-                for t in tracks! {
+                for t in tracks {
                     if (t.topMatch ?? false) {
                         count += 1
                     }
                 }
-                return section == 0 ? count : tracks!.count - count
+                return section == 0 ? count : tracks.count - count
             }
-            return tracks!.count
+            return tracks.count
         } else {
             return autocomKeywords.count
         }
@@ -268,21 +264,8 @@ class SearchViewController: BaseViewController,
             }
             let shareUrl = "http://dropbeat.net/?track=" + uid!
             let shareTitle = track.title
-            var shareImage:UIImage?
-            
-            var e:NSError?
-            if track.thumbnailUrl != nil {
-                var data = NSData(contentsOfURL:
-                    NSURL(string:track.thumbnailUrl!)!, options: NSDataReadingOptions.UncachedRead, error: &e)
-                if e == nil && data != nil {
-                    shareImage = UIImage(data: data!)
-                }
-            }
             
             var items:[AnyObject] = [shareTitle, shareUrl]
-            if shareImage != nil {
-                items.append(shareImage!)
-            }
             
             let activityController = UIActivityViewController(
                     activityItems: items, applicationActivities: nil)
@@ -302,7 +285,6 @@ class SearchViewController: BaseViewController,
     
     func onMenuBtnClicked(sender: AddableTrackTableViewCell) {
         let indexPath:NSIndexPath = resultTableView.indexPathForCell(sender)!
-        let tracks:[Track] = sectionedTracks[currentSection!]!
         var index:Int = indexPath.row
         if (indexPath.section != 0) {
             index += self.tableView(resultTableView, numberOfRowsInSection: 0)
@@ -314,9 +296,8 @@ class SearchViewController: BaseViewController,
         let actionSheet = UIActionSheet()
         actionSheet.addButtonWithTitle("Add to playlist")
         actionSheet.addButtonWithTitle("Share")
-        actionSheet.addButtonWithTitle("Play")
         actionSheet.addButtonWithTitle("Cancel")
-        actionSheet.cancelButtonIndex = 3
+        actionSheet.cancelButtonIndex = 2
         actionSheet.delegate = self
         actionSheet.showInView(self.view)
     }
@@ -325,7 +306,6 @@ class SearchViewController: BaseViewController,
         var track:Track? = actionSheetTargetTrack
         var foundIdx = -1
         
-        let tracks:[Track] = sectionedTracks[currentSection!]!
         if track != nil {
             for (idx, t)  in enumerate(tracks) {
                 if t.id == track!.id {
@@ -345,9 +325,6 @@ class SearchViewController: BaseViewController,
             break
         case 1:
             onShareBtnClicked(track!)
-            break
-        case 2:
-            onPlayBtnClicked(track!)
             break
         default:
             break
@@ -397,15 +374,17 @@ class SearchViewController: BaseViewController,
                     ViewUtils.showNoticeAlert(self, title: "Failed to search", message: "Internet is not connected")
                     return
                 }
-                var message = "Failed to search caused by undefined error."
-                if (error != nil) {
-                    message += " (\(error!.domain):\(error!.code))"
-                }
+                var message = "Failed to search."
                 ViewUtils.showNoticeAlert(self, title: "Failed to search", message: message)
                 self.searchResult = nil
                 self.sectionedTracks = [String:[Track]]()
+                self.tracks.removeAll(keepCapacity: false)
                 self.currentSections = nil
                 self.currentSection = nil
+                
+                self.resultTableView.hidden = true
+                self.noSearchResultView.hidden = false
+                self.resultTableView.reloadData()
                 return
             }
             let parser = Parser()
@@ -454,6 +433,17 @@ class SearchViewController: BaseViewController,
                 self.currentSection = foundSections[0]
             } else {
                 self.currentSection = nil
+                
+                ViewUtils.showNoticeAlert(self, title: "Failed to search", message: "Failed to search.")
+                self.searchResult = nil
+                self.sectionedTracks = [String:[Track]]()
+                self.tracks.removeAll(keepCapacity: false)
+                self.currentSections = nil
+                self.currentSection = nil
+                
+                self.resultTableView.hidden = true
+                self.noSearchResultView.hidden = false
+                self.resultTableView.reloadData()
                 return
             }
             self.currentSections = foundSections
@@ -467,8 +457,20 @@ class SearchViewController: BaseViewController,
                 self.scrollPager.hidden = false
             }
             
+            self.tracks.removeAll(keepCapacity: false)
+            var tracks = self.sectionedTracks[self.currentSection!]
+            if tracks != nil {
+                for track in tracks! {
+                    self.tracks.append(track)
+                }
+            }
+            
             self.resultTableView.reloadData()
             self.searchResultView.hidden = false
+            
+            let showNoResultView = self.tracks.count == 0
+            self.resultTableView.hidden = showNoResultView
+            self.noSearchResultView.hidden = !showNoResultView
         })
     }
     
@@ -485,17 +487,22 @@ class SearchViewController: BaseViewController,
                         ViewUtils.showNoticeAlert(self, title: "Failed to fetch data", message: "Internet is not connected")
                         return
                     }
-                    var message = "Failed to fetch data caused by undefined error."
+                    var message = "Failed to fetch data."
                     if (error != nil) {
                         message += " (\(error!.domain):\(error!.code))"
                     }
                     ViewUtils.showNoticeAlert(self, title: "Failed to fetch data", message: message)
                     return
                 }
+                self.tracks.removeAll(keepCapacity: false)
+                self.sectionedTracks[self.currentSection!] = tracks
                 if (tracks!.count == 0) {
                     ViewUtils.showToast(self, message: "No search results")
+                } else {
+                    for track in tracks! {
+                        self.tracks.append(track)
+                    }
                 }
-                self.sectionedTracks[self.currentSection!] = tracks
                 self.resultTableView.reloadData()
             }
             if (self.currentSection == SearchSections.LIVESET) {
@@ -506,8 +513,13 @@ class SearchViewController: BaseViewController,
                 self.searchResult!.fetchRelevant(callback)
             }
         } else {
+            self.tracks.removeAll(keepCapacity: false)
             if (tracks!.count == 0) {
                 ViewUtils.showToast(self, message: "No search results")
+            } else {
+                for track in tracks! {
+                    self.tracks.append(track)
+                }
             }
             self.resultTableView.reloadData()
         }

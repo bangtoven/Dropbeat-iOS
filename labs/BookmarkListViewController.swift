@@ -114,7 +114,7 @@ class BookmarkListViewController: BaseViewController,
                     ViewUtils.showNoticeAlert(self, title: "Failed to fetch bookmark", message: "Internet is not connected")
                     return
                 }
-                var message = "Failed to fetch bookmarks caused by undefined error."
+                var message = "Failed to fetch bookmarks."
                 ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: message)
                 return
             }

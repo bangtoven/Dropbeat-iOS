@@ -52,7 +52,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         gai.trackerWithTrackingId("UA-49094112-1")
         
-        
         reachability = Reachability(hostName: "www.google.com")
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "networkReachabilityChanged:", name: kReachabilityChangedNotification, object: reachability)

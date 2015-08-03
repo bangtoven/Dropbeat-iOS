@@ -16,30 +16,11 @@ class ChannelViewController: BaseViewController,
     var allChannels : [Channel] = [Channel]()
     var channels : [Channel] = [Channel]()
     var bookmarkedChannels : [Channel] = [Channel]()
-    var genres : [Genre] = [
-            Genre(key: "ALL", name: "ALL"),
-            Genre(key: "BREAKS", name: "BREAKS"),
-            Genre(key: "CHILL OUT", name: "CHILL OUT"),
-            Genre(key: "DEEP HOUSE", name: "DEEP HOUSE"),
-            Genre(key: "DRUM & BASS", name: "DRUM & BASS"),
-            Genre(key: "DUBSTEP", name: "DUBSTEP"),
-            Genre(key: "ELECTRO HOUSE", name: "ELECTRO HOUSE"),
-            Genre(key: "ELECTRONICA", name: "ELECTRONICA"),
-            Genre(key: "GLITCH HOP", name: "GLITCH HOP"),
-            Genre(key: "HARD DANCE", name: "HARD DANCE"),
-            Genre(key: "HARDCORE / HARD TECHNO", name: "HARDCORE / HARD TECHNO"),
-            Genre(key: "HOUSE", name: "HOUSE"),
-            Genre(key: "INDIE DANCE / NU DISCO", name: "INDIE DANCE / NU DISCO"),
-            Genre(key: "MINIMAL", name: "MINIMAL"),
-            Genre(key: "PROGRESSIVE HOUSE", name: "PROGRESSIVE HOUSE"),
-            Genre(key: "PSY-TRANCE", name: "PSY-TRANCE"),
-            Genre(key: "TECH HOUSE", name: "TECH HOUSE"),
-            Genre(key: "TECHNO", name: "TECHNO"),
-            Genre(key: "TRANCE", name: "TRANCE")
-        ]
+    var genres : [Genre] = []
     
     var selectedTabIdx = 0
     var channelLoaded = false
+    var genreLoaded = false
     var isGenreSelectMode = false
     var selectedGenre:Genre?
     var actionSheetTargetTrack:Track?
@@ -152,10 +133,26 @@ class ChannelViewController: BaseViewController,
         if tableView.indexPathForSelectedRow() != nil {
             tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: false)
         }
-        if (channelLoaded) {
-            loadBookmarks()
+        
+        if !genreLoaded {
+           loadGenres({ (error) -> Void in
+                if error != nil {
+                    ViewUtils.showNoticeAlert(self, title: "Failed to load", message: "Failed to initalize genre")
+                    return
+                }
+                if (self.channelLoaded) {
+                    self.loadBookmarks()
+                } else {
+                    self.loadChannels(self.genres[0], initialLoad: true)
+                }
+                self.genreLoaded = true
+           })
         } else {
-            loadChannels(genres[0], initialLoad: true)
+            if (channelLoaded) {
+                loadBookmarks()
+            } else {
+                loadChannels(genres[0], initialLoad: true)
+            }
         }
         updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
     }
@@ -282,7 +279,7 @@ class ChannelViewController: BaseViewController,
                 return 80.0
             }
         } else {
-            return 44.0
+            return 60.0
         }
     }
     
@@ -434,9 +431,8 @@ class ChannelViewController: BaseViewController,
         var actionSheet = UIActionSheet()
         actionSheet.addButtonWithTitle("Add to playlist")
         actionSheet.addButtonWithTitle("Share")
-        actionSheet.addButtonWithTitle("Play")
         actionSheet.addButtonWithTitle("Cancel")
-        actionSheet.cancelButtonIndex = 3
+        actionSheet.cancelButtonIndex = 2
         actionSheet.delegate = self
         actionSheet.showInView(self.view)
         
@@ -469,15 +465,36 @@ class ChannelViewController: BaseViewController,
         case 1:
             onTrackShareBtnClicked(track!)
             break
-        case 2:
-            onTrackPlayBtnClicked(track!)
-            break
         default:
             break
         }
         actionSheetTargetTrack = nil
     }
     
+    func loadGenres(callback:(error:NSError?) -> Void) {
+        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        Requests.getFeedGenre({ (req: NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error: NSError?) -> Void in
+            progressHud.hide(true)
+            if (error != nil || result == nil) {
+                callback(error:error != nil ? error : NSError(domain:"loadGenre", code:0, userInfo:nil))
+                return
+            }
+            
+            let parser = Parser()
+            let genreList = parser.parseGenre(result!)
+            if !genreList.success {
+                callback(error:NSError(domain: "initGenre", code:0, userInfo:nil))
+                return
+            }
+            
+            self.genres.removeAll(keepCapacity: false)
+            for genre in genreList.results!["default"]! {
+                self.genres.append(genre)
+            }
+            self.genreTableView.reloadData()
+            callback(error:nil)
+        })
+    }
     
     func loadBookmarks(refreshFeed:Bool=false) {
         if (Account.getCachedAccount() == nil) {
@@ -493,7 +510,7 @@ class ChannelViewController: BaseViewController,
                     ViewUtils.showNoticeAlert(self, title: "Failed to fetch bookmark", message: "Internet is not connected")
                     return
                 }
-                var message = "Failed to fetch bookmarks caused by undefined error."
+                var message = "Failed to fetch bookmarks."
                 ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: message)
                 return
             }
@@ -563,7 +580,12 @@ class ChannelViewController: BaseViewController,
         emptyChannelView.hidden = true
         updateGenreSelectBtnView(genre.name)
         
-        Requests.getChannelList(genre.key.lowercaseString, respCb: {
+        var genreKey = genre.name.lowercaseString
+        if count(genreKey) == 0 {
+            genreKey = "all"
+        }
+        
+        Requests.getChannelList(genreKey, respCb: {
                 (req: NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error: NSError?) -> Void in
             progressHud.hide(true)
             if (error != nil || result == nil) {
@@ -572,7 +594,7 @@ class ChannelViewController: BaseViewController,
                     ViewUtils.showNoticeAlert(self, title: "Failed to fetch channels", message: "Internet is not connected")
                     return
                 }
-                var message = "Failed to fetch channels caused by undefined error."
+                var message = "Failed to fetch channels."
                 ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: message)
                 return
             }

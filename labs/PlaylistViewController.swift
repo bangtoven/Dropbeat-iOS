@@ -278,15 +278,12 @@ class PlaylistViewController: BaseViewController,
             
             switch(buttonIndex) {
             case 0:
-                onPlayTrackBtnClicked(menuSelectedTrack!)
-                break
-            case 1:
                 onShareTrackBtnClicked(menuSelectedTrack!)
                 break
-            case 2:
+            case 1:
                 onTrackAddToOtherPlaylistBtnClicked(menuSelectedTrack!)
                 break
-            case 3:
+            case 2:
                 onDeleteTrackBtnClicked(menuSelectedTrack!)
                 break
             default:
@@ -335,21 +332,8 @@ class PlaylistViewController: BaseViewController,
             }
             let shareUrl = "http://dropbeat.net/?track=" + uid!
             let shareTitle = track.title
-            var shareImage:UIImage?
-            
-            var e:NSError?
-            if track.thumbnailUrl != nil {
-                var data = NSData(contentsOfURL:
-                    NSURL(string:track.thumbnailUrl!)!, options: NSDataReadingOptions.UncachedRead, error: &e)
-                if e == nil && data != nil {
-                    shareImage = UIImage(data: data!)
-                }
-            }
             
             var items:[AnyObject] = [shareTitle, shareUrl]
-            if shareImage != nil {
-                items.append(shareImage!)
-            }
             
             let activityController = UIActivityViewController(
                     activityItems: items, applicationActivities: nil)
@@ -542,13 +526,12 @@ class PlaylistViewController: BaseViewController,
         menuSelectedTrack = tracks[indexPath.row]
         
         let actionSheet = UIActionSheet()
-        actionSheet.addButtonWithTitle("Play")
         actionSheet.addButtonWithTitle("Share")
         actionSheet.addButtonWithTitle("Add to other playlist")
         actionSheet.addButtonWithTitle("Delete")
         actionSheet.addButtonWithTitle("Cancel")
-        actionSheet.destructiveButtonIndex = 3
-        actionSheet.cancelButtonIndex = 4
+        actionSheet.destructiveButtonIndex = 2
+        actionSheet.cancelButtonIndex = 3
         actionSheet.showInView(self.view)
         actionSheet.delegate = self
     }

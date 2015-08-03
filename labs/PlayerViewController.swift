@@ -78,6 +78,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         updatePlayerViews()
         updateCoverView()
         updateNextPrevBtn()
+        audioPlayerControl.view.frame = CGRectMake(0, 0, videoView.frame.width, videoView.frame.height)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -257,7 +258,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             videoView.hidden = true
             coverImageView.hidden = false
             coverBgImageView.image = UIImage(named: "player_bg.png")
-            coverImageView.image = UIImage(named: "default_cover_big")
+            coverImageView.image = UIImage(named: "default_cover_big.png")
         } else if track!.type == "youtube" {
             videoView.hidden = false
             audioPlayerControl.view.hidden = false
@@ -265,22 +266,33 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             audioPlayerControl.presentInView(videoView)
             coverImageView.hidden = true
             
-            var thumbnailImage:UIImage = UIImage(named: "player_bg.png")!
-            var hqImage = track!.hqImage
-            if hqImage != nil {
-                thumbnailImage = hqImage!
+            
+            if track!.hasHqThumbnail {
+                coverBgImageView.sd_setImageWithURL(NSURL(string: track!.thumbnailUrl!),
+                        placeholderImage: UIImage(named: "player_bg.png"), completed: {
+                        (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
+                    if (error != nil) {
+                        self.coverBgImageView.image = UIImage(named: "player_bg.png")
+                    }
+                })
+            } else {
+                coverBgImageView.image = UIImage(named: "player_bg.png")!
             }
-            coverBgImageView.image = thumbnailImage
         } else {
             videoView.hidden = true
             coverImageView.hidden = false
-            var thumbnailImage:UIImage = UIImage(named: "default_cover_big")!
-            var hqImage = track!.hqImage
-            if hqImage != nil {
-                thumbnailImage = hqImage!
-            }
             coverBgImageView.image = UIImage(named: "player_bg.png")
-            coverImageView.image = thumbnailImage
+            if track!.hasHqThumbnail {
+                coverImageView.sd_setImageWithURL(NSURL(string: track!.thumbnailUrl!),
+                        placeholderImage: UIImage(named: "default_cover_big.png"), completed: {
+                        (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
+                    if (error != nil) {
+                        self.coverImageView.image = UIImage(named: "default_cover_big.png")
+                    }
+                })
+            } else {
+                coverImageView.image = UIImage(named: "default_cover_big.png")!
+            }
         }
     }
     
@@ -591,8 +603,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         if (userInfo != nil) {
             var reason:NSError? = userInfo!["error"] as? NSError
             if (reason != nil) {
-                println("playback failed with error : \(reason!.description)")
-                var errMsg = "This track is not streamable (\(reason!.code))"
+                var errMsg = "This track is not streamable"
                 ViewUtils.showNoticeAlert(self, title: "Failed to play",
                     message: errMsg)
                 handleStop()
@@ -612,10 +623,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                     // Finished with error
                     var err:NSError? = userInfo!["error"] as? NSError
                     var errMsg = "This track is not streamable "
-                    if (err != nil) {
-                        println("Playback failed with error description: \(err!.description)")
-                        errMsg += "(\(err!.code))"
-                    }
                     ViewUtils.showNoticeAlert(self, title: "Failed to play",
                         message: errMsg)
                     handleStop()
@@ -791,7 +798,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     }
     
     @IBAction func onProgressValueChanged(sender: UISlider) {
-        println("progress value : \(sender.value)")
         handleSeek(sender.value)
     }
     
@@ -1053,6 +1059,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             audioPlayerControl.moviePlayer.stop()
         }
         updatePlayState(PlayState.STOPPED)
+        updateCoverView()
         deactivateAudioSession()
     }
     
@@ -1062,7 +1069,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
         let duration = PlayerContext.correctDuration ?? 0
         var newPlaybackTime:Double = (duration * Double(value)) / 100
-        println("new playback time: \(newPlaybackTime)")
         
         // - 1 is hacky way to prevent player exceed correct duration
         // player gain repeatedly pasuse / play event after correntDuration
@@ -1086,71 +1092,98 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         updatePlayStateView(playingState)
     }
     
+    var playingStateImageOperation:SDWebImageOperation?
+    
     func updatePlayStateView(playingState:Int) {
         var track: Track? = PlayerContext.currentTrack
         var playingInfoCenter:AnyClass! = NSClassFromString("MPNowPlayingInfoCenter")
         if (playingInfoCenter != nil && track != nil) {
-            var trackInfo:NSMutableDictionary = NSMutableDictionary()
+            playingStateImageOperation?.cancel()
             
-            var thumbnailImage:UIImage = UIImage(named: "default_cover_big.png")!
-            var hqImage = track!.hqImage
-            if hqImage != nil {
-                thumbnailImage = hqImage!
-            }
-            
-            var albumArt:MPMediaItemArtwork = MPMediaItemArtwork(image: thumbnailImage)
-            trackInfo[MPMediaItemPropertyTitle] = track!.title
-            
-            var stateText:String?
-            var rate:Float?
-            switch(playingState) {
-                case PlayState.LOADING:
-                    updateCoverView()
-                    stateText = "LOADING.."
-                    rate = 0.0
-                    break
-                case PlayState.SWITCHING:
-                    stateText = "LOADING.."
-                    rate = 0.0
-                    break
-                case PlayState.PAUSED:
-                    stateText = "PAUSED"
-                    rate = 0
-                    break
-                case PlayState.STOPPED:
-                    updateCoverView()
-                    stateText = "READY"
-                    rate = 0
-                    break
-                case PlayState.PLAYING:
-                    stateText = "PLAYING"
-                    rate = 1.0
-                    break
-                case PlayState.BUFFERING:
-                    stateText = "BUFFERING"
-                    rate = 1.0
-                    break
-                default:
-                    stateText = ""
-            }
-            trackInfo[MPMediaItemPropertyArtist] = stateText
-            trackInfo[MPMediaItemPropertyArtwork] = albumArt
-            
-            let duration = PlayerContext.correctDuration ?? 0
-            var currentPlayback:NSTimeInterval?
-            if audioPlayerControl.moviePlayer.currentPlaybackTime.isNaN {
-                currentPlayback = 0
+            let manager:SDWebImageManager = SDWebImageManager.sharedManager()
+            if track!.hasHqThumbnail {
+                if !manager.cachedImageExistsForURL(NSURL(string:track!.thumbnailUrl!)) {
+                    updatePlayingInfoCenter(playingState, image: UIImage(named:"default_cover_big")!)
+                }
+                
+                playingStateImageOperation = manager.downloadImageWithURL(
+                    NSURL(string: track!.thumbnailUrl!),
+                    options: SDWebImageOptions.ContinueInBackground,
+                    progress: { (receivedSize:Int, expectedSize:Int) -> Void in
+                        
+                    },
+                    completed: {
+                        (image:UIImage!, error:NSError!, cacheType:SDImageCacheType, finished:Bool, imageUrl:NSURL!) -> Void in
+                        var thumbImage = image
+                        if error != nil {
+                            thumbImage = UIImage(named:"default_cover_big")!
+                        }
+                        self.updatePlayingInfoCenter(playingState, image: thumbImage)
+                    })
+                
             } else {
-                currentPlayback = audioPlayerControl.moviePlayer.currentPlaybackTime ?? 0
+                updatePlayingInfoCenter(playingState, image: UIImage(named:"default_cover_big")!)
             }
-            playingInfoDisplayDuration = duration > 0 && currentPlayback >= 0
-            
-            trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentPlayback
-            trackInfo[MPMediaItemPropertyPlaybackDuration] = duration
-            trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = rate
-            MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo as [NSObject : AnyObject]
         }
         updatePlayerViews()
+    }
+    
+    func updatePlayingInfoCenter(playingState:Int, image:UIImage) {
+        var track: Track? = PlayerContext.currentTrack
+        if track == nil {
+            return
+        }
+        
+        var trackInfo:NSMutableDictionary = NSMutableDictionary()
+        var albumArt:MPMediaItemArtwork = MPMediaItemArtwork(image: image)
+        trackInfo[MPMediaItemPropertyTitle] = track!.title
+        
+        var stateText:String?
+        var rate:Float?
+        switch(playingState) {
+            case PlayState.LOADING:
+                stateText = "LOADING.."
+                rate = 0.0
+                break
+            case PlayState.SWITCHING:
+                stateText = "LOADING.."
+                rate = 0.0
+                break
+            case PlayState.PAUSED:
+                stateText = "PAUSED"
+                rate = 0
+                break
+            case PlayState.STOPPED:
+                stateText = "READY"
+                rate = 0
+                break
+            case PlayState.PLAYING:
+                stateText = "PLAYING"
+                rate = 1.0
+                break
+            case PlayState.BUFFERING:
+                stateText = "BUFFERING"
+                rate = 1.0
+                break
+            default:
+                stateText = ""
+        }
+        trackInfo[MPMediaItemPropertyArtist] = stateText
+        trackInfo[MPMediaItemPropertyArtwork] = albumArt
+        
+        let duration = PlayerContext.correctDuration ?? 0
+        var currentPlayback:NSTimeInterval?
+        if audioPlayerControl.moviePlayer.currentPlaybackTime.isNaN {
+            currentPlayback = 0
+        } else {
+            currentPlayback = audioPlayerControl.moviePlayer.currentPlaybackTime ?? 0
+        }
+        playingInfoDisplayDuration = duration > 0 && currentPlayback >= 0
+        
+        trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentPlayback
+        trackInfo[MPMediaItemPropertyPlaybackDuration] = duration
+        trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = rate
+        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo as [NSObject : AnyObject]
     }
     
     func activateAudioSession() {

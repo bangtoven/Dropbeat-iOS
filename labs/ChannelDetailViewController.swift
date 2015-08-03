@@ -107,14 +107,14 @@ class ChannelDetailViewController: BaseViewController,
                     ViewUtils.showNoticeAlert(self, title: "Failed to fetch channel info", message: "Internet is not connected")
                     return
                 }
-                var message = "Failed to fetch channel info caused by undefined error."
+                var message = "Failed to fetch channel info."
                 ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: message)
                 return
             }
             
             self.channel = Channel.fromDetailJson(result!, key: "data")
             if (self.channel == nil) {
-                var message = "Failed to fetch channel info caused by undefined error."
+                var message = "Failed to fetch channel info."
                 ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: message)
                 return
             }
@@ -149,7 +149,7 @@ class ChannelDetailViewController: BaseViewController,
                     ViewUtils.showNoticeAlert(self, title: "Failed to fetch bookmark", message: "Internet is not connected")
                     return
                 }
-                var message = "Failed to fetch bookmarks caused by undefined error."
+                var message = "Failed to fetch bookmarks."
                 ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: message)
                 return
             }
@@ -173,7 +173,7 @@ class ChannelDetailViewController: BaseViewController,
         
         var progressHud:MBProgressHUD?
         if pageToken == nil {
-            progressHud = ViewUtils.showProgress(self, message: "loading..")
+            progressHud = ViewUtils.showProgress(self, message: nil)
         }
         Requests.getChannelPlaylist(playlistUid, pageToken: pageToken) { (req: NSURLRequest, resp: NSHTTPURLResponse?, result: AnyObject?, error :NSError?) -> Void in
             if progressHud != nil {
@@ -525,9 +525,8 @@ class ChannelDetailViewController: BaseViewController,
         let actionSheet = UIActionSheet()
         actionSheet.addButtonWithTitle("Add to playlist")
         actionSheet.addButtonWithTitle("Share")
-        actionSheet.addButtonWithTitle("Play")
         actionSheet.addButtonWithTitle("Cancel")
-        actionSheet.cancelButtonIndex = 3
+        actionSheet.cancelButtonIndex = 2
         actionSheet.delegate = self
         actionSheet.showInView(self.view)
     }
@@ -557,9 +556,6 @@ class ChannelDetailViewController: BaseViewController,
             break
         case 1:
             onShareBtnClicked(track!)
-            break
-        case 2:
-            onPlayBtnClicked(track!)
             break
         default:
             break

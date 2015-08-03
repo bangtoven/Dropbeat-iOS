@@ -22,7 +22,7 @@ class StartupViewController: GAITrackedViewController {
     
     override func viewDidAppear(animated: Bool) {
         if (self.progressHud == nil || self.progressHud?.alpha == 0) {
-            self.progressHud = ViewUtils.showProgress(self, message: "Initializing..")
+            self.progressHud = ViewUtils.showProgress(self, message: nil)
             checkVersion() {
                 self.initialize()
             }
@@ -46,7 +46,7 @@ class StartupViewController: GAITrackedViewController {
     
     func appDidBecomeActive(noti:NSNotification) {
         if (self.progressHud == nil || self.progressHud?.alpha == 0) {
-            self.progressHud = ViewUtils.showProgress(self, message: "Initializing..")
+            self.progressHud = ViewUtils.showProgress(self, message: nil)
             checkVersion() {
                 self.initialize()
             }

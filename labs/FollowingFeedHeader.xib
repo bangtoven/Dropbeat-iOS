@@ -65,7 +65,7 @@
                 <constraint firstAttribute="centerX" secondItem="nn5-D7-tvm" secondAttribute="centerX" id="dEn-7l-YYo"/>
                 <constraint firstItem="nn5-D7-tvm" firstAttribute="top" secondItem="NZT-c1-gDP" secondAttribute="bottom" constant="10" id="djq-oS-mO4"/>
                 <constraint firstItem="NZT-c1-gDP" firstAttribute="top" secondItem="K5O-Mx-0Af" secondAttribute="bottom" constant="8" id="e8v-NB-A1a"/>
-                <constraint firstItem="JLy-DT-zRj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="42" id="qTr-OX-vmm"/>
+                <constraint firstItem="JLy-DT-zRj" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="16" id="qTr-OX-vmm"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="494" y="109.5"/>

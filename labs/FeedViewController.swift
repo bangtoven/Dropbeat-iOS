@@ -173,28 +173,6 @@ class FeedViewController: BaseViewController,
     }
     
     func initGenres(callback:(error:NSError?) -> Void) {
-        genres[FeedType.BEATPORT_CHART] = [
-            Genre(key: "TOP100", name: "TOP100"),
-            Genre(key: "BREAKS", name: "BREAKS"),
-            Genre(key: "CHILL OUT", name: "CHILL OUT"),
-            Genre(key: "DEEP HOUSE", name: "DEEP HOUSE"),
-            Genre(key: "DRUM & BASS", name: "DRUM & BASS"),
-            Genre(key: "DUBSTEP", name: "DUBSTEP"),
-            Genre(key: "ELECTRO HOUSE", name: "ELECTRO HOUSE"),
-            Genre(key: "ELECTRONICA", name: "ELECTRONICA"),
-            Genre(key: "GLITCH HOP", name: "GLITCH HOP"),
-            Genre(key: "HARD DANCE", name: "HARD DANCE"),
-            Genre(key: "HARDCORE / HARD TECHNO", name: "HARDCORE / HARD TECHNO"),
-            Genre(key: "HOUSE", name: "HOUSE"),
-            Genre(key: "INDIE DANCE / NU DISCO", name: "INDIE DANCE / NU DISCO"),
-            Genre(key: "MINIMAL", name: "MINIMAL"),
-            Genre(key: "PROGRESSIVE HOUSE", name: "PROGRESSIVE HOUSE"),
-            Genre(key: "PSY-TRANCE", name: "PSY-TRANCE"),
-            Genre(key: "TECH HOUSE", name: "TECH HOUSE"),
-            Genre(key: "TECHNO", name: "TECHNO"),
-            Genre(key: "TRANCE", name: "TRANCE")
-        ]
-        
         genres[FeedType.FOLLOWING] = [
             Genre(key: "shuffle", name: "SHUFFLE"),
             Genre(key: "recent", name: "RECENT")
@@ -202,53 +180,21 @@ class FeedViewController: BaseViewController,
         
         Requests.getFeedGenre {
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            if error != nil {
-                callback(error:error)
+            if error != nil || result == nil {
+                callback(error:error != nil ? error : NSError(domain: "initGenre", code:0, userInfo:nil))
                 return
             }
             
-            var json = JSON(result!)
-            
-            if !(json["success"].bool ?? false) {
-                var message = "Failed to load initailize."
-                ViewUtils.showNoticeAlert(self, title: "Failed to load", message: message)
+            let parser = Parser()
+            let genreList = parser.parseGenre(result!)
+            if !genreList.success {
+                callback(error:NSError(domain: "initGenre", code:0, userInfo:nil))
                 return
             }
             
-            var newGenres = [Genre]()
-            newGenres.append(Genre(key:"", name:"ALL"))
-            for (idx:String, s:JSON) in json["default"] {
-                if s["id"].int == nil {
-                    continue
-                }
-                let key = s["id"].intValue
-                
-                if s["name"].string == nil {
-                    continue
-                }
-                
-                let name = s["name"].stringValue
-                newGenres.append(Genre(key:"\(key)", name:name))
-            }
-            
-            self.genres[FeedType.NEW_RELEASE] = newGenres
-            
-            var trendingGenres = [Genre]()
-            trendingGenres.append(Genre(key:"", name:"NOW"))
-            for (idx:String, s:JSON) in json["trending"] {
-                if s["key"].string == nil {
-                    continue
-                }
-                let key = s["key"].stringValue
-                
-                if s["name"].string == nil {
-                    continue
-                }
-                
-                let name = s["name"].stringValue
-                trendingGenres.append(Genre(key:key, name:name))
-            }
-            self.genres[FeedType.TRENDING] = trendingGenres
+            self.genres[FeedType.BEATPORT_CHART] = genreList.results!["default"]
+            self.genres[FeedType.NEW_RELEASE] = genreList.results!["default"]
+            self.genres[FeedType.TRENDING] = genreList.results!["trending"]
             
             self.genreInitialized = true
             callback(error: nil)
@@ -328,7 +274,7 @@ class FeedViewController: BaseViewController,
             "BpChartTrackTableViewCell", forIndexPath: indexPath) as! BpChartTrackTableViewCell
         let track:BeatportTrack = tracks[indexPath.row] as! BeatportTrack
         cell.delegate = self
-        cell.nameView.text = track.title
+        cell.nameView.text = track.trackName
         if (track.thumbnailUrl != nil) {
             cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
                     placeholderImage: UIImage(named: "default_artwork.png"), completed: {
@@ -352,17 +298,17 @@ class FeedViewController: BaseViewController,
             "TrendingTrackTableViewCell", forIndexPath: indexPath) as! TrendingTrackTableViewCell
         let track:TrendingTrack = tracks[indexPath.row] as! TrendingTrack
         cell.delegate = self
-        cell.nameView.text = track.title
+        cell.nameView.text = track.trackName
         if (track.thumbnailUrl != nil) {
             cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_artwork.png"), completed: {
+                    placeholderImage: UIImage(named: "default_cover_big.png"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                 if (error != nil) {
-                    cell.thumbView.image = UIImage(named: "default_artwork.png")
+                    cell.thumbView.image = UIImage(named: "default_cover_big.png")
                 }
             })
         } else {
-            cell.thumbView.image = UIImage(named: "default_artwork.png")
+            cell.thumbView.image = UIImage(named: "default_cover_big.png")
         }
         cell.snippet.text = track.snippet
         cell.artistName.text = track.artist
@@ -371,21 +317,25 @@ class FeedViewController: BaseViewController,
     }
     
     func getBeatportTrendingCell(indexPath:NSIndexPath) -> UITableViewCell {
-        let cell:BpChartTrackTableViewCell = feedTableView.dequeueReusableCellWithIdentifier(
-            "BpChartTrackTableViewCell", forIndexPath: indexPath) as! BpChartTrackTableViewCell
+        let cell:BpTrendingTrackTableViewCell = feedTableView.dequeueReusableCellWithIdentifier(
+            "BpTrendingTrackTableViewCell", forIndexPath: indexPath) as! BpTrendingTrackTableViewCell
         let track:BeatportTrack = tracks[indexPath.row] as! BeatportTrack
         cell.delegate = self
-        cell.nameView.text = track.title
+        cell.nameView.text = track.trackName
         if (track.thumbnailUrl != nil) {
             cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_artwork.png"), completed: {
+                    placeholderImage: UIImage(named: "default_cover_big.png"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                 if (error != nil) {
-                    cell.thumbView.image = UIImage(named: "default_artwork.png")
+                    cell.thumbView.image = UIImage(named: "default_cover_big.png")
                 }
             })
         } else {
-            cell.thumbView.image = UIImage(named: "default_artwork.png")
+            cell.thumbView.image = UIImage(named: "default_cover_big.png")
+        }
+        cell.releasedAt.hidden = track.releasedAt == nil
+        if track.releasedAt != nil {
+            cell.releasedAt.text = "Released on \(self.dateFormatter.stringFromDate(track.releasedAt!))"
         }
         cell.artistName.text = track.artist
         cell.rank.text = "\(indexPath.row + 1)"
@@ -478,7 +428,7 @@ class FeedViewController: BaseViewController,
         }
         switch(selectedFeedMenu.type) {
         case .TRENDING :
-            return selectedGenre != nil && count(selectedGenre!.key) > 0 ? 76 : 115
+            return (17 * self.view.bounds.width / 30) + 60
         case .NEW_RELEASE:
             return (17 * self.view.bounds.width / 30) + 60
         case .BEATPORT_CHART:
@@ -645,9 +595,8 @@ class FeedViewController: BaseViewController,
         let actionSheet = UIActionSheet()
         actionSheet.addButtonWithTitle("Add to playlist")
         actionSheet.addButtonWithTitle("Share")
-        actionSheet.addButtonWithTitle("Play")
         actionSheet.addButtonWithTitle("Cancel")
-        actionSheet.cancelButtonIndex = 3
+        actionSheet.cancelButtonIndex = 2
         actionSheet.delegate = self
         actionSheet.showInView(self.view)
     }
@@ -674,9 +623,6 @@ class FeedViewController: BaseViewController,
             break
         case 1:
             onShareBtnClicked(track!)
-            break
-        case 2:
-            onPlayBtnClicked(track!)
             break
         default:
             break
@@ -745,6 +691,11 @@ class FeedViewController: BaseViewController,
         }
         
         if menu.type == .FOLLOWING {
+            if Account.getCachedAccount() == nil {
+                self.feedTableView.tableHeaderView = self.getFollowingHeaderView([Following]())
+                self.loadFollowingFeed()
+                return
+            }
             let progressHud = ViewUtils.showProgress(self, message: "Loading..")
             loadFollowingList({ (following, error) -> Void in
                 progressHud.hide(false)
@@ -761,6 +712,7 @@ class FeedViewController: BaseViewController,
                 self.feedTableView.tableHeaderView = self.getFollowingHeaderView(following!)
                 self.loadFollowingFeed()
             })
+            return
         }
         
         loadFeed(menu.type)
@@ -857,7 +809,11 @@ class FeedViewController: BaseViewController,
         }
         
         let progressHud = ViewUtils.showProgress(self, message: "Loading..")
-        Requests.fetchBeatportChart(selectedGenre!.key, respCb: {
+        var genreKey = selectedGenre!.name
+        if count(selectedGenre!.key) == 0{
+            genreKey = "TOP100"
+        }
+        Requests.fetchBeatportChart(genreKey, respCb: {
                 (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(false)
             

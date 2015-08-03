@@ -62,15 +62,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         menuBtn.layer.borderWidth = 1
         menuBtn.layer.borderColor = UIColor(netHex: 0x4f525a).CGColor
     
-//        let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
-        let statusBarHeight:CGFloat = 20.0
-        containerHeightConstraint.constant = self.view.bounds.size.height
-            - tabBarHeightConstraint.constant
-        
-        containerTopPaddingConstraint.constant = -statusBarHeight
-        containerTopPaddingPlaceholderHeightConstraint.constant = statusBarHeight
-        
-        playerViewHeightConstraint.constant = self.view.bounds.size.height
+        initConstaints()
         
         // set first item
         let firstTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
@@ -81,11 +73,24 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "CenterViewScreen"
+        self.view.layoutIfNeeded()
         if isPlayerVisible {
-            UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.None)
+            UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Slide)
         } else {
-            UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
+            UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.Slide)
         }
+    }
+    
+    func initConstaints() {
+//        let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
+        let statusBarHeight:CGFloat = 20.0
+        containerHeightConstraint.constant = self.view.bounds.size.height
+            - tabBarHeightConstraint.constant
+        
+        containerTopPaddingConstraint.constant = -statusBarHeight
+        containerTopPaddingPlaceholderHeightConstraint.constant = statusBarHeight
+        
+        playerViewHeightConstraint.constant = self.view.bounds.size.height
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -150,7 +155,9 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         default:
             break
         }
-        currentMenu = type
+        if type != MenuType.PLAYER {
+            currentMenu = type
+        }
     }
     
     func tabTagToMenuType (tag:Int) -> MenuType? {

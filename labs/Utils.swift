@@ -194,14 +194,14 @@ class ViewUtils {
         hud.hide(true, afterDelay: 1)
     }
     
-    static func showProgress(viewController:UIViewController, message:String) -> MBProgressHUD {
+    static func showProgress(viewController:UIViewController, message:String?) -> MBProgressHUD {
         var vc = viewController
         if viewController.navigationController != nil {
             vc = viewController.navigationController!
         }
         let hud = MBProgressHUD.showHUDAddedTo(vc.view, animated: true)
         hud.mode = MBProgressHUDMode.Indeterminate
-        hud.labelText = message
+//        hud.labelText = message
         hud.removeFromSuperViewOnHide = true
         hud.show(true)
         return hud

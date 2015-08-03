@@ -10,10 +10,24 @@ import UIKit
 
 class SettingsViewController: UITableViewController {
 
+    @IBOutlet weak var signoutBtn: UIButton!
+    @IBOutlet weak var signinBtn: UIButton!
     @IBOutlet weak var versionView: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        if Account.getCachedAccount() != nil {
+            signinBtn.hidden = true
+            signoutBtn.hidden = false
+        } else {
+            signinBtn.hidden = false
+            signoutBtn.hidden = true
+        }
+        
+        var signinBgImage = UIImage(named: "facebook_btn_bg.png")
+        signinBgImage = signinBgImage!.resizableImageWithCapInsets(UIEdgeInsetsMake(14, 14, 14, 14))
+        signinBtn.setBackgroundImage(signinBgImage, forState: UIControlState.Normal)
         
         let verObject: AnyObject? = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"]
         versionView.text = verObject as? String
@@ -22,6 +36,7 @@ class SettingsViewController: UITableViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "sender", name: NotifyKey.appSignout, object: nil)
         if tableView.indexPathForSelectedRow() != nil {
             tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: false)
@@ -48,4 +63,10 @@ class SettingsViewController: UITableViewController {
         })
     }
     
+    
+    @IBAction func onSigninBtnClicked(sender: AnyObject) {
+        var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        var centerViewController = appDelegate.centerContainer!
+        centerViewController.showSigninView()
+    }
 }

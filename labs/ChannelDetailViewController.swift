@@ -8,17 +8,6 @@
 
 import UIKit
 
-class ChannelTrack : Track {
-    var publishedAt : NSDate?
-    init (id:String, title:String, publishedAt:NSDate?) {
-        super.init(id: id, title: title, type: "youtube", tag: nil,
-            thumbnailUrl: "http://img.youtube.com/vi/\(id)/mqdefault.jpg",
-            drop: nil, dref: nil, topMatch: false)
-        self.publishedAt = publishedAt
-    }
-}
-
-
 class ChannelDetailViewController: BaseViewController,
         UITableViewDelegate, UITableViewDataSource, AddableTrackCellDelegate,
         UIActionSheetDelegate {
@@ -72,6 +61,7 @@ class ChannelDetailViewController: BaseViewController,
         } else {
             loadBookmarks()
         }
+        updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
     }
     
     func appWillEnterForeground() {
@@ -81,6 +71,7 @@ class ChannelDetailViewController: BaseViewController,
                 selectSection(currSection!)
             }
         }
+        self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -250,7 +241,9 @@ class ChannelDetailViewController: BaseViewController,
                 var publishedAt = self.dateFormatter.dateFromString(publishedAtStr)
                 self.tracks.append(ChannelTrack(id: id, title:title, publishedAt: publishedAt))
             }
+            self.updatePlaylist(false)
             self.tableView.reloadData()
+            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
         }
     }
     
@@ -423,17 +416,95 @@ class ChannelDetailViewController: BaseViewController,
         return self.channel?.playlists.count ?? 0
     }
     
+    func getPlaylistId() -> String? {
+        if channel == nil || currSection == nil {
+            return nil
+        }
+        return "channel_playlist_\(channel!.uid)_\(currSection!.uid)"
+    }
+    
+    func updatePlaylist(forceUpdate:Bool) {
+        if !forceUpdate &&
+                (getPlaylistId() == nil ||
+                    PlayerContext.currentPlaylistId != getPlaylistId()) {
+            return
+        }
+        
+        var playlist:Playlist!
+        if PlayerContext.externalPlaylist != nil &&
+                PlayerContext.externalPlaylist!.id == getPlaylistId() {
+            playlist = PlayerContext.externalPlaylist!
+            playlist.tracks.removeAll(keepCapacity: false)
+            for track in tracks {
+                playlist.tracks.append(track)
+            }
+        } else {
+            playlist = Playlist(
+                    id: getPlaylistId()!,
+                    name: "\(channel!.name) - \(currSection!.name)",
+                    tracks: tracks)
+            playlist.type = PlaylistType.EXTERNAL
+            PlayerContext.externalPlaylist = playlist
+        }
+        
+        if PlayerContext.currentPlaylistId == playlist.id {
+            if PlayerContext.currentTrack == nil {
+                PlayerContext.currentTrackIdx = -1
+            } else {
+                PlayerContext.currentTrackIdx = playlist.getTrackIdx(PlayerContext.currentTrack!)
+            }
+        }
+        return
+    }
+    
     func onPlayBtnClicked(track:Track) {
-        var params: Dictionary<String, AnyObject> = [
+        var playlistId:String?
+        if tracks.count == 0 || getPlaylistId() == nil{
+            playlistId = nil
+        } else {
+            updatePlaylist(true)
+            playlistId = PlayerContext.externalPlaylist!.id
+        }
+        var params: [String: AnyObject] = [
             "track": track,
-            "playlistId": "-1"
         ]
+        if playlistId != nil {
+            params["playlistId"] = playlistId
+        }
         NSNotificationCenter.defaultCenter().postNotificationName(
             NotifyKey.playerPlay, object: params)
     }
     
     func onShareBtnClicked(track:Track) {
-        // TODO
+        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        track.shareTrack("playlist", afterShare: { (error, uid) -> Void in
+            progressHud.hide(false)
+            if error != nil {
+                if (error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    ViewUtils.showConfirmAlert(self, title: "Failed to share",
+                        message: "Internet is not connected.",
+                        positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                            self.onShareBtnClicked(track)
+                        }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                    return
+                }
+                ViewUtils.showConfirmAlert(self, title: "Failed to share",
+                    message: "Failed to share track",
+                    positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                        self.onShareBtnClicked(track)
+                    }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                return
+            }
+            let shareUrl = "http://dropbeat.net/?track=" + uid!
+            let shareTitle = track.title
+            
+            var items:[AnyObject] = [shareTitle, shareUrl]
+            
+            let activityController = UIActivityViewController(
+                    activityItems: items, applicationActivities: nil)
+            self.presentViewController(activityController, animated:true, completion: nil)
+        })
     }
     
     func onAddBtnClicked(track:Track) {
@@ -443,7 +514,7 @@ class ChannelDetailViewController: BaseViewController,
             centerViewController.showSigninView()
             return
         }
-        // TODO show playlist select
+        performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
     }
     
     func onMenuBtnClicked(sender: AddableTrackTableViewCell) {
@@ -453,8 +524,8 @@ class ChannelDetailViewController: BaseViewController,
         
         let actionSheet = UIActionSheet()
         actionSheet.addButtonWithTitle("Add to playlist")
-        actionSheet.addButtonWithTitle("Play")
         actionSheet.addButtonWithTitle("Share")
+        actionSheet.addButtonWithTitle("Play")
         actionSheet.addButtonWithTitle("Cancel")
         actionSheet.cancelButtonIndex = 3
         actionSheet.delegate = self
@@ -462,6 +533,9 @@ class ChannelDetailViewController: BaseViewController,
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+    }
+    
+    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
         var track:Track? = actionSheetTargetTrack
         var foundIdx = -1
         if track != nil {
@@ -478,21 +552,18 @@ class ChannelDetailViewController: BaseViewController,
         }
         
         switch(buttonIndex) {
-        case 1:
-            onPlayBtnClicked(track!)
-            break
         case 0:
             onAddBtnClicked(track!)
             break
-        case 2:
+        case 1:
             onShareBtnClicked(track!)
+            break
+        case 2:
+            onPlayBtnClicked(track!)
             break
         default:
             break
         }
-    }
-    
-    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
         actionSheetTargetTrack = nil
     }
     
@@ -518,7 +589,7 @@ class ChannelDetailViewController: BaseViewController,
         }
         
         
-        if (playlistId == nil || playlistId!.toInt() >= 0) {
+        if (playlistId != getPlaylistId()) {
             return
         }
         
@@ -528,6 +599,15 @@ class ChannelDetailViewController: BaseViewController,
                     animated: false, scrollPosition: UITableViewScrollPosition.None)
                 break
             }
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "PlaylistSelectSegue" {
+            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
+            playlistSelectVC.targetTrack = sender as? Track
+            playlistSelectVC.fromSection = "feed"
+            playlistSelectVC.caller = self
         }
     }
 }

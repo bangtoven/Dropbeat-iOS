@@ -162,6 +162,33 @@ class StartupViewController: GAITrackedViewController {
     }
     
     func fetchUserInfo() {
+        if Account.getCachedAccount() == nil {
+            self.showMainController()
+            return
+        }
+        
+        var defaultDb:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        var didAutoFollow:Bool? = defaultDb.objectForKey(UserDataKey.didAutoFollow) as? Bool
+        if !(didAutoFollow ?? false) {
+            checkFollowingCount({ (needAutoFollow:Bool?, error:NSError?) -> Void in
+                if error != nil {
+                    self.showMainController()
+                    return
+                }
+                if !needAutoFollow! {
+                    defaultDb.setBool(true, forKey: UserDataKey.didAutoFollow)
+                    self.showMainController()
+                    return
+                }
+                self.autoArtistFollow({ (error) -> Void in
+                    if error == nil {
+                        defaultDb.setBool(true, forKey: UserDataKey.didAutoFollow)
+                    }
+                    self.showMainController()
+                })
+            })
+            return
+        }
         self.showMainController()
     }
     
@@ -171,5 +198,229 @@ class StartupViewController: GAITrackedViewController {
             self.progressHud?.hide(true)
             self.performSegueWithIdentifier("DrawerSegue", sender: self)
         }
+    }
+    
+    func checkFollowingCount(callback:(needAutoFollow:Bool?, error:NSError?) -> Void) {
+        Requests.following { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if error != nil {
+                callback(needAutoFollow: nil, error:error)
+                return
+            }
+            if result == nil {
+                callback(needAutoFollow: nil, error:error)
+                return
+            }
+            
+            let parser = Parser()
+            let info:FollowingInfo = parser.parseFollowing(result!)
+            if !info.success {
+                callback(needAutoFollow: nil, error:error)
+                return
+            }
+            if info.results!.count != 0 {
+                callback(needAutoFollow: false, error:nil)
+                return
+            }
+            callback(needAutoFollow: true, error: nil)
+        }
+    }
+    
+    func autoArtistFollow(callback:(error:NSError?) -> Void) {
+        var needFBSignin:Bool = false
+        var needFBRerequest:Bool = false
+        
+        if FBSDKAccessToken.currentAccessToken() == nil {
+            needFBSignin = true
+        } else {
+            let accessToken:FBSDKAccessToken = FBSDKAccessToken.currentAccessToken()
+            let expireDate:NSDate? = accessToken.expirationDate
+            if expireDate == nil || NSDate() > expireDate {
+                needFBSignin = true
+                needFBRerequest = true
+            }
+            
+            if !needFBSignin && !accessToken.hasGranted("user_likes") {
+                needFBSignin = true
+                needFBRerequest = true
+            }
+        }
+        
+        if needFBSignin {
+            self.facebookSignin(needFBRerequest, callback: { (cancel:Bool, error:NSError?) -> Void in
+                if error != nil {
+                    callback(error:error)
+                    return
+                }
+                if cancel {
+                    callback(error:nil)
+                    return
+                }
+                self.autoArtistFollow(callback)
+                return
+            })
+            return
+        }
+        
+        
+        requestLikeInfos { (data:[FBPage]?, error:NSError?) -> Void in
+            if error != nil {
+                callback(error:error)
+                return
+            }
+            if data == nil {
+                callback(error:NSError(domain: "autoArtistFollow", code: 0, userInfo: nil))
+                return
+            }
+            
+            var names = [String]()
+            
+            for page in data! {
+                names.append(page.name)
+            }
+            
+            if names.count == 0 {
+                callback(error: nil)
+                return
+            }
+            
+            Requests.artistFilter(names, respCb: {
+                    (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                if error != nil {
+                    println(error!)
+                    callback(error:error)
+                    return
+                }
+                
+                if result == nil || !(JSON(result!)["success"].bool ?? false) {
+                    callback(error:NSError(domain: "autoArtistFollow", code: 1, userInfo: nil))
+                    return
+                }
+                
+                var dataJson = JSON(result!)["data"]
+                println(dataJson)
+                var ids = [Int]()
+                
+                for (idx:String, s:JSON) in dataJson {
+                    if s["id"] != nil {
+                        let id = s["id"].intValue
+                        ids.append(id)
+                    }
+                }
+                
+                if ids.count == 0 {
+                    callback(error: nil)
+                    return
+                }
+                
+                Requests.follow(ids, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                    if error != nil {
+                        callback(error:error)
+                        return
+                    }
+                    
+                    if result == nil || !(JSON(result!)["success"].bool ?? false) {
+                        callback(error:NSError(domain: "autoArtistFollow", code: 1, userInfo: nil))
+                        return
+                    }
+                    
+                    callback(error:nil)
+                })
+            })
+        }
+    }
+    
+    func requestLikeInfos(callback:(data:[FBPage]?, error:NSError?) -> Void) {
+        let request:FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me/likes", parameters: ["limit": 1000])
+        request.startWithCompletionHandler({ (connection:FBSDKGraphRequestConnection!, result:AnyObject!, error:NSError!) -> Void in
+            if (error != nil) {
+                callback(data:nil, error:error)
+                return
+            }
+            
+            let likes = FBPageLikes.fromJson(result)
+            if likes == nil {
+                callback(data:nil, error:NSError(domain: "requestLikeInfos", code: 0, userInfo: nil))
+                return
+            }
+            
+            var data = [FBPage]()
+            for page:FBPage in likes!.pages {
+                data.append(page)
+            }
+            
+            if likes!.nextPageToken != nil {
+                self.requestNextLikeInfos(likes!.pages, pageUrl: likes!.nextPageToken!, callback: callback)
+            } else {
+                callback(data:data, error:nil)
+            }
+        })
+    }
+    
+    func requestNextLikeInfos(pages:[FBPage], pageUrl:String, callback:(data:[FBPage]?, error:NSError?) -> Void) {
+        Requests.sendGet(pageUrl, params: nil, auth:false, respCb: {
+                (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if (error != nil) {
+                callback(data:nil, error:error)
+                return
+            }
+            
+            if (result == nil) {
+                callback(data:nil, error:NSError(domain: "requestLikeInfos", code: 0, userInfo: nil))
+                return
+            }
+            let likes = FBPageLikes.fromJson(result!)
+            if likes == nil {
+                callback(data:nil, error:NSError(domain: "requestLikeInfos", code: 0, userInfo: nil))
+                return
+            }
+            
+            var concatPages = [FBPage]()
+            
+            for page:FBPage in pages {
+                concatPages.append(page)
+            }
+            for page:FBPage in likes!.pages {
+                concatPages.append(page)
+            }
+            
+            if likes!.nextPageToken != nil {
+                self.requestNextLikeInfos(likes!.pages, pageUrl: likes!.nextPageToken!, callback: callback)
+            } else {
+                callback(data:concatPages, error:nil)
+            }
+        })
+    }
+    
+    func facebookSignin(rerequest:Bool, callback:(cancel:Bool, error:NSError?) -> Void) {
+        ViewUtils.showConfirmAlert(self,
+                title: "Permission Required",
+                message: "Grant permission to import your favorite followed artists from Facebook?",
+                positiveBtnText: "OK",
+                positiveBtnCallback: { () -> Void in
+            
+            var fbManager:FBSDKLoginManager = FBSDKLoginManager()
+                    
+            fbManager.logInWithReadPermissions(["user_likes"], handler: { (result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
+                
+                if error != nil || result.isCancelled || !result.grantedPermissions.contains("user_likes") {
+                    // Process error
+                    ViewUtils.showConfirmAlert(
+                        self,
+                        title: "Failed to connect facebook", message: "Failed to acquire user info permission. Do you want to retry facebook connect?",
+                        positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                            self.facebookSignin(rerequest, callback: callback)
+                    }, negativeBtnText: "Not now", negativeBtnCallback: { () -> Void in
+                        callback(cancel:true, error:error != nil ? error : NSError(domain: "facebookSignin", code: 0, userInfo: nil))
+                    })
+                    return
+                }
+                callback(cancel:false, error: nil)
+            })
+                
+        }, negativeBtnText: "Decline") { () -> Void in
+            callback(cancel: true, error: nil)
+            return
+        }
+        
     }
 }

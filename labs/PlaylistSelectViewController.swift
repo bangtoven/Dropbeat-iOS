@@ -1,33 +1,32 @@
 //
-//  ProfileViewController.swift
+//  PlaylistSelectViewController.swift
 //  labs
 //
-//  Created by vulpes on 2015. 7. 29..
+//  Created by vulpes on 2015. 7. 31..
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
 import UIKit
 
-class ProfileViewController: BaseViewController,
+class PlaylistSelectViewController: BaseViewController,
         UITableViewDelegate, UITableViewDataSource {
-
+    
+    @IBOutlet weak var frameHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var profileView: UIImageView!
-    @IBOutlet weak var nameView: UILabel!
-    @IBOutlet weak var emailView: UILabel!
-    
     var playlists:[Playlist] = [Playlist]()
-    
+    var targetTrack:Track?
+    var fromSection:String = "unknown"
+    var caller:UIViewController?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let account = Account.getCachedAccount()!
-        nameView.text = "\(account.user!.firstName) \(account.user!.lastName)"
-        emailView.text = account.user!.email
-        
-        let profileUrl = "https://graph.facebook.com/\(account.user!.fbId)/picture?type=large"
-        profileView.sd_setImageWithURL(NSURL(string:profileUrl),
-            placeholderImage: UIImage(named: "default_profile.png"))
+        frameHeightConstraint.constant = self.view.bounds.height - 20
+        playlists.removeAll(keepCapacity: false)
+        for playlist in PlayerContext.playlists {
+            playlists.append(playlist)
+        }
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -37,21 +36,13 @@ class ProfileViewController: BaseViewController,
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.screenName = "ProfileViewScreen"
-        
-        playlists.removeAll(keepCapacity: false)
-        for playlist in PlayerContext.playlists {
-            playlists.append(playlist)
-        }
-        tableView.reloadData()
+        self.screenName = "PlaylistSelectScreen"
+        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
         
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "appWillEnterForeground", name: UIApplicationWillEnterForegroundNotification, object: nil)
         
-        if tableView.indexPathForSelectedRow() != nil {
-            tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: false)
-        }
-        loadPlaylist()
+        loadPlaylists()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -59,15 +50,11 @@ class ProfileViewController: BaseViewController,
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "PlaylistSegue" {
-            let playlist = playlists[tableView.indexPathForSelectedRow()!.row]
-            let playlistVC = segue.destinationViewController as! PlaylistViewController
-            playlistVC.currentPlaylist = playlist
-        }
+    @IBAction func onBackBtnClicked(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
-    @IBAction func onCreatePlaylistBtnClicked(sender: AnyObject) {
+    @IBAction func onCreatePlaylistBtnClicked(sender: UIButton) {
         ViewUtils.showTextInputAlert(
             self, title: "Create new playlist", message: "Type new playlist name", placeholder: "Playlist 01",
             positiveBtnText: "Create",
@@ -92,15 +79,28 @@ class ProfileViewController: BaseViewController,
                         ViewUtils.showNoticeAlert(self, title: "Failed to create playlist", message: message!)
                         return
                     }
-                    self.loadPlaylist()
+                    self.loadPlaylists()
                 })
             })
     }
     
+    func appWillEnterForeground () {
+        loadPlaylists()
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.playlists.count
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var playlist = playlists[indexPath.row]
+        addToPlaylist(playlist)
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let playlist = playlists[indexPath.row]
         var cell:PlaylistSelectTableViewCell = tableView.dequeueReusableCellWithIdentifier(
                 "PlaylistSelectTableViewCell", forIndexPath: indexPath) as! PlaylistSelectTableViewCell
+        let playlist = playlists[indexPath.row]
         cell.nameView.text = playlist.name
         let trackCount = playlist.tracks.count
         switch(trackCount) {
@@ -113,14 +113,7 @@ class ProfileViewController: BaseViewController,
             cell.trackCount.text = "\(trackCount) tracks"
             break
         }
-        if playlist.id == PlayerContext.currentPlaylistId {
-            cell.setSelected(true, animated: false)
-        }
         return cell
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return playlists.count
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -137,18 +130,14 @@ class ProfileViewController: BaseViewController,
         }
     }
     
-    func appWillEnterForeground () {
-        loadPlaylist()
-    }
-    
-    func loadPlaylist() {
+    func loadPlaylists() {
         let progressHud = ViewUtils.showProgress(self, message: "Loading playlists..")
         Requests.fetchAllPlaylists({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(true)
             if (error != nil || result == nil) {
                 ViewUtils.showConfirmAlert(self, title: "Failed to fetch", message: "Failed to fetch playlists.",
                     positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
-                    self.loadPlaylist()
+                    self.loadPlaylists()
                 }, negativeBtnText: "Cancel")
                 return
             }
@@ -165,5 +154,39 @@ class ProfileViewController: BaseViewController,
             }
             self.tableView.reloadData()
         })
+    }
+    
+    func addToPlaylist(playlist:Playlist) {
+        var hasAlready = false
+        for track in playlist.tracks {
+            if track.id == targetTrack!.id {
+                hasAlready = true
+                break
+            }
+        }
+        if hasAlready {
+            ViewUtils.showToast(self, message: "Already in Playlist")
+            if tableView.indexPathForSelectedRow() != nil {
+                tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: false)
+            }
+            return
+        }
+        let progressHud = ViewUtils.showProgress(self, message: "Saving..")
+        targetTrack!.addToPlaylist(playlist, section: fromSection) { (error) -> Void in
+            progressHud.hide(false)
+            if error != nil {
+                var message:String?
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    message = "Internet is not connected. Please try again."
+                } else {
+                    message = "Failed to add track to playlist"
+                }
+                ViewUtils.showNoticeAlert(self, title: "Failed to add", message: message!, btnText: "Confirm", callback: nil)
+                return
+            }
+            ViewUtils.showToast(self.caller!, message: "Track added")
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
     }
 }

@@ -40,6 +40,28 @@ extension UIColor {
     }
 }
 
+class PaddingLabel:UILabel {
+    var topInset:CGFloat = 0.0
+    var leftInset:CGFloat = 0.0
+    var rightInset:CGFloat = 0.0
+    var bottomInset:CGFloat = 0.0
+    
+    override func intrinsicContentSize() -> CGSize {
+        var intrinsicSuperViewContentSize:CGSize = super.intrinsicContentSize()
+        intrinsicSuperViewContentSize.height += topInset + bottomInset ;
+        intrinsicSuperViewContentSize.width += leftInset + rightInset ;
+        return intrinsicSuperViewContentSize ;
+    }
+    
+    func setContentEdgeInsets(edgeInsets:UIEdgeInsets) {
+        topInset = edgeInsets.top;
+        leftInset = edgeInsets.left;
+        rightInset = edgeInsets.right;
+        bottomInset = edgeInsets.bottom;
+        self.invalidateIntrinsicContentSize();
+    }
+}
+
 class ViewUtils {
     static func showNoticeAlert(viewController:UIViewController, title:String,
             message:String, btnText:String="Confirm", callback:(() -> Void)?=nil) {
@@ -159,10 +181,11 @@ class ViewUtils {
     
     
     static func showToast(viewController:UIViewController, message:String) {
-        if (viewController.navigationController == nil) {
-            return
+        var vc = viewController
+        if viewController.navigationController != nil {
+            vc = viewController.navigationController!
         }
-        let hud = MBProgressHUD.showHUDAddedTo(viewController.view, animated: true)
+        var hud:MBProgressHUD = MBProgressHUD.showHUDAddedTo(vc.view, animated: true)
         hud.mode = MBProgressHUDMode.Text
         hud.labelText = message
         hud.margin = 10.0
@@ -172,7 +195,11 @@ class ViewUtils {
     }
     
     static func showProgress(viewController:UIViewController, message:String) -> MBProgressHUD {
-        let hud = MBProgressHUD.showHUDAddedTo(viewController.view, animated: true)
+        var vc = viewController
+        if viewController.navigationController != nil {
+            vc = viewController.navigationController!
+        }
+        let hud = MBProgressHUD.showHUDAddedTo(vc.view, animated: true)
         hud.mode = MBProgressHUDMode.Indeterminate
         hud.labelText = message
         hud.removeFromSuperViewOnHide = true

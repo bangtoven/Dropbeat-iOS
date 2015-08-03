@@ -62,7 +62,8 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         menuBtn.layer.borderWidth = 1
         menuBtn.layer.borderColor = UIColor(netHex: 0x4f525a).CGColor
     
-        let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
+//        let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
+        let statusBarHeight:CGFloat = 20.0
         containerHeightConstraint.constant = self.view.bounds.size.height
             - tabBarHeightConstraint.constant
         
@@ -79,8 +80,11 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.screenName = "CenterViewScreen"
         if isPlayerVisible {
             UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.None)
+        } else {
+            UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
         }
     }
     
@@ -116,16 +120,20 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             break
         case .PROFILE:
             if Account.getCachedAccount() == nil {
-                var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-                var centerViewController = appDelegate.centerContainer!
-                centerViewController.showSigninView()
-                let lastTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
-                tabBar.selectedItem = lastTab
-                break
+//                var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+//                var centerViewController = appDelegate.centerContainer!
+//                centerViewController.showSigninView()
+//                let lastTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
+//                tabBar.selectedItem = lastTab
+//                break
+                activeViewController = mainStoryboard
+                    .instantiateViewControllerWithIdentifier("SettingsNavigationController")
+                    as? UIViewController
+            } else {
+                activeViewController = mainStoryboard
+                    .instantiateViewControllerWithIdentifier("ProfileNavigationController")
+                    as? UIViewController
             }
-            activeViewController = mainStoryboard
-                .instantiateViewControllerWithIdentifier("ProfileNavigationController")
-                as? UIViewController
             break
         case .PLAYER:
             showPlayerView()
@@ -194,7 +202,9 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         isPlayerVisible = false
         UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.Fade)
         UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-            self.containerTopConstraint.constant = -1 * UIApplication.sharedApplication().statusBarFrame.size.height
+//            let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
+            let statusBarHeight:CGFloat = 20.0
+            self.containerTopConstraint.constant = -1 * statusBarHeight
             self.tabBarBottomConstraint.constant = 0
             self.tabBar.alpha = 1.0
             self.view.layoutIfNeeded()

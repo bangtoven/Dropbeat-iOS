@@ -11,12 +11,13 @@ import Foundation
 
 class PlayerContext {
     static var currentTrackIdx: Int = -1
-    static var currentPlaylistId: String? = "-1"
+    static var currentPlaylistId: String?
     static var currentTrack: Track?
     static var repeatState = RepeatState.NOT_REPEAT
     static var shuffleState = ShuffleState.NOT_SHUFFLE
     static var playState = PlayState.STOPPED
     static var playlists: [Playlist] = []
+    static var externalPlaylist: Playlist?
     static var correctDuration: Double?
     static var currentPlaybackTime: Double?
     static var qualityState = QualityState.LQ
@@ -40,9 +41,9 @@ class PlayerContext {
     static func pickNextTrack() -> Track? {
         var track :Track? = nil
         var playlist :Playlist? = getPlaylist(currentPlaylistId)
-        let size = playlist?.tracks.count
+        let size = playlist?.tracks.count ?? 0
         
-        if currentTrackIdx == -1 || currentPlaylistId == "-1" {
+        if currentPlaylistId == nil || playlist == nil || size == 0{
             return nil;
         }
         
@@ -52,10 +53,18 @@ class PlayerContext {
             var nextIdx :Int
             
             if PlayerContext.repeatState == RepeatState.REPEAT_PLAYLIST {
-                nextIdx = (currentTrackIdx + 1) % size!
+                if currentTrackIdx < 0 {
+                    nextIdx = 0
+                } else {
+                    nextIdx = (currentTrackIdx + 1) % size
+                }
                 track = playlist!.tracks[nextIdx] as Track
             } else {
-                nextIdx = currentTrackIdx + 1
+                if currentTrackIdx < 0 {
+                    nextIdx = 0
+                } else {
+                    nextIdx = currentTrackIdx + 1
+                }
                 if (nextIdx < size) {
                     track = playlist!.tracks[nextIdx] as Track
                 }
@@ -67,9 +76,9 @@ class PlayerContext {
     static func pickPrevTrack() -> Track? {
         var track :Track? = nil
         var playlist :Playlist? = getPlaylist(currentPlaylistId)
-        let size = playlist?.tracks.count
+        let size = playlist?.tracks.count ?? 0
         
-        if currentTrackIdx == -1 || currentPlaylistId == "-1" {
+        if currentPlaylistId == nil || playlist == nil || size == 0{
             return nil;
         }
         
@@ -81,7 +90,7 @@ class PlayerContext {
             if PlayerContext.repeatState == RepeatState.REPEAT_PLAYLIST {
                 prevIdx = currentTrackIdx - 1
                 if prevIdx <= 0 {
-                    prevIdx = size! - 1
+                    prevIdx = size - 1
                 }
                 track = playlist!.tracks[prevIdx] as Track
             } else {
@@ -116,6 +125,10 @@ class PlayerContext {
             if playlist.id == playlistId {
                 return playlist
             }
+        }
+        if PlayerContext.externalPlaylist != nil &&
+                PlayerContext.externalPlaylist!.id == playlistId {
+            return PlayerContext.externalPlaylist
         }
         return nil
     }

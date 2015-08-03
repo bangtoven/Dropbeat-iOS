@@ -68,10 +68,6 @@ class Requests {
         return sendGet(ApiPath.playlistShared, params: ["uid": uid], auth: false, respCb: respCb)
     }
     
-    static func sharePlaylist(name: String, data: AnyObject, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
-        return sendPost(ApiPath.playlistShared, params: ["name": name, "data": data], auth: true, respCb: respCb)
-    }
-    
     static func importPlaylist(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
         return sendGet(ApiPath.playlistShared, params: ["uid": uid], auth: false, respCb: respCb)
     }
@@ -160,6 +156,77 @@ class Requests {
         }
         return sendGet(YoutubeApiPath.playlistItems, params: params, auth:false, respCb: respCb)
     }
+    
+    static func sharePlaylist(playlist:Playlist, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        var playlistData = playlist.toJson()
+        return sendPost(ApiPath.playlistShared, params: playlistData, auth: true, respCb: respCb)
+    }
+    
+    static func shareTrack(track:Track, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendPost(ApiPath.trackShare, params: ["track_name": track.title, "ref": track.id], auth: true, respCb: respCb)
+    }
+    
+    static func getSharedTrack(uid:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(ApiPath.trackShare, params: ["uid": uid], auth:false, respCb: respCb)
+    }
+    
+    static func sendFeedback(senderEmail:String, content:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        
+        return sendPost(ApiPath.feedback, params: ["sender": senderEmail, "content": content], auth: false, respCb: respCb)
+    }
+    
+    static func fetchChannelFeed(pageIdx:Int, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(ApiPath.feedChannel, params: ["p": pageIdx], auth:true, respCb: respCb)
+    }
+    
+    static func artistFilter(names:[String], respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendPost(CorePath.artistFilter, params: ["q": names], auth:false, respCb: respCb)
+    }
+    
+    static func follow(ids:[Int], respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendPost(ApiPath.artistFollow, params: ["ids": ids], auth:true, respCb: respCb)
+    }
+    
+    static func unfollow(ids:[Int], respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendPost(ApiPath.artistUnfollow, params: ["ids": ids], auth:true, respCb: respCb)
+    }
+    
+    static func following(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(ApiPath.artistFollowing, params: nil, auth:true, respCb: respCb)
+    }
+    
+    static func fetchBeatportChart(genre:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(CorePath.trendingChart, params:["type": genre], auth:false, respCb: respCb)
+    }
+    
+    static func getFeedGenre(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(CorePath.genre, params:nil, auth:false, respCb: respCb)
+    }
+    
+    static func getStreamNew(genre:String?, pageIdx:Int, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        var params:[String:AnyObject] = ["p": pageIdx]
+        if genre != nil && count(genre!) > 0 {
+            params["g"] = genre
+        }
+        return sendGet(CorePath.streamNew, params:params, auth:false, respCb: respCb)
+    }
+    
+    static func getStreamTrending(genre:String?, pageIdx:Int, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        var params:[String:AnyObject] = ["p": pageIdx]
+        if genre != nil && count(genre!) > 0 {
+            params["g"] = genre
+        }
+        return sendGet(CorePath.streamTrending, params:params, auth:false, respCb: respCb)
+    }
+    
+    static func getStreamFollowing(pageIdx:Int, order:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        var params:[String:AnyObject] = ["p": pageIdx, "order": order]
+        return sendGet(ApiPath.streamFollowing, params:params, auth:true, respCb: respCb)
+    }
+    
+    static func searchArtist(keyword:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(CorePath.searchArtist, params:["q": keyword], auth:false, respCb:respCb)
+    }
 }
 
 
@@ -194,11 +261,13 @@ class WebAdapter {
         if (auth == true) {
             // TODO: Get global session key.
             let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup: nil)
-            var key :String = keychainItemWrapper["auth_token"] as! String
-//            var key :String = "0osyggg96aogbrb0vk820kcb9v8i3nv5"
-            manager.session.configuration.HTTPAdditionalHeaders = [
-                "Cookie": "sessionid=" + key
-            ]
+            if keychainItemWrapper["auth_token"] != nil {
+                var key :String = keychainItemWrapper["auth_token"] as! String
+//                var key :String = "5yqy1zxvvv7pcm7xrsbmvqje3n99f8ok"
+                manager.session.configuration.HTTPAdditionalHeaders = [
+                    "Cookie": "sessionid=" + key
+                ]
+            }
         }
     }
     

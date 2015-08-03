@@ -12,129 +12,38 @@ class PlaylistViewController: BaseViewController,
         UITableViewDelegate, UITableViewDataSource, PlaylistTableViewDelegate, UIActionSheetDelegate{
 
     
-    @IBOutlet weak var editBtn: UIBarButtonItem!
+    @IBOutlet weak var playlistMenuBtn: UIButton!
+    @IBOutlet weak var playPlaylistBtn: UIButton!
     @IBOutlet weak var playlistTableView: UITableView!
     @IBOutlet weak var playlistTrackCountView: UILabel!
     @IBOutlet weak var playlistNameView: UILabel!
+    @IBOutlet weak var fakeNavigationBar: UINavigationBar!
+    @IBOutlet weak var fakeNavigationBarHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var frameHeightConstraint: NSLayoutConstraint!
     
-    var currentPlaylist:Playlist?
+    var currentPlaylist:Playlist!
     var tracks:[Track] = [Track]()
     var playlistActionSheet:UIActionSheet?
     var menuSelectedTrack:Track?
     var fromPlayer:Bool = false
     
-    static func addTrack(playlist: Playlist, track:Track, section:String, afterAdd: (error:NSError?) -> Void) {
-        var tracks = playlist.tracks
-        
-        var dummyTracks = [[String:AnyObject]]()
-        for t in tracks {
-            if (track.id == t.id) {
-                afterAdd(error: NSError(domain: "addTrack", code:101, userInfo: nil))
-                return
-            }
-            dummyTracks.append(["title": t.title, "id": t.id, "type": t.type])
-        }
-        dummyTracks.append(["title": track.title, "id": track.id, "type": track.type])
-        
-        // Log to us
-        Requests.logTrackAdd(track.title)
-        // Log to GA
-        let tracker = GAI.sharedInstance().defaultTracker
-        let event = GAIDictionaryBuilder.createEventWithCategory(
-                "playlist-add-from-\(section)",
-                action: "add-\(track.type)",
-                label: track.title,
-                value: nil
-            ).build()
-        
-        tracker.send(event as [NSObject: AnyObject]!)
-        
-        Requests.setPlaylist(playlist.id, data: dummyTracks) {
-                (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            
-            if (error != nil) {
-                afterAdd(error: error)
-                return
-            }
-            var changedPlaylist:Playlist? = nil
-            for p in PlayerContext.playlists {
-                if (p.id == playlist.id) {
-                    changedPlaylist = p
-                    break
-                }
-            }
-            if (changedPlaylist == nil) {
-                afterAdd(error: nil)
-                return
-            }
-            for t in changedPlaylist!.tracks {
-                if (t.id == track.id) {
-                    afterAdd(error: nil)
-                    return
-                }
-            }
-            changedPlaylist!.tracks.append(track)
-            afterAdd(error: nil)
-        }
-    }
-    
-    static func deleteTrack(selectedPlaylist:Playlist, selectedTrack:Track, afterDelete:(error:NSError?) -> Void) {
-        var tracks = selectedPlaylist.tracks
-        
-        var dummyTracks = [[String:AnyObject]]()
-        for t in tracks {
-            if (t.id != selectedTrack.id) {
-                dummyTracks.append(["title": t.title, "id": t.id, "type": t.type])
-            }
-        }
-        
-        Requests.setPlaylist(selectedPlaylist.id, data: dummyTracks) {
-            (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            if (error != nil) {
-                afterDelete(error: error)
-                return
-            }
-            var playlist:Playlist? = nil
-            for p in PlayerContext.playlists {
-                if (p.id == selectedPlaylist.id) {
-                    playlist = p
-                    break
-                }
-            }
-            if (playlist == nil) {
-                afterDelete(error: nil)
-                return
-            }
-            var foundIdx:Int?
-            for (idx, track) in enumerate(playlist!.tracks) {
-                if (track.id == selectedTrack.id) {
-                    foundIdx = idx
-                }
-            }
-            if (foundIdx == nil) {
-                afterDelete(error: nil)
-                return
-            }
-            playlist!.tracks.removeAtIndex(foundIdx!)
-            
-            // Update current PlayerContext with new index
-            let playingTrack:Track? = PlayerContext.currentTrack
-            if (playingTrack != nil &&
-                    PlayerContext.currentPlaylistId != nil &&
-                    PlayerContext.currentPlaylistId == selectedPlaylist.id) {
-                for (idx, track) in enumerate(playlist!.tracks) {
-                    if (track.id == playingTrack!.id) {
-                        PlayerContext.currentTrackIdx = idx
-                        break
-                    }
-                }
-            }
-            afterDelete(error: nil)
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        let statusBarHeight:CGFloat = 20.0
+        if fromPlayer {
+            fakeNavigationBar.hidden = false
+            frameHeightConstraint.constant = self.view.bounds.size.height - statusBarHeight
+        } else {
+            var navigationHeight = navigationController!.navigationBar.frame.height
+            fakeNavigationBar.hidden = true
+            fakeNavigationBarHeightConstraint.constant = 0
+            frameHeightConstraint.constant = self.view.bounds.size.height - navigationHeight - statusBarHeight - 49
+        }
+        
+        if currentPlaylist.type == PlaylistType.EXTERNAL {
+            playlistMenuBtn.hidden = true
+            playPlaylistBtn.hidden = true
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -149,6 +58,8 @@ class PlaylistViewController: BaseViewController,
             }
             playlistTableView.reloadData()
         }
+        
+        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
         
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "sender", name: NotifyKey.playerStop, object: nil)
@@ -240,77 +151,49 @@ class PlaylistViewController: BaseViewController,
     
     func loadPlaylist() {
         let currPlaylist = currentPlaylist!
-        var foundPlaylistIdx:Int = -1
-        for (idx:Int, playlist:Playlist) in enumerate(PlayerContext.playlists) {
-            if (currPlaylist.id == playlist.id) {
-                foundPlaylistIdx = idx
-                break
-            }
-        }
-        if (foundPlaylistIdx == -1) {
-            ViewUtils.showToast(self, message: "Failed to find current playlist")
-            return
-        }
-        let progressHud = ViewUtils.showProgress(self, message: "Loading playlist..")
-        fetchPlaylist(foundPlaylistIdx, callback: {(success:Bool, newIdx:Int, error:NSError?) -> Void in
-            progressHud.hide(false)
-            if (!success) {
-                var message:String?
-                if (error != nil && error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                    message = "Internet is not connected. Please try again."
-                } else {
-                    message = "Failed to fetch playlist"
-                }
-                ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: message!, btnText: "Retry", callback: { () -> Void in
-                    self.loadPlaylist()
-                })
-                return
-            }
+        if currPlaylist.type == PlaylistType.EXTERNAL {
             
-            if (newIdx == -1) {
-                ViewUtils.showToast(self, message: "Failed to find current playlist")
-                return
+            self.tracks.removeAll(keepCapacity: false)
+            for track:Track in currPlaylist.tracks {
+                self.tracks.append(track)
             }
+            self.playlistTableView.reloadData()
             
             self.updatePlaylistInfo()
-            self.playlistTableView.reloadData()
             self.updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
-        })
-    }
-    
-    func fetchPlaylist(idx:Int, callback:(success:Bool, newIdx:Int, error:NSError?) -> Void) {
-        var nextPlaylist = PlayerContext.playlists[idx]
-        Requests.getPlaylist(nextPlaylist.id, respCb: { (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            return
+        }
+        
+        let progressHud = ViewUtils.showProgress(self, message: "Loading playlist..")
+        Requests.getPlaylist(currentPlaylist!.id, respCb: {
+                (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            progressHud.hide(false)
             if (error != nil || result == nil) {
-                callback(success: false, newIdx: -1, error: error)
-                return
-            }
-            var foundPlaylistIdx = -1
-            for (idx:Int, playlist:Playlist) in enumerate(PlayerContext.playlists) {
-                if (nextPlaylist.id == playlist.id) {
-                    foundPlaylistIdx = idx
-                    break
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    var message = "Internet is not connected. Please try again."
+                    ViewUtils.showConfirmAlert(self, title: "Failed to fetch", message: message,
+                        positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                            self.loadPlaylist()
+                    }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                    return
                 }
+                ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: "Failed to fetch playlist", btnText: "Confirm")
+                return
             }
             
-            if (foundPlaylistIdx == -1) {
-                callback(success: false, newIdx: -1, error: nil)
-                return
-            }
-           
             var res = JSON(result!)
             if !res["success"].boolValue {
-                callback(success: false, newIdx: -1, error: nil)
+                ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: "Failed to fetch playlist", btnText: "Confirm")
                 return
             }
             var playlist:Playlist? = Playlist.fromJson(res["playlist"].rawValue)
             if (playlist == nil) {
-                callback(success: false, newIdx: -1, error: nil)
+                ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: "Failed to fetch playlist", btnText: "Confirm")
                 return
             }
             
-            var original = PlayerContext.playlists[foundPlaylistIdx]
+            var original = self.currentPlaylist!
             original.name = playlist!.name
             original.tracks.removeAll(keepCapacity: false)
             self.tracks.removeAll(keepCapacity: false)
@@ -318,7 +201,10 @@ class PlaylistViewController: BaseViewController,
                 original.tracks.append(track)
                 self.tracks.append(track)
             }
-            callback(success: true, newIdx: foundPlaylistIdx, error: nil)
+            
+            self.updatePlaylistInfo()
+            self.playlistTableView.reloadData()
+            self.updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
         })
     }
     
@@ -352,17 +238,12 @@ class PlaylistViewController: BaseViewController,
         playlistActionSheet!.addButtonWithTitle("Cancel")
         playlistActionSheet!.destructiveButtonIndex = 3
         playlistActionSheet!.cancelButtonIndex = 4
+        
         playlistActionSheet!.showInView(self.view)
         playlistActionSheet!.delegate = self
     }
     
     func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
-        if actionSheet != playlistActionSheet {
-            menuSelectedTrack = nil
-        }
-    }
-    
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
         if actionSheet == playlistActionSheet {
             switch(buttonIndex) {
             case 0:
@@ -414,6 +295,9 @@ class PlaylistViewController: BaseViewController,
                 break
             }
         }
+        if actionSheet != playlistActionSheet {
+            menuSelectedTrack = nil
+        }
     }
     
     func onPlayTrackBtnClicked(track: Track) {
@@ -426,20 +310,69 @@ class PlaylistViewController: BaseViewController,
             NotifyKey.playerPlay, object: params)
         
         if fromPlayer {
-            navigationController?.popViewControllerAnimated(true)
+            dismissViewControllerAnimated(true, completion: nil)
         }
     }
     
     func onShareTrackBtnClicked(track: Track) {
-        // TODO
+        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        track.shareTrack("playlist", afterShare: { (error, uid) -> Void in
+            progressHud.hide(false)
+            if error != nil {
+                if (error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    ViewUtils.showConfirmAlert(self, title: "Failed to share",
+                        message: "Internet is not connected.",
+                        positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                            self.onShareTrackBtnClicked(track)
+                        }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                    return
+                }
+                ViewUtils.showConfirmAlert(self, title: "Failed to share",
+                    message: "Failed to share track",
+                    positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                        self.onShareTrackBtnClicked(track)
+                    }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                return
+            }
+            let shareUrl = "http://dropbeat.net/?track=" + uid!
+            let shareTitle = track.title
+            var shareImage:UIImage?
+            
+            var e:NSError?
+            if track.thumbnailUrl != nil {
+                var data = NSData(contentsOfURL:
+                    NSURL(string:track.thumbnailUrl!)!, options: NSDataReadingOptions.UncachedRead, error: &e)
+                if e == nil && data != nil {
+                    shareImage = UIImage(data: data!)
+                }
+            }
+            
+            var items:[AnyObject] = [shareTitle, shareUrl]
+            if shareImage != nil {
+                items.append(shareImage!)
+            }
+            
+            let activityController = UIActivityViewController(
+                    activityItems: items, applicationActivities: nil)
+            self.presentViewController(activityController, animated:true, completion: nil)
+        })
     }
     
     func onTrackAddToOtherPlaylistBtnClicked(track: Track) {
-        // TODO
+        if (Account.getCachedAccount() == nil) {
+            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            var centerViewController = appDelegate.centerContainer!
+            centerViewController.showSigninView()
+            return
+        }
+        performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
     }
     
     func onDeleteTrackBtnClicked(track:Track) {
-        PlaylistViewController.deleteTrack(currentPlaylist!, selectedTrack: track, afterDelete: { (error) -> Void in
+        let progressHud = ViewUtils.showProgress(self, message: "Deleting..")
+        track.deleteFromPlaylist(currentPlaylist!, afterDelete: { (error) -> Void in
+            progressHud.hide(false)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -482,7 +415,42 @@ class PlaylistViewController: BaseViewController,
     }
     
     func onSharePlaylistBtnClicked() {
-        // TODO
+        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        Requests.sharePlaylist(currentPlaylist!, respCb: {
+                (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            progressHud.hide(false)
+            var message:String = "Failed to share playlist."
+            var success = true
+            if error != nil || result == nil {
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    message = "Internet is not connected"
+                }
+                success = false
+            }
+            
+            if !success {
+                ViewUtils.showNoticeAlert(self, title: "Failed to share", message: message)
+                return
+            }
+            
+            var json = JSON(result!)
+        
+            if ((json["success"].bool ?? false) &&
+                    json["obj"].dictionary != nil && json["obj"]["uid"].string != nil) {
+                    
+                let uid = json["obj"]["uid"].string
+                let url = "http://dropbeat.net/?playlist=\(uid!)"
+                        
+                var items:[AnyObject] = [self.currentPlaylist!.name, url]
+                
+                let activityController = UIActivityViewController(
+                        activityItems: items, applicationActivities: nil)
+                self.presentViewController(activityController, animated:true, completion: nil)
+            } else {
+                ViewUtils.showNoticeAlert(self, title: "Failed to share", message: message)
+            }
+        })
     }
     
     func onDeletePlaylistBtnClicked() {
@@ -614,6 +582,21 @@ class PlaylistViewController: BaseViewController,
                     animated: true, scrollPosition: UITableViewScrollPosition.None)
                 break
             }
+        }
+    }
+    
+    @IBAction func onFakeBackBtnClicked(sender: AnyObject) {
+        if fromPlayer {
+            dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "PlaylistSelectSegue" {
+            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
+            playlistSelectVC.targetTrack = sender as? Track
+            playlistSelectVC.fromSection = "playlist"
+            playlistSelectVC.caller = self
         }
     }
 }

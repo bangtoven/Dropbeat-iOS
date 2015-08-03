@@ -239,15 +239,55 @@ class SearchViewController: BaseViewController,
     
     func onPlayBtnClicked(track:Track) {
         var params: Dictionary<String, AnyObject> = [
-            "track": track,
-            "playlistId": "-1"
+            "track": track
         ]
         NSNotificationCenter.defaultCenter().postNotificationName(
             NotifyKey.playerPlay, object: params)
     }
     
     func onShareBtnClicked(track:Track) {
-        // TODO
+        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        track.shareTrack("playlist", afterShare: { (error, uid) -> Void in
+            progressHud.hide(false)
+            if error != nil {
+                if (error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    ViewUtils.showConfirmAlert(self, title: "Failed to share",
+                        message: "Internet is not connected.",
+                        positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                            self.onShareBtnClicked(track)
+                        }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                    return
+                }
+                ViewUtils.showConfirmAlert(self, title: "Failed to share",
+                    message: "Failed to share track",
+                    positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                        self.onShareBtnClicked(track)
+                    }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                return
+            }
+            let shareUrl = "http://dropbeat.net/?track=" + uid!
+            let shareTitle = track.title
+            var shareImage:UIImage?
+            
+            var e:NSError?
+            if track.thumbnailUrl != nil {
+                var data = NSData(contentsOfURL:
+                    NSURL(string:track.thumbnailUrl!)!, options: NSDataReadingOptions.UncachedRead, error: &e)
+                if e == nil && data != nil {
+                    shareImage = UIImage(data: data!)
+                }
+            }
+            
+            var items:[AnyObject] = [shareTitle, shareUrl]
+            if shareImage != nil {
+                items.append(shareImage!)
+            }
+            
+            let activityController = UIActivityViewController(
+                    activityItems: items, applicationActivities: nil)
+            self.presentViewController(activityController, animated:true, completion: nil)
+        })
     }
     
     func onAddBtnClicked(track:Track) {
@@ -257,7 +297,7 @@ class SearchViewController: BaseViewController,
             centerViewController.showSigninView()
             return
         }
-        // TODO show playlist select
+        performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
     }
     
     func onMenuBtnClicked(sender: AddableTrackTableViewCell) {
@@ -273,15 +313,15 @@ class SearchViewController: BaseViewController,
         
         let actionSheet = UIActionSheet()
         actionSheet.addButtonWithTitle("Add to playlist")
-        actionSheet.addButtonWithTitle("Play")
         actionSheet.addButtonWithTitle("Share")
+        actionSheet.addButtonWithTitle("Play")
         actionSheet.addButtonWithTitle("Cancel")
         actionSheet.cancelButtonIndex = 3
         actionSheet.delegate = self
         actionSheet.showInView(self.view)
     }
     
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
         var track:Track? = actionSheetTargetTrack
         var foundIdx = -1
         
@@ -294,31 +334,26 @@ class SearchViewController: BaseViewController,
                 }
             }
         }
-        if track == nil || foundIdx == -1 {
+        if buttonIndex < 3 && track == nil || foundIdx == -1 {
             ViewUtils.showToast(self, message: "Track is not in feed")
             return
         }
         
         switch(buttonIndex) {
-        case 1:
-            onPlayBtnClicked(track!)
-            break
         case 0:
             onAddBtnClicked(track!)
             break
-        case 2:
+        case 1:
             onShareBtnClicked(track!)
+            break
+        case 2:
+            onPlayBtnClicked(track!)
             break
         default:
             break
         }
-    }
-    
-    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
         actionSheetTargetTrack = nil
     }
-    
-    
     
     func hideAutocomplete() {
         autocomTableView.hidden = true
@@ -520,15 +555,14 @@ class SearchViewController: BaseViewController,
 //        }
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "PlaylistSelectSegue" {
+            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
+            playlistSelectVC.targetTrack = sender as? Track
+            playlistSelectVC.fromSection = "search"
+            playlistSelectVC.caller = self
+        }
     }
-    */
 
 }

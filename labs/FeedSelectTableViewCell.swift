@@ -1,24 +1,22 @@
 //
-//  PlaylistSelectTableViewCell.swift
+//  FeedSelectTableViewCell.swift
 //  labs
 //
-//  Created by vulpes on 2015. 5. 21..
+//  Created by vulpes on 2015. 7. 31..
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
 import UIKit
 
-class PlaylistSelectTableViewCell: UITableViewCell {
-    
-    @IBOutlet weak var trackCount: UILabel!
-    @IBOutlet weak var nameView: UILabel!
-    
+class FeedSelectTableViewCell: UITableViewCell {
+
+    @IBOutlet weak var name: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         var selectedBgView = UIView(frame: self.bounds)
         selectedBgView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
-        selectedBgView.backgroundColor = UIColor(netHex: 0xdddddd)
+        selectedBgView.backgroundColor = UIColor(netHex: 0xffffff)
         self.selectedBackgroundView = selectedBgView
     }
 
@@ -27,4 +25,5 @@ class PlaylistSelectTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+
 }

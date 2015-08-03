@@ -5,8 +5,9 @@
 import Foundation
 
 public class ApiPath {
+    static var host :String = "http://spark.coroutine.io/api/v1/"
 //    static var host :String = "http://coroutine.io:19050/api/v1/"
-    static var host :String = "http://dropbeat.net/api/v1/"
+//    static var host :String = "http://dropbeat.net/api/v1/"
     
     // User
     static var user :String = host + "user/"
@@ -18,6 +19,7 @@ public class ApiPath {
     
     // Feed
     static var feed :String = host + "feed/"
+    static var feedChannel :String = host + "feed/channel/"
     
     // Playlist
     static var playlist :String = host + "playlist/"
@@ -42,17 +44,35 @@ public class ApiPath {
     
     // Bookmark
     static var bookmark :String = host + "channelbookmark/"
+    
+    // Track
+    static var track :String = host + "track/"
+    static var trackShare :String = track + "shared/"
+    
+    // Artist
+    static var artist :String = host + "artist/"
+    static var artistFollow :String = artist + "follow/"
+    static var artistUnfollow :String = artist + "unfollow/"
+    static var artistFollowing :String = artist + "following/"
+    
+    // Stream
+    static var stream :String = host + "stream/"
+    static var streamFollowing: String = stream + "following/"
+    
+    // Feedback
+    static var feedback :String = host + "async/feedback/"
 }
 
 public class CorePath {
-//    static var host :String = "http://coroutine.io:19070/api/"
-    static var host :String = "http://core.dropbeat.net/api/"
+    static var host :String = "http://core.coroutine.io/api/"
+//    static var host :String = "http://core.dropbeat.net/api/"
     
     // core.search
     static var search :String = host + "search/"
     static var searchRelated :String = search + "related/"
     static var searchLiveset :String = search + "liveset/"
     static var searchOther :String = search + "other/"
+    static var searchArtist: String = search + "artist/"
     
     // core.resolve
     static var resolve :String = host + "resolve/"
@@ -66,9 +86,7 @@ public class CorePath {
 
     // core.trending
     static var trending :String = host + "trending/"
-    static var trendingDj :String = host + "dj/"
-    static var trendingChart :String = host + "chart/"
-    static var trendingTopDjs :String = trending + "top_djs/"
+    static var trendingChart :String = trending + "bpchart/"
     static var trendingFeaturedPlaylist :String = trending + "featured_playlist/"
     
     // core.podcast
@@ -82,10 +100,20 @@ public class CorePath {
     static var channelList: String = channel + "list/"
     static var channelDetail: String = channel + "detail/"
     static var channelDescExtractUrl: String = channel + "extract/"
+    
+    // core.artistFilter
+    static var artistFilter: String = host + "artist/filter/"
+    
+    // core.genre
+    static var genre: String = host + "genre/"
+    
+    // core.stream
+    static var stream: String = host + "stream/"
+    static var streamNew: String = stream + "new/"
+    static var streamTrending: String = stream + "trending/"
 }
 
 public class ResolvePath {
-//    static var host :String = "http://14.63.224.95:19001/"
     static var host :String = "http://resolve.dropbeat.net/"
     static var resolveStream :String = host + "resolve/"
 }

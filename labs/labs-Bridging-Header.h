@@ -53,4 +53,6 @@
 
 #import "MarqueeLabel.h"
 
+#import "CommonCrypto/CommonCrypto.h"
+
 #endif

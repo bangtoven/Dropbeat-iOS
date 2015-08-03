@@ -24,6 +24,7 @@ class SigninViewController: BaseViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "sender", name: NotifyKey.appSignin, object: nil)
     }
     
@@ -49,7 +50,7 @@ class SigninViewController: BaseViewController {
         var fbManager:FBSDKLoginManager = FBSDKLoginManager()
         progressHud = ViewUtils.showProgress(self, message: "Signining in..")
         fbManager.logOut()
-        fbManager.logInWithReadPermissions(["email"], handler: { (result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
+        fbManager.logInWithReadPermissions(["email", "user_likes"], handler: { (result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
             if (error != nil) {
                 // Process error
                 ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Failed to acquire user info permission")
@@ -61,10 +62,10 @@ class SigninViewController: BaseViewController {
                 self.progressHud?.hide(false)
                 return
             }
-            if (result.grantedPermissions.contains("email")) {
+            if result.grantedPermissions.contains("email") {
                 self.requestProfileInfos()
             } else {
-                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Email permission required for Dropbeat signin")
+                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Email and like permission required for Dropbeat signin")
                 self.progressHud?.hide(false)
             }
         })
@@ -95,18 +96,17 @@ class SigninViewController: BaseViewController {
                 "last_name": lastName,
                 "fb_id": fbId
             ]
+            
             Requests.userSignin(userParam, respCb: {
                     (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                 if (error != nil) {
+                    fbManager.logOut()
                     var message:String?
                     if (error != nil && error!.domain == NSURLErrorDomain &&
                             error!.code == NSURLErrorNotConnectedToInternet) {
                         message = "Internet is not connected. Please try again."
                     } else {
-                        message = "Failed to signin caused by undefined error."
-                        if (error != nil) {
-                            message! += " (\(error!.domain):\(error!.code))"
-                        }
+                        message = "Failed to sign in."
                     }
                     ViewUtils.showNoticeAlert(self, title: "Failed to sign in",
                         message: message!)
@@ -116,6 +116,7 @@ class SigninViewController: BaseViewController {
                 let res = result as! NSDictionary
                 var success:Bool = res.objectForKey("success") as! Bool? ?? false
                 if (!success) {
+                    fbManager.logOut()
                     var errorMsg:String = res.objectForKey("error") as? String ?? "Undefined error"
                     ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: errorMsg)
                     self.progressHud?.hide(false)
@@ -153,7 +154,7 @@ class SigninViewController: BaseViewController {
                 return
             }
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.appSignin, object: nil)
-            self.dismiss()
+            self.dismissViewControllerAnimated(false, completion: nil)
             PlayerViewController.sharedInstance!.resignObservers()
             var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             var navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController

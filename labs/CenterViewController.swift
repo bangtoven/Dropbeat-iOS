@@ -85,13 +85,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             self, selector: "loadSharedTrackIfExist", name: NotifyKey.trackShare, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "loadSharedPlaylistIfExist", name: NotifyKey.playlistShare, object: nil)
-        
-        self.view.layoutIfNeeded()
-        if isPlayerVisible {
-            UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Slide)
-        } else {
-            UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.Slide)
-        }
+        setNeedsStatusBarAppearanceUpdate()
     }
     
     func loadSharedTrackIfExist() {
@@ -297,10 +291,18 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         }
     }
     
+    override func prefersStatusBarHidden() -> Bool {
+        return isPlayerVisible
+    }
+    
+    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+        return UIStatusBarAnimation.None
+    }
+    
     func showPlayerView() {
         isPlayerVisible = true
+        setNeedsStatusBarAppearanceUpdate()
         self.view.layoutIfNeeded()
-        UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Fade)
         UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
             self.containerTopConstraint.constant = 3 - self.containerHeightConstraint.constant
             self.tabBarBottomConstraint.constant = -1 * self.tabBarHeightConstraint.constant
@@ -314,7 +316,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         self.view.layoutIfNeeded()
         
         isPlayerVisible = false
-        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.Fade)
+        setNeedsStatusBarAppearanceUpdate()
         UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
 //            let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
             let statusBarHeight:CGFloat = 20.0

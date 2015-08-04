@@ -539,7 +539,7 @@ class ChannelDetailViewController: BaseViewController,
         actionSheet.addButtonWithTitle("Cancel")
         actionSheet.cancelButtonIndex = 2
         actionSheet.delegate = self
-        actionSheet.showInView(self.view)
+        actionSheet.showInView(self.view.window)
     }
     
     func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {

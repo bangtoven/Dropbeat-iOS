@@ -196,3 +196,28 @@ extension NSURL {
         return results
     }
 }
+
+func SYSTEM_VERSION_EQUAL_TO(version: NSString) -> Bool {
+    return UIDevice.currentDevice().systemVersion.compare(version as String,
+        options: NSStringCompareOptions.NumericSearch) == NSComparisonResult.OrderedSame
+}
+
+func SYSTEM_VERSION_GREATER_THAN(version: NSString) -> Bool {
+    return UIDevice.currentDevice().systemVersion.compare(version as String,
+        options: NSStringCompareOptions.NumericSearch) == NSComparisonResult.OrderedDescending
+}
+
+func SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(version: NSString) -> Bool {
+    return UIDevice.currentDevice().systemVersion.compare(version as String,
+        options: NSStringCompareOptions.NumericSearch) != NSComparisonResult.OrderedAscending
+}
+
+func SYSTEM_VERSION_LESS_THAN(version: NSString) -> Bool {
+    return UIDevice.currentDevice().systemVersion.compare(version as String,
+        options: NSStringCompareOptions.NumericSearch) == NSComparisonResult.OrderedAscending
+}
+
+func SYSTEM_VERSION_LESS_THAN_OR_EQUAL_TO(version: NSString) -> Bool {
+    return UIDevice.currentDevice().systemVersion.compare(version as String,
+        options: NSStringCompareOptions.NumericSearch) != NSComparisonResult.OrderedDescending
+}

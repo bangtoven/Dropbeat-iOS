@@ -157,7 +157,7 @@ class Requests {
         if pageToken != nil {
             params["pageToken"] = pageToken!
         }
-        return sendGet(YoutubeApiPath.playlistItems, params: params, auth:false, respCb: respCb)
+        return sendGet(CorePath.channelGproxy, params: params, auth:false, respCb: respCb)
     }
     
     static func sharePlaylist(playlist:Playlist, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {

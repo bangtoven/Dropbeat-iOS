@@ -253,7 +253,7 @@ class PlaylistViewController: BaseViewController,
         playlistActionSheet!.destructiveButtonIndex = 3
         playlistActionSheet!.cancelButtonIndex = 4
         
-        playlistActionSheet!.showInView(self.view)
+        playlistActionSheet!.showInView(self.view.window)
         playlistActionSheet!.delegate = self
     }
     
@@ -579,7 +579,7 @@ class PlaylistViewController: BaseViewController,
         } else {
             actionSheet.cancelButtonIndex = 2
         }
-        actionSheet.showInView(self.view)
+        actionSheet.showInView(self.view.window)
         actionSheet.delegate = self
     }
     

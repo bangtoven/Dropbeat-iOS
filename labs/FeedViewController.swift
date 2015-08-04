@@ -208,7 +208,11 @@ class FeedViewController: BaseViewController,
         feedTypeSelectBtn.setTitle(typeName, forState: UIControlState.Normal)
         
         var attr:[String : UIFont] = [String: UIFont]()
-        attr[ NSFontAttributeName] = UIFont.systemFontOfSize(18, weight: UIFontWeightBold)
+        if SYSTEM_VERSION_LESS_THAN("8.2") {
+            attr[ NSFontAttributeName] = UIFont.systemFontOfSize(18)
+        } else {
+            attr[ NSFontAttributeName] = UIFont.systemFontOfSize(18, weight: UIFontWeightBold)
+        }
         var textSize:CGSize = genreStr.sizeWithAttributes(attr)
         var textWidth = textSize.width;
         
@@ -616,7 +620,7 @@ class FeedViewController: BaseViewController,
         actionSheet.addButtonWithTitle("Cancel")
         actionSheet.cancelButtonIndex = 2
         actionSheet.delegate = self
-        actionSheet.showInView(self.view)
+        actionSheet.showInView(self.view.window)
     }
     
     func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {

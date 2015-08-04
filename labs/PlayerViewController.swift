@@ -12,6 +12,9 @@ import AVFoundation
 
 class PlayerViewController: BaseViewController, UIActionSheetDelegate {
 
+    @IBOutlet weak var playerTitleHeightConstaint: NSLayoutConstraint!
+    
+    @IBOutlet weak var coverView: UIView!
     @IBOutlet weak var loadingView: UIImageView!
     @IBOutlet weak var progressBar: UISlider!
     
@@ -65,6 +68,21 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
         
         audioPlayerControl.presentInView(videoView)
+        if UIScreen.mainScreen().bounds.height == 480 {
+            resizeViewUnder4in()
+        }
+    }
+    
+    func resizeViewUnder4in() {
+        playerTitleHeightConstaint.constant = 28
+        let heightConstraint = NSLayoutConstraint(item: coverView,
+            attribute: NSLayoutAttribute.Height,
+            relatedBy: NSLayoutRelation.Equal,
+            toItem: nil,
+            attribute: NSLayoutAttribute.NotAnAttribute,
+            multiplier: 1.0,
+            constant: 200)
+        coverView.addConstraint(heightConstraint)
     }
 
     override func didReceiveMemoryWarning() {
@@ -253,6 +271,28 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         // TODO
     }
     
+    // XXX : hacky solution for hide video controls
+    // This code should be well tested before release
+    func showMPMoviePlayerControls(show:Bool) {
+        let player = audioPlayerControl.moviePlayer
+        player.controlStyle = show ? MPMovieControlStyle.Embedded : MPMovieControlStyle.None
+        if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO("8") {
+            var subViewObjs = player.backgroundView.superview?.superview?.subviews
+            if subViewObjs == nil {
+                return
+            }
+            if let subViews = subViewObjs as? [UIView] {
+                for subView:UIView in subViews {
+                    if subView.isKindOfClass(NSClassFromString("MPVideoPlaybackOverlayView")) {
+                        subView.backgroundColor = UIColor.clearColor()
+                        subView.alpha = show ? 1.0 : 0.0
+                        subView.hidden = show ? false : true
+                    }
+                }
+            }
+        }
+    }
+    
     func updateCoverView() {
         var track = PlayerContext.currentTrack
         if track == nil || PlayerContext.playState == PlayState.STOPPED {
@@ -265,6 +305,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             audioPlayerControl.view.hidden = false
             audioPlayerControl.view.frame = CGRectMake(0, 0, videoView.frame.width, videoView.frame.height)
             audioPlayerControl.presentInView(videoView)
+            showMPMoviePlayerControls(false)
             coverImageView.hidden = true
             
             
@@ -555,6 +596,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         
         if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Playing) {
             updatePlayState(PlayState.PLAYING)
+            updateCoverView()
             // Periodic timer for progress update.
             if remoteProgressTimer == nil {
                 remoteProgressTimer = NSTimer.scheduledTimerWithTimeInterval(
@@ -661,7 +703,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         actionSheet.addButtonWithTitle("Share")
         actionSheet.addButtonWithTitle("Cancel")
         actionSheet.cancelButtonIndex = 2
-        actionSheet.showInView(self.view)
+        actionSheet.showInView(self.view.window)
         actionSheet.delegate = self
     }
     
@@ -939,7 +981,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         updatePlayState(PlayState.LOADING)
         updatePlayerPlaylistBtn()
         updateNextPrevBtn()
-        updateCoverView()
         
         // Log to us
         Requests.logPlay(track!.title)
@@ -998,7 +1039,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             audioPlayerControl.videoIdentifier = nil
         }
         
-        audioPlayerControl.moviePlayer.controlStyle = MPMovieControlStyle.None
         if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
             audioPlayerControl.moviePlayer.repeatMode = MPMovieRepeatMode.One
         } else {
@@ -1013,6 +1053,10 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         
         println("prepare to play")
         audioPlayerControl.moviePlayer.prepareToPlay()
+        audioPlayerControl.moviePlayer.scalingMode = .AspectFill
+        audioPlayerControl.moviePlayer.controlStyle = .Fullscreen
+        audioPlayerControl.moviePlayer.view.userInteractionEnabled = false
+        updateCoverView()
     }
     
     func handlePause() {

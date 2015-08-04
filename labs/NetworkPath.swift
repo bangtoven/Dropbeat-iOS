@@ -100,6 +100,8 @@ public class CorePath {
     static var channelList: String = channel + "list/"
     static var channelDetail: String = channel + "detail/"
     static var channelDescExtractUrl: String = channel + "extract/"
+    // core.channel playlist
+    static var channelGproxy: String = channel + "gproxy/"
     
     // core.artistFilter
     static var artistFilter: String = host + "artist/filter/"
@@ -111,6 +113,7 @@ public class CorePath {
     static var stream: String = host + "stream/"
     static var streamNew: String = stream + "new/"
     static var streamTrending: String = stream + "trending/"
+    
 }
 
 public class ResolvePath {

@@ -445,7 +445,7 @@ class ChannelViewController: BaseViewController,
         actionSheet.addButtonWithTitle("Cancel")
         actionSheet.cancelButtonIndex = 2
         actionSheet.delegate = self
-        actionSheet.showInView(self.view)
+        actionSheet.showInView(self.view.window)
         
         let indexPath = tableView.indexPathForCell(sender)
         actionSheetTargetTrack = tracks[indexPath!.row]
@@ -499,7 +499,7 @@ class ChannelViewController: BaseViewController,
             }
             
             self.genres.removeAll(keepCapacity: false)
-            for genre in genreList.results!["default"]! {
+            for genre in genreList.results!["channel"]! {
                 self.genres.append(genre)
             }
             self.genreTableView.reloadData()

@@ -634,8 +634,8 @@ class BeatportChart {
             if s["released"].string == nil {
                 continue
             }
-            let releasedAtStr = s["released"].stringValue
-            let releasedAt = dateFormatter.dateFromString(releasedAtStr)
+            var releasedAtStr = s["released"].stringValue
+            let releasedAt = dateFormatter.dateFromString(releasedAtStr.subString(0, length: 10))
             
             
             let track = BeatportTrack(
@@ -671,7 +671,7 @@ class StreamNew {
         
         var tracks:[NewReleaseTrack] = []
         var formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss:z"
+        formatter.dateFormat = "yyyy-MM-dd"
         
         for (idx:String, s:JSON) in json[key] {
             println(s)
@@ -684,8 +684,8 @@ class StreamNew {
                 continue
             }
             
-            let releasedAtStr = s["release_date"].stringValue
-            let releasedAt = formatter.dateFromString(releasedAtStr)
+            var releasedAtStr = s["release_date"].stringValue
+            let releasedAt = formatter.dateFromString(releasedAtStr.subString(0, length: 10))
             
             tracks.append(NewReleaseTrack(
                 id: s["id"].stringValue,
@@ -717,7 +717,7 @@ class StreamTrending {
         
         var tracks:[TrendingTrack] = []
         var formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.000Z"
+        formatter.dateFormat = "yyyy-MM-dd"
         
         for (idx:String, s:JSON) in json[key] {
             if s["id"].string == nil ||
@@ -757,7 +757,7 @@ class StreamBeatportTrending {
         }
         
         var dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.00Z"
+        dateFormatter.dateFormat = "yyyy-MM-dd"
         var tracks:[BeatportTrack] = [BeatportTrack]()
         for (idx:String, s:JSON) in json["data"] {
             if s["artist_name"].string == nil {
@@ -783,8 +783,8 @@ class StreamBeatportTrending {
             if s["released"].string == nil {
                 continue
             }
-            let releasedAtStr = s["released"].stringValue
-            let releasedAt = dateFormatter.dateFromString(releasedAtStr)
+            var releasedAtStr = s["released"].stringValue
+            let releasedAt = dateFormatter.dateFromString(releasedAtStr.subString(0, length: 10))
             
             
             let track = BeatportTrack(
@@ -847,7 +847,7 @@ class StreamFollowing {
             
             var releasedAt:NSDate?
             if let releasedAtStr = s["release_date"].string {
-                releasedAt = dateFormatter.dateFromString(releasedAtStr)
+                releasedAt = dateFormatter.dateFromString(releasedAtStr.subString(0, length: 10))
             }
             
             var thumbnail:String?
@@ -1377,6 +1377,7 @@ class GenreList {
         
         var genres = [String:[Genre]]()
         var defaultGenres = [Genre]()
+        var channelGenres = [Genre]()
         var trendingGenres = [Genre]()
         
         
@@ -1395,6 +1396,21 @@ class GenreList {
             defaultGenres.append(Genre(key:"\(key)", name:name))
         }
         
+        channelGenres.append(Genre(key:"", name:"ALL"))
+        for (idx:String, s:JSON) in json["channel"] {
+            if s["id"].int == nil {
+                continue
+            }
+            let key = s["id"].intValue
+            
+            if s["name"].string == nil {
+                continue
+            }
+            
+            let name = s["name"].stringValue
+            channelGenres.append(Genre(key:"\(key)", name:name))
+        }
+        
         trendingGenres.append(Genre(key:"", name:"NOW TRENDING"))
         for (idx:String, s:JSON) in json["trending"] {
             if s["key"].string == nil {
@@ -1411,6 +1427,7 @@ class GenreList {
         }
         
         genres["default"] = defaultGenres
+        genres["channel"] = channelGenres
         genres["trending"] = trendingGenres
         
         return GenreList(success: true, results: genres)

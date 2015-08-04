@@ -81,6 +81,7 @@ class FeedViewController: BaseViewController,
         selectedFeedMenu = feedMenus[0]
         feedTypeSelectTableView.selectRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), animated: false,
             scrollPosition: UITableViewScrollPosition.Top)
+        updateFeedTypeSelectBtn(nil)
         initialize()
     }
     
@@ -128,7 +129,7 @@ class FeedViewController: BaseViewController,
     
     func onFollowManageCloseWithResult(isChanged: Bool) {
         if selectedFeedMenu.type == FeedType.FOLLOWING {
-            switchFeed(selectedFeedMenu, genre: selectedGenre)
+            switchFeed(selectedFeedMenu, genre: selectedGenre, forceRefresh: isChanged)
         }
     }
     
@@ -201,11 +202,16 @@ class FeedViewController: BaseViewController,
         }
     }
     
-    func updateFeedTypeSelectBtn(typeName:String) {
+    func updateFeedTypeSelectBtn(typeName:String?) {
+        if typeName == nil {
+            feedTypeSelectBtn.hidden = true
+            return
+        }
+        feedTypeSelectBtn.hidden = false
         var image = feedTypeSelectBtn.imageView!.image
         var titleLabel = feedTypeSelectBtn.titleLabel
-        var genreStr:NSString = typeName as NSString
-        feedTypeSelectBtn.setTitle(typeName, forState: UIControlState.Normal)
+        var genreStr:NSString = typeName! as NSString
+        feedTypeSelectBtn.setTitle(typeName!, forState: UIControlState.Normal)
         
         var attr:[String : UIFont] = [String: UIFont]()
         if SYSTEM_VERSION_LESS_THAN("8.2") {
@@ -652,7 +658,7 @@ class FeedViewController: BaseViewController,
         selectedTrack = nil
     }
     
-    func switchFeed(menu:FeedMenu, genre:Genre?=nil) {
+    func switchFeed(menu:FeedMenu, genre:Genre?=nil, forceRefresh:Bool=false) {
         updateFeedTypeSelectBtn(menu.title)
         nextPage = menu.type == FeedType.BEATPORT_CHART ? -1 : 0
         tracks.removeAll(keepCapacity: false)
@@ -732,41 +738,33 @@ class FeedViewController: BaseViewController,
                     return
                 }
                 self.feedTableView.tableHeaderView = self.getFollowingHeaderView(following!)
-                self.loadFollowingFeed()
+                self.loadFollowingFeed(forceRefresh: forceRefresh)
             })
             return
         }
         
-        loadFeed(menu.type)
-    }
-    
-    func loadFeed(type:FeedType) {
+        
+        // log ga
         var action:String = "none"
-        switch(type) {
+        switch(menu.type) {
         case .TRENDING:
-            loadTrendingFeed()
             action = "trending"
             break
         case .FOLLOWING:
-            loadFollowingFeed()
             action = "following"
             break
         case .BEATPORT_CHART:
-            loadBeatportChartFeed()
             action = "beatport_chart"
             break
         case .NEW_RELEASE:
-            loadNewReleaseFeed()
             action = "new_release"
             break
         default:
             break
         }
-        
         if selectedGenre != nil {
             action += "_" + selectedGenre!.name.lowercaseString.replace(" ", withString: "_")
         }
-        
         let tracker = GAI.sharedInstance().defaultTracker
         let event = GAIDictionaryBuilder.createEventWithCategory(
                 "load_feed",
@@ -775,9 +773,32 @@ class FeedViewController: BaseViewController,
                 value: 1
             ).build()
         tracker.send(event as [NSObject: AnyObject]!)
+        
+        
+        
+        loadFeed(menu.type, forceRefresh: forceRefresh)
     }
     
-    func loadTrendingFeed() {
+    func loadFeed(type:FeedType, forceRefresh:Bool=false) {
+        switch(type) {
+        case .TRENDING:
+            loadTrendingFeed(forceRefresh: forceRefresh)
+            break
+        case .FOLLOWING:
+            loadFollowingFeed(forceRefresh: forceRefresh)
+            break
+        case .BEATPORT_CHART:
+            loadBeatportChartFeed(forceRefresh: forceRefresh)
+            break
+        case .NEW_RELEASE:
+            loadNewReleaseFeed(forceRefresh: forceRefresh)
+            break
+        default:
+            break
+        }
+    }
+    
+    func loadTrendingFeed(forceRefresh:Bool=false) {
         if selectedGenre == nil {
             selectedGenre = genres[FeedType.TRENDING]![0]
         }
@@ -843,14 +864,14 @@ class FeedViewController: BaseViewController,
         })
     }
     
-    func loadBeatportChartFeed() {
+    func loadBeatportChartFeed(forceRefresh:Bool=false) {
         if selectedGenre == nil {
             selectedGenre = genres[FeedType.BEATPORT_CHART]![0]
         }
         
         let progressHud = ViewUtils.showProgress(self, message: "Loading..")
         var genreKey = selectedGenre!.name
-        if count(selectedGenre!.key) == 0{
+        if count(selectedGenre!.key) == 0 {
             genreKey = "TOP100"
         }
         Requests.fetchBeatportChart(genreKey, respCb: {
@@ -911,7 +932,7 @@ class FeedViewController: BaseViewController,
         }
     }
     
-    func loadFollowingFeed() {
+    func loadFollowingFeed(forceRefresh:Bool=false) {
         if selectedGenre == nil {
             selectedGenre = genres[FeedType.FOLLOWING]![0]
         }
@@ -925,7 +946,7 @@ class FeedViewController: BaseViewController,
             progressHud = ViewUtils.showProgress(self, message: "Loading..")
         }
         
-        Requests.getStreamFollowing(nextPage, order:selectedGenre!.key, respCb: {
+        Requests.getStreamFollowing(forceRefresh, pageIdx: nextPage, order:selectedGenre!.key, respCb: {
             (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             self.isLoading = false
             progressHud?.hide(false)
@@ -965,7 +986,7 @@ class FeedViewController: BaseViewController,
         })
     }
     
-    func loadNewReleaseFeed() {
+    func loadNewReleaseFeed(forceRefresh:Bool=false) {
         if selectedGenre == nil {
             selectedGenre = genres[FeedType.NEW_RELEASE]![0]
         }

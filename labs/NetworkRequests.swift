@@ -108,15 +108,15 @@ class Requests {
     }
     
     static func logSearch(keyword: String) -> Request{
-        return request(Method.GET, ApiPath.logSearch, parameters: ["q": keyword], encoding: .URL).validate()
+        return request(Method.GET, ApiPath.logSearch, parameters: ["q": keyword, "device_type": "ios"], encoding: .URL).validate()
     }
     
     static func logTrackAdd(title: String) -> Request{
-        return request(Method.GET, ApiPath.logTrackAdd, parameters: ["t": title], encoding: .URL).validate()
+        return request(Method.GET, ApiPath.logTrackAdd, parameters: ["t": title, "device_type": "ios"], encoding: .URL).validate()
     }
     
     static func logPlay(title: String) -> Request{
-        return request(Method.GET, ApiPath.logPlay, parameters: ["t": title], encoding: .URL).validate()
+        return request(Method.GET, ApiPath.logPlay, parameters: ["t": title, "device_type": "ios"], encoding: .URL).validate()
     }
     
     static func getClientVersion(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
@@ -222,8 +222,8 @@ class Requests {
         return sendGet(CorePath.streamTrending, params:params, auth:false, respCb: respCb)
     }
     
-    static func getStreamFollowing(pageIdx:Int, order:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
-        var params:[String:AnyObject] = ["p": pageIdx, "order": order]
+    static func getStreamFollowing(forceRefresh:Bool, pageIdx:Int, order:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        var params:[String:AnyObject] = ["p": pageIdx, "order": order, "f": forceRefresh ? 1 : 0]
         return sendGet(ApiPath.streamFollowing, params:params, auth:true, respCb: respCb)
     }
     

@@ -58,6 +58,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     var hookingBackground: Bool = false
     
     var actionSheetTargetTrack:Track?
+    var lastPlaybackBeforeSwitch:Double?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -92,9 +93,10 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "PlayerViewScreen"
+        userPaused = true
     
         self.navigationController?.navigationBarHidden = true
-        updatePlayerViews()
+        updateExtraViews()
         updateCoverView()
         updateNextPrevBtn()
         audioPlayerControl.view.frame = CGRectMake(0, 0, videoView.frame.width, videoView.frame.height)
@@ -103,6 +105,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         becomeFirstResponder()
+        updatePlayView()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -238,7 +241,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     }
     
     func appWillEnterForeground () {
-        updatePlayerViews()
+        updateExtraViews()
+        updatePlayView()
         updateCoverView()
         updateNextPrevBtn()
     }
@@ -257,8 +261,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
     }
     
-    func updatePlayerViews() {
-        updatePlayView()
+    func updateExtraViews() {
         updateStatusView()
         updateProgressView()
         updateRepeatView()
@@ -268,7 +271,21 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     }
     
     func updateNextPrevBtn() {
-        // TODO
+        if PlayerContext.pickNextTrack() != nil {
+            nextBtn.enabled = true
+            nextBtn.setImage(UIImage(named:"ic_forward.png"), forState: UIControlState.Normal)
+        } else {
+            nextBtn.enabled = false
+            nextBtn.setImage(UIImage(named:"ic_forward_gray.png"), forState: UIControlState.Normal)
+        }
+        
+        if PlayerContext.pickPrevTrack() != nil {
+            prevBtn.enabled = true
+            prevBtn.setImage(UIImage(named:"ic_rewind.png"), forState: UIControlState.Normal)
+        } else {
+            prevBtn.enabled = false
+            prevBtn.setImage(UIImage(named:"ic_rewind_gray.png"), forState: UIControlState.Normal)
+        }
     }
     
     // XXX : hacky solution for hide video controls
@@ -552,10 +569,12 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             return
         }
         if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0) {
-            if (PlayerContext.playState == PlayState.SWITCHING &&
-                    PlayerContext.currentPlaybackTime != nil &&
-                    PlayerContext.currentPlaybackTime > 0) {
-                audioPlayerControl.moviePlayer.currentPlaybackTime = PlayerContext.currentPlaybackTime!
+            if ((PlayerContext.playState == PlayState.SWITCHING ||
+                PlayerContext.playState == PlayState.PLAYING) &&
+                    lastPlaybackBeforeSwitch != nil &&
+                    lastPlaybackBeforeSwitch > 0) {
+                audioPlayerControl.moviePlayer.currentPlaybackTime = lastPlaybackBeforeSwitch!
+                lastPlaybackBeforeSwitch = nil
             }
             audioPlayerControl.moviePlayer.play()
             return
@@ -596,7 +615,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         
         if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Playing) {
             updatePlayState(PlayState.PLAYING)
-            updateCoverView()
             // Periodic timer for progress update.
             if remoteProgressTimer == nil {
                 remoteProgressTimer = NSTimer.scheduledTimerWithTimeInterval(
@@ -957,12 +975,16 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         PlayerContext.currentTrack = track
         var closureTrack :Track? = track
         
+        println("111111")
         if playlistId != nil {
+            println("22222")
             var playlist :Playlist? = PlayerContext.getPlaylist(playlistId)
             if playlist == nil {
+                println("333333")
                 PlayerContext.currentPlaylistId = nil
                 PlayerContext.currentTrackIdx = -1
             } else {
+                println("444444444")
                 PlayerContext.currentPlaylistId = playlistId
                 PlayerContext.currentTrackIdx = -1
                 for (idx: Int, t: Track) in enumerate(playlist!.tracks) {
@@ -972,6 +994,10 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                     }
                 }
             }
+        } else {
+            println("5555555555")
+            PlayerContext.currentPlaylistId = nil
+            PlayerContext.currentTrackIdx = -1
         }
         
         // Init correct duration.
@@ -1000,6 +1026,12 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     }
     
     func switchPlayerWithQuality(track:Track, qualityState: Int, isInitial: Bool = false) {
+        
+        if !isInitial {
+            lastPlaybackBeforeSwitch = audioPlayerControl.moviePlayer.currentPlaybackTime
+        } else {
+            lastPlaybackBeforeSwitch = nil
+        }
         PlayerContext.correctDuration = nil
        
         audioPlayerControl.moviePlayer.contentURL = nil
@@ -1012,7 +1044,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             PlayerContext.correctDuration = nil
         } else {
             updatePlayState(PlayState.SWITCHING)
-            userPaused = false
         }
         
         if (PlayerContext.qualityState == QualityState.LQ) {
@@ -1141,6 +1172,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     }
     
     func updatePlayState(playingState: Int) {
+        println("playstate updated:\(playingState)")
         PlayerContext.playState = playingState
         updatePlayStateView(playingState)
     }
@@ -1178,7 +1210,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 updatePlayingInfoCenter(playingState, image: UIImage(named:"default_cover_big")!)
             }
         }
-        updatePlayerViews()
+        updateExtraViews()
+        updatePlayView()
     }
     
     func updatePlayingInfoCenter(playingState:Int, image:UIImage) {

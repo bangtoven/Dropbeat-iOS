@@ -116,7 +116,7 @@ class SigninViewController: BaseViewController {
                 var success:Bool = res.objectForKey("success") as! Bool? ?? false
                 if (!success) {
                     fbManager.logOut()
-                    var errorMsg:String = res.objectForKey("error") as? String ?? "Undefined error"
+                    var errorMsg:String = res.objectForKey("error") as? String ?? "Failed to sign in"
                     ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: errorMsg)
                     self.progressHud?.hide(false)
                     return
@@ -142,6 +142,7 @@ class SigninViewController: BaseViewController {
     
     func afterSignin(user:User, token:String) {
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
+        keychainItemWrapper.resetKeychain()
         keychainItemWrapper["auth_token"] = token
         Account.getAccountWithCompletionHandler({ (account:Account?, error:NSError?) -> Void in
             if (error != nil) {

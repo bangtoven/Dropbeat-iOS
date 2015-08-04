@@ -463,7 +463,7 @@ class SearchViewController: BaseViewController,
                 self.scrollPagerConstraint.constant = 0
                 self.scrollPager.hidden = true
             } else {
-                self.scrollPagerConstraint.constant = 40
+                self.scrollPagerConstraint.constant = 50
                 self.scrollPager.addSegmentsWithTitles(foundTitles)
                 self.scrollPager.hidden = false
             }

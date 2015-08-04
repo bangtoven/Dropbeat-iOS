@@ -549,9 +549,9 @@
                                         </connections>
                                     </tableView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="EUh-DY-5pz" customClass="ScrollPager" customModule="labs" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="40" id="eOH-AK-wVF"/>
+                                            <constraint firstAttribute="height" constant="50" id="eOH-AK-wVF"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="color" keyPath="selectedTextColor">
@@ -979,7 +979,7 @@
                                                             <constraint firstAttribute="width" constant="46" id="yZJ-Fe-5SY"/>
                                                         </constraints>
                                                         <inset key="contentEdgeInsets" minX="2" minY="9" maxX="2" maxY="9"/>
-                                                        <state key="normal" title="HQ" image="7A206855-CC76-4641-9466-98CEAE7D831E">
+                                                        <state key="normal" title="HQ" image="6CD31B4D-685E-4764-9F99-D7EBB2B3BBE3">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -1801,9 +1801,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hkb-nw-err" customClass="ScrollPager" customModule="labs" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="40"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="oRs-jL-ZvG"/>
+                                    <constraint firstAttribute="height" constant="50" id="oRs-jL-ZvG"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="color" keyPath="selectedTextColor">
@@ -1909,12 +1909,12 @@
                                                     <color key="highlightedColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NIY-WD-EE5">
-                                                    <rect key="frame" x="268" y="16" width="40" height="40"/>
+                                                    <rect key="frame" x="268" y="0.0" width="50" height="66"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="40" id="1mn-mj-Be0"/>
-                                                        <constraint firstAttribute="height" constant="40" id="7pl-8w-d8H"/>
+                                                        <constraint firstAttribute="width" constant="50" id="1mn-mj-Be0"/>
+                                                        <constraint firstAttribute="height" constant="66" id="7pl-8w-d8H"/>
                                                     </constraints>
-                                                    <inset key="contentEdgeInsets" minX="7" minY="7" maxX="7" maxY="7"/>
+                                                    <inset key="contentEdgeInsets" minX="7" minY="20" maxX="17" maxY="20"/>
                                                     <state key="normal" title="Button" image="ic_star.png">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -1925,13 +1925,13 @@
                                             </subviews>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="NIY-WD-EE5" secondAttribute="trailing" constant="4" id="9hc-a2-izG"/>
+                                                <constraint firstAttribute="trailing" secondItem="NIY-WD-EE5" secondAttribute="trailing" id="9hc-a2-izG"/>
                                                 <constraint firstAttribute="centerY" secondItem="Red-JG-Bpm" secondAttribute="centerY" constant="1.5" id="LxG-QQ-8TQ"/>
+                                                <constraint firstItem="NIY-WD-EE5" firstAttribute="top" secondItem="xS3-7N-8fa" secondAttribute="top" id="QTG-NJ-aBE"/>
                                                 <constraint firstItem="ygB-DG-yd4" firstAttribute="leading" secondItem="Red-JG-Bpm" secondAttribute="trailing" constant="8" id="VXX-4r-4JO"/>
                                                 <constraint firstItem="NIY-WD-EE5" firstAttribute="leading" secondItem="ygB-DG-yd4" secondAttribute="trailing" constant="8" id="Wep-Bp-tiE"/>
                                                 <constraint firstItem="Red-JG-Bpm" firstAttribute="leading" secondItem="xS3-7N-8fa" secondAttribute="leadingMargin" id="psK-VO-LZg"/>
                                                 <constraint firstAttribute="centerY" secondItem="ygB-DG-yd4" secondAttribute="centerY" constant="1.5" id="vDk-Ds-SKL"/>
-                                                <constraint firstAttribute="centerY" secondItem="NIY-WD-EE5" secondAttribute="centerY" constant="1.5" id="xzJ-2k-Ew7"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -2045,7 +2045,7 @@
                                 </connections>
                             </tableView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mi6-n8-D7e" userLabel="GenreSelector">
-                                <rect key="frame" x="0.0" y="40" width="320" height="40"/>
+                                <rect key="frame" x="0.0" y="50" width="320" height="40"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="GENRE:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qdt-4c-Gig">
                                         <rect key="frame" x="14" y="13" width="48" height="21"/>
@@ -2255,7 +2255,7 @@
                             <constraint firstAttribute="trailing" secondItem="mi6-n8-D7e" secondAttribute="trailing" id="aZX-jO-moQ"/>
                             <constraint firstAttribute="trailing" secondItem="2Kh-b4-PwF" secondAttribute="trailing" id="azE-gc-DWi"/>
                             <constraint firstAttribute="trailing" secondItem="hkb-nw-err" secondAttribute="trailing" id="bfB-d0-FC5"/>
-                            <constraint firstItem="tr3-7q-0LS" firstAttribute="top" secondItem="mi6-n8-D7e" secondAttribute="bottom" id="dsk-Rq-WBG"/>
+                            <constraint firstItem="tr3-7q-0LS" firstAttribute="top" secondItem="mi6-n8-D7e" secondAttribute="bottom" constant="5" id="dsk-Rq-WBG"/>
                             <constraint firstItem="Pcp-eP-C9d" firstAttribute="top" secondItem="mi6-n8-D7e" secondAttribute="bottom" id="g1r-fS-jdm"/>
                             <constraint firstAttribute="trailing" secondItem="tr3-7q-0LS" secondAttribute="trailing" id="geI-Es-Mky"/>
                             <constraint firstItem="wKB-4Y-dni" firstAttribute="top" secondItem="hkb-nw-err" secondAttribute="bottom" id="h4h-5l-cYt"/>
@@ -3897,7 +3897,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="7A206855-CC76-4641-9466-98CEAE7D831E" width="105" height="64">
+        <image name="6CD31B4D-685E-4764-9F99-D7EBB2B3BBE3" width="105" height="64">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -4459,11 +4459,11 @@ AAACAQAAAAAAAAA/AAAAAAAAAAAAAAAAAAB3ug
         <image name="player_bg.png" width="817" height="1079"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="HiJ-qO-nKe"/>
+        <segue reference="s9L-cp-dOd"/>
         <segue reference="YpT-Ri-Ss2"/>
         <segue reference="Z6q-d9-u8K"/>
-        <segue reference="s9L-cp-dOd"/>
         <segue reference="D5z-Jt-wFj"/>
+        <segue reference="HiJ-qO-nKe"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

@@ -967,8 +967,10 @@ class Track {
         }
         dummyTracks.append(["title": self.title, "id": self.id, "type": self.type])
         
-        // Log to us
-        Requests.logTrackAdd(self.title)
+        if Account.getCachedAccount() != nil {
+            // Log to us
+            Requests.logTrackAdd(self.title)
+        }
         // Log to GA
         let tracker = GAI.sharedInstance().defaultTracker
         let event = GAIDictionaryBuilder.createEventWithCategory(
@@ -1158,6 +1160,7 @@ class Channel {
     var genre: [String]
     var playlists: [ChannelPlaylist]
     var isBookmarked:Bool
+    var idx:Int?
     
     init(uid: String, name: String, thumbnail: String? = nil) {
         self.uid = uid
@@ -1181,6 +1184,7 @@ class Channel {
     static func fromListJson(data: AnyObject, key: String) -> [Channel] {
         var json = JSON(data)
         var channels: [Channel] = []
+        var index = 0
         for (idx: String, s: JSON) in json[key] {
             if (s["uid"].error != nil || s["name"].error != nil) {
                 continue
@@ -1191,7 +1195,9 @@ class Channel {
             if (s["thumbnail"].error == nil) {
                 thumbnail = s["thumbnail"].stringValue
             }
-            channels.append(Channel(uid:uid, name: name, thumbnail: thumbnail))
+            let c = Channel(uid:uid, name: name, thumbnail: thumbnail)
+            c.idx = index
+            channels.append(c)
         }
         return channels
     }
@@ -1242,7 +1248,7 @@ class Account {
     
     static func signout() {
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
-        keychainItemWrapper["auth_token"] = nil
+        keychainItemWrapper.resetKeychain()
         Account.account = nil
         let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         appDelegate.account = nil

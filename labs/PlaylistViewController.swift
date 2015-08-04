@@ -314,6 +314,9 @@ class PlaylistViewController: BaseViewController,
     }
     
     func onPlayTrackBtnClicked(track: Track) {
+        if currentPlaylist.type != PlaylistType.USER {
+            PlayerContext.externalPlaylist = currentPlaylist
+        }
         var params: Dictionary<String, AnyObject> = [
             "track": track,
             "playlistId": currentPlaylist!.id
@@ -412,6 +415,10 @@ class PlaylistViewController: BaseViewController,
         
         PlayerContext.shuffleState = ShuffleState.SHUFFLE
         
+        if currentPlaylist.type != PlaylistType.USER {
+            PlayerContext.externalPlaylist = currentPlaylist
+        }
+        
         var params: Dictionary<String, AnyObject> = [
             "track": selectedTrack,
             "playlistId": currentPlaylist!.id
@@ -507,8 +514,8 @@ class PlaylistViewController: BaseViewController,
                     let res = result as! NSDictionary
                     var success:Bool = res.objectForKey("success") as! Bool? ?? false
                     if (!success) {
-                        let errorMsg = res.objectForKey("error") as? String ?? "undefined error"
-                        ViewUtils.showNoticeAlert(self, title: "Failed to delete", message: errorMsg)
+                        var message = "Failed to update playlist"
+                        ViewUtils.showNoticeAlert(self, title: "Failed to delete", message: message)
                         return
                     }
                     if PlayerContext.currentPlaylistId == removePlaylist.id {

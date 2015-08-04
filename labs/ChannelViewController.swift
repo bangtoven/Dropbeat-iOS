@@ -13,7 +13,7 @@ class ChannelViewController: BaseViewController,
             UIActionSheetDelegate {
     
     var tracks: [ChannelFeedTrack] = [ChannelFeedTrack]()
-    var allChannels : [Channel] = [Channel]()
+    var allChannels : [String:Channel] = [String:Channel]()
     var channels : [Channel] = [Channel]()
     var bookmarkedChannels : [Channel] = [Channel]()
     var genres : [Genre] = []
@@ -528,14 +528,14 @@ class ChannelViewController: BaseViewController,
             
             var json = JSON(result!)
             var data = json["bookmark"]
-            var bookmarkIds = [String]()
+            var bookmarkIds = Set<String>()
             for (idx:String, s: JSON) in data {
-                bookmarkIds.append(s.stringValue)
+                bookmarkIds.insert(s.stringValue)
             }
             
             self.bookmarkedChannels.removeAll(keepCapacity: false)
-            for channel in self.channels {
-                if (find(bookmarkIds, channel.uid!) != nil) {
+            for (uid:String, channel:Channel) in self.allChannels {
+                if bookmarkIds.contains(channel.uid!) {
                     channel.isBookmarked = true
                     self.bookmarkedChannels.append(channel)
                 } else {
@@ -612,11 +612,17 @@ class ChannelViewController: BaseViewController,
             self.channels.removeAll(keepCapacity: false)
             var channels = Channel.fromListJson(result!, key: "data")
             if initialLoad {
-                self.allChannels = Channel.fromListJson(result!, key: "data")
+                for channel in channels {
+                    self.allChannels[channel.uid!] = channel
+                }
             }
+            
             for channel in channels {
-                self.channels.append(channel)
+                if let c = self.allChannels[channel.uid!] {
+                    self.channels.append(c)
+                }
             }
+            
             self.channelLoaded = true
             
             if initialLoad {

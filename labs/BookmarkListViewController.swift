@@ -14,7 +14,7 @@ class BookmarkListViewController: BaseViewController,
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var noBookmarkView: UILabel!
     
-    var channels : [Channel]?
+    var channels : [String:Channel]!
     var bookmarkedChannels : [Channel] = [Channel]()
     
     override func viewDidLoad() {
@@ -121,20 +121,21 @@ class BookmarkListViewController: BaseViewController,
             
             var json = JSON(result!)
             var data = json["bookmark"]
-            var bookmarkIds = [String]()
+            var bookmarkIds = Set<String>()
             for (idx:String, s: JSON) in data {
-                bookmarkIds.append(s.stringValue)
+                bookmarkIds.insert(s.stringValue)
             }
             
             self.bookmarkedChannels.removeAll(keepCapacity: false)
-            for channel in self.channels! {
-                if (find(bookmarkIds, channel.uid!) != nil) {
-                    channel.isBookmarked = true
+            for (uid:String, channel:Channel) in self.channels! {
+                channel.isBookmarked = bookmarkIds.contains(channel.uid!)
+                if channel.isBookmarked {
                     self.bookmarkedChannels.append(channel)
-                } else {
-                    channel.isBookmarked = false
                 }
             }
+            self.bookmarkedChannels.sort({ (lhs:Channel, rhs:Channel) -> Bool in
+                return lhs.idx! < rhs.idx!
+            })
             self.noBookmarkView.hidden = self.bookmarkedChannels.count != 0
             self.tableView.reloadData()
         })
@@ -149,25 +150,22 @@ class BookmarkListViewController: BaseViewController,
             return
         }
         var channel = bookmarkedChannels[indexPath.row]
-        var newBookmarkedIds: [String]?
+        var newBookmarkedIds = Set<String>()
         var newChannels = [Channel]()
         if (channel.isBookmarked) {
             for c in bookmarkedChannels {
                 if (c.uid != channel.uid) {
-                    newChannels.append(c)
+                    newBookmarkedIds.insert(c.uid!)
                 }
             }
         } else {
             for c in bookmarkedChannels {
-                newChannels.append(c)
+                newBookmarkedIds.insert(c.uid!)
             }
-            newChannels.append(channel)
+            newBookmarkedIds.insert(channel.uid!)
         }
-        newBookmarkedIds = newChannels.map({ (c:Channel) -> String in
-            return c.uid!
-        })
         let progressHud = ViewUtils.showProgress(self, message: "Saving..")
-        Requests.updateBookmarkList(newBookmarkedIds!, respCb:{
+        Requests.updateBookmarkList(Array(newBookmarkedIds), respCb:{
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(false)
             if (error != nil || result == nil) {
@@ -180,14 +178,16 @@ class BookmarkListViewController: BaseViewController,
                 ViewUtils.showNoticeAlert(self, title: "Failed to update", message: message)
                 return
             }
-            self.bookmarkedChannels = newChannels
-            for channel in self.channels! {
-                channel.isBookmarked = false
+            self.bookmarkedChannels.removeAll(keepCapacity: false)
+            for (uid:String, channel:Channel) in self.channels! {
+                channel.isBookmarked = newBookmarkedIds.contains(uid)
+                if channel.isBookmarked {
+                    self.bookmarkedChannels.append(channel)
+                }
             }
-            for channel in self.bookmarkedChannels {
-                channel.isBookmarked = true
-            }
-            
+            self.bookmarkedChannels.sort({ (lhs:Channel, rhs:Channel) -> Bool in
+                return lhs.idx! < rhs.idx!
+            })
             self.tableView.reloadData()
         })
     }

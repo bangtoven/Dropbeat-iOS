@@ -68,17 +68,114 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         let firstTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
         tabBar.selectedItem = firstTab
         onMenuSelected(currentMenu, forceUpdate:true)
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        loadSharedTrackIfExist()
+        loadSharedPlaylistIfExist()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "CenterViewScreen"
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "loadSharedTrackIfExist", name: NotifyKey.trackShare, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "loadSharedPlaylistIfExist", name: NotifyKey.playlistShare, object: nil)
+        
         self.view.layoutIfNeeded()
         if isPlayerVisible {
             UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.Slide)
         } else {
             UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.Slide)
         }
+    }
+    
+    func loadSharedTrackIfExist() {
+        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        if appDelegate.sharedTrackUid == nil {
+            return
+        }
+        
+        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        Requests.getSharedTrack(appDelegate.sharedTrackUid!, respCb: {
+                (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            
+            progressHud.hide(false)
+            var success:Bool = true
+            var track:Track?
+            
+            if error != nil || result == nil {
+                success = false
+            } else {
+                let parser = Parser()
+                track = parser.parseSharedTrack(result!)
+                if track == nil {
+                    success = false
+                }
+            }
+            
+            if !success {
+                ViewUtils.showNoticeAlert(
+                    self,
+                    title: "Failed to load",
+                    message: "Failed to load shared track",
+                    btnText: "Confirm",
+                    callback: nil)
+                return
+            }
+            
+            var params: [String: AnyObject] = [
+                "track": track!,
+            ]
+            NSNotificationCenter.defaultCenter().postNotificationName(
+                NotifyKey.playerPlay, object: params)
+        })
+        appDelegate.sharedTrackUid = nil
+    }
+    
+    func loadSharedPlaylistIfExist() {
+        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        if appDelegate.sharedPlaylistUid == nil {
+            return
+        }
+        
+        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        Requests.getSharedPlaylist(appDelegate.sharedPlaylistUid!, respCb: {
+                (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            
+            var success:Bool = true
+            var playlist:Playlist?
+            
+            if error != nil || result == nil {
+                success = false
+            } else {
+                let parser = Parser()
+                playlist = parser.parseSharedPlaylist(result!)
+                if playlist == nil {
+                    success = false
+                }
+            }
+            
+            if !success {
+                ViewUtils.showNoticeAlert(
+                    self,
+                    title: "Failed to load",
+                    message: "Failed to load shared playlist",
+                    btnText: "Confirm",
+                    callback: nil)
+                progressHud.hide(false)
+                return
+            }
+            
+            playlist!.type = PlaylistType.SHARED
+            progressHud.hide(false)
+            self.performSegueWithIdentifier("PlaylistSegue", sender: playlist)
+        })
+        appDelegate.sharedPlaylistUid = nil
     }
     
     func initConstaints() {
@@ -94,7 +191,10 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     }
     
     override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
         UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.trackShare, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playlistShare, object: nil)
     }
     
     override func remotePlay(noti: NSNotification) {

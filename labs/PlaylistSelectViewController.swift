@@ -72,7 +72,7 @@ class PlaylistSelectViewController: BaseViewController,
                             message = "Internet is not connected"
                         }
                         if (message == nil) {
-                            message = "undefined error (\(error!.domain),\(error!.code))"
+                            message = "Failed to create"
                         }
                         ViewUtils.showNoticeAlert(self, title: "Failed to create playlist", message: message!)
                         return

@@ -477,7 +477,7 @@ class ChannelDetailViewController: BaseViewController,
     
     func onShareBtnClicked(track:Track) {
         let progressHud = ViewUtils.showProgress(self, message: "Loading..")
-        track.shareTrack("playlist", afterShare: { (error, uid) -> Void in
+        track.shareTrack("channel_detail", afterShare: { (error, uid) -> Void in
             progressHud.hide(false)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
@@ -503,6 +503,17 @@ class ChannelDetailViewController: BaseViewController,
             
             let activityController = UIActivityViewController(
                     activityItems: items, applicationActivities: nil)
+            activityController.excludedActivityTypes = [
+                    UIActivityTypePrint,
+                    UIActivityTypeSaveToCameraRoll,
+                    UIActivityTypeAirDrop,
+                    UIActivityTypeAssignToContact
+                ]
+            if UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiom.Phone {
+                if activityController.respondsToSelector("popoverPresentationController:") {
+                    activityController.popoverPresentationController?.sourceView = self.view
+                }
+            }
             self.presentViewController(activityController, animated:true, completion: nil)
         })
     }

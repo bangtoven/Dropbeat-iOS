@@ -12,6 +12,7 @@ class PlaylistViewController: BaseViewController,
         UITableViewDelegate, UITableViewDataSource, PlaylistTableViewDelegate, UIActionSheetDelegate{
 
     
+    @IBOutlet weak var likeBtn: UIButton!
     @IBOutlet weak var playlistMenuBtn: UIButton!
     @IBOutlet weak var playPlaylistBtn: UIButton!
     @IBOutlet weak var playlistTableView: UITableView!
@@ -26,6 +27,7 @@ class PlaylistViewController: BaseViewController,
     var playlistActionSheet:UIActionSheet?
     var menuSelectedTrack:Track?
     var fromPlayer:Bool = false
+    var isLiked = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,9 +42,19 @@ class PlaylistViewController: BaseViewController,
             frameHeightConstraint.constant = self.view.bounds.size.height - navigationHeight - statusBarHeight - 49
         }
         
-        if currentPlaylist.type == PlaylistType.EXTERNAL {
+        if currentPlaylist.type == PlaylistType.EXTERNAL ||
+                currentPlaylist.type == PlaylistType.SHARED {
             playlistMenuBtn.hidden = true
             playPlaylistBtn.hidden = true
+                    
+            if currentPlaylist.type == PlaylistType.SHARED {
+                likeBtn.hidden = false
+                updateLikeBtn()
+            }
+        } else {
+            playlistMenuBtn.hidden = false
+            playPlaylistBtn.hidden = false
+            likeBtn.hidden = true
         }
     }
     
@@ -149,7 +161,7 @@ class PlaylistViewController: BaseViewController,
     
     func loadPlaylist() {
         let currPlaylist = currentPlaylist!
-        if currPlaylist.type == PlaylistType.EXTERNAL {
+        if currPlaylist.type != PlaylistType.USER {
             
             self.tracks.removeAll(keepCapacity: false)
             for track:Track in currPlaylist.tracks {
@@ -215,6 +227,10 @@ class PlaylistViewController: BaseViewController,
         var selectedTrack: Track = tracks[0] as Track
         
         PlayerContext.shuffleState = ShuffleState.NOT_SHUFFLE
+        
+        if currentPlaylist.type != PlaylistType.USER {
+            PlayerContext.externalPlaylist = currentPlaylist
+        }
         
         var params: Dictionary<String, AnyObject> = [
             "track": selectedTrack,
@@ -284,7 +300,9 @@ class PlaylistViewController: BaseViewController,
                 onTrackAddToOtherPlaylistBtnClicked(menuSelectedTrack!)
                 break
             case 2:
-                onDeleteTrackBtnClicked(menuSelectedTrack!)
+                if currentPlaylist.type == PlaylistType.USER {
+                    onDeleteTrackBtnClicked(menuSelectedTrack!)
+                }
                 break
             default:
                 break
@@ -337,15 +355,24 @@ class PlaylistViewController: BaseViewController,
             
             let activityController = UIActivityViewController(
                     activityItems: items, applicationActivities: nil)
+            activityController.excludedActivityTypes = [
+                    UIActivityTypePrint,
+                    UIActivityTypeSaveToCameraRoll,
+                    UIActivityTypeAirDrop,
+                    UIActivityTypeAssignToContact
+                ]
+            if UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiom.Phone {
+                if activityController.respondsToSelector("popoverPresentationController:") {
+                    activityController.popoverPresentationController?.sourceView = self.view
+                }
+            }
             self.presentViewController(activityController, animated:true, completion: nil)
         })
     }
     
     func onTrackAddToOtherPlaylistBtnClicked(track: Track) {
         if (Account.getCachedAccount() == nil) {
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var centerViewController = appDelegate.centerContainer!
-            centerViewController.showSigninView()
+            showSignin()
             return
         }
         performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
@@ -428,6 +455,17 @@ class PlaylistViewController: BaseViewController,
                 
                 let activityController = UIActivityViewController(
                         activityItems: items, applicationActivities: nil)
+                activityController.excludedActivityTypes = [
+                        UIActivityTypePrint,
+                        UIActivityTypeSaveToCameraRoll,
+                        UIActivityTypeAirDrop,
+                        UIActivityTypeAssignToContact
+                    ]
+                if UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiom.Phone {
+                    if activityController.respondsToSelector("popoverPresentationController:") {
+                        activityController.popoverPresentationController?.sourceView = self.view
+                    }
+                }
                 self.presentViewController(activityController, animated:true, completion: nil)
             } else {
                 ViewUtils.showNoticeAlert(self, title: "Failed to share", message: message)
@@ -461,9 +499,9 @@ class PlaylistViewController: BaseViewController,
                             message = "Internet is not connected"
                         }
                         if (message == nil) {
-                            message = "undefined error (\(error!.domain),\(error!.code))"
+                            message = "Failed to update playlist"
                         }
-                        ViewUtils.showNoticeAlert(self, title: "Failed to update playlist", message: message!)
+                        ViewUtils.showNoticeAlert(self, title: "Failed to delete", message: message!)
                         return
                     }
                     let res = result as! NSDictionary
@@ -510,7 +548,7 @@ class PlaylistViewController: BaseViewController,
                             message = "Internet is not connected"
                         }
                         if (message == nil) {
-                            message = "undefined error (\(error!.domain),\(error!.code))"
+                            message = "Failed to rename playlist"
                         }
                         ViewUtils.showNoticeAlert(self, title: "Failed to change", message: message!)
                         return
@@ -528,10 +566,19 @@ class PlaylistViewController: BaseViewController,
         let actionSheet = UIActionSheet()
         actionSheet.addButtonWithTitle("Share")
         actionSheet.addButtonWithTitle("Add to other playlist")
-        actionSheet.addButtonWithTitle("Delete")
+        
+        if currentPlaylist.type == PlaylistType.USER {
+            actionSheet.addButtonWithTitle("Delete")
+        }
+        
         actionSheet.addButtonWithTitle("Cancel")
-        actionSheet.destructiveButtonIndex = 2
-        actionSheet.cancelButtonIndex = 3
+        
+        if currentPlaylist.type == PlaylistType.USER {
+            actionSheet.destructiveButtonIndex = 2
+            actionSheet.cancelButtonIndex = 3
+        } else {
+            actionSheet.cancelButtonIndex = 2
+        }
         actionSheet.showInView(self.view)
         actionSheet.delegate = self
     }
@@ -566,9 +613,74 @@ class PlaylistViewController: BaseViewController,
         }
     }
     
+    func importPlaylist(callback: (playlist:Playlist?, error:NSError?) -> Void) {
+        Requests.createPlaylist(currentPlaylist.name) {
+            (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if (error != nil || result == nil) {
+                callback(playlist:nil, error: error != nil ? error :
+                    NSError(domain: "importPlaylist", code: 0, userInfo: nil))
+                return
+            }
+            
+            let parser = Parser()
+            let importedPlaylist:Playlist? = parser.parsePlaylist(result!)
+            if importedPlaylist == nil {
+                callback(playlist:nil, error: NSError(domain: "importPlaylist", code: 0, userInfo: nil))
+                return
+            }
+            for track in self.currentPlaylist.tracks {
+                importedPlaylist!.tracks.append(track)
+            }
+            
+            var data = [[String:AnyObject]]()
+            for t in self.currentPlaylist.tracks {
+                data.append(["title": t.title, "id": t.id, "type": t.type])
+            }
+            
+            Requests.setPlaylist(importedPlaylist!.id, data: data, respCb: {
+                    (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                if (result == nil || error != nil || !(JSON(result!)["success"].bool ?? false)) {
+                    var message = "Failed to save playlist"
+                    Requests.deletePlaylist(importedPlaylist!.id, respCb: Requests.EMPTY_RESPONSE_CALLBACK)
+                    callback(playlist:nil, error: NSError(domain: "importPlaylist", code: 0, userInfo: nil))
+                    return
+                }
+                callback(playlist:importedPlaylist, error:nil)
+            })
+        }
+    }
+    
     @IBAction func onFakeBackBtnClicked(sender: AnyObject) {
         if fromPlayer {
             dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+    
+    @IBAction func onLikeBtnClicked(sender: AnyObject) {
+        if isLiked {
+            return
+        }
+        if (Account.getCachedAccount() == nil) {
+            showSignin()
+            return
+        }
+        let progressHud = ViewUtils.showProgress(self, message: nil)
+        importPlaylist { (playlist, error) -> Void in
+            progressHud.hide(false)
+            if error != nil {
+                var message:String?
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    message = "Internet is not connected"
+                }
+                if (message == nil) {
+                    message = "Failed to save playlist"
+                }
+                ViewUtils.showNoticeAlert(self, title: "Failed to save", message: message!)
+                return
+            }
+            self.isLiked = true
+            self.updateLikeBtn()
         }
     }
     
@@ -578,6 +690,28 @@ class PlaylistViewController: BaseViewController,
             playlistSelectVC.targetTrack = sender as? Track
             playlistSelectVC.fromSection = "playlist"
             playlistSelectVC.caller = self
+        }
+    }
+    
+    func showSignin() {
+        if fromPlayer {
+            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            var signinVC = mainStoryboard.instantiateViewControllerWithIdentifier("SigninViewController") as! SigninViewController
+            
+            signinVC.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
+            presentViewController(signinVC, animated: true, completion: nil)
+        } else {
+            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            var centerViewController = appDelegate.centerContainer!
+            centerViewController.showSigninView()
+        }
+    }
+    
+    func updateLikeBtn() {
+        if isLiked {
+            likeBtn.setImage(UIImage(named:"ic_like_btn.png"), forState: UIControlState.Normal)
+        } else {
+            likeBtn.setImage(UIImage(named:"ic_like_btn_gray.png"), forState: UIControlState.Normal)
         }
     }
 }

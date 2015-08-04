@@ -70,10 +70,7 @@ class StartupViewController: GAITrackedViewController {
                         error!.code == NSURLErrorNotConnectedToInternet) {
                     message = "Internet is not connected. Please try again."
                 } else {
-                    message = "Failed to fetch version info becuase of undefined error."
-                    if (error != nil) {
-                        message! += " (\(error!.domain):\(error!.code))"
-                    }
+                    message = "Failed to fetch version info."
                 }
                 ViewUtils.showNoticeAlert(self,
                     title: "Failed to fetch version info",
@@ -129,9 +126,6 @@ class StartupViewController: GAITrackedViewController {
                     message = "Internet is not connected. Please try again."
                 } else {
                     message = "Failed to fetch user info because of undefined error."
-                    if (error != nil) {
-                        message! += " (\(error!.domain):\(error!.code))"
-                    }
                     let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
                     keychainItemWrapper["auth_token"] = nil
                 }

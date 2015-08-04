@@ -243,7 +243,7 @@ class SearchViewController: BaseViewController,
     
     func onShareBtnClicked(track:Track) {
         let progressHud = ViewUtils.showProgress(self, message: "Loading..")
-        track.shareTrack("playlist", afterShare: { (error, uid) -> Void in
+        track.shareTrack("search", afterShare: { (error, uid) -> Void in
             progressHud.hide(false)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
@@ -269,6 +269,17 @@ class SearchViewController: BaseViewController,
             
             let activityController = UIActivityViewController(
                     activityItems: items, applicationActivities: nil)
+            activityController.excludedActivityTypes = [
+                    UIActivityTypePrint,
+                    UIActivityTypeSaveToCameraRoll,
+                    UIActivityTypeAirDrop,
+                    UIActivityTypeAssignToContact
+                ]
+            if UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiom.Phone {
+                if activityController.respondsToSelector("popoverPresentationController:") {
+                    activityController.popoverPresentationController?.sourceView = self.view
+                }
+            }
             self.presentViewController(activityController, animated:true, completion: nil)
         })
     }
@@ -361,7 +372,7 @@ class SearchViewController: BaseViewController,
                 "search-sectio",
                 action: "search-with-keyword",
                 label: keyword,
-                value: nil
+                value: 0
             ).build()
         tracker.send(event as [NSObject: AnyObject]!)
         
@@ -488,9 +499,6 @@ class SearchViewController: BaseViewController,
                         return
                     }
                     var message = "Failed to fetch data."
-                    if (error != nil) {
-                        message += " (\(error!.domain):\(error!.code))"
-                    }
                     ViewUtils.showNoticeAlert(self, title: "Failed to fetch data", message: message)
                     return
                 }

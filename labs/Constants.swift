@@ -23,6 +23,8 @@ class NotifyKey {
     static var networkStatusChanged = "networkStatusChanged"
     static var appSignout = "appSignout"
     static var appSignin = "appSignin"
+    static var trackShare = "trackShare"
+    static var playlistShare = "playlistShare"
 }
 
 class ApiKey {
@@ -32,9 +34,15 @@ class ApiKey {
 
 enum PlaylistType {
     case EXTERNAL
+    case SHARED
     case USER
 }
 
 class UserDataKey {
     static var didAutoFollow = "did_auto_follow"
+}
+
+class ExternalUrlKey {
+    static var scheme = "dropbeat"
+    static var defaultIdentifier = "net.dropbeat.labs"
 }

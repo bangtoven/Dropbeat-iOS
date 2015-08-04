@@ -18,6 +18,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     @IBOutlet weak var playerTitle: UILabel!
     @IBOutlet weak var playerStatus: UILabel!
     
+    @IBOutlet weak var shareBtn: UIButton!
     @IBOutlet weak var repeatBtn: UIButton!
     @IBOutlet weak var shuffleBtn: UIButton!
     @IBOutlet weak var totalTextView: UILabel!
@@ -723,7 +724,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     
     func onTrackShareBtnClicked(track:Track) {
         let progressHud = ViewUtils.showProgress(self, message: "Loading..")
-        track.shareTrack("playlist", afterShare: { (error, uid) -> Void in
+        track.shareTrack("player", afterShare: { (error, uid) -> Void in
             progressHud.hide(false)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
@@ -744,24 +745,22 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             }
             let shareUrl = "http://dropbeat.net/?track=" + uid!
             let shareTitle = track.title
-            var shareImage:UIImage?
-            
-            var e:NSError?
-            if track.thumbnailUrl != nil {
-                var data = NSData(contentsOfURL:
-                    NSURL(string:track.thumbnailUrl!)!, options: NSDataReadingOptions.UncachedRead, error: &e)
-                if e == nil && data != nil {
-                    shareImage = UIImage(data: data!)
-                }
-            }
             
             var items:[AnyObject] = [shareTitle, shareUrl]
-            if shareImage != nil {
-                items.append(shareImage!)
-            }
             
             let activityController = UIActivityViewController(
                     activityItems: items, applicationActivities: nil)
+            activityController.excludedActivityTypes = [
+                    UIActivityTypePrint,
+                    UIActivityTypeSaveToCameraRoll,
+                    UIActivityTypeAirDrop,
+                    UIActivityTypeAssignToContact
+                ]
+            if UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiom.Phone {
+                if activityController.respondsToSelector("popoverPresentationController:") {
+                    activityController.popoverPresentationController?.sourceView = self.shareBtn
+                }
+            }
             self.presentViewController(activityController, animated:true, completion: nil)
         })
     }
@@ -789,7 +788,11 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         if PlayerContext.currentPlaylistId == nil {
             return
         }
-        performSegueWithIdentifier("PlaylistSegue", sender: sender)
+        
+        var playlist = PlayerContext.getPlaylist(PlayerContext.currentPlaylistId)
+        if playlist != nil {
+            performSegueWithIdentifier("PlaylistSegue", sender: playlist)
+        }
     }
     
     @IBAction func pauseBtnClicked(sender: UIButton?) {
@@ -910,16 +913,21 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
         
         PlayerContext.currentTrack = track
-        PlayerContext.currentPlaylistId = playlistId
-        PlayerContext.currentTrackIdx = -1
         var closureTrack :Track? = track
         
         if playlistId != nil {
-            var playlist :Playlist? = PlayerContext.getPlaylist(playlistId)!
-            for (idx: Int, t: Track) in enumerate(playlist!.tracks) {
-                if t.id == track!.id {
-                    PlayerContext.currentTrackIdx = idx
-                    break
+            var playlist :Playlist? = PlayerContext.getPlaylist(playlistId)
+            if playlist == nil {
+                PlayerContext.currentPlaylistId = nil
+                PlayerContext.currentTrackIdx = -1
+            } else {
+                PlayerContext.currentPlaylistId = playlistId
+                PlayerContext.currentTrackIdx = -1
+                for (idx: Int, t: Track) in enumerate(playlist!.tracks) {
+                    if t.id == track!.id {
+                        PlayerContext.currentTrackIdx = idx
+                        break
+                    }
                 }
             }
         }
@@ -942,8 +950,9 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 "player-play-from-ios",
                 action: "play-\(track!.type)",
                 label: track!.title,
-                value: nil
+                value: 0
             ).build()
+        tracker.send(event as [NSObject: AnyObject]!)
         
         self.activateAudioSession()
         switchPlayerWithQuality(track!, qualityState: PlayerContext.qualityState, isInitial: true)
@@ -1230,21 +1239,10 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
     }
     
-    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
-        if identifier == "PlaylistSegue" {
-            var playlist:Playlist? = PlayerContext.getPlaylist(PlayerContext.currentPlaylistId)
-            if playlist == nil {
-                return false
-            }
-        }
-        return true
-    }
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "PlaylistSegue" {
             let playlistVC:PlaylistViewController = segue.destinationViewController as! PlaylistViewController
-            var playlist:Playlist! = PlayerContext.getPlaylist(PlayerContext.currentPlaylistId)
-            playlistVC.currentPlaylist = playlist
+            playlistVC.currentPlaylist = sender as! Playlist
             playlistVC.fromPlayer = true
         } else if segue.identifier == "PlaylistSelectSegue" {
             let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController

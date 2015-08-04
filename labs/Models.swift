@@ -14,11 +14,15 @@ class Parser {
         var json = JSON(data)
         var playlists :[Playlist] = []
         for (idx: String, s: JSON) in json["playlists"] {
-            playlists.append(
-                Playlist.fromJson(s.rawValue)
-            )
+            if let playlist = Playlist.fromJson(s.rawValue) {
+                playlists.append(playlist)
+            }
         }
         return playlists
+    }
+    
+    func parsePlaylist(data: AnyObject) -> Playlist? {
+        return Playlist.fromJson(JSON(data)["obj"].rawValue)
     }
     
     func parseSearch(data: AnyObject) -> Search {
@@ -61,6 +65,46 @@ class Parser {
         return GenreList.fromJson(data)
     }
     
+    func parseSharedTrack(data: AnyObject) -> Track? {
+        var json = JSON(data)
+        println(json)
+        if !(json["success"].bool ?? false) {
+            return nil
+        }
+        var s:JSON?
+        if json["data"] != nil {
+            s = json["data"]
+        } else {
+            s = json["obj"]
+        }
+        
+        if s == nil {
+            return nil
+        }
+        
+        if s!["ref"] == nil || s!["track_name"] == nil ||
+                s!["type"].string == nil {
+            return nil
+        }
+        
+        return Track(
+            id: s!["ref"].stringValue,
+            title: s!["track_name"].stringValue,
+            type: s!["type"].stringValue,
+            tag: nil,
+            thumbnailUrl: nil,
+            drop: nil,
+            dref: nil,
+            topMatch: nil)
+    }
+    
+    func parseSharedPlaylist(data: AnyObject) -> Playlist? {
+        var json = JSON(data)
+        if !(json["success"].bool ?? false) || json["playlist"] == nil {
+            return nil
+        }
+        return Playlist.fromJson(json["playlist"].rawValue)
+    }
 }
 
 
@@ -119,7 +163,7 @@ class Playlist {
         return -1
     }
     
-    static func fromJson(data: AnyObject) -> Playlist {
+    static func fromJson(data: AnyObject) -> Playlist? {
         var playlistDict = JSON(data)
         var playlistId: Int = playlistDict["id"].intValue
         var playlistName: String = playlistDict["name"].stringValue
@@ -762,8 +806,8 @@ class StreamBeatportTrending {
 
 class StreamFollowing {
     var success:Bool
-    var results:[NewReleaseTrack]?
-    init(success: Bool, tracks:[NewReleaseTrack]?) {
+    var results:[FollowingArtistTrack]?
+    init(success: Bool, tracks:[FollowingArtistTrack]?) {
         self.success = success
         results = tracks
     }
@@ -778,7 +822,7 @@ class StreamFollowing {
         
         var dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        var tracks:[NewReleaseTrack] = [NewReleaseTrack]()
+        var tracks:[FollowingArtistTrack] = [FollowingArtistTrack]()
         
         for (idx:String, s:JSON) in json[key] {
             if s["id"].string == nil {
@@ -814,7 +858,7 @@ class StreamFollowing {
             }
             
             
-            tracks.append(NewReleaseTrack(
+            tracks.append(FollowingArtistTrack(
                 id: id,
                 trackName: title,
                 artist: artist,
@@ -902,8 +946,9 @@ class Track {
                     "track-share",
                     action: "from-\(section)",
                     label: self.title,
-                    value: nil
+                    value: 0
                 ).build()
+            tracker.send(event as [NSObject: AnyObject]!)
             
             afterShare(error: nil, uid: uid)
         })
@@ -930,7 +975,7 @@ class Track {
                 "playlist-add-from-\(section)",
                 action: "add-\(self.type)",
                 label: self.title,
-                value: nil
+                value: 0
             ).build()
         
         tracker.send(event as [NSObject: AnyObject]!)
@@ -1061,6 +1106,18 @@ class NewReleaseTrack:Track {
     var releasedAt: NSDate?
     init(id:String, trackName:String, artist:String, type:String, thumbnail: String?, releasedAt:NSDate?) {
         super.init(id: id, title: "\(artist) - \(trackName)", type: type, tag: nil, thumbnailUrl:thumbnail)
+        self.artist = artist
+        self.trackName = trackName
+        self.releasedAt = releasedAt
+    }
+}
+
+class FollowingArtistTrack:Track {
+    var artist:String!
+    var trackName: String!
+    var releasedAt: NSDate?
+    init(id:String, trackName:String, artist:String, type:String, thumbnail: String?, releasedAt:NSDate?) {
+        super.init(id: id, title: trackName, type: type, tag: nil, thumbnailUrl:thumbnail)
         self.artist = artist
         self.trackName = trackName
         self.releasedAt = releasedAt

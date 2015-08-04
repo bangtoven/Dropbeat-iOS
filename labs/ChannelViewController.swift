@@ -387,7 +387,7 @@ class ChannelViewController: BaseViewController,
     
     func onTrackShareBtnClicked(track:Track) {
         let progressHud = ViewUtils.showProgress(self, message: "Loading..")
-        track.shareTrack("playlist", afterShare: { (error, uid) -> Void in
+        track.shareTrack("channel_feed", afterShare: { (error, uid) -> Void in
             progressHud.hide(false)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
@@ -413,6 +413,17 @@ class ChannelViewController: BaseViewController,
             
             let activityController = UIActivityViewController(
                     activityItems: items, applicationActivities: nil)
+            activityController.excludedActivityTypes = [
+                    UIActivityTypePrint,
+                    UIActivityTypeSaveToCameraRoll,
+                    UIActivityTypeAirDrop,
+                    UIActivityTypeAssignToContact
+                ]
+            if UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiom.Phone {
+                if activityController.respondsToSelector("popoverPresentationController:") {
+                    activityController.popoverPresentationController?.sourceView = self.view
+                }
+            }
             self.presentViewController(activityController, animated:true, completion: nil)
         })
     }
@@ -722,6 +733,15 @@ class ChannelViewController: BaseViewController,
             return
         }
         isLoading = true
+        
+        let tracker = GAI.sharedInstance().defaultTracker
+        let event = GAIDictionaryBuilder.createEventWithCategory(
+                "load_feed",
+                action: "channel_feed",
+                label: "feed",
+                value: 1
+            ).build()
+        tracker.send(event as [NSObject: AnyObject]!)
         
         var progressHud:MBProgressHUD?
         if pageIdx == 0 {

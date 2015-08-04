@@ -370,7 +370,7 @@ class FeedViewController: BaseViewController,
     func getFollowingCell(indexPath:NSIndexPath) -> UITableViewCell{
         let cell:NewReleasedTrackTableViewCell = feedTableView.dequeueReusableCellWithIdentifier(
             "NewReleasedTrackTableViewCell", forIndexPath: indexPath) as! NewReleasedTrackTableViewCell
-        let track:NewReleaseTrack = tracks[indexPath.row] as! NewReleaseTrack
+        let track:FollowingArtistTrack = tracks[indexPath.row] as! FollowingArtistTrack
         cell.delegate = self
         cell.nameView.text = track.trackName
         if (track.thumbnailUrl != nil) {
@@ -482,7 +482,7 @@ class FeedViewController: BaseViewController,
         case .BEATPORT_CHART:
             return "Beatport Chart - \(selectedGenre!.name)"
         case .FOLLOWING:
-            return "Followed Artist Feed"
+            return "Followed Artists Feed"
         case .NEW_RELEASE:
             return "New Release - \(selectedGenre!.name)"
         case .TRENDING:
@@ -547,7 +547,14 @@ class FeedViewController: BaseViewController,
     
     func onShareBtnClicked(track:Track) {
         let progressHud = ViewUtils.showProgress(self, message: "Loading..")
-        track.shareTrack("playlist", afterShare: { (error, uid) -> Void in
+        var section = "feed_"
+        if selectedFeedMenu != nil {
+            section += "_" + selectedFeedMenu.title.lowercaseString.replace(" ", withString: "_")
+        }
+        if selectedGenre != nil {
+            section += "_" + selectedGenre!.name
+        }
+        track.shareTrack(section, afterShare: { (error, uid) -> Void in
             progressHud.hide(false)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
@@ -573,6 +580,17 @@ class FeedViewController: BaseViewController,
             
             let activityController = UIActivityViewController(
                     activityItems: items, applicationActivities: nil)
+            activityController.excludedActivityTypes = [
+                    UIActivityTypePrint,
+                    UIActivityTypeSaveToCameraRoll,
+                    UIActivityTypeAirDrop,
+                    UIActivityTypeAssignToContact
+                ]
+            if UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiom.Phone {
+                if activityController.respondsToSelector("popoverPresentationController:") {
+                    activityController.popoverPresentationController?.sourceView = self.view
+                }
+            }
             self.presentViewController(activityController, animated:true, completion: nil)
         })
     }
@@ -719,22 +737,40 @@ class FeedViewController: BaseViewController,
     }
     
     func loadFeed(type:FeedType) {
+        var action:String = "none"
         switch(type) {
         case .TRENDING:
             loadTrendingFeed()
+            action = "trending"
             break
         case .FOLLOWING:
             loadFollowingFeed()
+            action = "following"
             break
         case .BEATPORT_CHART:
             loadBeatportChartFeed()
+            action = "beatport_chart"
             break
         case .NEW_RELEASE:
             loadNewReleaseFeed()
+            action = "new_release"
             break
         default:
             break
         }
+        
+        if selectedGenre != nil {
+            action += "_" + selectedGenre!.name.lowercaseString.replace(" ", withString: "_")
+        }
+        
+        let tracker = GAI.sharedInstance().defaultTracker
+        let event = GAIDictionaryBuilder.createEventWithCategory(
+                "load_feed",
+                action: action,
+                label: "feed",
+                value: 1
+            ).build()
+        tracker.send(event as [NSObject: AnyObject]!)
     }
     
     func loadTrendingFeed() {

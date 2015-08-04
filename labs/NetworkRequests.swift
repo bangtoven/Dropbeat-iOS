@@ -5,6 +5,9 @@
 import Foundation
 
 class Requests {
+    static var EMPTY_RESPONSE_CALLBACK = {(req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+    }
+    
     static func sendGet(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, background: Bool = false, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         return send(Method.GET, url: url, params: params, auth: auth, background:background, respCb: respCb)
     }

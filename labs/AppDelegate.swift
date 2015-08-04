@@ -26,6 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var shouldInitializeQualityState = true
     var futureQuality:Int? = nil
     var reachability: Reachability?
+    var sharedTrackUid: String?
+    var sharedPlaylistUid: String?
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -42,6 +44,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self, selector: "sender", name: NotifyKey.playerSeek, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "sender", name: NotifyKey.networkStatusChanged, object: nil)
+        
+        if let fromUrl = launchOptions?[UIApplicationLaunchOptionsURLKey] as? NSURL {
+            handleCustomURL(fromUrl)
+        }
         
         // GA settings
         let gai = GAI.sharedInstance()
@@ -143,7 +149,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+        handleCustomURL(url)
         return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+    }
+    
+    func handleCustomURL(url:NSURL) {
+        if url.scheme == ExternalUrlKey.scheme && url.host == ExternalUrlKey.defaultIdentifier {
+            if let query = url.getKeyVals() {
+                var sharedTrackUid:String? = query["track"]
+                if sharedTrackUid != nil {
+                    redirectSharedTrack(sharedTrackUid!)
+                    return
+                }
+                var sharedPlaylistUid:String? = query["playlist"]
+                if sharedPlaylistUid != nil {
+                    redirectSharedPlaylist(sharedPlaylistUid!)
+                    return
+                }
+            }
+        }
     }
     
     func resetAppToFirstController() {
@@ -181,6 +205,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         default:
             break
         }
+    }
+    
+    func redirectSharedTrack(uid:String) {
+        sharedTrackUid = uid
+        NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.trackShare, object: nil)
+    }
+    
+    func redirectSharedPlaylist(uid:String) {
+        sharedPlaylistUid = uid
+        NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.playlistShare, object: nil)
     }
 }
 

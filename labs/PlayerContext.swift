@@ -130,6 +130,11 @@ class PlayerContext {
                 PlayerContext.externalPlaylist!.id == playlistId {
             return PlayerContext.externalPlaylist
         }
+        if PlayerContext.externalPlaylist == nil {
+            println("externalPlaylistId: nil")
+        } else {
+            println("externalPlaylistId: \(PlayerContext.externalPlaylist!.id)")
+        }
         return nil
     }
 }

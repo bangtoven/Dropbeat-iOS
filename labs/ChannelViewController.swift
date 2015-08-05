@@ -419,10 +419,8 @@ class ChannelViewController: BaseViewController,
                     UIActivityTypeAirDrop,
                     UIActivityTypeAssignToContact
                 ]
-            if UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiom.Phone {
-                if activityController.respondsToSelector("popoverPresentationController:") {
-                    activityController.popoverPresentationController?.sourceView = self.view
-                }
+            if activityController.respondsToSelector("popoverPresentationController:") {
+                activityController.popoverPresentationController?.sourceView = self.view
             }
             self.presentViewController(activityController, animated:true, completion: nil)
         })
@@ -445,7 +443,9 @@ class ChannelViewController: BaseViewController,
         actionSheet.addButtonWithTitle("Cancel")
         actionSheet.cancelButtonIndex = 2
         actionSheet.delegate = self
-        actionSheet.showInView(self.view.window)
+        
+        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
         
         let indexPath = tableView.indexPathForCell(sender)
         actionSheetTargetTrack = tracks[indexPath!.row]

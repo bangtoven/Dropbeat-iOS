@@ -253,7 +253,13 @@ class PlaylistViewController: BaseViewController,
         playlistActionSheet!.destructiveButtonIndex = 3
         playlistActionSheet!.cancelButtonIndex = 4
         
-        playlistActionSheet!.showInView(self.view.window)
+        if fromPlayer {
+            playlistActionSheet!.showInView(self.view)
+        } else {
+            var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            
+            playlistActionSheet!.showFromTabBar(appDelegate.centerContainer!.tabBar)
+        }
         playlistActionSheet!.delegate = self
     }
     
@@ -364,10 +370,8 @@ class PlaylistViewController: BaseViewController,
                     UIActivityTypeAirDrop,
                     UIActivityTypeAssignToContact
                 ]
-            if UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiom.Phone {
-                if activityController.respondsToSelector("popoverPresentationController:") {
-                    activityController.popoverPresentationController?.sourceView = self.view
-                }
+            if activityController.respondsToSelector("popoverPresentationController:") {
+                activityController.popoverPresentationController?.sourceView = self.view
             }
             self.presentViewController(activityController, animated:true, completion: nil)
         })
@@ -468,10 +472,8 @@ class PlaylistViewController: BaseViewController,
                         UIActivityTypeAirDrop,
                         UIActivityTypeAssignToContact
                     ]
-                if UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiom.Phone {
-                    if activityController.respondsToSelector("popoverPresentationController:") {
-                        activityController.popoverPresentationController?.sourceView = self.view
-                    }
+                if activityController.respondsToSelector("popoverPresentationController:") {
+                    activityController.popoverPresentationController?.sourceView = self.view
                 }
                 self.presentViewController(activityController, animated:true, completion: nil)
             } else {
@@ -586,7 +588,13 @@ class PlaylistViewController: BaseViewController,
         } else {
             actionSheet.cancelButtonIndex = 2
         }
-        actionSheet.showInView(self.view.window)
+        if fromPlayer {
+            actionSheet.showInView(self.view)
+        } else {
+            var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            
+            actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
+        }
         actionSheet.delegate = self
     }
     

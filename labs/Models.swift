@@ -635,7 +635,10 @@ class BeatportChart {
                 continue
             }
             var releasedAtStr = s["released"].stringValue
-            let releasedAt = dateFormatter.dateFromString(releasedAtStr.subString(0, length: 10))
+            var releasedAt:NSDate?
+            if releasedAtStr.length >= 10 {
+                releasedAt = dateFormatter.dateFromString(releasedAtStr.subString(0, length: 10))
+            }
             
             
             let track = BeatportTrack(
@@ -674,7 +677,6 @@ class StreamNew {
         formatter.dateFormat = "yyyy-MM-dd"
         
         for (idx:String, s:JSON) in json[key] {
-            println(s)
             if s["id"].string == nil ||
                     s["track_name"].string == nil ||
                     s["type"].string == nil ||
@@ -685,7 +687,10 @@ class StreamNew {
             }
             
             var releasedAtStr = s["release_date"].stringValue
-            let releasedAt = formatter.dateFromString(releasedAtStr.subString(0, length: 10))
+            var releasedAt:NSDate?
+            if releasedAtStr.length >= 10 {
+                releasedAt = formatter.dateFromString(releasedAtStr.subString(0, length: 10))
+            }
             
             tracks.append(NewReleaseTrack(
                 id: s["id"].stringValue,
@@ -784,7 +789,10 @@ class StreamBeatportTrending {
                 continue
             }
             var releasedAtStr = s["released"].stringValue
-            let releasedAt = dateFormatter.dateFromString(releasedAtStr.subString(0, length: 10))
+            var releasedAt:NSDate?
+            if releasedAtStr.length >= 10 {
+                releasedAt = dateFormatter.dateFromString(releasedAtStr.subString(0, length: 10))
+            }
             
             
             let track = BeatportTrack(
@@ -847,7 +855,9 @@ class StreamFollowing {
             
             var releasedAt:NSDate?
             if let releasedAtStr = s["release_date"].string {
-                releasedAt = dateFormatter.dateFromString(releasedAtStr.subString(0, length: 10))
+                if releasedAtStr.length >= 10 {
+                    releasedAt = dateFormatter.dateFromString(releasedAtStr.subString(0, length: 10))
+                }
             }
             
             var thumbnail:String?

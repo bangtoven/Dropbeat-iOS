@@ -51,7 +51,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     var removedId:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     
     // Used only for video playback recovery.
-    var userPaused: Bool = false
+    var shouldPlayMusic: Bool = false
     var prevResolveReq:Request? = nil
     var forceStopPlayer = false
     var playingInfoDisplayDuration = false
@@ -93,7 +93,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "PlayerViewScreen"
-        userPaused = true
     
         self.navigationController?.navigationBarHidden = true
         updateExtraViews()
@@ -140,11 +139,11 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "handleStop", name: NotifyKey.playerStop, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "handlePrev", name: NotifyKey.playerPrev, object: nil)
+            self, selector: "remotePrev", name: NotifyKey.playerPrev, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "handlePause", name: NotifyKey.playerPause, object: nil)
+            self, selector: "remotePause", name: NotifyKey.playerPause, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "handleNext", name: NotifyKey.playerNext, object: nil)
+            self, selector: "remoteNext", name: NotifyKey.playerNext, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "remoteSeek:", name: NotifyKey.playerSeek, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
@@ -231,7 +230,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 return
             }
             if (PlayerContext.currentTrack!.type == "youtube" &&
-                    PlayerContext.playState == PlayState.PAUSED && !userPaused) {
+                    PlayerContext.playState == PlayState.PAUSED && shouldPlayMusic) {
                 hookingBackground = true
                 
                 startBackgroundTask()
@@ -250,13 +249,15 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     func triggerBackgroundPlay(retry:Int) {
         var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) {
-            if (self.userPaused || PlayerContext.playState != PlayState.PAUSED) {
+            if (!self.shouldPlayMusic || PlayerContext.playState != PlayState.PAUSED) {
                 self.hookingBackground = false
                 return
             }
             if (PlayerContext.playState == PlayState.PAUSED) {
-                self.handlePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+                self.handlePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId, force:false)
                 self.triggerBackgroundPlay(retry - 1)
+            } else {
+                self.hookingBackground = false
             }
         }
     }
@@ -638,12 +639,13 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 remoteProgressTimer?.invalidate()
                 remoteProgressTimer = nil
             }
-//            if (!hookingBackground && PlayerContext.currentTrack!.type == "youtube" && userPaused == false) {
-//                startBackgroundTask()
-//                triggerBackgroundPlay(100)
-//            }
         } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Interrupted) {
-
+            shouldPlayMusic = false
+            updatePlayState(PlayState.PAUSED)
+            if remoteProgressTimer != nil {
+                remoteProgressTimer?.invalidate()
+                remoteProgressTimer = nil
+            }
         } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.SeekingForward) {
             if remoteProgressTimer != nil {
                 remoteProgressTimer?.invalidate()
@@ -696,7 +698,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
         
         println("fin!!!!")
-        var success :Bool = handleNext()
+        var success :Bool = handleNext(false)
         if (!success) {
             handleStop()
         }
@@ -721,7 +723,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         actionSheet.addButtonWithTitle("Share")
         actionSheet.addButtonWithTitle("Cancel")
         actionSheet.cancelButtonIndex = 2
-        actionSheet.showInView(self.view.window)
+        actionSheet.showInView(self.view)
         actionSheet.delegate = self
     }
     
@@ -729,16 +731,16 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         println("play!")
         if (PlayerContext.currentTrack != nil) {
             var playlistId :String? = PlayerContext.currentPlaylistId
-            handlePlay(PlayerContext.currentTrack!, playlistId: playlistId)
+            handlePlay(PlayerContext.currentTrack!, playlistId: playlistId, force:true)
         }
     }
     
     @IBAction func onNextBtnClicked(sender: UIButton) {
-        handleNext()
+        handleNext(true)
     }
     
     @IBAction func onPrevBtnClicked(sender: UIButton) {
-        handlePrev()
+        handlePrev(true)
     }
     
     @IBAction func onRepeatBtnClicked(sender: UIButton) {
@@ -816,10 +818,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                     UIActivityTypeAirDrop,
                     UIActivityTypeAssignToContact
                 ]
-            if UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiom.Phone {
-                if activityController.respondsToSelector("popoverPresentationController:") {
-                    activityController.popoverPresentationController?.sourceView = self.shareBtn
-                }
+            if activityController.respondsToSelector("popoverPresentationController:") {
+                activityController.popoverPresentationController?.sourceView = self.shareBtn
             }
             self.presentViewController(activityController, animated:true, completion: nil)
         })
@@ -856,8 +856,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     }
     
     @IBAction func pauseBtnClicked(sender: UIButton?) {
-        println("pause!")
-        handlePause()
+        handlePause(true)
     }
     
     @IBAction func onProgressValueChanged(sender: UISlider) {
@@ -893,13 +892,25 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         } else {
             playlistId = params["playlistId"] as? String
         }
-        handlePlay(track, playlistId: playlistId)
+        handlePlay(track, playlistId: playlistId, force:true)
     }
     
     func remoteSeek(noti: NSNotification) {
         var params = noti.object as! Dictionary<String, AnyObject>
         var value = params["value"] as? Float ?? 0
         handleSeek(value)
+    }
+    
+    func remotePause() {
+        handlePause(true)
+    }
+    
+    func remoteNext() {
+        handleNext(true)
+    }
+    
+    func remotePrev() {
+        handlePrev(true)
     }
     
     func repeatStateUpdated() {
@@ -932,7 +943,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
     }
     
-    func handlePlay(track: Track?, playlistId: String?) {
+    func handlePlay(track: Track?, playlistId: String?, force:Bool) {
         println("handle play")
         // Fetch stream urls.
         if track == nil {
@@ -940,7 +951,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
         
         forceStopPlayer = false
-        userPaused = false
         
         if (track != nil) {
             var params: Dictionary<String, AnyObject> = [
@@ -960,8 +970,12 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 PlayerContext.playState == PlayState.SWITCHING {
                 return
             }
-            if audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Paused {
+            if audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Paused ||
+                audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Interrupted {
                 // Resume
+                if force {
+                    shouldPlayMusic = true
+                }
                 updatePlayStateView(PlayState.PLAYING)
                 playAudioPlayer()
                 return
@@ -972,19 +986,19 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             // In case of repeating one track.
         }
         
+        if force {
+            shouldPlayMusic = true
+        }
+        
         PlayerContext.currentTrack = track
         var closureTrack :Track? = track
         
-        println("111111")
         if playlistId != nil {
-            println("22222")
             var playlist :Playlist? = PlayerContext.getPlaylist(playlistId)
             if playlist == nil {
-                println("333333")
                 PlayerContext.currentPlaylistId = nil
                 PlayerContext.currentTrackIdx = -1
             } else {
-                println("444444444")
                 PlayerContext.currentPlaylistId = playlistId
                 PlayerContext.currentTrackIdx = -1
                 for (idx: Int, t: Track) in enumerate(playlist!.tracks) {
@@ -995,7 +1009,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 }
             }
         } else {
-            println("5555555555")
             PlayerContext.currentPlaylistId = nil
             PlayerContext.currentTrackIdx = -1
         }
@@ -1036,7 +1049,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
        
         audioPlayerControl.moviePlayer.contentURL = nil
         audioPlayerControl.videoIdentifier = nil
-        userPaused = false
+        shouldPlayMusic = true
         audioPlayerControl.moviePlayer.stop()
 
         if (isInitial) {
@@ -1090,15 +1103,17 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         updateCoverView()
     }
     
-    func handlePause() {
-        userPaused = true
+    func handlePause(force:Bool) {
+        if force {
+            shouldPlayMusic = false
+        }
         if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Playing) {
             pauseAudioPlayer()
             updatePlayStateView(PlayState.PAUSED)
         }
     }
     
-    func handleNext() -> Bool{
+    func handleNext(force:Bool) -> Bool{
         println("handleNext")
         if remoteProgressTimer != nil {
             remoteProgressTimer?.invalidate()
@@ -1111,11 +1126,11 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             return false;
         }
         
-        handlePlay(track, playlistId: PlayerContext.currentPlaylistId)
+        handlePlay(track, playlistId: PlayerContext.currentPlaylistId, force: force)
         return true;
     }
     
-    func handlePrev() -> Bool {
+    func handlePrev(force:Bool) -> Bool {
         println("handlePrev")
         if remoteProgressTimer != nil {
             remoteProgressTimer?.invalidate()
@@ -1127,11 +1142,12 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             return false;
         }
         
-        handlePlay(track, playlistId: PlayerContext.currentPlaylistId)
+        handlePlay(track, playlistId: PlayerContext.currentPlaylistId, force: force)
         return true;
     }
     
     func handleStop() {
+        shouldPlayMusic = false
         PlayerContext.currentPlaylistId = nil
         PlayerContext.currentTrack = nil
         PlayerContext.currentTrackIdx = -1
@@ -1163,7 +1179,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     }
     
     func playAudioPlayer() {
-        println("playAudio")
         audioPlayerControl.moviePlayer.play()
     }
     

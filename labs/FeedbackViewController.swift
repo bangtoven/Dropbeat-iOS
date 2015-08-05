@@ -61,7 +61,7 @@ class FeedbackViewController: BaseViewController {
         }
         
         if !isValidEmail(senderEmail!) {
-            ViewUtils.showNoticeAlert(self, title: "Invalid format", message: "Email is not proper format")
+            ViewUtils.showNoticeAlert(self, title: "Invalid format", message: "Invalid email format")
             return
         }
         

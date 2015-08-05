@@ -275,10 +275,8 @@ class SearchViewController: BaseViewController,
                     UIActivityTypeAirDrop,
                     UIActivityTypeAssignToContact
                 ]
-            if UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiom.Phone {
-                if activityController.respondsToSelector("popoverPresentationController:") {
-                    activityController.popoverPresentationController?.sourceView = self.view
-                }
+            if activityController.respondsToSelector("popoverPresentationController:") {
+                activityController.popoverPresentationController?.sourceView = self.view
             }
             self.presentViewController(activityController, animated:true, completion: nil)
         })
@@ -310,7 +308,8 @@ class SearchViewController: BaseViewController,
         actionSheet.addButtonWithTitle("Cancel")
         actionSheet.cancelButtonIndex = 2
         actionSheet.delegate = self
-        actionSheet.showInView(self.view.window)
+        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
     }
     
     func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {

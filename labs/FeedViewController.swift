@@ -458,13 +458,13 @@ class FeedViewController: BaseViewController,
         }
         switch(selectedFeedMenu.type) {
         case .TRENDING :
-            return (15 * self.view.bounds.width / 30) + 60
+            return (15 * self.view.bounds.width / 30) + 52
         case .NEW_RELEASE:
-            return (15 * self.view.bounds.width / 30) + 60
+            return (15 * self.view.bounds.width / 30) + 52
         case .BEATPORT_CHART:
             return 76
         case .FOLLOWING:
-            return (15 * self.view.bounds.width / 30) + 60
+            return (15 * self.view.bounds.width / 30) + 52
         default:
             break
         }

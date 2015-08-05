@@ -78,10 +78,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         switch(event.subtype) {
         case UIEventSubtype.RemoteControlPlay:
             println("play clicked")
-            var params: Dictionary<String, AnyObject> = [
-                "track": PlayerContext.currentTrack!,
-                "playlistId": PlayerContext.currentPlaylistId!
-            ]
+            if PlayerContext.currentTrack == nil {
+                return
+            }
+            var params: [String: AnyObject] = [String: AnyObject]()
+            params["track"] = PlayerContext.currentTrack!
+            if PlayerContext.currentPlaylistId != nil {
+                params["playlistId"] =  PlayerContext.currentPlaylistId!
+            }
             NSNotificationCenter.defaultCenter().postNotificationName(
                 NotifyKey.playerPlay, object: params)
             break;
@@ -113,10 +117,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 NSNotificationCenter.defaultCenter().postNotificationName(
                     NotifyKey.playerPause, object: nil)
             } else {
-                var params: Dictionary<String, AnyObject> = [
-                    "track": PlayerContext.currentTrack!,
-                    "playlistId": PlayerContext.currentPlaylistId!
-                ]
+                if PlayerContext.currentTrack == nil {
+                    return
+                }
+                var params: [String: AnyObject] = [String:AnyObject]()
+                params["track"] = PlayerContext.currentTrack!
+                if PlayerContext.currentPlaylistId != nil {
+                    params["playlistId"] =  PlayerContext.currentPlaylistId!
+                }
                 NSNotificationCenter.defaultCenter().postNotificationName(
                     NotifyKey.playerPlay, object: params)               
             }

@@ -72,22 +72,26 @@ class TrendingTrackTableViewCell: AddableTrackTableViewCell {
     override func setSelected(selected: Bool, animated: Bool) {
         let artistWrapperColor = artistWrapper.backgroundColor
         let titleWrapperColor = titleWrapper.backgroundColor
+        let rankWarapperColor = rank.backgroundColor
         super.setSelected(selected, animated: animated)
         
         if(selected) {
             artistWrapper.backgroundColor = artistWrapperColor
             titleWrapper.backgroundColor = titleWrapperColor
+            rank.backgroundColor = rankWarapperColor
         }
     }
     
     override func setHighlighted(highlighted: Bool, animated: Bool) {
         let artistWrapperColor = artistWrapper.backgroundColor
         let titleWrapperColor = titleWrapper.backgroundColor
+        let rankWarapperColor = rank.backgroundColor
         super.setHighlighted(highlighted, animated: animated)
         
         if(highlighted) {
             artistWrapper.backgroundColor = artistWrapperColor
             titleWrapper.backgroundColor = titleWrapperColor
+            rank.backgroundColor = rankWarapperColor
         }
     }
 }

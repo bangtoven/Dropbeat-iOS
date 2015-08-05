@@ -235,6 +235,26 @@ class FeedViewController: BaseViewController,
         if tableView != self.feedTableView || tracks.count == 0 {
             return
         }
+        if selectedFeedMenu.type == FeedType.NEW_RELEASE {
+            let trackCell = cell as! NewReleasedTrackTableViewCell
+            trackCell.titleWidthConstaint.constant = self.view.bounds.width - 36
+            trackCell.artistWidthConstraint.constant = self.view.bounds.width - 36
+        } else if selectedFeedMenu.type == FeedType.TRENDING {
+            if selectedGenre != nil && count(selectedGenre!.key) > 0 {
+                let trackCell = cell as! BpTrendingTrackTableViewCell
+                trackCell.titleWidthConstaint.constant = self.view.bounds.width - 36
+                trackCell.artistWidthConstraint.constant = self.view.bounds.width - 36
+            } else {
+                let trackCell = cell as! TrendingTrackTableViewCell
+                trackCell.titleWidthConstaint.constant = self.view.bounds.width - 36
+                trackCell.artistWidthConstraint.constant = self.view.bounds.width - 36
+            }
+        } else if selectedFeedMenu.type == FeedType.FOLLOWING {
+            let trackCell = cell as! NewReleasedTrackTableViewCell
+            trackCell.titleWidthConstaint.constant = self.view.bounds.width - 36
+            trackCell.artistWidthConstraint.constant = self.view.bounds.width - 36
+        }
+        
         if indexPath.row == tracks.count - 1 {
             if nextPage <= 0 || isLoading {
                 return

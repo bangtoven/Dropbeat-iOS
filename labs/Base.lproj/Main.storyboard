@@ -979,7 +979,7 @@
                                                             <constraint firstAttribute="width" constant="46" id="yZJ-Fe-5SY"/>
                                                         </constraints>
                                                         <inset key="contentEdgeInsets" minX="2" minY="9" maxX="2" maxY="9"/>
-                                                        <state key="normal" title="HQ" image="1AE8204A-1F4D-4FCE-9AFE-4CDB8B35553C">
+                                                        <state key="normal" title="HQ" image="E3DCA90F-EBC6-45F5-87D3-45171E012CF6">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -3081,7 +3081,6 @@
                                                                     <rect key="frame" x="0.0" y="2" width="284" height="26"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="Eog-aL-LPd"/>
-                                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="284" id="FDE-f4-kKP"/>
                                                                     </constraints>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3201,7 +3200,6 @@
                                                                     <rect key="frame" x="0.0" y="2" width="284" height="26"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="OaW-o5-hJ2"/>
-                                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="284" id="e1g-YY-fSI"/>
                                                                     </constraints>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3335,7 +3333,6 @@
                                                                     <rect key="frame" x="0.0" y="2" width="284" height="26"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="A4i-cl-7C7"/>
-                                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="284" id="QTx-3L-tRL"/>
                                                                     </constraints>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -3870,7 +3867,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="1AE8204A-1F4D-4FCE-9AFE-4CDB8B35553C" width="105" height="64">
+        <image name="E3DCA90F-EBC6-45F5-87D3-45171E012CF6" width="105" height="64">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA

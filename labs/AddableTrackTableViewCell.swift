@@ -65,8 +65,6 @@ class TrendingTrackTableViewCell: AddableTrackTableViewCell {
 //        
 //        self.selectedBackgroundView = selectedBgView
         
-        titleWidthConstaint.constant = self.bounds.width - 16
-        artistWidthConstraint.constant = self.bounds.width - 16
         photoFrame.layer.borderColor = UIColor(netHex: 0x909090).CGColor
         photoFrame.layer.borderWidth = 1
     }
@@ -113,8 +111,6 @@ class BpTrendingTrackTableViewCell: AddableTrackTableViewCell {
 //        
 //        self.selectedBackgroundView = selectedBgView
         
-        titleWidthConstaint.constant = self.bounds.width - 16
-        artistWidthConstraint.constant = self.bounds.width - 16
         photoFrame.layer.borderColor = UIColor(netHex: 0x909090).CGColor
         photoFrame.layer.borderWidth = 1
     }
@@ -164,8 +160,6 @@ class NewReleasedTrackTableViewCell: AddableTrackTableViewCell {
 //        
 //        self.selectedBackgroundView = selectedBgView
         
-        titleWidthConstaint.constant = self.bounds.width - 16
-        artistWidthConstraint.constant = self.bounds.width - 16
         photoFrame.layer.borderColor = UIColor(netHex: 0x909090).CGColor
         photoFrame.layer.borderWidth = 1
     }

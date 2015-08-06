@@ -144,22 +144,13 @@ class SigninViewController: BaseViewController {
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
         keychainItemWrapper.resetKeychain()
         keychainItemWrapper["auth_token"] = token
-        Account.getAccountWithCompletionHandler({ (account:Account?, error:NSError?) -> Void in
-            if (error != nil) {
-                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Failed to get user info")
-                return
-            }
-            if (account == nil) {
-                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Account is undefined")
-                return
-            }
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.appSignin, object: nil)
-            self.dismissViewControllerAnimated(false, completion: nil)
-            PlayerViewController.sharedInstance!.resignObservers()
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
-            navController.popToRootViewControllerAnimated(false)
-        })
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.appSignin, object: nil)
+        self.dismissViewControllerAnimated(false, completion: nil)
+        PlayerViewController.sharedInstance!.resignObservers()
+        var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        var navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
+        navController.popToRootViewControllerAnimated(false)
     }
     
 

@@ -648,12 +648,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="10F-MT-oTh">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="10F-MT-oTh">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="10F-MT-oTh" firstAttribute="top" secondItem="qdI-eC-eU8" secondAttribute="bottom" id="DIa-sn-qz7"/>
+                            <constraint firstAttribute="trailing" secondItem="10F-MT-oTh" secondAttribute="trailing" id="QRk-N7-iGa"/>
+                            <constraint firstItem="r1Z-NJ-I6L" firstAttribute="top" secondItem="10F-MT-oTh" secondAttribute="bottom" id="dQp-6X-je9"/>
+                            <constraint firstItem="10F-MT-oTh" firstAttribute="leading" secondItem="WQw-aR-a2P" secondAttribute="leading" id="nAi-6p-rMJ"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Copyright &amp; legal" id="tsv-2T-egn">
                         <barButtonItem key="backBarButtonItem" title=" " id="7KI-Vf-2a6"/>
@@ -979,7 +985,7 @@
                                                             <constraint firstAttribute="width" constant="46" id="yZJ-Fe-5SY"/>
                                                         </constraints>
                                                         <inset key="contentEdgeInsets" minX="2" minY="9" maxX="2" maxY="9"/>
-                                                        <state key="normal" title="HQ" image="2B076A45-7C3E-40F8-8484-91896668E99D">
+                                                        <state key="normal" title="HQ" image="775CF099-1A4D-4424-84A5-EB535AA80F94">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -3867,7 +3873,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="2B076A45-7C3E-40F8-8484-91896668E99D" width="105" height="64">
+        <image name="775CF099-1A4D-4424-84A5-EB535AA80F94" width="105" height="64">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA

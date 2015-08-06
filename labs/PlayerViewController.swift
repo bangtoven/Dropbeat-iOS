@@ -112,6 +112,10 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         resignFirstResponder()
     }
     
+    override func canBecomeFirstResponder() -> Bool {
+        return true
+    }
+    
     override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
         if (flag && (PlayerContext.playState == PlayState.LOADING ||
                 PlayerContext.playState == PlayState.SWITCHING ||

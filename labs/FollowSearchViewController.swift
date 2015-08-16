@@ -101,7 +101,7 @@ class FollowSearchViewController: BaseViewController,
     }
     
     func search(keyword:String) {
-        let progressHud = ViewUtils.showProgress(self, message: "Searching..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Searching..", comment:""))
         Requests.searchArtist(keyword, respCb:{
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(true)
@@ -109,24 +109,24 @@ class FollowSearchViewController: BaseViewController,
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
                     ViewUtils.showConfirmAlert(
-                        self, title: "Failed to load", message: "Internet is not connected",
-                        positiveBtnText: "Retry",
+                        self, title: NSLocalizedString("Failed to load", comment:""), message: NSLocalizedString("Internet is not connected", comment:""),
+                        positiveBtnText: NSLocalizedString("Retry", comment:""),
                         positiveBtnCallback: { () -> Void in
                             self.loadFollowings()
                         },
-                        negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                        negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                var message = "Failed to load following info."
-                ViewUtils.showNoticeAlert(self, title: "Failed to load", message: message)
+                var message = NSLocalizedString("Failed to load following info.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
             let parser = Parser()
             let info = parser.parseSearchArtist(result!)
             if !info.success {
-                var message = "Failed to load following info."
-                ViewUtils.showNoticeAlert(self, title: "Failed to load", message: message)
+                var message = NSLocalizedString("Failed to load following info.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
@@ -141,31 +141,31 @@ class FollowSearchViewController: BaseViewController,
     
     func loadFollowings() {
         
-        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         Requests.following { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(false)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
                     ViewUtils.showConfirmAlert(
-                        self, title: "Failed to load", message: "Internet is not connected",
-                        positiveBtnText: "Retry",
+                        self, title: NSLocalizedString("Failed to load", comment:""), message: NSLocalizedString("Internet is not connected", comment:""),
+                        positiveBtnText: NSLocalizedString("Retry", comment:""),
                         positiveBtnCallback: { () -> Void in
                             self.loadFollowings()
                         },
-                        negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                        negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                var message = "Failed to load following info."
-                ViewUtils.showNoticeAlert(self, title: "Failed to load", message: message)
+                var message = NSLocalizedString("Failed to load following info.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
             let parser = Parser()
             let info = parser.parseFollowing(result!)
             if !info.success {
-                var message = "Failed to load following info."
-                ViewUtils.showNoticeAlert(self, title: "Failed to load", message: message)
+                var message = NSLocalizedString("Failed to load following info.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
@@ -184,29 +184,29 @@ class FollowSearchViewController: BaseViewController,
     }
     
     func follow(id:Int) {
-        let progressHud = ViewUtils.showProgress(self, message: "Saving..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Saving..", comment:""))
         Requests.follow([id], respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(false)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
                     ViewUtils.showConfirmAlert(
-                        self, title: "Failed to follow", message: "Internet is not connected",
-                        positiveBtnText: "Retry",
+                        self, title: NSLocalizedString("Failed to follow", comment:""), message: NSLocalizedString("Internet is not connected", comment:""),
+                        positiveBtnText: NSLocalizedString("Retry", comment:""),
                         positiveBtnCallback: { () -> Void in
                             self.follow(id)
                         },
-                        negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                        negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                var message = "Failed to save follow info."
-                ViewUtils.showNoticeAlert(self, title: "Failed to follow", message: message)
+                var message = NSLocalizedString("Failed to save follow info.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to follow", comment:""), message: message)
                 return
             }
             
             if !(JSON(result!)["success"].bool ?? false) {
-                var message = "Failed to save follow info."
-                ViewUtils.showNoticeAlert(self, title: "Failed to follow", message: message)
+                var message = NSLocalizedString("Failed to save follow info.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to follow", comment:""), message: message)
                 return
             }
             self.isChanged = true
@@ -215,29 +215,29 @@ class FollowSearchViewController: BaseViewController,
     }
     
     func unfollow(id:Int) {
-        let progressHud = ViewUtils.showProgress(self, message: "Saving..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Saving..", comment:""))
         Requests.unfollow([id], respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(false)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
                     ViewUtils.showConfirmAlert(
-                        self, title: "Failed to unfollow", message: "Internet is not connected",
-                        positiveBtnText: "Retry",
+                        self, title: NSLocalizedString("Failed to unfollow", comment:""), message: NSLocalizedString("Internet is not connected", comment:""),
+                        positiveBtnText: NSLocalizedString("Retry", comment:""),
                         positiveBtnCallback: { () -> Void in
                             self.unfollow(id)
                         },
-                        negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                        negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                var message = "Failed to save unfollow info."
-                ViewUtils.showNoticeAlert(self, title: "Failed to unfollow", message: message)
+                var message = NSLocalizedString("Failed to save unfollow info.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to unfollow", comment:""), message: message)
                 return
             }
             
             if !(JSON(result!)["success"].bool ?? false) {
-                var message = "Failed to save unfollow info."
-                ViewUtils.showNoticeAlert(self, title: "Failed to unfollow", message: message)
+                var message = NSLocalizedString("Failed to save unfollow info.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to unfollow", comment:""), message: message)
                 return
             }
             

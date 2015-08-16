@@ -22,11 +22,11 @@ class SearchViewController: BaseViewController,
     UISearchBarDelegate, UIActionSheetDelegate, AddableTrackCellDelegate, ScrollPagerDelegate{
     
     private static var sectionTitles = [
-        SearchResultSections.RELEASED: "OFFICIAL",
-        SearchResultSections.PODCAST: "PODCASTS",
-        SearchResultSections.LIVESET: "LIVE SETS",
-        SearchResultSections.TOP_MATCH: "TOP_MATCH",
-        SearchResultSections.RELEVANT: "OTHERS"
+        SearchResultSections.RELEASED: NSLocalizedString("OFFICIAL", comment:""),
+        SearchResultSections.PODCAST: NSLocalizedString("PODCASTS", comment:""),
+        SearchResultSections.LIVESET: NSLocalizedString("LIVE SETS", comment:""),
+        SearchResultSections.TOP_MATCH: NSLocalizedString("TOP MATCH", comment:""),
+        SearchResultSections.RELEVANT: NSLocalizedString("OTHERS", comment:"")
     ]
     
     var searchResult:Search?
@@ -242,24 +242,25 @@ class SearchViewController: BaseViewController,
     }
     
     func onShareBtnClicked(track:Track) {
-        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         track.shareTrack("search", afterShare: { (error, uid) -> Void in
             progressHud.hide(false)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showConfirmAlert(self, title: "Failed to share",
-                        message: "Internet is not connected.",
-                        positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                    ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
+                        message: NSLocalizedString("Internet is not connected.", comment:""),
+                        positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
                             self.onShareBtnClicked(track)
-                        }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                        }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                ViewUtils.showConfirmAlert(self, title: "Failed to share",
-                    message: "Failed to share track",
-                    positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
+                    message: NSLocalizedString("Failed to share track", comment:""),
+                    positiveBtnText: NSLocalizedString("Retry", comment:""),
+                    positiveBtnCallback: { () -> Void in
                         self.onShareBtnClicked(track)
-                    }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                 return
             }
             let shareUrl = "http://dropbeat.net/?track=" + uid!
@@ -303,9 +304,9 @@ class SearchViewController: BaseViewController,
         actionSheetTargetTrack = track
         
         let actionSheet = UIActionSheet()
-        actionSheet.addButtonWithTitle("Add to playlist")
-        actionSheet.addButtonWithTitle("Share")
-        actionSheet.addButtonWithTitle("Cancel")
+        actionSheet.addButtonWithTitle(NSLocalizedString("Add to playlist", comment:""))
+        actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
+        actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
         actionSheet.cancelButtonIndex = 2
         actionSheet.delegate = self
         var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -325,7 +326,7 @@ class SearchViewController: BaseViewController,
             }
         }
         if buttonIndex < 3 && track == nil || foundIdx == -1 {
-            ViewUtils.showToast(self, message: "Track is not in feed")
+            ViewUtils.showToast(self, message: NSLocalizedString("Track is not in feed", comment:""))
             return
         }
         
@@ -358,7 +359,7 @@ class SearchViewController: BaseViewController,
     func doSearch(keyword:String) {
         hideAutocomplete()
         
-        let progressHud = ViewUtils.showProgress(self, message: "Searching..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Searching..", comment:""))
         searchResultView.hidden = false
         
         // Log to Us
@@ -381,11 +382,13 @@ class SearchViewController: BaseViewController,
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showNoticeAlert(self, title: "Failed to search", message: "Internet is not connected")
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to search", comment:""),
+                        message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = "Failed to search."
-                ViewUtils.showNoticeAlert(self, title: "Failed to search", message: message)
+                var message = NSLocalizedString("Failed to search.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to search", comment:""), message: message)
                 self.searchResult = nil
                 self.sectionedTracks = [String:[Track]]()
                 self.tracks.removeAll(keepCapacity: false)
@@ -444,7 +447,8 @@ class SearchViewController: BaseViewController,
             } else {
                 self.currentSection = nil
                 
-                ViewUtils.showNoticeAlert(self, title: "Failed to search", message: "Failed to search.")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to search", comment:""),
+                    message: NSLocalizedString("Failed to search.", comment:""))
                 self.searchResult = nil
                 self.sectionedTracks = [String:[Track]]()
                 self.tracks.removeAll(keepCapacity: false)
@@ -488,23 +492,26 @@ class SearchViewController: BaseViewController,
         self.currentSection = section
         var tracks = self.sectionedTracks[self.currentSection!]
         if (tracks == nil) {
-            var progress = ViewUtils.showProgress(self, message: "Loading..")
+            var progress = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
             let callback = { (tracks: [Track]?, error:NSError?) -> Void in
                 progress.hide(false)
                 if (error != nil || tracks == nil) {
                     if (error != nil && error!.domain == NSURLErrorDomain &&
                             error!.code == NSURLErrorNotConnectedToInternet) {
-                        ViewUtils.showNoticeAlert(self, title: "Failed to fetch data", message: "Internet is not connected")
+                        ViewUtils.showNoticeAlert(self,
+                            title: NSLocalizedString("Failed to fetch data", comment:""),
+                            message: NSLocalizedString("Internet is not connected", comment:""))
                         return
                     }
-                    var message = "Failed to fetch data."
-                    ViewUtils.showNoticeAlert(self, title: "Failed to fetch data", message: message)
+                    var message = NSLocalizedString("Failed to fetch data.", comment:"")
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to fetch data", comment:""), message: message)
                     return
                 }
                 self.tracks.removeAll(keepCapacity: false)
                 self.sectionedTracks[self.currentSection!] = tracks
                 if (tracks!.count == 0) {
-                    ViewUtils.showToast(self, message: "No search results")
+                    ViewUtils.showToast(self, message: NSLocalizedString("No search results", comment:""))
                 } else {
                     for track in tracks! {
                         self.tracks.append(track)
@@ -522,7 +529,7 @@ class SearchViewController: BaseViewController,
         } else {
             self.tracks.removeAll(keepCapacity: false)
             if (tracks!.count == 0) {
-                ViewUtils.showToast(self, message: "No search results")
+                ViewUtils.showToast(self, message: NSLocalizedString("No search results", comment:""))
             } else {
                 for track in tracks! {
                     self.tracks.append(track)
@@ -548,7 +555,6 @@ class SearchViewController: BaseViewController,
         var indexPath = resultTableView.indexPathForSelectedRow()
         if (indexPath != nil) {
             var preSelectedTrack:Track?
-            var tracks = sectionedTracks[currentSection!]!
             preSelectedTrack = tracks[indexPath!.row]
             if (preSelectedTrack != nil &&
                 (preSelectedTrack!.id != track.id ||

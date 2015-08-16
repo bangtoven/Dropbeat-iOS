@@ -100,13 +100,11 @@ class PlaylistViewController: BaseViewController,
         playlistNameView.text = currentPlaylist!.name
         switch(currentPlaylist!.tracks.count) {
         case 0:
-            playlistTrackCountView.text = "Empty playlist"
-            break
-        case 1:
-            playlistTrackCountView.text = "1 track"
+            playlistTrackCountView.text = NSLocalizedString("Empty playlist", comment:"")
             break
         default:
-            playlistTrackCountView.text = "\(currentPlaylist!.tracks.count) tracks"
+            playlistTrackCountView.text = NSString.localizedStringWithFormat(
+                NSLocalizedString("%d tracks", comment: ""), currentPlaylist!.tracks.count) as String
             break
         }
     }
@@ -174,32 +172,44 @@ class PlaylistViewController: BaseViewController,
             return
         }
         
-        let progressHud = ViewUtils.showProgress(self, message: "Loading playlist..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading playlist..", comment:""))
         Requests.getPlaylist(currentPlaylist!.id, respCb: {
                 (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(false)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    var message = "Internet is not connected. Please try again."
-                    ViewUtils.showConfirmAlert(self, title: "Failed to fetch", message: message,
-                        positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                    var message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to fetch", comment:""),
+                        message: message,
+                        positiveBtnText: NSLocalizedString("Retry", comment:""),
+                        positiveBtnCallback: { () -> Void in
                             self.loadPlaylist()
-                    }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: "Failed to fetch playlist", btnText: "Confirm")
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Failed to fetch", comment:""),
+                    message: NSLocalizedString("Failed to fetch playlist", comment:""),
+                    btnText: NSLocalizedString("Confirm", comment:""))
                 return
             }
             
             var res = JSON(result!)
             if !res["success"].boolValue {
-                ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: "Failed to fetch playlist", btnText: "Confirm")
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Failed to fetch", comment:""),
+                    message: NSLocalizedString("Failed to fetch playlist", comment:""),
+                    btnText: NSLocalizedString("Confirm", comment:""))
                 return
             }
             var playlist:Playlist? = Playlist.fromJson(res["playlist"].rawValue)
             if (playlist == nil) {
-                ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: "Failed to fetch playlist", btnText: "Confirm")
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Failed to fetch", comment:""),
+                    message: NSLocalizedString("Failed to fetch playlist", comment:""),
+                    btnText: NSLocalizedString("Confirm", comment:""))
                 return
             }
             
@@ -220,7 +230,7 @@ class PlaylistViewController: BaseViewController,
     
     @IBAction func onPlayPlaylistBtnClicked(sender: AnyObject) {
         if tracks.count == 0 {
-            ViewUtils.showToast(self, message: "Playlist empty")
+            ViewUtils.showToast(self, message: NSLocalizedString("Playlist empty", comment:""))
             return
         }
         
@@ -245,11 +255,11 @@ class PlaylistViewController: BaseViewController,
     
     @IBAction func onPlaylistMenuBtnClicked(sender: AnyObject) {
         playlistActionSheet = UIActionSheet()
-        playlistActionSheet!.addButtonWithTitle("Shuffle Play")
-        playlistActionSheet!.addButtonWithTitle("Share")
-        playlistActionSheet!.addButtonWithTitle("Rename")
-        playlistActionSheet!.addButtonWithTitle("Delete")
-        playlistActionSheet!.addButtonWithTitle("Cancel")
+        playlistActionSheet!.addButtonWithTitle(NSLocalizedString("Shuffle Play", comment:""))
+        playlistActionSheet!.addButtonWithTitle(NSLocalizedString("Share", comment:""))
+        playlistActionSheet!.addButtonWithTitle(NSLocalizedString("Rename", comment:""))
+        playlistActionSheet!.addButtonWithTitle(NSLocalizedString("Delete", comment:""))
+        playlistActionSheet!.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
         playlistActionSheet!.destructiveButtonIndex = 3
         playlistActionSheet!.cancelButtonIndex = 4
         
@@ -294,7 +304,7 @@ class PlaylistViewController: BaseViewController,
                 }
             }
             if foundIdx == -1 {
-                ViewUtils.showToast(self, message: "Track is not in playlist")
+                ViewUtils.showToast(self, message: NSLocalizedString("Track is not in playlist", comment:""))
                 return
             }
             
@@ -337,24 +347,27 @@ class PlaylistViewController: BaseViewController,
     }
     
     func onShareTrackBtnClicked(track: Track) {
-        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         track.shareTrack("playlist", afterShare: { (error, uid) -> Void in
             progressHud.hide(false)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showConfirmAlert(self, title: "Failed to share",
-                        message: "Internet is not connected.",
-                        positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to share", comment:""),
+                        message: NSLocalizedString("Internet is not connected.", comment:""),
+                        positiveBtnText: NSLocalizedString("Retry", comment:""),
+                        positiveBtnCallback: { () -> Void in
                             self.onShareTrackBtnClicked(track)
-                        }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                        }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                ViewUtils.showConfirmAlert(self, title: "Failed to share",
-                    message: "Failed to share track",
-                    positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
+                    message: NSLocalizedString("Failed to share track", comment:""),
+                    positiveBtnText: NSLocalizedString("Retry", comment:""),
+                    positiveBtnCallback: { () -> Void in
                         self.onShareTrackBtnClicked(track)
-                    }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                 return
             }
             let shareUrl = "http://dropbeat.net/?track=" + uid!
@@ -386,22 +399,26 @@ class PlaylistViewController: BaseViewController,
     }
     
     func onDeleteTrackBtnClicked(track:Track) {
-        let progressHud = ViewUtils.showProgress(self, message: "Deleting..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Deleting..", comment:""))
         track.deleteFromPlaylist(currentPlaylist!, afterDelete: { (error) -> Void in
             progressHud.hide(false)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showConfirmAlert(self, title: "Failed to delete", message: "Internet is not connected.",
-                        positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to delete", comment:""),
+                        message: NSLocalizedString("Internet is not connected.", comment:""),
+                        positiveBtnText: NSLocalizedString("Retry", comment:""),
+                        positiveBtnCallback: { () -> Void in
                             self.onDeleteTrackBtnClicked(track)
-                        }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                        }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                ViewUtils.showConfirmAlert(self, title: "Failed to delete", message: "Failed to delete track",
-                    positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to delete", comment:""),
+                    message: NSLocalizedString("Failed to delete track", comment:""),
+                    positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
                         self.onDeleteTrackBtnClicked(track)
-                    }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                 return
             }
             self.loadPlaylist()
@@ -410,7 +427,7 @@ class PlaylistViewController: BaseViewController,
     
     func onShufflePlayPlaylistBtnClicked() {
         if tracks.count == 0 {
-            ViewUtils.showToast(self, message: "Playlist empty")
+            ViewUtils.showToast(self, message: NSLocalizedString("Playlist empty", comment:""))
             return
         }
         
@@ -435,22 +452,24 @@ class PlaylistViewController: BaseViewController,
     }
     
     func onSharePlaylistBtnClicked() {
-        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         Requests.sharePlaylist(currentPlaylist!, respCb: {
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(false)
-            var message:String = "Failed to share playlist."
+            var message:String = NSLocalizedString("Failed to share playlist.", comment:"")
             var success = true
             if error != nil || result == nil {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    message = "Internet is not connected"
+                    message = NSLocalizedString("Internet is not connected", comment:"")
                 }
                 success = false
             }
             
             if !success {
-                ViewUtils.showNoticeAlert(self, title: "Failed to share", message: message)
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Failed to share", comment:""),
+                    message: message)
                 return
             }
             
@@ -477,7 +496,9 @@ class PlaylistViewController: BaseViewController,
                 }
                 self.presentViewController(activityController, animated:true, completion: nil)
             } else {
-                ViewUtils.showNoticeAlert(self, title: "Failed to share", message: message)
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Failed to share", comment:""),
+                    message: message)
             }
         })
     }
@@ -485,17 +506,22 @@ class PlaylistViewController: BaseViewController,
     func onDeletePlaylistBtnClicked() {
         let playlists = PlayerContext.playlists
         if (playlists.count == 1) {
-            ViewUtils.showNoticeAlert(self, title: "Failed to delete", message: "At least one playlist should exist")
+            ViewUtils.showNoticeAlert(self,
+                title: NSLocalizedString("Failed to delete", comment:""),
+                message: NSLocalizedString("At least one playlist should exist", comment:""))
             return
         }
         let removePlaylist = currentPlaylist!
+        let confirmMessage = NSString.localizedStringWithFormat(
+                NSLocalizedString("Are you sure you want do delete '%s' playlist with %d tracks?", comment:""),
+                removePlaylist.name, removePlaylist.tracks.count) as String
         
         ViewUtils.showConfirmAlert(
-            self, title: "Are you sure?",
-            message: "Are you sure you want do delete \'\(removePlaylist.name)' playlist with \(removePlaylist.tracks.count) songs?",
-            positiveBtnText: "Delete", positiveBtnCallback: {
+            self, title: NSLocalizedString("Are you sure?", comment:""),
+            message: confirmMessage,
+            positiveBtnText: NSLocalizedString("Delete", comment:""), positiveBtnCallback: {
                 
-                let progressHud = ViewUtils.showProgress(self, message: "Deleting..")
+                let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Deleting..", comment:""))
                 
                 Requests.deletePlaylist(removePlaylist.id, respCb: {
                         (request:NSURLRequest, response: NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
@@ -505,19 +531,21 @@ class PlaylistViewController: BaseViewController,
                         var message:String?
                         if (error != nil && error!.domain == NSURLErrorDomain &&
                                 error!.code == NSURLErrorNotConnectedToInternet) {
-                            message = "Internet is not connected"
+                            message = NSLocalizedString("Internet is not connected", comment:"")
                         }
                         if (message == nil) {
-                            message = "Failed to update playlist"
+                            message = NSLocalizedString("Failed to update playlist", comment:"")
                         }
-                        ViewUtils.showNoticeAlert(self, title: "Failed to delete", message: message!)
+                        ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to delete", comment:""),
+                            message: message!)
                         return
                     }
                     let res = result as! NSDictionary
                     var success:Bool = res.objectForKey("success") as! Bool? ?? false
                     if (!success) {
                         var message = "Failed to update playlist"
-                        ViewUtils.showNoticeAlert(self, title: "Failed to delete", message: message)
+                        ViewUtils.showNoticeAlert(self,
+                            title: NSLocalizedString("Failed to delete", comment:""), message: message)
                         return
                     }
                     if PlayerContext.currentPlaylistId == removePlaylist.id {
@@ -537,14 +565,16 @@ class PlaylistViewController: BaseViewController,
         let targetPlaylist = currentPlaylist!
         
         ViewUtils.showTextInputAlert(
-            self, title: "Change playlist name", message: "Type new playlist name", placeholder: "Playlist 01",
-            positiveBtnText: "Change",
+            self, title: NSLocalizedString("Change playlist name", comment:""),
+            message: NSLocalizedString("Type new playlist name", comment:""),
+            placeholder: NSLocalizedString("Playlist 01", comment:""),
+            positiveBtnText: NSLocalizedString("Change", comment:""),
             positiveBtnCallback: { (result) -> Void in
                 if (count(result) == 0) {
                     return
                 }
                 
-                let progressHud = ViewUtils.showProgress(self, message: "Changing..")
+                let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Changing..", comment:""))
                 
                 Requests.changePlaylistName(
                     targetPlaylist.id, name: result, respCb: {
@@ -554,12 +584,12 @@ class PlaylistViewController: BaseViewController,
                         var message:String?
                         if (error != nil && error!.domain == NSURLErrorDomain &&
                                 error!.code == NSURLErrorNotConnectedToInternet) {
-                            message = "Internet is not connected"
+                            message = NSLocalizedString("Internet is not connected", comment:"")
                         }
                         if (message == nil) {
-                            message = "Failed to rename playlist"
+                            message = NSLocalizedString("Failed to rename playlist", comment:"")
                         }
-                        ViewUtils.showNoticeAlert(self, title: "Failed to change", message: message!)
+                        ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to change", comment:""), message: message!)
                         return
                     }
                         
@@ -573,14 +603,14 @@ class PlaylistViewController: BaseViewController,
         menuSelectedTrack = tracks[indexPath.row]
         
         let actionSheet = UIActionSheet()
-        actionSheet.addButtonWithTitle("Share")
-        actionSheet.addButtonWithTitle("Add to other playlist")
+        actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
+        actionSheet.addButtonWithTitle(NSLocalizedString("Add to other playlist", comment:""))
         
         if currentPlaylist.type == PlaylistType.USER {
-            actionSheet.addButtonWithTitle("Delete")
+            actionSheet.addButtonWithTitle(NSLocalizedString("Delete", comment:""))
         }
         
-        actionSheet.addButtonWithTitle("Cancel")
+        actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
         
         if currentPlaylist.type == PlaylistType.USER {
             actionSheet.destructiveButtonIndex = 2

@@ -1,0 +1,37 @@
+/*
+ Localizable.strings
+ labs
+ 
+ Created by vulpes on 2015. 8. 16..
+ Copyright (c) 2015년 dropbeat. All rights reserved.
+ */
+"Saving.." = "Saving..";
+"Retry" = "Retry";
+"Failed to save" = "Failed to save";
+"Internet is not connected" = "Internet is not connected";
+"Cancel" = "Cancel";
+"Failed to save follow info." = "Failed to save follow info.";
+"Loading.." = "Loading..";
+"Failed to load following info." = "Failed to load following info.";
+"Failed to load" = "Failed to load";
+"Failed to save follow info." =  "Failed to save follow info.";
+"Failed to follow" = "Failed to follow";
+"Failed to unfollow" = "Failed to unfollow";
+"Failed to save unfollow info." = "Failed to save unfollow info.";
+"Create new playlist" = "Create new playlist";
+"Type new playlist name" = "Type new playlist name";
+"Create" = "Create";
+"Creating playlist.." = "Creating playlist..";
+"Failed to create" = "Failed to create";
+"Failed to create playlist" = "Failed to create playlist";
+"Failed to fetch" = "Failed to fetch";
+"Failed to fetch playlists." = "Failed to fetch playlists.";
+"Failed to fetch playlists" = "Failed to fetch playlists";
+"Loading playlists.." =  "Loading playlists..";
+"Already in Playlist" = "Already in Playlist";
+"Internet is not connected. Please try again." = "Internet is not connected. Please try again.";
+"Failed to add track to playlist" = "Failed to add track to playlist";
+"Failed to add" = "Failed to add";
+"Confirm" = "Confirm";
+"Track added" = "Track added";
+

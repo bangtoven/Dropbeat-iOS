@@ -56,30 +56,36 @@ class FeedbackViewController: BaseViewController {
         }
         
         if senderEmail == nil || count(senderEmail!) == 0 {
-            ViewUtils.showNoticeAlert(self, title: "Invalid format", message: "Email is required")
+            ViewUtils.showNoticeAlert(self,
+                title: NSLocalizedString("Invalid format", comment:""),
+                message: NSLocalizedString("Email is required", comment:""))
             return
         }
         
         if !isValidEmail(senderEmail!) {
-            ViewUtils.showNoticeAlert(self, title: "Invalid format", message: "Invalid email format")
+            ViewUtils.showNoticeAlert(self,
+                title: NSLocalizedString("Invalid format", comment:""),
+                message: NSLocalizedString("Invalid email format", comment:""))
             return
         }
         
         let text = textView.text
         if text == nil || count(text) == 0 {
-            ViewUtils.showNoticeAlert(self, title: "Invalid format", message: "Empty message cannot be sent")
+            ViewUtils.showNoticeAlert(self,
+                title: NSLocalizedString("Invalid format", comment:""),
+                message: NSLocalizedString("Empty message cannot be sent", comment:""))
             return
         }
-        let progressHud = ViewUtils.showProgress(self, message: "Sending..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Sending..", comment:""))
         Requests.sendFeedback(senderEmail!, content: text) {
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            var message:String = "Failed to send feedback."
+            var message:String = NSLocalizedString("Failed to send feedback.", comment:"")
             var success = true
             if success && error != nil {
                 success = false
                 if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    message = " Internet is not connected."
+                    message = " " + NSLocalizedString("Internet is not connected", comment:"")
                 }
             }
             
@@ -94,18 +100,20 @@ class FeedbackViewController: BaseViewController {
             if !success {
                 progressHud.hide(false)
                 ViewUtils.showConfirmAlert(self,
-                    title: "Failed to send",
+                    title: NSLocalizedString("Failed to send", comment:""),
                     message: message,
-                    positiveBtnText: "Retry",
+                    positiveBtnText: NSLocalizedString("Retry", comment:""),
                     positiveBtnCallback: { () -> Void in
                         
                         self.onSubmitBtnClicked(sender)
                         
-                    }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                 return
             }
-            ViewUtils.showNoticeAlert(self, title: "Feedback Submitted!",
-                    message: "Thank you for your feedback.", btnText: "Confirm", callback: { () -> Void in
+            ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Feedback Submitted!", comment:""),
+                    message: NSLocalizedString("Thank you for your feedback.", comment:""),
+                    btnText: NSLocalizedString("Confirm", comment:""), callback: { () -> Void in
                 progressHud.hide(false)
                 self.navigationController?.popViewControllerAnimated(true)
             })

@@ -56,8 +56,10 @@ class SettingsViewController: UITableViewController {
     }
     
     @IBAction func onSignoutBtnClicked(sender: UIButton) {
-        ViewUtils.showConfirmAlert(self, title: "Are you sure?", message: "Are you sure you want to sign out?",
-                positiveBtnText: "Sign out", positiveBtnCallback: { () -> Void in
+        ViewUtils.showConfirmAlert(self,
+            title: NSLocalizedString("Are you sure?", comment:""),
+            message: NSLocalizedString("Are you sure you want to sign out?", comment:""),
+                positiveBtnText: NSLocalizedString("Sign out", comment:""), positiveBtnCallback: { () -> Void in
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.appSignout, object: nil)
             Account.signout()
         })

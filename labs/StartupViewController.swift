@@ -68,14 +68,14 @@ class StartupViewController: GAITrackedViewController {
                 var message:String?
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    message = "Internet is not connected. Please try again."
+                    message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
                 } else {
-                    message = "Failed to fetch version info."
+                    message = NSLocalizedString("Failed to fetch version info.", comment:"")
                 }
                 ViewUtils.showNoticeAlert(self,
-                    title: "Failed to fetch version info",
+                    title: NSLocalizedString("Failed to fetch version info", comment:""),
                     message: message!,
-                    btnText: "Retry",
+                    btnText: NSLocalizedString("Retry", comment:""),
                     callback: { () -> Void in
                         self.progressHud?.hide(true)
                         self.checkVersion(callback)
@@ -87,9 +87,9 @@ class StartupViewController: GAITrackedViewController {
             var iosVersion:String? = res.objectForKey("ios_version") as! String?
             if (iosVersion == nil) {
                 ViewUtils.showNoticeAlert(self,
-                    title: "Failed to fetch version info",
-                    message: "Improper data format",
-                    btnText: "Retry",
+                    title: NSLocalizedString("Failed to fetch version info", comment:""),
+                    message: NSLocalizedString("Improper data format", comment:""),
+                    btnText: NSLocalizedString("Retry", comment:""),
                     callback: { () -> Void in
                         self.progressHud?.hide(true)
                         self.checkVersion(callback)
@@ -102,10 +102,10 @@ class StartupViewController: GAITrackedViewController {
             let cmpResult = iosVersion!.compare(currVersion!, options:NSStringCompareOptions.NumericSearch)
             if (cmpResult == NSComparisonResult.OrderedDescending) {
                 ViewUtils.showNoticeAlert(self,
-                    title: "Get new version",
+                    title: NSLocalizedString("Get new version", comment:""),
                     
-                    message: "We have released a new version of DROPBEAT. Please download on AppStore",
-                    btnText: "Download",
+                    message: NSLocalizedString("We have released a new version of DROPBEAT. Please download on AppStore", comment:""),
+                    btnText: NSLocalizedString("Download", comment:""),
                     callback: { () -> Void in
                         self.progressHud?.hide(true)
                         let url = NSURL(string: "http://itunes.apple.com/app/id998263412")
@@ -123,16 +123,16 @@ class StartupViewController: GAITrackedViewController {
                 var message:String?
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    message = "Internet is not connected. Please try again."
+                    message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
                 } else {
-                    message = "Failed to fetch user info because of undefined error."
+                    message = NSLocalizedString("Failed to fetch user info because of undefined error.", comment:"")
                     let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
                     keychainItemWrapper["auth_token"] = nil
                 }
                 ViewUtils.showNoticeAlert(self,
-                    title: "Failed to fetch user info",
+                    title: NSLocalizedString("Failed to fetch user info", comment:""),
                     message: message!,
-                    btnText: "Retry",
+                    btnText: NSLocalizedString("Retry", comment:""),
                     callback: { () -> Void in
                         self.progressHud?.hide(true)
                         self.initialize()
@@ -387,9 +387,9 @@ class StartupViewController: GAITrackedViewController {
     
     func facebookSignin(rerequest:Bool, callback:(cancel:Bool, error:NSError?) -> Void) {
         ViewUtils.showConfirmAlert(self,
-                title: "Permission Required",
-                message: "Grant permission to import your favorite followed artists from Facebook?",
-                positiveBtnText: "OK",
+                title: NSLocalizedString("Permission Required", comment:""),
+            message: NSLocalizedString("Grant permission to import your favorite followed artists from Facebook?", comment:""),
+                positiveBtnText: NSLocalizedString("OK", comment:""),
                 positiveBtnCallback: { () -> Void in
             
             var fbManager:FBSDKLoginManager = FBSDKLoginManager()
@@ -400,10 +400,11 @@ class StartupViewController: GAITrackedViewController {
                     // Process error
                     ViewUtils.showConfirmAlert(
                         self,
-                        title: "Failed to connect facebook", message: "Failed to acquire user info permission. Do you want to retry facebook connect?",
-                        positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                        title: NSLocalizedString("Failed to connect facebook", comment:""),
+                        message: NSLocalizedString("Failed to acquire user info permission. Do you want to retry facebook connect?", comment:""),
+                        positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
                             self.facebookSignin(rerequest, callback: callback)
-                    }, negativeBtnText: "Not now", negativeBtnCallback: { () -> Void in
+                    }, negativeBtnText: NSLocalizedString("Not now", comment:""), negativeBtnCallback: { () -> Void in
                         callback(cancel:true, error:error != nil ? error : NSError(domain: "facebookSignin", code: 0, userInfo: nil))
                     })
                     return
@@ -411,7 +412,7 @@ class StartupViewController: GAITrackedViewController {
                 callback(cancel:false, error: nil)
             })
                 
-        }, negativeBtnText: "Decline") { () -> Void in
+        }, negativeBtnText: NSLocalizedString("Decline", comment:"")) { () -> Void in
             callback(cancel: true, error: nil)
             return
         }

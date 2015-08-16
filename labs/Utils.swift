@@ -64,7 +64,7 @@ class PaddingLabel:UILabel {
 
 class ViewUtils {
     static func showNoticeAlert(viewController:UIViewController, title:String,
-            message:String, btnText:String="Confirm", callback:(() -> Void)?=nil) {
+            message:String, btnText:String=NSLocalizedString("Confirm", comment:""), callback:(() -> Void)?=nil) {
                 
         if (NSClassFromString("UIAlertController") != nil) {
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
@@ -94,8 +94,8 @@ class ViewUtils {
     
     static func showConfirmAlert(viewController:UIViewController,
             title:String, message:String,
-            positiveBtnText:String="Proceed", positiveBtnCallback: (() -> Void)?=nil,
-            negativeBtnText:String="Cancel", negativeBtnCallback: (() -> Void)?=nil) {
+            positiveBtnText:String=NSLocalizedString("Proceed", comment:""), positiveBtnCallback: (() -> Void)?=nil,
+            negativeBtnText:String=NSLocalizedString("Cancel", comment:""), negativeBtnCallback: (() -> Void)?=nil) {
             
         if (NSClassFromString("UIAlertController") != nil) {
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
@@ -131,8 +131,8 @@ class ViewUtils {
     
     static func showTextInputAlert(viewController:UIViewController,
             title:String, message:String, placeholder:String,
-            positiveBtnText:String="Submit", positiveBtnCallback: (result:String) -> Void,
-            negativeBtnText:String="Cancel", negativeBtnCallback: (() -> Void)?=nil) {
+            positiveBtnText:String=NSLocalizedString("Submit", comment:""), positiveBtnCallback: (result:String) -> Void,
+            negativeBtnText:String=NSLocalizedString("Cancel", comment:""), negativeBtnCallback: (() -> Void)?=nil) {
     
         if (NSClassFromString("UIAlertController") != nil) {
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)

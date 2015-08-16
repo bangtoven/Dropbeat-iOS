@@ -428,22 +428,22 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     }
     
     func updateStatusView() {
-        let defaultText = "CHOOSE TRACK"
+        let defaultText = NSLocalizedString("CHOOSE TRACK", comment:"")
         if (PlayerContext.playState == PlayState.LOADING ||
                 PlayerContext.playState == PlayState.SWITCHING) {
-            playerStatus.text = "LOADING"
+            playerStatus.text = NSLocalizedString("LOADING", comment:"")
             playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
         } else if (PlayerContext.playState == PlayState.PAUSED) {
-            playerStatus.text = "PAUSED"
+            playerStatus.text = NSLocalizedString("PAUSED", comment:"")
             playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
         } else if (PlayerContext.playState == PlayState.PLAYING) {
-            playerStatus.text = "PLAYING"
+            playerStatus.text = NSLocalizedString("PLAYING", comment:"")
             playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
         } else if (PlayerContext.playState == PlayState.STOPPED) {
-            playerStatus.text = "READY"
+            playerStatus.text = NSLocalizedString("READY", comment:"")
             playerTitle.text = defaultText
         } else if (PlayerContext.playState == PlayState.BUFFERING) {
-            playerStatus.text = "BUFFERING"
+            playerStatus.text = NSLocalizedString("BUFFERING", comment:"")
             playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
         }
     }
@@ -670,8 +670,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         if (userInfo != nil) {
             var reason:NSError? = userInfo!["error"] as? NSError
             if (reason != nil) {
-                var errMsg = "This track is not streamable"
-                ViewUtils.showNoticeAlert(self, title: "Failed to play",
+                var errMsg = NSLocalizedString("This track is not streamable", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to play", comment:""),
                     message: errMsg)
                 handleStop()
             }
@@ -689,8 +689,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 if (reason == MPMovieFinishReason.PlaybackError.rawValue) {
                     // Finished with error
                     var err:NSError? = userInfo!["error"] as? NSError
-                    var errMsg = "This track is not streamable "
-                    ViewUtils.showNoticeAlert(self, title: "Failed to play",
+                    var errMsg = NSLocalizedString("This track is not streamable", comment:"")
+                    ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to play", comment:""),
                         message: errMsg)
                     handleStop()
                     return
@@ -723,9 +723,9 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     @IBAction func onMenuBtnClicked(sender: AnyObject) {
         actionSheetTargetTrack = PlayerContext.currentTrack
         var actionSheet = UIActionSheet()
-        actionSheet.addButtonWithTitle("Add to playlist")
-        actionSheet.addButtonWithTitle("Share")
-        actionSheet.addButtonWithTitle("Cancel")
+        actionSheet.addButtonWithTitle(NSLocalizedString("Add to playlist", comment:""))
+        actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
+        actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
         actionSheet.cancelButtonIndex = 2
         actionSheet.showInView(self.view)
         actionSheet.delegate = self
@@ -773,11 +773,11 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         if (!forceChange &&
             networkStatus == NetworkStatus.OTHER &&
             PlayerContext.qualityState == QualityState.LQ) {
-                ViewUtils.showConfirmAlert(self, title: "Data usage warning",
-                    message: "Streaming music in High Quality can use significant network data",
-                    positiveBtnText: "Proceed", positiveBtnCallback: { () -> Void in
+                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Data usage warning", comment:""),
+                    message: NSLocalizedString("Streaming music in High Quality can use significant network data", comment:""),
+                    positiveBtnText: NSLocalizedString("Proceed", comment:""), positiveBtnCallback: { () -> Void in
                         self.onQualityBtnClicked(sender, forceChange:true)
-                    }, negativeBtnText: "Cancel", negativeBtnCallback: { () -> Void in
+                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: { () -> Void in
                         return
                 })
                 return
@@ -789,24 +789,24 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     }
     
     func onTrackShareBtnClicked(track:Track) {
-        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         track.shareTrack("player", afterShare: { (error, uid) -> Void in
             progressHud.hide(false)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showConfirmAlert(self, title: "Failed to share",
-                        message: "Internet is not connected.",
-                        positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                    ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
+                        message: NSLocalizedString("Internet is not connected", comment:""),
+                        positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
                             self.onTrackShareBtnClicked(track)
-                        }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                        }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                ViewUtils.showConfirmAlert(self, title: "Failed to share",
-                    message: "Failed to share track",
-                    positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
+                    message: NSLocalizedString("Failed to share track", comment:""),
+                    positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
                         self.onTrackShareBtnClicked(track)
-                    }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                 return
             }
             let shareUrl = "http://dropbeat.net/?track=" + uid!
@@ -841,7 +841,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     
     @IBAction func onTrackShareBtnClicked(sender: UIButton) {
         if PlayerContext.currentTrack == nil {
-            ViewUtils.showToast(self, message: "No track selected")
+            ViewUtils.showToast(self, message: NSLocalizedString("No track selected", comment:""))
             return
         }
         onTrackShareBtnClicked(PlayerContext.currentTrack!)
@@ -1077,8 +1077,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         } else {
             let url = resolveLocal(track.id, track.type)
             if (url == nil) {
-                ViewUtils.showNoticeAlert(self, title: "Failed to play",
-                    message: "Unsupported track type")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to play", comment:""),
+                    message: NSLocalizedString("Unsupported track type", comment:""))
                 // XXX: Cannot play.
                 handleStop()
                 return
@@ -1247,27 +1247,27 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         var rate:Float?
         switch(playingState) {
             case PlayState.LOADING:
-                stateText = "LOADING.."
+                stateText = NSLocalizedString("LOADING..", comment:"")
                 rate = 0.0
                 break
             case PlayState.SWITCHING:
-                stateText = "LOADING.."
+                stateText = NSLocalizedString("LOADING..", comment:"")
                 rate = 0.0
                 break
             case PlayState.PAUSED:
-                stateText = "PAUSED"
+                stateText = NSLocalizedString("PAUSED", comment:"")
                 rate = 0
                 break
             case PlayState.STOPPED:
-                stateText = "READY"
+                stateText = NSLocalizedString("READY", comment:"")
                 rate = 0
                 break
             case PlayState.PLAYING:
-                stateText = "PLAYING"
+                stateText = NSLocalizedString("PLAYING", comment:"")
                 rate = 1.0
                 break
             case PlayState.BUFFERING:
-                stateText = "BUFFERING"
+                stateText = NSLocalizedString("BUFFERING", comment:"")
                 rate = 1.0
                 break
             default:

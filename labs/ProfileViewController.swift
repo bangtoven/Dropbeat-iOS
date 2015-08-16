@@ -69,13 +69,16 @@ class ProfileViewController: BaseViewController,
     
     @IBAction func onCreatePlaylistBtnClicked(sender: AnyObject) {
         ViewUtils.showTextInputAlert(
-            self, title: "Create new playlist", message: "Type new playlist name", placeholder: "Playlist 01",
-            positiveBtnText: "Create",
+            self, title: NSLocalizedString("Create new playlist", comment:""),
+            message: NSLocalizedString("Type new playlist name", comment:""),
+            placeholder: NSLocalizedString("Playlist 01", comment:""),
+            positiveBtnText: NSLocalizedString("Create", comment:""),
             positiveBtnCallback: { (result) -> Void in
                 if (count(result) == 0) {
                     return
                 }
-                let progressHud = ViewUtils.showProgress(self, message: "Creating playlist..")
+                let progressHud = ViewUtils.showProgress(self,
+                    message: NSLocalizedString("Creating playlist..", comment:""))
                 Requests.createPlaylist(result, respCb: {
                         (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                     progressHud.hide(false)
@@ -84,12 +87,14 @@ class ProfileViewController: BaseViewController,
                         var message:String?
                         if (error != nil && error!.domain == NSURLErrorDomain &&
                                 error!.code == NSURLErrorNotConnectedToInternet) {
-                            message = "Internet is not connected"
+                            message = NSLocalizedString("Internet is not connected", comment:"")
                         }
                         if (message == nil) {
-                            message = "Failed to create playlist"
+                            message = NSLocalizedString("Failed to create playlist", comment:"")
                         }
-                        ViewUtils.showNoticeAlert(self, title: "Failed to create", message: message!)
+                        ViewUtils.showNoticeAlert(self,
+                            title: NSLocalizedString("Failed to create", comment:""),
+                            message: message!)
                         return
                     }
                     self.loadPlaylist()
@@ -103,16 +108,8 @@ class ProfileViewController: BaseViewController,
                 "PlaylistSelectTableViewCell", forIndexPath: indexPath) as! PlaylistSelectTableViewCell
         cell.nameView.text = playlist.name
         let trackCount = playlist.tracks.count
-        switch(trackCount) {
-        case 0:
-            cell.trackCount.text = "\(trackCount) track"
-        case 1:
-            cell.trackCount.text = "\(trackCount) track"
-            break
-        default:
-            cell.trackCount.text = "\(trackCount) tracks"
-            break
-        }
+        cell.trackCount.text = NSString.localizedStringWithFormat(
+            NSLocalizedString("%d tracks", comment: ""), trackCount) as String
         if playlist.id == PlayerContext.currentPlaylistId {
             cell.setSelected(true, animated: false)
         }
@@ -142,19 +139,20 @@ class ProfileViewController: BaseViewController,
     }
     
     func loadPlaylist() {
-        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         Requests.fetchAllPlaylists({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(true)
             if (error != nil || result == nil) {
-                ViewUtils.showConfirmAlert(self, title: "Failed to fetch", message: "Failed to fetch playlists.",
-                    positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to fetch", comment:""),
+                    message: NSLocalizedString("Failed to fetch playlists.", comment:""),
+                    positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
                     self.loadPlaylist()
-                }, negativeBtnText: "Cancel")
+                }, negativeBtnText: NSLocalizedString("Cancel", comment:""))
                 return
             }
             let playlists = Parser().parsePlaylists(result!).reverse()
             if (playlists.count == 0) {
-                ViewUtils.showNoticeAlert(self, title: "Failed to fetch playlists", message: error!.description)
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch playlists", comment:""), message: error!.description)
                 return
             }
             PlayerContext.playlists.removeAll(keepCapacity: false)

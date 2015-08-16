@@ -59,10 +59,10 @@ class FeedViewController: BaseViewController,
     
     var feedMenus:[FeedMenu] = {
         var types = [FeedMenu]()
-        types.append(FeedMenu(title: "Trending Tracks", type: FeedType.TRENDING))
-        types.append(FeedMenu(title: "Followed Artists", type: FeedType.FOLLOWING))
-        types.append(FeedMenu(title: "New Releases", type: FeedType.NEW_RELEASE))
-        types.append(FeedMenu(title: "Beatport Charts", type: FeedType.BEATPORT_CHART))
+        types.append(FeedMenu(title: NSLocalizedString("Trending Tracks", comment:""), type: FeedType.TRENDING))
+        types.append(FeedMenu(title: NSLocalizedString("Followed Artists", comment:""), type: FeedType.FOLLOWING))
+        types.append(FeedMenu(title: NSLocalizedString("New Releases", comment:""), type: FeedType.NEW_RELEASE))
+        types.append(FeedMenu(title: NSLocalizedString("Beatport Charts", comment:""), type: FeedType.BEATPORT_CHART))
         return types
     }()
     
@@ -86,20 +86,24 @@ class FeedViewController: BaseViewController,
     }
     
     func initialize() {
-        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         initGenres { (error) -> Void in
             progressHud.hide(false)
             if error != nil {
-                var message:String = "Failed to initalize feed."
+                var message:String = NSLocalizedString("Failed to initalize feed.", comment:"")
                 
                 if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    message += "Internet is not connected."
+                    message += NSLocalizedString("Internet is not connected.", comment:"")
                 }
                 
-                ViewUtils.showConfirmAlert(self, title: "Failed to load", message: message, positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to load", comment:""),
+                        message: message,
+                        positiveBtnText: NSLocalizedString("Retry", comment:""),
+                        positiveBtnCallback: { () -> Void in
                     self.initialize()
-                }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                 return
             }
             self.switchFeed(self.selectedFeedMenu)
@@ -146,12 +150,11 @@ class FeedViewController: BaseViewController,
             view.delegate = self
             return view
         }
-        let view:FollowingFeedHeaderWithFollowingView = FollowingFeedHeaderWithFollowingView(frame: CGRectMake(0, 0, self.feedTableView.bounds.width, 100))
-        var text = "You are following \(followings.count) artist"
-        if followings.count > 1 {
-            text += "s"
-        }
-        view.followingInfoView.text = text
+        let view:FollowingFeedHeaderWithFollowingView =
+            FollowingFeedHeaderWithFollowingView(frame: CGRectMake(0, 0, self.feedTableView.bounds.width, 100))
+        var text = NSString.localizedStringWithFormat(
+            NSLocalizedString("You are following %d artists", comment:""), followings.count)
+        view.followingInfoView.text = text as String
         view.delegate = self
         return view
     }
@@ -576,7 +579,7 @@ class FeedViewController: BaseViewController,
     }
     
     func onShareBtnClicked(track:Track) {
-        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         var section = "feed_"
         if selectedFeedMenu != nil {
             section += "_" + selectedFeedMenu.title.lowercaseString.replace(" ", withString: "_")
@@ -589,18 +592,18 @@ class FeedViewController: BaseViewController,
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showConfirmAlert(self, title: "Failed to share",
-                        message: "Internet is not connected.",
-                        positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                    ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
+                        message: NSLocalizedString("Internet is not connected.", comment:""),
+                        positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
                             self.onShareBtnClicked(track)
-                        }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                        }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                ViewUtils.showConfirmAlert(self, title: "Failed to share",
-                    message: "Failed to share track",
-                    positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
+                    message: NSLocalizedString("Failed to share track", comment:""),
+                    positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
                         self.onShareBtnClicked(track)
-                    }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                 return
             }
             let shareUrl = "http://dropbeat.net/?track=" + uid!
@@ -639,9 +642,9 @@ class FeedViewController: BaseViewController,
         selectedTrack = track
         
         let actionSheet = UIActionSheet()
-        actionSheet.addButtonWithTitle("Add to playlist")
-        actionSheet.addButtonWithTitle("Share")
-        actionSheet.addButtonWithTitle("Cancel")
+        actionSheet.addButtonWithTitle(NSLocalizedString("Add to playlist", comment:""))
+        actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
+        actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
         actionSheet.cancelButtonIndex = 2
         actionSheet.delegate = self
         
@@ -661,7 +664,7 @@ class FeedViewController: BaseViewController,
             }
         }
         if track == nil || foundIdx == -1 {
-            ViewUtils.showToast(self, message: "Track is not in feed")
+            ViewUtils.showToast(self, message: NSLocalizedString("Track is not in feed", comment:""))
             return
         }
         
@@ -689,9 +692,9 @@ class FeedViewController: BaseViewController,
         loadMoreSpinner.stopAnimating()
         
         if menu.type == FeedType.FOLLOWING {
-            genreSelectBtn.title = "Order"
+            genreSelectBtn.title = NSLocalizedString("Order", comment:"")
         } else {
-            genreSelectBtn.title = "Genre"
+            genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
         }
         
         if genres[menu.type] != nil {
@@ -744,17 +747,20 @@ class FeedViewController: BaseViewController,
                 self.loadFollowingFeed()
                 return
             }
-            let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+            let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
             loadFollowingList({ (following, error) -> Void in
                 progressHud.hide(false)
                 if error != nil {
                     if error!.domain == NSURLErrorDomain &&
                             error!.code == NSURLErrorNotConnectedToInternet {
-                        ViewUtils.showNoticeAlert(self, title: "Failed to load", message: "Internet is not connected")
+                        ViewUtils.showNoticeAlert(self,
+                            title: NSLocalizedString("Failed to load", comment:""),
+                            message: NSLocalizedString("Internet is not connected", comment:""))
                         return
                     }
-                    var message = "Failed to load trending."
-                    ViewUtils.showNoticeAlert(self, title: "Failed to load", message: message)
+                    var message = NSLocalizedString("Failed to load trending.", comment:"")
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to load", comment:""), message: message)
                     return
                 }
                 self.feedTableView.tableHeaderView = self.getFollowingHeaderView(following!)
@@ -792,6 +798,7 @@ class FeedViewController: BaseViewController,
                 label: "feed",
                 value: 1
             ).build()
+        
         tracker.send(event as [NSObject: AnyObject]!)
         
         
@@ -829,7 +836,7 @@ class FeedViewController: BaseViewController,
         
         var progressHud:MBProgressHUD?
         if nextPage == 0 {
-            progressHud = ViewUtils.showProgress(self, message: "Loading..")
+            progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
         Requests.getStreamTrending(selectedGenre!.key, pageIdx: nextPage, respCb: {
             (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
@@ -838,11 +845,13 @@ class FeedViewController: BaseViewController,
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showNoticeAlert(self, title: "Failed to load", message: "Internet is not connected")
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to load", comment:""),
+                        message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = "Failed to load trending."
-                ViewUtils.showNoticeAlert(self, title: "Failed to load", message: message)
+                var message = NSLocalizedString("Failed to load trending.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
@@ -852,16 +861,17 @@ class FeedViewController: BaseViewController,
             if count(self.selectedGenre!.key) == 0 {
                 let streamTrending = parser.parseStreamTrending(result!)
                 if !streamTrending.success {
-                    var message = "Failed to load trending."
-                    ViewUtils.showNoticeAlert(self, title: "Failed to load", message: message)
+                    var message = NSLocalizedString("Failed to load trending.", comment:"")
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to load", comment:""), message: message)
                     return
                 }
                 resultTracks = streamTrending.results
             } else {
                 let beatportTrending = parser.parseStreamBeatportTrending(result!)
                 if !beatportTrending.success {
-                    var message = "Failed to load trending."
-                    ViewUtils.showNoticeAlert(self, title: "Failed to load", message: message)
+                    var message = NSLocalizedString("Failed to load trending.", comment:"")
+                    ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                     return
                 }
                 resultTracks = beatportTrending.results
@@ -889,7 +899,7 @@ class FeedViewController: BaseViewController,
             selectedGenre = genres[FeedType.BEATPORT_CHART]![0]
         }
         
-        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         var genreKey = selectedGenre!.name
         if count(selectedGenre!.key) == 0 {
             genreKey = "TOP100"
@@ -901,11 +911,13 @@ class FeedViewController: BaseViewController,
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showNoticeAlert(self, title: "Failed to load", message: "Internet is not connected")
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to load", comment:""),
+                        message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = "Failed to load chart."
-                ViewUtils.showNoticeAlert(self, title: "Failed to load", message: message)
+                var message = NSLocalizedString("Failed to load chart.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
@@ -913,8 +925,8 @@ class FeedViewController: BaseViewController,
             var chart = parser.parseBeatportChart(result!)
             
             if !chart.success {
-                var message = "Failed to load chart."
-                ViewUtils.showNoticeAlert(self, title: "Failed to load", message: message)
+                var message = NSLocalizedString("Failed to load chart.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             self.tracks.removeAll(keepCapacity: false)
@@ -944,7 +956,8 @@ class FeedViewController: BaseViewController,
             let parser = Parser()
             let info = parser.parseFollowing(result!)
             if !info.success {
-                callback(following: nil, error: NSError(domain: "loadFollowingList", code:0, userInfo: nil))
+                callback(following: nil,
+                    error: NSError(domain: NSLocalizedString("loadFollowingList", comment:""), code:0, userInfo: nil))
                 return
             }
             
@@ -963,7 +976,7 @@ class FeedViewController: BaseViewController,
         
         var progressHud:MBProgressHUD?
         if nextPage == 0 {
-            progressHud = ViewUtils.showProgress(self, message: "Loading..")
+            progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
         
         Requests.getStreamFollowing(forceRefresh, pageIdx: nextPage, order:selectedGenre!.key, respCb: {
@@ -973,11 +986,13 @@ class FeedViewController: BaseViewController,
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showNoticeAlert(self, title: "Failed to load", message: "Internet is not connected")
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to load", comment:""),
+                        message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = "Failed to load following feed."
-                ViewUtils.showNoticeAlert(self, title: "Failed to load", message: message)
+                var message = NSLocalizedString("Failed to load following feed.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
@@ -985,8 +1000,8 @@ class FeedViewController: BaseViewController,
             let parser = Parser()
             let streamFollowing = parser.parseStreamFollowing(result!)
             if !streamFollowing.success {
-                var message = "Failed to load following feed."
-                ViewUtils.showNoticeAlert(self, title: "Failed to load", message: message)
+                var message = NSLocalizedString("Failed to load following feed.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
@@ -1017,7 +1032,7 @@ class FeedViewController: BaseViewController,
         
         var progressHud:MBProgressHUD?
         if nextPage == 0 {
-            progressHud = ViewUtils.showProgress(self, message: "Loading..")
+            progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
         Requests.getStreamNew(selectedGenre!.key, pageIdx: nextPage, respCb: {
             (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
@@ -1026,11 +1041,13 @@ class FeedViewController: BaseViewController,
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showNoticeAlert(self, title: "Failed to load", message: "Internet is not connected")
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to load", comment:""),
+                        message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = "Failed to load new release."
-                ViewUtils.showNoticeAlert(self, title: "Failed to load", message: message)
+                var message = NSLocalizedString("Failed to load new release.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
@@ -1038,8 +1055,9 @@ class FeedViewController: BaseViewController,
             let parser = Parser()
             let streamNew = parser.parseStreamNew(result!)
             if !streamNew.success {
-                var message = "Failed to load new release."
-                ViewUtils.showNoticeAlert(self, title: "Failed to load", message: message)
+                var message = NSLocalizedString("Failed to load new release.", comment:"")
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
@@ -1123,9 +1141,9 @@ class FeedViewController: BaseViewController,
         genreTableView.hidden = true
         feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_up.png"), forState: UIControlState.Normal)
         if selectedFeedMenu.type == FeedType.FOLLOWING {
-            genreSelectBtn.title = "Order"
+            genreSelectBtn.title = NSLocalizedString("Order", comment:"")
         } else {
-            genreSelectBtn.title = "Genre"
+            genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
         }
     }
     
@@ -1137,9 +1155,9 @@ class FeedViewController: BaseViewController,
         feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_down.png"), forState: UIControlState.Normal)
         updateFeedTypeSelectBtn(selected)
         if selectedFeedMenu.type == FeedType.FOLLOWING {
-            genreSelectBtn.title = "Order"
+            genreSelectBtn.title = NSLocalizedString("Order", comment:"")
         } else {
-            genreSelectBtn.title = "Genre"
+            genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
         }
     }
     
@@ -1149,6 +1167,6 @@ class FeedViewController: BaseViewController,
         feedTypeSelectTableView.hidden = true
         genreTableView.hidden = false
         feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_down.png"), forState: UIControlState.Normal)
-        genreSelectBtn.title = "Close"
+        genreSelectBtn.title = NSLocalizedString("Close", comment:"")
     }
 }

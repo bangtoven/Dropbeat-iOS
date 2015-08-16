@@ -104,18 +104,20 @@ class BookmarkListViewController: BaseViewController,
             return
         }
         
-        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         Requests.getBookmarkList({ (req: NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error: NSError?) -> Void in
             
             progressHud.hide(true)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showNoticeAlert(self, title: "Failed to fetch bookmark", message: "Internet is not connected")
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to fetch bookmark", comment:""),
+                        message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = "Failed to fetch bookmarks."
-                ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: message)
+                var message = NSLocalizedString("Failed to fetch bookmarks.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)
                 return
             }
             
@@ -164,18 +166,20 @@ class BookmarkListViewController: BaseViewController,
             }
             newBookmarkedIds.insert(channel.uid!)
         }
-        let progressHud = ViewUtils.showProgress(self, message: "Saving..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Saving..", comment:""))
         Requests.updateBookmarkList(Array(newBookmarkedIds), respCb:{
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(false)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showNoticeAlert(self, title: "Failed to update bookmarks", message: "Internet is not connected")
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to update bookmarks", comment:""),
+                        message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = "Failed to update bookmarks."
-                ViewUtils.showNoticeAlert(self, title: "Failed to update", message: message)
+                var message = NSLocalizedString("Failed to update bookmarks.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to update", comment:""), message: message)
                 return
             }
             self.bookmarkedChannels.removeAll(keepCapacity: false)

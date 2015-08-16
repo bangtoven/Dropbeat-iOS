@@ -47,12 +47,14 @@ class SigninViewController: BaseViewController {
     
     @IBAction func onSigninBtnClicked(sender: UIButton) {
         var fbManager:FBSDKLoginManager = FBSDKLoginManager()
-        progressHud = ViewUtils.showProgress(self, message: "Signining in..")
+        progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Signining in..", comment:""))
         fbManager.logOut()
         fbManager.logInWithReadPermissions(["email", "user_likes"], handler: { (result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
             if (error != nil) {
                 // Process error
-                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Failed to acquire user info permission")
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Failed to sign in", comment:""),
+                    message: NSLocalizedString("Failed to acquire user info permission", comment:""))
                 self.progressHud?.hide(false)
                 return
             }
@@ -64,7 +66,9 @@ class SigninViewController: BaseViewController {
             if result.grantedPermissions.contains("email") {
                 self.requestProfileInfos()
             } else {
-                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Email and like permission required for Dropbeat signin")
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Failed to sign in", comment:""),
+                    message: NSLocalizedString("Email and like permission required for Dropbeat signin", comment:""))
                 self.progressHud?.hide(false)
             }
         })
@@ -75,7 +79,9 @@ class SigninViewController: BaseViewController {
         let request:FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
         request.startWithCompletionHandler({ (connection:FBSDKGraphRequestConnection!, result:AnyObject!, error:NSError!) -> Void in
             if (error != nil) {
-                ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: "Failed to fetch user profile")
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Failed to sign in", comment:""),
+                    message: NSLocalizedString("Failed to fetch user profile", comment:""))
                 self.progressHud?.hide(false)
                 fbManager.logOut()
                 return
@@ -103,11 +109,11 @@ class SigninViewController: BaseViewController {
                     var message:String?
                     if (error != nil && error!.domain == NSURLErrorDomain &&
                             error!.code == NSURLErrorNotConnectedToInternet) {
-                        message = "Internet is not connected. Please try again."
+                        message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
                     } else {
-                        message = "Failed to sign in."
+                        message = NSLocalizedString("Failed to sign in.", comment:"")
                     }
-                    ViewUtils.showNoticeAlert(self, title: "Failed to sign in",
+                    ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to sign in", comment:""),
                         message: message!)
                     self.progressHud?.hide(false)
                     return
@@ -116,8 +122,8 @@ class SigninViewController: BaseViewController {
                 var success:Bool = res.objectForKey("success") as! Bool? ?? false
                 if (!success) {
                     fbManager.logOut()
-                    var errorMsg:String = res.objectForKey("error") as? String ?? "Failed to sign in"
-                    ViewUtils.showNoticeAlert(self, title: "Failed to sign in", message: errorMsg)
+                    var errorMsg:String = res.objectForKey("error") as? String ?? NSLocalizedString("Failed to sign in", comment:"")
+                    ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to sign in", comment:""), message: errorMsg)
                     self.progressHud?.hide(false)
                     return
                 }

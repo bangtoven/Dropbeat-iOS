@@ -94,7 +94,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             return
         }
         
-        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         Requests.getSharedTrack(appDelegate.sharedTrackUid!, respCb: {
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             
@@ -115,9 +115,9 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             if !success {
                 ViewUtils.showNoticeAlert(
                     self,
-                    title: "Failed to load",
-                    message: "Failed to load shared track",
-                    btnText: "Confirm",
+                    title: NSLocalizedString("Failed to load", comment:""),
+                    message: NSLocalizedString("Failed to load shared track", comment:""),
+                    btnText: NSLocalizedString("Confirm", comment:""),
                     callback: nil)
                 return
             }
@@ -137,7 +137,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             return
         }
         
-        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         Requests.getSharedPlaylist(appDelegate.sharedPlaylistUid!, respCb: {
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             
@@ -157,9 +157,9 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             if !success {
                 ViewUtils.showNoticeAlert(
                     self,
-                    title: "Failed to load",
-                    message: "Failed to load shared playlist",
-                    btnText: "Confirm",
+                    title: NSLocalizedString("Failed to load", comment:""),
+                    message: NSLocalizedString("Failed to load shared playlist", comment:""),
+                    btnText: NSLocalizedString("Confirm", comment:""),
                     callback: nil)
                 progressHud.hide(false)
                 return

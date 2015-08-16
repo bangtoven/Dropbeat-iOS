@@ -97,25 +97,27 @@ class ChannelDetailViewController: BaseViewController,
     }
     
     func loadChannel() {
-        let progressHud = ViewUtils.showProgress(self, message: "loading channel info..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("loading channel info..", comment:""))
         Requests.getChannelDetail(channelUid!, respCb: {
                 (req:NSURLRequest, resp: NSHTTPURLResponse?, result: AnyObject?, error:NSError?) -> Void in
             progressHud.hide(false)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showNoticeAlert(self, title: "Failed to fetch channel info", message: "Internet is not connected")
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to fetch channel info", comment:""),
+                        message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = "Failed to fetch channel info."
-                ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: message)
+                var message = NSLocalizedString("Failed to fetch channel info.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)
                 return
             }
             
             self.channel = Channel.fromDetailJson(result!, key: "data")
             if (self.channel == nil) {
-                var message = "Failed to fetch channel info."
-                ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: message)
+                var message = NSLocalizedString("Failed to fetch channel info.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)
                 return
             }
             self.channel!.uid = self.channelUid
@@ -140,17 +142,19 @@ class ChannelDetailViewController: BaseViewController,
         if (Account.getCachedAccount() == nil) {
             return
         }
-        let progressHud = ViewUtils.showProgress(self, message: "loading bookmarks..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("loading bookmarks..", comment:""))
         Requests.getBookmarkList({ (req: NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error: NSError?) -> Void in
             progressHud.hide(true)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showNoticeAlert(self, title: "Failed to fetch bookmark", message: "Internet is not connected")
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to fetch bookmark", comment:""),
+                        message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = "Failed to fetch bookmarks."
-                ViewUtils.showNoticeAlert(self, title: "Failed to fetch", message: message)
+                var message = NSLocalizedString("Failed to fetch bookmarks.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)
                 return
             }
             
@@ -183,14 +187,16 @@ class ChannelDetailViewController: BaseViewController,
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showNoticeAlert(self, title: "Failed to load", message: "Internet is not connected")
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to load", comment:""),
+                        message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
                 if result != nil {
                     println("result = \(result)")
                 }
-                var message = "Failed to load tracks."
-                ViewUtils.showNoticeAlert(self, title: "Failed to load", message: message)
+                var message = NSLocalizedString("Failed to load tracks.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
@@ -295,18 +301,21 @@ class ChannelDetailViewController: BaseViewController,
             }
             isAdding = false
         }
-        let progressHud = ViewUtils.showProgress(self, message: "saving bookmark..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("saving bookmark..", comment:""))
         Requests.updateBookmarkList(newBookmarkedIds, respCb:{
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(false)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showNoticeAlert(self, title: "Failed to update bookmarks", message: "Internet is not connected")
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to update bookmarks", comment:""),
+                        message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = "Failed to update bookmarks."
-                ViewUtils.showNoticeAlert(self, title: "Failed to update", message: message)
+                var message = NSLocalizedString("Failed to update bookmarks.", comment:"")
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Failed to update", comment:""), message: message)
                 return
             }
             if (isAdding && find(self.bookmarkedIds, self.channel!.uid!) == nil) {
@@ -476,24 +485,24 @@ class ChannelDetailViewController: BaseViewController,
     }
     
     func onShareBtnClicked(track:Track) {
-        let progressHud = ViewUtils.showProgress(self, message: "Loading..")
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         track.shareTrack("channel_detail", afterShare: { (error, uid) -> Void in
             progressHud.hide(false)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showConfirmAlert(self, title: "Failed to share",
-                        message: "Internet is not connected.",
-                        positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                    ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
+                        message: NSLocalizedString("Internet is not connected.", comment:""),
+                        positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
                             self.onShareBtnClicked(track)
-                        }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                        }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                ViewUtils.showConfirmAlert(self, title: "Failed to share",
-                    message: "Failed to share track",
-                    positiveBtnText: "Retry", positiveBtnCallback: { () -> Void in
+                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
+                    message: NSLocalizedString("Failed to share track", comment:""),
+                    positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
                         self.onShareBtnClicked(track)
-                    }, negativeBtnText: "Cancel", negativeBtnCallback: nil)
+                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                 return
             }
             let shareUrl = "http://dropbeat.net/?track=" + uid!
@@ -532,9 +541,9 @@ class ChannelDetailViewController: BaseViewController,
         actionSheetTargetTrack = track
         
         let actionSheet = UIActionSheet()
-        actionSheet.addButtonWithTitle("Add to playlist")
-        actionSheet.addButtonWithTitle("Share")
-        actionSheet.addButtonWithTitle("Cancel")
+        actionSheet.addButtonWithTitle(NSLocalizedString("Add to playlist", comment:""))
+        actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
+        actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
         actionSheet.cancelButtonIndex = 2
         actionSheet.delegate = self
         
@@ -557,7 +566,7 @@ class ChannelDetailViewController: BaseViewController,
             }
         }
         if track == nil || foundIdx == -1 {
-            ViewUtils.showToast(self, message: "Track is not in feed")
+            ViewUtils.showToast(self, message: NSLocalizedString("Track is not in feed", comment:""))
             return
         }
         

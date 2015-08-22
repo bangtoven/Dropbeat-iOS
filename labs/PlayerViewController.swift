@@ -21,6 +21,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     @IBOutlet weak var playerTitle: UILabel!
     @IBOutlet weak var playerStatus: UILabel!
     
+    @IBOutlet weak var likeProgIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var likeBtn: UIButton!
     @IBOutlet weak var shareBtn: UIButton!
     @IBOutlet weak var repeatBtn: UIButton!
     @IBOutlet weak var shuffleBtn: UIButton!
@@ -34,7 +36,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     @IBOutlet weak var coverImageView: UIImageView!
     @IBOutlet weak var qualityBtn: UIButton!
     @IBOutlet weak var coverBgImageView: UIImageView!
-    @IBOutlet weak var playlistBtn: UIButton!
+//    @IBOutlet weak var playlistBtn: UIButton!
     
     static var observerAttached: Bool = false
     static var sharedInstance:PlayerViewController?
@@ -42,6 +44,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     var audioPlayerControl: XCDYouTubeVideoPlayerViewController = XCDYouTubeVideoPlayerViewController()
     
     var remoteProgressTimer: NSTimer?
+    var bufferingTimer: NSTimer?
     
     var isProgressUpdatable = true
     var prevShuffleBtnState:Int?
@@ -58,6 +61,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     var hookingBackground: Bool = false
     
     var actionSheetTargetTrack:Track?
+    var actionSheetIncludePlaylist = false
     var lastPlaybackBeforeSwitch:Double?
     
     override func viewDidLoad() {
@@ -98,7 +102,11 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         updateExtraViews()
         updateCoverView()
         updateNextPrevBtn()
+        updateLikeBtn()
         audioPlayerControl.view.frame = CGRectMake(0, 0, videoView.frame.width, videoView.frame.height)
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "onLikeUpdated", name: NotifyKey.likeUpdated, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -110,6 +118,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         resignFirstResponder()
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.likeUpdated, object: nil)
     }
     
     override func canBecomeFirstResponder() -> Bool {
@@ -158,6 +168,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             self, selector: "qualityStateUpdated", name: NotifyKey.updateQualityState, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "networkStatusUpdated", name: NotifyKey.networkStatusChanged, object: nil)
+        
         
         
         // Observe internal player.
@@ -213,12 +224,27 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             ViewUtils.showToast(self, message: "No track selected")
             return
         }
-        
-        switch(buttonIndex) {
+        var idx = buttonIndex
+        if !actionSheetIncludePlaylist {
+            idx += 1
+        }
+        switch(idx) {
         case 0:
-            onAddToPlaylistBtnClicked(actionSheetTargetTrack!)
+            var playlist:Playlist?
+            if PlayerContext.currentPlaylistId != nil {
+                playlist = PlayerContext.getPlaylist(PlayerContext.currentPlaylistId)
+            }
+            if playlist == nil {
+                ViewUtils.showToast(self,
+                    message: NSLocalizedString("Failed to find playlist", comment:""))
+                return
+            }
+            performSegueWithIdentifier("PlaylistSegue", sender: playlist)
             break
         case 1:
+            onAddToPlaylistBtnClicked(actionSheetTargetTrack!)
+            break
+        case 2:
             onTrackShareBtnClicked(actionSheetTargetTrack!)
             break
         default:
@@ -248,19 +274,24 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         updatePlayView()
         updateCoverView()
         updateNextPrevBtn()
+        updateLikeBtn()
     }
     
     func triggerBackgroundPlay(retry:Int) {
         var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) {
+            println("poll background play")
             if (!self.shouldPlayMusic || PlayerContext.playState != PlayState.PAUSED) {
+                println("stop polling")
                 self.hookingBackground = false
                 return
             }
             if (PlayerContext.playState == PlayState.PAUSED) {
+                println("play state is paused, try play")
                 self.handlePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId, force:false)
                 self.triggerBackgroundPlay(retry - 1)
             } else {
+                println("play state is not paused. stop polling")
                 self.hookingBackground = false
             }
         }
@@ -272,7 +303,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         updateRepeatView()
         updateShuffleView()
         updateQualityView()
-        updatePlayerPlaylistBtn()
+//        updatePlayerPlaylistBtn()
     }
     
     func updateNextPrevBtn() {
@@ -360,15 +391,15 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
     }
     
-    func updatePlayerPlaylistBtn () {
-        if PlayerContext.currentPlaylistId == nil {
-            playlistBtn.setImage(UIImage(named:"ic_list_gray.png"), forState: UIControlState.Normal)
-            playlistBtn.enabled = false
-        } else {
-            playlistBtn.setImage(UIImage(named:"ic_list.png"), forState: UIControlState.Normal)
-            playlistBtn.enabled = true
-        }
-    }
+//    func updatePlayerPlaylistBtn () {
+//        if PlayerContext.currentPlaylistId == nil {
+//            playlistBtn.setImage(UIImage(named:"ic_list_gray.png"), forState: UIControlState.Normal)
+//            playlistBtn.enabled = false
+//        } else {
+//            playlistBtn.setImage(UIImage(named:"ic_list.png"), forState: UIControlState.Normal)
+//            playlistBtn.enabled = true
+//        }
+//    }
     
     func updatePlayView() {
         if (PlayerContext.playState == PlayState.LOADING ||
@@ -485,6 +516,16 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
     }
     
+    func updateLikeBtn() {
+        if PlayerContext.currentTrack?.isLiked ?? false {
+            likeBtn.setImage(UIImage(named:"ic_player_heart_fill_btn.png"),
+                forState: UIControlState.Normal)
+        } else {
+            likeBtn.setImage(UIImage(named:"ic_player_heart_btn.png"),
+                forState: UIControlState.Normal)
+        }
+    }
+    
     func getTimeFormatText(time:NSTimeInterval) -> String {
         let ti = Int(time)
         let seconds = ti % 60
@@ -571,6 +612,11 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Stalled.rawValue != 0) {
             startBackgroundTask()
             updatePlayState(PlayState.BUFFERING)
+            println("update state to buffering")
+            if bufferingTimer == nil {
+                bufferingTimer = NSTimer.scheduledTimerWithTimeInterval(
+                    0.5, target: self, selector: Selector("checkBufferState"), userInfo: nil, repeats: true)
+            }
             return
         }
         if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0) {
@@ -581,7 +627,10 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 audioPlayerControl.moviePlayer.currentPlaybackTime = lastPlaybackBeforeSwitch!
                 lastPlaybackBeforeSwitch = nil
             }
-            audioPlayerControl.moviePlayer.play()
+            if bufferingTimer == nil {
+                bufferingTimer = NSTimer.scheduledTimerWithTimeInterval(
+                    0.5, target: self, selector: Selector("checkBufferState"), userInfo: nil, repeats: true)
+            }
             return
         }
         
@@ -609,8 +658,47 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
     }
     
+    func checkBufferState() {
+        if PlayerContext.playState != PlayState.BUFFERING &&
+                PlayerContext.playState != PlayState.LOADING &&
+                PlayerContext.playState != PlayState.SWITCHING {
+            println("invalidate buffering timer")
+            bufferingTimer?.invalidate()
+            bufferingTimer = nil
+            return
+        }
+        var currTime = audioPlayerControl.moviePlayer.currentPlaybackTime
+        var playableTime = audioPlayerControl.moviePlayer.playableDuration
+        var duration = audioPlayerControl.moviePlayer.duration
+        if duration == 0 {
+            return
+        }
+        
+        // Buffer should be more than 3sec
+        if playableTime - currTime > 3 || playableTime >= duration {
+            bufferingTimer?.invalidate()
+            bufferingTimer = nil
+            audioPlayerControl.moviePlayer.play()
+            println("play audio from buffer timer")
+        } else {
+            println("curr buffering state  = \(playableTime - currTime)")
+        }
+    }
+    
     func MPMoviePlayerPlaybackStateDidChange (noti: NSNotification) {
-        println("changed! \(audioPlayerControl.moviePlayer.playbackState.rawValue)")
+        if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Playing) {
+            println("changed! playing")
+        } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Stopped) {
+            println("changed! stopped")
+        } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Paused) {
+            println("changed! paused")
+        } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Interrupted) {
+            println("changed! interrupted")
+        } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.SeekingForward) {
+            println("changed! seekingForward")
+        } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.SeekingBackward) {
+            println("changed! seekingBackward")
+        }
         
         if (forceStopPlayer && (
                 audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Paused ||
@@ -620,6 +708,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         
         if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Playing) {
             updatePlayState(PlayState.PLAYING)
+            println("update state to playing")
             // Periodic timer for progress update.
             if remoteProgressTimer == nil {
                 remoteProgressTimer = NSTimer.scheduledTimerWithTimeInterval(
@@ -656,12 +745,14 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 remoteProgressTimer = nil
             }
             updatePlayState(PlayState.BUFFERING)
+            println("update state to buffering")
         } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.SeekingBackward) {
             if remoteProgressTimer != nil {
                 remoteProgressTimer?.invalidate()
                 remoteProgressTimer = nil
             }
             updatePlayState(PlayState.BUFFERING)
+            println("update state to buffering")
         }
     }
     
@@ -720,13 +811,80 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         return params
     }
     
+    @IBAction func onLikeBtnClicked(sender: AnyObject) {
+        if !likeProgIndicator.hidden {
+            return
+        }
+        if PlayerContext.currentTrack == nil {
+            ViewUtils.showToast(self, message: NSLocalizedString("No track selected", comment:""))
+            return
+        }
+        if (Account.getCachedAccount() == nil) {
+            performSegueWithIdentifier("need_auth", sender: nil)
+            return
+        }
+        if PlayerContext.currentTrack!.isLiked {
+            doUnlike(PlayerContext.currentTrack!)
+        } else {
+            doLike(PlayerContext.currentTrack!)
+        }
+    }
+    
+    func doLike(track:Track) {
+        likeBtn.hidden = true
+        likeProgIndicator.startAnimating()
+        track.doLike({(error:NSError?) -> Void in
+            self.likeProgIndicator.stopAnimating()
+            self.likeBtn.hidden = false
+            if error != nil {
+                ViewUtils.showConfirmAlert(self,
+                    title: NSLocalizedString("Failed to save", comment: ""),
+                    message: NSLocalizedString("Failed to save like info.", comment: ""),
+                    positiveBtnText: NSLocalizedString("Retry", comment:""),
+                    positiveBtnCallback: { () -> Void in
+                        self.doLike(track)
+                })
+                return
+            }
+        })
+    }
+    
+    func doUnlike(track:Track) {
+        if !likeProgIndicator.hidden {
+            return
+        }
+        
+        likeBtn.hidden = true
+        likeProgIndicator.startAnimating()
+        track.doUnlike({(error:NSError?) -> Void in
+            self.likeProgIndicator.stopAnimating()
+            self.likeBtn.hidden = false
+            if error != nil {
+                ViewUtils.showConfirmAlert(self,
+                    title: NSLocalizedString("Failed to save", comment: ""),
+                    message: NSLocalizedString("Failed to save unlike info.", comment: ""),
+                    positiveBtnText: NSLocalizedString("Retry", comment:""),
+                    positiveBtnCallback: { () -> Void in
+                        self.doLike(track)
+                })
+                return
+            }
+        })
+    }
+    
     @IBAction func onMenuBtnClicked(sender: AnyObject) {
         actionSheetTargetTrack = PlayerContext.currentTrack
+        actionSheetIncludePlaylist = PlayerContext.currentPlaylistId != nil
         var actionSheet = UIActionSheet()
+        if actionSheetIncludePlaylist {
+            actionSheet.addButtonWithTitle(NSLocalizedString("Open playing playlist", comment:""))
+            actionSheet.cancelButtonIndex = 3
+        } else {
+            actionSheet.cancelButtonIndex = 2
+        }
         actionSheet.addButtonWithTitle(NSLocalizedString("Add to playlist", comment:""))
         actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
         actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
-        actionSheet.cancelButtonIndex = 2
         actionSheet.showInView(self.view)
         actionSheet.delegate = self
     }
@@ -791,7 +949,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     func onTrackShareBtnClicked(track:Track) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         track.shareTrack("player", afterShare: { (error, uid) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -831,9 +989,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     
     func onAddToPlaylistBtnClicked(track:Track) {
         if (Account.getCachedAccount() == nil) {
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var centerViewController = appDelegate.centerContainer!
-            centerViewController.showSigninView()
+            performSegueWithIdentifier("need_auth", sender: nil)
             return
         }
         performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
@@ -877,6 +1033,10 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     
     @IBAction func onProgressUpOutside(sender: UISlider) {
         onProgressUp(sender)
+    }
+    
+    func onLikeUpdated() {
+        updateLikeBtn()
     }
     
     func onProgressUp(sender:UISlider) {
@@ -993,7 +1153,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         if force {
             shouldPlayMusic = true
         }
-        
         PlayerContext.currentTrack = track
         var closureTrack :Track? = track
         
@@ -1022,8 +1181,9 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         
         // Indicate loading status.
         updatePlayState(PlayState.LOADING)
-        updatePlayerPlaylistBtn()
+//        updatePlayerPlaylistBtn()
         updateNextPrevBtn()
+        updateLikeBtn()
         
         // Log to us
         Requests.logPlay(track!.title)
@@ -1231,6 +1391,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
         updateExtraViews()
         updatePlayView()
+        updateLikeBtn()
     }
     
     func updatePlayingInfoCenter(playingState:Int, image:UIImage) {

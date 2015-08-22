@@ -24,6 +24,7 @@ class ChannelDetailViewController: BaseViewController,
     @IBOutlet weak var loadMoreSpinnerWrapper: UIView!
     @IBOutlet weak var loadMoreSpinner: UIActivityIndicatorView!
     
+    var refreshControl:UIRefreshControl!
     var actionSheetTargetTrack:Track?
     var isLoading:Bool = false
     var listEnd:Bool = false
@@ -51,6 +52,16 @@ class ChannelDetailViewController: BaseViewController,
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "appWillEnterForeground",
             name: UIApplicationWillEnterForegroundNotification, object: nil)
+        
+        refreshControl = UIRefreshControl()
+        refreshControl.tintColor = UIColor(netHex:0xc380fc)
+        refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
+        
+        let refreshControlTitle = NSAttributedString(
+            string: NSLocalizedString("Pull to refresh", comment: ""),
+            attributes: [NSForegroundColorAttributeName: UIColor(netHex: 0x909090)])
+        refreshControl.attributedTitle = refreshControlTitle
+        tableView.insertSubview(refreshControl, atIndex: 0)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -100,7 +111,7 @@ class ChannelDetailViewController: BaseViewController,
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("loading channel info..", comment:""))
         Requests.getChannelDetail(channelUid!, respCb: {
                 (req:NSURLRequest, resp: NSHTTPURLResponse?, result: AnyObject?, error:NSError?) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -169,6 +180,10 @@ class ChannelDetailViewController: BaseViewController,
         })
     }
     
+    func refresh() {
+        selectSection(currSection!)
+    }
+    
     func loadTracks(playlistUid:String, pageToken:String?) {
         if isLoading {
             return
@@ -176,12 +191,13 @@ class ChannelDetailViewController: BaseViewController,
         isLoading = true
         
         var progressHud:MBProgressHUD?
-        if pageToken == nil {
+        if !refreshControl.refreshing && pageToken == nil {
             progressHud = ViewUtils.showProgress(self, message: nil)
         }
         Requests.getChannelPlaylist(playlistUid, pageToken: pageToken) { (req: NSURLRequest, resp: NSHTTPURLResponse?, result: AnyObject?, error :NSError?) -> Void in
-            if progressHud != nil {
-                progressHud!.hide(false)
+            progressHud?.hide(true)
+            if self.refreshControl.refreshing {
+                self.refreshControl.endRefreshing()
             }
             self.isLoading = false
             if (error != nil || result == nil) {
@@ -277,9 +293,7 @@ class ChannelDetailViewController: BaseViewController,
     
     @IBAction func onBookmarkBtnClicked(sender: AnyObject) {
         if (Account.getCachedAccount() == nil) {
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var centerViewController = appDelegate.centerContainer!
-            centerViewController.showSigninView()
+            performSegueWithIdentifier("need_auth", sender: nil)
             return
         }
         
@@ -304,7 +318,7 @@ class ChannelDetailViewController: BaseViewController,
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("saving bookmark..", comment:""))
         Requests.updateBookmarkList(newBookmarkedIds, respCb:{
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -487,7 +501,7 @@ class ChannelDetailViewController: BaseViewController,
     func onShareBtnClicked(track:Track) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         track.shareTrack("channel_detail", afterShare: { (error, uid) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -525,11 +539,53 @@ class ChannelDetailViewController: BaseViewController,
         })
     }
     
+    func onLikeBtnClicked(track:Track) {
+        if (Account.getCachedAccount() == nil) {
+            performSegueWithIdentifier("need_auth", sender: nil)
+            return
+        }
+        let progressHud = ViewUtils.showProgress(self, message: nil)
+        if track.isLiked {
+            track.doUnlike({ (error) -> Void in
+                if error != nil {
+                    progressHud.hide(true)
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to save", comment: ""),
+                        message: NSLocalizedString("Failed to save unlike info.", comment:""),
+                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
+                        positiveBtnCallback: { () -> Void in
+                            self.onLikeBtnClicked(track)
+                    })
+                    return
+                }
+                progressHud.mode = MBProgressHUDMode.CustomView
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike.png"))
+                progressHud.hide(true, afterDelay: 1)
+                
+            })
+        } else {
+            track.doLike({ (error) -> Void in
+                if error != nil {
+                    progressHud.hide(true)
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to save", comment: ""),
+                        message: NSLocalizedString("Failed to save like info.", comment:""),
+                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
+                        positiveBtnCallback: { () -> Void in
+                            self.onLikeBtnClicked(track)
+                    })
+                    return
+                }
+                progressHud.mode = MBProgressHUDMode.CustomView
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like.png"))
+                progressHud.hide(true, afterDelay: 1)
+            })
+        }
+    }
+    
     func onAddBtnClicked(track:Track) {
         if (Account.getCachedAccount() == nil) {
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var centerViewController = appDelegate.centerContainer!
-            centerViewController.showSigninView()
+            performSegueWithIdentifier("need_auth", sender: nil)
             return
         }
         performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
@@ -541,10 +597,15 @@ class ChannelDetailViewController: BaseViewController,
         actionSheetTargetTrack = track
         
         let actionSheet = UIActionSheet()
+        if track.isLiked {
+            actionSheet.addButtonWithTitle(NSLocalizedString("Liked", comment:""))
+        } else {
+            actionSheet.addButtonWithTitle(NSLocalizedString("Like", comment:""))
+        }
         actionSheet.addButtonWithTitle(NSLocalizedString("Add to playlist", comment:""))
         actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
         actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
-        actionSheet.cancelButtonIndex = 2
+        actionSheet.cancelButtonIndex = 3
         actionSheet.delegate = self
         
         var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -572,9 +633,12 @@ class ChannelDetailViewController: BaseViewController,
         
         switch(buttonIndex) {
         case 0:
-            onAddBtnClicked(track!)
+            onLikeBtnClicked(track!)
             break
         case 1:
+            onAddBtnClicked(track!)
+            break
+        case 2:
             onShareBtnClicked(track!)
             break
         default:

@@ -62,6 +62,15 @@ class PaddingLabel:UILabel {
     }
 }
 
+class Utils {
+    static func isValidEmail(testStr:String) -> Bool {
+        let emailRegEx = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+        
+        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailTest.evaluateWithObject(testStr)
+    }
+}
+
 class ViewUtils {
     static func showNoticeAlert(viewController:UIViewController, title:String,
             message:String, btnText:String=NSLocalizedString("Confirm", comment:""), callback:(() -> Void)?=nil) {
@@ -176,9 +185,22 @@ class ViewUtils {
             alert.show()
         }
     }
-
     
-    
+    static func showCheck(viewController:UIViewController, message:String) {
+        var vc = viewController
+        if viewController.navigationController != nil {
+            vc = viewController.navigationController!
+        }
+        var hud:MBProgressHUD = MBProgressHUD.showHUDAddedTo(vc.view, animated: true)
+//        hud.color = UIColor(netHex: 0x8F2CEF).colorWithAlphaComponent(0.8)
+        hud.customView = UIImageView(image: UIImage(named: "37x-Checkmark.png"))
+    	hud.mode = MBProgressHUDMode.CustomView;
+        hud.labelText = message
+        hud.margin = 10.0
+        hud.yOffset = 150
+        hud.removeFromSuperViewOnHide = true
+        hud.hide(true, afterDelay: 1)
+    }
     
     static func showToast(viewController:UIViewController, message:String) {
         var vc = viewController

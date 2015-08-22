@@ -16,27 +16,59 @@ class AddableTrackTableViewCell: UITableViewCell {
     
     var delegate:AddableTrackCellDelegate?
 
+    @IBOutlet weak var filterView: UIView!
     @IBOutlet weak var nameView: UILabel!
     @IBOutlet weak var thumbView: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
 //        // Initialization code
-//        var selectedBgView = UIView(frame: self.bounds)
-//        selectedBgView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
-//        selectedBgView.backgroundColor = UIColor(netHex: 0xffffff)
-//        self.selectedBackgroundView = selectedBgView
+        var selectedBgView = UIView(frame: self.bounds)
+        selectedBgView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
+        selectedBgView.backgroundColor = UIColor(netHex: 0xffffff)
+        self.selectedBackgroundView = selectedBgView
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+        if(selected) {
+            filterView.hidden = false
+            filterView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.4)
+        } else {
+            filterView.hidden = true
+        }
     }
 
     @IBAction func onMenuBtnClicked(sender: UIButton) {
         delegate?.onMenuBtnClicked(self)
     }
     
+}
+
+class UserTrackTableViewCell: AddableTrackTableViewCell {
+    
+    @IBOutlet weak var contentFrame: UIView!
+    @IBOutlet weak var listenTimeView: UILabel!
+    @IBOutlet weak var userNameView: UILabel!
+    @IBOutlet weak var artistName: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        var selectedBgView = UIView(frame: self.bounds)
+        selectedBgView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
+        selectedBgView.backgroundColor = UIColor(netHex: 0xEFEFF4)
+        self.selectedBackgroundView = selectedBgView
+        
+        contentFrame.layer.borderColor = UIColor(netHex: 0xD6D6D6).CGColor
+        contentFrame.layer.borderWidth = 1
+        contentFrame.layer.cornerRadius = 3.0
+    }
+
+    override func setSelected(selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        contentFrame.backgroundColor = UIColor.whiteColor()
+    }
 }
 
 class BpChartTrackTableViewCell: AddableTrackTableViewCell {
@@ -47,7 +79,6 @@ class BpChartTrackTableViewCell: AddableTrackTableViewCell {
 
 class TrendingTrackTableViewCell: AddableTrackTableViewCell {
 
-    @IBOutlet weak var filter: UIView!
     @IBOutlet weak var rank: UILabel!
     @IBOutlet weak var artistName: UILabel!
     
@@ -80,10 +111,6 @@ class TrendingTrackTableViewCell: AddableTrackTableViewCell {
             artistWrapper.backgroundColor = artistWrapperColor
             titleWrapper.backgroundColor = titleWrapperColor
             rank.backgroundColor = rankWarapperColor
-            filter.hidden = false
-            filter.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.4)
-        } else {
-            filter.hidden = true
         }
     }
     
@@ -103,7 +130,6 @@ class TrendingTrackTableViewCell: AddableTrackTableViewCell {
 
 class BpTrendingTrackTableViewCell: AddableTrackTableViewCell {
 
-    @IBOutlet weak var filter: UIView!
     @IBOutlet weak var artistWrapper: UIView!
     @IBOutlet weak var titleWrapper: UIView!
     @IBOutlet weak var rank: UILabel!
@@ -135,11 +161,6 @@ class BpTrendingTrackTableViewCell: AddableTrackTableViewCell {
             artistWrapper.backgroundColor = artistWrapperColor
             titleWrapper.backgroundColor = titleWrapperColor
             rank.backgroundColor = rank.backgroundColor
-            
-            filter.hidden = false
-            filter.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.4)
-        } else {
-            filter.hidden = true
         }
     }
     
@@ -159,7 +180,6 @@ class BpTrendingTrackTableViewCell: AddableTrackTableViewCell {
 
 class NewReleasedTrackTableViewCell: AddableTrackTableViewCell {
     
-    @IBOutlet weak var filter: UIView!
     @IBOutlet weak var artistWrapper: UIView!
     @IBOutlet weak var titleWrapper: UIView!
     @IBOutlet weak var titleWidthConstaint: NSLayoutConstraint!
@@ -188,11 +208,6 @@ class NewReleasedTrackTableViewCell: AddableTrackTableViewCell {
         if(selected) {
             artistWrapper.backgroundColor = artistWrapperColor
             titleWrapper.backgroundColor = titleWrapperColor
-            
-            filter.hidden = false
-            filter.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.4)
-        } else {
-            filter.hidden = true
         }
     }
     

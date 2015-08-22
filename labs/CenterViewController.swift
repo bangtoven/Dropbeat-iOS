@@ -98,7 +98,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         Requests.getSharedTrack(appDelegate.sharedTrackUid!, respCb: {
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             
-            progressHud.hide(false)
+            progressHud.hide(true)
             var success:Bool = true
             var track:Track?
             
@@ -161,12 +161,12 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
                     message: NSLocalizedString("Failed to load shared playlist", comment:""),
                     btnText: NSLocalizedString("Confirm", comment:""),
                     callback: nil)
-                progressHud.hide(false)
+                progressHud.hide(true)
                 return
             }
             
             playlist!.type = PlaylistType.SHARED
-            progressHud.hide(false)
+            progressHud.hide(true)
             self.performSegueWithIdentifier("PlaylistSegue", sender: playlist)
         })
         appDelegate.sharedPlaylistUid = nil
@@ -226,9 +226,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             break
         case .PROFILE:
             if Account.getCachedAccount() == nil {
-//                var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//                var centerViewController = appDelegate.centerContainer!
-//                centerViewController.showSigninView()
+//                performSegueWithIdentifier("need_auth", sender: nil)
 //                let lastTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
 //                tabBar.selectedItem = lastTab
 //                break
@@ -329,11 +327,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     }
     
     func showSigninView() {
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        var signinVC = mainStoryboard.instantiateViewControllerWithIdentifier("SigninViewController") as! SigninViewController
-        
-        signinVC.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
-        presentViewController(signinVC, animated: true, completion: nil)
+        performSegueWithIdentifier("need_auth", sender: nil)
     }
     
     private func removeInactiveViewController(inactiveViewController:UIViewController?) {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FeedbackViewController: BaseViewController {
+class FeedbackViewController: BaseViewController, UITextViewDelegate {
 
     @IBOutlet weak var textViewTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var emailHeightConstraint: NSLayoutConstraint!
@@ -18,13 +18,14 @@ class FeedbackViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if Account.getCachedAccount() != nil {
-            emailView.hidden = true
-            emailHeightConstraint.constant = 0
-            textViewTopConstraint.constant = 0
+        if let account = Account.getCachedAccount() {
+            emailView.text = account.user!.email
         }
         
         submitBtn.layer.cornerRadius = 3.0
+        submitBtn.layer.borderWidth = 1
+        submitBtn.layer.borderColor = UIColor(netHex: 0x982EF4).CGColor
+        
         textView.layer.cornerRadius = 3.0
         textView.layer.borderColor = UIColor(netHex: 0xcccccc).CGColor
         textView.layer.borderWidth = 1
@@ -49,11 +50,7 @@ class FeedbackViewController: BaseViewController {
     
     @IBAction func onSubmitBtnClicked(sender: AnyObject) {
         var senderEmail:String?
-        if Account.getCachedAccount() != nil {
-            senderEmail = Account.getCachedAccount()!.user!.email
-        } else {
-            senderEmail = emailView.text
-        }
+        senderEmail = emailView.text
         
         if senderEmail == nil || count(senderEmail!) == 0 {
             ViewUtils.showNoticeAlert(self,
@@ -98,7 +95,7 @@ class FeedbackViewController: BaseViewController {
             }
             
             if !success {
-                progressHud.hide(false)
+                progressHud.hide(true)
                 ViewUtils.showConfirmAlert(self,
                     title: NSLocalizedString("Failed to send", comment:""),
                     message: message,
@@ -114,7 +111,7 @@ class FeedbackViewController: BaseViewController {
                     title: NSLocalizedString("Feedback Submitted!", comment:""),
                     message: NSLocalizedString("Thank you for your feedback.", comment:""),
                     btnText: NSLocalizedString("Confirm", comment:""), callback: { () -> Void in
-                progressHud.hide(false)
+                progressHud.hide(true)
                 self.navigationController?.popViewControllerAnimated(true)
             })
         }

@@ -92,7 +92,7 @@ class FollowManageViewController: BaseViewController,
     func unfollow(id:Int) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Saving..", comment:""))
         Requests.unfollow([id], respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -122,7 +122,7 @@ class FollowManageViewController: BaseViewController,
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         Requests.following { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             self.isLoading = false
-            progressHud.hide(false)
+            progressHud.hide(true)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {

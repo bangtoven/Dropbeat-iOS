@@ -13,6 +13,7 @@ enum FeedType {
     case FOLLOWING
     case NEW_RELEASE
     case BEATPORT_CHART
+    case USER_GROUP
 }
 
 enum ViewMode {
@@ -43,6 +44,8 @@ class FeedViewController: BaseViewController,
     @IBOutlet weak var feedTypeSelectTableView: UITableView!
     @IBOutlet weak var genreTableView: UITableView!
     
+    var refreshControl: UIRefreshControl!
+    
     var genres:[FeedType:[Genre]] = [FeedType:[Genre]]()
     var tracks:Array<Track> = []
     var selectedTrack:Track?
@@ -59,6 +62,9 @@ class FeedViewController: BaseViewController,
     
     var feedMenus:[FeedMenu] = {
         var types = [FeedMenu]()
+        if Account.getCachedAccount() != nil {
+            types.append(FeedMenu(title: NSLocalizedString("Friend Feed", comment:""), type: FeedType.USER_GROUP))
+        }
         types.append(FeedMenu(title: NSLocalizedString("Trending Tracks", comment:""), type: FeedType.TRENDING))
         types.append(FeedMenu(title: NSLocalizedString("Followed Artists", comment:""), type: FeedType.FOLLOWING))
         types.append(FeedMenu(title: NSLocalizedString("New Releases", comment:""), type: FeedType.NEW_RELEASE))
@@ -81,6 +87,18 @@ class FeedViewController: BaseViewController,
         selectedFeedMenu = feedMenus[0]
         feedTypeSelectTableView.selectRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), animated: false,
             scrollPosition: UITableViewScrollPosition.Top)
+        
+       
+        refreshControl = UIRefreshControl()
+        refreshControl.tintColor = UIColor(netHex:0xc380fc)
+        refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
+        
+        let refreshControlTitle = NSAttributedString(
+            string: NSLocalizedString("Pull to refresh", comment: ""),
+            attributes: [NSForegroundColorAttributeName: UIColor(netHex: 0x909090)])
+        refreshControl.attributedTitle = refreshControlTitle
+        feedTableView.insertSubview(refreshControl, atIndex: 0)
+        
         updateFeedTypeSelectBtn(nil)
         initialize()
     }
@@ -88,7 +106,7 @@ class FeedViewController: BaseViewController,
     func initialize() {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         initGenres { (error) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             if error != nil {
                 var message:String = NSLocalizedString("Failed to initalize feed.", comment:"")
                 
@@ -159,11 +177,13 @@ class FeedViewController: BaseViewController,
         return view
     }
     
+    func getFriendFeedHeaderView() -> UIView {
+        return FriendFeedHeaderView(frame: CGRectMake(0, 0, self.feedTableView.bounds.width, 90))
+    }
+    
     func onManageFollowBtnClicked(sender: FollowingFeedHeaderView) {
         if (Account.getCachedAccount() == nil) {
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var centerViewController = appDelegate.centerContainer!
-            centerViewController.showSigninView()
+            performSegueWithIdentifier("need_auth", sender: nil)
             return
         }
         performSegueWithIdentifier("ManageFollowSegue", sender: nil)
@@ -199,6 +219,7 @@ class FeedViewController: BaseViewController,
             self.genres[FeedType.BEATPORT_CHART] = genreList.results!["default"]
             self.genres[FeedType.NEW_RELEASE] = genreList.results!["default"]
             self.genres[FeedType.TRENDING] = genreList.results!["trending"]
+            self.genres[FeedType.USER_GROUP] = genreList.results!["default"]
             
             self.genreInitialized = true
             callback(error: nil)
@@ -285,20 +306,35 @@ class FeedViewController: BaseViewController,
             }
             return cell
         } else {
+            var cell:UITableViewCell!
             switch (selectedFeedMenu.type) {
             case .BEATPORT_CHART:
-                return getBeatportChartCell(indexPath)
+                cell = getBeatportChartCell(indexPath)
+                break
             case .NEW_RELEASE:
-                return getNewReleaseCell(indexPath)
+                cell = getNewReleaseCell(indexPath)
+                break
             case .TRENDING:
-                return selectedGenre != nil && count(selectedGenre!.key) > 0 ?
+                cell = selectedGenre != nil && count(selectedGenre!.key) > 0 ?
                     getBeatportTrendingCell(indexPath) : getTrendingCell(indexPath)
+                break
             case .FOLLOWING:
-                return getFollowingCell(indexPath)
+                cell = getFollowingCell(indexPath)
+                break
+            case .USER_GROUP:
+                cell = getUserGroupCell(indexPath)
+                break
             default:
                 // not reach
-                return UITableViewCell()
+                cell = UITableViewCell()
             }
+            let track = tracks[indexPath.row]
+            if (getPlaylistId() == PlayerContext.currentPlaylistId &&
+                    PlayerContext.currentTrack != nil &&
+                    PlayerContext.currentTrack!.id == track.id) {
+                cell.setSelected(true, animated: false)
+            }
+            return cell
         }
     }
     
@@ -425,6 +461,30 @@ class FeedViewController: BaseViewController,
         return cell
     }
     
+    func getUserGroupCell(indexPath:NSIndexPath) -> UITableViewCell {
+        let cell:UserTrackTableViewCell = feedTableView.dequeueReusableCellWithIdentifier(
+            "UserTrackTableViewCell", forIndexPath: indexPath) as! UserTrackTableViewCell
+        let track:FriendTrack = tracks[indexPath.row] as! FriendTrack
+        cell.delegate = self
+        cell.nameView.text = track.trackName
+        if (track.thumbnailUrl != nil) {
+            cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
+                    placeholderImage: UIImage(named: "default_artwork.png"), completed: {
+                    (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
+                if (error != nil) {
+                    cell.thumbView.image = UIImage(named: "default_artwork.png")
+                }
+            })
+        } else {
+            cell.thumbView.image = UIImage(named: "default_artwork.png")
+        }
+        var listenDate = NSDate(timeIntervalSinceNow: -60.0 * Double(track.ts))
+        cell.listenTimeView.text = listenDate.timeAgoSinceNow()
+        cell.userNameView.text = track.nickname
+        cell.artistName.text = track.artistName
+        return cell
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if tableView == feedTypeSelectTableView {
             let feedMenu = feedMenus[indexPath.row]
@@ -468,6 +528,8 @@ class FeedViewController: BaseViewController,
             return 76
         case .FOLLOWING:
             return (15 * self.view.bounds.width / 30) + 52
+        case .USER_GROUP:
+            return 135
         default:
             break
         }
@@ -520,6 +582,8 @@ class FeedViewController: BaseViewController,
             return "New Release - \(selectedGenre!.name)"
         case .TRENDING:
             return "Trending - \(selectedGenre!.name)"
+        case .TRENDING:
+            return "UserGroup - \(selectedGenre!.name)"
         default:
             break
         }
@@ -588,7 +652,7 @@ class FeedViewController: BaseViewController,
             section += "_" + selectedGenre!.name
         }
         track.shareTrack(section, afterShare: { (error, uid) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -626,11 +690,53 @@ class FeedViewController: BaseViewController,
         })
     }
     
+    func onLikeBtnClicked(track:Track) {
+        if (Account.getCachedAccount() == nil) {
+            performSegueWithIdentifier("need_auth", sender: nil)
+            return
+        }
+        let progressHud = ViewUtils.showProgress(self, message: nil)
+        if track.isLiked {
+            track.doUnlike({ (error) -> Void in
+                if error != nil {
+                    progressHud.hide(true)
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to save", comment: ""),
+                        message: NSLocalizedString("Failed to save dislike info.", comment:""),
+                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
+                        positiveBtnCallback: { () -> Void in
+                            self.onLikeBtnClicked(track)
+                    })
+                    return
+                }
+                progressHud.mode = MBProgressHUDMode.CustomView
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike.png"))
+                progressHud.hide(true, afterDelay: 1)
+                
+            })
+        } else {
+            track.doLike({ (error) -> Void in
+                if error != nil {
+                    progressHud.hide(true)
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to save", comment: ""),
+                        message: NSLocalizedString("Failed to save like info.", comment:""),
+                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
+                        positiveBtnCallback: { () -> Void in
+                            self.onLikeBtnClicked(track)
+                    })
+                    return
+                }
+                progressHud.mode = MBProgressHUDMode.CustomView
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like.png"))
+                progressHud.hide(true, afterDelay: 1)
+            })
+        }
+    }
+    
     func onAddBtnClicked(track:Track) {
         if (Account.getCachedAccount() == nil) {
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var centerViewController = appDelegate.centerContainer!
-            centerViewController.showSigninView()
+            performSegueWithIdentifier("need_auth", sender: nil)
             return
         }
         performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
@@ -642,10 +748,15 @@ class FeedViewController: BaseViewController,
         selectedTrack = track
         
         let actionSheet = UIActionSheet()
+        if track.isLiked {
+            actionSheet.addButtonWithTitle(NSLocalizedString("Liked", comment:""))
+        } else {
+            actionSheet.addButtonWithTitle(NSLocalizedString("Like", comment:""))
+        }
         actionSheet.addButtonWithTitle(NSLocalizedString("Add to playlist", comment:""))
         actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
         actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
-        actionSheet.cancelButtonIndex = 2
+        actionSheet.cancelButtonIndex = 3
         actionSheet.delegate = self
         
         var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -670,9 +781,11 @@ class FeedViewController: BaseViewController,
         
         switch(buttonIndex) {
         case 0:
+            onLikeBtnClicked(track!)
+        case 1:
             onAddBtnClicked(track!)
             break
-        case 1:
+        case 2:
             onShareBtnClicked(track!)
             break
         default:
@@ -691,6 +804,12 @@ class FeedViewController: BaseViewController,
         loadMoreSpinnerWrapper.hidden = true
         loadMoreSpinner.stopAnimating()
         
+        if menu.type == FeedType.USER_GROUP {
+            feedTableView.backgroundColor = UIColor(netHex: 0xEFEFF4)
+        } else {
+            feedTableView.backgroundColor = UIColor(netHex: 0xffffff)
+        }
+        
         if menu.type == FeedType.FOLLOWING {
             genreSelectBtn.title = NSLocalizedString("Order", comment:"")
         } else {
@@ -701,10 +820,6 @@ class FeedViewController: BaseViewController,
             navigationItem.leftBarButtonItem = genreSelectBtn
         } else {
             navigationItem.leftBarButtonItem = nil
-        }
-        
-        if menu.type != FeedType.FOLLOWING {
-            feedTableView.tableHeaderView = nil
         }
         
         if genreTableView.indexPathForSelectedRow() != nil {
@@ -749,7 +864,7 @@ class FeedViewController: BaseViewController,
             }
             let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
             loadFollowingList({ (following, error) -> Void in
-                progressHud.hide(false)
+                progressHud.hide(true)
                 if error != nil {
                     if error!.domain == NSURLErrorDomain &&
                             error!.code == NSURLErrorNotConnectedToInternet {
@@ -767,6 +882,10 @@ class FeedViewController: BaseViewController,
                 self.loadFollowingFeed(forceRefresh: forceRefresh)
             })
             return
+        } else if menu.type == .USER_GROUP {
+            feedTableView.tableHeaderView = getFriendFeedHeaderView()
+        } else {
+            feedTableView.tableHeaderView = nil
         }
         
         
@@ -785,6 +904,9 @@ class FeedViewController: BaseViewController,
         case .NEW_RELEASE:
             action = "new_release"
             break
+        case .NEW_RELEASE:
+            action = "user_group"
+            break
         default:
             break
         }
@@ -800,8 +922,6 @@ class FeedViewController: BaseViewController,
             ).build()
         
         tracker.send(event as [NSObject: AnyObject]!)
-        
-        
         
         loadFeed(menu.type, forceRefresh: forceRefresh)
     }
@@ -819,10 +939,21 @@ class FeedViewController: BaseViewController,
             break
         case .NEW_RELEASE:
             loadNewReleaseFeed(forceRefresh: forceRefresh)
+        case .USER_GROUP:
+            loadUserGroupFeed(forceRefresh: forceRefresh)
             break
         default:
             break
         }
+    }
+    
+    func refresh() {
+        nextPage = selectedFeedMenu.type == FeedType.BEATPORT_CHART ? -1 : 0
+        
+        loadMoreSpinnerWrapper.hidden = true
+        loadMoreSpinner.stopAnimating()
+        
+        loadFeed(selectedFeedMenu.type, forceRefresh: true)
     }
     
     func loadTrendingFeed(forceRefresh:Bool=false) {
@@ -835,13 +966,16 @@ class FeedViewController: BaseViewController,
         }
         
         var progressHud:MBProgressHUD?
-        if nextPage == 0 {
+        if !refreshControl.refreshing && nextPage == 0 {
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
         Requests.getStreamTrending(selectedGenre!.key, pageIdx: nextPage, respCb: {
             (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             self.isLoading = false
-            progressHud?.hide(false)
+            progressHud?.hide(true)
+            if self.refreshControl.refreshing {
+                self.refreshControl.endRefreshing()
+            }
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -884,6 +1018,10 @@ class FeedViewController: BaseViewController,
             } else {
                 self.nextPage += 1
             }
+            
+            if forceRefresh {
+                self.tracks.removeAll(keepCapacity: true)
+            }
             for track in resultTracks {
                 self.tracks.append(track)
             }
@@ -899,14 +1037,20 @@ class FeedViewController: BaseViewController,
             selectedGenre = genres[FeedType.BEATPORT_CHART]![0]
         }
         
-        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+        var progressHud:MBProgressHUD?
+        if !refreshControl.refreshing {
+            progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+        }
         var genreKey = selectedGenre!.name
         if count(selectedGenre!.key) == 0 {
             genreKey = "TOP100"
         }
         Requests.fetchBeatportChart(genreKey, respCb: {
                 (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            progressHud.hide(false)
+            progressHud?.hide(true)
+            if self.refreshControl.refreshing {
+                self.refreshControl.endRefreshing()
+            }
             
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
@@ -975,14 +1119,17 @@ class FeedViewController: BaseViewController,
         }
         
         var progressHud:MBProgressHUD?
-        if nextPage == 0 {
+        if !refreshControl.refreshing && nextPage == 0 {
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
         
         Requests.getStreamFollowing(forceRefresh, pageIdx: nextPage, order:selectedGenre!.key, respCb: {
             (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             self.isLoading = false
-            progressHud?.hide(false)
+            progressHud?.hide(true)
+            if self.refreshControl.refreshing {
+                self.refreshControl.endRefreshing()
+            }
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -1012,6 +1159,9 @@ class FeedViewController: BaseViewController,
             } else {
                 self.nextPage += 1
             }
+            if forceRefresh {
+                self.tracks.removeAll(keepCapacity: true)
+            }
             for track in streamFollowing.results! {
                 self.tracks.append(track)
             }
@@ -1031,13 +1181,16 @@ class FeedViewController: BaseViewController,
         }
         
         var progressHud:MBProgressHUD?
-        if nextPage == 0 {
+        if !refreshControl.refreshing && nextPage == 0 {
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
         Requests.getStreamNew(selectedGenre!.key, pageIdx: nextPage, respCb: {
             (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             self.isLoading = false
-            progressHud?.hide(false)
+            progressHud?.hide(true)
+            if self.refreshControl.refreshing {
+                self.refreshControl.endRefreshing()
+            }
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -1068,7 +1221,68 @@ class FeedViewController: BaseViewController,
             } else {
                 self.nextPage += 1
             }
+            if forceRefresh {
+                self.tracks.removeAll(keepCapacity: true)
+            }
             for track in streamNew.results! {
+                self.tracks.append(track)
+            }
+            self.updatePlaylist(false)
+            self.feedTableView.reloadData()
+            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+        })
+    }
+    
+    func loadUserGroupFeed(forceRefresh:Bool=false) {
+        if selectedGenre == nil {
+            selectedGenre = genres[FeedType.USER_GROUP]![0]
+        }
+        if isLoading {
+            return
+        }
+        
+        var progressHud:MBProgressHUD?
+        if !refreshControl.refreshing && nextPage == 0 {
+            progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+        }
+        Requests.getStreamFriend({(req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            self.isLoading = false
+            progressHud?.hide(true)
+            if self.refreshControl.refreshing {
+                self.refreshControl.endRefreshing()
+            }
+            if (error != nil || result == nil) {
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to load", comment:""),
+                        message: NSLocalizedString("Internet is not connected", comment:""))
+                    return
+                }
+                var message = NSLocalizedString("Failed to load friend feed.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
+                return
+            }
+            
+            
+            let parser = Parser()
+            let streamUserGroup = parser.parseStreamFriend(result!)
+            if !streamUserGroup.success {
+                var message = NSLocalizedString("Failed to load friend feed.", comment:"")
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Failed to load", comment:""), message: message)
+                return
+            }
+            
+            if streamUserGroup.results!.count > 0 {
+                self.nextPage = -1
+                self.loadMoreSpinner.stopAnimating()
+                self.loadMoreSpinnerWrapper.hidden = true
+            }
+            if forceRefresh {
+                self.tracks.removeAll(keepCapacity: true)
+            }
+            for track in streamUserGroup.results! {
                 self.tracks.append(track)
             }
             self.updatePlaylist(false)

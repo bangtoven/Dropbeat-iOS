@@ -65,9 +65,8 @@ class PlaylistSelectViewController: BaseViewController,
                 let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Creating playlist..", comment:""))
                 Requests.createPlaylist(result, respCb: {
                         (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-                    progressHud.hide(false)
+                    progressHud.hide(true)
                     if (error != nil) {
-                        progressHud.hide(true)
                         var message:String?
                         if (error != nil && error!.domain == NSURLErrorDomain &&
                                 error!.code == NSURLErrorNotConnectedToInternet) {
@@ -169,7 +168,7 @@ class PlaylistSelectViewController: BaseViewController,
         }
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Saving..", comment:""))
         targetTrack!.addToPlaylist(playlist, section: fromSection) { (error) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             if error != nil {
                 var message:String?
                 if (error != nil && error!.domain == NSURLErrorDomain &&

@@ -5,9 +5,9 @@
 import Foundation
 
 public class ApiPath {
-//    static var host :String = "http://spark.coroutine.io/api/v1/"
+    static var host :String = "http://spark.coroutine.io/api/v1/"
 //    static var host :String = "http://coroutine.io:19050/api/v1/"
-    static var host :String = "http://dropbeat.net/api/v1/"
+//    static var host :String = "http://dropbeat.net/api/v1/"
     
     // User
     static var user :String = host + "user/"
@@ -16,10 +16,14 @@ public class ApiPath {
     static var userSignOut :String = user + "signout/"
     static var userUnlock :String = user + "unlock/"
     static var userChangeEmail :String = user + "change_email/"
+    static var userEmailSignup:String = user + "email_signup/"
+    static var userEmailSignin:String = user + "email_signin/"
+    static var userChangeNickname:String = user + "change_nickname/"
     
     // Feed
     static var feed :String = host + "feed/"
-    static var feedChannel :String = host + "feed/channel/"
+    static var feedChannel :String = feed + "channel/"
+    static var feedFriend :String = feed + "friend/"
     
     // Playlist
     static var playlist :String = host + "playlist/"
@@ -45,9 +49,17 @@ public class ApiPath {
     // Bookmark
     static var bookmark :String = host + "channelbookmark/"
     
+    // Genre
+    static var genre:String = host + "genre/"
+    static var genreFavorite:String = genre + "favorite/"
+    static var genreAddFavorite:String = genre + "add_favorite/"
+    static var genreDelFavorite:String = genre + "del_favorite/"
+    
     // Track
     static var track :String = host + "track/"
     static var trackShare :String = track + "shared/"
+    static var trackLike:String = track + "like/"
+    static var trackDislike:String = track + "dislike/"
     
     // Artist
     static var artist :String = host + "artist/"
@@ -61,6 +73,7 @@ public class ApiPath {
     
     // Feedback
     static var feedback :String = host + "async/feedback/"
+    
 }
 
 public class CorePath {

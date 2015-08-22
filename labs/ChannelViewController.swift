@@ -10,7 +10,8 @@ import UIKit
 
 class ChannelViewController: BaseViewController,
         UITableViewDelegate, UITableViewDataSource, ScrollPagerDelegate, ChannelTableViewCellDelegate, AddableTrackCellDelegate,
-            UIActionSheetDelegate {
+            UIActionSheetDelegate,
+            UIScrollViewDelegate{
     
     var tracks: [ChannelFeedTrack] = [ChannelFeedTrack]()
     var allChannels : [String:Channel] = [String:Channel]()
@@ -27,6 +28,7 @@ class ChannelViewController: BaseViewController,
     var nextPage:Int = 0
     var isLoading:Bool = false
     var bookmarkListHeader:UIView?
+    var refreshControl:UIRefreshControl!
     
     var dateFormatter:NSDateFormatter {
         var formatter = NSDateFormatter()
@@ -35,8 +37,10 @@ class ChannelViewController: BaseViewController,
     }
     
     @IBOutlet weak var signinBtn: UIButton!
+    @IBOutlet weak var signupBtn: UIButton!
+    @IBOutlet weak var needSigninScrollInnerConstaint: NSLayoutConstraint!
+    @IBOutlet weak var needSigninScrollView: UIScrollView!
     @IBOutlet weak var noBookmarkView: UIView!
-    @IBOutlet weak var needSigninView: UIView!
     @IBOutlet weak var loadMoreSpinner: UIActivityIndicatorView!
     @IBOutlet weak var loadMoreSpinnerWrapper: UIView!
     @IBOutlet weak var genreSelectBtn: UIButton!
@@ -51,12 +55,10 @@ class ChannelViewController: BaseViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var signinBgImage = UIImage(named: "facebook_btn_bg.png")
-        signinBgImage = signinBgImage!.resizableImageWithCapInsets(UIEdgeInsetsMake(14, 14, 14, 14))
-        signinBtn.setBackgroundImage(signinBgImage, forState: UIControlState.Normal)
-        
         pager.font = UIFont.systemFontOfSize(11)
         pager.selectedFont = UIFont.systemFontOfSize(11)
+        
+        needSigninScrollInnerConstaint.constant = self.view.bounds.width
         
         pager.delegate = self
         pager.addSegmentsWithTitles(["FEED", "CHANNELS"])
@@ -65,9 +67,32 @@ class ChannelViewController: BaseViewController,
         genreSelectorConstraint.constant = 0
         genreSelectorWrapper.hidden = true
         
-        needSigninView.hidden = Account.getCachedAccount() != nil
+        signinBtn.layer.cornerRadius = 3.0
+        signinBtn.layer.borderWidth = 1
+        signinBtn.layer.borderColor = UIColor(netHex:0x982EF4).CGColor
+        
+        signupBtn.layer.cornerRadius = 3.0
+        signupBtn.layer.borderWidth = 1
+        signupBtn.layer.borderColor = UIColor(netHex:0x982EF4).CGColor
+        
+        
+        needSigninScrollView.hidden = Account.getCachedAccount() != nil
         
         bookmarkListHeader = createBookmarkListHeader()
+        
+        refreshControl = UIRefreshControl()
+        refreshControl.tintColor = UIColor(netHex:0xc380fc)
+        refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
+        
+        let refreshControlTitle = NSAttributedString(
+            string: NSLocalizedString("Pull to refresh", comment: ""),
+            attributes: [NSForegroundColorAttributeName: UIColor(netHex: 0x909090)])
+        refreshControl.attributedTitle = refreshControlTitle
+        tableView.insertSubview(refreshControl, atIndex: 0)
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        scrollView.contentOffset = CGPointMake(0, scrollView.contentOffset.y)
     }
     
     func updateGenreSelectBtnView(genre: String) {
@@ -102,6 +127,9 @@ class ChannelViewController: BaseViewController,
                 tableView.tableHeaderView = nil
             }
             loadBookmarks(refreshFeed: true)
+            if refreshControl.superview == nil {
+                tableView.insertSubview(refreshControl, atIndex: 0)
+            }
         } else {
             genreSelectorConstraint.constant = 40
             genreSelectorWrapper.hidden = false
@@ -112,6 +140,7 @@ class ChannelViewController: BaseViewController,
                 loadChannels(genres[0], initialLoad: true)
             }
             tableView.tableHeaderView = nil
+            refreshControl.removeFromSuperview()
         }
         loadMoreSpinnerWrapper.hidden = true
         loadMoreSpinner.stopAnimating()
@@ -390,7 +419,7 @@ class ChannelViewController: BaseViewController,
     func onTrackShareBtnClicked(track:Track) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         track.shareTrack("channel_feed", afterShare: { (error, uid) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -428,11 +457,53 @@ class ChannelViewController: BaseViewController,
         })
     }
     
+    func onLikeBtnClicked(track:Track) {
+        if (Account.getCachedAccount() == nil) {
+            performSegueWithIdentifier("need_auth", sender: nil)
+            return
+        }
+        let progressHud = ViewUtils.showProgress(self, message: nil)
+        if track.isLiked {
+            track.doUnlike({ (error) -> Void in
+                if error != nil {
+                    progressHud.hide(true)
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to save", comment: ""),
+                        message: NSLocalizedString("Failed to save unlike info.", comment:""),
+                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
+                        positiveBtnCallback: { () -> Void in
+                            self.onLikeBtnClicked(track)
+                    })
+                    return
+                }
+                progressHud.mode = MBProgressHUDMode.CustomView
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike.png"))
+                progressHud.hide(true, afterDelay: 1)
+                
+            })
+        } else {
+            track.doLike({ (error) -> Void in
+                if error != nil {
+                    progressHud.hide(true)
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to save", comment: ""),
+                        message: NSLocalizedString("Failed to save like info.", comment:""),
+                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
+                        positiveBtnCallback: { () -> Void in
+                            self.onLikeBtnClicked(track)
+                    })
+                    return
+                }
+                progressHud.mode = MBProgressHUDMode.CustomView
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like.png"))
+                progressHud.hide(true, afterDelay: 1)
+            })
+        }
+    }
+    
     func onTrackAddBtnClicked(track:Track) {
         if (Account.getCachedAccount() == nil) {
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var centerViewController = appDelegate.centerContainer!
-            centerViewController.showSigninView()
+            performSegueWithIdentifier("need_auth", sender: nil)
             return
         }
         performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
@@ -440,17 +511,23 @@ class ChannelViewController: BaseViewController,
     
     func onMenuBtnClicked(sender: AddableTrackTableViewCell) {
         var actionSheet = UIActionSheet()
+        let indexPath = tableView.indexPathForCell(sender)
+        actionSheetTargetTrack = tracks[indexPath!.row]
+        
+        if actionSheetTargetTrack!.isLiked {
+            actionSheet.addButtonWithTitle(NSLocalizedString("Liked", comment:""))
+        } else {
+            actionSheet.addButtonWithTitle(NSLocalizedString("Like", comment:""))
+        }
         actionSheet.addButtonWithTitle(NSLocalizedString("Add to playlist", comment:""))
         actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
         actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
-        actionSheet.cancelButtonIndex = 2
+        actionSheet.cancelButtonIndex = 3
         actionSheet.delegate = self
         
         var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
         
-        let indexPath = tableView.indexPathForCell(sender)
-        actionSheetTargetTrack = tracks[indexPath!.row]
     }
     
     func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
@@ -473,15 +550,23 @@ class ChannelViewController: BaseViewController,
         
         switch(buttonIndex) {
         case 0:
-            onTrackAddBtnClicked(track!)
+            onLikeBtnClicked(track!)
             break
         case 1:
+            onTrackAddBtnClicked(track!)
+            break
+        case 2:
             onTrackShareBtnClicked(track!)
             break
         default:
             break
         }
         actionSheetTargetTrack = nil
+    }
+    
+    func refresh() {
+        nextPage = 0
+        loadChannelFeed(nextPage, forceRefresh: true)
     }
     
     func loadGenres(callback:(error:NSError?) -> Void) {
@@ -550,7 +635,9 @@ class ChannelViewController: BaseViewController,
             if self.selectedTabIdx == 0 {
                 self.noBookmarkView.hidden = self.bookmarkedChannels.count != 0
                 if self.bookmarkedChannels.count != 0 {
+                    self.tableView.beginUpdates()
                     self.tableView.tableHeaderView = self.bookmarkListHeader
+                    self.tableView.endUpdates()
                 } else {
                     self.tableView.tableHeaderView = nil
                 }
@@ -584,6 +671,7 @@ class ChannelViewController: BaseViewController,
         btn.addTarget(self, action: "onBookmarkListBtnClicked:", forControlEvents: UIControlEvents.TouchUpInside)
         
         frame.addSubview(btn)
+        frame.backgroundColor = UIColor.whiteColor()
         return frame
     }
     
@@ -635,7 +723,7 @@ class ChannelViewController: BaseViewController,
                 if Account.getCachedAccount() != nil {
                     self.loadBookmarks(refreshFeed: true)
                 } else if self.selectedTabIdx == 0 {
-                    self.needSigninView.hidden = false
+                    self.needSigninScrollView.hidden = false
                 }
             } else if self.selectedTabIdx == 1{
                 self.tableView.reloadData()
@@ -644,12 +732,6 @@ class ChannelViewController: BaseViewController,
                 self.emptyChannelView.hidden = self.channels.count != 0
             }
         })
-    }
-    
-    @IBAction func onSigninBtnClicked(sender: AnyObject) {
-        var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        var centerViewController = appDelegate.centerContainer!
-        centerViewController.showSigninView()
     }
     
     @IBAction func onGenreSelectBtnClicked(sender: AnyObject) {
@@ -682,16 +764,14 @@ class ChannelViewController: BaseViewController,
         tableView.hidden = false
         genreTableView.hidden = true
         emptyChannelView.hidden = selectedTabIdx == 0 || channels.count != 0
-        needSigninView.hidden = selectedTabIdx != 0 || Account.getCachedAccount() != nil
+        needSigninScrollView.hidden = selectedTabIdx != 0 || Account.getCachedAccount() != nil
         genreSelectBtn.setImage(UIImage(named:"ic_arrow_down.png"), forState: UIControlState.Normal)
     }
     
     func onBookmarkBtnClicked(sender: ChannelTableViewCell) {
         let indexPath:NSIndexPath = tableView.indexPathForCell(sender)!
         if (Account.getCachedAccount() == nil) {
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var centerViewController = appDelegate.centerContainer!
-            centerViewController.showSigninView()
+            performSegueWithIdentifier("need_auth", sender: nil)
             return
         }
         var channel = channels[indexPath.row]
@@ -715,7 +795,7 @@ class ChannelViewController: BaseViewController,
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Saving..", comment:""))
         Requests.updateBookmarkList(newBookmarkedIds!, respCb:{
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -743,7 +823,7 @@ class ChannelViewController: BaseViewController,
         })
     }
     
-    func loadChannelFeed(pageIdx: Int) {
+    func loadChannelFeed(pageIdx: Int, forceRefresh:Bool = false) {
         if isLoading {
             return
         }
@@ -759,13 +839,16 @@ class ChannelViewController: BaseViewController,
         tracker.send(event as [NSObject: AnyObject]!)
         
         var progressHud:MBProgressHUD?
-        if pageIdx == 0 {
+        if !refreshControl.refreshing && pageIdx == 0 {
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
             tableView.scrollsToTop = true
         }
         Requests.fetchChannelFeed(pageIdx, respCb: {
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            progressHud?.hide(false)
+            
+            progressHud?.hide(true)
+            self.refreshControl.endRefreshing()
+            
             self.isLoading = false
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
@@ -825,6 +908,10 @@ class ChannelViewController: BaseViewController,
                 return
             } else {
                 self.nextPage = pageIdx + 1
+            }
+            
+            if forceRefresh {
+                self.tracks.removeAll(keepCapacity: false)
             }
             
             for track in particals {

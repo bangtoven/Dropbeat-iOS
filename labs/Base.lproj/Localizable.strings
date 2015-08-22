@@ -154,3 +154,26 @@
 "Failed to acquire user info permission. Do you want to retry facebook connect?" = "Failed to acquire user info permission. Do you want to retry facebook connect?";
 "MY BOOKMARK LIST" = "MY BOOKMARK LIST";
 "Are you sure you want do delete '%s' playlist with %d tracks?" = "Are you sure you want do delete '%s' playlist with %d tracks?";
+
+"Failed to submit" = "Failed to submit";
+"Failed to form submit" = "Failed to form submit";
+"Required Field" = "Required Field";
+"Invalid email format" = "Invalid email format";
+"Must be less than %d characters long" = "Must be less than %d characters long";
+"Must be longger than %d charaters" = "Must be longger than %d charaters";
+"Password does not match the confirm password" = "Password does not match the confirm password";
+"Nickname already exists" = "Nickname already exists";
+"Email already exists" = "Email already exists";
+"Failed to change nickname" = "Failed to change nickname";
+"Failed to save like info." = "Failed to save like info.";
+"Failed to save dislike info." = "Failed to save dislike info.";
+"Liked" = "Liked";
+"Like" = "Like";
+"Failed to sign in" = "Failed to sign in";
+"Failed to sign up" = "Failed to sign up";
+"Like box empty" = "Like box empty";
+"Pull to refresh" = "Pull to refresh";
+"Failed to save genre" = "Failed to save genre";
+"%d genre selected" = "%d genre selected";
+"Failed to load genre" = "Failed to load genre";
+"Failed to load favorite genres" = "Failed to load favorite genres";

@@ -8,9 +8,9 @@
 "Saving.." = "저장 중..";
 "Retry" = "재시도";
 "Failed to save" = "저장에 실패하였습니다.";
-"Internet is not connected" = "인터넷이 연결되어있지 않습니다.";
-"Internet is not connected." = "인터넷이 연결되어있지 않습니다.";
-"Internet is not connected. Please try again." = "인터넷이 연결되어있지 않습니다. 재시도 해주세요.";
+"Internet is not connected" = "인터넷에 연결되어있지 않습니다.";
+"Internet is not connected." = "인터넷에 연결되어있지 않습니다.";
+"Internet is not connected. Please try again." = "인터넷에 연결되어있지 않습니다. 재시도 해주세요.";
 "Cancel" = "취소";
 "Failed to save follow info." = "팔로잉 정보를 저장하는데 실패하였습니다.";
 "Loading.." = "로딩 중..";
@@ -120,7 +120,7 @@
 "Failed to delete" = "삭제에 실패하였습니다.";
 "Failed to delete track" = "삭제에 실패하였습니다.";
 "Failed to share playlist." = "플레이리스트 공유에 실패하였습니다.";
-"At least one playlist should exist" = "최소한 한개의 플레이리스트가 있어야합니다.";
+"At least one playlist should exist" = "최소한 한개의 플레이리스트가 있어야 합니다.";
 "Changing.." =  "변경 중..";
 "Failed to rename playlist" = "플레이리스트 이름 변경에 실패하였습니다.";
 "Failed to change" = "변경 실패";
@@ -154,3 +154,8 @@
 "Failed to acquire user info permission. Do you want to retry facebook connect?" = "페이스북에서 유저 정보를 가져오는데 실패하였습니다. 재시도 하시겠습니까?";
 "MY BOOKMARK LIST" = "내 즐겨찾기 목록";
 "Are you sure you want do delete '%s' playlist with %d tracks?" = "정말 %d개의 곡과 '%s' 플레이리스트를 삭제하시겠습니까?";
+"Open playing playlist" = "재생중인 플레이리스트 열기";
+"Failed to save unlike info." = "좋아요를 취소하는데 실패하였습니다.";
+"Failed to save like info." = "좋아요를 저장 하는데 실패하였습니다.";
+"Liked" = "Like 취소";
+"Like" = "Like 하기";

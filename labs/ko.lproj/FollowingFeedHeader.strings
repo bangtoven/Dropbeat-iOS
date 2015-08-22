@@ -3,7 +3,7 @@
 "JLy-DT-zRj.text" = "팔로잉 하고있는 아티스트가 없습니다.\n";
 
 /* Class = "UILabel"; text = "Search and follow your favorite artists to find tracks in your feed!"; ObjectID = "NZT-c1-gDP"; */
-"NZT-c1-gDP.text" = "좋아하는 아티스트를 팔로잉하고\n피드에서 아티스트의 신곡을 받아보세요!";
+"NZT-c1-gDP.text" = "좋아하는 아티스트를 팔로우하고\n피드에서 아티스트의 신곡을 받아보세요!";
 
 /* Class = "UIButton"; normalTitle = "Search Artists"; ObjectID = "nn5-D7-tvm"; */
 "nn5-D7-tvm.normalTitle" = "아티스트 검색하기";

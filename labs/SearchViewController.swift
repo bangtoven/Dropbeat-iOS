@@ -42,7 +42,6 @@ class SearchViewController: BaseViewController,
     
 //    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var noSearchResultView: UILabel!
-    @IBOutlet var tabGestureRecognizer: UITapGestureRecognizer!
     @IBOutlet weak var scrollPagerConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchResultView: UIView!
     @IBOutlet weak var scrollPager: ScrollPager!
@@ -233,6 +232,50 @@ class SearchViewController: BaseViewController,
         }
     }
     
+    func onLikeBtnClicked(track:Track) {
+        if (Account.getCachedAccount() == nil) {
+            performSegueWithIdentifier("need_auth", sender: nil)
+            return
+        }
+        let progressHud = ViewUtils.showProgress(self, message: nil)
+        if track.isLiked {
+            track.doUnlike({ (error) -> Void in
+                if error != nil {
+                    progressHud.hide(true)
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to save", comment: ""),
+                        message: NSLocalizedString("Failed to save unlike info.", comment:""),
+                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
+                        positiveBtnCallback: { () -> Void in
+                            self.onLikeBtnClicked(track)
+                    })
+                    return
+                }
+                progressHud.mode = MBProgressHUDMode.CustomView
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike.png"))
+                progressHud.hide(true, afterDelay: 1)
+                
+            })
+        } else {
+            track.doLike({ (error) -> Void in
+                if error != nil {
+                    progressHud.hide(true)
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to save", comment: ""),
+                        message: NSLocalizedString("Failed to save like info.", comment:""),
+                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
+                        positiveBtnCallback: { () -> Void in
+                            self.onLikeBtnClicked(track)
+                    })
+                    return
+                }
+                progressHud.mode = MBProgressHUDMode.CustomView
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like.png"))
+                progressHud.hide(true, afterDelay: 1)
+            })
+        }
+    }
+    
     func onPlayBtnClicked(track:Track) {
         var params: Dictionary<String, AnyObject> = [
             "track": track
@@ -244,7 +287,7 @@ class SearchViewController: BaseViewController,
     func onShareBtnClicked(track:Track) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         track.shareTrack("search", afterShare: { (error, uid) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -285,9 +328,7 @@ class SearchViewController: BaseViewController,
     
     func onAddBtnClicked(track:Track) {
         if (Account.getCachedAccount() == nil) {
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var centerViewController = appDelegate.centerContainer!
-            centerViewController.showSigninView()
+            performSegueWithIdentifier("need_auth", sender: nil)
             return
         }
         performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
@@ -304,10 +345,15 @@ class SearchViewController: BaseViewController,
         actionSheetTargetTrack = track
         
         let actionSheet = UIActionSheet()
+        if track.isLiked {
+            actionSheet.addButtonWithTitle(NSLocalizedString("Liked", comment:""))
+        } else {
+            actionSheet.addButtonWithTitle(NSLocalizedString("Like", comment:""))
+        }
         actionSheet.addButtonWithTitle(NSLocalizedString("Add to playlist", comment:""))
         actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
         actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
-        actionSheet.cancelButtonIndex = 2
+        actionSheet.cancelButtonIndex = 3
         actionSheet.delegate = self
         var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
@@ -332,9 +378,12 @@ class SearchViewController: BaseViewController,
         
         switch(buttonIndex) {
         case 0:
-            onAddBtnClicked(track!)
+            onLikeBtnClicked(track!)
             break
         case 1:
+            onAddBtnClicked(track!)
+            break
+        case 2:
             onShareBtnClicked(track!)
             break
         default:
@@ -494,7 +543,7 @@ class SearchViewController: BaseViewController,
         if (tracks == nil) {
             var progress = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
             let callback = { (tracks: [Track]?, error:NSError?) -> Void in
-                progress.hide(false)
+                progress.hide(true)
                 if (error != nil || tracks == nil) {
                     if (error != nil && error!.domain == NSURLErrorDomain &&
                             error!.code == NSURLErrorNotConnectedToInternet) {

@@ -54,10 +54,14 @@ class StartupViewController: GAITrackedViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "DrawerSegue" {
-            var drawerController:CenterViewController = segue.destinationViewController as! CenterViewController
+        if segue.identifier == "main" {
+            var vc:CenterViewController = segue.destinationViewController as! CenterViewController
             var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            appDelegate.centerContainer = drawerController
+            appDelegate.centerContainer = vc
+        }
+        if segue.identifier == "genre_tutorial" {
+            let vc = segue.destinationViewController as! FavoriteGenreTutorialViewController
+            vc.fromStartup = true
         }
     }
     
@@ -125,7 +129,7 @@ class StartupViewController: GAITrackedViewController {
                         error!.code == NSURLErrorNotConnectedToInternet) {
                     message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
                 } else {
-                    message = NSLocalizedString("Failed to fetch user info because of undefined error.", comment:"")
+                    message = NSLocalizedString("Failed to fetch user info.", comment:"")
                     let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
                     keychainItemWrapper["auth_token"] = nil
                 }
@@ -181,16 +185,22 @@ class StartupViewController: GAITrackedViewController {
                     self.showMainController()
                 })
             })
-            return
+        } else {
+            self.showMainController()
         }
-        self.showMainController()
     }
     
     func showMainController() {
         var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) {
             self.progressHud?.hide(true)
-            self.performSegueWithIdentifier("DrawerSegue", sender: self)
+            if let account = Account.getCachedAccount() {
+                if count(account.favoriteGenreIds) == 0 {
+                    self.performSegueWithIdentifier("genre_tutorial", sender: self)
+                    return
+                }
+            }
+            self.performSegueWithIdentifier("main", sender: self)
         }
     }
     

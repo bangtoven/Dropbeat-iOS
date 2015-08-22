@@ -146,9 +146,7 @@ class BookmarkListViewController: BaseViewController,
     func onBookmarkBtnClicked(sender: ChannelTableViewCell) {
         let indexPath:NSIndexPath = tableView.indexPathForCell(sender)!
         if (Account.getCachedAccount() == nil) {
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var centerViewController = appDelegate.centerContainer!
-            centerViewController.showSigninView()
+            performSegueWithIdentifier("need_auth", sender: nil)
             return
         }
         var channel = bookmarkedChannels[indexPath.row]
@@ -169,7 +167,7 @@ class BookmarkListViewController: BaseViewController,
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Saving..", comment:""))
         Requests.updateBookmarkList(Array(newBookmarkedIds), respCb:{
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {

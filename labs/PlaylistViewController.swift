@@ -175,7 +175,7 @@ class PlaylistViewController: BaseViewController,
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading playlist..", comment:""))
         Requests.getPlaylist(currentPlaylist!.id, respCb: {
                 (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -308,14 +308,22 @@ class PlaylistViewController: BaseViewController,
                 return
             }
             
-            switch(buttonIndex) {
+            var idx = buttonIndex
+            if currentPlaylist.type == PlaylistType.USER {
+                idx += 1
+            }
+            
+            switch(idx) {
             case 0:
-                onShareTrackBtnClicked(menuSelectedTrack!)
+                onTrackLikeBtnClicked(menuSelectedTrack!)
                 break
             case 1:
-                onTrackAddToOtherPlaylistBtnClicked(menuSelectedTrack!)
+                onShareTrackBtnClicked(menuSelectedTrack!)
                 break
             case 2:
+                onTrackAddToOtherPlaylistBtnClicked(menuSelectedTrack!)
+                break
+            case 3:
                 if currentPlaylist.type == PlaylistType.USER {
                     onDeleteTrackBtnClicked(menuSelectedTrack!)
                 }
@@ -326,6 +334,50 @@ class PlaylistViewController: BaseViewController,
         }
         if actionSheet != playlistActionSheet {
             menuSelectedTrack = nil
+        }
+    }
+    
+    func onTrackLikeBtnClicked(track:Track) {
+        if (Account.getCachedAccount() == nil) {
+            showSignin()
+            return
+        }
+        let progressHud = ViewUtils.showProgress(self, message: nil)
+        if track.isLiked {
+            track.doUnlike({ (error) -> Void in
+                if error != nil {
+                    progressHud.hide(true)
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to save", comment: ""),
+                        message: NSLocalizedString("Failed to save unlike info.", comment:""),
+                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
+                        positiveBtnCallback: { () -> Void in
+                            self.onTrackLikeBtnClicked(track)
+                    })
+                    return
+                }
+                progressHud.mode = MBProgressHUDMode.CustomView
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike.png"))
+                progressHud.hide(true, afterDelay: 1)
+                
+            })
+        } else {
+            track.doLike({ (error) -> Void in
+                if error != nil {
+                    progressHud.hide(true)
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to save", comment: ""),
+                        message: NSLocalizedString("Failed to save like info.", comment:""),
+                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
+                        positiveBtnCallback: { () -> Void in
+                            self.onTrackLikeBtnClicked(track)
+                    })
+                    return
+                }
+                progressHud.mode = MBProgressHUDMode.CustomView
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like.png"))
+                progressHud.hide(true, afterDelay: 1)
+            })
         }
     }
     
@@ -349,7 +401,7 @@ class PlaylistViewController: BaseViewController,
     func onShareTrackBtnClicked(track: Track) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         track.shareTrack("playlist", afterShare: { (error, uid) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -401,7 +453,7 @@ class PlaylistViewController: BaseViewController,
     func onDeleteTrackBtnClicked(track:Track) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Deleting..", comment:""))
         track.deleteFromPlaylist(currentPlaylist!, afterDelete: { (error) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -455,7 +507,7 @@ class PlaylistViewController: BaseViewController,
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         Requests.sharePlaylist(currentPlaylist!, respCb: {
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             var message:String = NSLocalizedString("Failed to share playlist.", comment:"")
             var success = true
             if error != nil || result == nil {
@@ -603,6 +655,14 @@ class PlaylistViewController: BaseViewController,
         menuSelectedTrack = tracks[indexPath.row]
         
         let actionSheet = UIActionSheet()
+        
+        if currentPlaylist.type != PlaylistType.USER {
+            if menuSelectedTrack!.isLiked {
+                actionSheet.addButtonWithTitle(NSLocalizedString("Liked", comment:""))
+            } else {
+                actionSheet.addButtonWithTitle(NSLocalizedString("Like", comment:""))
+            }
+        }
         actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
         actionSheet.addButtonWithTitle(NSLocalizedString("Add to other playlist", comment:""))
         
@@ -614,10 +674,8 @@ class PlaylistViewController: BaseViewController,
         
         if currentPlaylist.type == PlaylistType.USER {
             actionSheet.destructiveButtonIndex = 2
-            actionSheet.cancelButtonIndex = 3
-        } else {
-            actionSheet.cancelButtonIndex = 2
         }
+        actionSheet.cancelButtonIndex = 3
         if fromPlayer {
             actionSheet.showInView(self.view)
         } else {
@@ -702,16 +760,16 @@ class PlaylistViewController: BaseViewController,
     }
     
     @IBAction func onLikeBtnClicked(sender: AnyObject) {
-        if isLiked {
-            return
-        }
         if (Account.getCachedAccount() == nil) {
             showSignin()
             return
         }
+        if isLiked {
+            return
+        }
         let progressHud = ViewUtils.showProgress(self, message: nil)
         importPlaylist { (playlist, error) -> Void in
-            progressHud.hide(false)
+            progressHud.hide(true)
             if error != nil {
                 var message:String?
                 if (error != nil && error!.domain == NSURLErrorDomain &&
@@ -739,24 +797,14 @@ class PlaylistViewController: BaseViewController,
     }
     
     func showSignin() {
-        if fromPlayer {
-            let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-            var signinVC = mainStoryboard.instantiateViewControllerWithIdentifier("SigninViewController") as! SigninViewController
-            
-            signinVC.modalTransitionStyle = UIModalTransitionStyle.CoverVertical
-            presentViewController(signinVC, animated: true, completion: nil)
-        } else {
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            var centerViewController = appDelegate.centerContainer!
-            centerViewController.showSigninView()
-        }
+        performSegueWithIdentifier("need_auth", sender: nil)
     }
     
     func updateLikeBtn() {
         if isLiked {
-            likeBtn.setImage(UIImage(named:"ic_like_btn.png"), forState: UIControlState.Normal)
+            likeBtn.setImage(UIImage(named:"ic_heart_fill_btn_big.png"), forState: UIControlState.Normal)
         } else {
-            likeBtn.setImage(UIImage(named:"ic_like_btn_gray.png"), forState: UIControlState.Normal)
+            likeBtn.setImage(UIImage(named:"ic_heart_btn_big.png"), forState: UIControlState.Normal)
         }
     }
 }

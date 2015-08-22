@@ -12,22 +12,23 @@ class SettingsViewController: UITableViewController {
 
     @IBOutlet weak var signoutBtn: UIButton!
     @IBOutlet weak var signinBtn: UIButton!
+    @IBOutlet weak var signupBtn: UIButton!
     @IBOutlet weak var versionView: UILabel!
+    
+    @IBOutlet var settingTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if Account.getCachedAccount() != nil {
             signinBtn.hidden = true
+            signupBtn.hidden = true
             signoutBtn.hidden = false
         } else {
             signinBtn.hidden = false
+            signupBtn.hidden = false
             signoutBtn.hidden = true
         }
-        
-        var signinBgImage = UIImage(named: "facebook_btn_bg.png")
-        signinBgImage = signinBgImage!.resizableImageWithCapInsets(UIEdgeInsetsMake(14, 14, 14, 14))
-        signinBtn.setBackgroundImage(signinBgImage, forState: UIControlState.Normal)
         
         let verObject: AnyObject? = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"]
         versionView.text = verObject as? String
@@ -65,10 +66,13 @@ class SettingsViewController: UITableViewController {
         })
     }
     
-    
-    @IBAction func onSigninBtnClicked(sender: AnyObject) {
-        var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        var centerViewController = appDelegate.centerContainer!
-        centerViewController.showSigninView()
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section > 0 {
+            return 50
+        }
+        if Account.getCachedAccount() != nil {
+            return 50
+        }
+        return 126
     }
 }

@@ -49,6 +49,10 @@ class Parser {
         return StreamFollowing.fromJson(data, key: "data")
     }
     
+    func parseStreamFriend(data: AnyObject) -> StreamFriend {
+        return StreamFriend.fromJson(data)
+    }
+    
     func parseBeatportChart(data: AnyObject) -> BeatportChart {
         return BeatportChart.fromJson(data, key: "data")
     }
@@ -105,6 +109,25 @@ class Parser {
         }
         return Playlist.fromJson(json["playlist"].rawValue)
     }
+    
+    func parseLikes(data:AnyObject?) -> [Like]? {
+        if data == nil {
+            return nil
+        }
+        let json = JSON(data!)
+        if !(json["success"].bool ?? false) || json["like"] == nil {
+            return nil
+        }
+        
+        var likes = [Like]()
+        for (idx:String, obj:JSON) in json["like"] {
+            if let like = Like.fromJson(obj) {
+                likes.append(like)
+            }
+        }
+        return likes
+    }
+    
 }
 
 
@@ -113,19 +136,17 @@ class User {
     var email: String
     var firstName: String
     var lastName: String
-    var unlocked: Bool
-    var createdAt: String
-    var fbId: String
+    var fbId: String?
+    var nickname:String
     
     init(id: String, email: String, firstName: String, lastName: String,
-            unlocked: Bool, createdAt: String, fbId: String) {
+            nickname:String, fbId: String?) {
         self.id = id
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
-        self.unlocked = unlocked
-        self.createdAt = createdAt
         self.fbId = fbId
+        self.nickname = nickname
     }
     
     static func fromJson(data: AnyObject) -> User {
@@ -135,8 +156,7 @@ class User {
                 email: json["email"].string!,
                 firstName: json["firstName"].string!,
                 lastName: json["lastName"].string!,
-                unlocked: json["unlock"].boolValue,
-                createdAt: json["createdAt"].string!,
+                nickname: json["nickname"].string!,
                 fbId: json["fb_id"].string!
         )
     }
@@ -824,7 +844,6 @@ class StreamFollowing {
         var json = JSON(data)
         
         if !(json["success"].bool ?? false) {
-            println(json)
             return StreamFollowing(success:false, tracks:nil)
         }
         
@@ -880,6 +899,62 @@ class StreamFollowing {
     }
 }
 
+class StreamFriend {
+    var success:Bool
+    var lastUpdate:NSDate?
+    var results:[FriendTrack]?
+    init(success: Bool, tracks:[FriendTrack]?) {
+        self.success = success
+        results = tracks
+    }
+    
+    static func fromJson(data:AnyObject) -> StreamFriend {
+        var json = JSON(data)
+        
+        if !(json["success"].bool ?? false) {
+            return StreamFriend(success:false, tracks:nil)
+        }
+        
+        if json["data"] == nil || json["data"]["tracks"] == nil ||
+            json["data"]["last_updated"].string == nil {
+            return StreamFriend(success:false, tracks:nil)
+        }
+        
+        let dataObj = json["data"]
+        let lastUpdateStr = dataObj["last_updated"].stringValue
+        var formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let lastUpdatedAt = formatter.dateFromString(lastUpdateStr)
+        
+        var tracks = [FriendTrack]()
+        
+        for(idx:String, s:JSON) in dataObj["tracks"] {
+            if s["id"].string == nil ||
+                    s["nickname"].string == nil ||
+                    s["release_date"].string == nil ||
+                    s["ts"].int == nil ||
+                    s["artist_name"].string == nil ||
+                    s["track_name"].string == nil ||
+                    s["type"].string == nil {
+                return StreamFriend(success:false, tracks:nil)
+            }
+            
+            let track = FriendTrack(
+                nickname:s["nickname"].stringValue,
+                id:s["id"].stringValue,
+                trackName: s["track_name"].stringValue,
+                type: s["type"].stringValue,
+                artistName: s["artist_name"].stringValue,
+                ts: s["ts"].intValue,
+                thumbnail:s["thumbnail"].string
+            )
+            
+            tracks.append(track)
+        }
+        return StreamFriend(success:true, tracks:tracks)
+    }
+}
+
 class Track {
     var id: String
     var title: String
@@ -902,6 +977,15 @@ class Track {
         }
     }
     
+    var isLiked: Bool {
+        get {
+            if let account = Account.getCachedAccount() {
+                return account.likedTrackIds.contains(self.id)
+            }
+            return false
+        }
+    }
+    
     init(id: String, title: String, type: String, tag: String? = nil,
             thumbnailUrl: String? = nil, drop: String? = nil,
             dref: String? = nil, topMatch: Bool? = false) {
@@ -914,6 +998,91 @@ class Track {
         self.thumbnailUrl = thumbnailUrl
         self.topMatch = topMatch
         self.rank = -1
+    }
+    
+    func doLike(callback:((error:NSError?) -> Void)?) {
+        if Account.getCachedAccount() == nil {
+            return
+        }
+        Requests.doLike(self, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if error != nil {
+                callback?(error:error)
+                return
+            }
+            
+            var json:JSON?
+            if result != nil {
+                json = JSON(result!)
+            }
+            
+            if result == nil || !(json!["success"].bool ?? false) {
+                callback?(error:NSError(domain:"doLike", code: 0, userInfo:nil))
+                return
+            }
+            
+            let obj = json!["obj"]
+            let id = obj["id"].intValue
+            let trackObj = obj["data"]
+            let track = Track(
+                id: trackObj["id"].stringValue,
+                title: trackObj["title"].stringValue,
+                type: trackObj["type"].stringValue)
+            
+            let like = Like(id: id, track: track)
+            
+            let account = Account.getCachedAccount()
+            account!.likes.append(like)
+            account!.likedTrackIds.insert(self.id)
+            callback?(error:nil)
+            
+            NSNotificationCenter.defaultCenter().postNotificationName(
+                NotifyKey.likeUpdated, object: nil)
+        })
+    }
+    
+    func doUnlike(callback:((error:NSError?) -> Void)?) {
+        if Account.getCachedAccount() == nil {
+            return
+        }
+        var likeId:Int?
+        let account = Account.getCachedAccount()!
+        for (idx:Int, like:Like) in enumerate(account.likes) {
+            if like.track.id == self.id {
+                likeId = like.id
+                break
+            }
+        }
+        if likeId == nil {
+            return
+        }
+        
+        Requests.doUnlike(likeId!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if error != nil {
+                callback?(error:error)
+                return
+            }
+            if result != nil {
+                println(result)
+            }
+            if result == nil || !(JSON(result!)["success"].bool ?? false) {
+                callback?(error:NSError(domain:"doUnlike", code: 0, userInfo:nil))
+                return
+            }
+            var foundIdx = -1
+            for (idx:Int, like:Like) in enumerate(account.likes) {
+                if like.track.id == self.id {
+                    foundIdx = idx
+                    break
+                }
+            }
+            
+            account.likes.removeAtIndex(foundIdx)
+            account.likedTrackIds.remove(self.id)
+            callback?(error:nil)
+            
+            NSNotificationCenter.defaultCenter().postNotificationName(
+                NotifyKey.likeUpdated, object: nil)
+        })
     }
     
     func shareTrack(section:String, afterShare: (error:NSError?, uid:String?) -> Void) {
@@ -1154,6 +1323,26 @@ class ChannelFeedTrack: ChannelTrack {
     }
 }
 
+class FriendTrack: Track {
+    var trackName:String!
+    var nickname:String!
+    var ts: Int!
+    var artistName:String!
+    init (nickname:String, id:String, trackName:String, type:String, artistName:String,
+            ts:Int, thumbnail:String?) {
+        let title = artistName + " - " + trackName
+        var thumbnailUrl = thumbnail
+        if thumbnailUrl == nil && type == "youtube" {
+            thumbnailUrl = "http://img.youtube.com/vi/\(id)/mqdefault.jpg"
+        }
+        super.init(id:id, title: title, type: type, tag: nil, thumbnailUrl:thumbnailUrl)
+        self.trackName = trackName
+        self.nickname = nickname
+        self.ts = ts
+        self.artistName = artistName
+    }
+}
+
 class ChannelPlaylist {
     var name:String
     var uid: String
@@ -1245,13 +1434,71 @@ class Channel {
     }
 }
 
+class Like {
+    var track:Track
+    var id:Int
+    init(id:Int, track:Track) {
+        self.id = id
+        self.track = track
+    }
+    
+    static func fromJson(data:JSON) -> Like? {
+        if data["id"].int == nil || data["data"] == nil {
+            return nil
+        }
+        var trackJson:JSON = data["data"]
+        if trackJson["id"].string == nil {
+            return nil
+        }
+        if trackJson["type"].string == nil {
+            return nil
+        }
+        if trackJson["title"].string == nil {
+            return nil
+        }
+        let trackId = trackJson["id"].stringValue
+        let type = trackJson["type"].stringValue
+        var thumbnailUrl:String?
+        if type == "youtube" {
+            thumbnailUrl = "http://img.youtube.com/vi/\(trackId)/mqdefault.jpg"
+        }
+        let track:Track = Track(id: trackId, title: trackJson["title"].stringValue, type: type, tag: nil, thumbnailUrl: thumbnailUrl)
+        let like:Like = Like(id: data["id"].intValue, track:track)
+        return like
+    }
+}
+
 class Account {
     var user:User?
     var token:String
+    var likes:[Like] = [Like]()
+    var likedTrackIds:Set<String> = Set<String>()
+    var favoriteGenreIds:Set<String> = Set<String>()
     
     init(token:String, user:User?) {
         self.user = user
         self.token = token
+    }
+    
+    func syncLikeInfo(callback:((error: NSError?) -> Void)?) {
+        Requests.getLikes { (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if (error != nil) {
+                callback?(error:error)
+                return
+            }
+            let parser = Parser()
+            let likeResult:[Like]? = parser.parseLikes(result)
+            if likeResult == nil {
+                callback?(error: NSError(domain:"getLikes", code: 102, userInfo: nil))
+                return
+            }
+            self.likes.removeAll(keepCapacity: false)
+            for like in likeResult! {
+                self.likes.append(like)
+                self.likedTrackIds.insert(like.track.id)
+            }
+            callback?(error:nil)
+        }
     }
     
     static private var account:Account?
@@ -1278,34 +1525,116 @@ class Account {
             handler(account: nil, error: nil)
             return
         }
+        
+        self.account = nil
+        var gotLikeInfo = false
+        var gotFavoriteInfo = false
+        var didErrorHandlerFire = false
+        
+        var likes:[Like] = [Like]()
+        var favoriteGenreIds:[String] = [String]()
+        
+        var responseHandler = {() -> Void in
+            if !gotLikeInfo || !gotFavoriteInfo || self.account == nil {
+                return
+            }
+            
+            self.account!.likes.removeAll(keepCapacity: false)
+            self.account!.likedTrackIds.removeAll(keepCapacity: false)
+            
+            for like: Like in likes {
+                self.account!.likes.append(like)
+                self.account!.likedTrackIds.insert(like.track.id)
+            }
+            
+            
+            self.account!.favoriteGenreIds.removeAll(keepCapacity: false)
+            
+            for favoriteId:String in favoriteGenreIds {
+                self.account!.favoriteGenreIds.insert(favoriteId)
+            }
+            
+            handler(account:self.account, error: nil)
+        }
+        
+        var errorHandler = {(error:NSError) -> Void in
+            if didErrorHandlerFire {
+                return
+            }
+            
+            self.account = nil
+            didErrorHandlerFire = true
+            handler(account:nil, error: error)
+        }
+        
+        
         Requests.userSelf({ (request: NSURLRequest, response: NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil) {
-                handler(account: nil, error:error)
+                errorHandler(error!)
                 return
             }
             
-            let res = result as! NSDictionary
-            var success:Bool = res.objectForKey("success") as! Bool? ?? false
-            if (!success) {
-                var errorMsg:String? = res.objectForKey("error") as! String?
-                handler(account:nil, error: NSError(domain: "account", code: 101, userInfo: nil))
+            let res = JSON(result!)
+            var success:Bool = res["success"].bool ?? false
+            if !success {
+                errorHandler(NSError(domain: "account", code: 101, userInfo: nil))
                 return
             }
             
-            var userObj = res.objectForKey("user") as! NSDictionary
+            var userObj = res["user"]
             let user = User(
-                id: String(userObj.valueForKey("id") as! Int),
-                email: userObj.valueForKey("email") as! String,
-                firstName: userObj.valueForKey("first_name") as! String,
-                lastName: userObj.valueForKey("last_name") as! String,
-                unlocked: userObj.valueForKey("unlocked") as! Bool,
-                createdAt: userObj.valueForKey("created_at") as! String,
-                fbId: userObj.valueForKey("fb_id") as! String
+                id: String(userObj["id"].intValue),
+                email: userObj["email"].stringValue,
+                firstName: userObj["first_name"].stringValue,
+                lastName: userObj["last_name"].stringValue,
+                nickname: userObj["nickname"].stringValue,
+                fbId: userObj["fb_id"].string
             )
             var account = Account(token:token!, user:user)
             self.account = account
-            handler(account:account, error:nil)
+            responseHandler()
         })
+        
+        Requests.getLikes { (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if error != nil {
+                errorHandler(error!)
+                return
+            }
+            let parser = Parser()
+            let likeResult:[Like]? = parser.parseLikes(result)
+            if likeResult == nil {
+                errorHandler(NSError(domain:"getLikes", code: 102, userInfo: nil))
+                return
+            }
+            println(result!)
+            for like in likeResult! {
+                likes.append(like)
+            }
+            
+            gotLikeInfo = true
+            responseHandler()
+        }
+        
+        Requests.getFavorites { (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if error != nil || result == nil {
+                errorHandler(error != nil ? error! :
+                    NSError(domain: "getFavorites", code: 103, userInfo: nil))
+                return
+            }
+            
+            let json = JSON(result!)
+            if !(json["success"].bool ?? false) || json["data"] == nil {
+                errorHandler(NSError(domain: "getFavorites", code: 103, userInfo: nil))
+                return
+            }
+            
+            for (idx:String, s:JSON) in json["data"] {
+                favoriteGenreIds.append(String(s.intValue))
+            }
+            
+            gotFavoriteInfo = true
+            responseHandler()
+        }
     }
 }
 

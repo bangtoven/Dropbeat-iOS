@@ -25,6 +25,7 @@ class NotifyKey {
     static var appSignin = "appSignin"
     static var trackShare = "trackShare"
     static var playlistShare = "playlistShare"
+    static var likeUpdated = "likeUpdated"
 }
 
 class ApiKey {

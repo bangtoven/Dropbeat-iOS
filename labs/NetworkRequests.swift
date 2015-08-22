@@ -227,8 +227,61 @@ class Requests {
         return sendGet(ApiPath.streamFollowing, params:params, auth:true, respCb: respCb)
     }
     
+    static func getStreamFriend(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(ApiPath.feedFriend, params:nil, auth:true, respCb: respCb)
+    }
+    
     static func searchArtist(keyword:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         return sendGet(CorePath.searchArtist, params:["q": keyword], auth:false, respCb:respCb)
+    }
+    
+    static func getLikes(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(ApiPath.trackLike, auth: true, respCb:respCb)
+    }
+    
+    static func doLike(track: Track, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        var params:[String:AnyObject] = [String:AnyObject]()
+        params["data"] = ["id":track.id, "type":track.type, "title": track.title]
+        return sendPost(ApiPath.trackLike, params:params, auth: true, respCb:respCb)
+    }
+    
+    static func doUnlike(likeId:Int, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendPost(ApiPath.trackDislike, params:["id":likeId], auth: true, respCb:respCb)
+    }
+    
+    static func addFavorite(ids:[String], respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendPost(ApiPath.genreAddFavorite, params: ["ids": ids], auth: true, respCb:respCb)
+    }
+    
+    static func delFavorite(ids:[String], respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendPost(ApiPath.genreDelFavorite, params: ["ids": ids], auth: true, respCb:respCb)
+    }
+    
+    static func getFavorites(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(ApiPath.genreFavorite, params: nil, auth: true, respCb:respCb)
+    }
+    
+    static func emailSignup(email:String, firstName:String, lastName:String, nickname:String, password:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        
+        var params:[String:AnyObject] = [String:AnyObject]()
+        params["email"] = email
+        params["first_name"] = firstName
+        params["last_name"] = lastName
+        params["nickname"] = nickname
+        params["password"] = password
+        return sendPost(ApiPath.userEmailSignup, params: params, auth:false, respCb:respCb)
+    }
+    
+    static func emailSignin(email:String, password:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        
+        var params:[String:AnyObject] = [String:AnyObject]()
+        params["email"] = email
+        params["password"] = password
+        return sendPost(ApiPath.userEmailSignin, params: params, auth:false, respCb:respCb)
+    }
+    
+    static func changeNickname(nickname:String, respCb:((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendPost(ApiPath.userChangeNickname, params: ["nickname": nickname], auth: true, respCb: respCb)
     }
 }
 
@@ -264,11 +317,9 @@ class WebAdapter {
         if (auth == true) {
             // TODO: Get global session key.
             let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup: nil)
-            if keychainItemWrapper["auth_token"] != nil {
-                var key :String = keychainItemWrapper["auth_token"] as! String
-//                var key :String = "5yqy1zxvvv7pcm7xrsbmvqje3n99f8ok"
+            if let token:String = keychainItemWrapper["auth_token"] as? String {
                 manager.session.configuration.HTTPAdditionalHeaders = [
-                    "Cookie": "sessionid=" + key
+                    "Cookie": "sessionid=" + token
                 ]
             }
         }

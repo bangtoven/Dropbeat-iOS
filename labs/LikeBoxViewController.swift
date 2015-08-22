@@ -87,7 +87,7 @@ class LikeBoxViewController: BaseViewController,
     
     @IBAction func onShuffleBtnClicked(sender: AnyObject) {
         if tracks.count == 0 {
-            ViewUtils.showToast(self, message: NSLocalizedString("Like box empty", comment:""))
+            ViewUtils.showToast(self, message: NSLocalizedString("Like list empty", comment:""))
             return
         }
         

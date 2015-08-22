@@ -877,7 +877,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         actionSheetIncludePlaylist = PlayerContext.currentPlaylistId != nil
         var actionSheet = UIActionSheet()
         if actionSheetIncludePlaylist {
-            actionSheet.addButtonWithTitle(NSLocalizedString("Open playing playlist", comment:""))
+            actionSheet.addButtonWithTitle(NSLocalizedString("Open current playlist", comment:""))
             actionSheet.cancelButtonIndex = 3
         } else {
             actionSheet.cancelButtonIndex = 2

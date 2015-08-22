@@ -174,6 +174,9 @@
 		58AC784C1B6819EF00A2A248 /* ic_play_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AC784B1B6819EF00A2A248 /* ic_play_btn@2x.png */; };
 		58AC784F1B681F0E00A2A248 /* ic_nonplaying@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AC784D1B681F0E00A2A248 /* ic_nonplaying@2x.png */; };
 		58AC78501B681F0E00A2A248 /* ic_playing@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AC784E1B681F0E00A2A248 /* ic_playing@2x.png */; };
+		58B829C91B88879C009F6E51 /* GenreDiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58B829C81B88879C009F6E51 /* GenreDiscoveryViewController.swift */; };
+		58B829CC1B888987009F6E51 /* FriendFeedHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58B829CE1B888987009F6E51 /* FriendFeedHeader.xib */; };
+		58B829D21B888F3B009F6E51 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58B829D11B888F3B009F6E51 /* CoreMedia.framework */; };
 		58BB0ADC1B12211E00B07279 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0ADB1B12211E00B07279 /* SwiftyJSON.swift */; };
 		58BB0AE61B12222C00B07279 /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0ADE1B12222B00B07279 /* Alamofire.swift */; };
 		58BB0AE71B12222C00B07279 /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0ADF1B12222B00B07279 /* Download.swift */; };
@@ -188,7 +191,6 @@
 		58BB0AF61B122A7900B07279 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 58BB0AF51B122A7900B07279 /* libz.dylib */; };
 		58BB0AF81B122A8600B07279 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 58BB0AF71B122A8600B07279 /* libsqlite3.dylib */; };
 		58BB0B161B12308000B07279 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0B151B12308000B07279 /* BaseViewController.swift */; };
-		58C539781B8657ED00D7B8D0 /* FriendFeedHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 58C539771B8657ED00D7B8D0 /* FriendFeedHeader.xib */; };
 		58C5397A1B865AD000D7B8D0 /* FriendFeedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C539791B865AD000D7B8D0 /* FriendFeedHeaderView.swift */; };
 		58C5397E1B8772BD00D7B8D0 /* ic_shuffle_btn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58C5397D1B8772BD00D7B8D0 /* ic_shuffle_btn@2x.png */; };
 		58C539801B87746600D7B8D0 /* LikeBoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C5397F1B87746600D7B8D0 /* LikeBoxViewController.swift */; };
@@ -421,6 +423,7 @@
 		589F0F2E1B6A327A000851CC /* ic_repeat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_repeat@2x.png"; sourceTree = "<group>"; };
 		589F0F321B6A32DB000851CC /* ic_dotdotdot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_dotdotdot@2x.png"; sourceTree = "<group>"; };
 		589F0F341B6A333F000851CC /* ic_dotdotdot_horizontal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_dotdotdot_horizontal@2x.png"; sourceTree = "<group>"; };
+		58A616661B88C1250072BB76 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Main.strings; sourceTree = "<group>"; };
 		58AC78351B67EE7E00A2A248 /* ic_header_dotdotdot@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_header_dotdotdot@2x.png"; sourceTree = "<group>"; };
 		58AC783F1B67FBDB00A2A248 /* ic_playlist.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_playlist.png; sourceTree = "<group>"; };
 		58AC78411B67FC1A00A2A248 /* ic_playlist_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_playlist_selected.png; sourceTree = "<group>"; };
@@ -430,6 +433,10 @@
 		58AC784B1B6819EF00A2A248 /* ic_play_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_play_btn@2x.png"; sourceTree = "<group>"; };
 		58AC784D1B681F0E00A2A248 /* ic_nonplaying@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_nonplaying@2x.png"; sourceTree = "<group>"; };
 		58AC784E1B681F0E00A2A248 /* ic_playing@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_playing@2x.png"; sourceTree = "<group>"; };
+		58B829C81B88879C009F6E51 /* GenreDiscoveryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenreDiscoveryViewController.swift; sourceTree = "<group>"; };
+		58B829CD1B888987009F6E51 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/FriendFeedHeader.xib; sourceTree = "<group>"; };
+		58B829D01B88898B009F6E51 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/FriendFeedHeader.strings; sourceTree = "<group>"; };
+		58B829D11B888F3B009F6E51 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		58BB0ADB1B12211E00B07279 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyJSON.swift; sourceTree = "<group>"; };
 		58BB0ADE1B12222B00B07279 /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Alamofire.swift; sourceTree = "<group>"; };
 		58BB0ADF1B12222B00B07279 /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Download.swift; sourceTree = "<group>"; };
@@ -455,7 +462,6 @@
 		58BB0B101B122D7400B07279 /* GAITracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GAITracker.h; sourceTree = "<group>"; };
 		58BB0B121B122DCB00B07279 /* labs-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "labs-Bridging-Header.h"; sourceTree = "<group>"; };
 		58BB0B151B12308000B07279 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
-		58C539771B8657ED00D7B8D0 /* FriendFeedHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FriendFeedHeader.xib; sourceTree = "<group>"; };
 		58C539791B865AD000D7B8D0 /* FriendFeedHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendFeedHeaderView.swift; sourceTree = "<group>"; };
 		58C5397D1B8772BD00D7B8D0 /* ic_shuffle_btn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "ic_shuffle_btn@2x.png"; path = "../../../../breeze/dropbeat-v2/iphone/images/2x/ic_shuffle_btn@2x.png"; sourceTree = "<group>"; };
 		58C5397F1B87746600D7B8D0 /* LikeBoxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeBoxViewController.swift; sourceTree = "<group>"; };
@@ -489,6 +495,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58B829D21B888F3B009F6E51 /* CoreMedia.framework in Frameworks */,
 				585BAD161B85EE3F00FE137A /* DateTools.bundle in Frameworks */,
 				587837E81B45C66E008DF480 /* libXCDYouTubeKit.a in Frameworks */,
 				587837E41B451DE7008DF480 /* JavaScriptCore.framework in Frameworks */,
@@ -794,6 +801,7 @@
 		F98F65D2D15412F7828AF298 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				58B829D11B888F3B009F6E51 /* CoreMedia.framework */,
 				587837E71B45C66E008DF480 /* libXCDYouTubeKit.a */,
 				587837E31B451DE7008DF480 /* JavaScriptCore.framework */,
 				588693CD1B13C4C500566124 /* Raygun4iOS.framework */,
@@ -853,7 +861,7 @@
 				FCD1DA8B1B04CCB200F9EA70 /* Main.storyboard */,
 				586F49C91B805D290039CC6B /* Localizable.stringsdict.plist */,
 				586F49B91B7FE5010039CC6B /* Localizable.strings */,
-				58C539771B8657ED00D7B8D0 /* FriendFeedHeader.xib */,
+				58B829CE1B888987009F6E51 /* FriendFeedHeader.xib */,
 				58C539791B865AD000D7B8D0 /* FriendFeedHeaderView.swift */,
 				586F49D41B8088220039CC6B /* FollowingFeedHeader.xib */,
 				586F49D91B8088AD0039CC6B /* FollowingFeedHeaderWithFollowing.xib */,
@@ -869,6 +877,7 @@
 				58EAB3DE1B0D11110075304E /* Utils.swift */,
 				FC0D9D581B0CC4DE00E048CC /* Constants.swift */,
 				58C5397F1B87746600D7B8D0 /* LikeBoxViewController.swift */,
+				58B829C81B88879C009F6E51 /* GenreDiscoveryViewController.swift */,
 				585BAD191B861AE100FE137A /* FavoriteGenreTutorialViewController.swift */,
 				589413641B83CB8000395AFA /* NicknameViewController.swift */,
 				5898FB061B8346FF009CE97E /* NeedAuthViewController.swift */,
@@ -1060,7 +1069,7 @@
 				589F0F131B6A272D000851CC /* ic_share@2x.png in Resources */,
 				589F0F2B1B6A324D000851CC /* ic_shuffle@2x.png in Resources */,
 				589F0F301B6A327A000851CC /* ic_repeat_one@2x.png in Resources */,
-				58C539781B8657ED00D7B8D0 /* FriendFeedHeader.xib in Resources */,
+				58B829CC1B888987009F6E51 /* FriendFeedHeader.xib in Resources */,
 				589F0F211B6A2BC3000851CC /* ic_play@2x.png in Resources */,
 				589F0F1F1B6A2BC3000851CC /* ic_forward@2x.png in Resources */,
 				FCD1DA921B04CCB200F9EA70 /* LaunchScreen.xib in Resources */,
@@ -1126,6 +1135,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5890D6161B0538CD00AAEAE5 /* SearchViewController.swift in Sources */,
+				58B829C91B88879C009F6E51 /* GenreDiscoveryViewController.swift in Sources */,
 				588693C51B13B7A800566124 /* MBProgressHUD.m in Sources */,
 				586D166A1B0B65AF00C5147F /* MMSparkDrawerVisualStateManager.swift in Sources */,
 				587B5BDA1B6BBCCC009BD05D /* FeedbackViewController.swift in Sources */,
@@ -1280,10 +1290,20 @@
 			name = FollowingFeedHeaderWithFollowing.xib;
 			sourceTree = "<group>";
 		};
+		58B829CE1B888987009F6E51 /* FriendFeedHeader.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				58B829CD1B888987009F6E51 /* Base */,
+				58B829D01B88898B009F6E51 /* ko */,
+			);
+			name = FriendFeedHeader.xib;
+			sourceTree = "<group>";
+		};
 		FCD1DA8B1B04CCB200F9EA70 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
 				FCD1DA8C1B04CCB200F9EA70 /* Base */,
+				58A616661B88C1250072BB76 /* ko */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";

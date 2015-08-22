@@ -1188,7 +1188,7 @@
                                                             <constraint firstAttribute="width" constant="46" id="yZJ-Fe-5SY"/>
                                                         </constraints>
                                                         <inset key="contentEdgeInsets" minX="2" minY="9" maxX="2" maxY="9"/>
-                                                        <state key="normal" title="HQ" image="2402E1B6-DE60-4927-851C-44D59586AF43">
+                                                        <state key="normal" title="HQ" image="F0F79F58-4C73-42DD-8A9F-C9B4DEBA3E2E">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -2108,12 +2108,12 @@
                                                 <constraint firstAttribute="width" constant="70" id="zGe-2A-4J9"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <state key="normal" title="CONFIG">
+                                            <state key="normal" title="CHANGE">
                                                 <color key="titleColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
                                             </state>
                                             <connections>
-                                                <segue destination="UAP-Wk-R42" kind="presentation" identifier="genre_tutorial" id="dwj-UJ-qt9"/>
+                                                <segue destination="DEW-jL-e1H" kind="presentation" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="lN4-Cy-WLR"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -2664,7 +2664,7 @@
                                                                         <color key="textColor" red="0.56470588239999997" green="0.56470588239999997" blue="0.56470588239999997" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
-                                                                    <textField opaque="NO" clipsSubviews="YES" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Type previous password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9F8-6w-xQV">
+                                                                    <textField opaque="NO" clipsSubviews="YES" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Input previous password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9F8-6w-xQV">
                                                                         <rect key="frame" x="100" y="11" width="212" height="48"/>
                                                                         <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                                         <constraints>
@@ -3107,7 +3107,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oUN-Dn-yy2">
                                             <rect key="frame" x="16" y="30" width="288" height="45"/>
                                             <string key="text">Let us know
-your favorite EDM genre</string>
+your favorite EDM genres</string>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -3120,25 +3120,10 @@ your favorite EDM genre</string>
                                                 <constraint firstAttribute="width" constant="40" id="i7X-Dk-bLT"/>
                                             </constraints>
                                         </view>
-                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hMh-oi-rBL">
-                                            <rect key="frame" x="50" y="183" width="220" height="46"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="220" id="5nv-7e-SWn"/>
-                                                <constraint firstAttribute="height" constant="46" id="fE6-kj-Vf0"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                            <state key="normal" title="DISCOVER MY FAVOR">
-                                                <color key="titleColor" red="0.59607843140000005" green="0.18039215689999999" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                <color key="titleShadowColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="onDiscoverBtnClicked:" destination="UAP-Wk-R42" eventType="touchUpInside" id="gmF-bq-S0m"/>
-                                            </connections>
-                                        </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mTQ-XH-t1g">
                                             <rect key="frame" x="16" y="118" width="288" height="44"/>
-                                            <string key="text">If you are not familiar with EDM genre, 
-click below to discover your favor!</string>
+                                            <string key="text">If you are not familiar with EDM genres, 
+click below to discover your favorites</string>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -3155,6 +3140,22 @@ click below to discover your favor!</string>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hMh-oi-rBL">
+                                            <rect key="frame" x="41" y="183" width="240" height="46"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="240" id="5nv-7e-SWn"/>
+                                                <constraint firstAttribute="height" constant="46" id="fE6-kj-Vf0"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <state key="normal" title="DISCOVER FAVORITE GENRES">
+                                                <color key="titleColor" red="0.59607843140000005" green="0.18039215689999999" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                <color key="titleShadowColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="onDiscoverBtnClicked:" destination="UAP-Wk-R42" eventType="touchUpInside" id="gmF-bq-S0m"/>
+                                                <segue destination="Mwi-vW-cLn" kind="show" id="Xbx-d7-cL7"/>
+                                            </connections>
+                                        </button>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
@@ -3249,6 +3250,7 @@ click below to discover your favor!</string>
                             <constraint firstItem="dd7-7M-RJK" firstAttribute="leading" secondItem="YlX-wy-hyX" secondAttribute="leading" id="rJd-SG-8ll"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="XgB-BT-nzu"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="closeBtn" destination="L19-vX-xlf" id="gzX-5Y-x6V"/>
@@ -3264,6 +3266,27 @@ click below to discover your favor!</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hPH-7L-EPb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="355" y="-2738"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Vqm-aQ-7Hs">
+            <objects>
+                <navigationController navigationBarHidden="YES" id="DEW-jL-e1H" sceneMemberID="viewController">
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="USQ-vO-kAg">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <textAttributes key="titleTextAttributes">
+                            <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
+                        </textAttributes>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="UAP-Wk-R42" kind="relationship" relationship="rootViewController" id="kuN-nR-Cfr"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dup-LG-X3c" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="631" y="-2051"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="42Q-fE-RHJ">
@@ -3715,7 +3738,7 @@ click below to discover your favor!</string>
                                                     <segue destination="Ktx-cH-VkE" kind="presentation" identifier="signup" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="LxB-aE-y4C"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Sign in with Facebook to see your bookmarked EDM channels feed." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3qA-K3-cPC">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Sign in to see your bookmarked EDM channels feed." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3qA-K3-cPC">
                                                 <rect key="frame" x="16" y="193" width="288" height="65"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                 <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
@@ -4354,6 +4377,80 @@ click below to discover your favor!</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MQZ-bs-yHy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3407" y="-1211"/>
+        </scene>
+        <!--Favor Discovery-->
+        <scene sceneID="wmg-Xl-NS7">
+            <objects>
+                <viewController id="Mwi-vW-cLn" customClass="GenreDiscoveryViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7Ks-mx-2LS"/>
+                        <viewControllerLayoutGuide type="bottom" id="JEB-PO-fea"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="vIC-8e-DH8">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ufd-AP-vHN">
+                                <rect key="frame" x="0.0" y="20" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="AsW-Qd-gwG"/>
+                                    <constraint firstAttribute="height" constant="40" id="djW-YN-dh1"/>
+                                </constraints>
+                                <state key="normal" image="ic_header_back.png">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onBackBtnClicked:" destination="Mwi-vW-cLn" eventType="touchUpInside" id="vwh-r4-4Tj"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Listen below tracks and check your favor " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UK2-b8-f5T">
+                                <rect key="frame" x="22" y="82" width="320" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bCP-Mm-YFd">
+                                <rect key="frame" x="234" y="492" width="39" height="30"/>
+                                <state key="normal" title="Good">
+                                    <color key="titleColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onGoodBtnClicked:" destination="Mwi-vW-cLn" eventType="touchUpInside" id="Fft-eF-oUb"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UtL-1y-sYk">
+                                <rect key="frame" x="51" y="492" width="56" height="30"/>
+                                <state key="normal" title="Bad">
+                                    <color key="titleColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onBadBtnClicked:" destination="Mwi-vW-cLn" eventType="touchUpInside" id="8WB-bC-nXD"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JNg-Hm-7Ff">
+                                <rect key="frame" x="137" y="269" width="30" height="30"/>
+                                <state key="normal" title="play">
+                                    <color key="titleColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="onPlayBtnClicked:" destination="Mwi-vW-cLn" eventType="touchUpInside" id="Q1G-z2-TA7"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ufd-AP-vHN" firstAttribute="top" secondItem="7Ks-mx-2LS" secondAttribute="bottom" id="KdT-wj-Ifz"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Favor Discovery" id="OlK-q8-WPX"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="z1s-Nq-p2K" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1167" y="-2738"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="xmH-cZ-Jiy">
@@ -5770,7 +5867,7 @@ click below to discover your favor!</string>
         </scene>
     </scenes>
     <resources>
-        <image name="2402E1B6-DE60-4927-851C-44D59586AF43" width="105" height="64">
+        <image name="F0F79F58-4C73-42DD-8A9F-C9B4DEBA3E2E" width="105" height="64">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -6304,6 +6401,7 @@ AAACAQAAAAAAAAA/AAAAAAAAAAAAAAAAAAB3ug
         <image name="ic_dotdotdot_horizontal.png" width="47" height="47"/>
         <image name="ic_facebook.png" width="9" height="18"/>
         <image name="ic_forward.png" width="47" height="47"/>
+        <image name="ic_header_back.png" width="22" height="22"/>
         <image name="ic_header_dotdotdot.png" width="22" height="22"/>
         <image name="ic_header_search.png" width="22" height="22"/>
         <image name="ic_heart_btn_big.png" width="40" height="40"/>
@@ -6335,16 +6433,16 @@ AAACAQAAAAAAAAA/AAAAAAAAAAAAAAAAAAB3ug
         <image name="player_bg.png" width="817" height="1079"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="dwj-UJ-qt9"/>
-        <segue reference="thR-JD-JHk"/>
         <segue reference="D5z-Jt-wFj"/>
+        <segue reference="thR-JD-JHk"/>
+        <segue reference="kuN-nR-Cfr"/>
         <segue reference="QQw-jC-5zV"/>
+        <segue reference="Xzw-Km-7SK"/>
         <segue reference="Z6q-d9-u8K"/>
         <segue reference="Slv-y9-I0B"/>
         <segue reference="YpT-Ri-Ss2"/>
         <segue reference="LxB-aE-y4C"/>
-        <segue reference="lkT-Lc-qho"/>
-        <segue reference="gMR-UA-hjX"/>
+        <segue reference="s9L-cp-dOd"/>
         <segue reference="Ph7-jJ-Xhz"/>
         <segue reference="hAY-Br-kOs"/>
     </inferredMetricsTieBreakers>

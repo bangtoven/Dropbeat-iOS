@@ -195,7 +195,7 @@ class ProfileViewController: BaseViewController,
                 var remain = total - selected
                 if remain > 0 {
                     message += NSString.localizedStringWithFormat(
-                        NSLocalizedString("and %d genres", comment:""),
+                        NSLocalizedString(" and %d others", comment:""),
                         remain) as String
                 }
                 

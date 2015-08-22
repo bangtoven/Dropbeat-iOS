@@ -156,12 +156,12 @@
 "Are you sure you want do delete '%s' playlist with %d tracks?" = "Are you sure you want do delete '%s' playlist with %d tracks?";
 
 "Failed to submit" = "Failed to submit";
-"Failed to form submit" = "Failed to form submit";
+"Failed to submit form" = "Failed to submit form";
 "Required Field" = "Required Field";
 "Invalid email format" = "Invalid email format";
 "Must be less than %d characters long" = "Must be less than %d characters long";
-"Must be longger than %d charaters" = "Must be longger than %d charaters";
-"Password does not match the confirm password" = "Password does not match the confirm password";
+"Must be longer than %d charaters" = "Must be longer than %d charaters";
+"Confirmation password for not match original" = "Confirmation password for not match original";
 "Nickname already exists" = "Nickname already exists";
 "Email already exists" = "Email already exists";
 "Failed to change nickname" = "Failed to change nickname";
@@ -171,9 +171,12 @@
 "Like" = "Like";
 "Failed to sign in" = "Failed to sign in";
 "Failed to sign up" = "Failed to sign up";
-"Like box empty" = "Like box empty";
-"Pull to refresh" = "Pull to refresh";
+"Like list empty" = "Like list empty";
+"Pull to refresh" = "Drag to refresh";
 "Failed to save genre" = "Failed to save genre";
 "%d genre selected" = "%d genre selected";
+"Failed to load friend feed." = "Failed to load friend feed.";
 "Failed to load genre" = "Failed to load genre";
 "Failed to load favorite genres" = "Failed to load favorite genres";
+" and %d others" = " and %d others";
+"%d tracks are liked" = "%d tracks are liked";

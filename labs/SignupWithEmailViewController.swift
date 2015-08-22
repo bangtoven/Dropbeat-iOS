@@ -128,7 +128,7 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                        
                         ViewUtils.showNoticeAlert(self,
                             title: NSLocalizedString("Failed to sign up", comment:""),
-                            message: NSLocalizedString("Failed to form submit", comment:""))
+                            message: NSLocalizedString("Failed to submit form", comment:""))
                         return
                     }
                     
@@ -146,7 +146,7 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                         
                         ViewUtils.showNoticeAlert(self,
                             title: NSLocalizedString("Failed to sign up", comment:""),
-                            message: NSLocalizedString("Failed to form submit", comment:""))
+                            message: NSLocalizedString("Failed to submit form", comment:""))
                         return
                     }
                     progressHud.mode = MBProgressHUDMode.CustomView
@@ -257,7 +257,7 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                 NSLocalizedString("Must be less than %d charaters long", comment:""), 25) as String
         } else if count(password) < 6 {
             passwordErrorView.text = NSString.localizedStringWithFormat(
-                NSLocalizedString("Must be longger than %d charaters", comment:""), 6) as String
+                NSLocalizedString("Must be longer than %d charaters", comment:""), 6) as String
         }
         if count(passwordErrorView.text!) > 0 {
             passwordErrorView.hidden = false
@@ -268,7 +268,7 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         if count(passwordConfirm) == 0 {
             passwordConfirmErrorView.text = NSLocalizedString("Required Field", comment:"")
         } else if passwordConfirm != password {
-            passwordConfirmErrorView.text = NSLocalizedString("Password does not match the confirm password", comment:"")
+            passwordConfirmErrorView.text = NSLocalizedString("Confirmation password for not match original", comment:"")
         }
         if count(passwordConfirmErrorView.text!) > 0 {
             passwordConfirmErrorView.hidden = false

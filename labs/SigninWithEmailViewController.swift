@@ -97,7 +97,7 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                 
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to sign in", comment:""),
-                    message: NSLocalizedString("Failed to form submit", comment:""))
+                    message: NSLocalizedString("Failed to submit form", comment:""))
                 return
             }
             

@@ -11,7 +11,7 @@ import MediaPlayer
 import AVFoundation
 
 class PlayerViewController: BaseViewController, UIActionSheetDelegate {
-
+    
     @IBOutlet weak var playerTitleHeightConstaint: NSLayoutConstraint!
     
     @IBOutlet weak var coverView: UIView!
@@ -36,7 +36,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     @IBOutlet weak var coverImageView: UIImageView!
     @IBOutlet weak var qualityBtn: UIButton!
     @IBOutlet weak var coverBgImageView: UIImageView!
-//    @IBOutlet weak var playlistBtn: UIButton!
+    //    @IBOutlet weak var playlistBtn: UIButton!
     
     static var observerAttached: Bool = false
     static var sharedInstance:PlayerViewController?
@@ -89,7 +89,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             constant: 200)
         coverView.addConstraint(heightConstraint)
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -97,7 +97,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "PlayerViewScreen"
-    
+        
         self.navigationController?.navigationBarHidden = true
         updateExtraViews()
         updateCoverView()
@@ -128,9 +128,9 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     
     override func animationDidStop(anim: CAAnimation!, finished flag: Bool) {
         if (flag && (PlayerContext.playState == PlayState.LOADING ||
-                PlayerContext.playState == PlayState.SWITCHING ||
-                PlayerContext.playState == PlayState.BUFFERING)) {
-            loadingView.rotate360Degrees(duration: 0.7, completionDelegate: self)
+            PlayerContext.playState == PlayState.SWITCHING ||
+            PlayerContext.playState == PlayState.BUFFERING)) {
+                loadingView.rotate360Degrees(duration: 0.7, completionDelegate: self)
         }
     }
     
@@ -252,7 +252,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
         actionSheetTargetTrack = nil
     }
-
+    
     func backgroundHook () {
         if (PlayerContext.currentTrack != nil) {
             // Check whether it is video and stopped when it entered into background.
@@ -260,11 +260,11 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 return
             }
             if (PlayerContext.currentTrack!.type == "youtube" &&
-                    PlayerContext.playState == PlayState.PAUSED && shouldPlayMusic) {
-                hookingBackground = true
-                
-                startBackgroundTask()
-                triggerBackgroundPlay(100)
+                PlayerContext.playState == PlayState.PAUSED && shouldPlayMusic) {
+                    hookingBackground = true
+                    
+                    startBackgroundTask()
+                    triggerBackgroundPlay(100)
             }
         }
     }
@@ -303,7 +303,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         updateRepeatView()
         updateShuffleView()
         updateQualityView()
-//        updatePlayerPlaylistBtn()
+        //        updatePlayerPlaylistBtn()
     }
     
     func updateNextPrevBtn() {
@@ -364,11 +364,11 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             
             if track!.hasHqThumbnail {
                 coverBgImageView.sd_setImageWithURL(NSURL(string: track!.thumbnailUrl!),
-                        placeholderImage: UIImage(named: "player_bg.png"), completed: {
+                    placeholderImage: UIImage(named: "player_bg.png"), completed: {
                         (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
-                    if (error != nil) {
-                        self.coverBgImageView.image = UIImage(named: "player_bg.png")
-                    }
+                        if (error != nil) {
+                            self.coverBgImageView.image = UIImage(named: "player_bg.png")
+                        }
                 })
             } else {
                 coverBgImageView.image = UIImage(named: "player_bg.png")!
@@ -379,11 +379,11 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             coverBgImageView.image = UIImage(named: "player_bg.png")
             if track!.hasHqThumbnail {
                 coverImageView.sd_setImageWithURL(NSURL(string: track!.thumbnailUrl!),
-                        placeholderImage: UIImage(named: "default_cover_big.png"), completed: {
+                    placeholderImage: UIImage(named: "default_cover_big.png"), completed: {
                         (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
-                    if (error != nil) {
-                        self.coverImageView.image = UIImage(named: "default_cover_big.png")
-                    }
+                        if (error != nil) {
+                            self.coverImageView.image = UIImage(named: "default_cover_big.png")
+                        }
                 })
             } else {
                 coverImageView.image = UIImage(named: "default_cover_big.png")!
@@ -391,24 +391,24 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
     }
     
-//    func updatePlayerPlaylistBtn () {
-//        if PlayerContext.currentPlaylistId == nil {
-//            playlistBtn.setImage(UIImage(named:"ic_list_gray.png"), forState: UIControlState.Normal)
-//            playlistBtn.enabled = false
-//        } else {
-//            playlistBtn.setImage(UIImage(named:"ic_list.png"), forState: UIControlState.Normal)
-//            playlistBtn.enabled = true
-//        }
-//    }
+    //    func updatePlayerPlaylistBtn () {
+    //        if PlayerContext.currentPlaylistId == nil {
+    //            playlistBtn.setImage(UIImage(named:"ic_list_gray.png"), forState: UIControlState.Normal)
+    //            playlistBtn.enabled = false
+    //        } else {
+    //            playlistBtn.setImage(UIImage(named:"ic_list.png"), forState: UIControlState.Normal)
+    //            playlistBtn.enabled = true
+    //        }
+    //    }
     
     func updatePlayView() {
         if (PlayerContext.playState == PlayState.LOADING ||
-                PlayerContext.playState == PlayState.SWITCHING ||
-                PlayerContext.playState == PlayState.BUFFERING) {
-            playBtn.hidden = true
-            pauseBtn.hidden = true
-            loadingView.hidden = false
-            loadingView.rotate360Degrees(duration: 0.7, completionDelegate: self)
+            PlayerContext.playState == PlayState.SWITCHING ||
+            PlayerContext.playState == PlayState.BUFFERING) {
+                playBtn.hidden = true
+                pauseBtn.hidden = true
+                loadingView.hidden = false
+                loadingView.rotate360Degrees(duration: 0.7, completionDelegate: self)
         } else if (PlayerContext.playState == PlayState.PAUSED) {
             playBtn.hidden = false
             pauseBtn.hidden = true
@@ -461,9 +461,9 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     func updateStatusView() {
         let defaultText = NSLocalizedString("CHOOSE TRACK", comment:"")
         if (PlayerContext.playState == PlayState.LOADING ||
-                PlayerContext.playState == PlayState.SWITCHING) {
-            playerStatus.text = NSLocalizedString("LOADING", comment:"")
-            playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
+            PlayerContext.playState == PlayState.SWITCHING) {
+                playerStatus.text = NSLocalizedString("LOADING", comment:"")
+                playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
         } else if (PlayerContext.playState == PlayState.PAUSED) {
             playerStatus.text = NSLocalizedString("PAUSED", comment:"")
             playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
@@ -493,7 +493,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             break
         }
     }
-
+    
     func updateProgressView() {
         if (PlayerContext.playState == PlayState.PLAYING && !isProgressUpdatable) {
             return
@@ -550,7 +550,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             if (PlayerContext.correctDuration == nil) {
                 PlayerContext.correctDuration = audioPlayerControl.moviePlayer.duration
             }
-
+            
             if (audioPlayerControl.moviePlayer.duration != PlayerContext.correctDuration) {
                 // To find a end of the track that has corrected duration.
                 // - This is hacky way to prevent repeatedly gain pause / play event from player
@@ -571,7 +571,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                     return
                 }
             }
-
+            
             if (PlayerContext.correctDuration == -1.0) {
                 // URL has no duration info.
                 PlayerContext.correctDuration = audioPlayerControl.moviePlayer.duration / 2.0
@@ -609,23 +609,23 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             println("load state = Stalled")
         }
         if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0 &&
-                audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Stalled.rawValue != 0) {
-            startBackgroundTask()
-            updatePlayState(PlayState.BUFFERING)
-            println("update state to buffering")
-            if bufferingTimer == nil {
-                bufferingTimer = NSTimer.scheduledTimerWithTimeInterval(
-                    0.5, target: self, selector: Selector("checkBufferState"), userInfo: nil, repeats: true)
-            }
-            return
+            audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Stalled.rawValue != 0) {
+                startBackgroundTask()
+                updatePlayState(PlayState.BUFFERING)
+                println("update state to buffering")
+                if bufferingTimer == nil {
+                    bufferingTimer = NSTimer.scheduledTimerWithTimeInterval(
+                        0.5, target: self, selector: Selector("checkBufferState"), userInfo: nil, repeats: true)
+                }
+                return
         }
         if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0) {
             if ((PlayerContext.playState == PlayState.SWITCHING ||
                 PlayerContext.playState == PlayState.PLAYING) &&
-                    lastPlaybackBeforeSwitch != nil &&
-                    lastPlaybackBeforeSwitch > 0) {
-                audioPlayerControl.moviePlayer.currentPlaybackTime = lastPlaybackBeforeSwitch!
-                lastPlaybackBeforeSwitch = nil
+                lastPlaybackBeforeSwitch != nil &&
+                lastPlaybackBeforeSwitch > 0) {
+                    audioPlayerControl.moviePlayer.currentPlaybackTime = lastPlaybackBeforeSwitch!
+                    lastPlaybackBeforeSwitch = nil
             }
             if bufferingTimer == nil {
                 bufferingTimer = NSTimer.scheduledTimerWithTimeInterval(
@@ -640,32 +640,32 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             if (PlayerContext.currentTrack != nil &&
                 PlayerContext.currentTrack!.type == "youtube" &&
                 PlayerContext.correctDuration != nil){
-                if (audioPlayerControl.moviePlayer.currentPlaybackTime >= PlayerContext.correctDuration! - 1) {
-                    if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
-                        handleSeek(0)
-                    } else if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
-                        if remoteProgressTimer != nil {
-                            remoteProgressTimer?.invalidate()
-                            remoteProgressTimer = nil
-                        }
-                        if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
-                            self.forceStopPlayer = true
-                            audioPlayerControl.moviePlayer.stop()
+                    if (audioPlayerControl.moviePlayer.currentPlaybackTime >= PlayerContext.correctDuration! - 1) {
+                        if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
+                            handleSeek(0)
+                        } else if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
+                            if remoteProgressTimer != nil {
+                                remoteProgressTimer?.invalidate()
+                                remoteProgressTimer = nil
+                            }
+                            if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
+                                self.forceStopPlayer = true
+                                audioPlayerControl.moviePlayer.stop()
+                            }
                         }
                     }
-                }
             }
         }
     }
     
     func checkBufferState() {
         if PlayerContext.playState != PlayState.BUFFERING &&
-                PlayerContext.playState != PlayState.LOADING &&
-                PlayerContext.playState != PlayState.SWITCHING {
-            println("invalidate buffering timer")
-            bufferingTimer?.invalidate()
-            bufferingTimer = nil
-            return
+            PlayerContext.playState != PlayState.LOADING &&
+            PlayerContext.playState != PlayState.SWITCHING {
+                println("invalidate buffering timer")
+                bufferingTimer?.invalidate()
+                bufferingTimer = nil
+                return
         }
         var currTime = audioPlayerControl.moviePlayer.currentPlaybackTime
         var playableTime = audioPlayerControl.moviePlayer.playableDuration
@@ -701,9 +701,9 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
         
         if (forceStopPlayer && (
-                audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Paused ||
+            audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Paused ||
                 audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Playing)) {
-            return
+                    return
         }
         
         if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Playing) {
@@ -724,8 +724,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Stalled.rawValue != 0) ||
                 PlayerContext.playState == PlayState.SWITCHING ||
                 PlayerContext.playState == PlayState.BUFFERING) {
-                // buffering
-                return
+                    // buffering
+                    return
             }
             updatePlayState(PlayState.PAUSED)
             if remoteProgressTimer != nil {
@@ -952,13 +952,13 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             progressHud.hide(true)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
-                        message: NSLocalizedString("Internet is not connected", comment:""),
-                        positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                            self.onTrackShareBtnClicked(track)
-                        }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
-                    return
+                    error!.code == NSURLErrorNotConnectedToInternet) {
+                        ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
+                            message: NSLocalizedString("Internet is not connected", comment:""),
+                            positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
+                                self.onTrackShareBtnClicked(track)
+                            }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
+                        return
                 }
                 ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
                     message: NSLocalizedString("Failed to share track", comment:""),
@@ -973,13 +973,13 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             var items:[AnyObject] = [shareTitle, shareUrl]
             
             let activityController = UIActivityViewController(
-                    activityItems: items, applicationActivities: nil)
+                activityItems: items, applicationActivities: nil)
             activityController.excludedActivityTypes = [
-                    UIActivityTypePrint,
-                    UIActivityTypeSaveToCameraRoll,
-                    UIActivityTypeAirDrop,
-                    UIActivityTypeAssignToContact
-                ]
+                UIActivityTypePrint,
+                UIActivityTypeSaveToCameraRoll,
+                UIActivityTypeAirDrop,
+                UIActivityTypeAssignToContact
+            ]
             if activityController.respondsToSelector("popoverPresentationController:") {
                 activityController.popoverPresentationController?.sourceView = self.shareBtn
             }
@@ -1132,17 +1132,17 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             if PlayerContext.playState == PlayState.LOADING ||
                 PlayerContext.playState == PlayState.BUFFERING ||
                 PlayerContext.playState == PlayState.SWITCHING {
-                return
+                    return
             }
             if audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Paused ||
                 audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Interrupted {
-                // Resume
-                if force {
-                    shouldPlayMusic = true
-                }
-                updatePlayStateView(PlayState.PLAYING)
-                playAudioPlayer()
-                return
+                    // Resume
+                    if force {
+                        shouldPlayMusic = true
+                    }
+                    updatePlayStateView(PlayState.PLAYING)
+                    playAudioPlayer()
+                    return
             } else if audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Playing {
                 // Same music is clicked when it is being played.
                 return
@@ -1181,7 +1181,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         
         // Indicate loading status.
         updatePlayState(PlayState.LOADING)
-//        updatePlayerPlaylistBtn()
+        //        updatePlayerPlaylistBtn()
         updateNextPrevBtn()
         updateLikeBtn()
         
@@ -1191,10 +1191,10 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         // Log to GA
         let tracker = GAI.sharedInstance().defaultTracker
         let event = GAIDictionaryBuilder.createEventWithCategory(
-                "player-play-from-ios",
-                action: "play-\(track!.type)",
-                label: track!.title,
-                value: 0
+            "player-play-from-ios",
+            action: "play-\(track!.type)",
+            label: track!.title,
+            value: 0
             ).build()
         tracker.send(event as [NSObject: AnyObject]!)
         
@@ -1210,12 +1210,12 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             lastPlaybackBeforeSwitch = nil
         }
         PlayerContext.correctDuration = nil
-       
+        
         audioPlayerControl.moviePlayer.contentURL = nil
         audioPlayerControl.videoIdentifier = nil
         shouldPlayMusic = true
         audioPlayerControl.moviePlayer.stop()
-
+        
         if (isInitial) {
             PlayerContext.currentPlaybackTime = 0
             PlayerContext.correctDuration = nil
@@ -1254,7 +1254,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
         
         // NOTE:
-        // Not start play here 
+        // Not start play here
         // audioPlayerControl.moviePlayer.play will be called on MPMoviePlayerLoadStateDidChange func
         // receive Playable or PlaythroughOK
         // see http://macromeez.tumblr.com/post/91330737652/continuous-background-media-playback-on-ios-using
@@ -1383,7 +1383,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                             thumbImage = UIImage(named:"default_cover_big")!
                         }
                         self.updatePlayingInfoCenter(playingState, image: thumbImage)
-                    })
+                })
                 
             } else {
                 updatePlayingInfoCenter(playingState, image: UIImage(named:"default_cover_big")!)
@@ -1407,32 +1407,32 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         var stateText:String?
         var rate:Float?
         switch(playingState) {
-            case PlayState.LOADING:
-                stateText = NSLocalizedString("LOADING..", comment:"")
-                rate = 0.0
-                break
-            case PlayState.SWITCHING:
-                stateText = NSLocalizedString("LOADING..", comment:"")
-                rate = 0.0
-                break
-            case PlayState.PAUSED:
-                stateText = NSLocalizedString("PAUSED", comment:"")
-                rate = 0
-                break
-            case PlayState.STOPPED:
-                stateText = NSLocalizedString("READY", comment:"")
-                rate = 0
-                break
-            case PlayState.PLAYING:
-                stateText = NSLocalizedString("PLAYING", comment:"")
-                rate = 1.0
-                break
-            case PlayState.BUFFERING:
-                stateText = NSLocalizedString("BUFFERING", comment:"")
-                rate = 1.0
-                break
-            default:
-                stateText = ""
+        case PlayState.LOADING:
+            stateText = NSLocalizedString("LOADING..", comment:"")
+            rate = 0.0
+            break
+        case PlayState.SWITCHING:
+            stateText = NSLocalizedString("LOADING..", comment:"")
+            rate = 0.0
+            break
+        case PlayState.PAUSED:
+            stateText = NSLocalizedString("PAUSED", comment:"")
+            rate = 0
+            break
+        case PlayState.STOPPED:
+            stateText = NSLocalizedString("READY", comment:"")
+            rate = 0
+            break
+        case PlayState.PLAYING:
+            stateText = NSLocalizedString("PLAYING", comment:"")
+            rate = 1.0
+            break
+        case PlayState.BUFFERING:
+            stateText = NSLocalizedString("BUFFERING", comment:"")
+            rate = 1.0
+            break
+        default:
+            stateText = ""
         }
         trackInfo[MPMediaItemPropertyArtist] = stateText
         trackInfo[MPMediaItemPropertyArtwork] = albumArt
@@ -1507,5 +1507,362 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             playlistSelectVC.fromSection = "feed"
             playlistSelectVC.caller = self
         }
+    }
+}
+
+
+//
+//  CenterViewController.swift
+//  labs
+//
+//  Created by vulpes on 2015. 5. 15..
+//  Copyright (c) 2015년 dropbeat. All rights reserved.
+//
+
+enum MenuType {
+    case FEED
+    case CHANNEL
+    case SEARCH
+    case PROFILE
+    case PLAYER
+}
+
+class CenterViewController: PlayerViewController, UITabBarDelegate{
+    
+    static let TAB_FEED = 1
+    static let TAB_CHANNEL = 2
+//    static let TAB_SEARCH = 3
+    static let TAB_PROFILE = 4
+    static let TAB_PLAYER = 5
+    
+    @IBOutlet weak var containerFrame: UIView!
+    @IBOutlet weak var containerTopConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var containerTopPaddingConstraint: NSLayoutConstraint!
+    @IBOutlet weak var containerTopPaddingPlaceholderHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var containerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tabBarBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tabBarHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var playerViewHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var menuBtn: UIButton!
+    @IBOutlet weak var hideBtn: UIButton!
+    @IBOutlet weak var playerView: UIView!
+    @IBOutlet weak var containerView: UIView!
+    @IBOutlet weak var tabBar: UITabBar!
+    
+    private var currentMenu:MenuType = MenuType.FEED
+    private var isPlayerVisible:Bool = false
+    
+    private var activeViewController: UIViewController? {
+        didSet {
+            removeInactiveViewController(oldValue)
+            updateActiveViewController()
+        }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        
+        hideBtn.layer.cornerRadius = 3.0
+        hideBtn.layer.borderWidth = 1
+        hideBtn.layer.borderColor = UIColor(netHex: 0x4f525a).CGColor
+        
+        menuBtn.layer.cornerRadius = 3.0
+        menuBtn.layer.borderWidth = 1
+        menuBtn.layer.borderColor = UIColor(netHex: 0x4f525a).CGColor
+    
+        initConstaints()
+        
+        // set first item
+        let firstTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
+        tabBar.selectedItem = firstTab
+        onMenuSelected(currentMenu, forceUpdate:true)
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        loadSharedTrackIfExist()
+        loadSharedPlaylistIfExist()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.screenName = "CenterViewScreen"
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "loadSharedTrackIfExist", name: NotifyKey.trackShare, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "loadSharedPlaylistIfExist", name: NotifyKey.playlistShare, object: nil)
+        setNeedsStatusBarAppearanceUpdate()
+    }
+    
+    func loadSharedTrackIfExist() {
+        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        if appDelegate.sharedTrackUid == nil {
+            return
+        }
+        
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+        Requests.getSharedTrack(appDelegate.sharedTrackUid!, respCb: {
+                (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            
+            progressHud.hide(true)
+            var success:Bool = true
+            var track:Track?
+            
+            if error != nil || result == nil {
+                success = false
+            } else {
+                let parser = Parser()
+                track = parser.parseSharedTrack(result!)
+                if track == nil {
+                    success = false
+                }
+            }
+            
+            if !success {
+                ViewUtils.showNoticeAlert(
+                    self,
+                    title: NSLocalizedString("Failed to load", comment:""),
+                    message: NSLocalizedString("Failed to load shared track", comment:""),
+                    btnText: NSLocalizedString("Confirm", comment:""),
+                    callback: nil)
+                return
+            }
+            
+            var params: [String: AnyObject] = [
+                "track": track!,
+            ]
+            NSNotificationCenter.defaultCenter().postNotificationName(
+                NotifyKey.playerPlay, object: params)
+        })
+        appDelegate.sharedTrackUid = nil
+    }
+    
+    func loadSharedPlaylistIfExist() {
+        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        if appDelegate.sharedPlaylistUid == nil {
+            return
+        }
+        
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+        Requests.getSharedPlaylist(appDelegate.sharedPlaylistUid!, respCb: {
+                (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            
+            var success:Bool = true
+            var playlist:Playlist?
+            
+            if error != nil || result == nil {
+                success = false
+            } else {
+                let parser = Parser()
+                playlist = parser.parseSharedPlaylist(result!)
+                if playlist == nil {
+                    success = false
+                }
+            }
+            
+            if !success {
+                ViewUtils.showNoticeAlert(
+                    self,
+                    title: NSLocalizedString("Failed to load", comment:""),
+                    message: NSLocalizedString("Failed to load shared playlist", comment:""),
+                    btnText: NSLocalizedString("Confirm", comment:""),
+                    callback: nil)
+                progressHud.hide(true)
+                return
+            }
+            
+            playlist!.type = PlaylistType.SHARED
+            progressHud.hide(true)
+            self.performSegueWithIdentifier("PlaylistSegue", sender: playlist)
+        })
+        appDelegate.sharedPlaylistUid = nil
+    }
+    
+    func initConstaints() {
+//        let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
+        let statusBarHeight:CGFloat = 20.0
+        containerHeightConstraint.constant = self.view.bounds.size.height
+            - tabBarHeightConstraint.constant
+        
+        containerTopPaddingConstraint.constant = -statusBarHeight
+        containerTopPaddingPlaceholderHeightConstraint.constant = statusBarHeight
+        
+        playerViewHeightConstraint.constant = self.view.bounds.size.height
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.trackShare, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playlistShare, object: nil)
+    }
+    
+    override func remotePlay(noti: NSNotification) {
+        super.remotePlay(noti)
+        showPlayerView()
+    }
+    
+    func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem!) {
+        let menuType:MenuType? = tabTagToMenuType(item.tag)
+        if menuType != nil {
+            onMenuSelected(menuType!)
+        }
+    }
+    
+    func onMenuSelected(type:MenuType, forceUpdate:Bool=false) {
+        if !forceUpdate && currentMenu == type {
+            return
+        }
+        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        switch(type) {
+        case .FEED:
+            activeViewController = mainStoryboard
+                .instantiateViewControllerWithIdentifier("FeedNavigationController")
+                as? UIViewController
+            break
+        case .CHANNEL:
+            activeViewController = mainStoryboard
+                .instantiateViewControllerWithIdentifier("ChannelNavigationController")
+                as? UIViewController
+            break
+        case .SEARCH:
+            activeViewController = mainStoryboard
+                .instantiateViewControllerWithIdentifier("SearchNavigationController")
+                as? UIViewController
+            break
+        case .PROFILE:
+            if Account.getCachedAccount() == nil {
+//                performSegueWithIdentifier("need_auth", sender: nil)
+//                let lastTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
+//                tabBar.selectedItem = lastTab
+//                break
+                activeViewController = mainStoryboard
+                    .instantiateViewControllerWithIdentifier("SettingsNavigationController")
+                    as? UIViewController
+            } else {
+                activeViewController = mainStoryboard
+                    .instantiateViewControllerWithIdentifier("ProfileNavigationController")
+                    as? UIViewController
+            }
+            break
+        case .PLAYER:
+            showPlayerView()
+            let lastTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
+            tabBar.selectedItem = lastTab
+            break
+        default:
+            break
+        }
+        if type != MenuType.PLAYER {
+            currentMenu = type
+        }
+    }
+    
+    func tabTagToMenuType (tag:Int) -> MenuType? {
+        var menuType:MenuType?
+        switch(tag) {
+        case CenterViewController.TAB_FEED:
+            menuType = MenuType.FEED
+            break
+        case CenterViewController.TAB_CHANNEL:
+            menuType = MenuType.CHANNEL
+            break
+        case CenterViewController.TAB_PROFILE:
+            menuType = MenuType.PROFILE
+            break
+        case CenterViewController.TAB_PLAYER:
+            menuType = MenuType.PLAYER
+            break
+        default:
+            break
+        }
+        return menuType
+    }
+    
+    func menuTypeToTabIdx (type:MenuType) -> Int {
+        var idx : Int
+        switch(type) {
+        case .FEED:
+            return 0
+        case .CHANNEL:
+            return 1
+        case .PROFILE:
+            return 2
+        case .PLAYER:
+            return 3
+        default:
+            return 0
+        }
+    }
+    
+    override func prefersStatusBarHidden() -> Bool {
+        return isPlayerVisible
+    }
+    
+    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
+        return UIStatusBarAnimation.None
+    }
+    
+    func showPlayerView() {
+        isPlayerVisible = true
+        setNeedsStatusBarAppearanceUpdate()
+        self.view.layoutIfNeeded()
+        UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+            self.containerTopConstraint.constant = 3 - self.containerHeightConstraint.constant
+            self.tabBarBottomConstraint.constant = -1 * self.tabBarHeightConstraint.constant
+            self.tabBar.alpha = 0.0
+            self.view.layoutIfNeeded()
+        }) { (Bool) -> Void in
+        }
+    }
+    
+    func hidePlayerView() {
+        self.view.layoutIfNeeded()
+        
+        isPlayerVisible = false
+        setNeedsStatusBarAppearanceUpdate()
+        UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+//            let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
+            let statusBarHeight:CGFloat = 20.0
+            self.containerTopConstraint.constant = -1 * statusBarHeight
+            self.tabBarBottomConstraint.constant = 0
+            self.tabBar.alpha = 1.0
+            self.view.layoutIfNeeded()
+        }) { (Bool) -> Void in
+        }
+    }
+    
+    func showSigninView() {
+        performSegueWithIdentifier("need_auth", sender: nil)
+    }
+    
+    private func removeInactiveViewController(inactiveViewController:UIViewController?) {
+        if let inactiveVC = inactiveViewController {
+            inactiveVC.willMoveToParentViewController(nil)
+            inactiveVC.view.removeFromSuperview()
+            inactiveVC.removeFromParentViewController()
+        }
+    }
+    
+    private func updateActiveViewController() {
+        if let activeVC = activeViewController {
+            // call before adding child view controller's view as subview
+            addChildViewController(activeVC)
+            
+            activeVC.view.frame = containerFrame.bounds
+            containerFrame.addSubview(activeVC.view)
+            
+            // call before adding child view controller's view as subview
+            activeVC.didMoveToParentViewController(self)
+        }
+    }
+    
+    @IBAction func onHidePlayerViewBtnClicked(sender: AnyObject) {
+        hidePlayerView()
     }
 }

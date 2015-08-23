@@ -808,3 +808,608 @@ class PlaylistViewController: BaseViewController,
         }
     }
 }
+
+
+
+//
+//  PlaylistSelectViewController.swift
+//  labs
+//
+//  Created by vulpes on 2015. 7. 31..
+//  Copyright (c) 2015년 dropbeat. All rights reserved.
+//
+
+class PlaylistSelectViewController: BaseViewController,
+        UITableViewDelegate, UITableViewDataSource {
+    
+    @IBOutlet weak var frameHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tableView: UITableView!
+    private var playlists:[Playlist] = [Playlist]()
+    var targetTrack:Track?
+    var fromSection:String = "unknown"
+    var caller:UIViewController?
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        frameHeightConstraint.constant = self.view.bounds.height - 20
+        playlists.removeAll(keepCapacity: false)
+        for playlist in PlayerContext.playlists {
+            playlists.append(playlist)
+        }
+        tableView.reloadData()
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.screenName = "PlaylistSelectScreen"
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "appWillEnterForeground", name: UIApplicationWillEnterForegroundNotification, object: nil)
+        
+        loadPlaylists()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
+    }
+    
+    @IBAction func onBackBtnClicked(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    @IBAction func onCreatePlaylistBtnClicked(sender: UIButton) {
+        ViewUtils.showTextInputAlert(
+            self, title: NSLocalizedString("Create new playlist", comment:""),
+                message: NSLocalizedString("Type new playlist name", comment:""),
+                placeholder: NSLocalizedString("Playlist 01", comment:""),
+            positiveBtnText: NSLocalizedString("Create", comment:""),
+            positiveBtnCallback: { (result) -> Void in
+                if (count(result) == 0) {
+                    return
+                }
+                let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Creating playlist..", comment:""))
+                Requests.createPlaylist(result, respCb: {
+                        (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                    progressHud.hide(true)
+                    if (error != nil) {
+                        var message:String?
+                        if (error != nil && error!.domain == NSURLErrorDomain &&
+                                error!.code == NSURLErrorNotConnectedToInternet) {
+                            message = NSLocalizedString("Internet is not connected", comment:"")
+                        }
+                        if (message == nil) {
+                            message = NSLocalizedString("Failed to create", comment:"")
+                        }
+                        ViewUtils.showNoticeAlert(self, title:
+                            NSLocalizedString("Failed to create playlist", comment:""), message: message!)
+                        return
+                    }
+                    self.loadPlaylists()
+                })
+            })
+    }
+    
+    func appWillEnterForeground () {
+        loadPlaylists()
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.playlists.count
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var playlist = playlists[indexPath.row]
+        addToPlaylist(playlist)
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell:PlaylistSelectTableViewCell = tableView.dequeueReusableCellWithIdentifier(
+                "PlaylistSelectTableViewCell", forIndexPath: indexPath) as! PlaylistSelectTableViewCell
+        let playlist = playlists[indexPath.row]
+        cell.nameView.text = playlist.name
+        let trackCount = playlist.tracks.count
+        cell.trackCount.text = NSString.localizedStringWithFormat(
+            NSLocalizedString("%d tracks", comment:""), trackCount) as String
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if tableView.respondsToSelector("separatorInset") {
+            tableView.separatorInset = UIEdgeInsetsMake(0, 8, 0, 8)
+        }
+        
+        if tableView.respondsToSelector("layoutMargins") {
+            tableView.layoutMargins = UIEdgeInsetsZero
+        }
+        
+        if cell.respondsToSelector("layoutMargins") {
+            cell.layoutMargins = UIEdgeInsetsZero
+        }
+    }
+    
+    func loadPlaylists() {
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading playlists..", comment:""))
+        Requests.fetchAllPlaylists({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            progressHud.hide(true)
+            if (error != nil || result == nil) {
+                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to fetch", comment:""),
+                    message: NSLocalizedString("Failed to fetch playlists.", comment:""),
+                    positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
+                    self.loadPlaylists()
+                }, negativeBtnText: NSLocalizedString("Cancel", comment:""))
+                return
+            }
+            let playlists = Parser().parsePlaylists(result!).reverse()
+            if (playlists.count == 0) {
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Failed to fetch playlists", comment:""),
+                    message: error!.description)
+                return
+            }
+            PlayerContext.playlists.removeAll(keepCapacity: false)
+            self.playlists.removeAll(keepCapacity: false)
+            for playlist in playlists {
+                PlayerContext.playlists.append(playlist)
+                self.playlists.append(playlist)
+            }
+            self.tableView.reloadData()
+        })
+    }
+    
+    func addToPlaylist(playlist:Playlist) {
+        var hasAlready = false
+        for track in playlist.tracks {
+            if track.id == targetTrack!.id {
+                hasAlready = true
+                break
+            }
+        }
+        if hasAlready {
+            ViewUtils.showToast(self, message: NSLocalizedString("Already in Playlist", comment:""))
+            if tableView.indexPathForSelectedRow() != nil {
+                tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: false)
+            }
+            return
+        }
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Saving..", comment:""))
+        targetTrack!.addToPlaylist(playlist, section: fromSection) { (error) -> Void in
+            progressHud.hide(true)
+            if error != nil {
+                var message:String?
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
+                } else {
+                    message = NSLocalizedString("Failed to add track to playlist", comment:"")
+                }
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Failed to add", comment:""),
+                    message: message!, btnText: NSLocalizedString("Confirm", comment:""), callback: nil)
+                return
+            }
+            ViewUtils.showToast(self.caller!, message: NSLocalizedString("Track added", comment:""))
+            self.dismissViewControllerAnimated(true, completion: nil)
+        }
+    }
+}
+
+
+//
+//  LikeBoxViewController.swift
+//  labs
+//
+//  Created by vulpes on 2015. 8. 21..
+//  Copyright (c) 2015년 dropbeat. All rights reserved.
+//
+
+class LikeBoxViewController: BaseViewController,
+        UITableViewDelegate, UITableViewDataSource, PlaylistTableViewDelegate,
+        UIActionSheetDelegate {
+    
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tracksCountView: UILabel!
+    @IBOutlet weak var shuffleBtn: UIButton!
+    
+    
+    private var tracks:[Track] = [Track]()
+    private var menuSelectedTrack:Track?
+    private var refreshControl:UIRefreshControl!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        shuffleBtn.layer.cornerRadius = 3.0
+        shuffleBtn.layer.borderWidth = 1
+        shuffleBtn.layer.borderColor = UIColor(netHex:0xcccccc).CGColor
+        
+        refreshControl = UIRefreshControl()
+        refreshControl.tintColor = UIColor(netHex:0xc380fc)
+        refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
+        
+        let refreshControlTitle = NSAttributedString(
+            string: NSLocalizedString("Pull to refresh", comment: ""),
+            attributes: [NSForegroundColorAttributeName: UIColor(netHex: 0x909090)])
+        refreshControl.attributedTitle = refreshControlTitle
+        tableView.insertSubview(refreshControl, atIndex: 0)
+        
+        
+        let account = Account.getCachedAccount()!
+        if account.likes.count > 0 {
+            for i in reverse(0...account.likes.count - 1) {
+                let like = account.likes[i]
+                self.tracks.append(like.track)
+            }
+        }
+        tracksCountView.text = NSString.localizedStringWithFormat(
+            NSLocalizedString("%d tracks", comment:""), account.likes.count) as String
+        self.tableView.reloadData()
+        self.updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.screenName = "LikeBoxViewScreen"
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.playerStop, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "sender", name: NotifyKey.updateShuffleState, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "updatePlayTrack:", name: NotifyKey.updatePlay, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "appWillEnterForeground",
+            name: UIApplicationWillEnterForegroundNotification, object: nil)
+        
+        refresh()
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerStop, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updateShuffleState, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
+    }
+    
+    @IBAction func onShuffleBtnClicked(sender: AnyObject) {
+        if tracks.count == 0 {
+            ViewUtils.showToast(self, message: NSLocalizedString("Like list empty", comment:""))
+            return
+        }
+        
+        let randomIndex = Int(arc4random_uniform(UInt32(tracks.count)))
+        var selectedTrack: Track = tracks[randomIndex] as Track
+        
+        PlayerContext.shuffleState = ShuffleState.SHUFFLE
+        PlayerContext.externalPlaylist = Playlist(
+            id: getPlaylistId(),
+            name: getPlaylistName(),
+            tracks: tracks
+        )
+        
+        
+        var params: Dictionary<String, AnyObject> = [
+            "track": selectedTrack,
+            "playlistId": getPlaylistId()
+        ]
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            NotifyKey.playerPlay, object: params)
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            NotifyKey.updateShuffleState, object: nil)
+    }
+    
+    func onMenuBtnClicked(sender: PlaylistTableViewCell) {
+        
+        let indexPath:NSIndexPath = tableView.indexPathForCell(sender)!
+        menuSelectedTrack = tracks[indexPath.row]
+        
+        let actionSheet = UIActionSheet()
+        
+        actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
+        actionSheet.addButtonWithTitle(NSLocalizedString("Add to playlist", comment:""))
+        actionSheet.addButtonWithTitle(NSLocalizedString("Delete", comment:""))
+        
+        actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
+        
+        actionSheet.destructiveButtonIndex = 2
+        actionSheet.cancelButtonIndex = 3
+        actionSheet.showInView(self.view)
+        actionSheet.delegate = self
+    }
+    
+    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
+        let track = menuSelectedTrack
+        var foundIdx = -1
+        if track != nil {
+            for (idx, track) in enumerate(tracks) {
+                if track.id == track.id {
+                    foundIdx = idx
+                    break
+                }
+            }
+        }
+        if foundIdx == -1 {
+            ViewUtils.showToast(self, message: NSLocalizedString("Track is not in playlist", comment:""))
+            return
+        }
+        
+        switch(buttonIndex) {
+        case 0:
+            onShareTrackBtnClicked(menuSelectedTrack!)
+            break
+        case 1:
+            onTrackAddToOtherPlaylistBtnClicked(menuSelectedTrack!)
+            break
+        case 2:
+            doDislike(menuSelectedTrack!)
+            break
+        default:
+            break
+        }
+        menuSelectedTrack = nil
+    }
+    
+    func getPlaylistId() -> String {
+        return "like_box"
+    }
+    
+    func getPlaylistName() -> String {
+        return "Like box"
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var selectedTrack: Track = tracks[indexPath.row] as Track
+        onPlayTrackBtnClicked(selectedTrack)
+    }
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if tableView.respondsToSelector("separatorInset") {
+            tableView.separatorInset = UIEdgeInsetsZero
+        }
+        
+        if tableView.respondsToSelector("layoutMargins") {
+            tableView.layoutMargins = UIEdgeInsetsZero
+        }
+        
+        if cell.respondsToSelector("layoutMargins") {
+            cell.layoutMargins = UIEdgeInsetsZero
+        }
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let track:Track = tracks[indexPath.row]
+        var cell:PlaylistTableViewCell = tableView.dequeueReusableCellWithIdentifier(
+                "PlaylistTableViewCell", forIndexPath: indexPath) as! PlaylistTableViewCell
+        if (getPlaylistId() == PlayerContext.currentPlaylistId &&
+                PlayerContext.currentTrack != nil &&
+                PlayerContext.currentTrack!.id == track.id) {
+            cell.setSelected(true, animated: false)
+        }
+        cell.trackTitle.text = track.title
+        cell.delegate = self
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return count(tracks)
+    }
+    
+    func updatePlayTrack(noti: NSNotification) {
+        var params = noti.object as! Dictionary<String, AnyObject>
+        var track = params["track"] as! Track
+        var playlistId:String? = params["playlistId"] as? String
+        updatePlayTrack(track, playlistId: playlistId)
+    }
+    
+    func updatePlayTrack(track:Track?, playlistId:String?) {
+        var indexPath = tableView.indexPathForSelectedRow()
+        if (indexPath != nil) {
+            var preSelectedTrack:Track = tracks[indexPath!.row]
+            if (preSelectedTrack.id != track!.id ||
+                (playlistId == nil && playlistId != getPlaylistId())) {
+                tableView.deselectRowAtIndexPath(indexPath!, animated: false)
+            }
+        }
+        
+        if (playlistId == nil || playlistId != getPlaylistId()) {
+            return
+        }
+        
+        for (idx, t) in enumerate(tracks) {
+            if (t.id == track!.id) {
+                tableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
+                    animated: true, scrollPosition: UITableViewScrollPosition.None)
+                break
+            }
+        }
+    }
+    
+    func sender() {}
+    
+    func appWillEnterForeground () {
+        refresh()
+    }
+    
+    func refresh() {
+        let account = Account.getCachedAccount()!
+        
+        var progressHud:MBProgressHUD?
+        if !refreshControl.refreshing {
+            progressHud = ViewUtils.showProgress(self, message: "")
+        }
+        account.syncLikeInfo { (error) -> Void in
+            progressHud?.hide(true)
+            self.refreshControl.endRefreshing()
+            if error != nil {
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Failed to load", comment:""),
+                    message: NSLocalizedString("Failed to load like box", comment: ""))
+                return
+            }
+            self.tracks.removeAll(keepCapacity: false)
+            if account.likes.count > 0 {
+                for i in reverse(0...account.likes.count - 1) {
+                    let like = account.likes[i]
+                    self.tracks.append(like.track)
+                }
+            }
+            self.tableView.reloadData()
+            self.updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+        }
+    }
+    
+    func onTrackLikeBtnClicked(track:Track) {
+        let progressHud = ViewUtils.showProgress(self, message: nil)
+        if track.isLiked {
+            track.doUnlike({ (error) -> Void in
+                if error != nil {
+                    progressHud.hide(true)
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to save", comment: ""),
+                        message: NSLocalizedString("Failed to save unlike info.", comment:""),
+                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
+                        positiveBtnCallback: { () -> Void in
+                            self.onTrackLikeBtnClicked(track)
+                    })
+                    return
+                }
+                progressHud.mode = MBProgressHUDMode.CustomView
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike.png"))
+                progressHud.hide(true, afterDelay: 1)
+                
+            })
+        } else {
+            track.doLike({ (error) -> Void in
+                if error != nil {
+                    progressHud.hide(true)
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to save", comment: ""),
+                        message: NSLocalizedString("Failed to save like info.", comment:""),
+                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
+                        positiveBtnCallback: { () -> Void in
+                            self.onTrackLikeBtnClicked(track)
+                    })
+                    return
+                }
+                progressHud.mode = MBProgressHUDMode.CustomView
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like.png"))
+                progressHud.hide(true, afterDelay: 1)
+            })
+        }
+    }
+    
+    func onPlayTrackBtnClicked(track: Track) {
+        PlayerContext.externalPlaylist = Playlist(
+            id: getPlaylistId(),
+            name: getPlaylistName(),
+            tracks: tracks)
+        
+        var params: Dictionary<String, AnyObject> = [
+            "track": track,
+            "playlistId": getPlaylistId()
+        ]
+        
+        NSNotificationCenter.defaultCenter().postNotificationName(
+            NotifyKey.playerPlay, object: params)
+    }
+    
+    func onShareTrackBtnClicked(track: Track) {
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+        track.shareTrack("playlist", afterShare: { (error, uid) -> Void in
+            progressHud.hide(true)
+            if error != nil {
+                if (error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to share", comment:""),
+                        message: NSLocalizedString("Internet is not connected.", comment:""),
+                        positiveBtnText: NSLocalizedString("Retry", comment:""),
+                        positiveBtnCallback: { () -> Void in
+                            self.onShareTrackBtnClicked(track)
+                        }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
+                    return
+                }
+                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
+                    message: NSLocalizedString("Failed to share track", comment:""),
+                    positiveBtnText: NSLocalizedString("Retry", comment:""),
+                    positiveBtnCallback: { () -> Void in
+                        self.onShareTrackBtnClicked(track)
+                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
+                return
+            }
+            let shareUrl = "http://dropbeat.net/?track=" + uid!
+            let shareTitle = track.title
+            
+            var items:[AnyObject] = [shareTitle, shareUrl]
+            
+            let activityController = UIActivityViewController(
+                    activityItems: items, applicationActivities: nil)
+            activityController.excludedActivityTypes = [
+                    UIActivityTypePrint,
+                    UIActivityTypeSaveToCameraRoll,
+                    UIActivityTypeAirDrop,
+                    UIActivityTypeAssignToContact
+                ]
+            if activityController.respondsToSelector("popoverPresentationController:") {
+                activityController.popoverPresentationController?.sourceView = self.view
+            }
+            self.presentViewController(activityController, animated:true, completion: nil)
+        })
+    }
+    
+    func onTrackAddToOtherPlaylistBtnClicked(track: Track) {
+        performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
+    }
+    
+    func doDislike(track:Track) {
+        if !track.isLiked {
+            return
+        }
+        let progressHud = ViewUtils.showProgress(self, message: "")
+        track.doUnlike({ (error) -> Void in
+            if error != nil {
+                progressHud.hide(true)
+                ViewUtils.showConfirmAlert(self,
+                    title: NSLocalizedString("Failed to save", comment: ""),
+                    message: NSLocalizedString("Failed to save dislike info.", comment:""),
+                    positiveBtnText:  NSLocalizedString("Retry", comment: ""),
+                    positiveBtnCallback: { () -> Void in
+                        self.doDislike(track)
+                })
+                return
+            }
+            progressHud.mode = MBProgressHUDMode.CustomView
+            progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike.png"))
+            progressHud.hide(true, afterDelay: 1)
+            self.refresh()
+        })
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "PlaylistSelectSegue" {
+            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
+            playlistSelectVC.targetTrack = sender as? Track
+            playlistSelectVC.fromSection = "playlist"
+            playlistSelectVC.caller = self
+        }
+    }
+    
+    @IBAction func onCloseBtn(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+}

@@ -570,6 +570,20 @@ class ChannelViewController: BaseViewController,
     }
     
     func loadGenres(callback:(error:NSError?) -> Void) {
+        let genreHandler = { (genreMap:[String:[Genre]]) -> Void in
+            self.genres.removeAll(keepCapacity: false)
+            for genre in genreMap["channel"]! {
+                self.genres.append(genre)
+            }
+            self.genreTableView.reloadData()
+            callback(error:nil)
+        }
+        
+        if let cachedGenreMap = GenreList.cachedResult {
+            genreHandler(cachedGenreMap)
+            return
+        }
+        
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         Requests.getFeedGenre({ (req: NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error: NSError?) -> Void in
             progressHud.hide(true)
@@ -584,13 +598,7 @@ class ChannelViewController: BaseViewController,
                 callback(error:NSError(domain: "initGenre", code:0, userInfo:nil))
                 return
             }
-            
-            self.genres.removeAll(keepCapacity: false)
-            for genre in genreList.results!["channel"]! {
-                self.genres.append(genre)
-            }
-            self.genreTableView.reloadData()
-            callback(error:nil)
+            genreHandler(genreList.results!)
         })
     }
     

@@ -1733,8 +1733,10 @@ class Genre {
 }
 
 class GenreList {
+    static var cachedResult:[String:[Genre]]?
     var success:Bool
     var results: [String:[Genre]]?
+    
     init (success:Bool, results:[String:[Genre]]?) {
         self.success = success
         self.results = results
@@ -1802,6 +1804,7 @@ class GenreList {
         genres["channel"] = channelGenres
         genres["trending"] = trendingGenres
         
+        GenreList.cachedResult = genres
         return GenreList(success: true, results: genres)
     }
 }

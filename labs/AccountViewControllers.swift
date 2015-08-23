@@ -208,6 +208,21 @@ UITableViewDelegate, UITableViewDataSource {
             return
         }
         
+        let genreHandler = { (genreMap:[String:[Genre]]) -> Void in
+            let genres = genreMap["default"]!
+            self.genres.removeAll(keepCapacity: false)
+            for genre:Genre in genres {
+                self.genres[genre.key] = genre
+            }
+            
+            handler()
+        }
+        
+        if let cachedGenre = GenreList.cachedResult {
+            genreHandler(cachedGenre)
+            return
+        }
+        
         let progressHud = ViewUtils.showProgress(self, message: "")
         favoriteGenresView.text = ""
         Requests.getFeedGenre { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
@@ -227,13 +242,7 @@ UITableViewDelegate, UITableViewDataSource {
                     return
             }
             
-            let genres = genreResult!.results!["default"]!
-            self.genres.removeAll(keepCapacity: false)
-            for genre:Genre in genres {
-                self.genres[genre.key] = genre
-            }
-            
-            handler()
+            genreHandler(genreResult!.results!)
         }
     }
     
@@ -953,6 +962,8 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
             emailErrorView.text = NSLocalizedString("Required Field", comment:"")
         } else if !Utils.isValidEmail(email) {
             emailErrorView.text = NSLocalizedString("Invalid email format", comment: "")
+        } else if email.indexOf("@dropbeat.net") > -1 {
+            emailErrorView.text = NSLocalizedString("Invalid email domain", comment:"")
         }
         if count(emailErrorView.text!) > 0 {
             emailErrorView.hidden = false
@@ -1022,5 +1033,118 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         }
         
         return valid
+    }
+}
+
+//
+//  FBEmailSubmitViewController.swift
+//  labs
+//
+//  Created by vulpes on 2015. 8. 23..
+//  Copyright (c) 2015년 dropbeat. All rights reserved.
+//
+
+protocol FBEmailSubmitViewControllerDelegate {
+    func onAfterEmailUpdate()
+}
+
+class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate {
+    
+    @IBOutlet weak var submitBtn: UIButton!
+    @IBOutlet weak var emailErrorView: UILabel!
+    @IBOutlet weak var emailInputView: UITextField!
+    
+    private var isSubmitting = false
+    var delegate:FBEmailSubmitViewControllerDelegate?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        submitBtn.layer.borderWidth = 1
+        submitBtn.layer.borderColor = UIColor(netHex: 0x982EF4).CGColor
+        submitBtn.layer.cornerRadius = 3.0
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.screenName = "FBEmailSubmitViewScreen"
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        doSubmit()
+        return true
+    }
+    
+    @IBAction func onSubmitBtnClicked(sender: AnyObject) {
+        doSubmit()
+    }
+    
+    func doSubmit() {
+        if isSubmitting {
+            return
+        }
+        let email = emailInputView.text
+        emailErrorView.hidden = true
+        if count(email) == 0 {
+            emailErrorView.hidden = false
+            emailErrorView.text = NSLocalizedString("Required Field", comment:"")
+        } else if !Utils.isValidEmail(email) {
+            emailErrorView.hidden = false
+            emailErrorView.text = NSLocalizedString("Invalid email format", comment:"")
+        } else if email.indexOf("@dropbeat.net") > -1 {
+            emailErrorView.hidden = false
+            emailErrorView.text = NSLocalizedString("Invalid email domain", comment:"")
+        }
+        
+        if !emailErrorView.hidden {
+            return
+        }
+        isSubmitting = true
+        let progressHud = ViewUtils.showProgress(self, message: "")
+        Requests.userChangeEmail(email, respCb: {
+            (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            self.isSubmitting = false
+            if error != nil || result == nil {
+                progressHud.hide(true)
+                self.showErrorAlert(error)
+                return
+            }
+            var json = JSON(result!)
+            if !(json["success"].bool ?? false) {
+                progressHud.hide(true)
+                self.emailErrorView.text = NSLocalizedString("Email already exist", comment:"")
+                self.emailErrorView.hidden = false
+                return
+            }
+            
+            Account.getCachedAccount()!.user!.email = email
+            
+            progressHud.mode = MBProgressHUDMode.CustomView
+            progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark.png"))
+            progressHud.hide(true, afterDelay: 1)
+            
+            let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)));
+            dispatch_after(popTime, dispatch_get_main_queue(), {() -> Void in
+                delegate?.onAfterEmailUpdate()
+            })
+        })
+    }
+    
+    func showErrorAlert(error:NSError?) {
+        var message:String!
+        if (error != nil && error!.domain == NSURLErrorDomain &&
+            error!.code == NSURLErrorNotConnectedToInternet) {
+            message = NSLocalizedString("Internet is not connected", comment:"")
+        } else {
+            message = NSLocalizedString("Failed to set email", comment:"")
+        }
+        
+        ViewUtils.showConfirmAlert(self,
+            title: NSLocalizedString("Failed to submit", comment:""),
+            message: message,
+            positiveBtnText: NSLocalizedString("Retry", comment:""),
+            positiveBtnCallback: { () -> Void in
+                self.doSubmit()
+            })
+        return
     }
 }

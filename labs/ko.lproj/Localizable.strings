@@ -183,3 +183,4 @@
 "Failed to load like list" = "Like정보를 불러올 수 없습니다.";
 "Open current playlist" = "현재 플레이리스트 열기";
 "Failed to fetch user like information." = "Like 정보를 받아오는데 실패하였습니다.";
+"Invalid email domain" = "사용할 수 없는 이메일 도메인입니다.";

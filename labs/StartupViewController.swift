@@ -9,7 +9,7 @@
 import UIKit
 import Raygun4iOS
 
-class StartupViewController: GAITrackedViewController {
+class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControllerDelegate {
 
     private var progressHud:MBProgressHUD?
     
@@ -62,6 +62,10 @@ class StartupViewController: GAITrackedViewController {
         if segue.identifier == "genre_tutorial" {
             let vc = segue.destinationViewController as! FavoriteGenreTutorialViewController
             vc.fromStartup = true
+        }
+        if segue.identifier == "need_email" {
+            let vc = segue.destinationViewController as! FBEmailSubmitViewController
+            vc.delegate = self
         }
     }
     
@@ -162,6 +166,15 @@ class StartupViewController: GAITrackedViewController {
     func fetchUserInfo() {
         if Account.getCachedAccount() == nil {
             self.showMainController()
+            return
+        }
+        
+        let account = Account.getCachedAccount()!
+        
+        let email = account.user!.email
+        if email.indexOf("@dropbeat.net") > -1 {
+            progressHud?.hide(true)
+            performSegueWithIdentifier("need_email", sender: nil)
             return
         }
         
@@ -427,5 +440,9 @@ class StartupViewController: GAITrackedViewController {
             return
         }
         
+    }
+    
+    func onAfterEmailUpdate() {
+        fetchUserInfo()
     }
 }

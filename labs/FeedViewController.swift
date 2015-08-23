@@ -202,6 +202,20 @@ class FeedViewController: BaseViewController,
             Genre(key: "recent", name: "RECENT")
         ]
         
+        let genreHandler = {(genreMap:[String:[Genre]]) -> Void in
+            self.genres[FeedType.BEATPORT_CHART] = genreMap["default"]
+            self.genres[FeedType.NEW_RELEASE] = genreMap["default"]
+            self.genres[FeedType.TRENDING] = genreMap["trending"]
+            
+            self.genreInitialized = true
+            callback(error: nil)
+        }
+        
+        if let cachedGenreMap = GenreList.cachedResult {
+            genreHandler(cachedGenreMap)
+            return
+        }
+        
         Requests.getFeedGenre {
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if error != nil || result == nil {
@@ -215,13 +229,7 @@ class FeedViewController: BaseViewController,
                 callback(error:NSError(domain: "initGenre", code:0, userInfo:nil))
                 return
             }
-            
-            self.genres[FeedType.BEATPORT_CHART] = genreList.results!["default"]
-            self.genres[FeedType.NEW_RELEASE] = genreList.results!["default"]
-            self.genres[FeedType.TRENDING] = genreList.results!["trending"]
-            
-            self.genreInitialized = true
-            callback(error: nil)
+            genreHandler(genreList.results!)
         }
     }
     

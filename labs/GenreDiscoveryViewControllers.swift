@@ -287,6 +287,34 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
     }
     
     func loadGenre() {
+        
+        let genreHandler = {(genreMap:[String:[Genre]]) -> Void in
+            self.progressHud?.hide(true)
+            let genres = genreMap["default"]
+            if genres == nil {
+                return
+            }
+            self.genres.removeAll(keepCapacity: false)
+            for genre:Genre in genres! {
+                if count(genre.key) > 0 {
+                    self.genres.append(genre)
+                }
+            }
+            self.tableView.reloadData()
+            for (idx:Int, genre:Genre) in enumerate(self.genres) {
+                if self.selectedGenreIds.contains(genre.key) {
+                    self.tableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
+                        animated: false, scrollPosition: UITableViewScrollPosition.None)
+                }
+            }
+        }
+        
+        if let cachedGenreMap = GenreList.cachedResult {
+            genreHandler(cachedGenreMap)
+            return
+        }
+        
+        
         if progressHud == nil {
             progressHud = ViewUtils.showProgress(self, message: "")
         }
@@ -311,24 +339,7 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
                 })
                 return
             }
-            
-            let genres = parseResult.results!["default"]
-            if genres == nil {
-                return
-            }
-            self.genres.removeAll(keepCapacity: false)
-            for genre:Genre in genres! {
-                if count(genre.key) > 0 {
-                    self.genres.append(genre)
-                }
-            }
-            self.tableView.reloadData()
-            for (idx:Int, genre:Genre) in enumerate(self.genres) {
-                if self.selectedGenreIds.contains(genre.key) {
-                    self.tableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
-                        animated: false, scrollPosition: UITableViewScrollPosition.None)
-                }
-            }
+            genreHandler(parseResult.results!)
         }
     }
     

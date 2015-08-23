@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%d tracks are liked</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@tracks@</string>
+		<key>tracks</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>zero</key>
+			<string>no track is liked</string>
+			<key>one</key>
+			<string>1 track is liked</string>
+			<key>other</key>
+			<string>%d tracks are liked</string>
+		</dict>
+	</dict>
+	<key>%d tracks</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@tracks@</string>
+		<key>tracks</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>zero</key>
+			<string>no track</string>
+			<key>one</key>
+			<string>1 track</string>
+			<key>other</key>
+			<string>%d tracks</string>
+		</dict>
+	</dict>
+	<key> and %d others</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@others@</string>
+		<key>others</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>d</string>
+			<key>one</key>
+			<string> and 1 other</string>
+			<key>other</key>
+			<string> and %d others</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

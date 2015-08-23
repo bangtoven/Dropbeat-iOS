@@ -1269,6 +1269,8 @@ class LikeBoxViewController: BaseViewController,
                 }
             }
             self.tableView.reloadData()
+            self.tracksCountView.text = NSString.localizedStringWithFormat(
+                NSLocalizedString("%d tracks", comment:""), account.likes.count) as String
             self.updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
         }
     }

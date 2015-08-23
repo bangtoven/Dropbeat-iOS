@@ -1188,7 +1188,7 @@
                                                             <constraint firstAttribute="width" constant="46" id="yZJ-Fe-5SY"/>
                                                         </constraints>
                                                         <inset key="contentEdgeInsets" minX="2" minY="9" maxX="2" maxY="9"/>
-                                                        <state key="normal" title="HQ" image="1D34799B-7827-40B5-9398-06825FCC81A6">
+                                                        <state key="normal" title="HQ" image="FD030BF2-1008-426F-9DE2-BCF14B00CDC0">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -6171,7 +6171,7 @@ and press like button to your favor!</string>
         </scene>
     </scenes>
     <resources>
-        <image name="1D34799B-7827-40B5-9398-06825FCC81A6" width="105" height="64">
+        <image name="FD030BF2-1008-426F-9DE2-BCF14B00CDC0" width="105" height="64">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA

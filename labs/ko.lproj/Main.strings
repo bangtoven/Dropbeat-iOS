@@ -601,3 +601,17 @@
 
 /* Class = "UILabel"; text = "Playlist name"; ObjectID = "zrm-yM-ANY"; */
 "zrm-yM-ANY.text" = "플레이리스트 이름";
+
+/* Class = "UINavigationItem"; title = "Email Required"; ObjectID = "RHm-B2-fQ3"; */
+"RHm-B2-fQ3.title" = "이메일이 필요합니다.";
+
+/* Class = "UILabel"; text = "Text should be less than 32 character"; ObjectID = "Vez-QO-n9C"; */
+"Vez-QO-n9C.text" = "Text should be less than 32 character";
+
+/* Class = "UIButton"; normalTitle = "SUBMIT"; ObjectID = "mPh-pw-jhH"; */
+"mPh-pw-jhH.normalTitle" = "변경하고 진행하기";
+
+/* Class = "UIButton"; normalTitle = "SUBMIT"; ObjectID = "mPh-pw-jhH"; */
+"Kyu-PW-PI2.placeholder" = "이메일 주소를 입력해주세요.";
+
+"E5o-pR-z3i.text" = "이메일";

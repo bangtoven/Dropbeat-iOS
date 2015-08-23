@@ -180,3 +180,5 @@
 "Failed to load favorite genres" = "Failed to load favorite genres";
 " and %d others" = " and %d others";
 "%d tracks are liked" = "%d tracks are liked";
+"Failed to fetch playlist" = "Failed to fetch playlist";
+"Open current playlist" = "Open current playlist";

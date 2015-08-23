@@ -41,28 +41,28 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     static var observerAttached: Bool = false
     static var sharedInstance:PlayerViewController?
     
-    var audioPlayerControl: XCDYouTubeVideoPlayerViewController = XCDYouTubeVideoPlayerViewController()
+    private var audioPlayerControl: XCDYouTubeVideoPlayerViewController = XCDYouTubeVideoPlayerViewController()
     
-    var remoteProgressTimer: NSTimer?
-    var bufferingTimer: NSTimer?
+    private var remoteProgressTimer: NSTimer?
+    private var bufferingTimer: NSTimer?
     
-    var isProgressUpdatable = true
-    var prevShuffleBtnState:Int?
-    var prevRepeatBtnState:Int?
+    private var isProgressUpdatable = true
+    private var prevShuffleBtnState:Int?
+    private var prevRepeatBtnState:Int?
     
-    var bgTaskId:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
-    var removedId:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+    private var bgTaskId:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
+    private var removedId:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     
     // Used only for video playback recovery.
-    var shouldPlayMusic: Bool = false
-    var prevResolveReq:Request? = nil
-    var forceStopPlayer = false
-    var playingInfoDisplayDuration = false
-    var hookingBackground: Bool = false
+    private var shouldPlayMusic: Bool = false
+    private var prevResolveReq:Request? = nil
+    private var forceStopPlayer = false
+    private var playingInfoDisplayDuration = false
+    private var hookingBackground: Bool = false
     
-    var actionSheetTargetTrack:Track?
-    var actionSheetIncludePlaylist = false
-    var lastPlaybackBeforeSwitch:Double?
+    private var actionSheetTargetTrack:Track?
+    private var actionSheetIncludePlaylist = false
+    private var lastPlaybackBeforeSwitch:Double?
     
     override func viewDidLoad() {
         super.viewDidLoad()

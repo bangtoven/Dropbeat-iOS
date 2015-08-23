@@ -20,6 +20,8 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
     @IBOutlet weak var emailErrorView: UILabel!
     @IBOutlet weak var emailInputView: UITextField!
     
+    private var isSubmitting = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -67,6 +69,9 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
     }
     
     func doSubmit() {
+        if isSubmitting {
+            return
+        }
         emailErrorView.hidden = true
         passwordErrorView.hidden = true
         
@@ -78,9 +83,11 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         }
         
         let progressHud = ViewUtils.showProgress(self, message: "")
+        isSubmitting = true
         
         Requests.emailSignin(email, password: password) { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if error != nil || result == nil {
+                self.isSubmitting = false
                 progressHud.hide(true)
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
@@ -103,6 +110,7 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
             
             let json = JSON(result!)
             if !(json["success"].bool ?? false) || json["token"].string == nil {
+                self.isSubmitting = false
                 progressHud.hide(true)
                 
                 if json["error"].string != nil &&

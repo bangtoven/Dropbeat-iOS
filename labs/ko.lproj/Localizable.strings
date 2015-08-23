@@ -178,5 +178,8 @@
 "Failed to load friend feed." = "피드를 불러오는데 실패하였습니다.";
 "Failed to load genre" = "장르를 불러오는데 실패하였습니다.";
 "Failed to load favorite genres" = "저장된 선호 장르를 가져오는데 실패하였습니다.";
-" and %d others" = ", %d 개의 장르";
+" and %d others" = " 외 %d개의 장르";
 "%d tracks are liked" = "%d개의 곡이 like되었습니다.";
+"Failed to fetch playlist" = "플레이리스트를 불러올 수 없습니다.";
+
+"Open current playlist" = "현재 플레이리스트 열기";

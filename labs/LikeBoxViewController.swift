@@ -17,9 +17,9 @@ class LikeBoxViewController: BaseViewController,
     @IBOutlet weak var shuffleBtn: UIButton!
     
     
-    var tracks:[Track] = [Track]()
-    var menuSelectedTrack:Track?
-    var refreshControl:UIRefreshControl!
+    private var tracks:[Track] = [Track]()
+    private var menuSelectedTrack:Track?
+    private var refreshControl:UIRefreshControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()

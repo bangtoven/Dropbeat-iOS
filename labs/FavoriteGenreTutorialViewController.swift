@@ -18,12 +18,13 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
     @IBOutlet weak var selectStatus: UILabel!
     @IBOutlet weak var closeBtn: UIButton!
     
-    var genres:[Genre] = [Genre]()
-    var selectedGenreIds:Set<String> = Set<String>()
-    var remoteSelectedGenreIds:Set<String> = Set<String>()
+    private var genres:[Genre] = [Genre]()
+    private var selectedGenreIds:Set<String> = Set<String>()
+    private var remoteSelectedGenreIds:Set<String> = Set<String>()
+    private var isLoading:Bool = false
+    private var progressHud:MBProgressHUD?
+    
     var fromStartup = false
-    var isLoading:Bool = false
-    var progressHud:MBProgressHUD?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +50,16 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
         super.viewWillAppear(animated)
         self.screenName = "FavoriteGenreTutorialViewScreen"
         loadFavorites()
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "discover" {
+            let vc = segue.destinationViewController as! GenreDiscoveryViewController
+            for id in remoteSelectedGenreIds {
+                vc.remoteFavoriteIds.insert(id)
+            }
+            vc.fromStartup = fromStartup
+        }
     }
     
     @IBAction func onCloseBtnClicked(sender: AnyObject) {
@@ -121,6 +132,8 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
             dispatch_after(popTime, dispatch_get_main_queue(), {() -> Void in
                 if self.fromStartup {
                     self.performSegueWithIdentifier("main", sender: nil)
+                } else if self.navigationController != nil {
+                    self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
                 } else {
                     self.dismissViewControllerAnimated(true, completion: nil)
                 }

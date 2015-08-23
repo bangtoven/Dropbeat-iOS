@@ -17,6 +17,8 @@ class NicknameViewController: BaseViewController, UITextFieldDelegate {
     @IBOutlet weak var nicknameInputView: UITextField!
     @IBOutlet weak var nicknameErrorView: UILabel!
     
+    private var isSubmitting = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if self.navigationController != nil {
@@ -62,6 +64,9 @@ class NicknameViewController: BaseViewController, UITextFieldDelegate {
     }
     
     func doSubmit() {
+        if isSubmitting {
+            return
+        }
         let newNickname = nicknameInputView.text
         
         if let account = Account.getCachedAccount() {
@@ -75,11 +80,13 @@ class NicknameViewController: BaseViewController, UITextFieldDelegate {
         }
         
         nicknameErrorView.hidden = true
+        isSubmitting = true
         
         let progressHud = ViewUtils.showProgress(self, message: "")
         Requests.changeNickname(newNickname, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if error != nil || result == nil {
                 progressHud.hide(true)
+                self.isSubmitting = false
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
                             
@@ -101,6 +108,7 @@ class NicknameViewController: BaseViewController, UITextFieldDelegate {
             
             let json = JSON(result!)
             if !(json["success"].bool ?? false) {
+                self.isSubmitting = false
                 progressHud.hide(true)
                 self.nicknameErrorView.hidden = false
                 self.nicknameErrorView.text = NSLocalizedString("Nickname already exists", comment:"")

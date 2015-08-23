@@ -19,9 +19,9 @@ class FollowSearchViewController: BaseViewController,
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
     
-    var followingIds:[Int] = []
-    var artists:[Following] = []
-    var isChanged:Bool = false
+    private var followingIds:[Int] = []
+    private var artists:[Following] = []
+    private var isChanged:Bool = false
     var initialKeyword:String!
     var delegate:FollowSearchViewControllerDelegate?
     

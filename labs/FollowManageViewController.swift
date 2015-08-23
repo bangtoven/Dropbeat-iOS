@@ -19,8 +19,8 @@ class FollowManageViewController: BaseViewController,
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     
-    var artists:[Following] = []
-    var isLoading:Bool = false
+    private var artists:[Following] = []
+    private var isLoading:Bool = false
     var delegate:FollowManageViewControllerDelegate?
     var isChanged = false
     

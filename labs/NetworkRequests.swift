@@ -283,6 +283,10 @@ class Requests {
     static func changeNickname(nickname:String, respCb:((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         return sendPost(ApiPath.userChangeNickname, params: ["nickname": nickname], auth: true, respCb: respCb)
     }
+    
+    static func getGenreSamples(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(CorePath.genreSample, params: nil, auth: false, respCb: respCb)
+    }
 }
 
 

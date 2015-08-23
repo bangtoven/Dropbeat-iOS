@@ -128,6 +128,39 @@ class Parser {
         return likes
     }
     
+    func parseGenreSamples(data:AnyObject?) -> [GenreSample]? {
+        if data == nil {
+            return nil
+        }
+        var json = JSON(data!)
+        if !(json["success"].bool ?? false) || json["data"] == nil {
+            return nil
+        }
+        
+        var samples = [GenreSample]()
+        var count = 0
+        for (idx:String, s:JSON) in json["data"] {
+            if s["id"].int == nil ||
+                s["name"].string == nil ||
+                s["sample_track"] == nil {
+                continue
+            }
+            let id = String(s["id"].intValue)
+            let sampleJson = s["sample_track"]
+            if sampleJson["url"].string == nil{
+                continue
+            }
+            samples.append(GenreSample(
+                id:count,
+                streamUrl: sampleJson["url"].stringValue,
+                genreIds:[id],
+                thumbnailUrl:sampleJson["thumbnail"].string))
+            
+            count += 1
+        }
+        return samples
+    }
+    
 }
 
 
@@ -901,7 +934,6 @@ class StreamFollowing {
 
 class StreamFriend {
     var success:Bool
-    var lastUpdate:NSDate?
     var results:[FriendTrack]?
     init(success: Bool, tracks:[FriendTrack]?) {
         self.success = success
@@ -915,16 +947,11 @@ class StreamFriend {
             return StreamFriend(success:false, tracks:nil)
         }
         
-        if json["data"] == nil || json["data"]["tracks"] == nil ||
-            json["data"]["last_updated"].string == nil {
+        if json["data"] == nil || json["data"]["tracks"] == nil {
             return StreamFriend(success:false, tracks:nil)
         }
         
         let dataObj = json["data"]
-        let lastUpdateStr = dataObj["last_updated"].stringValue
-        var formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        let lastUpdatedAt = formatter.dateFromString(lastUpdateStr)
         
         var tracks = [FriendTrack]()
         
@@ -936,7 +963,7 @@ class StreamFriend {
                     s["artist_name"].string == nil ||
                     s["track_name"].string == nil ||
                     s["type"].string == nil {
-                return StreamFriend(success:false, tracks:nil)
+                continue
             }
             
             let track = FriendTrack(
@@ -1857,4 +1884,22 @@ class SearchArtist {
         }
         return SearchArtist(success:true, results:followings)
     }
+}
+
+class GenreSample {
+    var genreIds:[String]
+    var streamUrl:String
+    var thumbnailUrl:String?
+    var id:Int
+    init(id:Int, streamUrl:String, genreIds:[String], thumbnailUrl:String?) {
+        self.id = id
+        self.genreIds = genreIds
+        self.streamUrl = streamUrl
+        self.thumbnailUrl = thumbnailUrl
+    }
+    
+    static func fronJson(sample:JSON) -> GenreSample? {
+        return nil
+    }
+    
 }

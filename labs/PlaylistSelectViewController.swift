@@ -13,7 +13,7 @@ class PlaylistSelectViewController: BaseViewController,
     
     @IBOutlet weak var frameHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!
-    var playlists:[Playlist] = [Playlist]()
+    private var playlists:[Playlist] = [Playlist]()
     var targetTrack:Track?
     var fromSection:String = "unknown"
     var caller:UIViewController?

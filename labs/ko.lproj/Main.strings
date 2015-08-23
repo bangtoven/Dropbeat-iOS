@@ -8,6 +8,9 @@
 /* Class = "UIButton"; normalTitle = "Button"; ObjectID = "0Q3-lc-glb"; */
 "0Q3-lc-glb.normalTitle" = "Button";
 
+/* Class = "UIButton"; normalTitle = "DONE"; ObjectID = "1K3-bc-75Y"; */
+"1K3-bc-75Y.normalTitle" = "완료";
+
 /* Class = "UINavigationItem"; title = "Channel"; ObjectID = "1n6-Wa-ml1"; */
 "1n6-Wa-ml1.title" = "채널";
 
@@ -20,14 +23,14 @@
 /* Class = "UILabel"; text = "Playlist 01"; ObjectID = "3q1-uZ-muX"; */
 "3q1-uZ-muX.text" = "플레이리스트 01";
 
-/* Class = "UILabel"; text = "Sign in with Facebook to see your bookmarked EDM channels feed."; ObjectID = "3qA-K3-cPC"; */
-"3qA-K3-cPC.text" = "즐겨찾기된 EDM채널 피드를 보시려면 로그인하세요.";
+/* Class = "UILabel"; text = "Sign in to see your bookmarked EDM channels feed."; ObjectID = "3qA-K3-cPC"; */
+"3qA-K3-cPC.text" = "즐겨찾기된 EDM채널의 피드를 보려면\n로그인이 필요합니다.";
 
 /* Class = "UIButton"; normalTitle = "SIGN IN"; ObjectID = "45J-7U-xty"; */
 "45J-7U-xty.normalTitle" = "로그인";
 
 /* Class = "UITextField"; placeholder = "Your nickname"; ObjectID = "4Ak-hc-Xuu"; */
-"4Ak-hc-Xuu.placeholder" = "닉네임을 입력하세요.";
+"4Ak-hc-Xuu.placeholder" = "닉네임을 입력해주세요.";
 
 /* Class = "UINavigationItem"; title = "Sign in"; ObjectID = "4oz-TK-Df2"; */
 "4oz-TK-Df2.title" = "로그인";
@@ -60,7 +63,7 @@
 "7SU-Dv-5eb.title" = " ";
 
 /* Class = "UIButton"; normalTitle = "CREATE ACCOUNT"; ObjectID = "7cv-6j-rou"; */
-"7cv-6j-rou.normalTitle" = "계정 생성하기";
+"7cv-6j-rou.normalTitle" = "회원가입";
 
 /* Class = "UIButton"; normalTitle = "Sign up with Email"; ObjectID = "7hL-jI-jwc"; */
 "7hL-jI-jwc.normalTitle" = "이메일로 회원가입";
@@ -80,8 +83,11 @@
 /* Class = "UILabel"; text = "Proximity"; ObjectID = "90m-Iy-yYg"; */
 "90m-Iy-yYg.text" = "Proximity";
 
-/* Class = "UITextField"; placeholder = "Type previous password"; ObjectID = "9F8-6w-xQV"; */
+/* Class = "UITextField"; placeholder = "Input previous password"; ObjectID = "9F8-6w-xQV"; */
 "9F8-6w-xQV.placeholder" = "비밀번호를 한번 더 입력해주세요.";
+
+/* Class = "UIButton"; normalTitle = "LIKE"; ObjectID = "9Xr-wk-dXG"; */
+"9Xr-wk-dXG.normalTitle" = "LIKE";
 
 /* Class = "UIButton"; normalTitle = "DONE"; ObjectID = "APK-Af-yKe"; */
 "APK-Af-yKe.normalTitle" = "완료";
@@ -96,7 +102,7 @@
 "B9T-7B-GAi.text" = "Copyright & legal";
 
 /* Class = "UILabel"; text = "PLAYLISTS"; ObjectID = "BET-B7-qMy"; */
-"BET-B7-qMy.text" = "PLAYLISTS";
+"BET-B7-qMy.text" = "플레이리스트";
 
 /* Class = "UILabel"; text = "Released on May 23, 2014"; ObjectID = "Bfy-fi-wnN"; */
 "Bfy-fi-wnN.text" = "Released on May 23, 2014";
@@ -132,7 +138,7 @@
 "Fc2-sZ-yDu.normalTitle" = "Button";
 
 /* Class = "UINavigationItem"; title = "Sign in with Email"; ObjectID = "FxN-Ja-coz"; */
-"FxN-Ja-coz.title" = "이메일로 로그인"";
+"FxN-Ja-coz.title" = "이메일로 로그인";
 
 /* Class = "UIBarButtonItem"; title = "Close"; ObjectID = "Ge9-7j-ISv"; */
 "Ge9-7j-ISv.title" = "닫기";
@@ -153,16 +159,16 @@
 "HoY-B5-l0U.normalTitle" = "더보기";
 
 /* Class = "UILabel"; text = "EMAIL"; ObjectID = "IDB-dV-rf3"; */
-"IDB-dV-rf3.text" = "EMAIL";
+"IDB-dV-rf3.text" = "이메일";
 
 /* Class = "UITextField"; placeholder = "Your password"; ObjectID = "ION-yu-k49"; */
-"ION-yu-k49.placeholder" = "비밀번호를 입력하세요.";
+"ION-yu-k49.placeholder" = "비밀번호를 입력해주세요.";
 
 /* Class = "UILabel"; text = "Require DROPBEAT account to use all features and functions."; ObjectID = "IQq-fN-I7n"; */
-"IQq-fN-I7n.text" = "DROPBEAT의 모든 기능을 사용하시려면 계정이 필요합니다.";
+"IQq-fN-I7n.text" = "DROPBEAT의 모든 기능을 사용하시려면 로그인이 필요합니다.";
 
 /* Class = "UISearchBar"; placeholder = "Search your favorite artists"; ObjectID = "ITc-EY-1qk"; */
-"ITc-EY-1qk.placeholder" = "좋아하는 아티스트를 검색해보세요";
+"ITc-EY-1qk.placeholder" = "좋아하는 아티스트를 검색해보세요.";
 
 /* Class = "UILabel"; text = "SELECT FROM LIST"; ObjectID = "IvD-Bm-2Vd"; */
 "IvD-Bm-2Vd.text" = "목록에서 선택";
@@ -201,10 +207,10 @@
 "M5a-lj-Uul.title" = " ";
 
 /* Class = "UINavigationItem"; title = "Create Account"; ObjectID = "NGR-q9-mBf"; */
-"NGR-q9-mBf.title" = "계정 생성하기";
+"NGR-q9-mBf.title" = "회원가입";
 
 /* Class = "UILabel"; text = "No search results"; ObjectID = "Nkr-bD-dru"; */
-"Nkr-bD-dru.text" = "검색결과가 없습니다.";
+"Nkr-bD-dru.text" = "검색 결과가 없습니다.";
 
 /* Class = "UILabel"; text = "Axwell /\\ Ingrosso"; ObjectID = "Nod-nR-ckl"; */
 "Nod-nR-ckl.text" = "Axwell /\\ Ingrosso";
@@ -216,7 +222,7 @@
 "ORH-Ix-Rvy.title" = " ";
 
 /* Class = "UINavigationItem"; title = "Favor Discovery"; ObjectID = "OlK-q8-WPX"; */
-"OlK-q8-WPX.title" = "취향 분석하기";
+"OlK-q8-WPX.title" = "내가 좋아하는 장르 찾기";
 
 /* Class = "UINavigationItem"; title = "Settings"; ObjectID = "P8y-76-HJI"; */
 "P8y-76-HJI.title" = "설정";
@@ -228,25 +234,25 @@
 "Q83-Dk-Ohp.text" = "23 tracks";
 
 /* Class = "UILabel"; text = "FAVORITE GENRES"; ObjectID = "QCH-Ac-Mpj"; */
-"QCH-Ac-Mpj.text" = "FAVORITE GENRES";
+"QCH-Ac-Mpj.text" = "좋아하는 장르";
 
 /* Class = "UITableViewSection"; headerTitle = "application"; ObjectID = "QWG-N4-EST"; */
 "QWG-N4-EST.headerTitle" = "application";
 
 /* Class = "UINavigationItem"; title = "Likes"; ObjectID = "QWW-0e-gtH"; */
-"QWW-0e-gtH.title" = "Like한 곡들";
+"QWW-0e-gtH.title" = "리스트";
 
 /* Class = "UILabel"; text = "LIKE"; ObjectID = "QZ6-0D-N8G"; */
 "QZ6-0D-N8G.text" = "LIKE";
 
 /* Class = "UISearchBar"; placeholder = "Search your favorite artists"; ObjectID = "QeX-qZ-asY"; */
-"QeX-qZ-asY.placeholder" = "좋아하는 아티스트를 검색해보세요";
+"QeX-qZ-asY.placeholder" = "좋아하는 아티스트를 검색해보세요.";
 
 /* Class = "UIButton"; normalTitle = "Find channels >>"; ObjectID = "QhN-NF-PrH"; */
-"QhN-NF-PrH.normalTitle" = "채널 찾기 >>";
+"QhN-NF-PrH.normalTitle" = "채널 찾아보기 >>";
 
 /* Class = "UITextField"; placeholder = "Your nickname"; ObjectID = "RG3-Q3-2hs"; */
-"RG3-Q3-2hs.placeholder" = "닉네임을 입력하세요.";
+"RG3-Q3-2hs.placeholder" = "닉네임을 입력해주세요.";
 
 /* Class = "UILabel"; text = "1 genre selected"; ObjectID = "RfB-2r-XMb"; */
 "RfB-2r-XMb.text" = "1 genre selected";
@@ -255,19 +261,16 @@
 "SV5-xX-kMv.text" = "이메일로 로그인";
 
 /* Class = "UITextField"; placeholder = "Your last name"; ObjectID = "SfG-rY-L9P"; */
-"SfG-rY-L9P.placeholder" = "성을 입력하세요.";
+"SfG-rY-L9P.placeholder" = "성을 입력해주세요.";
 
 /* Class = "UIBarButtonItem"; title = " "; ObjectID = "T95-nT-Brq"; */
 "T95-nT-Brq.title" = " ";
 
 /* Class = "UILabel"; text = "Feedback"; ObjectID = "TMX-qD-ir2"; */
-"TMX-qD-ir2.text" = "문의 & 건의";
+"TMX-qD-ir2.text" = "문의 및 건의";
 
 /* Class = "UIButton"; normalTitle = "SIGN OUT"; ObjectID = "TgB-t7-YbY"; */
 "TgB-t7-YbY.normalTitle" = "로그아웃";
-
-/* Class = "UILabel"; text = "Label"; ObjectID = "UK2-b8-f5T"; */
-"UK2-b8-f5T.text" = "Label";
 
 /* Class = "UILabel"; text = "Text should be less than 32 character"; ObjectID = "URa-Fy-xgM"; */
 "URa-Fy-xgM.text" = "Text should be less than 32 character";
@@ -302,8 +305,11 @@
 /* Class = "UILabel"; text = "100"; ObjectID = "Yo7-XU-h0p"; */
 "Yo7-XU-h0p.text" = "100";
 
+/* Class = "UINavigationItem"; title = "Discover Favorites"; ObjectID = "Z99-A7-4oc"; */
+"Z99-A7-4oc.title" = "내가 좋아하는 장르 찾기";
+
 /* Class = "UILabel"; text = "Recommended Tracks"; ObjectID = "Zap-Pj-FuV"; */
-"Zap-Pj-FuV.text" = "추천된 곡들";
+"Zap-Pj-FuV.text" = "추천곡";
 
 /* Class = "UIBarButtonItem"; title = " "; ObjectID = "a4R-CE-rYS"; */
 "a4R-CE-rYS.title" = " ";
@@ -317,14 +323,11 @@
 /* Class = "UILabel"; text = "asdfasdfasdf"; ObjectID = "akS-r2-uxB"; */
 "akS-r2-uxB.text" = "asdfasdfasdf";
 
-/* Class = "UIButton"; normalTitle = "sample 1"; ObjectID = "bCP-Mm-YFd"; */
-"bCP-Mm-YFd.normalTitle" = "sample 1";
-
 /* Class = "UILabel"; text = "Text should be less than 32 character"; ObjectID = "bIG-VR-5cl"; */
 "bIG-VR-5cl.text" = "Text should be less than 32 character";
 
 /* Class = "UIButton"; normalTitle = "CREATE ACCOUNT"; ObjectID = "bIr-cw-Yxp"; */
-"bIr-cw-Yxp.normalTitle" = "계정 생성하기";
+"bIr-cw-Yxp.normalTitle" = "회원가입";
 
 /* Class = "UILabel"; text = "Tech house"; ObjectID = "bPW-lc-3cs"; */
 "bPW-lc-3cs.text" = "Tech house";
@@ -354,7 +357,7 @@
 "d0W-Aa-RpN.text" = "멋진 음악을 발견하세요!";
 
 /* Class = "UILabel"; text = "No following artists found"; ObjectID = "dHF-C2-Gan"; */
-"dHF-C2-Gan.text" = "팔로잉하는 아티스트가 없습니다.";
+"dHF-C2-Gan.text" = "팔로잉하고있는 아티스트가 없습니다.";
 
 /* Class = "UILabel"; text = " asdfasd fasdfasdfasdfasdfasdfasdfasdf as dfasdfasdf asdfasdf asdf asdfasdfasd fasdfasdfa sdfasdfasdfasdfasdfasdfasdf"; ObjectID = "e0y-yg-dqD"; */
 "e0y-yg-dqD.text" = " asdfasd fasdfasdfasdfasdfasdfasdfasdf as dfasdfasdf asdfasdf asdf asdfasdfasd fasdfasdfa sdfasdfasdfasdfasdfasdfasdf";
@@ -366,10 +369,10 @@
 "e7s-2A-JEy.text" = "0.0.2";
 
 /* Class = "UIButton"; normalTitle = "CREATE ACCOUNT"; ObjectID = "eNR-Y0-Avl"; */
-"eNR-Y0-Avl.normalTitle" = "계정 생성하기";
+"eNR-Y0-Avl.normalTitle" = "회원가입";
 
 /* Class = "UIButton"; normalTitle = "Sign up with Facebook"; ObjectID = "enZ-wB-VyS"; */
-"enZ-wB-VyS.normalTitle" = "페이스북으로 회원가입하기";
+"enZ-wB-VyS.normalTitle" = "페이스북으로 회원가입";
 
 /* Class = "UIButton"; normalTitle = "CHANGE"; ObjectID = "eyX-b2-A6E"; */
 "eyX-b2-A6E.normalTitle" = "변경";
@@ -401,14 +404,17 @@
 /* Class = "UILabel"; text = "NICKNAME"; ObjectID = "gib-Wl-he9"; */
 "gib-Wl-he9.text" = "닉네임";
 
+/* Class = "UILabel"; text = "Listen below tracks' hightlight\nand press like button to your favor!"; ObjectID = "h17-8o-YIm"; */
+"h17-8o-YIm.text" = "하단 곡들의 클라이막스를 들어보고\nLIKE버튼을 눌러 취향을 알려주세요.";
+
 /* Class = "UIBarButtonItem"; title = " "; ObjectID = "hLA-7r-fSg"; */
 "hLA-7r-fSg.title" = " ";
 
 /* Class = "UIButton"; normalTitle = "CREATE NEW PLAYLIST"; ObjectID = "hLu-aH-V2l"; */
-"hLu-aH-V2l.normalTitle" = "새 플레이리스트 만들기";
+"hLu-aH-V2l.normalTitle" = "새 플레이리스트 생성";
 
-/* Class = "UIButton"; normalTitle = "DISCOVER MY FAVOR"; ObjectID = "hMh-oi-rBL"; */
-"hMh-oi-rBL.normalTitle" = "취향 발견하러 가기";
+/* Class = "UIButton"; normalTitle = "DISCOVER FAVORITE GENRES"; ObjectID = "hMh-oi-rBL"; */
+"hMh-oi-rBL.normalTitle" = "내가 좋아하는 장르 찾기";
 
 /* Class = "UIBarButtonItem"; title = " "; ObjectID = "hNc-lm-3d9"; */
 "hNc-lm-3d9.title" = " ";
@@ -417,7 +423,7 @@
 "hbC-Ro-bb2.text" = "2014-07-21";
 
 /* Class = "UINavigationItem"; title = "Search Results"; ObjectID = "hen-3T-lf0"; */
-"hen-3T-lf0.title" = "검색 결과";
+"hen-3T-lf0.title" = "검색결과";
 
 /* Class = "UILabel"; text = "00:00"; ObjectID = "idL-gJ-kgf"; */
 "idL-gJ-kgf.text" = "00:00";
@@ -435,10 +441,10 @@
 "jOJ-uT-ygY.title" = "계정이 필요합니다.";
 
 /* Class = "UITextField"; placeholder = "Min 6 Characters"; ObjectID = "jsA-S7-IB3"; */
-"jsA-S7-IB3.placeholder" = "Min 6 Characters";
+"jsA-S7-IB3.placeholder" = "6글자 이상을 입력해주세요.";
 
 /* Class = "UILabel"; text = "Select Feed Type"; ObjectID = "jtz-JJ-vpn"; */
-"jtz-JJ-vpn.text" = "피드 종류를 선택하세요";
+"jtz-JJ-vpn.text" = "피드 종류 선택";
 
 /* Class = "UILabel"; text = "HOUSE, CHILL OUT, INDIE DANCE / NU DISCO, DRUM & BASS"; ObjectID = "k8b-yG-7HF"; */
 "k8b-yG-7HF.text" = "HOUSE, CHILL OUT, INDIE DANCE / NU DISCO, DRUM & BASS";
@@ -455,10 +461,10 @@
 /* Class = "UILabel"; text = "sdsdfsdf sadfa sdfasd fasdf asdf sadf asd sasd fsad sad asd fasd fasd fasd fasd "; ObjectID = "mId-3t-U5p"; */
 "mId-3t-U5p.text" = "sdsdfsdf sadfa sdfasd fasdf asdf sadf asd sasd fsad sad asd fasd fasd fasd fasd ";
 
-/* Class = "UILabel"; text = "If you are not familiar with EDM genre, \nclick below to discover your favor!"; ObjectID = "mTQ-XH-t1g"; */
-"mTQ-XH-t1g.text" = "혹시 EDM 장르를 잘 모르시겠다면,\n하단의 버튼을 눌러 취향을 알아보세요!";
+/* Class = "UILabel"; text = "If you are not familiar with EDM genres, \nclick below to discover your favorites"; ObjectID = "mTQ-XH-t1g"; */
+"mTQ-XH-t1g.text" = "EDM 장르를 잘 모르신다면,\n하단의 버튼을 눌러 좋아하는 장르를 찾아보세요!";
 
-/* Class = "UIButton"; normalTitle = "CONFIG"; ObjectID = "ma1-fB-aGQ"; */
+/* Class = "UIButton"; normalTitle = "CHANGE"; ObjectID = "ma1-fB-aGQ"; */
 "ma1-fB-aGQ.normalTitle" = "변경";
 
 /* Class = "UIBarButtonItem"; title = "Close"; ObjectID = "n8D-jy-7rI"; */
@@ -473,8 +479,8 @@
 /* Class = "UIButton"; normalTitle = "Sign in with Facebook"; ObjectID = "nts-44-ZTw"; */
 "nts-44-ZTw.normalTitle" = "페이스북으로 로그인";
 
-/* Class = "UILabel"; text = "Let us know\nyour favorite EDM genre"; ObjectID = "oUN-Dn-yy2"; */
-"oUN-Dn-yy2.text" = "당신이 좋아하는 EDM 장르들을 알려주세요";
+/* Class = "UILabel"; text = "Let us know\nyour favorite EDM genres"; ObjectID = "oUN-Dn-yy2"; */
+"oUN-Dn-yy2.text" = "당신이 좋아하는\nEDM 장르를 알려주세요";
 
 /* Class = "UILabel"; text = "Axwell /\\ Ingrosso"; ObjectID = "ocy-Wq-rWa"; */
 "ocy-Wq-rWa.text" = "Axwell /\\ Ingrosso";
@@ -549,7 +555,7 @@
 "w2J-Bf-jyq.title" = " ";
 
 /* Class = "UIButton"; normalTitle = "Shuffle"; ObjectID = "w5R-im-G8D"; */
-"w5R-im-G8D.normalTitle" = "Shuffle";
+"w5R-im-G8D.normalTitle" = "임의재생";
 
 /* Class = "UIButton"; normalTitle = "SIGN IN"; ObjectID = "w7x-CL-fRq"; */
 "w7x-CL-fRq.normalTitle" = "로그인";
@@ -558,10 +564,10 @@
 "w9u-Z5-ETH.text" = "Text should be less than 32 character";
 
 /* Class = "UIButton"; normalTitle = "CREATE ACCOUNT"; ObjectID = "wA3-cc-FQB"; */
-"wA3-cc-FQB.normalTitle" = "계정 생성하기";
+"wA3-cc-FQB.normalTitle" = "회원가입";
 
 /* Class = "UILabel"; text = "Bookmark your favorite channels and find new tracks in the feed!\n"; ObjectID = "wMP-re-1Px"; */
-"wMP-re-1Px.text" = "좋아하는 채널을 즐겨찾기하고 채널 피드에서 새로운 노래를 발견하세요!\n";
+"wMP-re-1Px.text" = "좋아하는 채널을 즐겨찾기하고\n새로운 노래를 피드에서 받아보세요!";
 
 /* Class = "UILabel"; text = "23 tracks are liked"; ObjectID = "x31-Lq-u10"; */
 "x31-Lq-u10.text" = "23 tracks are liked";
@@ -576,7 +582,7 @@
 "yMe-pb-X3T.title" = " ";
 
 /* Class = "UILabel"; text = "ACCOUNT"; ObjectID = "yZh-zn-RTW"; */
-"yZh-zn-RTW.text" = "ACCOUNT";
+"yZh-zn-RTW.text" = "계정";
 
 /* Class = "UILabel"; text = "asdfasdfasdfsdfsdafasdf asfasd fasdf asdf asdf ads"; ObjectID = "ygB-DG-yd4"; */
 "ygB-DG-yd4.text" = "asdfasdfasdfsdfsdafasdf asfasd fasdf asdf asdf ads";
@@ -591,8 +597,7 @@
 "zal-ej-c0d.text" = "READY";
 
 /* Class = "UINavigationItem"; title = "Feedback"; ObjectID = "zlM-fq-UVs"; */
-"zlM-fq-UVs.title" = "문의 & 건의";
+"zlM-fq-UVs.title" = "문의 및 건의";
 
 /* Class = "UILabel"; text = "Playlist name"; ObjectID = "zrm-yM-ANY"; */
 "zrm-yM-ANY.text" = "플레이리스트 이름";
-

@@ -28,6 +28,9 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
     @IBOutlet weak var lastNameErrorView: UILabel!
     @IBOutlet weak var passwordErrorView: UILabel!
     @IBOutlet weak var passwordConfirmErrorView: UILabel!
+    
+    private var isSubmitting = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -89,6 +92,9 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
     }
     
     func doSubmit() {
+        if isSubmitting {
+            return
+        }
         emailErrorView.hidden = true
         firstNameErrorView.hidden = true
         lastNameErrorView.hidden = true
@@ -106,12 +112,15 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         let password = passwordInputView.text
         let passwordConfirm = passwordConfirmInputView.text
         
+        isSubmitting = true
+        
         let progressHud = ViewUtils.showProgress(self, message: "")
         Requests.emailSignup(email, firstName: firstname, lastName: lastname,
                 nickname: nickname, password: password,
                 respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                     
                     if error != nil || result == nil {
+                        self.isSubmitting = false
                         progressHud.hide(true)
                         if (error != nil && error!.domain == NSURLErrorDomain &&
                                 error!.code == NSURLErrorNotConnectedToInternet) {
@@ -135,7 +144,7 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                     var json = JSON(result!)
                     
                     if !(json["success"].bool ?? false) || json["token"].string == nil {
-                        
+                        self.isSubmitting = false
                         progressHud.hide(true)
                         
                         if json["error"].string != nil &&

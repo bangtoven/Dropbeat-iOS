@@ -178,7 +178,7 @@ class FeedViewController: BaseViewController,
     }
     
     func getFriendFeedHeaderView() -> UIView {
-        return FriendFeedHeaderView(frame: CGRectMake(0, 0, self.feedTableView.bounds.width, 90))
+        return FriendFeedHeaderView(frame: CGRectMake(0, 0, self.feedTableView.bounds.width, 106))
     }
     
     func onManageFollowBtnClicked(sender: FollowingFeedHeaderView) {
@@ -219,7 +219,6 @@ class FeedViewController: BaseViewController,
             self.genres[FeedType.BEATPORT_CHART] = genreList.results!["default"]
             self.genres[FeedType.NEW_RELEASE] = genreList.results!["default"]
             self.genres[FeedType.TRENDING] = genreList.results!["trending"]
-            self.genres[FeedType.USER_GROUP] = genreList.results!["default"]
             
             self.genreInitialized = true
             callback(error: nil)
@@ -550,44 +549,57 @@ class FeedViewController: BaseViewController,
     }
     
     func getPlaylistId() -> String? {
-        if selectedGenre == nil {
-            return nil
-        }
+        var prefix:String? = nil
         switch (selectedFeedMenu.type) {
         case .BEATPORT_CHART:
-            return "beatport_chart_\(selectedGenre!.key)"
+            prefix = "beatport_chart"
+            break
         case .FOLLOWING:
-            return "followed_artist_feed_\(selectedGenre!.key)"
+            prefix = "followed_artist_feed"
+            break
         case .NEW_RELEASE:
-            return "new_release_\(selectedGenre!.key)"
+            prefix = "new_release"
+            break
         case .TRENDING:
-            return "trending_\(selectedGenre!.key)"
+            prefix = "trending"
+            break
+        case .USER_GROUP:
+            prefix = "friend_feed"
+            break
         default:
             break
         }
-        return nil
+        if prefix != nil && selectedGenre != nil{
+            prefix! += "_\(selectedGenre!.key)"
+        }
+        return prefix
     }
     
     func getPlaylistName() -> String? {
-        if selectedGenre == nil {
-            return nil
-        }
-        
+        var prefix:String? = nil
         switch (selectedFeedMenu.type) {
         case .BEATPORT_CHART:
-            return "Beatport Chart - \(selectedGenre!.name)"
+            prefix = "Beatport Chart"
+            break
         case .FOLLOWING:
-            return "Followed Artists Feed"
+            prefix = "Followed Artists Feed"
+            break
         case .NEW_RELEASE:
-            return "New Release - \(selectedGenre!.name)"
+            prefix = "New Release"
+            break
         case .TRENDING:
-            return "Trending - \(selectedGenre!.name)"
-        case .TRENDING:
-            return "UserGroup - \(selectedGenre!.name)"
+            prefix = "Trending"
+            break
+        case .USER_GROUP:
+            prefix = "Friend Feed"
+            break
         default:
             break
         }
-        return nil
+        if prefix != nil && selectedGenre != nil {
+            prefix! += " - \(selectedGenre!.name)"
+        }
+        return prefix
     }
     
     func updatePlaylist(forceUpdate:Bool) {
@@ -939,6 +951,7 @@ class FeedViewController: BaseViewController,
             break
         case .NEW_RELEASE:
             loadNewReleaseFeed(forceRefresh: forceRefresh)
+            break
         case .USER_GROUP:
             loadUserGroupFeed(forceRefresh: forceRefresh)
             break
@@ -1234,9 +1247,6 @@ class FeedViewController: BaseViewController,
     }
     
     func loadUserGroupFeed(forceRefresh:Bool=false) {
-        if selectedGenre == nil {
-            selectedGenre = genres[FeedType.USER_GROUP]![0]
-        }
         if isLoading {
             return
         }

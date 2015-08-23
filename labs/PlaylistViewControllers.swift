@@ -1258,7 +1258,7 @@ class LikeBoxViewController: BaseViewController,
             if error != nil {
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to load", comment:""),
-                    message: NSLocalizedString("Failed to load like box", comment: ""))
+                    message: NSLocalizedString("Failed to load like list", comment: ""))
                 return
             }
             self.tracks.removeAll(keepCapacity: false)

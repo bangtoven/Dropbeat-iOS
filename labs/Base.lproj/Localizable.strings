@@ -181,3 +181,5 @@
 " and %d others" = " and %d others";
 "Failed to fetch playlist" = "Failed to fetch playlist";
 "Open current playlist" = "Open current playlist";
+"Failed to load like list" = "Failed to load like list";
+"Failed to fetch user like information." = "Failed to fetch user like information.";

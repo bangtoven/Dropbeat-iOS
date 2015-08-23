@@ -126,7 +126,7 @@
 "Failed to change" = "변경 실패";
 "Add to other playlist" = "다른 플레이리스트에 추가";
 "Failed to save playlist" = "플레이리스트 저장에 실패하였습니다.";
-"Failed to fetch version info." = "버전 정보를 불러오는데 실패하였습니다.";
+"Failed to fetch version info." = "버전 정보 확인 실패";
 "Failed to fetch version info" = "버전 정보를 불러오는데 실패하였습니다.";
 "Improper data format" = "잘못된 데이터 양식";
 "Get new version" = "새 버전이 출시되었습니다";
@@ -180,5 +180,6 @@
 "Failed to load favorite genres" = "저장된 선호 장르를 가져오는데 실패하였습니다.";
 " and %d others" = " 외 %d개의 장르";
 "Failed to fetch playlist" = "플레이리스트를 불러올 수 없습니다.";
-
+"Failed to load like list" = "Like정보를 불러올 수 없습니다.";
 "Open current playlist" = "현재 플레이리스트 열기";
+"Failed to fetch user like information." = "Like 정보를 받아오는데 실패하였습니다.";

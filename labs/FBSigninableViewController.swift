@@ -11,7 +11,7 @@ import UIKit
 class FBSigninableViewController: BaseViewController {
     
     @IBOutlet weak var signinWithFacebookBtn: UIButton!
-    var progressHud:MBProgressHUD?
+    private var progressHud:MBProgressHUD?
     
     override func viewDidLoad() {
         super.viewDidLoad()

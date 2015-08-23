@@ -10,7 +10,7 @@ import UIKit
 
 class BaseViewController: GAITrackedViewController {
     
-    var isVisible:Bool = false
+    private var isVisible:Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -29,24 +29,23 @@ class SearchViewController: BaseViewController,
         SearchResultSections.RELEVANT: NSLocalizedString("OTHERS", comment:"")
     ]
     
-    var searchResult:Search?
-    var tracks:[Track] = []
-    var sectionedTracks = [String:[Track]]()
-    var currentSections:[String]?
-    var currentSection:String?
-    var showAsRowSection = false
-    var autocomKeywords:[String] = []
-    var autocomRequester:AutocompleteRequester?
-    var searchBar:UISearchBar?
-    var actionSheetTargetTrack:Track?
-    
-//    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var noSearchResultView: UILabel!
     @IBOutlet weak var scrollPagerConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchResultView: UIView!
     @IBOutlet weak var scrollPager: ScrollPager!
     @IBOutlet weak var autocomTableView: UITableView!
     @IBOutlet weak var resultTableView: UITableView!
+    
+    private var searchResult:Search?
+    private var tracks:[Track] = []
+    private var sectionedTracks = [String:[Track]]()
+    private var currentSections:[String]?
+    private var currentSection:String?
+    private var showAsRowSection = false
+    private var autocomKeywords:[String] = []
+    private var autocomRequester:AutocompleteRequester?
+    private var searchBar:UISearchBar?
+    private var actionSheetTargetTrack:Track?
     
     override func viewDidLoad() {
         super.viewDidLoad()

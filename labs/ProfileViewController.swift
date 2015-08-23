@@ -22,8 +22,8 @@ class ProfileViewController: BaseViewController,
     @IBOutlet weak var favoriteGenresView: UILabel!
     @IBOutlet weak var configFavoriteGenreBtn: UIButton!
     
-    var playlists:[Playlist] = [Playlist]()
-    var genres:[String:Genre] = [String:Genre]()
+    private var playlists:[Playlist] = [Playlist]()
+    private var genres:[String:Genre] = [String:Genre]()
     
     override func viewDidLoad() {
         super.viewDidLoad()

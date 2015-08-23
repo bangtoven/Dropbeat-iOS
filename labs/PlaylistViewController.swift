@@ -22,12 +22,12 @@ class PlaylistViewController: BaseViewController,
     @IBOutlet weak var fakeNavigationBarHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var frameHeightConstraint: NSLayoutConstraint!
     
+    private var tracks:[Track] = [Track]()
+    private var playlistActionSheet:UIActionSheet?
+    private var menuSelectedTrack:Track?
+    private var isLiked = false
     var currentPlaylist:Playlist!
-    var tracks:[Track] = [Track]()
-    var playlistActionSheet:UIActionSheet?
-    var menuSelectedTrack:Track?
     var fromPlayer:Bool = false
-    var isLiked = false
     
     override func viewDidLoad() {
         super.viewDidLoad()

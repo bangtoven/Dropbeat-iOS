@@ -13,29 +13,6 @@ class ChannelViewController: BaseViewController,
             UIActionSheetDelegate,
             UIScrollViewDelegate{
     
-    var tracks: [ChannelFeedTrack] = [ChannelFeedTrack]()
-    var allChannels : [String:Channel] = [String:Channel]()
-    var channels : [Channel] = [Channel]()
-    var bookmarkedChannels : [Channel] = [Channel]()
-    var genres : [Genre] = []
-    
-    var selectedTabIdx = 0
-    var channelLoaded = false
-    var genreLoaded = false
-    var isGenreSelectMode = false
-    var selectedGenre:Genre?
-    var actionSheetTargetTrack:Track?
-    var nextPage:Int = 0
-    var isLoading:Bool = false
-    var bookmarkListHeader:UIView?
-    var refreshControl:UIRefreshControl!
-    
-    var dateFormatter:NSDateFormatter {
-        var formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.000Z"
-        return formatter
-    }
-    
     @IBOutlet weak var signinBtn: UIButton!
     @IBOutlet weak var signupBtn: UIButton!
     @IBOutlet weak var needSigninScrollInnerConstaint: NSLayoutConstraint!
@@ -51,6 +28,29 @@ class ChannelViewController: BaseViewController,
     @IBOutlet weak var genreSelectorConstraint: NSLayoutConstraint!
     @IBOutlet weak var genreSelectorWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var emptyChannelView: UILabel!
+    
+    private var tracks: [ChannelFeedTrack] = [ChannelFeedTrack]()
+    private var allChannels : [String:Channel] = [String:Channel]()
+    private var channels : [Channel] = [Channel]()
+    private var bookmarkedChannels : [Channel] = [Channel]()
+    private var genres : [Genre] = []
+    
+    private var selectedTabIdx = 0
+    private var channelLoaded = false
+    private var genreLoaded = false
+    private var isGenreSelectMode = false
+    private var selectedGenre:Genre?
+    private var actionSheetTargetTrack:Track?
+    private var nextPage:Int = 0
+    private var isLoading:Bool = false
+    private var bookmarkListHeader:UIView?
+    private var refreshControl:UIRefreshControl!
+    
+    private var dateFormatter:NSDateFormatter {
+        var formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.000Z"
+        return formatter
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

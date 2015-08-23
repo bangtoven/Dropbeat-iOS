@@ -24,23 +24,23 @@ class ChannelDetailViewController: BaseViewController,
     @IBOutlet weak var loadMoreSpinnerWrapper: UIView!
     @IBOutlet weak var loadMoreSpinner: UIActivityIndicatorView!
     
-    var refreshControl:UIRefreshControl!
-    var actionSheetTargetTrack:Track?
-    var isLoading:Bool = false
-    var listEnd:Bool = false
-    var currSection:ChannelPlaylist?
-    var sectionSelectMode = false
-    var nextPageToken:String?
-    var channelUid:String?
-    var channelName: String?
-    var channel:Channel?
-    var bookmarkedIds: [String] = [String]()
-    var tracks:[ChannelTrack] = [ChannelTrack]()
-    var dateFormatter:NSDateFormatter {
+    private var refreshControl:UIRefreshControl!
+    private var actionSheetTargetTrack:Track?
+    private var isLoading:Bool = false
+    private var listEnd:Bool = false
+    private var currSection:ChannelPlaylist?
+    private var sectionSelectMode = false
+    private var nextPageToken:String?
+    private var channel:Channel?
+    private var bookmarkedIds: [String] = [String]()
+    private var tracks:[ChannelTrack] = [ChannelTrack]()
+    private var dateFormatter:NSDateFormatter {
         var formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.000Z"
         return formatter
     }
+    var channelUid:String?
+    var channelName: String?
 
     override func viewDidLoad() {
         super.viewDidLoad()

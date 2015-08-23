@@ -906,8 +906,12 @@
 				589413681B8455E500395AFA /* SignupWithEmailViewController.swift */,
 				582E7D951B109B3100AB76A2 /* AutocomTableViewCell.swift */,
 				581D4C9D1B09FA120036BEBF /* PlaylistViewController.swift */,
+				58946E621B64E7FE005B4712 /* ChannelDetailViewController.swift */,
+				58946E5A1B63AFCE005B4712 /* ChannelViewController.swift */,
+				58CCC94F1B6CC8A8000D64F6 /* BookmarkListViewController.swift */,
 				582709F61B0A8605003C44DA /* KeychainItemWrapper.swift */,
 				586D166D1B0B972400C5147F /* StartupViewController.swift */,
+				587CDD211B0E4EC100D23CCC /* CopyrightViewController.swift */,
 				58BB0B151B12308000B07279 /* BaseViewController.swift */,
 				5854C7C71B6EEA8B003A5A2A /* FollowingTableViewCell.swift */,
 				58933A541B6618D400452EAB /* SectionTableViewCell.swift */,
@@ -918,10 +922,6 @@
 				58D3EBDD1B0BBC00000C6374 /* AddableTrackTableViewCell.swift */,
 				58EAB3DC1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift */,
 				58946E601B6412E5005B4712 /* ChannelTableViewCell.swift */,
-				587CDD211B0E4EC100D23CCC /* CopyrightViewController.swift */,
-				58CCC94F1B6CC8A8000D64F6 /* BookmarkListViewController.swift */,
-				58946E621B64E7FE005B4712 /* ChannelDetailViewController.swift */,
-				58946E5A1B63AFCE005B4712 /* ChannelViewController.swift */,
 			);
 			path = labs;
 			sourceTree = "<group>";

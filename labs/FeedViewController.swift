@@ -44,23 +44,23 @@ class FeedViewController: BaseViewController,
     @IBOutlet weak var feedTypeSelectTableView: UITableView!
     @IBOutlet weak var genreTableView: UITableView!
     
-    var refreshControl: UIRefreshControl!
+    private var refreshControl: UIRefreshControl!
     
-    var genres:[FeedType:[Genre]] = [FeedType:[Genre]]()
-    var tracks:Array<Track> = []
-    var selectedTrack:Track?
-    var feedTypeSelectMode:Int = 0
-    var viewMode:ViewMode = ViewMode.Normal
-    var nextPage:Int = 0
-    var isLoading:Bool = false
+    private var genres:[FeedType:[Genre]] = [FeedType:[Genre]]()
+    private var tracks:Array<Track> = []
+    private var selectedTrack:Track?
+    private var feedTypeSelectMode:Int = 0
+    private var viewMode:ViewMode = ViewMode.Normal
+    private var nextPage:Int = 0
+    private var isLoading:Bool = false
             
-    var genreSelectBtn: UIBarButtonItem!
-    var selectedGenre:Genre?
+    private var genreSelectBtn: UIBarButtonItem!
+    private var selectedGenre:Genre?
     
-    var selectedFeedMenu:FeedMenu!
-    var genreInitialized:Bool = false
+    private var selectedFeedMenu:FeedMenu!
+    private var genreInitialized:Bool = false
     
-    var feedMenus:[FeedMenu] = {
+    private var feedMenus:[FeedMenu] = {
         var types = [FeedMenu]()
         if Account.getCachedAccount() != nil {
             types.append(FeedMenu(title: NSLocalizedString("Friend Feed", comment:""), type: FeedType.USER_GROUP))
@@ -72,7 +72,7 @@ class FeedViewController: BaseViewController,
         return types
     }()
     
-    var dateFormatter:NSDateFormatter {
+    private var dateFormatter:NSDateFormatter {
         var formatter = NSDateFormatter()
         formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
         formatter.dateFormat = "MMMM dd, yyyy"

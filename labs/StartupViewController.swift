@@ -11,7 +11,7 @@ import Raygun4iOS
 
 class StartupViewController: GAITrackedViewController {
 
-    var progressHud:MBProgressHUD?
+    private var progressHud:MBProgressHUD?
     
     override func viewDidLoad() {
         super.viewDidLoad()

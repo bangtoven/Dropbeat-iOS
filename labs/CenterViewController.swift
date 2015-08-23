@@ -40,8 +40,8 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var tabBar: UITabBar!
     
-    var currentMenu:MenuType = MenuType.FEED
-    var isPlayerVisible:Bool = false
+    private var currentMenu:MenuType = MenuType.FEED
+    private var isPlayerVisible:Bool = false
     
     private var activeViewController: UIViewController? {
         didSet {

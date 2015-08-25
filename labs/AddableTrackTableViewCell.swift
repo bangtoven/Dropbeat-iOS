@@ -57,6 +57,7 @@ class UserTrackTableViewCell: AddableTrackTableViewCell {
     @IBOutlet weak var listenTimeView: UILabel!
     @IBOutlet weak var userNameView: UILabel!
     @IBOutlet weak var artistName: UILabel!
+    @IBOutlet weak var genreView: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()

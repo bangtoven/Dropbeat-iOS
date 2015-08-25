@@ -1068,6 +1068,7 @@ class StreamFriend {
                     s["ts"].int == nil ||
                     s["artist_name"].string == nil ||
                     s["track_name"].string == nil ||
+                    s["genre"].string == nil ||
                     s["type"].string == nil {
                 continue
             }
@@ -1079,6 +1080,7 @@ class StreamFriend {
                 type: s["type"].stringValue,
                 artistName: s["artist_name"].stringValue,
                 ts: s["ts"].intValue,
+                genre:s["genre"].stringValue,
                 thumbnail:s["thumbnail"].string
             )
             
@@ -1482,8 +1484,9 @@ class FriendTrack: Track {
     var nickname:String!
     var ts: Int!
     var artistName:String!
+    var genre:String!
     init (nickname:String, id:String, trackName:String, type:String, artistName:String,
-            ts:Int, thumbnail:String?) {
+        ts:Int, genre:String, thumbnail:String?) {
         let title = artistName + " - " + trackName
         var thumbnailUrl = thumbnail
         if thumbnailUrl == nil && type == "youtube" {
@@ -1493,6 +1496,7 @@ class FriendTrack: Track {
         self.trackName = trackName
         self.nickname = nickname
         self.ts = ts
+        self.genre = genre
         self.artistName = artistName
     }
 }

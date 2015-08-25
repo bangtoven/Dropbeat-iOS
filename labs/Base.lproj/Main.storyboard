@@ -1205,7 +1205,7 @@
                                                             <constraint firstAttribute="width" constant="46" id="yZJ-Fe-5SY"/>
                                                         </constraints>
                                                         <inset key="contentEdgeInsets" minX="2" minY="9" maxX="2" maxY="9"/>
-                                                        <state key="normal" title="HQ" image="DE91AF59-4ECF-46FB-86CB-8521C74E2F17">
+                                                        <state key="normal" title="HQ" image="A326B5D1-8439-4C38-AF1C-1FF2DEB9559B">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -5686,14 +5686,14 @@ and let us know your favorite genre.</string>
                                             <outlet property="titleWrapper" destination="vWo-ip-ZxM" id="Whj-iU-Pvl"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserTrackTableViewCell" rowHeight="132" id="Oc6-TN-6bL" customClass="UserTrackTableViewCell" customModule="labs" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserTrackTableViewCell" rowHeight="150" id="Oc6-TN-6bL" customClass="UserTrackTableViewCell" customModule="labs" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Oc6-TN-6bL" id="VQb-ep-ZTC">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YY7-hk-o1F">
-                                                    <rect key="frame" x="0.0" y="4" width="320" height="124"/>
+                                                    <rect key="frame" x="0.0" y="4" width="320" height="142"/>
                                                     <subviews>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ICX-y7-SmQ" userLabel="userView">
                                                             <rect key="frame" x="10" y="10" width="300" height="40"/>
@@ -5722,13 +5722,13 @@ and let us know your favorite genre.</string>
                                                             </constraints>
                                                         </view>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FVo-EC-AL6" userLabel="trackView">
-                                                            <rect key="frame" x="10" y="58" width="300" height="56"/>
+                                                            <rect key="frame" x="10" y="58" width="300" height="74"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fWo-7h-nWZ">
-                                                                    <rect key="frame" x="61" y="3" width="164" height="51"/>
+                                                                    <rect key="frame" x="61" y="0.0" width="164" height="74"/>
                                                                     <subviews>
-                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="asdfasdfasdf sdfsda fsadf sadfasdf asdf asdfa sdfasdfas df" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VFC-RG-M4I">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="164" height="34"/>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="asdfasdfasdf " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VFC-RG-M4I">
+                                                                            <rect key="frame" x="0.0" y="0.0" width="164" height="17"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="34" id="6sr-6K-kl7"/>
                                                                             </constraints>
@@ -5737,20 +5737,29 @@ and let us know your favorite genre.</string>
                                                                             <color key="highlightedColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Axwell /\ Ingrosso" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5EC-9P-Eun">
-                                                                            <rect key="frame" x="0.0" y="35" width="164" height="16"/>
+                                                                            <rect key="frame" x="0.0" y="21" width="164" height="16"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                             <color key="textColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                                                                            <nil key="highlightedColor"/>
+                                                                        </label>
+                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Progressive House" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZvR-iE-Pwv">
+                                                                            <rect key="frame" x="0.0" y="40" width="164" height="16"/>
+                                                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                                                            <color key="textColor" red="0.95686274510000002" green="0.21591749120000001" blue="0.68256611099999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
                                                                     </subviews>
                                                                     <constraints>
                                                                         <constraint firstAttribute="trailing" secondItem="VFC-RG-M4I" secondAttribute="trailing" id="1jT-RN-XHi"/>
                                                                         <constraint firstItem="5EC-9P-Eun" firstAttribute="leading" secondItem="fWo-7h-nWZ" secondAttribute="leading" id="1tv-aZ-AJt"/>
+                                                                        <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="ZvR-iE-Pwv" secondAttribute="bottom" id="4bn-16-IQx"/>
                                                                         <constraint firstItem="VFC-RG-M4I" firstAttribute="leading" secondItem="fWo-7h-nWZ" secondAttribute="leading" id="5Qu-NN-O1Y"/>
+                                                                        <constraint firstItem="ZvR-iE-Pwv" firstAttribute="leading" secondItem="fWo-7h-nWZ" secondAttribute="leading" id="J6f-0x-g1K"/>
+                                                                        <constraint firstItem="ZvR-iE-Pwv" firstAttribute="top" secondItem="5EC-9P-Eun" secondAttribute="bottom" constant="3" id="LA3-hi-tLm"/>
                                                                         <constraint firstAttribute="trailing" secondItem="5EC-9P-Eun" secondAttribute="trailing" id="TCK-eK-Xaf"/>
+                                                                        <constraint firstAttribute="trailing" secondItem="ZvR-iE-Pwv" secondAttribute="trailing" id="bsG-c7-o5k"/>
                                                                         <constraint firstItem="VFC-RG-M4I" firstAttribute="top" secondItem="fWo-7h-nWZ" secondAttribute="top" id="cP8-Ec-6hq"/>
-                                                                        <constraint firstItem="5EC-9P-Eun" firstAttribute="top" secondItem="VFC-RG-M4I" secondAttribute="bottom" constant="1" id="e8W-P2-TaD"/>
-                                                                        <constraint firstAttribute="bottom" secondItem="5EC-9P-Eun" secondAttribute="bottom" id="msd-r9-YYG"/>
+                                                                        <constraint firstItem="5EC-9P-Eun" firstAttribute="top" secondItem="VFC-RG-M4I" secondAttribute="bottom" constant="4" id="e8W-P2-TaD"/>
                                                                     </constraints>
                                                                 </view>
                                                                 <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bFx-hY-1jf">
@@ -5794,12 +5803,11 @@ and let us know your favorite genre.</string>
                                                                 </view>
                                                             </subviews>
                                                             <constraints>
-                                                                <constraint firstItem="fWo-7h-nWZ" firstAttribute="top" relation="greaterThanOrEqual" secondItem="FVo-EC-AL6" secondAttribute="top" id="KlT-XN-Qut"/>
+                                                                <constraint firstItem="fWo-7h-nWZ" firstAttribute="top" secondItem="FVo-EC-AL6" secondAttribute="top" id="KlT-XN-Qut"/>
+                                                                <constraint firstAttribute="bottom" secondItem="fWo-7h-nWZ" secondAttribute="bottom" id="Q7d-X3-I7h"/>
                                                                 <constraint firstAttribute="trailing" secondItem="fWo-7h-nWZ" secondAttribute="trailing" constant="75" id="V1r-D3-TXo"/>
                                                                 <constraint firstItem="bFx-hY-1jf" firstAttribute="leading" secondItem="FVo-EC-AL6" secondAttribute="leading" id="bJR-2I-t35"/>
-                                                                <constraint firstAttribute="centerY" secondItem="fWo-7h-nWZ" secondAttribute="centerY" priority="900" id="cPA-Ba-Rzs"/>
                                                                 <constraint firstItem="bFx-hY-1jf" firstAttribute="top" secondItem="FVo-EC-AL6" secondAttribute="top" id="gAp-e4-uia"/>
-                                                                <constraint firstAttribute="height" constant="56" id="lut-LS-cPz"/>
                                                                 <constraint firstItem="fWo-7h-nWZ" firstAttribute="leading" secondItem="bFx-hY-1jf" secondAttribute="trailing" constant="5" id="tF4-rk-QLy"/>
                                                             </constraints>
                                                         </view>
@@ -5846,13 +5854,13 @@ and let us know your favorite genre.</string>
                                             </subviews>
                                             <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
+                                                <constraint firstItem="f5o-kk-4Lu" firstAttribute="top" secondItem="VQb-ep-ZTC" secondAttribute="topMargin" constant="44" id="0aL-Sh-MZA"/>
                                                 <constraint firstItem="YY7-hk-o1F" firstAttribute="top" secondItem="VQb-ep-ZTC" secondAttribute="top" constant="4" id="833-6h-HXa"/>
                                                 <constraint firstAttribute="trailing" secondItem="YY7-hk-o1F" secondAttribute="trailing" id="FBf-zE-Wox"/>
                                                 <constraint firstAttribute="bottom" secondItem="YY7-hk-o1F" secondAttribute="bottom" constant="4" id="LwP-Wp-Qsh"/>
                                                 <constraint firstItem="YY7-hk-o1F" firstAttribute="leading" secondItem="VQb-ep-ZTC" secondAttribute="leading" id="RfZ-Ls-0up"/>
-                                                <constraint firstAttribute="bottom" secondItem="164-oo-2hF" secondAttribute="bottom" constant="4" id="W8r-nH-KIz"/>
-                                                <constraint firstAttribute="bottom" secondItem="f5o-kk-4Lu" secondAttribute="bottom" constant="4" id="aS9-OW-Or8"/>
                                                 <constraint firstAttribute="trailing" secondItem="164-oo-2hF" secondAttribute="trailing" id="c6w-KX-KaD"/>
+                                                <constraint firstItem="164-oo-2hF" firstAttribute="top" secondItem="VQb-ep-ZTC" secondAttribute="topMargin" constant="44" id="kcC-Ym-HiU"/>
                                                 <constraint firstAttribute="trailing" secondItem="f5o-kk-4Lu" secondAttribute="trailing" constant="40" id="uWB-zl-7Pj"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -5861,6 +5869,7 @@ and let us know your favorite genre.</string>
                                             <outlet property="contentFrame" destination="YY7-hk-o1F" id="h1E-Tz-gwb"/>
                                             <outlet property="dropBtn" destination="f5o-kk-4Lu" id="Bud-cX-GWS"/>
                                             <outlet property="filterView" destination="7dY-vM-0Kv" id="Y8O-dI-kLY"/>
+                                            <outlet property="genreView" destination="ZvR-iE-Pwv" id="nar-PV-SWS"/>
                                             <outlet property="listenTimeView" destination="5z8-f7-Y9X" id="yxx-93-45y"/>
                                             <outlet property="nameView" destination="VFC-RG-M4I" id="e9Y-lC-rhw"/>
                                             <outlet property="thumbView" destination="k5X-v7-um7" id="29N-me-BMF"/>
@@ -6289,7 +6298,7 @@ and let us know your favorite genre.</string>
         </scene>
     </scenes>
     <resources>
-        <image name="DE91AF59-4ECF-46FB-86CB-8521C74E2F17" width="105" height="64">
+        <image name="A326B5D1-8439-4C38-AF1C-1FF2DEB9559B" width="105" height="64">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -6859,18 +6868,18 @@ AAACAQAAAAAAAAA/AAAAAAAAAAAAAAAAAAB3ug
         <image name="sample_cover.png" width="225" height="225"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="D5z-Jt-wFj"/>
         <segue reference="FMe-8G-SkH"/>
         <segue reference="n4i-js-U3G"/>
-        <segue reference="1xR-MJ-eI3"/>
         <segue reference="HiJ-qO-nKe"/>
-        <segue reference="BlK-Xu-UPI"/>
-        <segue reference="hAY-Br-kOs"/>
-        <segue reference="Ph7-jJ-Xhz"/>
-        <segue reference="s9L-cp-dOd"/>
+        <segue reference="D5z-Jt-wFj"/>
         <segue reference="LxB-aE-y4C"/>
         <segue reference="Slv-y9-I0B"/>
+        <segue reference="s9L-cp-dOd"/>
+        <segue reference="AfE-Hp-Lz9"/>
         <segue reference="bVc-Yf-og9"/>
+        <segue reference="1Tz-WA-SGf"/>
+        <segue reference="hAY-Br-kOs"/>
+        <segue reference="Ph7-jJ-Xhz"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

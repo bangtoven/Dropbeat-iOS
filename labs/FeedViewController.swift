@@ -70,6 +70,9 @@ class FeedViewController: AddableTrackListViewController,
         return types
     }()
     
+    private var userGroupSizingCell:UserTrackTableViewCell! = nil;
+    private var onceToken:dispatch_once_t = 0
+    
     private var dateFormatter:NSDateFormatter {
         var formatter = NSDateFormatter()
         formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
@@ -579,8 +582,13 @@ class FeedViewController: AddableTrackListViewController,
     func getUserGroupCell(indexPath:NSIndexPath) -> UITableViewCell {
         let cell:UserTrackTableViewCell = trackTableView.dequeueReusableCellWithIdentifier(
             "UserTrackTableViewCell", forIndexPath: indexPath) as! UserTrackTableViewCell
-        let track:FriendTrack = tracks[indexPath.row] as! FriendTrack
         cell.delegate = self
+        updateUserGroupCell(cell, indexPath: indexPath)
+        return cell
+    }
+    
+    func updateUserGroupCell(cell:UserTrackTableViewCell, indexPath:NSIndexPath) {
+        let track:FriendTrack = tracks[indexPath.row] as! FriendTrack
         cell.nameView.text = track.trackName
         if (track.thumbnailUrl != nil) {
             cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
@@ -597,8 +605,9 @@ class FeedViewController: AddableTrackListViewController,
         cell.listenTimeView.text = listenDate.timeAgoSinceNow()
         cell.userNameView.text = track.nickname
         cell.artistName.text = track.artistName
-        return cell
+        cell.genreView.text = track.genre
     }
+    
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if tableView == feedTypeSelectTableView {
@@ -644,11 +653,25 @@ class FeedViewController: AddableTrackListViewController,
         case .FOLLOWING:
             return (15 * self.view.bounds.width / 30) + 52
         case .USER_GROUP:
-            return 132
+//            return calculateUserGroupCellHeight(indexPath)
+            return 150
         default:
             break
         }
         return 60
+    }
+    
+    func calculateUserGroupCellHeight(indexPath:NSIndexPath) -> CGFloat {
+        dispatch_once(&onceToken, { () -> Void in
+            self.userGroupSizingCell = self.trackTableView.dequeueReusableCellWithIdentifier(
+                "UserTrackTableViewCell", forIndexPath: indexPath) as! UserTrackTableViewCell
+        })
+        updateUserGroupCell(userGroupSizingCell, indexPath: indexPath)
+        userGroupSizingCell.setNeedsLayout()
+        userGroupSizingCell.layoutIfNeeded()
+        let val = userGroupSizingCell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
+        println("cal height:\(val)")
+        return val
     }
     
     func filterAsGenre(genre:Genre) {

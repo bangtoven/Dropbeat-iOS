@@ -61,7 +61,7 @@ class FeedViewController: AddableTrackListViewController,
     private var feedMenus:[FeedMenu] = {
         var types = [FeedMenu]()
         if Account.getCachedAccount() != nil {
-            types.append(FeedMenu(title: NSLocalizedString("Friend Feed", comment:""), type: FeedType.USER_GROUP))
+            types.append(FeedMenu(title: NSLocalizedString("Social Feed", comment:""), type: FeedType.USER_GROUP))
         }
         types.append(FeedMenu(title: NSLocalizedString("Trending Tracks", comment:""), type: FeedType.TRENDING))
         types.append(FeedMenu(title: NSLocalizedString("Followed Artists", comment:""), type: FeedType.FOLLOWING))
@@ -163,7 +163,7 @@ class FeedViewController: AddableTrackListViewController,
             prefix = "trending"
             break
         case .USER_GROUP:
-            prefix = "friend_feed"
+            prefix = "social_feed"
             break
         default:
             break
@@ -190,7 +190,7 @@ class FeedViewController: AddableTrackListViewController,
             prefix = "Trending"
             break
         case .USER_GROUP:
-            prefix = "Friend Feed"
+            prefix = "Social Feed"
             break
         default:
             break

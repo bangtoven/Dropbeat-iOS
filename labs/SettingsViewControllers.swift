@@ -129,10 +129,12 @@ class CopyrightViewController: UIViewController {
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
-class FeedbackViewController: BaseViewController, UITextViewDelegate {
+class FeedbackViewController: BaseViewController,
+        UITextFieldDelegate, UITextViewDelegate, UIScrollViewDelegate {
 
-    @IBOutlet weak var textViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var emailHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollInnerWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollInnerView: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var emailView: UITextField!
     @IBOutlet weak var submitBtn: UIButton!
     @IBOutlet weak var textView: UITextView!
@@ -150,6 +152,8 @@ class FeedbackViewController: BaseViewController, UITextViewDelegate {
         textView.layer.cornerRadius = 3.0
         textView.layer.borderColor = UIColor(netHex: 0xcccccc).CGColor
         textView.layer.borderWidth = 1
+        
+        scrollInnerWidthConstraint.constant = view.bounds.width
     }
 
     override func didReceiveMemoryWarning() {
@@ -162,6 +166,11 @@ class FeedbackViewController: BaseViewController, UITextViewDelegate {
         self.screenName = "FeedbackScreen"
     }
     
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textView.becomeFirstResponder()
+        return true
+    }
+    
     func isValidEmail(testStr:String) -> Bool {
         let emailRegEx = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
         
@@ -169,8 +178,19 @@ class FeedbackViewController: BaseViewController, UITextViewDelegate {
         return emailTest.evaluateWithObject(testStr)
     }
     
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        scrollView.contentOffset = CGPointMake(0, scrollView.contentOffset.y)
+    }
+    
+    @IBAction func onTapped(sender: AnyObject) {
+        emailView.endEditing(true)
+        textView.endEditing(true)
+    }
+    
     @IBAction func onSubmitBtnClicked(sender: AnyObject) {
         var senderEmail:String?
+        emailView.endEditing(true)
+        textView.endEditing(true)
         senderEmail = emailView.text
         
         if senderEmail == nil || count(senderEmail!) == 0 {
@@ -248,8 +268,11 @@ class FeedbackViewController: BaseViewController, UITextViewDelegate {
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
-class NicknameViewController: BaseViewController, UITextFieldDelegate {
+class NicknameViewController: BaseViewController, UITextFieldDelegate, UIScrollViewDelegate {
     
+    @IBOutlet weak var scrollInnerViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollInnerView: UIView!
+    @IBOutlet weak var scrollView: TPKeyboardAvoidingScrollView!
     @IBOutlet weak var submitBtn: UIButton!
     @IBOutlet weak var closeBtn: UIBarButtonItem!
     @IBOutlet weak var headerViewConstraint: NSLayoutConstraint!
@@ -274,6 +297,8 @@ class NicknameViewController: BaseViewController, UITextFieldDelegate {
         submitBtn.layer.cornerRadius = 3.0
         submitBtn.layer.borderColor = UIColor(netHex: 0x982EF4).CGColor
         submitBtn.layer.borderWidth = 1
+        
+        scrollInnerViewWidthConstraint.constant = view.bounds.width
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -290,9 +315,17 @@ class NicknameViewController: BaseViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        scrollView.contentOffset = CGPointMake(0, scrollView.contentOffset.y)
+    }
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         doSubmit()
         return true
+    }
+    
+    @IBAction func onTapped(sender: AnyObject) {
+        nicknameInputView.endEditing(true)
     }
     
     @IBAction func onSubmitBtnClicked(sender: AnyObject) {
@@ -304,6 +337,7 @@ class NicknameViewController: BaseViewController, UITextFieldDelegate {
     }
     
     func doSubmit() {
+        nicknameInputView.endEditing(true)
         if isSubmitting {
             return
         }

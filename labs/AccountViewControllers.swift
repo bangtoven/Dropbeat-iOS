@@ -590,6 +590,8 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
     }
     
     func doSubmit() {
+        emailInputView.endEditing(true)
+        passwordInputView.endEditing(true)
         if isSubmitting {
             return
         }
@@ -838,6 +840,13 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
     }
     
     func doSubmit() {
+        emailInputView.endEditing(true)
+        nicknameInputView.endEditing(true)
+        firstNameInputView.endEditing(true)
+        lastNameInputView.endEditing(true)
+        passwordInputView.endEditing(true)
+        passwordConfirmInputView.endEditing(true)
+        
         if isSubmitting {
             return
         }
@@ -1048,8 +1057,10 @@ protocol FBEmailSubmitViewControllerDelegate {
     func onAfterEmailUpdate()
 }
 
-class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate {
+class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate, UIScrollViewDelegate {
     
+    @IBOutlet weak var scrollInnerWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var scrollView: TPKeyboardAvoidingCollectionView!
     @IBOutlet weak var submitBtn: UIButton!
     @IBOutlet weak var emailErrorView: UILabel!
     @IBOutlet weak var emailInputView: UITextField!
@@ -1062,6 +1073,8 @@ class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate {
         submitBtn.layer.borderWidth = 1
         submitBtn.layer.borderColor = UIColor(netHex: 0x982EF4).CGColor
         submitBtn.layer.cornerRadius = 3.0
+        
+        scrollInnerWidthConstraint.constant = view.bounds.width
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -1074,11 +1087,20 @@ class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate {
         return true
     }
     
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        scrollView.contentOffset = CGPointMake(0, scrollView.contentOffset.y)
+    }
+    
+    @IBAction func onTapped(sender: AnyObject) {
+        emailInputView.endEditing(true)
+    }
+    
     @IBAction func onSubmitBtnClicked(sender: AnyObject) {
         doSubmit()
     }
     
     func doSubmit() {
+        emailInputView.endEditing(true)
         if isSubmitting {
             return
         }

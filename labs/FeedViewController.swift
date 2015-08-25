@@ -31,15 +31,14 @@ class FeedMenu {
     }
 }
 
-class FeedViewController: BaseViewController,
+class FeedViewController: AddableTrackListViewController,
         UITableViewDelegate, UITableViewDataSource,
-        AddableTrackCellDelegate, UIActionSheetDelegate, FollowingFeedHeaderViewDelegate,
+        FollowingFeedHeaderViewDelegate,
         FollowManageViewControllerDelegate {
     
     @IBOutlet weak var loadMoreSpinner: UIActivityIndicatorView!
     @IBOutlet weak var loadMoreSpinnerWrapper: UIView!
     @IBOutlet weak var feedTypeSelectBtn: UIButton!
-    @IBOutlet weak var feedTableView: UITableView!
     @IBOutlet weak var feedTypeSelectBtnWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var feedTypeSelectTableView: UITableView!
     @IBOutlet weak var genreTableView: UITableView!
@@ -47,7 +46,6 @@ class FeedViewController: BaseViewController,
     private var refreshControl: UIRefreshControl!
     
     private var genres:[FeedType:[Genre]] = [FeedType:[Genre]]()
-    private var tracks:Array<Track> = []
     private var selectedTrack:Track?
     private var feedTypeSelectMode:Int = 0
     private var viewMode:ViewMode = ViewMode.Normal
@@ -97,7 +95,7 @@ class FeedViewController: BaseViewController,
             string: NSLocalizedString("Pull to refresh", comment: ""),
             attributes: [NSForegroundColorAttributeName: UIColor(netHex: 0x909090)])
         refreshControl.attributedTitle = refreshControlTitle
-        feedTableView.insertSubview(refreshControl, atIndex: 0)
+        trackTableView.insertSubview(refreshControl, atIndex: 0)
         
         updateFeedTypeSelectBtn(nil)
         initialize()
@@ -131,45 +129,103 @@ class FeedViewController: BaseViewController,
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "FeedViewScreen"
-        
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "updatePlay:", name: NotifyKey.updatePlay, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "appWillEnterForeground",
-            name: UIApplicationWillEnterForegroundNotification, object: nil)
-        
-        updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
     
     override func viewWillDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
+        super.viewWillDisappear(animated)
+    }
+    
+    override func appWillEnterForeground() {
+        if genreInitialized {
+            switchFeed(selectedFeedMenu, genre:selectedGenre)
+        }
+        super.appWillEnterForeground()
+    }
+    
+    override func getPlaylistId() -> String? {
+        var prefix:String? = nil
+        switch (selectedFeedMenu.type) {
+        case .BEATPORT_CHART:
+            prefix = "beatport_chart"
+            break
+        case .FOLLOWING:
+            prefix = "followed_artist_feed"
+            break
+        case .NEW_RELEASE:
+            prefix = "new_release"
+            break
+        case .TRENDING:
+            prefix = "trending"
+            break
+        case .USER_GROUP:
+            prefix = "friend_feed"
+            break
+        default:
+            break
+        }
+        if prefix != nil && selectedGenre != nil{
+            prefix! += "_\(selectedGenre!.key)"
+        }
+        return prefix
+    }
+    
+    override func getPlaylistName() -> String? {
+        var prefix:String? = nil
+        switch (selectedFeedMenu.type) {
+        case .BEATPORT_CHART:
+            prefix = "Beatport Chart"
+            break
+        case .FOLLOWING:
+            prefix = "Followed Artists Feed"
+            break
+        case .NEW_RELEASE:
+            prefix = "New Release"
+            break
+        case .TRENDING:
+            prefix = "Trending"
+            break
+        case .USER_GROUP:
+            prefix = "Friend Feed"
+            break
+        default:
+            break
+        }
+        if prefix != nil && selectedGenre != nil {
+            prefix! += " - \(selectedGenre!.name)"
+        }
+        return prefix
+    }
+    
+    override func getSectionName() -> String {
+        var section = "feed_"
+        if selectedFeedMenu != nil {
+            section += "_" + selectedFeedMenu.title.lowercaseString.replace(" ", withString: "_")
+        }
+        if selectedGenre != nil {
+            section += "_" + selectedGenre!.name
+        }
+        return section
     }
     
     func onFollowManageCloseWithResult(isChanged: Bool) {
         if selectedFeedMenu.type == FeedType.FOLLOWING {
-            switchFeed(selectedFeedMenu, genre: selectedGenre, forceRefresh: isChanged)
+            switchFeed(selectedFeedMenu, genre: selectedGenre, forceRefresh: true, remoteRefresh:isChanged)
         }
-    }
-    
-    func appWillEnterForeground() {
-        if genreInitialized {
-            switchFeed(selectedFeedMenu, genre:selectedGenre)
-        }
-        updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
     }
     
     func getFollowingHeaderView(followings:[Following]) -> UIView {
         if followings.count == 0 {
-            var view:FollowingFeedHeaderView = FollowingFeedHeaderView(frame: CGRectMake(0, 0, self.feedTableView.bounds.width, 200))
+            var view:FollowingFeedHeaderView = FollowingFeedHeaderView(frame: CGRectMake(0, 0, self.trackTableView.bounds.width, 200))
             view.delegate = self
             return view
         }
         let view:FollowingFeedHeaderWithFollowingView =
-            FollowingFeedHeaderWithFollowingView(frame: CGRectMake(0, 0, self.feedTableView.bounds.width, 100))
+            FollowingFeedHeaderWithFollowingView(frame: CGRectMake(0, 0, self.trackTableView.bounds.width, 100))
         var text = NSString.localizedStringWithFormat(
             NSLocalizedString("You are following %d artists", comment:""), followings.count)
         view.followingInfoView.text = text as String
@@ -178,7 +234,7 @@ class FeedViewController: BaseViewController,
     }
     
     func getFriendFeedHeaderView() -> UIView {
-        return FriendFeedHeaderView(frame: CGRectMake(0, 0, self.feedTableView.bounds.width, 106))
+        return FriendFeedHeaderView(frame: CGRectMake(0, 0, self.trackTableView.bounds.width, 110))
     }
     
     func onManageFollowBtnClicked(sender: FollowingFeedHeaderView) {
@@ -190,11 +246,6 @@ class FeedViewController: BaseViewController,
     }
     
     func sender () {}
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
     func initGenres(callback:(error:NSError?) -> Void) {
         genres[FeedType.FOLLOWING] = [
@@ -263,27 +314,84 @@ class FeedViewController: BaseViewController,
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if tableView != self.feedTableView || tracks.count == 0 {
+        if tableView != self.trackTableView || tracks.count == 0 {
             return
         }
+        var marginWidth:CGFloat = 36.0
+        let track = tracks[indexPath.row]
+        if track.drop != nil {
+            marginWidth += 64.0
+        }
+        
+        var dropBtn:UIButton?
+        var dropIcReadyName = "ic_drop.png"
+        var dropIcLoadingName = "ic_drop_loading.png"
+        var dropIcPlayingName = "ic_drop_pause.png"
+        
         if selectedFeedMenu.type == FeedType.NEW_RELEASE {
             let trackCell = cell as! NewReleasedTrackTableViewCell
-            trackCell.titleWidthConstaint.constant = self.view.bounds.width - 36
-            trackCell.artistWidthConstraint.constant = self.view.bounds.width - 36
+            trackCell.titleWidthConstaint.constant = self.view.bounds.width - marginWidth
+            trackCell.artistWidthConstraint.constant = self.view.bounds.width - marginWidth
+            dropBtn = trackCell.dropBtn
+            
         } else if selectedFeedMenu.type == FeedType.TRENDING {
             if selectedGenre != nil && count(selectedGenre!.key) > 0 {
                 let trackCell = cell as! BpTrendingTrackTableViewCell
-                trackCell.titleWidthConstaint.constant = self.view.bounds.width - 36
-                trackCell.artistWidthConstraint.constant = self.view.bounds.width - 36
+                trackCell.titleWidthConstaint.constant = self.view.bounds.width - marginWidth
+                trackCell.artistWidthConstraint.constant = self.view.bounds.width - marginWidth
+                dropBtn = trackCell.dropBtn
             } else {
                 let trackCell = cell as! TrendingTrackTableViewCell
-                trackCell.titleWidthConstaint.constant = self.view.bounds.width - 36
-                trackCell.artistWidthConstraint.constant = self.view.bounds.width - 36
+                trackCell.titleWidthConstaint.constant = self.view.bounds.width - marginWidth
+                trackCell.artistWidthConstraint.constant = self.view.bounds.width - marginWidth
+                dropBtn = trackCell.dropBtn
             }
+            
         } else if selectedFeedMenu.type == FeedType.FOLLOWING {
             let trackCell = cell as! NewReleasedTrackTableViewCell
-            trackCell.titleWidthConstaint.constant = self.view.bounds.width - 36
-            trackCell.artistWidthConstraint.constant = self.view.bounds.width - 36
+            trackCell.titleWidthConstaint.constant = self.view.bounds.width - marginWidth
+            trackCell.artistWidthConstraint.constant = self.view.bounds.width - marginWidth
+            dropBtn = trackCell.dropBtn
+            
+        } else if selectedFeedMenu.type == FeedType.BEATPORT_CHART {
+            let trackCell = cell as! BpChartTrackTableViewCell
+            dropBtn = trackCell.dropBtn
+            dropIcReadyName = "ic_drop_small.png"
+            dropIcLoadingName = "ic_drop_loading_small.png"
+            dropIcPlayingName = "ic_drop_pause_small.png"
+            
+        } else if selectedFeedMenu.type == FeedType.USER_GROUP {
+            let trackCell = cell as! UserTrackTableViewCell
+            dropBtn = trackCell.dropBtn
+            dropIcReadyName = "ic_drop_small.png"
+            dropIcLoadingName = "ic_drop_loading_small.png"
+            dropIcPlayingName = "ic_drop_pause_small.png"
+        }
+        if dropBtn != nil {
+            if track.drop != nil {
+                var currDropTrack = dropPlayerContext.currentTrack
+                
+                if currDropTrack != nil &&
+                    currDropTrack!.id == track.id &&
+                    getSectionName() == dropPlayerContext.sectionName {
+                    switch (dropPlayerContext.playStatus) {
+                    case .Ready:
+                        dropBtn!.setImage(UIImage(named:dropIcReadyName), forState: UIControlState.Normal)
+                        break
+                    case .Loading:
+                        dropBtn!.setImage(UIImage(named:dropIcLoadingName), forState: UIControlState.Normal)
+                        break
+                    case .Playing:
+                        dropBtn!.setImage(UIImage(named:dropIcPlayingName), forState: UIControlState.Normal)
+                        break
+                    }
+                } else {
+                    dropBtn!.setImage(UIImage(named:dropIcReadyName), forState: UIControlState.Normal)
+                }
+                dropBtn!.hidden = false
+            } else {
+                dropBtn!.hidden = true
+            }
         }
         
         if indexPath.row == tracks.count - 1 {
@@ -346,7 +454,7 @@ class FeedViewController: BaseViewController,
     }
     
     func getBeatportChartCell(indexPath:NSIndexPath) -> UITableViewCell{
-        let cell:BpChartTrackTableViewCell = feedTableView.dequeueReusableCellWithIdentifier(
+        let cell:BpChartTrackTableViewCell = trackTableView.dequeueReusableCellWithIdentifier(
             "BpChartTrackTableViewCell", forIndexPath: indexPath) as! BpChartTrackTableViewCell
         let track:BeatportTrack = tracks[indexPath.row] as! BeatportTrack
         cell.delegate = self
@@ -370,7 +478,7 @@ class FeedViewController: BaseViewController,
     }
     
     func getTrendingCell(indexPath:NSIndexPath) -> UITableViewCell{
-        let cell:TrendingTrackTableViewCell = feedTableView.dequeueReusableCellWithIdentifier(
+        let cell:TrendingTrackTableViewCell = trackTableView.dequeueReusableCellWithIdentifier(
             "TrendingTrackTableViewCell", forIndexPath: indexPath) as! TrendingTrackTableViewCell
         let track:TrendingTrack = tracks[indexPath.row] as! TrendingTrack
         cell.delegate = self
@@ -393,7 +501,7 @@ class FeedViewController: BaseViewController,
     }
     
     func getBeatportTrendingCell(indexPath:NSIndexPath) -> UITableViewCell {
-        let cell:BpTrendingTrackTableViewCell = feedTableView.dequeueReusableCellWithIdentifier(
+        let cell:BpTrendingTrackTableViewCell = trackTableView.dequeueReusableCellWithIdentifier(
             "BpTrendingTrackTableViewCell", forIndexPath: indexPath) as! BpTrendingTrackTableViewCell
         let track:BeatportTrack = tracks[indexPath.row] as! BeatportTrack
         cell.delegate = self
@@ -419,7 +527,7 @@ class FeedViewController: BaseViewController,
     }
     
     func getNewReleaseCell(indexPath:NSIndexPath) -> UITableViewCell{
-        let cell:NewReleasedTrackTableViewCell = feedTableView.dequeueReusableCellWithIdentifier(
+        let cell:NewReleasedTrackTableViewCell = trackTableView.dequeueReusableCellWithIdentifier(
             "NewReleasedTrackTableViewCell", forIndexPath: indexPath) as! NewReleasedTrackTableViewCell
         let track:NewReleaseTrack = tracks[indexPath.row] as! NewReleaseTrack
         cell.delegate = self
@@ -444,7 +552,7 @@ class FeedViewController: BaseViewController,
     }
     
     func getFollowingCell(indexPath:NSIndexPath) -> UITableViewCell{
-        let cell:NewReleasedTrackTableViewCell = feedTableView.dequeueReusableCellWithIdentifier(
+        let cell:NewReleasedTrackTableViewCell = trackTableView.dequeueReusableCellWithIdentifier(
             "NewReleasedTrackTableViewCell", forIndexPath: indexPath) as! NewReleasedTrackTableViewCell
         let track:FollowingArtistTrack = tracks[indexPath.row] as! FollowingArtistTrack
         cell.delegate = self
@@ -469,7 +577,7 @@ class FeedViewController: BaseViewController,
     }
     
     func getUserGroupCell(indexPath:NSIndexPath) -> UITableViewCell {
-        let cell:UserTrackTableViewCell = feedTableView.dequeueReusableCellWithIdentifier(
+        let cell:UserTrackTableViewCell = trackTableView.dequeueReusableCellWithIdentifier(
             "UserTrackTableViewCell", forIndexPath: indexPath) as! UserTrackTableViewCell
         let track:FriendTrack = tracks[indexPath.row] as! FriendTrack
         cell.delegate = self
@@ -504,7 +612,7 @@ class FeedViewController: BaseViewController,
                 filterAsGenre(menuGenres![indexPath.row])
             }
         } else {
-            onPlayBtnClicked(tracks[indexPath.row])
+            onTrackPlayBtnClicked(tracks[indexPath.row])
         }
     }
     
@@ -536,7 +644,7 @@ class FeedViewController: BaseViewController,
         case .FOLLOWING:
             return (15 * self.view.bounds.width / 30) + 52
         case .USER_GROUP:
-            return 135
+            return 132
         default:
             break
         }
@@ -556,278 +664,21 @@ class FeedViewController: BaseViewController,
         }
     }
     
-    func getPlaylistId() -> String? {
-        var prefix:String? = nil
-        switch (selectedFeedMenu.type) {
-        case .BEATPORT_CHART:
-            prefix = "beatport_chart"
-            break
-        case .FOLLOWING:
-            prefix = "followed_artist_feed"
-            break
-        case .NEW_RELEASE:
-            prefix = "new_release"
-            break
-        case .TRENDING:
-            prefix = "trending"
-            break
-        case .USER_GROUP:
-            prefix = "friend_feed"
-            break
-        default:
-            break
-        }
-        if prefix != nil && selectedGenre != nil{
-            prefix! += "_\(selectedGenre!.key)"
-        }
-        return prefix
-    }
-    
-    func getPlaylistName() -> String? {
-        var prefix:String? = nil
-        switch (selectedFeedMenu.type) {
-        case .BEATPORT_CHART:
-            prefix = "Beatport Chart"
-            break
-        case .FOLLOWING:
-            prefix = "Followed Artists Feed"
-            break
-        case .NEW_RELEASE:
-            prefix = "New Release"
-            break
-        case .TRENDING:
-            prefix = "Trending"
-            break
-        case .USER_GROUP:
-            prefix = "Friend Feed"
-            break
-        default:
-            break
-        }
-        if prefix != nil && selectedGenre != nil {
-            prefix! += " - \(selectedGenre!.name)"
-        }
-        return prefix
-    }
-    
-    func updatePlaylist(forceUpdate:Bool) {
-        if !forceUpdate &&
-                (getPlaylistId() == nil || getPlaylistName() == nil ||
-                    PlayerContext.currentPlaylistId != getPlaylistId()) {
-            return
-        }
-        
-        var playlist:Playlist!
-        if PlayerContext.externalPlaylist != nil &&
-                PlayerContext.externalPlaylist!.id == getPlaylistId() {
-            playlist = PlayerContext.externalPlaylist!
-            playlist.tracks.removeAll(keepCapacity: false)
-            for track in tracks {
-                playlist.tracks.append(track)
-            }
-        } else {
-            playlist = Playlist(
-                    id: getPlaylistId()!,
-                    name: getPlaylistName()!,
-                    tracks: tracks)
-            playlist.type = PlaylistType.EXTERNAL
-            PlayerContext.externalPlaylist = playlist
-        }
-        
-        if PlayerContext.currentPlaylistId == playlist.id {
-            if PlayerContext.currentTrack == nil {
-                PlayerContext.currentTrackIdx = -1
-            } else {
-                PlayerContext.currentTrackIdx = playlist.getTrackIdx(PlayerContext.currentTrack!)
-            }
-        }
-        return
-    }
-    
-    func onPlayBtnClicked(track:Track) {
-        var playlistId:String?
-        if tracks.count == 0 || getPlaylistId() == nil{
-            playlistId = nil
-        } else {
-            updatePlaylist(true)
-            playlistId = PlayerContext.externalPlaylist!.id
-        }
-        var params: [String: AnyObject] = [
-            "track": track,
-        ]
-        if playlistId != nil {
-            params["playlistId"] = playlistId
-        }
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            NotifyKey.playerPlay, object: params)
-    }
-    
-    func onShareBtnClicked(track:Track) {
-        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        var section = "feed_"
-        if selectedFeedMenu != nil {
-            section += "_" + selectedFeedMenu.title.lowercaseString.replace(" ", withString: "_")
-        }
-        if selectedGenre != nil {
-            section += "_" + selectedGenre!.name
-        }
-        track.shareTrack(section, afterShare: { (error, uid) -> Void in
-            progressHud.hide(true)
-            if error != nil {
-                if (error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
-                        message: NSLocalizedString("Internet is not connected.", comment:""),
-                        positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                            self.onShareBtnClicked(track)
-                        }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
-                    return
-                }
-                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
-                    message: NSLocalizedString("Failed to share track", comment:""),
-                    positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                        self.onShareBtnClicked(track)
-                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
-                return
-            }
-            let shareUrl = "http://dropbeat.net/?track=" + uid!
-            let shareTitle = track.title
-            
-            var items:[AnyObject] = [shareTitle, shareUrl]
-            
-            let activityController = UIActivityViewController(
-                    activityItems: items, applicationActivities: nil)
-            activityController.excludedActivityTypes = [
-                    UIActivityTypePrint,
-                    UIActivityTypeSaveToCameraRoll,
-                    UIActivityTypeAirDrop,
-                    UIActivityTypeAssignToContact
-                ]
-            if activityController.respondsToSelector("popoverPresentationController:") {
-                activityController.popoverPresentationController?.sourceView = self.view
-            }
-            self.presentViewController(activityController, animated:true, completion: nil)
-        })
-    }
-    
-    func onLikeBtnClicked(track:Track) {
-        if (Account.getCachedAccount() == nil) {
-            performSegueWithIdentifier("need_auth", sender: nil)
-            return
-        }
-        let progressHud = ViewUtils.showProgress(self, message: nil)
-        if track.isLiked {
-            track.doUnlike({ (error) -> Void in
-                if error != nil {
-                    progressHud.hide(true)
-                    ViewUtils.showConfirmAlert(self,
-                        title: NSLocalizedString("Failed to save", comment: ""),
-                        message: NSLocalizedString("Failed to save dislike info.", comment:""),
-                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
-                        positiveBtnCallback: { () -> Void in
-                            self.onLikeBtnClicked(track)
-                    })
-                    return
-                }
-                progressHud.mode = MBProgressHUDMode.CustomView
-                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike.png"))
-                progressHud.hide(true, afterDelay: 1)
-                
-            })
-        } else {
-            track.doLike({ (error) -> Void in
-                if error != nil {
-                    progressHud.hide(true)
-                    ViewUtils.showConfirmAlert(self,
-                        title: NSLocalizedString("Failed to save", comment: ""),
-                        message: NSLocalizedString("Failed to save like info.", comment:""),
-                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
-                        positiveBtnCallback: { () -> Void in
-                            self.onLikeBtnClicked(track)
-                    })
-                    return
-                }
-                progressHud.mode = MBProgressHUDMode.CustomView
-                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like.png"))
-                progressHud.hide(true, afterDelay: 1)
-            })
-        }
-    }
-    
-    func onAddBtnClicked(track:Track) {
-        if (Account.getCachedAccount() == nil) {
-            performSegueWithIdentifier("need_auth", sender: nil)
-            return
-        }
-        performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
-    }
-    
-    func onMenuBtnClicked(sender: AddableTrackTableViewCell) {
-        let indexPath:NSIndexPath = feedTableView.indexPathForCell(sender)!
-        let track = tracks[indexPath.row]
-        selectedTrack = track
-        
-        let actionSheet = UIActionSheet()
-        if track.isLiked {
-            actionSheet.addButtonWithTitle(NSLocalizedString("Liked", comment:""))
-        } else {
-            actionSheet.addButtonWithTitle(NSLocalizedString("Like", comment:""))
-        }
-        actionSheet.addButtonWithTitle(NSLocalizedString("Add to playlist", comment:""))
-        actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
-        actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
-        actionSheet.cancelButtonIndex = 3
-        actionSheet.delegate = self
-        
-        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
-    }
-    
-    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
-        var track:Track? = selectedTrack
-        var foundIdx = -1
-        if track != nil {
-            for (idx, t)  in enumerate(tracks) {
-                if t.id == track!.id {
-                    foundIdx = idx
-                    break
-                }
-            }
-        }
-        if track == nil || foundIdx == -1 {
-            ViewUtils.showToast(self, message: NSLocalizedString("Track is not in feed", comment:""))
-            return
-        }
-        
-        switch(buttonIndex) {
-        case 0:
-            onLikeBtnClicked(track!)
-        case 1:
-            onAddBtnClicked(track!)
-            break
-        case 2:
-            onShareBtnClicked(track!)
-            break
-        default:
-            break
-        }
-        selectedTrack = nil
-    }
-    
-    func switchFeed(menu:FeedMenu, genre:Genre?=nil, forceRefresh:Bool=false) {
+    func switchFeed(menu:FeedMenu, genre:Genre?=nil, forceRefresh:Bool=false, remoteRefresh:Bool=false) {
+        onDropFinished()
         updateFeedTypeSelectBtn(menu.title)
         nextPage = menu.type == FeedType.BEATPORT_CHART ? -1 : 0
         tracks.removeAll(keepCapacity: false)
-        feedTableView.reloadData()
+        trackTableView.reloadData()
         genreTableView.reloadData()
         
         loadMoreSpinnerWrapper.hidden = true
         loadMoreSpinner.stopAnimating()
         
         if menu.type == FeedType.USER_GROUP {
-            feedTableView.backgroundColor = UIColor(netHex: 0xEFEFF4)
+            trackTableView.backgroundColor = UIColor(netHex: 0xEFEFF4)
         } else {
-            feedTableView.backgroundColor = UIColor(netHex: 0xffffff)
+            trackTableView.backgroundColor = UIColor(netHex: 0xffffff)
         }
         
         if menu.type == FeedType.FOLLOWING {
@@ -871,14 +722,14 @@ class FeedViewController: BaseViewController,
             }
         }
         
-        if feedTableView.indexPathForSelectedRow() != nil {
-            let selectedIndexPath = feedTableView.indexPathForSelectedRow()!
-            feedTableView.deselectRowAtIndexPath(selectedIndexPath, animated: false)
+        if trackTableView.indexPathForSelectedRow() != nil {
+            let selectedIndexPath = trackTableView.indexPathForSelectedRow()!
+            trackTableView.deselectRowAtIndexPath(selectedIndexPath, animated: false)
         }
         
         if menu.type == .FOLLOWING {
             if Account.getCachedAccount() == nil {
-                self.feedTableView.tableHeaderView = self.getFollowingHeaderView([Following]())
+                self.trackTableView.tableHeaderView = self.getFollowingHeaderView([Following]())
                 self.loadFollowingFeed()
                 return
             }
@@ -898,14 +749,14 @@ class FeedViewController: BaseViewController,
                         title: NSLocalizedString("Failed to load", comment:""), message: message)
                     return
                 }
-                self.feedTableView.tableHeaderView = self.getFollowingHeaderView(following!)
-                self.loadFollowingFeed(forceRefresh: forceRefresh)
+                self.trackTableView.tableHeaderView = self.getFollowingHeaderView(following!)
+                self.loadFollowingFeed(forceRefresh: forceRefresh, remoteRefresh: remoteRefresh)
             })
             return
         } else if menu.type == .USER_GROUP {
-            feedTableView.tableHeaderView = getFriendFeedHeaderView()
+            trackTableView.tableHeaderView = getFriendFeedHeaderView()
         } else {
-            feedTableView.tableHeaderView = nil
+            trackTableView.tableHeaderView = nil
         }
         
         
@@ -1047,7 +898,7 @@ class FeedViewController: BaseViewController,
                 self.tracks.append(track)
             }
             self.updatePlaylist(false)
-            self.feedTableView.reloadData()
+            self.trackTableView.reloadData()
             
             self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
         })
@@ -1100,7 +951,7 @@ class FeedViewController: BaseViewController,
             }
             
             self.updatePlaylist(false)
-            self.feedTableView.reloadData()
+            self.trackTableView.reloadData()
             self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
         })
     }
@@ -1130,7 +981,7 @@ class FeedViewController: BaseViewController,
         }
     }
     
-    func loadFollowingFeed(forceRefresh:Bool=false) {
+    func loadFollowingFeed(forceRefresh:Bool=false, remoteRefresh:Bool=false) {
         if selectedGenre == nil {
             selectedGenre = genres[FeedType.FOLLOWING]![0]
         }
@@ -1144,7 +995,7 @@ class FeedViewController: BaseViewController,
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
         
-        Requests.getStreamFollowing(forceRefresh, pageIdx: nextPage, order:selectedGenre!.key, respCb: {
+        Requests.getStreamFollowing(remoteRefresh, pageIdx: nextPage, order:selectedGenre!.key, respCb: {
             (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             self.isLoading = false
             progressHud?.hide(true)
@@ -1187,7 +1038,7 @@ class FeedViewController: BaseViewController,
                 self.tracks.append(track)
             }
             self.updatePlaylist(false)
-            self.feedTableView.reloadData()
+            self.trackTableView.reloadData()
             self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
         })
     }
@@ -1249,7 +1100,7 @@ class FeedViewController: BaseViewController,
                 self.tracks.append(track)
             }
             self.updatePlaylist(false)
-            self.feedTableView.reloadData()
+            self.trackTableView.reloadData()
             self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
         })
     }
@@ -1304,44 +1155,9 @@ class FeedViewController: BaseViewController,
                 self.tracks.append(track)
             }
             self.updatePlaylist(false)
-            self.feedTableView.reloadData()
+            self.trackTableView.reloadData()
             self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
         })
-    }
-    
-    func updatePlay(noti: NSNotification) {
-        var params = noti.object as! Dictionary<String, AnyObject>
-        var track = params["track"] as! Track
-        var playlistId:String? = params["playlistId"] as? String
-        
-        updatePlay(track, playlistId: playlistId)
-    }
-    
-    func updatePlay(track:Track?, playlistId: String?) {
-        if (track == nil) {
-            return
-        }
-        var indexPath = feedTableView.indexPathForSelectedRow()
-        if (indexPath != nil) {
-            var preSelectedTrack = tracks[indexPath!.row]
-            if (preSelectedTrack.id != track!.id ||
-                (playlistId != nil && playlistId!.toInt() >= 0)) {
-                feedTableView.deselectRowAtIndexPath(indexPath!, animated: false)
-            }
-        }
-        
-        
-        if (playlistId == nil || playlistId != getPlaylistId()) {
-            return
-        }
-        
-        for (idx, t) in enumerate(tracks) {
-            if (t.id == track!.id) {
-                feedTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
-                    animated: false, scrollPosition: UITableViewScrollPosition.None)
-                break
-            }
-        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -1368,7 +1184,7 @@ class FeedViewController: BaseViewController,
     
     func toFeedTypeSelectView() {
         viewMode = ViewMode.MenuSelect
-        feedTableView.hidden = true
+        trackTableView.hidden = true
         feedTypeSelectTableView.hidden = false
         genreTableView.hidden = true
         feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_up.png"), forState: UIControlState.Normal)
@@ -1381,7 +1197,7 @@ class FeedViewController: BaseViewController,
     
     func toFeedView(selected:String) {
         viewMode = ViewMode.Normal
-        feedTableView.hidden = false
+        trackTableView.hidden = false
         feedTypeSelectTableView.hidden = true
         genreTableView.hidden = true
         feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_down.png"), forState: UIControlState.Normal)
@@ -1395,7 +1211,7 @@ class FeedViewController: BaseViewController,
     
     func toGenreSelectView() {
         viewMode = ViewMode.Filter
-        feedTableView.hidden = true
+        trackTableView.hidden = true
         feedTypeSelectTableView.hidden = true
         genreTableView.hidden = false
         feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_down.png"), forState: UIControlState.Normal)

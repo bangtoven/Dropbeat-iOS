@@ -17,7 +17,7 @@ class SearchResultSections {
     static var allValues = [RELEASED, PODCAST, LIVESET, TOP_MATCH, RELEVANT]
 }
 
-class SearchViewController: BaseViewController,
+class SearchViewController: AddableTrackListViewController,
     UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate,
     UISearchBarDelegate, UIActionSheetDelegate, AddableTrackCellDelegate, ScrollPagerDelegate{
     
@@ -34,18 +34,15 @@ class SearchViewController: BaseViewController,
     @IBOutlet weak var searchResultView: UIView!
     @IBOutlet weak var scrollPager: ScrollPager!
     @IBOutlet weak var autocomTableView: UITableView!
-    @IBOutlet weak var resultTableView: UITableView!
     
     private var searchResult:Search?
-    private var tracks:[Track] = []
     private var sectionedTracks = [String:[Track]]()
     private var currentSections:[String]?
     private var currentSection:String?
     private var showAsRowSection = false
     private var autocomKeywords:[String] = []
     private var autocomRequester:AutocompleteRequester?
-    private var searchBar:UISearchBar?
-    private var actionSheetTargetTrack:Track?
+    private var searchBar:UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,14 +50,14 @@ class SearchViewController: BaseViewController,
         // Search bar initialize as code 
         // cause in storyboard cannot set searchbar with full width
         searchBar = UISearchBar()
-        searchBar!.delegate = self
+        searchBar.delegate = self
         navigationItem.titleView = searchBar!
-        searchBar!.sizeToFit()
-        searchBar!.placeholder = "Artist or Track"
-        searchBar!.searchBarStyle = UISearchBarStyle.Minimal
-        searchBar!.barStyle = UIBarStyle.Default
-        searchBar!.translucent = false
-        searchBar!.returnKeyType = UIReturnKeyType.Search
+        searchBar.sizeToFit()
+        searchBar.placeholder = "Artist or Track"
+        searchBar.searchBarStyle = UISearchBarStyle.Minimal
+        searchBar.barStyle = UIBarStyle.Default
+        searchBar.translucent = false
+        searchBar.returnKeyType = UIReturnKeyType.Search
         navigationItem.titleView!.autoresizingMask = UIViewAutoresizing.FlexibleWidth
         navigationItem.rightBarButtonItem = nil
         
@@ -85,27 +82,64 @@ class SearchViewController: BaseViewController,
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "SearchViewScreen"
-        
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "updatePlay:", name: NotifyKey.updatePlay, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
-    }
-    
-    func sender () {}
-
-    @IBAction func onTabed(sender: AnyObject) {
-        searchBar!.endEditing(true)
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        searchBar.becomeFirstResponder()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func getSectionName() -> String {
+       return "search"
+    }
+    
+    override func updatePlay(track:Track?, playlistId:String?) {
+        if track == nil {
+            return
+        }
+        var indexPath = trackTableView.indexPathForSelectedRow()
+        if (indexPath != nil) {
+            var preSelectedTrack:Track?
+            preSelectedTrack = tracks[indexPath!.row]
+            if (preSelectedTrack != nil &&
+                (preSelectedTrack!.id != track!.id ||
+                (playlistId != nil && playlistId!.toInt() >= 0))) {
+                trackTableView.deselectRowAtIndexPath(indexPath!, animated: false)
+            }
+        }
+        
+        if playlistId != nil {
+            return
+        }
+        
+        for (idx, t) in enumerate(tracks) {
+            if (t.id == track!.id) {
+                trackTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
+                    animated: false, scrollPosition: UITableViewScrollPosition.None)
+                break
+            }
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "PlaylistSelectSegue" {
+            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
+            playlistSelectVC.targetTrack = sender as? Track
+            playlistSelectVC.fromSection = "search"
+            playlistSelectVC.caller = self
+        }
+    }
+
+    
+    func sender () {}
+
+    @IBAction func onTabed(sender: AnyObject) {
+        searchBar!.endEditing(true)
     }
     
     func onHandleAutocomplete(keywords:Array<String>?, error:NSError?) {
@@ -147,28 +181,47 @@ class SearchViewController: BaseViewController,
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if (tableView == resultTableView) {
+        if (tableView == trackTableView) {
             var cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
-            var track:Track?
-            if (indexPath.section == 0) {
+            var track:Track!
+            if indexPath.section == 0 {
                 track = tracks[indexPath.row]
             } else {
                 var firstSectionCount:Int = self.tableView(tableView, numberOfRowsInSection: 0)
                 track = tracks[indexPath.row + firstSectionCount]
             }
             cell.delegate = self
-            cell.nameView.text = track!.title
-            if (track!.thumbnailUrl != nil) {
+            cell.nameView.text = track.title
+            if track.thumbnailUrl != nil {
                 cell.thumbView.sd_setImageWithURL(NSURL(string: track!.thumbnailUrl!),
                         placeholderImage: UIImage(named: "default_artwork.png"), completed: {
                         (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
-                    if (error != nil) {
+                    if error != nil {
                         cell.thumbView.image = UIImage(named: "default_artwork.png")
                     }
                 })
             } else {
                 cell.thumbView.image = UIImage(named: "default_artwork.png")
             }
+            var dropBtnImageName:String!
+            if dropPlayerContext.sectionName == getSectionName() &&
+                dropPlayerContext.currentTrack?.id == track.id {
+                    switch(dropPlayerContext.playStatus) {
+                    case .Playing:
+                        dropBtnImageName = "ic_drop_pause_small.png"
+                        break
+                    case .Loading:
+                        dropBtnImageName = "ic_drop_loading_small.png"
+                        break
+                    case .Ready:
+                        dropBtnImageName = "ic_drop_small.png"
+                        break
+                    }
+            } else {
+                dropBtnImageName = "ic_drop_small.png"
+            }
+            cell.dropBtn.setImage(UIImage(named: dropBtnImageName), forState: UIControlState.Normal)
+            cell.dropBtn.hidden = track!.drop == nil
             return cell
         } else {
             var cell:AutocomTableViewCell = tableView.dequeueReusableCellWithIdentifier("AutocomItem", forIndexPath: indexPath) as! AutocomTableViewCell
@@ -179,12 +232,12 @@ class SearchViewController: BaseViewController,
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if (tableView == resultTableView) {
+        if (tableView == trackTableView) {
             var index:Int = indexPath.row
             if (indexPath.section != 0) {
                 index += self.tableView(tableView, numberOfRowsInSection: 0)
             }
-            onPlayBtnClicked(tracks[index])
+            onTrackPlayBtnClicked(tracks[index])
         } else {
             let keyword = autocomKeywords[indexPath.row]
             searchBar!.text = keyword
@@ -194,14 +247,14 @@ class SearchViewController: BaseViewController,
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if (tableView == resultTableView && showAsRowSection) {
+        if (tableView == trackTableView && showAsRowSection) {
             return 2
         }
         return 1
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if (tableView == resultTableView && showAsRowSection) {
+        if (tableView == trackTableView && showAsRowSection) {
             if (section == 0) {
                 return "TOP MATCH"
             } else {
@@ -212,7 +265,7 @@ class SearchViewController: BaseViewController,
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (tableView == resultTableView) {
+        if (tableView == trackTableView) {
             if (currentSection == nil) {
                 return 0
             }
@@ -231,166 +284,6 @@ class SearchViewController: BaseViewController,
         }
     }
     
-    func onLikeBtnClicked(track:Track) {
-        if (Account.getCachedAccount() == nil) {
-            performSegueWithIdentifier("need_auth", sender: nil)
-            return
-        }
-        let progressHud = ViewUtils.showProgress(self, message: nil)
-        if track.isLiked {
-            track.doUnlike({ (error) -> Void in
-                if error != nil {
-                    progressHud.hide(true)
-                    ViewUtils.showConfirmAlert(self,
-                        title: NSLocalizedString("Failed to save", comment: ""),
-                        message: NSLocalizedString("Failed to save unlike info.", comment:""),
-                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
-                        positiveBtnCallback: { () -> Void in
-                            self.onLikeBtnClicked(track)
-                    })
-                    return
-                }
-                progressHud.mode = MBProgressHUDMode.CustomView
-                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike.png"))
-                progressHud.hide(true, afterDelay: 1)
-                
-            })
-        } else {
-            track.doLike({ (error) -> Void in
-                if error != nil {
-                    progressHud.hide(true)
-                    ViewUtils.showConfirmAlert(self,
-                        title: NSLocalizedString("Failed to save", comment: ""),
-                        message: NSLocalizedString("Failed to save like info.", comment:""),
-                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
-                        positiveBtnCallback: { () -> Void in
-                            self.onLikeBtnClicked(track)
-                    })
-                    return
-                }
-                progressHud.mode = MBProgressHUDMode.CustomView
-                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like.png"))
-                progressHud.hide(true, afterDelay: 1)
-            })
-        }
-    }
-    
-    func onPlayBtnClicked(track:Track) {
-        var params: Dictionary<String, AnyObject> = [
-            "track": track
-        ]
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            NotifyKey.playerPlay, object: params)
-    }
-    
-    func onShareBtnClicked(track:Track) {
-        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        track.shareTrack("search", afterShare: { (error, uid) -> Void in
-            progressHud.hide(true)
-            if error != nil {
-                if (error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
-                        message: NSLocalizedString("Internet is not connected.", comment:""),
-                        positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                            self.onShareBtnClicked(track)
-                        }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
-                    return
-                }
-                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
-                    message: NSLocalizedString("Failed to share track", comment:""),
-                    positiveBtnText: NSLocalizedString("Retry", comment:""),
-                    positiveBtnCallback: { () -> Void in
-                        self.onShareBtnClicked(track)
-                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
-                return
-            }
-            let shareUrl = "http://dropbeat.net/?track=" + uid!
-            let shareTitle = track.title
-            
-            var items:[AnyObject] = [shareTitle, shareUrl]
-            
-            let activityController = UIActivityViewController(
-                    activityItems: items, applicationActivities: nil)
-            activityController.excludedActivityTypes = [
-                    UIActivityTypePrint,
-                    UIActivityTypeSaveToCameraRoll,
-                    UIActivityTypeAirDrop,
-                    UIActivityTypeAssignToContact
-                ]
-            if activityController.respondsToSelector("popoverPresentationController:") {
-                activityController.popoverPresentationController?.sourceView = self.view
-            }
-            self.presentViewController(activityController, animated:true, completion: nil)
-        })
-    }
-    
-    func onAddBtnClicked(track:Track) {
-        if (Account.getCachedAccount() == nil) {
-            performSegueWithIdentifier("need_auth", sender: nil)
-            return
-        }
-        performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
-    }
-    
-    func onMenuBtnClicked(sender: AddableTrackTableViewCell) {
-        let indexPath:NSIndexPath = resultTableView.indexPathForCell(sender)!
-        var index:Int = indexPath.row
-        if (indexPath.section != 0) {
-            index += self.tableView(resultTableView, numberOfRowsInSection: 0)
-        }
-        
-        var track = tracks[index]
-        actionSheetTargetTrack = track
-        
-        let actionSheet = UIActionSheet()
-        if track.isLiked {
-            actionSheet.addButtonWithTitle(NSLocalizedString("Liked", comment:""))
-        } else {
-            actionSheet.addButtonWithTitle(NSLocalizedString("Like", comment:""))
-        }
-        actionSheet.addButtonWithTitle(NSLocalizedString("Add to playlist", comment:""))
-        actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
-        actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
-        actionSheet.cancelButtonIndex = 3
-        actionSheet.delegate = self
-        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
-    }
-    
-    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
-        var track:Track? = actionSheetTargetTrack
-        var foundIdx = -1
-        
-        if track != nil {
-            for (idx, t)  in enumerate(tracks) {
-                if t.id == track!.id {
-                    foundIdx = idx
-                    break
-                }
-            }
-        }
-        if buttonIndex < 3 && track == nil || foundIdx == -1 {
-            ViewUtils.showToast(self, message: NSLocalizedString("Track is not in feed", comment:""))
-            return
-        }
-        
-        switch(buttonIndex) {
-        case 0:
-            onLikeBtnClicked(track!)
-            break
-        case 1:
-            onAddBtnClicked(track!)
-            break
-        case 2:
-            onShareBtnClicked(track!)
-            break
-        default:
-            break
-        }
-        actionSheetTargetTrack = nil
-    }
-    
     func hideAutocomplete() {
         autocomTableView.hidden = true
         autocomRequester?.cancelAll()
@@ -406,6 +299,9 @@ class SearchViewController: BaseViewController,
     
     func doSearch(keyword:String) {
         hideAutocomplete()
+        
+        // stop prev drop
+        onDropFinished()
         
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Searching..", comment:""))
         searchResultView.hidden = false
@@ -443,9 +339,10 @@ class SearchViewController: BaseViewController,
                 self.currentSections = nil
                 self.currentSection = nil
                 
-                self.resultTableView.hidden = true
+                self.trackTableView.hidden = true
                 self.noSearchResultView.hidden = false
-                self.resultTableView.reloadData()
+                self.trackTableView.reloadData()
+                self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
                 return
             }
             let parser = Parser()
@@ -503,9 +400,10 @@ class SearchViewController: BaseViewController,
                 self.currentSections = nil
                 self.currentSection = nil
                 
-                self.resultTableView.hidden = true
+                self.trackTableView.hidden = true
                 self.noSearchResultView.hidden = false
-                self.resultTableView.reloadData()
+                self.trackTableView.reloadData()
+                self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
                 return
             }
             self.currentSections = foundSections
@@ -527,16 +425,20 @@ class SearchViewController: BaseViewController,
                 }
             }
             
-            self.resultTableView.reloadData()
+            self.trackTableView.reloadData()
             self.searchResultView.hidden = false
             
             let showNoResultView = self.tracks.count == 0
-            self.resultTableView.hidden = showNoResultView
+            self.trackTableView.hidden = showNoResultView
             self.noSearchResultView.hidden = !showNoResultView
+            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
         })
     }
     
     func selectTab(section:String) {
+        // stop prev drop
+        onDropFinished()
+        
         self.currentSection = section
         var tracks = self.sectionedTracks[self.currentSection!]
         if (tracks == nil) {
@@ -565,7 +467,8 @@ class SearchViewController: BaseViewController,
                         self.tracks.append(track)
                     }
                 }
-                self.resultTableView.reloadData()
+                self.trackTableView.reloadData()
+                self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
             }
             if (self.currentSection == SearchSections.LIVESET) {
                 self.searchResult!.fetchListset(callback)
@@ -583,9 +486,10 @@ class SearchViewController: BaseViewController,
                     self.tracks.append(track)
                 }
             }
-            self.resultTableView.reloadData()
+            self.trackTableView.reloadData()
+            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
         }
-        resultTableView.setContentOffset(CGPointZero, animated:false)
+        trackTableView.setContentOffset(CGPointZero, animated:false)
     }
     
     func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
@@ -595,47 +499,4 @@ class SearchViewController: BaseViewController,
         selectTab(self.currentSections![changedIndex])
     }
     
-    func updatePlay(noti: NSNotification) {
-        var params = noti.object as! Dictionary<String, AnyObject>
-        var track = params["track"] as! Track
-        var playlistId:String? = params["playlistId"] as? String
-        
-        var indexPath = resultTableView.indexPathForSelectedRow()
-        if (indexPath != nil) {
-            var preSelectedTrack:Track?
-            preSelectedTrack = tracks[indexPath!.row]
-            if (preSelectedTrack != nil &&
-                (preSelectedTrack!.id != track.id ||
-                (playlistId != nil && playlistId!.toInt() >= 0))) {
-                resultTableView.deselectRowAtIndexPath(indexPath!, animated: false)
-            }
-        }
-        
-        // NOTE
-        // we have to handle re select case when user search agian with same keyword etc.
-        // but we will ignore this case because we have only one week for iphone
-        
-//        if (playlistId == nil || playlistId!.toInt() >= 0) {
-//            return
-//        }
-//        
-//        for (idx, t) in enumerate(tracks) {
-//            if (t.id == track.id) {
-//                feedTableView.selectRowAtIndexPath(NSIndexPath(index: idx),
-//                    animated: false, scrollPosition: UITableViewScrollPosition.None)
-//                break
-//            }
-//        }
-    }
-    
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "PlaylistSelectSegue" {
-            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
-            playlistSelectVC.targetTrack = sender as? Track
-            playlistSelectVC.fromSection = "search"
-            playlistSelectVC.caller = self
-        }
-    }
-
 }

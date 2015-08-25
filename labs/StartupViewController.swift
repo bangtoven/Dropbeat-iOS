@@ -180,7 +180,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         
         var defaultDb:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         var didAutoFollow:Bool? = defaultDb.objectForKey(UserDataKey.didAutoFollow) as? Bool
-        if !(didAutoFollow ?? false) {
+        if !(didAutoFollow ?? false) && account.user!.fbId != nil {
             checkFollowingCount({ (needAutoFollow:Bool?, error:NSError?) -> Void in
                 if error != nil {
                     self.showMainController()

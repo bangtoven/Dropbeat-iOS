@@ -9,7 +9,8 @@
 import UIKit
     
 protocol AddableTrackCellDelegate {
-    func onMenuBtnClicked(sender:AddableTrackTableViewCell)
+    func onTrackMenuBtnClicked(sender:AddableTrackTableViewCell)
+    func onTrackDropBtnClicked(sender:AddableTrackTableViewCell)
 }
 
 class AddableTrackTableViewCell: UITableViewCell {
@@ -19,6 +20,7 @@ class AddableTrackTableViewCell: UITableViewCell {
     @IBOutlet weak var filterView: UIView!
     @IBOutlet weak var nameView: UILabel!
     @IBOutlet weak var thumbView: UIImageView!
+    @IBOutlet weak var dropBtn: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
 //        // Initialization code
@@ -41,9 +43,12 @@ class AddableTrackTableViewCell: UITableViewCell {
     }
 
     @IBAction func onMenuBtnClicked(sender: UIButton) {
-        delegate?.onMenuBtnClicked(self)
+        delegate?.onTrackMenuBtnClicked(self)
     }
     
+    @IBAction func onDropBtnClicked(sender: AnyObject) {
+        delegate?.onTrackDropBtnClicked(self)
+    }
 }
 
 class UserTrackTableViewCell: AddableTrackTableViewCell {
@@ -62,7 +67,6 @@ class UserTrackTableViewCell: AddableTrackTableViewCell {
         
         contentFrame.layer.borderColor = UIColor(netHex: 0xD6D6D6).CGColor
         contentFrame.layer.borderWidth = 1
-        contentFrame.layer.cornerRadius = 3.0
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -75,6 +79,26 @@ class BpChartTrackTableViewCell: AddableTrackTableViewCell {
     @IBOutlet weak var artistName: UILabel!
     @IBOutlet weak var genreName: UILabel!
     @IBOutlet weak var rank: UILabel!
+    @IBOutlet weak var rankWrapper: UIView!
+    
+    override func setSelected(selected: Bool, animated: Bool) {
+        let rankWarapperColor = rankWrapper.backgroundColor
+        super.setSelected(selected, animated: animated)
+        
+        if(selected) {
+            rankWrapper.backgroundColor = rankWarapperColor
+        }
+    }
+    
+    override func setHighlighted(highlighted: Bool, animated: Bool) {
+        let rankWarapperColor = rankWrapper.backgroundColor
+        super.setHighlighted(highlighted, animated: animated)
+        
+        if(highlighted) {
+            rankWrapper.backgroundColor = rankWarapperColor
+        }
+    }
+    
 }
 
 class TrendingTrackTableViewCell: AddableTrackTableViewCell {

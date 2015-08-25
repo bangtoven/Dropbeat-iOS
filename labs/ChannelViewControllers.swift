@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChannelViewController: BaseViewController,
+class ChannelViewController: AddableTrackListViewController,
         UITableViewDelegate, UITableViewDataSource, ScrollPagerDelegate, ChannelTableViewCellDelegate, AddableTrackCellDelegate,
             UIActionSheetDelegate,
             UIScrollViewDelegate{
@@ -21,7 +21,6 @@ class ChannelViewController: BaseViewController,
     @IBOutlet weak var loadMoreSpinner: UIActivityIndicatorView!
     @IBOutlet weak var loadMoreSpinnerWrapper: UIView!
     @IBOutlet weak var genreSelectBtn: UIButton!
-    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var genreTableView: UITableView!
     @IBOutlet weak var genreSelectorWrapper: UIView!
     @IBOutlet weak var pager: ScrollPager!
@@ -29,7 +28,6 @@ class ChannelViewController: BaseViewController,
     @IBOutlet weak var genreSelectorWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var emptyChannelView: UILabel!
     
-    private var tracks: [ChannelFeedTrack] = [ChannelFeedTrack]()
     private var allChannels : [String:Channel] = [String:Channel]()
     private var channels : [Channel] = [Channel]()
     private var bookmarkedChannels : [Channel] = [Channel]()
@@ -40,7 +38,6 @@ class ChannelViewController: BaseViewController,
     private var genreLoaded = false
     private var isGenreSelectMode = false
     private var selectedGenre:Genre?
-    private var actionSheetTargetTrack:Track?
     private var nextPage:Int = 0
     private var isLoading:Bool = false
     private var bookmarkListHeader:UIView?
@@ -88,7 +85,7 @@ class ChannelViewController: BaseViewController,
             string: NSLocalizedString("Pull to refresh", comment: ""),
             attributes: [NSForegroundColorAttributeName: UIColor(netHex: 0x909090)])
         refreshControl.attributedTitle = refreshControlTitle
-        tableView.insertSubview(refreshControl, atIndex: 0)
+        trackTableView.insertSubview(refreshControl, atIndex: 0)
     }
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
@@ -124,11 +121,11 @@ class ChannelViewController: BaseViewController,
             genreSelectorConstraint.constant = 0
             genreSelectorWrapper.hidden = true
             if Account.getCachedAccount() == nil {
-                tableView.tableHeaderView = nil
+                trackTableView.tableHeaderView = nil
             }
             loadBookmarks(refreshFeed: true)
             if refreshControl.superview == nil {
-                tableView.insertSubview(refreshControl, atIndex: 0)
+                trackTableView.insertSubview(refreshControl, atIndex: 0)
             }
         } else {
             genreSelectorConstraint.constant = 40
@@ -139,28 +136,20 @@ class ChannelViewController: BaseViewController,
             } else {
                 loadChannels(genres[0], initialLoad: true)
             }
-            tableView.tableHeaderView = nil
+            trackTableView.tableHeaderView = nil
             refreshControl.removeFromSuperview()
         }
         loadMoreSpinnerWrapper.hidden = true
         loadMoreSpinner.stopAnimating()
-        tableView.reloadData()
+        trackTableView.reloadData()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "ChannelViewScreen"
         
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "updatePlay:", name: NotifyKey.updatePlay, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "appWillEnterForeground",
-            name: UIApplicationWillEnterForegroundNotification, object: nil)
-        
-        if tableView.indexPathForSelectedRow() != nil {
-            tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: false)
+        if trackTableView.indexPathForSelectedRow() != nil {
+            trackTableView.deselectRowAtIndexPath(trackTableView.indexPathForSelectedRow()!, animated: false)
         }
         
         if !genreLoaded {
@@ -185,22 +174,19 @@ class ChannelViewController: BaseViewController,
                 loadChannels(genres[0], initialLoad: true)
             }
         }
-        updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
     }
     
     override func viewWillDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
+        super.viewWillDisappear(animated)
     }
     
-    func appWillEnterForeground() {
+    override func appWillEnterForeground() {
         if (channelLoaded) {
             loadBookmarks(refreshFeed: true)
         } else {
             loadChannels(genres[0], initialLoad: true)
         }
-        updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+        super.appWillEnterForeground()
     }
     
     func sender () {}
@@ -211,7 +197,7 @@ class ChannelViewController: BaseViewController,
     }
     
     func getChannelInfoCell(indexPath:NSIndexPath) -> UITableViewCell {
-        let cell:ChannelTableViewCell = tableView.dequeueReusableCellWithIdentifier(
+        let cell:ChannelTableViewCell = trackTableView.dequeueReusableCellWithIdentifier(
                 "ChannelTableViewCell", forIndexPath: indexPath) as! ChannelTableViewCell
         cell.delegate = self
         
@@ -244,9 +230,9 @@ class ChannelViewController: BaseViewController,
     }
     
     func getChannelFeedCell(indexPath:NSIndexPath) -> UITableViewCell {
-        let cell:AddableChannelFeedTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier(
+        let cell:AddableChannelFeedTrackTableViewCell = trackTableView.dequeueReusableCellWithIdentifier(
                 "AddableTrackTableViewCell", forIndexPath: indexPath) as!AddableChannelFeedTrackTableViewCell
-        let track:ChannelFeedTrack = tracks[indexPath.row]
+        let track:ChannelFeedTrack = tracks[indexPath.row] as! ChannelFeedTrack
         cell.delegate = self
         cell.channelName.text = track.channelTitle
         cell.nameView.text = track.title
@@ -282,7 +268,7 @@ class ChannelViewController: BaseViewController,
     func tableView(tableView: UITableView,
             cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
                 
-        if tableView == self.tableView {
+        if tableView == self.trackTableView {
             if selectedTabIdx == 0 {
                 return getChannelFeedCell(indexPath)
             } else {
@@ -303,7 +289,7 @@ class ChannelViewController: BaseViewController,
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if tableView == self.tableView {
+        if tableView == self.trackTableView {
             if selectedTabIdx == 0 {
                 return 90.0
             } else {
@@ -315,7 +301,7 @@ class ChannelViewController: BaseViewController,
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if tableView != self.tableView || selectedTabIdx != 0 || tracks.count == 0 {
+        if tableView != self.trackTableView || selectedTabIdx != 0 || tracks.count == 0 {
             return
         }
         if indexPath.row == tracks.count - 1 {
@@ -343,7 +329,7 @@ class ChannelViewController: BaseViewController,
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView == self.tableView {
+        if tableView == self.trackTableView {
             var count = 0
             if selectedTabIdx == 0 {
                 count = tracks.count
@@ -356,7 +342,7 @@ class ChannelViewController: BaseViewController,
         }
     }
     
-    func getPlaylistId() -> String? {
+    override func getPlaylistId() -> String? {
         var seed = ""
         for channel in bookmarkedChannels {
             seed += channel.uid!
@@ -364,7 +350,7 @@ class ChannelViewController: BaseViewController,
         return "seed_\(seed.md5)"
     }
     
-    func updatePlaylist(forceUpdate:Bool) {
+    override func updatePlaylist(forceUpdate:Bool) {
         if !forceUpdate &&
                 (getPlaylistId() == nil ||
                     PlayerContext.currentPlaylistId != getPlaylistId()) {
@@ -398,170 +384,8 @@ class ChannelViewController: BaseViewController,
         return
     }
     
-    func onTrackPlayBtnClicked(track:Track) {
-        var playlistId:String?
-        if tracks.count == 0 || getPlaylistId() == nil{
-            playlistId = nil
-        } else {
-            updatePlaylist(true)
-            playlistId = PlayerContext.externalPlaylist!.id
-        }
-        var params: [String: AnyObject] = [
-            "track": track,
-        ]
-        if playlistId != nil {
-            params["playlistId"] = playlistId
-        }
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            NotifyKey.playerPlay, object: params)
-    }
-    
-    func onTrackShareBtnClicked(track:Track) {
-        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        track.shareTrack("channel_feed", afterShare: { (error, uid) -> Void in
-            progressHud.hide(true)
-            if error != nil {
-                if (error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
-                        message: NSLocalizedString("Internet is not connected.", comment:""),
-                        positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                            self.onTrackShareBtnClicked(track)
-                        }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
-                    return
-                }
-                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
-                    message: NSLocalizedString("Failed to share track", comment:""),
-                    positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                        self.onTrackShareBtnClicked(track)
-                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
-                return
-            }
-            let shareUrl = "http://dropbeat.net/?track=" + uid!
-            let shareTitle = track.title
-            
-            var items:[AnyObject] = [shareTitle, shareUrl]
-            
-            let activityController = UIActivityViewController(
-                    activityItems: items, applicationActivities: nil)
-            activityController.excludedActivityTypes = [
-                    UIActivityTypePrint,
-                    UIActivityTypeSaveToCameraRoll,
-                    UIActivityTypeAirDrop,
-                    UIActivityTypeAssignToContact
-                ]
-            if activityController.respondsToSelector("popoverPresentationController:") {
-                activityController.popoverPresentationController?.sourceView = self.view
-            }
-            self.presentViewController(activityController, animated:true, completion: nil)
-        })
-    }
-    
-    func onLikeBtnClicked(track:Track) {
-        if (Account.getCachedAccount() == nil) {
-            performSegueWithIdentifier("need_auth", sender: nil)
-            return
-        }
-        let progressHud = ViewUtils.showProgress(self, message: nil)
-        if track.isLiked {
-            track.doUnlike({ (error) -> Void in
-                if error != nil {
-                    progressHud.hide(true)
-                    ViewUtils.showConfirmAlert(self,
-                        title: NSLocalizedString("Failed to save", comment: ""),
-                        message: NSLocalizedString("Failed to save unlike info.", comment:""),
-                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
-                        positiveBtnCallback: { () -> Void in
-                            self.onLikeBtnClicked(track)
-                    })
-                    return
-                }
-                progressHud.mode = MBProgressHUDMode.CustomView
-                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike.png"))
-                progressHud.hide(true, afterDelay: 1)
-                
-            })
-        } else {
-            track.doLike({ (error) -> Void in
-                if error != nil {
-                    progressHud.hide(true)
-                    ViewUtils.showConfirmAlert(self,
-                        title: NSLocalizedString("Failed to save", comment: ""),
-                        message: NSLocalizedString("Failed to save like info.", comment:""),
-                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
-                        positiveBtnCallback: { () -> Void in
-                            self.onLikeBtnClicked(track)
-                    })
-                    return
-                }
-                progressHud.mode = MBProgressHUDMode.CustomView
-                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like.png"))
-                progressHud.hide(true, afterDelay: 1)
-            })
-        }
-    }
-    
-    func onTrackAddBtnClicked(track:Track) {
-        if (Account.getCachedAccount() == nil) {
-            performSegueWithIdentifier("need_auth", sender: nil)
-            return
-        }
-        performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
-    }
-    
-    func onMenuBtnClicked(sender: AddableTrackTableViewCell) {
-        var actionSheet = UIActionSheet()
-        let indexPath = tableView.indexPathForCell(sender)
-        actionSheetTargetTrack = tracks[indexPath!.row]
-        
-        if actionSheetTargetTrack!.isLiked {
-            actionSheet.addButtonWithTitle(NSLocalizedString("Liked", comment:""))
-        } else {
-            actionSheet.addButtonWithTitle(NSLocalizedString("Like", comment:""))
-        }
-        actionSheet.addButtonWithTitle(NSLocalizedString("Add to playlist", comment:""))
-        actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
-        actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
-        actionSheet.cancelButtonIndex = 3
-        actionSheet.delegate = self
-        
-        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
-        
-    }
-    
-    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
-        var track:Track? = actionSheetTargetTrack
-        var foundIdx = -1
-        
-        if track != nil {
-            for (idx, t)  in enumerate(tracks) {
-                if t.id == track!.id {
-                    foundIdx = idx
-                    break
-                }
-            }
-        }
-        
-        if buttonIndex < 3 && track == nil || foundIdx == -1 {
-            ViewUtils.showToast(self, message: NSLocalizedString("Track is not in feed", comment:""))
-            return
-        }
-        
-        switch(buttonIndex) {
-        case 0:
-            onLikeBtnClicked(track!)
-            break
-        case 1:
-            onTrackAddBtnClicked(track!)
-            break
-        case 2:
-            onTrackShareBtnClicked(track!)
-            break
-        default:
-            break
-        }
-        actionSheetTargetTrack = nil
+    override func getSectionName() -> String {
+        return "channel_feed"
     }
     
     func refresh() {
@@ -643,20 +467,20 @@ class ChannelViewController: BaseViewController,
             if self.selectedTabIdx == 0 {
                 self.noBookmarkView.hidden = self.bookmarkedChannels.count != 0
                 if self.bookmarkedChannels.count != 0 {
-                    self.tableView.beginUpdates()
-                    self.tableView.tableHeaderView = self.bookmarkListHeader
-                    self.tableView.endUpdates()
+                    self.trackTableView.beginUpdates()
+                    self.trackTableView.tableHeaderView = self.bookmarkListHeader
+                    self.trackTableView.endUpdates()
                 } else {
-                    self.tableView.tableHeaderView = nil
+                    self.trackTableView.tableHeaderView = nil
                 }
                 if refreshFeed && self.bookmarkedChannels.count != 0 {
                     self.nextPage = 0
                     self.tracks.removeAll(keepCapacity: false)
-                    self.tableView.reloadData()
+                    self.trackTableView.reloadData()
                     self.loadChannelFeed(self.nextPage)
                 }
             } else {
-                self.tableView.reloadData()
+                self.trackTableView.reloadData()
             }
         })
     }
@@ -734,7 +558,7 @@ class ChannelViewController: BaseViewController,
                     self.needSigninScrollView.hidden = false
                 }
             } else if self.selectedTabIdx == 1{
-                self.tableView.reloadData()
+                self.trackTableView.reloadData()
             }
             if !self.isGenreSelectMode && self.selectedTabIdx == 1 {
                 self.emptyChannelView.hidden = self.channels.count != 0
@@ -761,7 +585,7 @@ class ChannelViewController: BaseViewController,
     
     func toGenreSelectMode() {
         isGenreSelectMode = true
-        tableView.hidden = true
+        trackTableView.hidden = true
         genreTableView.hidden = false
         emptyChannelView.hidden = true
         genreSelectBtn.setImage(UIImage(named:"ic_arrow_up.png"), forState: UIControlState.Normal)
@@ -769,7 +593,7 @@ class ChannelViewController: BaseViewController,
     
     func toNonGenreSelectMode() {
         isGenreSelectMode = false
-        tableView.hidden = false
+        trackTableView.hidden = false
         genreTableView.hidden = true
         emptyChannelView.hidden = selectedTabIdx == 0 || channels.count != 0
         needSigninScrollView.hidden = selectedTabIdx != 0 || Account.getCachedAccount() != nil
@@ -777,7 +601,7 @@ class ChannelViewController: BaseViewController,
     }
     
     func onBookmarkBtnClicked(sender: ChannelTableViewCell) {
-        let indexPath:NSIndexPath = tableView.indexPathForCell(sender)!
+        let indexPath:NSIndexPath = trackTableView.indexPathForCell(sender)!
         if (Account.getCachedAccount() == nil) {
             performSegueWithIdentifier("need_auth", sender: nil)
             return
@@ -826,7 +650,7 @@ class ChannelViewController: BaseViewController,
             }
             
             if self.selectedTabIdx == 1 {
-                self.tableView.reloadData()
+                self.trackTableView.reloadData()
             }
         })
     }
@@ -849,7 +673,7 @@ class ChannelViewController: BaseViewController,
         var progressHud:MBProgressHUD?
         if !refreshControl.refreshing && pageIdx == 0 {
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-            tableView.scrollsToTop = true
+            trackTableView.scrollsToTop = true
         }
         Requests.fetchChannelFeed(pageIdx, respCb: {
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
@@ -928,7 +752,7 @@ class ChannelViewController: BaseViewController,
             self.updatePlaylist(false)
             
             if self.selectedTabIdx == 0 {
-                self.tableView.reloadData()
+                self.trackTableView.reloadData()
                 self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
             }
         })
@@ -938,7 +762,7 @@ class ChannelViewController: BaseViewController,
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowChannelSegue" {
             if let destination = segue.destinationViewController as? ChannelDetailViewController {
-                if let idx = tableView.indexPathForSelectedRow()?.row {
+                if let idx = trackTableView.indexPathForSelectedRow()?.row {
                     let channel = channels[idx]
                     destination.channelUid = channel.uid
                     destination.channelName = channel.name
@@ -958,41 +782,6 @@ class ChannelViewController: BaseViewController,
         }
     }
     
-    func updatePlay(noti: NSNotification) {
-        var params = noti.object as! Dictionary<String, AnyObject>
-        var track = params["track"] as! Track
-        var playlistId:String? = params["playlistId"] as? String
-        
-        updatePlay(track, playlistId: playlistId)
-    }
-    
-    func updatePlay(track:Track?, playlistId: String?) {
-        if (track == nil || selectedTabIdx != 0) {
-            return
-        }
-        var indexPath = tableView.indexPathForSelectedRow()
-        if (indexPath != nil) {
-            var preSelectedTrack = tracks[indexPath!.row]
-            if (preSelectedTrack.id != track!.id ||
-                (playlistId != nil && playlistId!.toInt() >= 0)) {
-                tableView.deselectRowAtIndexPath(indexPath!, animated: false)
-            }
-        }
-        
-        
-        if (playlistId != getPlaylistId()) {
-            return
-        }
-        
-        for (idx, t) in enumerate(tracks) {
-            if (t.id == track!.id) {
-                tableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
-                    animated: false, scrollPosition: UITableViewScrollPosition.None)
-                break
-            }
-        }
-    }
-    
 }
 
 
@@ -1004,14 +793,12 @@ class ChannelViewController: BaseViewController,
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
-class ChannelDetailViewController: BaseViewController,
-        UITableViewDelegate, UITableViewDataSource, AddableTrackCellDelegate,
-        UIActionSheetDelegate {
+class ChannelDetailViewController: AddableTrackListViewController,
+        UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet var channelInfoView: UIView!
     @IBOutlet weak var sectionSelector: UIButton!
     @IBOutlet weak var sectionSelectorWidthConstraint: NSLayoutConstraint!
-    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var bookmarkBtn: UIButton!
     @IBOutlet weak var genreView: UILabel!
     @IBOutlet weak var nameView: UILabel!
@@ -1021,7 +808,6 @@ class ChannelDetailViewController: BaseViewController,
     @IBOutlet weak var loadMoreSpinner: UIActivityIndicatorView!
     
     private var refreshControl:UIRefreshControl!
-    private var actionSheetTargetTrack:Track?
     private var isLoading:Bool = false
     private var listEnd:Bool = false
     private var currSection:ChannelPlaylist?
@@ -1029,7 +815,6 @@ class ChannelDetailViewController: BaseViewController,
     private var nextPageToken:String?
     private var channel:Channel?
     private var bookmarkedIds: [String] = [String]()
-    private var tracks:[ChannelTrack] = [ChannelTrack]()
     private var dateFormatter:NSDateFormatter {
         var formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.000Z"
@@ -1041,14 +826,6 @@ class ChannelDetailViewController: BaseViewController,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "updatePlay:", name: NotifyKey.updatePlay, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "appWillEnterForeground",
-            name: UIApplicationWillEnterForegroundNotification, object: nil)
-        
         refreshControl = UIRefreshControl()
         refreshControl.tintColor = UIColor(netHex:0xc380fc)
         refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
@@ -1057,7 +834,7 @@ class ChannelDetailViewController: BaseViewController,
             string: NSLocalizedString("Pull to refresh", comment: ""),
             attributes: [NSForegroundColorAttributeName: UIColor(netHex: 0x909090)])
         refreshControl.attributedTitle = refreshControlTitle
-        tableView.insertSubview(refreshControl, atIndex: 0)
+        trackTableView.insertSubview(refreshControl, atIndex: 0)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -1068,28 +845,45 @@ class ChannelDetailViewController: BaseViewController,
         } else {
             loadBookmarks()
         }
-        updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
     }
     
-    func appWillEnterForeground() {
+    override func appWillEnterForeground() {
         if channel != nil {
             loadBookmarks()
             if currSection != nil {
                 selectSection(currSection!)
             }
         }
-        self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+        super.appWillEnterForeground()
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func getPlaylistId() -> String? {
+        if channel == nil || currSection == nil {
+            return nil
+        }
+        return "channel_playlist_\(channel!.uid)_\(currSection!.uid)"
+    }
+    
+    override func getPlaylistName() -> String? {
+        return "Channel Feed"
+    }
+    
+    override func getSectionName() -> String {
+        return "channel_detail"
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "PlaylistSelectSegue" {
+            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
+            playlistSelectVC.targetTrack = sender as? Track
+            playlistSelectVC.fromSection = "feed"
+            playlistSelectVC.caller = self
+        }
     }
     
     func sender () {}
@@ -1099,7 +893,7 @@ class ChannelDetailViewController: BaseViewController,
         currSection = playlist
         nextPageToken = nil
         listEnd = false
-        tableView.setContentOffset(CGPointZero, animated:false)
+        trackTableView.setContentOffset(CGPointZero, animated:false)
         self.loadTracks(playlist.uid, pageToken: nextPageToken)
     }
     
@@ -1204,9 +998,6 @@ class ChannelDetailViewController: BaseViewController,
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                if result != nil {
-                    println("result = \(result)")
-                }
                 var message = NSLocalizedString("Failed to load tracks.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
@@ -1260,21 +1051,21 @@ class ChannelDetailViewController: BaseViewController,
                 self.tracks.append(ChannelTrack(id: id, title:title, publishedAt: publishedAt))
             }
             self.updatePlaylist(false)
-            self.tableView.reloadData()
+            self.trackTableView.reloadData()
             self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
         }
     }
     
     func switchToSectionSelectMode() {
         sectionSelectMode = true
-        self.tableView.hidden = true
+        self.trackTableView.hidden = true
         self.sectionSelectTableView.hidden = false
         sectionSelector.setImage(UIImage(named: "ic_arrow_up.png"), forState: UIControlState.Normal)
     }
     
     func switchToNonSectionSelectMode() {
         sectionSelectMode = false
-        self.tableView.hidden = false
+        self.trackTableView.hidden = false
         self.sectionSelectTableView.hidden = true
         sectionSelector.setImage(UIImage(named: "ic_arrow_down.png"), forState: UIControlState.Normal)
     }
@@ -1371,7 +1162,7 @@ class ChannelDetailViewController: BaseViewController,
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if tableView != self.tableView || tracks.count == 0 {
+        if tableView != self.trackTableView || tracks.count == 0 {
             return
         }
         if indexPath.row == tracks.count - 1 {
@@ -1385,10 +1176,10 @@ class ChannelDetailViewController: BaseViewController,
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if tableView == self.tableView {
-            let cell:AddableChannelTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier(
+        if tableView == self.trackTableView {
+            let cell:AddableChannelTrackTableViewCell = trackTableView.dequeueReusableCellWithIdentifier(
                     "AddableTrackTableViewCell", forIndexPath: indexPath) as!AddableChannelTrackTableViewCell
-            let track:ChannelTrack = tracks[indexPath.row]
+            let track:ChannelTrack = tracks[indexPath.row] as! ChannelTrack
             cell.delegate = self
             cell.nameView.text = track.title
             if (track.thumbnailUrl != nil) {
@@ -1420,8 +1211,8 @@ class ChannelDetailViewController: BaseViewController,
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if tableView == self.tableView {
-            onPlayBtnClicked(tracks[indexPath.row])
+        if tableView == self.trackTableView {
+            onTrackPlayBtnClicked(tracks[indexPath.row])
         } else {
             switchToNonSectionSelectMode()
             selectSection(self.channel!.playlists[indexPath.row])
@@ -1429,262 +1220,10 @@ class ChannelDetailViewController: BaseViewController,
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if tableView == self.tableView {
+        if tableView == self.trackTableView {
             return tracks.count
         }
         return self.channel?.playlists.count ?? 0
-    }
-    
-    func getPlaylistId() -> String? {
-        if channel == nil || currSection == nil {
-            return nil
-        }
-        return "channel_playlist_\(channel!.uid)_\(currSection!.uid)"
-    }
-    
-    func updatePlaylist(forceUpdate:Bool) {
-        if !forceUpdate &&
-                (getPlaylistId() == nil ||
-                    PlayerContext.currentPlaylistId != getPlaylistId()) {
-            return
-        }
-        
-        var playlist:Playlist!
-        if PlayerContext.externalPlaylist != nil &&
-                PlayerContext.externalPlaylist!.id == getPlaylistId() {
-            playlist = PlayerContext.externalPlaylist!
-            playlist.tracks.removeAll(keepCapacity: false)
-            for track in tracks {
-                playlist.tracks.append(track)
-            }
-        } else {
-            playlist = Playlist(
-                    id: getPlaylistId()!,
-                    name: "\(channel!.name) - \(currSection!.name)",
-                    tracks: tracks)
-            playlist.type = PlaylistType.EXTERNAL
-            PlayerContext.externalPlaylist = playlist
-        }
-        
-        if PlayerContext.currentPlaylistId == playlist.id {
-            if PlayerContext.currentTrack == nil {
-                PlayerContext.currentTrackIdx = -1
-            } else {
-                PlayerContext.currentTrackIdx = playlist.getTrackIdx(PlayerContext.currentTrack!)
-            }
-        }
-        return
-    }
-    
-    func onPlayBtnClicked(track:Track) {
-        var playlistId:String?
-        if tracks.count == 0 || getPlaylistId() == nil{
-            playlistId = nil
-        } else {
-            updatePlaylist(true)
-            playlistId = PlayerContext.externalPlaylist!.id
-        }
-        var params: [String: AnyObject] = [
-            "track": track,
-        ]
-        if playlistId != nil {
-            params["playlistId"] = playlistId
-        }
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            NotifyKey.playerPlay, object: params)
-    }
-    
-    func onShareBtnClicked(track:Track) {
-        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        track.shareTrack("channel_detail", afterShare: { (error, uid) -> Void in
-            progressHud.hide(true)
-            if error != nil {
-                if (error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
-                        message: NSLocalizedString("Internet is not connected.", comment:""),
-                        positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                            self.onShareBtnClicked(track)
-                        }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
-                    return
-                }
-                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
-                    message: NSLocalizedString("Failed to share track", comment:""),
-                    positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                        self.onShareBtnClicked(track)
-                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
-                return
-            }
-            let shareUrl = "http://dropbeat.net/?track=" + uid!
-            let shareTitle = track.title
-            
-            var items:[AnyObject] = [shareTitle, shareUrl]
-            
-            let activityController = UIActivityViewController(
-                    activityItems: items, applicationActivities: nil)
-            activityController.excludedActivityTypes = [
-                    UIActivityTypePrint,
-                    UIActivityTypeSaveToCameraRoll,
-                    UIActivityTypeAirDrop,
-                    UIActivityTypeAssignToContact
-                ]
-            if activityController.respondsToSelector("popoverPresentationController:") {
-                activityController.popoverPresentationController?.sourceView = self.view
-            }
-            self.presentViewController(activityController, animated:true, completion: nil)
-        })
-    }
-    
-    func onLikeBtnClicked(track:Track) {
-        if (Account.getCachedAccount() == nil) {
-            performSegueWithIdentifier("need_auth", sender: nil)
-            return
-        }
-        let progressHud = ViewUtils.showProgress(self, message: nil)
-        if track.isLiked {
-            track.doUnlike({ (error) -> Void in
-                if error != nil {
-                    progressHud.hide(true)
-                    ViewUtils.showConfirmAlert(self,
-                        title: NSLocalizedString("Failed to save", comment: ""),
-                        message: NSLocalizedString("Failed to save unlike info.", comment:""),
-                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
-                        positiveBtnCallback: { () -> Void in
-                            self.onLikeBtnClicked(track)
-                    })
-                    return
-                }
-                progressHud.mode = MBProgressHUDMode.CustomView
-                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike.png"))
-                progressHud.hide(true, afterDelay: 1)
-                
-            })
-        } else {
-            track.doLike({ (error) -> Void in
-                if error != nil {
-                    progressHud.hide(true)
-                    ViewUtils.showConfirmAlert(self,
-                        title: NSLocalizedString("Failed to save", comment: ""),
-                        message: NSLocalizedString("Failed to save like info.", comment:""),
-                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
-                        positiveBtnCallback: { () -> Void in
-                            self.onLikeBtnClicked(track)
-                    })
-                    return
-                }
-                progressHud.mode = MBProgressHUDMode.CustomView
-                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like.png"))
-                progressHud.hide(true, afterDelay: 1)
-            })
-        }
-    }
-    
-    func onAddBtnClicked(track:Track) {
-        if (Account.getCachedAccount() == nil) {
-            performSegueWithIdentifier("need_auth", sender: nil)
-            return
-        }
-        performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
-    }
-    
-    func onMenuBtnClicked(sender: AddableTrackTableViewCell) {
-        let indexPath:NSIndexPath = tableView.indexPathForCell(sender)!
-        let track = tracks[indexPath.row]
-        actionSheetTargetTrack = track
-        
-        let actionSheet = UIActionSheet()
-        if track.isLiked {
-            actionSheet.addButtonWithTitle(NSLocalizedString("Liked", comment:""))
-        } else {
-            actionSheet.addButtonWithTitle(NSLocalizedString("Like", comment:""))
-        }
-        actionSheet.addButtonWithTitle(NSLocalizedString("Add to playlist", comment:""))
-        actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
-        actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
-        actionSheet.cancelButtonIndex = 3
-        actionSheet.delegate = self
-        
-        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
-    }
-    
-    func actionSheet(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
-    }
-    
-    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
-        var track:Track? = actionSheetTargetTrack
-        var foundIdx = -1
-        if track != nil {
-            for (idx, t)  in enumerate(tracks) {
-                if t.id == track!.id {
-                    foundIdx = idx
-                    break
-                }
-            }
-        }
-        if track == nil || foundIdx == -1 {
-            ViewUtils.showToast(self, message: NSLocalizedString("Track is not in feed", comment:""))
-            return
-        }
-        
-        switch(buttonIndex) {
-        case 0:
-            onLikeBtnClicked(track!)
-            break
-        case 1:
-            onAddBtnClicked(track!)
-            break
-        case 2:
-            onShareBtnClicked(track!)
-            break
-        default:
-            break
-        }
-        actionSheetTargetTrack = nil
-    }
-    
-    func updatePlay(noti: NSNotification) {
-        var params = noti.object as! Dictionary<String, AnyObject>
-        var track = params["track"] as! Track
-        var playlistId:String? = params["playlistId"] as? String
-        
-        updatePlay(track, playlistId: playlistId)
-    }
-    
-    func updatePlay(track:Track?, playlistId: String?) {
-        if (track == nil) {
-            return
-        }
-        var indexPath = tableView.indexPathForSelectedRow()
-        if (indexPath != nil) {
-            var preSelectedTrack = tracks[indexPath!.row]
-            if (preSelectedTrack.id != track!.id ||
-                (playlistId != nil && playlistId!.toInt() >= 0)) {
-                tableView.deselectRowAtIndexPath(indexPath!, animated: false)
-            }
-        }
-        
-        
-        if (playlistId != getPlaylistId()) {
-            return
-        }
-        
-        for (idx, t) in enumerate(tracks) {
-            if (t.id == track!.id) {
-                tableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
-                    animated: false, scrollPosition: UITableViewScrollPosition.None)
-                break
-            }
-        }
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "PlaylistSelectSegue" {
-            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
-            playlistSelectVC.targetTrack = sender as? Track
-            playlistSelectVC.fromSection = "feed"
-            playlistSelectVC.caller = self
-        }
     }
 }
 
@@ -1696,8 +1235,6 @@ class ChannelDetailViewController: BaseViewController,
 //  Created by vulpes on 2015. 8. 1..
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
-
-import UIKit
 
 class BookmarkListViewController: BaseViewController,
 UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {

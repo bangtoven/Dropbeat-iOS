@@ -184,3 +184,7 @@
 "Failed to load like list" = "Failed to load like list";
 "Failed to fetch user like information." = "Failed to fetch user like information.";
 "Invalid email domain" = "Invalid email domain";
+"Track is not in list" = "Track is not in list";
+"Failed to play" = "Failed to play";
+"Failed to search." = "Failed to search.";
+"Failed to fetch user info" = "Failed to fetch user info";

@@ -41,6 +41,7 @@ enum PlaylistType {
 
 class UserDataKey {
     static var didAutoFollow = "did_auto_follow"
+    static var maxFavoriteCacheExpireDate = "max_favorite_cache_expire"
 }
 
 class ExternalUrlKey {

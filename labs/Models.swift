@@ -71,7 +71,6 @@ class Parser {
     
     func parseSharedTrack(data: AnyObject) -> Track? {
         var json = JSON(data)
-        println(json)
         if !(json["success"].bool ?? false) {
             return nil
         }
@@ -98,7 +97,6 @@ class Parser {
             tag: nil,
             thumbnailUrl: nil,
             drop: nil,
-            dref: nil,
             topMatch: nil)
     }
     
@@ -184,13 +182,17 @@ class User {
     
     static func fromJson(data: AnyObject) -> User {
         var json = JSON(data)
+        var fbId:String?
+        if json["fb_id"].string != nil && count(json["fb_id"].stringValue) > 0 {
+            fbId = json["fb_id"].stringValue
+        }
         return User(
-                id: json["id"].string!,
-                email: json["email"].string!,
-                firstName: json["firstName"].string!,
-                lastName: json["lastName"].string!,
-                nickname: json["nickname"].string!,
-                fbId: json["fb_id"].string!
+                id: json["id"].stringValue,
+                email: json["email"].stringValue,
+                firstName: json["firstName"].stringValue,
+                lastName: json["lastName"].stringValue,
+                nickname: json["nickname"].stringValue,
+                fbId: fbId
         )
     }
 }
@@ -427,6 +429,20 @@ class Search {
                     type: "podcast",
                     tag:nil
                 )
+                
+                var drop:Drop?
+                var dropObj = s["drop"]
+                if dropObj != nil && dropObj["dref"].string != nil &&
+                    count(dropObj["dref"].stringValue) > 0 &&
+                    dropObj["type"].string != nil {
+                    
+                    drop = Drop(
+                        dref: dropObj["dref"].stringValue,
+                        type: dropObj["type"].stringValue,
+                        when: dropObj["when"].int)
+                }
+                track.drop = drop
+            
                 tracks.append(track)
             }
             self.sectionedTracks[SearchSections.PODCAST] = tracks
@@ -472,9 +488,15 @@ class Search {
                 type: s["type"].stringValue,
                 tag: s["tag"].stringValue
             )
-            var drop = s["drop"]
-            if drop.error == nil {
-                track.drop = s["drop"].stringValue
+            
+            var dropObj = s["drop"]
+            if dropObj != nil && dropObj["dref"].string != nil &&
+                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["type"].string != nil {
+                track.drop = Drop(
+                    dref: dropObj["dref"].stringValue,
+                    type: dropObj["type"].stringValue,
+                    when: dropObj["when"].int)
             }
             
             var dref = s["dref"]
@@ -547,9 +569,15 @@ class Search {
                 type: s["type"].stringValue,
                 tag: s["tag"].stringValue
             )
-            var drop = s["drop"]
-            if drop.error == nil {
-                track.drop = s["drop"].stringValue
+            
+            var dropObj = s["drop"]
+            if dropObj != nil && dropObj["dref"].string != nil &&
+                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["type"].string != nil {
+                track.drop = Drop(
+                    dref: dropObj["dref"].stringValue,
+                    type: dropObj["type"].stringValue,
+                    when: dropObj["when"].int)
             }
             
             var dref = s["dref"]
@@ -608,9 +636,15 @@ class Feed {
                 type: s["type"].stringValue,
                 tag: s["tag"].stringValue
             )
-            var drop = s["drop"]
-            if drop.error == nil {
-                track.drop = s["drop"].stringValue
+            
+            var dropObj = s["drop"]
+            if dropObj != nil && dropObj["dref"].string != nil &&
+                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["type"].string != nil {
+                track.drop = Drop(
+                    dref: dropObj["dref"].stringValue,
+                    type: dropObj["type"].stringValue,
+                    when: dropObj["when"].int)
             }
             
             var dref = s["dref"]
@@ -693,6 +727,17 @@ class BeatportChart {
                 releasedAt = dateFormatter.dateFromString(releasedAtStr.subString(0, length: 10))
             }
             
+            var drop:Drop?
+            var dropObj = s["drop"]
+            if dropObj != nil && dropObj["dref"].string != nil &&
+                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["type"].string != nil {
+                    
+                drop = Drop(
+                    dref: dropObj["dref"].stringValue,
+                    type: dropObj["type"].stringValue,
+                    when: dropObj["when"].int)
+            }
             
             let track = BeatportTrack(
                 id: uid,
@@ -704,6 +749,8 @@ class BeatportChart {
                 genre: s["genre"].string,
                 label: s["label"].string,
                 releasedAt:releasedAt)
+            
+            track.drop = drop
             
             tracks.append(track)
         }
@@ -745,14 +792,29 @@ class StreamNew {
                 releasedAt = formatter.dateFromString(releasedAtStr.subString(0, length: 10))
             }
             
-            tracks.append(NewReleaseTrack(
+            var track = NewReleaseTrack(
                 id: s["id"].stringValue,
                 trackName: s["track_name"].stringValue,
                 artist: s["artist_name"].stringValue,
                 type: s["type"].stringValue,
                 thumbnail: s["thumbnail"].stringValue,
                 releasedAt: releasedAt
-            ))
+            )
+            
+            var drop:Drop?
+            var dropObj = s["drop"]
+            if dropObj != nil && dropObj["dref"].string != nil &&
+                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["type"].string != nil {
+                    
+                drop = Drop(
+                    dref: dropObj["dref"].stringValue,
+                    type: dropObj["type"].stringValue,
+                    when: dropObj["when"].int)
+            }
+            track.drop = drop
+            
+            tracks.append(track)
         }
         
         return StreamNew(success: true, tracks: tracks)
@@ -786,13 +848,29 @@ class StreamTrending {
                 continue
             }
             
-            tracks.append(TrendingTrack(
+            
+            var track = TrendingTrack(
                 id: s["id"].stringValue,
                 trackName: s["track_name"].stringValue,
                 artist: s["artist_name"].stringValue,
                 type: s["type"].stringValue,
                 snippet:s["snippet"].stringValue
-            ))
+            )
+            
+            var drop:Drop?
+            var dropObj = s["drop"]
+            if dropObj != nil && dropObj["dref"].string != nil &&
+                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["type"].string != nil {
+                    
+                drop = Drop(
+                    dref: dropObj["dref"].stringValue,
+                    type: dropObj["type"].stringValue,
+                    when: dropObj["when"].int)
+            }
+            track.drop = drop
+            
+            tracks.append(track)
         }
         
         return StreamTrending(success: true, tracks: tracks)
@@ -859,6 +937,19 @@ class StreamBeatportTrending {
                 label: s["label"].string,
                 releasedAt:releasedAt)
             
+            var drop:Drop?
+            var dropObj = s["drop"]
+            if dropObj != nil && dropObj["dref"].string != nil &&
+                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["type"].string != nil {
+                    
+                drop = Drop(
+                    dref: dropObj["dref"].stringValue,
+                    type: dropObj["type"].stringValue,
+                    when: dropObj["when"].int)
+            }
+            track.drop = drop
+            
             tracks.append(track)
         }
         return StreamBeatportTrending(success: true, tracks: tracks)
@@ -919,14 +1010,29 @@ class StreamFollowing {
                 thumbnail = "http://img.youtube.com/vi/\(id)/mqdefault.jpg"
             }
             
-            
-            tracks.append(FollowingArtistTrack(
+            var track = FollowingArtistTrack(
                 id: id,
                 trackName: title,
                 artist: artist,
                 type: type,
                 thumbnail: thumbnail,
-                releasedAt: releasedAt))
+                releasedAt: releasedAt
+            )
+            
+            var drop:Drop?
+            var dropObj = s["drop"]
+            if dropObj != nil && dropObj["dref"].string != nil &&
+                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["type"].string != nil {
+                    
+                drop = Drop(
+                    dref: dropObj["dref"].stringValue,
+                    type: dropObj["type"].stringValue,
+                    when: dropObj["when"].int)
+            }
+            track.drop = drop
+            
+            tracks.append(track)
         }
         return StreamFollowing(success: true, tracks: tracks)
     }
@@ -976,9 +1082,33 @@ class StreamFriend {
                 thumbnail:s["thumbnail"].string
             )
             
+            var drop:Drop?
+            var dropObj = s["drop"]
+            if dropObj != nil && dropObj["dref"].string != nil &&
+                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["type"].string != nil {
+                    
+                drop = Drop(
+                    dref: dropObj["dref"].stringValue,
+                    type: dropObj["type"].stringValue,
+                    when: dropObj["when"].int)
+            }
+            track.drop = drop
+            
             tracks.append(track)
         }
         return StreamFriend(success:true, tracks:tracks)
+    }
+}
+
+class Drop {
+    var type:String
+    var dref:String
+    var when:Int?
+    init (dref:String, type:String, when:Int?) {
+        self.type = type
+        self.dref = dref
+        self.when = when
     }
 }
 
@@ -987,7 +1117,7 @@ class Track {
     var title: String
     var type: String
     var tag: String?
-    var drop: String?
+    var drop: Drop?
     var dref: String?
     var thumbnailUrl: String?
     var topMatch: Bool?
@@ -1014,7 +1144,7 @@ class Track {
     }
     
     init(id: String, title: String, type: String, tag: String? = nil,
-            thumbnailUrl: String? = nil, drop: String? = nil,
+            thumbnailUrl: String? = nil, drop: Drop? = nil,
             dref: String? = nil, topMatch: Bool? = false) {
         self.id = id
         self.title = title
@@ -1087,9 +1217,6 @@ class Track {
             if error != nil {
                 callback?(error:error)
                 return
-            }
-            if result != nil {
-                println(result)
             }
             if result == nil || !(JSON(result!)["success"].bool ?? false) {
                 callback?(error:NSError(domain:"doUnlike", code: 0, userInfo:nil))
@@ -1633,7 +1760,6 @@ class Account {
                 errorHandler(NSError(domain:"getLikes", code: 102, userInfo: nil))
                 return
             }
-            println(result!)
             for like in likeResult! {
                 likes.append(like)
             }
@@ -1698,7 +1824,6 @@ class FBPageLikes {
         
         return FBPageLikes(pages: pages, nextPageToken: nextPageToken)
     }
-    
 }
 
 class FBPage {

@@ -232,7 +232,20 @@ class Requests {
     }
     
     static func getStreamFriend(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
-        return sendGet(ApiPath.feedFriend, params:nil, auth:true, respCb: respCb)
+        var params:[String:AnyObject]?
+        var defaultDb:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        if let expireDate:NSDate = defaultDb.objectForKey(UserDataKey.maxFavoriteCacheExpireDate) as? NSDate {
+            if expireDate.compare(NSDate()) == NSComparisonResult.OrderedDescending {
+                params = ["f": "1"]
+            }
+        }
+        return sendGet(ApiPath.feedFriend, params:params, auth:true,
+            respCb:{ (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                if error == nil && result != nil && JSON(result!)["success"].bool ?? false {
+                    defaultDb.removeObjectForKey(UserDataKey.maxFavoriteCacheExpireDate)
+                }
+                respCb(req, resp, result, error)
+        })
     }
     
     static func searchArtist(keyword:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {

@@ -53,6 +53,15 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
         super.viewWillAppear(animated)
         self.screenName = "FavoriteGenreTutorialViewScreen"
         loadFavorites()
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "onTrackFinished:", name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(
+            self, name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -130,8 +139,16 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
             progressHud.mode = MBProgressHUDMode.CustomView
             progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark.png"))
             progressHud.hide(true, afterDelay: 1)
-            let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)));
             
+            
+            if idsToAdd.count > 0 || idsToRemove.count > 0 {
+                var defaultDb:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                defaultDb.setObject(
+                    NSDate(timeIntervalSinceNow: 60 * 60 * 2),
+                    forKey: UserDataKey.maxFavoriteCacheExpireDate)
+            }
+            
+            let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)));
             dispatch_after(popTime, dispatch_get_main_queue(), {() -> Void in
                 if self.fromStartup {
                     self.performSegueWithIdentifier("main", sender: nil)
@@ -397,6 +414,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
     private var likedSampleIds:Set<Int> = Set<Int>()
     private var currPlayingSampleIdx:Int?
     private var isPlaying = false
+    private var playerPreloadObserver:AnyObject?
     
     var remoteFavoriteIds:Set<String> = Set<String>()
     var fromStartup = false
@@ -422,6 +440,9 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
         self.screenName = "GenreDiscoveryViewScreen"
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "sender", name:NotifyKey.playerStop , object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "receivePlaybackStarted:", name:"PlaybackStartedNotification", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "appDidEnterBackground",
+            name: UIApplicationDidEnterBackgroundNotification, object: nil)
         
         let noti = NSNotification(name: NotifyKey.playerStop, object: nil)
         NSNotificationCenter.defaultCenter().postNotification(noti)
@@ -429,11 +450,25 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        if currPlayer != nil {
-            currPlayer!.pause()
-        }
         NSNotificationCenter.defaultCenter().removeObserver(self, name:NotifyKey.playerStop , object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name:"PlaybackStartedNotification", object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidEnterBackgroundNotification, object: nil)
+        stopPlayer()
+    }
+    
+    func appDidEnterBackground() {
+        stopPlayer()
+    }
+    
+    func stopPlayer() {
+        if currPlayer != nil {
+            currPlayer!.pause()
+            if playerPreloadObserver != nil {
+                currPlayer!.removeTimeObserver(playerPreloadObserver!)
+            }
+            playerPreloadObserver = nil
+            currPlayer = nil
+        }
     }
     
     func sender() {}
@@ -503,8 +538,15 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
             progressHud.mode = MBProgressHUDMode.CustomView
             progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark.png"))
             progressHud.hide(true, afterDelay: 1)
-            let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)));
             
+            if idsToAdd.count > 0 || idsToRemove.count > 0 {
+                var defaultDb:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                defaultDb.setObject(
+                    NSDate(timeIntervalSinceNow: 60 * 60 * 2),
+                    forKey: UserDataKey.maxFavoriteCacheExpireDate)
+            }
+            
+            let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)));
             dispatch_after(popTime, dispatch_get_main_queue(), {() -> Void in
                 if self.fromStartup {
                     self.performSegueWithIdentifier("main", sender: nil)
@@ -558,7 +600,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
         
     }
     func playDrop(url:NSURL) {
-        currPlayer?.pause()
+        stopPlayer()
         
         var sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
         var audioSessionError:NSError?
@@ -568,18 +610,19 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
         
         sharedInstance.setActive(true, error: nil)
         currItem = AVPlayerItem(URL: url)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "onTrackFinished:", name: AVPlayerItemDidPlayToEndTimeNotification, object: currItem!)
+        
         currPlayer = AVPlayer(playerItem: currItem!)
         let player = currPlayer!
-        var ob: AnyObject!
-        ob = currPlayer!.addBoundaryTimeObserverForTimes(
+        playerPreloadObserver = currPlayer!.addBoundaryTimeObserverForTimes(
             [NSValue(CMTime: CMTimeMake(1, 3))],
             queue: nil,
             usingBlock: { () -> Void in
                     NSNotificationCenter.defaultCenter()
                         .postNotificationName("PlaybackStartedNotification", object: url)
-                    player.removeTimeObserver(ob)
+                if self.playerPreloadObserver != nil {
+                    player.removeTimeObserver(self.playerPreloadObserver!)
+                    self.playerPreloadObserver = nil
+                }
             })
         currPlayer!.play()
     }
@@ -641,9 +684,9 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
     
     func onPauseBtnClicked(sender: GenreSampleTableViewCell) {
         currPlayer?.pause()
-        sender.pauseBtn.hidden = true
-        sender.playBtn.hidden = false
         isPlaying = false
+        currPlayingSampleIdx = nil
+        tableView.reloadData()
     }
     
     func receivePlaybackStarted(noti:NSNotification) {

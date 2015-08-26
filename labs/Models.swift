@@ -1740,13 +1740,17 @@ class Account {
             }
             
             var userObj = res["user"]
+            var fbId:String?
+            if userObj["fb_id"].string != nil && count(userObj["fb_id"].stringValue) > 0 {
+                fbId = userObj["fb_id"].stringValue
+            }
             let user = User(
                 id: String(userObj["id"].intValue),
                 email: userObj["email"].stringValue,
                 firstName: userObj["first_name"].stringValue,
                 lastName: userObj["last_name"].stringValue,
                 nickname: userObj["nickname"].stringValue,
-                fbId: userObj["fb_id"].string
+                fbId: fbId
             )
             var account = Account(token:token!, user:user)
             self.account = account

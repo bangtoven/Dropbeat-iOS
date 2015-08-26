@@ -133,7 +133,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                         error!.code == NSURLErrorNotConnectedToInternet) {
                     message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
                 } else {
-                    message = NSLocalizedString("Failed to fetch user info.", comment:"")
+                    message = NSLocalizedString("Failed to fetch user info", comment:"")
                     let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
                     keychainItemWrapper["auth_token"] = nil
                 }

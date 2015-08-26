@@ -16,7 +16,6 @@
 "Loading.." = "Loading..";
 "Failed to load following info." = "Failed to load following info.";
 "Failed to load" = "Failed to load";
-"Failed to save follow info." =  "Failed to save follow info.";
 "Failed to follow" = "Failed to follow";
 "Failed to unfollow" = "Failed to unfollow";
 "Failed to save unfollow info." = "Failed to save unfollow info.";
@@ -60,6 +59,7 @@
 "Failed to send" = "Failed to send";
 "Feedback Submitted!" = "Feedback Submitted!";
 "Thank you for your feedback." = "Thank you for your feedback.";
+"Social Feed" = "Social Feed";
 "Trending Tracks" = "Trending Tracks";
 "Followed Artists" = "Followed Artists";
 "New Releases" = "New Releases";

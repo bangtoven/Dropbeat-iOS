@@ -1,6 +1,6 @@
 
 /* Class = "UILabel"; text = "Recommended tracks\nbased on your favorite genres"; ObjectID = "Ckn-eZ-MQb"; */
-"Ckn-eZ-MQb.text" = "Recommended tracks\nbased on your favorite genres";
+"Ckn-eZ-MQb.text" = "비슷한 취향의 사용자가 지금 듣고 있는 곡";
 
 /* Class = "UILabel"; text = "Listen to other users' tracks"; ObjectID = "E1x-Kd-k0u"; */
-"E1x-Kd-k0u.text" = "Listen to other users' tracks";
+"E1x-Kd-k0u.text" = "좋아하는 장르 내 추천 음악";

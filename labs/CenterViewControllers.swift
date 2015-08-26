@@ -222,7 +222,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     
     func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
         if buttonIndex < 2 && actionSheetTargetTrack == nil {
-            ViewUtils.showToast(self, message: "No track selected")
+            ViewUtils.showToast(self, message: NSLocalizedString("No track selected", comment:""))
             return
         }
         var idx = buttonIndex
@@ -1458,7 +1458,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentPlayback
         trackInfo[MPMediaItemPropertyPlaybackDuration] = duration
         trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = rate
-        println("rate:\(rate)")
         MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo as [NSObject : AnyObject]
     }
     

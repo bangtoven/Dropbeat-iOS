@@ -442,7 +442,7 @@ class ChannelViewController: AddableTrackListViewController,
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = NSLocalizedString("Failed to fetch bookmarks.", comment:"")
+                var message = NSLocalizedString("Failed to fetch bookmark", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)
                 return
             }
@@ -870,7 +870,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
     }
     
     override func getPlaylistName() -> String? {
-        return "Channel Feed"
+        return channel?.name ?? NSLocalizedString("Channel", comment:"")
     }
     
     override func getSectionName() -> String {
@@ -954,7 +954,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = NSLocalizedString("Failed to fetch bookmarks.", comment:"")
+                var message = NSLocalizedString("Failed to fetch bookmark", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)
                 return
             }
@@ -1344,7 +1344,7 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
                             message: NSLocalizedString("Internet is not connected", comment:""))
                         return
                 }
-                var message = NSLocalizedString("Failed to fetch bookmarks.", comment:"")
+                var message = NSLocalizedString("Failed to fetch bookmark", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)
                 return
             }

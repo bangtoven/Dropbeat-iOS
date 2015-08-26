@@ -246,7 +246,7 @@
 "QWG-N4-EST.headerTitle" = "application";
 
 /* Class = "UINavigationItem"; title = "Likes"; ObjectID = "QWW-0e-gtH"; */
-"QWW-0e-gtH.title" = "좋아요된 곡 목록";
+"QWW-0e-gtH.title" = "좋아한 곡 목록";
 
 /* Class = "UILabel"; text = "LIKE"; ObjectID = "QZ6-0D-N8G"; */
 "QZ6-0D-N8G.text" = "좋아요";

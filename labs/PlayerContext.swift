@@ -21,6 +21,7 @@ class PlayerContext {
     static var correctDuration: Double?
     static var currentPlaybackTime: Double?
     static var qualityState = QualityState.LQ
+    static var playingSection:String?
     
     static func resetPlaylist(playlists: [Playlist]) {
         PlayerContext.playlists = playlists

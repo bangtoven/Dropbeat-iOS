@@ -289,7 +289,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             }
             if (PlayerContext.playState == PlayState.PAUSED) {
                 println("play state is paused, try play")
-                self.handlePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId, force:false)
+                self.handlePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId,
+                    section: PlayerContext.playingSection, force:false)
                 self.triggerBackgroundPlay(retry - 1)
             } else {
                 println("play state is not paused. stop polling")
@@ -894,7 +895,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         println("play!")
         if (PlayerContext.currentTrack != nil) {
             var playlistId :String? = PlayerContext.currentPlaylistId
-            handlePlay(PlayerContext.currentTrack!, playlistId: playlistId, force:true)
+            handlePlay(PlayerContext.currentTrack!, playlistId: playlistId, section: "player", force:true)
         }
     }
     
@@ -1050,14 +1051,15 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     
     func remotePlay(noti: NSNotification) {
         var params = noti.object as! Dictionary<String, AnyObject>
-        var track = params["track"] as! Track?
+        var track = params["track"] as? Track
         var playlistId:String?
         if params["playlistId"] == nil {
             playlistId = nil
         } else {
             playlistId = params["playlistId"] as? String
         }
-        handlePlay(track, playlistId: playlistId, force:true)
+        let section = params["section"] as? String
+        handlePlay(track, playlistId: playlistId, section: section!, force:true)
     }
     
     func remoteSeek(noti: NSNotification) {
@@ -1109,7 +1111,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
     }
     
-    func handlePlay(track: Track?, playlistId: String?, force:Bool) {
+    func handlePlay(track: Track?, playlistId: String?, section:String?, force:Bool) {
         println("handle play")
         // Fetch stream urls.
         if track == nil {
@@ -1188,22 +1190,25 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         
         // Indicate loading status.
         updatePlayState(PlayState.LOADING)
-        //        updatePlayerPlaylistBtn()
         updateNextPrevBtn()
         updateLikeBtn()
         
-        // Log to us
-        Requests.logPlay(track!)
-        
-        // Log to GA
-        let tracker = GAI.sharedInstance().defaultTracker
-        let event = GAIDictionaryBuilder.createEventWithCategory(
-            "player-play-from-ios",
-            action: "play-\(track!.type)",
-            label: track!.title,
-            value: 0
-            ).build()
-        tracker.send(event as [NSObject: AnyObject]!)
+        if force {
+            // Log to us
+            Requests.logPlay(track!)
+            
+            var playSection = section ?? "uknown"
+            
+            // Log to GA
+            let tracker = GAI.sharedInstance().defaultTracker
+            let event = GAIDictionaryBuilder.createEventWithCategory(
+                "player-play-from-\(playSection)",
+                action: "play-\(track!.type)",
+                label: track!.title,
+                value: 0
+                ).build()
+            tracker.send(event as [NSObject: AnyObject]!)
+        }
         
         self.activateAudioSession()
         switchPlayerWithQuality(track!, qualityState: PlayerContext.qualityState, isInitial: true)
@@ -1298,7 +1303,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             return false;
         }
         
-        handlePlay(track, playlistId: PlayerContext.currentPlaylistId, force: force)
+        handlePlay(track, playlistId: PlayerContext.currentPlaylistId,
+            section: PlayerContext.playingSection, force: force)
         return true;
     }
     
@@ -1314,7 +1320,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             return false;
         }
         
-        handlePlay(track, playlistId: PlayerContext.currentPlaylistId, force: force)
+        handlePlay(track, playlistId: PlayerContext.currentPlaylistId,
+            section: PlayerContext.playingSection, force: force)
         return true;
     }
     
@@ -1644,6 +1651,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             
             var params: [String: AnyObject] = [
                 "track": track!,
+                "section": "shared_track"
             ]
             NSNotificationCenter.defaultCenter().postNotificationName(
                 NotifyKey.playerPlay, object: params)

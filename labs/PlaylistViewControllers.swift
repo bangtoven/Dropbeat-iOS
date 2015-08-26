@@ -242,9 +242,23 @@ class PlaylistViewController: BaseViewController,
             PlayerContext.externalPlaylist = currentPlaylist
         }
         
+        var section:String!
+        switch (currentPlaylist.type) {
+        case .SHARED:
+            section = "shared_playlist"
+            break
+        case .USER:
+            section = "base"
+            break
+        case .EXTERNAL:
+            section = currentPlaylist.id
+            break
+        }
+        
         var params: Dictionary<String, AnyObject> = [
             "track": selectedTrack,
-            "playlistId": currentPlaylist!.id
+            "playlistId": currentPlaylist!.id,
+            "section": section
         ]
         
         NSNotificationCenter.defaultCenter().postNotificationName(
@@ -385,9 +399,22 @@ class PlaylistViewController: BaseViewController,
         if currentPlaylist.type != PlaylistType.USER {
             PlayerContext.externalPlaylist = currentPlaylist
         }
+        var section:String!
+        switch (currentPlaylist.type) {
+        case .SHARED:
+            section = "shared_playlist"
+            break
+        case .USER:
+            section = "base"
+            break
+        case .EXTERNAL:
+            section = currentPlaylist.id
+            break
+        }
         var params: Dictionary<String, AnyObject> = [
             "track": track,
-            "playlistId": currentPlaylist!.id
+            "playlistId": currentPlaylist!.id,
+            "section": section
         ]
         
         NSNotificationCenter.defaultCenter().postNotificationName(
@@ -491,10 +518,23 @@ class PlaylistViewController: BaseViewController,
         if currentPlaylist.type != PlaylistType.USER {
             PlayerContext.externalPlaylist = currentPlaylist
         }
+        var section:String!
+        switch (currentPlaylist.type) {
+        case .SHARED:
+            section = "shared_playlist"
+            break
+        case .USER:
+            section = "base"
+            break
+        case .EXTERNAL:
+            section = currentPlaylist.id
+            break
+        }
         
         var params: Dictionary<String, AnyObject> = [
             "track": selectedTrack,
-            "playlistId": currentPlaylist!.id
+            "playlistId": currentPlaylist!.id,
+            "section": section
         ]
         
         NSNotificationCenter.defaultCenter().postNotificationName(
@@ -1101,10 +1141,10 @@ class LikeBoxViewController: BaseViewController,
             tracks: tracks
         )
         
-        
         var params: Dictionary<String, AnyObject> = [
             "track": selectedTrack,
-            "playlistId": getPlaylistId()
+            "playlistId": getPlaylistId(),
+            "section": "like_list"
         ]
         
         NSNotificationCenter.defaultCenter().postNotificationName(
@@ -1323,7 +1363,8 @@ class LikeBoxViewController: BaseViewController,
         
         var params: Dictionary<String, AnyObject> = [
             "track": track,
-            "playlistId": getPlaylistId()
+            "playlistId": getPlaylistId(),
+            "section": "like_list"
         ]
         
         NSNotificationCenter.defaultCenter().postNotificationName(

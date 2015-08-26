@@ -142,6 +142,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         if playlistId != nil {
             params["playlistId"] = playlistId
         }
+        params["section"] = getSectionName()
         NSNotificationCenter.defaultCenter().postNotificationName(
             NotifyKey.playerPlay, object: params)
     }
@@ -241,8 +242,11 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     }
     
     func onTrackDropBtnClicked(sender: AddableTrackTableViewCell) {
-        let indexPath:NSIndexPath = trackTableView.indexPathForCell(sender)!
-        let track = tracks[indexPath.row]
+        let indexPath:NSIndexPath? = trackTableView.indexPathForCell(sender)
+        if indexPath == nil {
+            return
+        }
+        let track = tracks[indexPath!.row]
         if track.drop == nil {
             return
         }
@@ -294,6 +298,20 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         let player = dropPlayer!
         let kvoOption = NSKeyValueObservingOptions(0)
         player.addObserver(self, forKeyPath: "status", options: kvoOption, context: nil)
+        
+        
+        // Log to us
+        Requests.logPlayDrop(track)
+        
+        // Log to GA
+        let tracker = GAI.sharedInstance().defaultTracker
+        let event = GAIDictionaryBuilder.createEventWithCategory(
+            "player-play-from-drop",
+            action: "play-\(track.drop!.type)",
+            label: track.title,
+            value: 0
+            ).build()
+        tracker.send(event as [NSObject: AnyObject]!)
     }
     
     override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
@@ -335,8 +353,11 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     }
     
     func onTrackMenuBtnClicked(sender: AddableTrackTableViewCell) {
-        let indexPath:NSIndexPath = trackTableView.indexPathForCell(sender)!
-        let track = tracks[indexPath.row]
+        let indexPath:NSIndexPath? = trackTableView.indexPathForCell(sender)
+        if indexPath == nil {
+            return
+        }
+        let track = tracks[indexPath!.row]
         actionSheetTargetTrack = track
         
         let actionSheet = UIActionSheet()

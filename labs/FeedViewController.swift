@@ -181,19 +181,19 @@ class FeedViewController: AddableTrackListViewController,
         var prefix:String? = nil
         switch (selectedFeedMenu.type) {
         case .BEATPORT_CHART:
-            prefix = "Beatport Chart"
+            prefix = NSLocalizedString("Beatport Charts", comment:"")
             break
         case .FOLLOWING:
-            prefix = "Followed Artists Feed"
+            prefix = NSLocalizedString("Followed Artists Feed", comment:"")
             break
         case .NEW_RELEASE:
-            prefix = "New Release"
+            prefix = NSLocalizedString("New Releases", comment:"")
             break
         case .TRENDING:
-            prefix = "Trending"
+            prefix = NSLocalizedString("Trending Tracks", comment:"")
             break
         case .USER_GROUP:
-            prefix = "Social Feed"
+            prefix = NSLocalizedString("Social Feed", comment:"")
             break
         default:
             break
@@ -206,13 +206,28 @@ class FeedViewController: AddableTrackListViewController,
     
     override func getSectionName() -> String {
         var section = "feed_"
-        if selectedFeedMenu != nil {
-            section += "_" + selectedFeedMenu.title.lowercaseString.replace(" ", withString: "_")
+        var postfix:String!
+        switch (selectedFeedMenu.type) {
+        case .BEATPORT_CHART:
+            postfix = "beatport_chart"
+            break
+        case .FOLLOWING:
+            postfix = "followed_artists"
+            break
+        case .NEW_RELEASE:
+            postfix = "new_release_tracks"
+            break
+        case .TRENDING:
+            postfix = "trending_tracks"
+            break
+        case .USER_GROUP:
+            postfix = "social_feed"
+            break
+        default:
+            postfix = "unknown"
+            break
         }
-        if selectedGenre != nil {
-            section += "_" + selectedGenre!.name
-        }
-        return section
+        return section + postfix
     }
     
     func onFollowManageCloseWithResult(isChanged: Bool) {
@@ -800,6 +815,9 @@ class FeedViewController: AddableTrackListViewController,
             break
         case .NEW_RELEASE:
             action = "user_group"
+            break
+        case .USER_GROUP:
+            action = "social_feed"
             break
         default:
             break

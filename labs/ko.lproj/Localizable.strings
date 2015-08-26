@@ -62,8 +62,11 @@
 "Social Feed" = "소셜 피드";
 "Trending Tracks" = "실시간 차트";
 "Followed Artists" = "팔로잉";
+"Followed Artists Feed" = "팔로잉";
 "New Releases" = "신규 발매";
 "Beatport Charts" = "Beatport 차트";
+"Channel Feed" = "채널 피드";
+"Channel" = "채널";
 "Failed to initalize feed." = "피드 초기화 실패";
 "You are following %d artists" = "%d명의 아티스트를 팔로잉 하고 있습니다.";
 "Failed to share" = "공유 실패";

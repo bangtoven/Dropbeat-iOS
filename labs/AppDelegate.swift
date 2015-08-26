@@ -125,6 +125,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 if PlayerContext.currentPlaylistId != nil {
                     params["playlistId"] =  PlayerContext.currentPlaylistId!
                 }
+                params["section"] = PlayerContext.playingSection
                 NSNotificationCenter.defaultCenter().postNotificationName(
                     NotifyKey.playerPlay, object: params)               
             }

@@ -59,11 +59,15 @@
 "Failed to send" = "Failed to send";
 "Feedback Submitted!" = "Feedback Submitted!";
 "Thank you for your feedback." = "Thank you for your feedback.";
+
 "Social Feed" = "Social Feed";
 "Trending Tracks" = "Trending Tracks";
 "Followed Artists" = "Followed Artists";
+"Followed Artists Feed" = "Followed Artists Feed";
 "New Releases" = "New Releases";
 "Beatport Charts" = "Beatport Charts";
+"Channel Feed" = "Channel Feed";
+"Channel" = "Channel";
 "Failed to initalize feed." = "Failed to initalize feed.";
 "You are following %d artists" = "You are following %d artists";
 "Failed to share" = "Failed to share";

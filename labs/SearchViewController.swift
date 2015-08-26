@@ -86,7 +86,6 @@ class SearchViewController: AddableTrackListViewController,
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        searchBar.becomeFirstResponder()
     }
     
     override func didReceiveMemoryWarning() {

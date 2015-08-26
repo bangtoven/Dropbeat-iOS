@@ -1328,6 +1328,7 @@ class LikeBoxViewController: BaseViewController,
         
         NSNotificationCenter.defaultCenter().postNotificationName(
             NotifyKey.playerPlay, object: params)
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     func onShareTrackBtnClicked(track: Track) {

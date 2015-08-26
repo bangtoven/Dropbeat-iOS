@@ -62,7 +62,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
             self, selector: "appDidEnterBackground",
             name: UIApplicationDidEnterBackgroundNotification, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sender", name:NotifyKey.playerStop , object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sender", name:NotifyKey.playerPause , object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "receivePlaybackStarted:", name:"PlaybackStartedNotification", object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(
@@ -75,7 +75,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name:NotifyKey.playerStop , object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name:NotifyKey.playerPause , object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name:"PlaybackStartedNotification", object: nil)
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
@@ -269,7 +269,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         dropPlayer?.removeObserver(self, forKeyPath: "status")
         dropPlayTimer?.invalidate()
         
-        let noti = NSNotification(name: NotifyKey.playerStop, object: nil)
+        let noti = NSNotification(name: NotifyKey.playerPause, object: nil)
         NSNotificationCenter.defaultCenter().postNotification(noti)
         
         var sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()

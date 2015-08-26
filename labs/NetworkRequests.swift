@@ -119,8 +119,8 @@ class Requests {
         return request(Method.GET, ApiPath.logTrackAdd, parameters: ["t": title, "device_type": "ios"], encoding: .URL).validate()
     }
     
-    static func logPlay(title: String) -> Request{
-        return request(Method.GET, ApiPath.logPlay, parameters: ["t": title, "device_type": "ios"], encoding: .URL).validate()
+    static func logPlay(track:Track) -> Request{
+        return request(Method.GET, ApiPath.logPlay, parameters: ["t": track.title, "device_type": "ios", "uid": track.id], encoding: .URL).validate()
     }
     
     static func getClientVersion(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {

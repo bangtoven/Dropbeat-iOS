@@ -1,0 +1,9 @@
+
+/* Class = "UILabel"; text = "You have no followed artists\n"; ObjectID = "JLy-DT-zRj"; */
+"JLy-DT-zRj.text" = "You have no followed artists\n";
+
+/* Class = "UILabel"; text = "Search and follow your favorite artists to find tracks in your feed!"; ObjectID = "NZT-c1-gDP"; */
+"NZT-c1-gDP.text" = "Search and follow your favorite artists to find tracks in your feed!";
+
+/* Class = "UIButton"; normalTitle = "Search Artists"; ObjectID = "nn5-D7-tvm"; */
+"nn5-D7-tvm.normalTitle" = "Search Artists";

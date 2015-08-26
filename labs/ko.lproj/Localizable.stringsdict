@@ -13,11 +13,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>zero</key>
-			<string>No track is liked</string>
+			<string>좋아요한 곡이 없습니다.</string>
 			<key>one</key>
-			<string>1 track is liked</string>
+			<string>한곡이 좋아요 되었습니다.</string>
 			<key>other</key>
-			<string>%d tracks are liked</string>
+			<string>%d곡이 좋아요 되었습니다.</string>
 		</dict>
 	</dict>
 	<key>%d tracks</key>
@@ -31,11 +31,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>zero</key>
-			<string>no track</string>
+			<string>0곡</string>
 			<key>one</key>
-			<string>1 track</string>
+			<string>1곡</string>
 			<key>other</key>
-			<string>%d tracks</string>
+			<string>%d곡</string>
 		</dict>
 	</dict>
 	<key> and %d others</key>
@@ -49,9 +49,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>one</key>
-			<string> and 1 other</string>
+			<string> 외 1개</string>
 			<key>other</key>
-			<string> and %d others</string>
+			<string> 외 %d개</string>
 		</dict>
 	</dict>
 	<key>%d genre is selected</key>
@@ -65,11 +65,11 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>d</string>
 			<key>zero</key>
-			<string>No genre is selected</string>
+			<string>장르가 선택되지 않았습니다.</string>
 			<key>one</key>
-			<string>One genre is selected</string>
+			<string>1개의 장르가 선택되었습니다.</string>
 			<key>other</key>
-			<string>%d genres are selected</string>
+			<string>%d개의 장르가 선택되었습니다.</string>
 		</dict>
 	</dict>
 </dict>

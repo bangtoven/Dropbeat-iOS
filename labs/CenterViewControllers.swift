@@ -63,6 +63,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     private var actionSheetTargetTrack:Track?
     private var actionSheetIncludePlaylist = false
     private var lastPlaybackBeforeSwitch:Double?
+    private var prevQualityState:Int?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -1095,6 +1096,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             PlayerContext.playState == PlayState.SWITCHING ||
             PlayerContext.playState == PlayState.STOPPED ||
             PlayerContext.currentTrack == nil) {
+                updateQualityView()
                 return
         }
         startBackgroundTask()
@@ -1140,8 +1142,13 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                     if force {
                         shouldPlayMusic = true
                     }
-                    updatePlayStateView(PlayState.PLAYING)
-                    playAudioPlayer()
+                    if prevQualityState != PlayerContext.qualityState {
+                        startBackgroundTask()
+                        switchPlayerWithQuality(PlayerContext.currentTrack!, qualityState: PlayerContext.qualityState)
+                    } else {
+                        updatePlayStateView(PlayState.PLAYING)
+                        playAudioPlayer()
+                    }
                     return
             } else if audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Playing {
                 // Same music is clicked when it is being played.
@@ -1186,7 +1193,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         updateLikeBtn()
         
         // Log to us
-        Requests.logPlay(track!.title)
+        Requests.logPlay(track!)
         
         // Log to GA
         let tracker = GAI.sharedInstance().defaultTracker
@@ -1223,6 +1230,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             updatePlayState(PlayState.SWITCHING)
         }
         
+        prevQualityState = PlayerContext.qualityState
         if (PlayerContext.qualityState == QualityState.LQ) {
             var qualities = [AnyObject]()
             qualities.append(XCDYouTubeVideoQuality.Small240.rawValue)
@@ -1405,7 +1413,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         trackInfo[MPMediaItemPropertyTitle] = track!.title
         
         var stateText:String?
-        var rate:Float?
+        var rate:Float!
         switch(playingState) {
         case PlayState.LOADING:
             stateText = NSLocalizedString("LOADING..", comment:"")
@@ -1413,15 +1421,15 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             break
         case PlayState.SWITCHING:
             stateText = NSLocalizedString("LOADING..", comment:"")
-            rate = 0.0
+            rate = 1.0
             break
         case PlayState.PAUSED:
             stateText = NSLocalizedString("PAUSED", comment:"")
-            rate = 0
+            rate = 0.0
             break
         case PlayState.STOPPED:
             stateText = NSLocalizedString("READY", comment:"")
-            rate = 0
+            rate = 0.0
             break
         case PlayState.PLAYING:
             stateText = NSLocalizedString("PLAYING", comment:"")
@@ -1433,6 +1441,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             break
         default:
             stateText = ""
+            rate = 0.0
         }
         trackInfo[MPMediaItemPropertyArtist] = stateText
         trackInfo[MPMediaItemPropertyArtwork] = albumArt
@@ -1449,6 +1458,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentPlayback
         trackInfo[MPMediaItemPropertyPlaybackDuration] = duration
         trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = rate
+        println("rate:\(rate)")
         MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo as [NSObject : AnyObject]
     }
     

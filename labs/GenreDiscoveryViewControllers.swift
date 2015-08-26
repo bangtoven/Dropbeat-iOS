@@ -240,7 +240,7 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
             })
         }
         selectStatus.text = NSString.localizedStringWithFormat(
-            NSLocalizedString("%d genre selected", comment:""), selectedGenreIds.count) as String
+            NSLocalizedString("%d genre is selected", comment:""), selectedGenreIds.count) as String
     }
     
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
@@ -256,7 +256,7 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
             })
         }
         selectStatus.text = NSString.localizedStringWithFormat(
-            NSLocalizedString("%d genre selected", comment:""), selectedGenreIds.count) as String
+            NSLocalizedString("%d genre is selected", comment:""), selectedGenreIds.count) as String
     }
     
     
@@ -296,7 +296,7 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
                 self.footerView.hidden = false
                 self.footerViewHeightConstraint.constant = 0
                 self.selectStatus.text = NSString.localizedStringWithFormat(
-                    NSLocalizedString("%d genre selected", comment:""),
+                    NSLocalizedString("%d genre is selected", comment:""),
                     self.selectedGenreIds.count) as String
             }
             self.loadGenre()

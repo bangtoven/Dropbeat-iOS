@@ -1205,7 +1205,7 @@
                                                             <constraint firstAttribute="width" constant="46" id="yZJ-Fe-5SY"/>
                                                         </constraints>
                                                         <inset key="contentEdgeInsets" minX="2" minY="9" maxX="2" maxY="9"/>
-                                                        <state key="normal" title="HQ" image="B3BBC25B-B317-4ACF-9EB6-A59D3D32083F">
+                                                        <state key="normal" title="HQ" image="583F2C03-88BD-4FE4-8BE6-2CB312276C11">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -1456,15 +1456,15 @@
                                                         <segue destination="Ktx-cH-VkE" kind="presentation" identifier="signup" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="pbM-lB-oHr"/>
                                                     </connections>
                                                 </button>
-                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQb-d1-owX">
-                                                    <rect key="frame" x="16" y="68" width="289" height="50"/>
+                                                <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQb-d1-owX">
+                                                    <rect key="frame" x="16" y="67" width="288" height="50"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="400" id="Zop-tP-mL0"/>
                                                         <constraint firstAttribute="height" constant="50" id="e0y-pc-lxF"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                                    <inset key="titleEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                    <inset key="imageEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
+                                                    <inset key="titleEdgeInsets" minX="17" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                                    <inset key="imageEdgeInsets" minX="9" minY="0.0" maxX="10" maxY="0.0"/>
                                                     <state key="normal" title="SIGN IN" image="ic_account.png">
                                                         <color key="titleColor" red="0.59607843140000005" green="0.18039215689999999" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -6303,7 +6303,7 @@ and let us know your favorite genre.</string>
         </scene>
     </scenes>
     <resources>
-        <image name="B3BBC25B-B317-4ACF-9EB6-A59D3D32083F" width="105" height="64">
+        <image name="583F2C03-88BD-4FE4-8BE6-2CB312276C11" width="105" height="64">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -6873,18 +6873,18 @@ AAACAQAAAAAAAAA/AAAAAAAAAAAAAAAAAAB3ug
         <image name="sample_cover.png" width="225" height="225"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="hAY-Br-kOs"/>
+        <segue reference="1Tz-WA-SGf"/>
+        <segue reference="bVc-Yf-og9"/>
+        <segue reference="AfE-Hp-Lz9"/>
+        <segue reference="Ph7-jJ-Xhz"/>
         <segue reference="FMe-8G-SkH"/>
         <segue reference="n4i-js-U3G"/>
         <segue reference="HiJ-qO-nKe"/>
         <segue reference="D5z-Jt-wFj"/>
-        <segue reference="LxB-aE-y4C"/>
-        <segue reference="Slv-y9-I0B"/>
+        <segue reference="pbM-lB-oHr"/>
+        <segue reference="SFT-EF-yNa"/>
         <segue reference="s9L-cp-dOd"/>
-        <segue reference="AfE-Hp-Lz9"/>
-        <segue reference="bVc-Yf-og9"/>
-        <segue reference="1Tz-WA-SGf"/>
-        <segue reference="hAY-Br-kOs"/>
-        <segue reference="Ph7-jJ-Xhz"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

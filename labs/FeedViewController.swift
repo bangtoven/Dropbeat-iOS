@@ -720,7 +720,7 @@ class FeedViewController: AddableTrackListViewController,
         }
         
         if menu.type == FeedType.FOLLOWING {
-            genreSelectBtn.title = NSLocalizedString("Order", comment:"")
+            genreSelectBtn.title = NSLocalizedString("Order By", comment:"")
         } else {
             genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
         }
@@ -1230,7 +1230,7 @@ class FeedViewController: AddableTrackListViewController,
         genreTableView.hidden = true
         feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_up.png"), forState: UIControlState.Normal)
         if selectedFeedMenu.type == FeedType.FOLLOWING {
-            genreSelectBtn.title = NSLocalizedString("Order", comment:"")
+            genreSelectBtn.title = NSLocalizedString("Order By", comment:"")
         } else {
             genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
         }
@@ -1244,7 +1244,7 @@ class FeedViewController: AddableTrackListViewController,
         feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_down.png"), forState: UIControlState.Normal)
         updateFeedTypeSelectBtn(selected)
         if selectedFeedMenu.type == FeedType.FOLLOWING {
-            genreSelectBtn.title = NSLocalizedString("Order", comment:"")
+            genreSelectBtn.title = NSLocalizedString("Order By", comment:"")
         } else {
             genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
         }

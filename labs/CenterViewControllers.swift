@@ -795,7 +795,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
         
         println("fin!!!!")
-        var success :Bool = handleNext(false)
+        var success :Bool = handleNext(shouldPlayMusic)
         if (!success) {
             handleStop()
         }
@@ -1118,8 +1118,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             return
         }
         
-        forceStopPlayer = false
-        
         if (track != nil) {
             var params: Dictionary<String, AnyObject> = [
                 "track": track!
@@ -1159,9 +1157,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             // In case of repeating one track.
         }
         
-        if force {
-            shouldPlayMusic = true
-        }
+        shouldPlayMusic = force
         PlayerContext.currentTrack = track
         var closureTrack :Track? = track
         

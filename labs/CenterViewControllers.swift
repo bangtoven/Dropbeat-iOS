@@ -1059,7 +1059,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             playlistId = params["playlistId"] as? String
         }
         let section = params["section"] as? String
-        handlePlay(track, playlistId: playlistId, section: section!, force:true)
+        handlePlay(track, playlistId: playlistId, section: section, force:true)
     }
     
     func remoteSeek(noti: NSNotification) {
@@ -1139,9 +1139,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             if audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Paused ||
                 audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Interrupted {
                     // Resume
-                    if force {
-                        shouldPlayMusic = true
-                    }
+                    shouldPlayMusic = force
                     if prevQualityState != PlayerContext.qualityState {
                         startBackgroundTask()
                         switchPlayerWithQuality(PlayerContext.currentTrack!, qualityState: PlayerContext.qualityState)
@@ -1157,7 +1155,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             // In case of repeating one track.
         }
         
-        shouldPlayMusic = force
         PlayerContext.currentTrack = track
         var closureTrack :Track? = track
         
@@ -1189,22 +1186,20 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         updateNextPrevBtn()
         updateLikeBtn()
         
-        if force {
-            // Log to us
-            Requests.logPlay(track!)
-            
-            var playSection = section ?? "uknown"
-            
-            // Log to GA
-            let tracker = GAI.sharedInstance().defaultTracker
-            let event = GAIDictionaryBuilder.createEventWithCategory(
-                "player-play-from-\(playSection)",
-                action: "play-\(track!.type)",
-                label: track!.title,
-                value: 0
-                ).build()
-            tracker.send(event as [NSObject: AnyObject]!)
-        }
+        // Log to us
+        Requests.logPlay(track!)
+        
+        var playSection = section ?? "uknown"
+        
+        // Log to GA
+        let tracker = GAI.sharedInstance().defaultTracker
+        let event = GAIDictionaryBuilder.createEventWithCategory(
+            "player-play-from-\(playSection)",
+            action: "play-\(track!.type)",
+            label: track!.title,
+            value: 0
+            ).build()
+        tracker.send(event as [NSObject: AnyObject]!)
         
         self.activateAudioSession()
         switchPlayerWithQuality(track!, qualityState: PlayerContext.qualityState, isInitial: true)

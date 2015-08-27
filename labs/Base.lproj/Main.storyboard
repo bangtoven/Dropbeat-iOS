@@ -1205,7 +1205,7 @@
                                                             <constraint firstAttribute="width" constant="46" id="yZJ-Fe-5SY"/>
                                                         </constraints>
                                                         <inset key="contentEdgeInsets" minX="2" minY="9" maxX="2" maxY="9"/>
-                                                        <state key="normal" title="HQ" image="583F2C03-88BD-4FE4-8BE6-2CB312276C11">
+                                                        <state key="normal" title="HQ" image="162086E4-5B3E-457A-8191-68FA1D5EBB07">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -6303,7 +6303,7 @@ and let us know your favorite genre.</string>
         </scene>
     </scenes>
     <resources>
-        <image name="583F2C03-88BD-4FE4-8BE6-2CB312276C11" width="105" height="64">
+        <image name="162086E4-5B3E-457A-8191-68FA1D5EBB07" width="105" height="64">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOzxYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISksLzU4VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA

@@ -605,7 +605,7 @@ class PlaylistViewController: BaseViewController,
         }
         let removePlaylist = currentPlaylist!
         let confirmMessage = NSString.localizedStringWithFormat(
-                NSLocalizedString("Are you sure you want do delete '%s' playlist with %d tracks?", comment:""),
+                NSLocalizedString("Are you sure you want do delete '%@' playlist with %d tracks?", comment:""),
                 removePlaylist.name, removePlaylist.tracks.count) as String
         
         ViewUtils.showConfirmAlert(

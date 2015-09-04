@@ -147,7 +147,7 @@
 "Failed to fetch channels" = "채널 정보 요청 실패";
 "Failed to load channel feed." = "채널 피드 요청 실패";
 "Are you sure?" = "확인";
-"Released on %s" = "Released on %s";
+"Released on %@" = "Released on %@";
 "Permission Required" = "권한이 필요합니다";
 "Grant permission to import your favorite followed artists from Facebook?" = "페이스북에서 좋아하는 아티스트 정보를 가지고 오시겠습니까?";
 "OK" = "예";
@@ -156,7 +156,7 @@
 "Failed to connect facebook" = "페이스북 연결 실패";
 "Failed to acquire user info permission. Do you want to retry facebook connect?" = "페이스북에서 사용자유저 정보를 가져오는데 실패하였습니다. 재시도 하시겠습니까?";
 "MY BOOKMARK LIST" = "내 즐겨찾기 목록";
-"Are you sure you want do delete '%s' playlist with %d tracks?" = "정말 %d개의 곡과 '%s' 플레이리스트를 삭제하시겠습니까?";
+"Are you sure you want do delete '%@' playlist with %d tracks?" = "정말 '%@' 플레이리스트와 %d개의 곡을 삭제하시겠습니까?";
 
 "Failed to submit" = "제출 실패";
 "Failed to submit form" = "양식을 제출 할 수 없습니다.";

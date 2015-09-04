@@ -148,7 +148,7 @@
 "Failed to fetch channels" = "Failed to fetch channels";
 "Failed to load channel feed." = "Failed to load channel feed.";
 "Are you sure?" = "Are you sure";
-"Released on %s" = "Released on %s";
+"Released on %@" = "Released on %@";
 "Permission Required" = "Permission Required";
 "Grant permission to import your favorite followed artists from Facebook?" = "Grant permission to import your favorite followed artists from Facebook?";
 "OK" = "OK";
@@ -157,7 +157,7 @@
 "Failed to connect facebook" = "Failed to connect facebook";
 "Failed to acquire user info permission. Do you want to retry facebook connect?" = "Failed to acquire user info permission. Do you want to retry facebook connect?";
 "MY BOOKMARK LIST" = "MY BOOKMARK LIST";
-"Are you sure you want do delete '%s' playlist with %d tracks?" = "Are you sure you want do delete '%s' playlist with %d tracks?";
+"Are you sure you want do delete '%@' playlist with %d tracks?" = "Are you sure you want do delete '%@' playlist with %d tracks?";
 
 "Failed to submit" = "Failed to submit";
 "Failed to submit form" = "Failed to submit form";

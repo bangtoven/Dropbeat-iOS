@@ -349,6 +349,10 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     }
     
     func updateCoverView() {
+        println("cover view is updating. make time label to 00:00")
+        progressTextView.text = getTimeFormatText(0)
+        totalTextView.text = getTimeFormatText(0)
+        
         var track = PlayerContext.currentTrack
         if track == nil || PlayerContext.playState == PlayState.STOPPED {
             videoView.hidden = true

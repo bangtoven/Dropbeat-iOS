@@ -65,6 +65,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     private var lastPlaybackBeforeSwitch:Double?
     private var prevQualityState:Int?
     
+// MARK: Methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -135,20 +137,19 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
     }
     
-    func sender() {}
+//    func sender() {}
     
     
     func asignObservers () {
         PlayerViewController.observerAttached = true
-        // Used for playlistView bottom controller update.
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.updatePlaylistView, object: nil)
-        
-        // Used for track list play / nonplay ui update
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.updatePlay, object: nil)
+//        // Used for track list play / nonplay ui update
         
         // Observe remote input.
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "resumePlay", name: NotifyKey.resumePlay, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "handleUpdatePlay:", name: NotifyKey.updatePlay, object: nil)
+        
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "remotePlay:", name: NotifyKey.playerPlay, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
@@ -194,8 +195,9 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     func resignObservers() {
         PlayerViewController.observerAttached = false
         
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlaylistView, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.resumePlay, object: nil)
+
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerStop, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPrev, object: nil)
@@ -349,10 +351,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     }
     
     func updateCoverView() {
-        println("cover view is updating. make time label to 00:00")
-        progressTextView.text = getTimeFormatText(0)
-        totalTextView.text = getTimeFormatText(0)
-        
         var track = PlayerContext.currentTrack
         if track == nil || PlayerContext.playState == PlayState.STOPPED {
             videoView.hidden = true
@@ -507,10 +505,13 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         var total:Float = Float(PlayerContext.correctDuration ?? 0)
         var curr:Float = Float(PlayerContext.currentPlaybackTime ?? 0)
         if (total == 0) {
-            progressBar.value = 0
+//            progressBar.value = 0
             progressBar.enabled = false
         } else {
-            progressBar.value = (curr * 100) / total
+            if (progressBar.enabled) {
+                progressBar.value = (curr * 100) / total
+            }
+            
             var state = PlayerContext.playState
             if (PlayerContext.playState == PlayState.PLAYING) {
                 progressBar.enabled = true
@@ -896,8 +897,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     }
     
     @IBAction func playBtnClicked(sender: UIButton?) {
-        println("play!")
         if (PlayerContext.currentTrack != nil) {
+            println("play!")
             var playlistId :String? = PlayerContext.currentPlaylistId
             handlePlay(PlayerContext.currentTrack!, playlistId: playlistId, section: "player", force:true)
         }
@@ -1047,10 +1048,23 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     
     func onProgressUp(sender:UISlider) {
         // update progress after 1 sec
-        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))
-        dispatch_after(time, dispatch_get_main_queue()) {
+//        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))
+//        dispatch_after(time, dispatch_get_main_queue()) {
             self.isProgressUpdatable = true
-        }
+//        }
+    }
+    
+// MARK: Notification Handling
+    
+    func resumePlay () {
+        self.playBtnClicked(nil)
+    }
+    
+    func handleUpdatePlay(noti: NSNotification) {
+        println("make time label to 00:00")
+        progressBar.value = 0
+        progressTextView.text = getTimeFormatText(0)
+        totalTextView.text = getTimeFormatText(0)
     }
     
     func remotePlay(noti: NSNotification) {
@@ -1349,7 +1363,14 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         if (newPlaybackTime >= duration && duration > 0) {
             newPlaybackTime = duration - 1
         }
+        
+        // To prevent slider to go back where it was
+        progressBar.enabled = false
+
         audioPlayerControl.moviePlayer.currentPlaybackTime = newPlaybackTime
+        
+        // Manually enable the slider before the timer does for us
+        updateProgressView()
     }
     
     func playAudioPlayer() {

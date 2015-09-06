@@ -259,6 +259,10 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
                 return
             }
             self.updateDropPlayStatus(DropPlayStatus.Ready)
+                
+            println("try to resume")
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.resumePlay, object: nil)
+
             return
         }
         
@@ -349,6 +353,9 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     }
     
     func onDropFinished() {
+        println("try to resume")
+        NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.resumePlay, object: nil)
+
         updateDropPlayStatus(DropPlayStatus.Ready)
     }
     

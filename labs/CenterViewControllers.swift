@@ -1563,7 +1563,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     
     static let TAB_FEED = 1
     static let TAB_CHANNEL = 2
-//    static let TAB_SEARCH = 3
+    static let TAB_SEARCH = 3
     static let TAB_PROFILE = 4
     static let TAB_PLAYER = 5
     
@@ -1726,6 +1726,8 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         containerTopConstraint.constant = -statusBarHeight
         containerTopPaddingPlaceholderHeightConstraint.constant = statusBarHeight
         
+        self.containerBottomConstraint.constant = self.tabBarHeightConstraint.constant
+        
         playerViewHeightConstraint.constant = self.view.bounds.size.height
     }
     
@@ -1806,6 +1808,9 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         case CenterViewController.TAB_CHANNEL:
             menuType = MenuType.CHANNEL
             break
+        case CenterViewController.TAB_SEARCH:
+            menuType = MenuType.SEARCH
+            break
         case CenterViewController.TAB_PROFILE:
             menuType = MenuType.PROFILE
             break
@@ -1825,10 +1830,12 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             return 0
         case .CHANNEL:
             return 1
-        case .PROFILE:
+        case .SEARCH:
             return 2
-        case .PLAYER:
+        case .PROFILE:
             return 3
+        case .PLAYER:
+            return 4
         default:
             return 0
         }

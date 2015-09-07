@@ -1568,15 +1568,6 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     static let TAB_PLAYER = 5
     
     @IBOutlet weak var containerFrame: UIView!
-    @IBOutlet weak var containerTopConstraint: NSLayoutConstraint!
-    @IBOutlet weak var containerTopPaddingPlaceholderHeightConstraint: NSLayoutConstraint!
-//    @IBOutlet weak var containerHeightConstraint: NSLayoutConstraint!
-    
-    @IBOutlet weak var containerBottomConstraint: NSLayoutConstraint!
-    
-    @IBOutlet weak var tabBarBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var tabBarHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var playerViewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var menuBtn: UIButton!
     @IBOutlet weak var hideBtn: UIButton!
@@ -1717,20 +1708,6 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         appDelegate.sharedPlaylistUid = nil
     }
     
-    func initConstaints() {
-//        let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
-        let statusBarHeight:CGFloat = 20.0
-//        containerHeightConstraint.constant = self.view.bounds.size.height
-//            - tabBarHeightConstraint.constant
-        
-        containerTopConstraint.constant = -statusBarHeight
-        containerTopPaddingPlaceholderHeightConstraint.constant = statusBarHeight
-        
-        self.containerBottomConstraint.constant = self.tabBarHeightConstraint.constant
-        
-        playerViewHeightConstraint.constant = self.view.bounds.size.height
-    }
-    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
@@ -1849,6 +1826,23 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         return UIStatusBarAnimation.None
     }
     
+// MARK: PlayerView Show/Hide Layout
+    @IBOutlet weak var containerTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var containerBottomConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var tabBarContainerView: UIView!
+    @IBOutlet weak var tabBarTopInsetConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tabBarBottomConstraint: NSLayoutConstraint!
+
+    func initConstaints() {
+        let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
+
+        self.containerTopConstraint.constant = -statusBarHeight
+        self.containerBottomConstraint.constant = self.tabBar.frame.height
+        
+        self.tabBarTopInsetConstraint.constant = 0
+    }
+    
     func showPlayerView() {
         isPlayerVisible = true
         setNeedsStatusBarAppearanceUpdate()
@@ -1863,7 +1857,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             self.containerTopConstraint.constant -= offset
             self.containerBottomConstraint.constant += offset
 
-            self.tabBarBottomConstraint.constant = -1 * self.tabBarHeightConstraint.constant
+            self.tabBarBottomConstraint.constant = -1 * self.tabBarContainerView.frame.height
             self.tabBar.alpha = 0.0
             self.view.layoutIfNeeded()
         }) { (Bool) -> Void in
@@ -1878,8 +1872,8 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
 
             let statusBarHeight:CGFloat = 20.0
+            self.containerBottomConstraint.constant = self.tabBarContainerView.frame.height
             self.containerTopConstraint.constant = -1 * statusBarHeight
-            self.containerBottomConstraint.constant = self.tabBarHeightConstraint.constant
             
             self.tabBarBottomConstraint.constant = 0
             self.tabBar.alpha = 1.0

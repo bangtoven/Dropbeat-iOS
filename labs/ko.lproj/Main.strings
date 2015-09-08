@@ -242,7 +242,7 @@
 /* Class = "UIButton"; normalTitle = "DISCOVER FAVORITES"; ObjectID = "hMh-oi-rBL"; */
 "hMh-oi-rBL.normalTitle" = "좋아하는 장르 찾기";
 
-/* Class = "UINavigationItem"; title = "Search Results"; ObjectID = "hen-3T-lf0"; */
+/* Class = "UINavigationItem"; title = "Results"; ObjectID = "hen-3T-lf0"; */
 "hen-3T-lf0.title" = "검색 결과";
 
 /* Class = "UILabel"; text = "Listen to awesome tracks"; ObjectID = "iwm-Nd-xzj"; */

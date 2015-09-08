@@ -1,0 +1,54 @@
+
+/* Class = "UILabel"; text = "from your favorite EDM channels\n"; ObjectID = "4ws-EW-KzZ"; */
+"4ws-EW-KzZ.text" = "좋은 음악들을 발견하세요.";
+
+/* Class = "UILabel"; text = "Listen to awesome tracks"; ObjectID = "94N-Wa-H7z"; */
+"94N-Wa-H7z.text" = "엄선된 EDM 채널들에서";
+
+/* Class = "UILabel"; text = "from your favorite EDM channels\n"; ObjectID = "BKc-ma-ARU"; */
+"BKc-ma-ARU.text" = "좋은 음악들을 발견하세요.";
+
+/* Class = "UILabel"; text = "No bookmarked channels found"; ObjectID = "DHc-Yc-tG3"; */
+"DHc-Yc-tG3.text" = "즐겨찾기된 채널이 없습니다.";
+
+/* Class = "UILabel"; text = "Sign in to see your bookmarked\nEDM channels feed."; ObjectID = "ICg-Hq-v1m"; */
+"ICg-Hq-v1m.text" = "즐겨찾기된 EDM채널의 피드를 보려면\n로그인이 필요합니다.";
+
+/* Class = "UILabel"; text = "GENRE:"; ObjectID = "JJM-fq-NUY"; */
+"JJM-fq-NUY.text" = "장르:";
+
+/* Class = "UILabel"; text = "No channel exists"; ObjectID = "Kw8-bi-bey"; */
+"Kw8-bi-bey.text" = "채널이 없습니다.";
+
+/* Class = "UIButton"; normalTitle = "CREATE ACCOUNT"; ObjectID = "MpM-QP-SDl"; */
+"MpM-QP-SDl.normalTitle" = "회원가입";
+
+/* Class = "UIButton"; normalTitle = "RECENT"; ObjectID = "OyC-Q5-4YJ"; */
+"OyC-Q5-4YJ.normalTitle" = "RECENT";
+
+/* Class = "UILabel"; text = "Listen to awesome tracks"; ObjectID = "QxJ-NV-sGY"; */
+"QxJ-NV-sGY.text" = "엄선된 EDM 채널들에서";
+
+/* Class = "UINavigationItem"; title = "Channel"; ObjectID = "S0c-GG-YIC"; */
+"S0c-GG-YIC.title" = "채널";
+
+/* Class = "UIButton"; normalTitle = "Find channels >>"; ObjectID = "T6v-VP-QM8"; */
+"T6v-VP-QM8.normalTitle" = "채널 찾기 >>";
+
+/* Class = "UINavigationItem"; title = "Bookmark List"; ObjectID = "aLQ-v4-Hf0"; */
+"aLQ-v4-Hf0.title" = "즐겨찾기 목록";
+
+/* Class = "UINavigationItem"; title = "Channel"; ObjectID = "f4p-L3-OfT"; */
+"f4p-L3-OfT.title" = "채널";
+
+/* Class = "UIButton"; normalTitle = "SIGN IN"; ObjectID = "idg-3G-Xhe"; */
+"idg-3G-Xhe.normalTitle" = "로그인";
+
+/* Class = "UILabel"; text = "Bookmark your favorite channels\nand find new tracks in the feed!\n"; ObjectID = "mnp-VJ-16S"; */
+"mnp-VJ-16S.text" = "채널을 즐겨찾기하고\n피드에서 새 음악을 받아보세요.";
+
+/* Class = "UILabel"; text = "No bookmarked channel exists"; ObjectID = "rWr-Q4-RbF"; */
+"rWr-Q4-RbF.text" = "즐겨찾기된 채널이 없습니다.";
+
+/* Class = "UILabel"; text = "SECTION:"; ObjectID = "zPW-Rd-TNh"; */
+"zPW-Rd-TNh.text" = "섹션:";

@@ -1,0 +1,156 @@
+
+/* Class = "UINavigationItem"; title = "Account Required"; ObjectID = "0FP-hu-LSd"; */
+"0FP-hu-LSd.title" = "계정이 필요합니다";
+
+/* Class = "UILabel"; text = "Require DROPBEAT account to use all features and functions."; ObjectID = "2hP-ce-Hsb"; */
+"2hP-ce-Hsb.text" = "DROPBEAT의 모든 기능을 사용하시려면\n로그인이 필요합니다.";
+
+/* Class = "UILabel"; text = "Version"; ObjectID = "2r2-74-Fhf"; */
+"2r2-74-Fhf.text" = "버전";
+
+/* Class = "UIButton"; normalTitle = "SIGN IN"; ObjectID = "6jC-on-Hyi"; */
+"6jC-on-Hyi.normalTitle" = "로그인";
+
+/* Class = "UILabel"; text = "PASSWORD"; ObjectID = "72G-9i-pUj"; */
+"72G-9i-pUj.text" = "비밀번호";
+
+/* Class = "UIButton"; normalTitle = "Sign up with Email"; ObjectID = "7BU-lW-0ly"; */
+"7BU-lW-0ly.normalTitle" = "이메일로 회원가입";
+
+/* Class = "UIButton"; normalTitle = "SIGN IN"; ObjectID = "8b1-JM-5iN"; */
+"8b1-JM-5iN.normalTitle" = "로그인";
+
+/* Class = "UILabel"; text = "EMAIL"; ObjectID = "8jJ-61-Hnr"; */
+"8jJ-61-Hnr.text" = "이메일";
+
+/* Class = "UILabel"; text = "EMAIL"; ObjectID = "9vx-PG-N6g"; */
+"9vx-PG-N6g.text" = "이메일";
+
+/* Class = "UILabel"; text = "SIGN IN WITH EMAIL"; ObjectID = "BqU-gD-dMd"; */
+"BqU-gD-dMd.text" = "이메일로 로그인";
+
+/* Class = "UIButton"; normalTitle = "CREATE ACCOUNT"; ObjectID = "CE4-Zm-tBP"; */
+"CE4-Zm-tBP.normalTitle" = "회원가입";
+
+/* Class = "UILabel"; text = "PASSWORD"; ObjectID = "Cbg-nb-BgF"; */
+"Cbg-nb-BgF.text" = "비밀번호";
+
+/* Class = "UILabel"; text = "Text should be less than 32 character"; ObjectID = "Cnx-GC-hD5"; */
+"Cnx-GC-hD5.text" = "Text should be less than 32 character";
+
+/* Class = "UIButton"; normalTitle = "CREATE ACCOUNT"; ObjectID = "Cyb-YX-k4h"; */
+"Cyb-YX-k4h.normalTitle" = "회원가입";
+
+/* Class = "UITextField"; placeholder = "Your nickname"; ObjectID = "DMT-B3-bXu"; */
+"DMT-B3-bXu.placeholder" = "닉네임을 입력해주세요.";
+
+/* Class = "UILabel"; text = "Text should be less than 32 character"; ObjectID = "E3g-nR-pbK"; */
+"E3g-nR-pbK.text" = "Text should be less than 32 character";
+
+/* Class = "UIButton"; normalTitle = "Sign in with Facebook"; ObjectID = "GV5-Vd-u4x"; */
+"GV5-Vd-u4x.normalTitle" = "페이스북으로 로그인";
+
+/* Class = "UILabel"; text = "LAST NAME"; ObjectID = "HZk-Gb-Cgj"; */
+"HZk-Gb-Cgj.text" = "성";
+
+/* Class = "UIBarButtonItem"; title = "Close"; ObjectID = "I8z-KM-utq"; */
+"I8z-KM-utq.title" = "닫기";
+
+/* Class = "UITextField"; placeholder = "Input previous password"; ObjectID = "JQU-sO-izW"; */
+"JQU-sO-izW.placeholder" = "비밀번호를 한번 더 입력해주세요.";
+
+/* Class = "UINavigationItem"; title = "Sign in"; ObjectID = "JUV-NU-BzW"; */
+"JUV-NU-BzW.title" = "로그인";
+
+/* Class = "UITextField"; placeholder = "Your first name"; ObjectID = "NzP-hb-7YV"; */
+"NzP-hb-7YV.placeholder" = "이름을 입력해주세요.";
+
+/* Class = "UILabel"; text = "CONFIRM\nPASSWORD"; ObjectID = "OLh-iP-lr2"; */
+"OLh-iP-lr2.text" = "비밀번호 확인";
+
+/* Class = "UIButton"; normalTitle = "CREATE ACCOUNT"; ObjectID = "OR0-nw-tXs"; */
+"OR0-nw-tXs.normalTitle" = "회원가입";
+
+/* Class = "UINavigationItem"; title = "Settings"; ObjectID = "PnR-Gj-UaB"; */
+"PnR-Gj-UaB.title" = "설정";
+
+/* Class = "UILabel"; text = "SIGN UP WITH EMAIL"; ObjectID = "SFe-QZ-tBA"; */
+"SFe-QZ-tBA.text" = "이메일로 회원가입";
+
+/* Class = "UITextField"; placeholder = "Min 6 Characters"; ObjectID = "Szk-Xa-rDz"; */
+"Szk-Xa-rDz.placeholder" = "6글자 이상을 입력해주세요.";
+
+/* Class = "UITextField"; placeholder = "mail@example.com"; ObjectID = "TfQ-jF-zsv"; */
+"TfQ-jF-zsv.placeholder" = "mail@example.com";
+
+/* Class = "UITextField"; placeholder = "Email"; ObjectID = "VS0-3b-fZS"; */
+"VS0-3b-fZS.placeholder" = "이메일";
+
+/* Class = "UILabel"; text = "Feedback"; ObjectID = "aZE-0u-yZM"; */
+"aZE-0u-yZM.text" = "문의 및 건의";
+
+/* Class = "UINavigationItem"; title = "Sign in with Email"; ObjectID = "dHP-Jz-CnL"; */
+"dHP-Jz-CnL.title" = "이메일로 로그인";
+
+/* Class = "UIButton"; normalTitle = "SIGN IN"; ObjectID = "daE-xW-ZUX"; */
+"daE-xW-ZUX.normalTitle" = "로그인";
+
+/* Class = "UILabel"; text = "Text should be less than 32 character"; ObjectID = "eX2-7i-YAZ"; */
+"eX2-7i-YAZ.text" = "Text should be less than 32 character";
+
+/* Class = "UIButton"; normalTitle = "SIGN OUT"; ObjectID = "egX-x6-bjq"; */
+"egX-x6-bjq.normalTitle" = "로그아웃";
+
+/* Class = "UINavigationItem"; title = "Feedback"; ObjectID = "f6q-jG-xuY"; */
+"f6q-jG-xuY.title" = "문의 및 건의";
+
+/* Class = "UITextField"; placeholder = "Your last name"; ObjectID = "fEv-px-iIK"; */
+"fEv-px-iIK.placeholder" = "성을 입력해주세요.";
+
+/* Class = "UILabel"; text = "Text should be less than 32 character"; ObjectID = "fLo-Md-rWu"; */
+"fLo-Md-rWu.text" = "Text should be less than 32 character";
+
+/* Class = "UIButton"; normalTitle = "Sign in with Email"; ObjectID = "gF3-PM-yQd"; */
+"gF3-PM-yQd.normalTitle" = "이메일로 로그인";
+
+/* Class = "UINavigationItem"; title = "Copyright & legal"; ObjectID = "h9t-ZU-H7s"; */
+"h9t-ZU-H7s.title" = "Copyright & legal";
+
+/* Class = "UILabel"; text = "NICKNAME"; ObjectID = "hto-i3-4Hf"; */
+"hto-i3-4Hf.text" = "닉네임";
+
+/* Class = "UILabel"; text = "Text should be less than 32 character"; ObjectID = "iJ3-pT-92E"; */
+"iJ3-pT-92E.text" = "Text should be less than 32 character";
+
+/* Class = "UILabel"; text = "Copyright & legal"; ObjectID = "iJM-r2-uIq"; */
+"iJM-r2-uIq.text" = "Copyright & legal";
+
+/* Class = "UITextField"; placeholder = "Your password"; ObjectID = "jyD-FK-ZL5"; */
+"jyD-FK-ZL5.placeholder" = "비밀번호를 입력해주세요.";
+
+/* Class = "UILabel"; text = "Text should be less than 32 character"; ObjectID = "lcI-u7-Rxg"; */
+"lcI-u7-Rxg.text" = "Text should be less than 32 character";
+
+/* Class = "UILabel"; text = "FIRST NAME"; ObjectID = "mED-4h-24Z"; */
+"mED-4h-24Z.text" = "이름";
+
+/* Class = "UINavigationItem"; title = "Create Account"; ObjectID = "n2C-Zd-2gb"; */
+"n2C-Zd-2gb.title" = "회원가입";
+
+/* Class = "UINavigationItem"; title = "Sign up with Email"; ObjectID = "qSd-PP-9WH"; */
+"qSd-PP-9WH.title" = "이메일로 회원가입";
+
+/* Class = "UILabel"; text = "Text should be less than 32 character"; ObjectID = "tR1-fm-1aY"; */
+"tR1-fm-1aY.text" = "Text should be less than 32 character";
+
+/* Class = "UIButton"; normalTitle = "SUBMIT"; ObjectID = "v6b-HF-dYF"; */
+"v6b-HF-dYF.normalTitle" = "제출";
+
+/* Class = "UITextField"; placeholder = "Your email address"; ObjectID = "v7I-ap-WS9"; */
+"v7I-ap-WS9.placeholder" = "이메일을 입력해주세요.";
+
+/* Class = "UIButton"; normalTitle = "Sign up with Facebook"; ObjectID = "wEk-Vd-RIm"; */
+"wEk-Vd-RIm.normalTitle" = "페이스북으로 회원가입";
+
+/* Class = "UITableViewSection"; headerTitle = "application"; ObjectID = "yhx-M5-TVU"; */
+"yhx-M5-TVU.headerTitle" = "application";

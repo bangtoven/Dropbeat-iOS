@@ -1,0 +1,27 @@
+
+/* Class = "UILabel"; text = "Recommended Tracks"; ObjectID = "TC3-oc-iYt"; */
+"TC3-oc-iYt.text" = "추천곡";
+
+/* Class = "UILabel"; text = "No following artists found"; ObjectID = "TdC-NQ-eWk"; */
+"TdC-NQ-eWk.text" = "팔로잉 하고있는 아티스트가 없습니다.";
+
+/* Class = "UINavigationItem"; title = "Search Results"; ObjectID = "dNV-1q-rc3"; */
+"dNV-1q-rc3.title" = "검색 결과";
+
+/* Class = "UISearchBar"; placeholder = "Search your favorite artists"; ObjectID = "jJe-Ze-Ylv"; */
+"jJe-Ze-Ylv.placeholder" = "좋아하는 아티스트를 검색하세요";
+
+/* Class = "UISearchBar"; placeholder = "Search your favorite artists"; ObjectID = "m0g-55-0jz"; */
+"m0g-55-0jz.placeholder" = "좋아하는 아티스트를 검색하세요";
+
+/* Class = "UILabel"; text = "No search results"; ObjectID = "pCm-yh-POk"; */
+"pCm-yh-POk.text" = "검색 결과가 없습니다.";
+
+/* Class = "UIButton"; normalTitle = "SIGN OUT"; ObjectID = "qo1-g7-EnC"; */
+"qo1-g7-EnC.normalTitle" = "로그아웃";
+
+/* Class = "UINavigationItem"; title = "Manage Follows"; ObjectID = "tQJ-Qc-i1s"; */
+"tQJ-Qc-i1s.title" = "팔로잉 관리";
+
+/* Class = "UILabel"; text = "YOUR FOLLOWING ARTISTS"; ObjectID = "wdq-GK-Y67"; */
+"wdq-GK-Y67.text" = "팔로잉하고 있는 아티스트";

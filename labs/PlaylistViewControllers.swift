@@ -20,7 +20,6 @@ class PlaylistViewController: BaseViewController,
     @IBOutlet weak var playlistNameView: UILabel!
     @IBOutlet weak var fakeNavigationBar: UINavigationBar!
     @IBOutlet weak var fakeNavigationBarHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var frameHeightConstraint: NSLayoutConstraint!
     
     private var tracks:[Track] = [Track]()
     private var playlistActionSheet:UIActionSheet?
@@ -34,12 +33,12 @@ class PlaylistViewController: BaseViewController,
         let statusBarHeight:CGFloat = 20.0
         if fromPlayer {
             fakeNavigationBar.hidden = false
-            frameHeightConstraint.constant = self.view.bounds.size.height - statusBarHeight
+//            frameHeightConstraint.constant = self.view.bounds.size.height - statusBarHeight
         } else {
             var navigationHeight = navigationController!.navigationBar.frame.height
             fakeNavigationBar.hidden = true
             fakeNavigationBarHeightConstraint.constant = 0
-            frameHeightConstraint.constant = self.view.bounds.size.height - navigationHeight - statusBarHeight - 49
+//            frameHeightConstraint.constant = self.view.bounds.size.height - navigationHeight - statusBarHeight - 49
         }
         
         if currentPlaylist.type == PlaylistType.EXTERNAL ||

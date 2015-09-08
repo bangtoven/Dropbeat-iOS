@@ -16,7 +16,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     
     @IBOutlet weak var coverView: UIView!
     @IBOutlet weak var loadingView: UIImageView!
-    @IBOutlet weak var progressBar: UISlider!
+    @IBOutlet weak var progressSliderBar: UISlider!
     
     @IBOutlet weak var playerTitle: UILabel!
     @IBOutlet weak var playerStatus: UILabel!
@@ -64,6 +64,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     private var actionSheetIncludePlaylist = false
     private var lastPlaybackBeforeSwitch:Double?
     private var prevQualityState:Int?
+    
+// MARK: Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -135,20 +137,19 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
     }
     
-    func sender() {}
+//    func sender() {}
     
     
     func asignObservers () {
         PlayerViewController.observerAttached = true
-        // Used for playlistView bottom controller update.
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.updatePlaylistView, object: nil)
-        
-        // Used for track list play / nonplay ui update
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.updatePlay, object: nil)
+//        // Used for track list play / nonplay ui update
         
         // Observe remote input.
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "resumePlay", name: NotifyKey.resumePlay, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "handleUpdatePlay:", name: NotifyKey.updatePlay, object: nil)
+        
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "remotePlay:", name: NotifyKey.playerPlay, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
@@ -194,8 +195,9 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     func resignObservers() {
         PlayerViewController.observerAttached = false
         
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlaylistView, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.resumePlay, object: nil)
+
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerStop, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPrev, object: nil)
@@ -503,15 +505,17 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         var total:Float = Float(PlayerContext.correctDuration ?? 0)
         var curr:Float = Float(PlayerContext.currentPlaybackTime ?? 0)
         if (total == 0) {
-            progressBar.value = 0
-            progressBar.enabled = false
+            progressSliderBar.enabled = false
         } else {
-            progressBar.value = (curr * 100) / total
+            if (progressSliderBar.enabled) {
+                progressSliderBar.value = (curr * 100) / total
+            }
+            
             var state = PlayerContext.playState
             if (PlayerContext.playState == PlayState.PLAYING) {
-                progressBar.enabled = true
+                progressSliderBar.enabled = true
             } else {
-                progressBar.enabled = false
+                progressSliderBar.enabled = false
             }
             progressTextView.text = getTimeFormatText(PlayerContext.currentPlaybackTime ?? 0)
             totalTextView.text = getTimeFormatText(PlayerContext.correctDuration ?? 0)
@@ -892,13 +896,17 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     }
     
     @IBAction func playBtnClicked(sender: UIButton?) {
-        println("play!")
         if (PlayerContext.currentTrack != nil) {
+            println("play!")
             var playlistId :String? = PlayerContext.currentPlaylistId
             handlePlay(PlayerContext.currentTrack!, playlistId: playlistId, section: "player", force:true)
         }
     }
     
+    @IBAction func pauseBtnClicked(sender: UIButton?) {
+        handlePause(true)
+    }
+
     @IBAction func onNextBtnClicked(sender: UIButton) {
         handleNext(true)
     }
@@ -1017,10 +1025,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
     }
     
-    @IBAction func pauseBtnClicked(sender: UIButton?) {
-        handlePause(true)
-    }
-    
     @IBAction func onProgressValueChanged(sender: UISlider) {
         handleSeek(sender.value)
     }
@@ -1043,10 +1047,30 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     
     func onProgressUp(sender:UISlider) {
         // update progress after 1 sec
-        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))
-        dispatch_after(time, dispatch_get_main_queue()) {
+//        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))
+//        dispatch_after(time, dispatch_get_main_queue()) {
             self.isProgressUpdatable = true
-        }
+//        }
+    }
+    
+// MARK: Notification Handling
+    
+    func resumePlay () {
+//        if (self.manuallyPaused == false) {
+//            self.playBtnClicked(nil)
+//        }
+//        println("try to resume")
+    }
+    
+    func remotePause() {
+        handlePause(true)
+    }
+    
+    func handleUpdatePlay(noti: NSNotification) {
+        println("make time label to 00:00")
+        progressSliderBar.value = 0
+        progressTextView.text = getTimeFormatText(0)
+        totalTextView.text = getTimeFormatText(0)
     }
     
     func remotePlay(noti: NSNotification) {
@@ -1066,10 +1090,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         var params = noti.object as! Dictionary<String, AnyObject>
         var value = params["value"] as? Float ?? 0
         handleSeek(value)
-    }
-    
-    func remotePause() {
-        handlePause(true)
     }
     
     func remoteNext() {
@@ -1345,7 +1365,14 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         if (newPlaybackTime >= duration && duration > 0) {
             newPlaybackTime = duration - 1
         }
+        
+        // To prevent slider to go back where it was
+        progressSliderBar.enabled = false
+
         audioPlayerControl.moviePlayer.currentPlaybackTime = newPlaybackTime
+        
+        // Manually enable the slider before the timer does for us
+        updateProgressView()
     }
     
     func playAudioPlayer() {
@@ -1538,19 +1565,11 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     
     static let TAB_FEED = 1
     static let TAB_CHANNEL = 2
-//    static let TAB_SEARCH = 3
+    static let TAB_SEARCH = 3
     static let TAB_PROFILE = 4
     static let TAB_PLAYER = 5
     
     @IBOutlet weak var containerFrame: UIView!
-    @IBOutlet weak var containerTopConstraint: NSLayoutConstraint!
-    
-    @IBOutlet weak var containerTopPaddingConstraint: NSLayoutConstraint!
-    @IBOutlet weak var containerTopPaddingPlaceholderHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var containerHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var tabBarBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var tabBarHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var playerViewHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var menuBtn: UIButton!
     @IBOutlet weak var hideBtn: UIButton!
@@ -1570,7 +1589,6 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         hideBtn.layer.cornerRadius = 3.0
         hideBtn.layer.borderWidth = 1
@@ -1691,28 +1709,11 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         appDelegate.sharedPlaylistUid = nil
     }
     
-    func initConstaints() {
-//        let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
-        let statusBarHeight:CGFloat = 20.0
-        containerHeightConstraint.constant = self.view.bounds.size.height
-            - tabBarHeightConstraint.constant
-        
-        containerTopPaddingConstraint.constant = -statusBarHeight
-        containerTopPaddingPlaceholderHeightConstraint.constant = statusBarHeight
-        
-        playerViewHeightConstraint.constant = self.view.bounds.size.height
-    }
-    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.trackShare, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playlistShare, object: nil)
-    }
-    
-    override func remotePlay(noti: NSNotification) {
-        super.remotePlay(noti)
-        showPlayerView()
     }
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem!) {
@@ -1759,9 +1760,10 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             }
             break
         case .PLAYER:
-            showPlayerView()
-            let lastTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
-            tabBar.selectedItem = lastTab
+            showTabBarPlayer(!self.isTabBarPlayerVisible)
+//            showPlayerView()
+//            let lastTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
+//            tabBar.selectedItem = lastTab
             break
         default:
             break
@@ -1779,6 +1781,9 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             break
         case CenterViewController.TAB_CHANNEL:
             menuType = MenuType.CHANNEL
+            break
+        case CenterViewController.TAB_SEARCH:
+            menuType = MenuType.SEARCH
             break
         case CenterViewController.TAB_PROFILE:
             menuType = MenuType.PROFILE
@@ -1799,10 +1804,12 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             return 0
         case .CHANNEL:
             return 1
-        case .PROFILE:
+        case .SEARCH:
             return 2
-        case .PLAYER:
+        case .PROFILE:
             return 3
+        case .PLAYER:
+            return 4
         default:
             return 0
         }
@@ -1816,14 +1823,161 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         return UIStatusBarAnimation.None
     }
     
+// MARK: PlayerView Show/Hide Layout
+    @IBOutlet weak var containerTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var containerBottomConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var tabBarContainerView: UIView!
+    @IBOutlet weak var tabBarTopInsetConstraint: NSLayoutConstraint!
+    @IBOutlet weak var tabBarBottomConstraint: NSLayoutConstraint!
+
+    @IBOutlet weak var tabBarBorder: UIView!
+    @IBOutlet weak var tabBarBorderHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var tabBarProgressBar: UIProgressView!
+    @IBOutlet weak var playPauseButton: UIButton!
+    @IBOutlet weak var trackInfoLabel: UILabel!
+    
+    func initConstaints() {
+        self.tabBarTopInsetConstraint.constant = 0
+        self.view.layoutIfNeeded()
+        
+        let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
+        self.containerTopConstraint.constant = -statusBarHeight
+        self.containerBottomConstraint.constant = self.tabBarContainerView.frame.height
+    }
+    
+    private var isTabBarPlayerVisible:Bool = false
+    
+    func showTabBarPlayer(visible:Bool) {
+        if (visible == self.isTabBarPlayerVisible) {
+            return
+        }
+        
+        UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+            
+            if (visible) {
+                self.tabBarTopInsetConstraint.constant = 41
+                self.tabBarBorderHeightConstraint.constant = 0.5
+                self.tabBarBorder.backgroundColor = UIColor.lightGrayColor()
+            }
+            else {
+                self.tabBarTopInsetConstraint.constant = 0
+                self.tabBarBorderHeightConstraint.constant = 2
+                self.tabBarBorder.backgroundColor = UIColor(red: 122/255.0, green: 29/255.0, blue: 236/255.0, alpha: 1.0)
+            }
+            self.view.layoutIfNeeded()
+            
+            self.containerBottomConstraint.constant = self.tabBarContainerView.frame.height
+            self.view.layoutIfNeeded()
+            
+            }) { (Bool) -> Void in
+        }
+        
+        self.isTabBarPlayerVisible = visible
+    }
+    
+    override func remotePause() {
+        super.remotePause()
+        showTabBarPlayer(false)
+    }
+    
+    override func resumePlay() {
+        super.resumePlay()
+        if (PlayerContext.currentTrack != nil) {
+            println("resume with current track. show tab bar player")
+            showTabBarPlayer(true)
+            super.playBtnClicked(nil)
+        }
+        else {
+            println("resume without current track")
+        }
+    }
+    
+    override func updatePlayView() {
+        super.updatePlayView()
+        
+        if (PlayerContext.playState == PlayState.LOADING ||
+            PlayerContext.playState == PlayState.SWITCHING ||
+            PlayerContext.playState == PlayState.BUFFERING) {
+                showTabBarPlayer(true)
+                self.playPauseButton.enabled = false
+                self.playPauseButton.setImage(UIImage(named: "ic_play_purple.png"), forState: UIControlState.Normal)
+                self.trackInfoLabel.textColor = UIColor.lightGrayColor()
+        } else if (PlayerContext.playState == PlayState.PAUSED) {
+            showTabBarPlayer(true)
+            self.playPauseButton.enabled = true
+            self.playPauseButton.setImage(UIImage(named: "ic_play_purple.png"), forState: UIControlState.Normal)
+            self.trackInfoLabel.textColor = UIColor.darkGrayColor()
+        } else if (PlayerContext.playState == PlayState.PLAYING) {
+            showTabBarPlayer(true)
+            self.playPauseButton.enabled = true
+            self.playPauseButton.setImage(UIImage(named: "ic_pause_purple.png"), forState: UIControlState.Normal)
+            self.trackInfoLabel.textColor = UIColor.darkGrayColor()
+        } else if (PlayerContext.playState == PlayState.STOPPED) {
+            showTabBarPlayer(false)
+            self.playPauseButton.enabled = false
+            self.trackInfoLabel.textColor = UIColor.lightGrayColor()
+        }
+    }
+    
+    override func updateStatusView() {
+        super.updateStatusView()
+        
+        let defaultText = NSLocalizedString("CHOOSE TRACK", comment:"")
+        if (PlayerContext.playState == PlayState.STOPPED) {
+            self.trackInfoLabel.text = defaultText
+        } else {
+            self.trackInfoLabel.text = PlayerContext.currentTrack?.title ?? defaultText
+        }
+    }
+    
+    override func updateProgressView() {
+        super.updateProgressView()
+        self.tabBarProgressBar.progress = super.progressSliderBar.value / 100.0
+    }
+    
+    @IBAction func playPauseBtnClicked(sender: UIButton) {
+        if (PlayerContext.playState == PlayState.PAUSED) {
+            super.playBtnClicked(sender)
+        } else if (PlayerContext.playState == PlayState.PLAYING) {
+            super.pauseBtnClicked(sender)
+        }
+    }
+    
+    @IBAction func showPlayerBtnClicked(sender: UIButton) {
+        showPlayerView()
+    }
+    
+    @IBAction func showListBtnClicked(sender: UIButton) {
+        var playlist:Playlist?
+        if PlayerContext.currentPlaylistId != nil {
+            playlist = PlayerContext.getPlaylist(PlayerContext.currentPlaylistId)
+        }
+        if playlist == nil {
+            ViewUtils.showToast(self,
+                message: NSLocalizedString("Failed to find playlist", comment:""))
+            return
+        }
+        performSegueWithIdentifier("PlaylistSegue", sender: playlist)
+    }
+    
     func showPlayerView() {
         isPlayerVisible = true
         setNeedsStatusBarAppearanceUpdate()
         self.view.layoutIfNeeded()
         UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-            self.containerTopConstraint.constant = 3 - self.containerHeightConstraint.constant
-            self.tabBarBottomConstraint.constant = -1 * self.tabBarHeightConstraint.constant
-            self.tabBar.alpha = 0.0
+//            self.containerTopConstraint.constant = 3 - self.containerHeightConstraint.constant
+
+            let statusBarHeight:CGFloat = 20.0
+            let height = self.containerView.frame.size.height
+            var offset = height - statusBarHeight
+            
+            self.containerTopConstraint.constant -= offset
+            self.containerBottomConstraint.constant += offset
+
+            self.tabBarBottomConstraint.constant = -1 * self.tabBarContainerView.frame.height
+            self.tabBarContainerView.alpha = 0.0
             self.view.layoutIfNeeded()
         }) { (Bool) -> Void in
         }
@@ -1835,11 +1989,13 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         isPlayerVisible = false
         setNeedsStatusBarAppearanceUpdate()
         UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-//            let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
+
             let statusBarHeight:CGFloat = 20.0
+            self.containerBottomConstraint.constant = self.tabBarContainerView.frame.height
             self.containerTopConstraint.constant = -1 * statusBarHeight
+            
             self.tabBarBottomConstraint.constant = 0
-            self.tabBar.alpha = 1.0
+            self.tabBarContainerView.alpha = 1.0
             self.view.layoutIfNeeded()
         }) { (Bool) -> Void in
         }

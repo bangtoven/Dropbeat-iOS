@@ -259,6 +259,9 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
                 return
             }
             self.updateDropPlayStatus(DropPlayStatus.Ready)
+                
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.resumePlay, object: nil)
+
             return
         }
         
@@ -349,6 +352,8 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     }
     
     func onDropFinished() {
+        NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.resumePlay, object: nil)
+
         updateDropPlayStatus(DropPlayStatus.Ready)
     }
     

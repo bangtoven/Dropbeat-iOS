@@ -1877,6 +1877,23 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         self.isTabBarPlayerVisible = visible
     }
     
+    override func remotePause() {
+        super.remotePause()
+        showTabBarPlayer(false)
+    }
+    
+    override func resumePlay() {
+        super.resumePlay()
+        if (PlayerContext.currentTrack != nil) {
+            println("resume with current track. show tab bar player")
+            showTabBarPlayer(true)
+            super.playBtnClicked(nil)
+        }
+        else {
+            println("resume without current track")
+        }
+    }
+    
     override func updatePlayView() {
         super.updatePlayView()
         
@@ -1886,17 +1903,21 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
                 showTabBarPlayer(true)
                 self.playPauseButton.enabled = false
                 self.playPauseButton.setImage(UIImage(named: "ic_play_purple.png"), forState: UIControlState.Normal)
+                self.trackInfoLabel.textColor = UIColor.lightGrayColor()
         } else if (PlayerContext.playState == PlayState.PAUSED) {
             showTabBarPlayer(true)
             self.playPauseButton.enabled = true
             self.playPauseButton.setImage(UIImage(named: "ic_play_purple.png"), forState: UIControlState.Normal)
+            self.trackInfoLabel.textColor = UIColor.darkGrayColor()
         } else if (PlayerContext.playState == PlayState.PLAYING) {
             showTabBarPlayer(true)
             self.playPauseButton.enabled = true
             self.playPauseButton.setImage(UIImage(named: "ic_pause_purple.png"), forState: UIControlState.Normal)
+            self.trackInfoLabel.textColor = UIColor.darkGrayColor()
         } else if (PlayerContext.playState == PlayState.STOPPED) {
             showTabBarPlayer(false)
             self.playPauseButton.enabled = false
+            self.trackInfoLabel.textColor = UIColor.lightGrayColor()
         }
     }
     
@@ -1904,16 +1925,9 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         super.updateStatusView()
         
         let defaultText = NSLocalizedString("CHOOSE TRACK", comment:"")
-        if (PlayerContext.playState == PlayState.LOADING ||
-            PlayerContext.playState == PlayState.SWITCHING) {
-                self.trackInfoLabel.text = PlayerContext.currentTrack?.title ?? defaultText
-        } else if (PlayerContext.playState == PlayState.PAUSED) {
-            self.trackInfoLabel.text = PlayerContext.currentTrack?.title ?? defaultText
-        } else if (PlayerContext.playState == PlayState.PLAYING) {
-            self.trackInfoLabel.text = PlayerContext.currentTrack?.title ?? defaultText
-        } else if (PlayerContext.playState == PlayState.STOPPED) {
+        if (PlayerContext.playState == PlayState.STOPPED) {
             self.trackInfoLabel.text = defaultText
-        } else if (PlayerContext.playState == PlayState.BUFFERING) {
+        } else {
             self.trackInfoLabel.text = PlayerContext.currentTrack?.title ?? defaultText
         }
     }
@@ -1933,6 +1947,19 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     
     @IBAction func showPlayerBtnClicked(sender: UIButton) {
         showPlayerView()
+    }
+    
+    @IBAction func showListBtnClicked(sender: UIButton) {
+        var playlist:Playlist?
+        if PlayerContext.currentPlaylistId != nil {
+            playlist = PlayerContext.getPlaylist(PlayerContext.currentPlaylistId)
+        }
+        if playlist == nil {
+            ViewUtils.showToast(self,
+                message: NSLocalizedString("Failed to find playlist", comment:""))
+            return
+        }
+        performSegueWithIdentifier("PlaylistSegue", sender: playlist)
     }
     
     func showPlayerView() {

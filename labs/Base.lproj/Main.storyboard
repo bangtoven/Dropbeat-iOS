@@ -384,7 +384,6 @@
                                 <constraints>
                                     <constraint firstItem="g4s-vl-X4b" firstAttribute="top" secondItem="Oez-Yi-L6o" secondAttribute="bottom" id="2Gu-yX-TMC"/>
                                     <constraint firstItem="g1K-TN-Yvd" firstAttribute="leading" secondItem="RpZ-Io-iXN" secondAttribute="leading" id="Gbr-ma-nlO"/>
-                                    <constraint firstAttribute="height" constant="504" id="Hq7-ah-Vbo"/>
                                     <constraint firstAttribute="trailing" secondItem="Oez-Yi-L6o" secondAttribute="trailing" id="Sjc-Pv-Qua"/>
                                     <constraint firstAttribute="trailing" secondItem="g1K-TN-Yvd" secondAttribute="trailing" id="T0y-VK-nVW"/>
                                     <constraint firstItem="Oez-Yi-L6o" firstAttribute="top" secondItem="g1K-TN-Yvd" secondAttribute="bottom" id="TcW-Za-6HW"/>
@@ -400,6 +399,7 @@
                         <constraints>
                             <constraint firstItem="hYy-YN-AU6" firstAttribute="top" secondItem="RpZ-Io-iXN" secondAttribute="bottom" id="SJY-11-Cpu"/>
                             <constraint firstItem="RpZ-Io-iXN" firstAttribute="leading" secondItem="VyV-8G-yNy" secondAttribute="leading" id="cbI-Dg-KAy"/>
+                            <constraint firstItem="RpZ-Io-iXN" firstAttribute="top" secondItem="huu-cK-XDq" secondAttribute="bottom" id="sDK-9N-Jdc"/>
                             <constraint firstAttribute="trailing" secondItem="RpZ-Io-iXN" secondAttribute="trailing" id="tN2-8m-jik"/>
                         </constraints>
                     </view>
@@ -411,7 +411,6 @@
                     <connections>
                         <outlet property="fakeNavigationBar" destination="g1K-TN-Yvd" id="eG7-bh-dZ1"/>
                         <outlet property="fakeNavigationBarHeightConstraint" destination="WoE-7b-W7u" id="rlf-sj-5Mw"/>
-                        <outlet property="frameHeightConstraint" destination="Hq7-ah-Vbo" id="0qJ-pJ-193"/>
                         <outlet property="likeBtn" destination="f91-bO-JII" id="TGN-nQ-6Vc"/>
                         <outlet property="playPlaylistBtn" destination="QKv-bF-rAB" id="Jd5-ML-Fqm"/>
                         <outlet property="playlistMenuBtn" destination="fGW-rf-gmu" id="AiH-rE-XrF"/>
@@ -1304,9 +1303,9 @@
                                         <color key="trackTintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     </progressView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label Label Label Label Label Label Label Label Label Label Label Label " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ydv-9R-rg4">
-                                        <rect key="frame" x="49" y="10" width="263" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.50196078430000002" green="0.50196078430000002" blue="0.50196078430000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <rect key="frame" x="49" y="12" width="222" height="18"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M6l-LP-dZg" userLabel="Play Pause Button">
@@ -1323,12 +1322,25 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nQC-tb-SEg" userLabel="Show Player Button">
-                                        <rect key="frame" x="41" y="0.0" width="279" height="41"/>
+                                        <rect key="frame" x="41" y="0.0" width="238" height="41"/>
                                         <state key="normal">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="showPlayerBtnClicked:" destination="784-QY-VPr" eventType="touchUpInside" id="AJs-78-Gov"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8PF-Vd-wiS" userLabel="Show list button">
+                                        <rect key="frame" x="279" y="0.0" width="41" height="41"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="41" id="FiN-M2-mqt"/>
+                                            <constraint firstAttribute="height" constant="41" id="JhE-Fn-BUL"/>
+                                        </constraints>
+                                        <state key="normal" image="ic_list_gray_small.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="showListBtnClicked:" destination="784-QY-VPr" eventType="touchUpInside" id="1pS-bm-1HV"/>
                                         </connections>
                                     </button>
                                     <tabBar contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="55h-Jb-Q2z">
@@ -1369,9 +1381,12 @@
                                     <constraint firstItem="55h-Jb-Q2z" firstAttribute="leading" secondItem="jNu-sh-Ld7" secondAttribute="leading" id="1iV-03-L85"/>
                                     <constraint firstAttribute="trailing" secondItem="puK-dK-YI7" secondAttribute="trailing" id="4FU-v8-KvM"/>
                                     <constraint firstAttribute="trailing" secondItem="55h-Jb-Q2z" secondAttribute="trailing" id="8AS-Hy-0Tn"/>
+                                    <constraint firstAttribute="trailing" secondItem="8PF-Vd-wiS" secondAttribute="trailing" id="9FH-79-LHz"/>
+                                    <constraint firstItem="8PF-Vd-wiS" firstAttribute="leading" secondItem="Ydv-9R-rg4" secondAttribute="trailing" constant="8" id="C25-uy-F3Y"/>
                                     <constraint firstAttribute="trailing" secondItem="nQC-tb-SEg" secondAttribute="trailing" id="KhO-aX-84t"/>
                                     <constraint firstItem="M6l-LP-dZg" firstAttribute="top" secondItem="jNu-sh-Ld7" secondAttribute="top" id="REi-rB-od8"/>
                                     <constraint firstItem="Ydv-9R-rg4" firstAttribute="centerY" secondItem="nQC-tb-SEg" secondAttribute="centerY" id="Sbu-qS-dl5"/>
+                                    <constraint firstItem="8PF-Vd-wiS" firstAttribute="leading" secondItem="nQC-tb-SEg" secondAttribute="trailing" id="Ta3-qs-kDw"/>
                                     <constraint firstAttribute="bottom" secondItem="55h-Jb-Q2z" secondAttribute="bottom" id="U2u-4O-ZW0"/>
                                     <constraint firstItem="M6l-LP-dZg" firstAttribute="leading" secondItem="jNu-sh-Ld7" secondAttribute="leading" id="Vre-CI-EtF"/>
                                     <constraint firstAttribute="trailing" secondItem="GaI-Pr-uCL" secondAttribute="trailing" id="Z0c-vR-M8M"/>
@@ -1382,6 +1397,7 @@
                                     <constraint firstItem="GaI-Pr-uCL" firstAttribute="top" secondItem="jNu-sh-Ld7" secondAttribute="top" constant="39" id="eDq-tO-Ss0"/>
                                     <constraint firstItem="M6l-LP-dZg" firstAttribute="top" secondItem="nQC-tb-SEg" secondAttribute="top" id="jBJ-xH-nsY"/>
                                     <constraint firstItem="nQC-tb-SEg" firstAttribute="leading" secondItem="M6l-LP-dZg" secondAttribute="trailing" id="prc-EG-YIk"/>
+                                    <constraint firstItem="8PF-Vd-wiS" firstAttribute="top" secondItem="jNu-sh-Ld7" secondAttribute="top" id="qR8-Hd-l62"/>
                                     <constraint firstItem="puK-dK-YI7" firstAttribute="leading" secondItem="jNu-sh-Ld7" secondAttribute="leading" id="rhn-pj-Odh"/>
                                     <constraint firstAttribute="trailing" secondItem="Ydv-9R-rg4" secondAttribute="trailing" constant="8" id="szJ-7F-e1Z"/>
                                     <constraint firstItem="M6l-LP-dZg" firstAttribute="bottom" secondItem="nQC-tb-SEg" secondAttribute="bottom" id="zS9-X3-BZJ"/>
@@ -1389,7 +1405,9 @@
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
+                                        <exclude reference="KhO-aX-84t"/>
                                         <exclude reference="ZmS-sV-WKJ"/>
+                                        <exclude reference="szJ-7F-e1Z"/>
                                     </mask>
                                 </variation>
                             </view>
@@ -6392,6 +6410,7 @@ and let us know your favorite genre.</string>
         <image name="ic_home.png" width="25" height="25"/>
         <image name="ic_home_gray.png" width="25" height="25"/>
         <image name="ic_hq_off.png" width="105" height="64"/>
+        <image name="ic_list_gray_small.png" width="24" height="24"/>
         <image name="ic_menu_btn_big.png" width="40" height="40"/>
         <image name="ic_nonplaying.png" width="20" height="20"/>
         <image name="ic_pause.png" width="47" height="47"/>
@@ -6417,17 +6436,17 @@ and let us know your favorite genre.</string>
         <image name="sample_cover.png" width="225" height="225"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="FMe-8G-SkH"/>
+        <segue reference="D5z-Jt-wFj"/>
+        <segue reference="kuN-nR-Cfr"/>
         <segue reference="QQw-jC-5zV"/>
         <segue reference="1xR-MJ-eI3"/>
-        <segue reference="HiJ-qO-nKe"/>
         <segue reference="BlK-Xu-UPI"/>
+        <segue reference="HiJ-qO-nKe"/>
         <segue reference="hAY-Br-kOs"/>
         <segue reference="Ph7-jJ-Xhz"/>
-        <segue reference="D5z-Jt-wFj"/>
         <segue reference="LxB-aE-y4C"/>
         <segue reference="Slv-y9-I0B"/>
-        <segue reference="s9L-cp-dOd"/>
+        <segue reference="gMR-UA-hjX"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

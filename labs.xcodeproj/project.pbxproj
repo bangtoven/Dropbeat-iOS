@@ -186,6 +186,12 @@
 		7361FCED1B9F684500444179 /* Channel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCEF1B9F684500444179 /* Channel.storyboard */; };
 		7361FCF21B9F685600444179 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCF41B9F685600444179 /* Profile.storyboard */; };
 		7361FCF71B9F687E00444179 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCF91B9F687E00444179 /* Settings.storyboard */; };
+		7361FD0B1BA060ED00444179 /* RBStoryboardLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 7361FCFF1BA060ED00444179 /* RBStoryboardLink.m */; };
+		7361FD0C1BA060ED00444179 /* RBStoryboardModalSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 7361FD021BA060ED00444179 /* RBStoryboardModalSegue.m */; };
+		7361FD0D1BA060ED00444179 /* RBStoryboardPopoverSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 7361FD041BA060ED00444179 /* RBStoryboardPopoverSegue.m */; };
+		7361FD0E1BA060ED00444179 /* RBStoryboardPushSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 7361FD061BA060ED00444179 /* RBStoryboardPushSegue.m */; };
+		7361FD0F1BA060ED00444179 /* RBStoryboardSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 7361FD081BA060ED00444179 /* RBStoryboardSegue.m */; };
+		7361FD101BA060ED00444179 /* UIViewController+RBStoryboardLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 7361FD0A1BA060ED00444179 /* UIViewController+RBStoryboardLink.m */; };
 		73C7862C1B9DB35F001D2A2E /* ic_play_purple@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73C7862A1B9DB35F001D2A2E /* ic_play_purple@2x.png */; };
 		73C7862D1B9DB35F001D2A2E /* ic_pause_purple@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73C7862B1B9DB35F001D2A2E /* ic_pause_purple@2x.png */; };
 		73C7862F1B9EFB93001D2A2E /* ic_list_gray_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73C7862E1B9EFB93001D2A2E /* ic_list_gray_small@2x.png */; };
@@ -455,6 +461,21 @@
 		7361FCF81B9F687E00444179 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
 		7361FCFB1B9F688000444179 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Settings.strings; sourceTree = "<group>"; };
 		7361FCFD1B9F794300444179 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Profile.strings; sourceTree = "<group>"; };
+		7361FCFE1BA060ED00444179 /* RBStoryboardLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RBStoryboardLink.h; sourceTree = "<group>"; };
+		7361FCFF1BA060ED00444179 /* RBStoryboardLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RBStoryboardLink.m; sourceTree = "<group>"; };
+		7361FD001BA060ED00444179 /* RBStoryboardLinkSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RBStoryboardLinkSource.h; sourceTree = "<group>"; };
+		7361FD011BA060ED00444179 /* RBStoryboardModalSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RBStoryboardModalSegue.h; sourceTree = "<group>"; };
+		7361FD021BA060ED00444179 /* RBStoryboardModalSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RBStoryboardModalSegue.m; sourceTree = "<group>"; };
+		7361FD031BA060ED00444179 /* RBStoryboardPopoverSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RBStoryboardPopoverSegue.h; sourceTree = "<group>"; };
+		7361FD041BA060ED00444179 /* RBStoryboardPopoverSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RBStoryboardPopoverSegue.m; sourceTree = "<group>"; };
+		7361FD051BA060ED00444179 /* RBStoryboardPushSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RBStoryboardPushSegue.h; sourceTree = "<group>"; };
+		7361FD061BA060ED00444179 /* RBStoryboardPushSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RBStoryboardPushSegue.m; sourceTree = "<group>"; };
+		7361FD071BA060ED00444179 /* RBStoryboardSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RBStoryboardSegue.h; sourceTree = "<group>"; };
+		7361FD081BA060ED00444179 /* RBStoryboardSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RBStoryboardSegue.m; sourceTree = "<group>"; };
+		7361FD091BA060ED00444179 /* UIViewController+RBStoryboardLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+RBStoryboardLink.h"; sourceTree = "<group>"; };
+		7361FD0A1BA060ED00444179 /* UIViewController+RBStoryboardLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RBStoryboardLink.m"; sourceTree = "<group>"; };
+		7361FD121BA0611400444179 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		7361FD131BA0611400444179 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		73C7862A1B9DB35F001D2A2E /* ic_play_purple@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_play_purple@2x.png"; sourceTree = "<group>"; };
 		73C7862B1B9DB35F001D2A2E /* ic_pause_purple@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_pause_purple@2x.png"; sourceTree = "<group>"; };
 		73C7862E1B9EFB93001D2A2E /* ic_list_gray_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_list_gray_small@2x.png"; sourceTree = "<group>"; };
@@ -762,6 +783,7 @@
 			children = (
 				58BB0ADB1B12211E00B07279 /* SwiftyJSON.swift */,
 				5853A7E91B0F44560068C6DF /* ScrollPager.swift */,
+				7361FD111BA060F400444179 /* RBStoryboardLink */,
 				585BACF91B85ED9900FE137A /* DateTool */,
 				589413531B83C3F700395AFA /* TPKeyboardAvoiding */,
 				589F0F0A1B6A0DE6000851CC /* MarqueeLabel */,
@@ -871,6 +893,28 @@
 			);
 			name = Resources;
 			path = labs;
+			sourceTree = "<group>";
+		};
+		7361FD111BA060F400444179 /* RBStoryboardLink */ = {
+			isa = PBXGroup;
+			children = (
+				7361FCFE1BA060ED00444179 /* RBStoryboardLink.h */,
+				7361FCFF1BA060ED00444179 /* RBStoryboardLink.m */,
+				7361FD001BA060ED00444179 /* RBStoryboardLinkSource.h */,
+				7361FD011BA060ED00444179 /* RBStoryboardModalSegue.h */,
+				7361FD021BA060ED00444179 /* RBStoryboardModalSegue.m */,
+				7361FD031BA060ED00444179 /* RBStoryboardPopoverSegue.h */,
+				7361FD041BA060ED00444179 /* RBStoryboardPopoverSegue.m */,
+				7361FD051BA060ED00444179 /* RBStoryboardPushSegue.h */,
+				7361FD061BA060ED00444179 /* RBStoryboardPushSegue.m */,
+				7361FD071BA060ED00444179 /* RBStoryboardSegue.h */,
+				7361FD081BA060ED00444179 /* RBStoryboardSegue.m */,
+				7361FD091BA060ED00444179 /* UIViewController+RBStoryboardLink.h */,
+				7361FD0A1BA060ED00444179 /* UIViewController+RBStoryboardLink.m */,
+				7361FD121BA0611400444179 /* LICENSE */,
+				7361FD131BA0611400444179 /* README.md */,
+			);
+			name = RBStoryboardLink;
 			sourceTree = "<group>";
 		};
 		F98F65D2D15412F7828AF298 /* Frameworks */ = {
@@ -1169,16 +1213,21 @@
 				581D4CA01B0A0CCF0036BEBF /* PlaylistTableViewCell.swift in Sources */,
 				585BAD0E1B85ED9900FE137A /* DTError.m in Sources */,
 				588693A01B13B51300566124 /* SDWebImageManager.m in Sources */,
+				7361FD0D1BA060ED00444179 /* RBStoryboardPopoverSegue.m in Sources */,
 				5854C7C81B6EEA8B003A5A2A /* FollowingTableViewCell.swift in Sources */,
+				7361FD0E1BA060ED00444179 /* RBStoryboardPushSegue.m in Sources */,
 				58BB0AEA1B12222C00B07279 /* Request.swift in Sources */,
 				58EAB3DD1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift in Sources */,
 				7361FCE41B9F5E7F00444179 /* EmailSubmitViewController.swift in Sources */,
+				7361FD0F1BA060ED00444179 /* RBStoryboardSegue.m in Sources */,
 				585BAD101B85ED9900FE137A /* DTTimePeriodChain.m in Sources */,
 				586D166E1B0B972400C5147F /* StartupViewController.swift in Sources */,
+				7361FD0C1BA060ED00444179 /* RBStoryboardModalSegue.m in Sources */,
 				5886939B1B13B51300566124 /* SDImageCache.m in Sources */,
 				5886939F1B13B51300566124 /* SDWebImageDownloaderOperation.m in Sources */,
 				5890D61A1B05484A00AAEAE5 /* CenterViewControllers.swift in Sources */,
 				58EAB3DF1B0D11110075304E /* Utils.swift in Sources */,
+				7361FD0B1BA060ED00444179 /* RBStoryboardLink.m in Sources */,
 				58BB0AEB1B12222C00B07279 /* ResponseSerialization.swift in Sources */,
 				582709F71B0A8605003C44DA /* KeychainItemWrapper.swift in Sources */,
 				58BB0B161B12308000B07279 /* BaseViewController.swift in Sources */,
@@ -1233,6 +1282,7 @@
 				5853A7EA1B0F44560068C6DF /* ScrollPager.swift in Sources */,
 				589F0F101B6A0DE7000851CC /* MarqueeLabel.m in Sources */,
 				58946E611B6412E5005B4712 /* ChannelTableViewCell.swift in Sources */,
+				7361FD101BA060ED00444179 /* UIViewController+RBStoryboardLink.m in Sources */,
 				585BAD141B85ED9900FE137A /* NSDate+DateTools.m in Sources */,
 				FCD1DA881B04CCB200F9EA70 /* AppDelegate.swift in Sources */,
 				58C3E7A31B8A40C300822842 /* AddableTrackListViewController.swift in Sources */,

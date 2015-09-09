@@ -405,17 +405,17 @@
         <!--Sign in-->
         <scene sceneID="W3K-AC-Ak8">
             <objects>
-                <viewController storyboardIdentifier="SigninViewController" id="o1U-g9-yCX" customClass="SigninViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="o1U-g9-yCX" customClass="SigninViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3WS-gG-dCm"/>
                         <viewControllerLayoutGuide type="bottom" id="N8Q-it-Pdl"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="b2b-at-e6g">
-                        <rect key="frame" x="0.0" y="64" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GV5-Vd-u4x">
-                                <rect key="frame" x="50" y="104" width="220" height="46"/>
+                                <rect key="frame" x="50" y="40" width="220" height="46"/>
                                 <color key="backgroundColor" red="0.2274509804" green="0.3411764706" blue="0.58431372550000005" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="L0X-9x-AMr"/>
@@ -432,7 +432,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gF3-PM-yQd">
-                                <rect key="frame" x="50" y="170" width="220" height="46"/>
+                                <rect key="frame" x="50" y="106" width="220" height="46"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="46" id="JvZ-Bm-WtR"/>
                                     <constraint firstAttribute="width" constant="220" id="zqW-gh-ZY6"/>
@@ -470,7 +470,7 @@
         <!--Navigation Controller-->
         <scene sceneID="m2o-fl-fmZ">
             <objects>
-                <navigationController id="vqA-1f-Ezm" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="SignInNav" id="vqA-1f-Ezm" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="PhK-dC-bBl">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -597,7 +597,7 @@
         <!--Signup View Control-->
         <scene sceneID="QhM-wB-v60">
             <objects>
-                <viewController storyboardIdentifier="SigniupViewController" id="yxu-lO-mRu" userLabel="Signup View Control" customClass="SignupViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="yxu-lO-mRu" userLabel="Signup View Control" customClass="SignupViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="fG5-EF-8sp"/>
                         <viewControllerLayoutGuide type="bottom" id="vbx-Yi-sbW"/>
@@ -1272,7 +1272,7 @@ PASSWORD</string>
         <!--Navigation Controller-->
         <scene sceneID="e37-iq-fST">
             <objects>
-                <navigationController id="ELy-uw-eHn" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="SignUpNav" id="ELy-uw-eHn" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="E36-Ky-Ku3">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1299,7 +1299,7 @@ PASSWORD</string>
         <image name="next-96.png" width="96" height="96"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="2bs-21-K3o"/>
-        <segue reference="0cz-K0-oaH"/>
+        <segue reference="8t3-qt-1PE"/>
+        <segue reference="lRw-PC-czC"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -36,15 +36,15 @@
 
 /// The name of the storyboard that should be linked.
 /// This should be set in the Interface Builder identity inspector.
-@property (nonatomic, copy) NSString * storyboardName;
+@property (nonatomic, copy) IBInspectable NSString * storyboardName;
 
 /// (Optional) The bundle id of the bundle containing the storyboard to be linked.
 /// This should be set in the Interface Builder identity inspector.
-@property (nonatomic, copy) NSString * storyboardBundleIdentifier;
+@property (nonatomic, copy) IBInspectable NSString * storyboardBundleIdentifier;
 
 /// (Optional) The identifier of the scene to show.
 /// This should be set in the Interface Builder identity inspector.
-@property (nonatomic, copy) NSString * sceneIdentifier;
+@property (nonatomic, copy) IBInspectable NSString * sceneIdentifier;
 
 /// (Optional) Whether the first view controller should have a constraint for
 /// the top layout guide in the storyboard. This should be set in the Interface

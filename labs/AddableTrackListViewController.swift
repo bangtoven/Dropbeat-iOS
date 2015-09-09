@@ -191,7 +191,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     
     func onTrackLikeBtnClicked(track:Track) {
         if (Account.getCachedAccount() == nil) {
-            performSegueWithIdentifier("need_auth", sender: nil)
+            NeedAuthViewController.showNeedAuthViewController(self)
             return
         }
         let progressHud = ViewUtils.showProgress(self, message: nil)
@@ -235,7 +235,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     
     func onTrackAddBtnClicked(track:Track) {
         if (Account.getCachedAccount() == nil) {
-            performSegueWithIdentifier("need_auth", sender: nil)
+            NeedAuthViewController.showNeedAuthViewController(self)
             return
         }
         performSegueWithIdentifier("PlaylistSelectSegue", sender: track)

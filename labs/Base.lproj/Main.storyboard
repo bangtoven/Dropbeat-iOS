@@ -11,7 +11,7 @@
         <!--Playlist Select View Controller-->
         <scene sceneID="e6S-Ju-tJ7">
             <objects>
-                <viewController id="e5t-t0-rLq" customClass="PlaylistSelectViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PlaylistSelect" id="e5t-t0-rLq" customClass="PlaylistSelectViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Xbp-tr-1vV"/>
                         <viewControllerLayoutGuide type="bottom" id="Tyh-JB-yNJ"/>
@@ -166,7 +166,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rnG-HH-G81" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1511" y="-741"/>
+            <point key="canvasLocation" x="1439" y="-387"/>
         </scene>
         <!--Playlist-->
         <scene sceneID="jG7-su-SAl">
@@ -399,7 +399,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZtQ-WG-i8B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1043" y="-741"/>
+            <point key="canvasLocation" x="971" y="-387"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="yGL-1L-Up8">
@@ -656,7 +656,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1511" y="-1931"/>
+            <point key="canvasLocation" x="1439" y="-1243"/>
         </scene>
         <!--Center View Controller-->
         <scene sceneID="DZ7-6O-etK">
@@ -1248,6 +1248,7 @@
                         <outlet property="videoView" destination="5ah-Rp-12s" id="knw-JI-Lhy"/>
                         <segue destination="ATs-9y-TgU" kind="presentation" identifier="PlaylistSegue" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="HiJ-qO-nKe"/>
                         <segue destination="e5t-t0-rLq" kind="presentation" identifier="PlaylistSelectSegue" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="1xR-MJ-eI3"/>
+                        <segue destination="39v-uc-SBt" kind="custom" identifier="hooked" id="Ib7-vJ-eW4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nGc-Mu-1CP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1406,7 +1407,38 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-144" y="-563"/>
+            <point key="canvasLocation" x="-552" y="-387"/>
+        </scene>
+        <!--Storyboard Link-->
+        <scene sceneID="gBU-FV-Ian">
+            <objects>
+                <viewController id="E4T-kl-RSw" customClass="RBStoryboardLink" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="TN3-u1-Ww1"/>
+                        <viewControllerLayoutGuide type="bottom" id="Dti-3n-Co8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="sqT-RX-aN4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="To Profile &gt; FavoriteGenreTutorial" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TbF-gK-3SN">
+                                <rect key="frame" x="26" y="35" width="259" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Profile"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="FavoriteGenreTutorial"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FX0-o0-jqN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-144" y="-387"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="42Q-fE-RHJ">
@@ -1460,6 +1492,7 @@
                     <connections>
                         <segue destination="784-QY-VPr" kind="show" identifier="main" id="254-yK-tl7"/>
                         <segue destination="5fk-r8-cR2" kind="show" identifier="need_email" id="tNb-Yn-A4N"/>
+                        <segue destination="E4T-kl-RSw" kind="custom" identifier="genre_tutorial" customClass="RBStoryboardPushSegue" id="COY-qr-VER"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wan-k8-h9m" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1488,7 +1521,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eqe-ms-7yQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1100" y="-1931"/>
+            <point key="canvasLocation" x="1028" y="-1243"/>
         </scene>
     </scenes>
     <resources>

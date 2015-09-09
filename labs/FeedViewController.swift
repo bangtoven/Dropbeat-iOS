@@ -257,7 +257,7 @@ class FeedViewController: AddableTrackListViewController,
     
     func onManageFollowBtnClicked(sender: FollowingFeedHeaderView) {
         if (Account.getCachedAccount() == nil) {
-            performSegueWithIdentifier("need_auth", sender: nil)
+            NeedAuthViewController.showNeedAuthViewController(self)
             return
         }
         performSegueWithIdentifier("ManageFollowSegue", sender: nil)

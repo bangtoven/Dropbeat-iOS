@@ -217,6 +217,10 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         }
     }
     
+    @IBAction func unwindFromGenreTutorialToStart(sender: UIStoryboardSegue) {
+        println("unwindFromGenreTutorialToStart")
+    }
+    
     func checkFollowingCount(callback:(needAutoFollow:Bool?, error:NSError?) -> Void) {
         Requests.following { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if error != nil {

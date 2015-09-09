@@ -151,7 +151,7 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
             let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)));
             dispatch_after(popTime, dispatch_get_main_queue(), {() -> Void in
                 if self.fromStartup {
-                    self.performSegueWithIdentifier("main", sender: nil)
+                    self.performSegueWithIdentifier("unwindFromGenreTutorialToStart", sender: nil)
                 } else if self.navigationController != nil {
                     self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
                 } else {
@@ -381,7 +381,7 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
                 NSLocalizedString("Cancel", comment:""),
             negativeBtnCallback: { () -> Void in
                 if self.fromStartup {
-                    self.performSegueWithIdentifier("main", sender: nil)
+                    self.performSegueWithIdentifier("unwindFromGenreTutorialToStart", sender: nil)
                 } else {
                     self.dismissViewControllerAnimated(true, completion: nil)
                 }

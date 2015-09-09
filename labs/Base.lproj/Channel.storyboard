@@ -31,7 +31,7 @@
         <!--Channel-->
         <scene sceneID="Cs2-P0-vQq">
             <objects>
-                <viewController storyboardIdentifier="ChannelViewController" id="F8Q-sn-wQV" customClass="ChannelViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="F8Q-sn-wQV" customClass="ChannelViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="aIh-ns-FsN"/>
                         <viewControllerLayoutGuide type="bottom" id="rHN-hc-Uzb"/>
@@ -583,6 +583,7 @@ and find new tracks in the feed!
                         <outlet property="trackTableView" destination="86J-yG-0b2" id="hKF-yV-1er"/>
                         <segue destination="RVI-Fz-UTV" kind="show" identifier="ShowChannelSegue" id="r8q-Ix-YxE"/>
                         <segue destination="o6C-1Z-BQs" kind="show" identifier="BookmarkListSegue" id="EfM-Ig-JTC"/>
+                        <segue destination="4WV-qn-IQg" kind="custom" identifier="PlaylistSelectSegue" customClass="RBStoryboardModalSegue" id="usz-KR-Wk3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zMs-oo-OzY" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -694,7 +695,7 @@ and find new tracks in the feed!
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zfU-cc-4sy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1939" y="-770"/>
+            <point key="canvasLocation" x="1939" y="-716"/>
         </scene>
         <!--Channel-->
         <scene sceneID="doz-Ur-hpx">
@@ -1016,11 +1017,43 @@ and find new tracks in the feed!
                         <outlet property="sectionSelectorWidthConstraint" destination="V6x-JQ-YD4" id="oCk-1c-ObR"/>
                         <outlet property="thumbView" destination="Amh-xO-gUX" id="j80-7I-S54"/>
                         <outlet property="trackTableView" destination="h0l-EB-tUn" id="LUG-dl-yfQ"/>
+                        <segue destination="4WV-qn-IQg" kind="custom" identifier="PlaylistSelectSegue" customClass="RBStoryboardModalSegue" id="UPw-IS-ujt"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LZf-77-pnb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2549" y="-1489"/>
+            <point key="canvasLocation" x="2461" y="-1489"/>
+        </scene>
+        <!--Storyboard Link-->
+        <scene sceneID="29A-xH-XoM">
+            <objects>
+                <viewController id="4WV-qn-IQg" customClass="RBStoryboardLink" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="6q1-Tg-VkC"/>
+                        <viewControllerLayoutGuide type="bottom" id="8AA-mc-lqV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="O1e-yM-lqB">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="PlaylistSelectSegue" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f8f-De-kNX">
+                                <rect key="frame" x="16" y="28" width="152" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Main"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="PlaylistSelect"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tkp-Kp-kkc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2865" y="-672"/>
         </scene>
     </scenes>
     <resources>
@@ -1033,6 +1066,7 @@ and find new tracks in the feed!
         <image name="ic_star.png" width="100" height="100"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="r8q-Ix-YxE"/>
+        <segue reference="Zg4-Do-d82"/>
+        <segue reference="usz-KR-Wk3"/>
     </inferredMetricsTieBreakers>
 </document>

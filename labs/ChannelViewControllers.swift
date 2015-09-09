@@ -603,7 +603,7 @@ class ChannelViewController: AddableTrackListViewController,
     func onBookmarkBtnClicked(sender: ChannelTableViewCell) {
         let indexPath:NSIndexPath = trackTableView.indexPathForCell(sender)!
         if (Account.getCachedAccount() == nil) {
-            performSegueWithIdentifier("need_auth", sender: nil)
+            NeedAuthViewController.showNeedAuthViewController(self)
             return
         }
         var channel = channels[indexPath.row]
@@ -1080,7 +1080,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
     
     @IBAction func onBookmarkBtnClicked(sender: AnyObject) {
         if (Account.getCachedAccount() == nil) {
-            performSegueWithIdentifier("need_auth", sender: nil)
+            NeedAuthViewController.showNeedAuthViewController(self)
             return
         }
         
@@ -1374,7 +1374,7 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
     func onBookmarkBtnClicked(sender: ChannelTableViewCell) {
         let indexPath:NSIndexPath = tableView.indexPathForCell(sender)!
         if (Account.getCachedAccount() == nil) {
-            performSegueWithIdentifier("need_auth", sender: nil)
+            NeedAuthViewController.showNeedAuthViewController(self)
             return
         }
         var channel = bookmarkedChannels[indexPath.row]

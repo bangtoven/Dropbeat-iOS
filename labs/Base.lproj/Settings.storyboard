@@ -9,7 +9,7 @@
         <!--Navigation Controller-->
         <scene sceneID="C2M-9U-55A">
             <objects>
-                <navigationController storyboardIdentifier="SettingsNavigationController" id="wrH-6K-TL6" sceneMemberID="viewController">
+                <navigationController id="wrH-6K-TL6" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="OEY-hf-yf0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -383,7 +383,7 @@
         <!--Navigation Controller-->
         <scene sceneID="JXC-Nz-xnF">
             <objects>
-                <navigationController id="6zS-Rs-xYH" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="AccountRequired" id="6zS-Rs-xYH" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="ren-db-mNc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

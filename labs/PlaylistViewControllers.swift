@@ -836,7 +836,7 @@ class PlaylistViewController: BaseViewController,
     }
     
     func showSignin() {
-        performSegueWithIdentifier("need_auth", sender: nil)
+        NeedAuthViewController.showNeedAuthViewController(self)
     }
     
     func updateLikeBtn() {

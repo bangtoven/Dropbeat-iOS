@@ -10,6 +10,12 @@ import UIKit
 
 class NeedAuthViewController: BaseViewController {
     
+    class func showNeedAuthViewController(from: UIViewController!) {
+        let storyboard: UIStoryboard = UIStoryboard(name: "Settings", bundle: nil)
+        let vc: UINavigationController = storyboard.instantiateViewControllerWithIdentifier("AccountRequired") as! UINavigationController
+        from.presentViewController(vc, animated: true, completion: nil)
+    }
+    
     @IBOutlet weak var signinBtn: UIButton!
     @IBOutlet weak var signupBtn: UIButton!
     override func viewDidLoad() {

@@ -826,7 +826,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             return
         }
         if (Account.getCachedAccount() == nil) {
-            performSegueWithIdentifier("need_auth", sender: nil)
+            NeedAuthViewController.showNeedAuthViewController(self)
+//            NeedAuthViewController.showNeedAuthViewController(self)
             return
         }
         if PlayerContext.currentTrack!.isLiked {
@@ -999,7 +1000,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     
     func onAddToPlaylistBtnClicked(track:Track) {
         if (Account.getCachedAccount() == nil) {
-            performSegueWithIdentifier("need_auth", sender: nil)
+            NeedAuthViewController.showNeedAuthViewController(self)
             return
         }
         performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
@@ -1727,36 +1728,23 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         if !forceUpdate && currentMenu == type {
             return
         }
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         switch(type) {
         case .FEED:
-            activeViewController = mainStoryboard
-                .instantiateViewControllerWithIdentifier("FeedNavigationController")
-                as? UIViewController
+            activeViewController = UIStoryboard(name: "Feed", bundle: nil).instantiateInitialViewController() as? UIViewController
             break
         case .CHANNEL:
-            activeViewController = mainStoryboard
-                .instantiateViewControllerWithIdentifier("ChannelNavigationController")
-                as? UIViewController
+            activeViewController = UIStoryboard(name: "Channel", bundle: nil).instantiateInitialViewController() as? UIViewController
             break
         case .SEARCH:
-            activeViewController = mainStoryboard
+            activeViewController = UIStoryboard(name: "Main", bundle: nil)
                 .instantiateViewControllerWithIdentifier("SearchNavigationController")
                 as? UIViewController
             break
         case .PROFILE:
             if Account.getCachedAccount() == nil {
-//                performSegueWithIdentifier("need_auth", sender: nil)
-//                let lastTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
-//                tabBar.selectedItem = lastTab
-//                break
-                activeViewController = mainStoryboard
-                    .instantiateViewControllerWithIdentifier("SettingsNavigationController")
-                    as? UIViewController
+                activeViewController = UIStoryboard(name: "Settings", bundle: nil).instantiateInitialViewController() as? UIViewController
             } else {
-                activeViewController = mainStoryboard
-                    .instantiateViewControllerWithIdentifier("ProfileNavigationController")
-                    as? UIViewController
+                activeViewController = UIStoryboard(name: "Profile", bundle: nil).instantiateInitialViewController() as? UIViewController
             }
             break
         case .PLAYER:
@@ -1999,10 +1987,6 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             self.view.layoutIfNeeded()
         }) { (Bool) -> Void in
         }
-    }
-    
-    func showSigninView() {
-        performSegueWithIdentifier("need_auth", sender: nil)
     }
     
     private func removeInactiveViewController(inactiveViewController:UIViewController?) {

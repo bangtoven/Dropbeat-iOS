@@ -162,11 +162,12 @@
                         <outlet property="shuffleBtn" destination="eXx-dF-j8n" id="Cdr-P1-P43"/>
                         <outlet property="tableView" destination="aAB-jg-zfK" id="nua-iY-pFj"/>
                         <outlet property="tracksCountView" destination="Nr1-Vt-KQF" id="avB-V0-iYZ"/>
+                        <segue destination="bog-J4-8E9" kind="custom" identifier="PlaylistSelectSegue" customClass="RBStoryboardModalSegue" id="r59-r6-ZjW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wNe-4e-ak8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-650" y="-934"/>
+            <point key="canvasLocation" x="-128" y="-1768"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Znd-PN-RHW">
@@ -354,7 +355,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-1103" y="-934"/>
+            <point key="canvasLocation" x="-650" y="-1010"/>
         </scene>
         <!--Profile-->
         <scene sceneID="PfI-sR-r6l">
@@ -622,6 +623,7 @@
                                         <connections>
                                             <outlet property="nameView" destination="WPA-jC-8fq" id="NvM-Wf-gUn"/>
                                             <outlet property="trackCount" destination="RHS-ut-FFI" id="IN8-CX-RLu"/>
+                                            <segue destination="k4A-dx-tOA" kind="custom" identifier="PlaylistSegue" customClass="RBStoryboardPushSegue" id="zs1-pT-EFq"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -682,11 +684,11 @@
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="To Settings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="490-g3-3AJ">
                                 <rect key="frame" x="16" y="20" width="86" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <userDefinedRuntimeAttributes>
@@ -696,7 +698,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="t9q-us-YlT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-118" y="-1768"/>
+            <point key="canvasLocation" x="-1072" y="-1010"/>
         </scene>
         <!--Favorite Genre Tutorial View Controller-->
         <scene sceneID="yvj-Ff-f6b">
@@ -924,7 +926,7 @@ click below to discover your favorites</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="taZ-RV-bxf" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="jxl-wD-jQ0" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="271" y="-934"/>
+            <point key="canvasLocation" x="290" y="-2439"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Wfr-7o-u4u">
@@ -945,7 +947,7 @@ click below to discover your favorites</string>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fow-6q-1TE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-147" y="-934"/>
+            <point key="canvasLocation" x="-128" y="-2439"/>
         </scene>
         <!--Favor Discovery-->
         <scene sceneID="m6k-wn-uu8">
@@ -1192,7 +1194,69 @@ and let us know your favorite genre.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fvx-ud-zqF" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="6NC-LC-xWJ" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="694" y="-934"/>
+            <point key="canvasLocation" x="713" y="-2439"/>
+        </scene>
+        <!--Storyboard Link-->
+        <scene sceneID="iCu-mF-XTQ">
+            <objects>
+                <viewController id="bog-J4-8E9" customClass="RBStoryboardLink" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Im4-lq-5Vr"/>
+                        <viewControllerLayoutGuide type="bottom" id="w4E-Jv-hq9"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ppP-fY-Qmq">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="PlaylistSelectSegue" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3Q2-YZ-mif">
+                                <rect key="frame" x="16" y="28" width="152" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Main"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="PlaylistSelect"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kLP-TS-LBF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="290" y="-1768"/>
+        </scene>
+        <!--Storyboard Link-->
+        <scene sceneID="ngn-ze-T84">
+            <objects>
+                <viewController id="k4A-dx-tOA" customClass="RBStoryboardLink" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="aE1-bm-dQk"/>
+                        <viewControllerLayoutGuide type="bottom" id="fnE-wQ-bf8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ys9-3c-B5G">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Show Playlist" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p8d-M0-Ddp">
+                                <rect key="frame" x="16" y="20" width="103" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="ShowPlaylist"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Main"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jUz-8O-M9E" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-128" y="-1010"/>
         </scene>
     </scenes>
     <resources>

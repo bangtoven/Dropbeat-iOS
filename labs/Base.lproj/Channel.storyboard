@@ -9,7 +9,7 @@
         <!--Navigation Controller-->
         <scene sceneID="KEu-6J-vog">
             <objects>
-                <navigationController storyboardIdentifier="ChannelNavigationController" id="7ym-3o-eX2" sceneMemberID="viewController">
+                <navigationController id="7ym-3o-eX2" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="qfB-pk-je6">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -768,7 +768,7 @@ and find new tracks in the feed!
         <!--Channel-->
         <scene sceneID="doz-Ur-hpx">
             <objects>
-                <viewController storyboardIdentifier="ChannelDetailViewController" automaticallyAdjustsScrollViewInsets="NO" id="RVI-Fz-UTV" customClass="ChannelDetailViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="RVI-Fz-UTV" customClass="ChannelDetailViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1cO-c3-Awv"/>
                         <viewControllerLayoutGuide type="bottom" id="HcV-jW-FCA"/>
@@ -1134,7 +1134,7 @@ and find new tracks in the feed!
         <image name="ic_star.png" width="100" height="100"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="r8q-Ix-YxE"/>
         <segue reference="usz-KR-Wk3"/>
+        <segue reference="Zg4-Do-d82"/>
     </inferredMetricsTieBreakers>
 </document>

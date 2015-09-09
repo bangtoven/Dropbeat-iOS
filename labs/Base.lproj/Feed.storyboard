@@ -32,7 +32,7 @@
         <!--Feed View Controller-->
         <scene sceneID="kuL-X5-dwd">
             <objects>
-                <viewController storyboardIdentifier="FeedViewController" automaticallyAdjustsScrollViewInsets="NO" id="iBA-aE-55u" customClass="FeedViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="iBA-aE-55u" customClass="FeedViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="K0i-IN-wGn"/>
                         <viewControllerLayoutGuide type="bottom" id="zAy-DT-AHo"/>

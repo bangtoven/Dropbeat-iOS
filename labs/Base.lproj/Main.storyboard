@@ -166,12 +166,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rnG-HH-G81" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1439" y="-387"/>
+            <point key="canvasLocation" x="1355" y="-387"/>
         </scene>
         <!--Playlist-->
         <scene sceneID="jG7-su-SAl">
             <objects>
-                <viewController storyboardIdentifier="PlaylistViewController" id="ATs-9y-TgU" customClass="PlaylistViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ShowPlaylist" id="ATs-9y-TgU" customClass="PlaylistViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="huu-cK-XDq"/>
                         <viewControllerLayoutGuide type="bottom" id="hYy-YN-AU6"/>
@@ -399,12 +399,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZtQ-WG-i8B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="971" y="-387"/>
+            <point key="canvasLocation" x="887" y="-387"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="yGL-1L-Up8">
             <objects>
-                <viewController storyboardIdentifier="SearchViewController" automaticallyAdjustsScrollViewInsets="NO" id="Bcu-6f-PCt" customClass="SearchViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="Bcu-6f-PCt" customClass="SearchViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1ug-Ve-nGk"/>
                         <viewControllerLayoutGuide type="bottom" id="Btp-Vb-WVV"/>
@@ -656,7 +656,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1439" y="-1243"/>
+            <point key="canvasLocation" x="1355" y="-1243"/>
         </scene>
         <!--Center View Controller-->
         <scene sceneID="DZ7-6O-etK">
@@ -1464,7 +1464,7 @@
         <!--Startup View Controller-->
         <scene sceneID="6Fb-VE-9E5">
             <objects>
-                <viewController storyboardIdentifier="StartupViewController" id="ejL-By-Wwd" customClass="StartupViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ejL-By-Wwd" customClass="StartupViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="kTl-pP-O95"/>
                         <viewControllerLayoutGuide type="bottom" id="Xsf-RH-yo4"/>
@@ -1521,7 +1521,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eqe-ms-7yQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1028" y="-1243"/>
+            <point key="canvasLocation" x="944" y="-1243"/>
         </scene>
     </scenes>
     <resources>
@@ -1561,7 +1561,7 @@
         <image name="player_bg.png" width="817" height="1079"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Qeg-fn-nRN"/>
+        <segue reference="U4e-rv-WDI"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
 </document>

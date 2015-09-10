@@ -14,9 +14,34 @@
 			<key>orderHint</key>
 			<integer>5</integer>
 		</dict>
+		<key>playground.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>7</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>7349F70D1BA1ABB1006E9ABF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>7349F7211BA1ABB1006E9ABF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>73F5EB961BA1B1E600A925F0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>73F5EBAA1BA1B1E600A925F0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>FCD1DA811B04CCB200F9EA70</key>
 		<dict>
 			<key>primary</key>

@@ -1954,7 +1954,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         isPlayerVisible = true
         setNeedsStatusBarAppearanceUpdate()
         self.view.layoutIfNeeded()
-        UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
 //            self.containerTopConstraint.constant = 3 - self.containerHeightConstraint.constant
 
             let statusBarHeight:CGFloat = 20.0
@@ -1967,6 +1967,8 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             self.tabBarBottomConstraint.constant = -1 * self.tabBarContainerView.frame.height
             self.tabBarContainerView.alpha = 0.0
             self.view.layoutIfNeeded()
+            
+            self.playerView.alpha = 1.0
         }) { (Bool) -> Void in
         }
     }
@@ -1976,7 +1978,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         
         isPlayerVisible = false
         setNeedsStatusBarAppearanceUpdate()
-        UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
 
             let statusBarHeight:CGFloat = 20.0
             self.containerBottomConstraint.constant = self.tabBarContainerView.frame.height
@@ -1985,6 +1987,8 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             self.tabBarBottomConstraint.constant = 0
             self.tabBarContainerView.alpha = 1.0
             self.view.layoutIfNeeded()
+            
+            self.playerView.alpha = 0.0
         }) { (Bool) -> Void in
         }
     }

@@ -1659,18 +1659,19 @@ class Account {
         }
     }
     
-    static private var account:Account?
+    static var account:Account?
     
-    static func signout() {
-        let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
-        keychainItemWrapper.resetKeychain()
-        Account.account = nil
-        let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        appDelegate.account = nil
-        PlayerViewController.sharedInstance!.resignObservers()
-        var navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
-        navController.popToRootViewControllerAnimated(false)
-    }
+//    -> SettingsViewController > onSignoutBtnClicked()
+//    static func signout() {
+//        let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
+//        keychainItemWrapper.resetKeychain()
+//        Account.account = nil
+//        let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+//        appDelegate.account = nil
+//        PlayerViewController.sharedInstance!.resignObservers()
+//        var navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
+//        navController.popToRootViewControllerAnimated(false)
+//    }
     
     static func getCachedAccount() -> Account? {
         return account

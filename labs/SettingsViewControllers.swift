@@ -61,7 +61,16 @@ class SettingsViewController: UITableViewController {
             message: NSLocalizedString("Are you sure you want to sign out?", comment:""),
                 positiveBtnText: NSLocalizedString("Sign out", comment:""), positiveBtnCallback: { () -> Void in
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.appSignout, object: nil)
-            Account.signout()
+                    
+//            Account.signout()
+                    let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
+                    keychainItemWrapper.resetKeychain()
+                    Account.account = nil
+                    let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                    appDelegate.account = nil
+                    PlayerViewController.sharedInstance!.resignObservers()
+                    var navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
+                    navController.popToRootViewControllerAnimated(false)
         })
     }
     

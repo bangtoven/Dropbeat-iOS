@@ -575,7 +575,7 @@ class ChannelViewController: AddableTrackListViewController,
     }
     
     @IBAction func onFindChannelBtnClicked(sender: AnyObject) {
-        pager.setSelectedIndex(1, animated: true, moveScrollView: true)
+        pager.setSelectedIndex(1, animated: true)
         scrollPager(pager, changedIndex: 1)
     }
     
@@ -898,6 +898,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
     }
     
     func loadChannel() {
+        self.channelInfoView.hidden = true
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("loading channel info..", comment:""))
         Requests.getChannelDetail(channelUid!, respCb: {
                 (req:NSURLRequest, resp: NSHTTPURLResponse?, result: AnyObject?, error:NSError?) -> Void in

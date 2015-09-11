@@ -203,7 +203,9 @@ class PlaylistViewController: BaseViewController,
                     btnText: NSLocalizedString("Confirm", comment:""))
                 return
             }
-            var playlist:Playlist? = Playlist.fromJson(res["playlist"].rawValue)
+
+            var playlist:Playlist? = Playlist.parsePlaylist(res.rawValue, key: "playlist")
+
             if (playlist == nil) {
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to fetch", comment:""),
@@ -764,8 +766,7 @@ class PlaylistViewController: BaseViewController,
                 return
             }
             
-            let parser = Parser()
-            let importedPlaylist:Playlist? = parser.parsePlaylist(result!)
+            let importedPlaylist:Playlist? = Playlist.parsePlaylist(result!)
             if importedPlaylist == nil {
                 callback(playlist:nil, error: NSError(domain: "importPlaylist", code: 0, userInfo: nil))
                 return
@@ -984,7 +985,7 @@ class PlaylistSelectViewController: BaseViewController,
                 }, negativeBtnText: NSLocalizedString("Cancel", comment:""))
                 return
             }
-            let playlists = Parser().parsePlaylists(result!).reverse()
+            let playlists = Playlist.parsePlaylists(result!).reverse()
             if (playlists.count == 0) {
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to fetch playlists", comment:""),

@@ -416,8 +416,7 @@ class ChannelViewController: AddableTrackListViewController,
                 return
             }
             
-            let parser = Parser()
-            let genreList = parser.parseGenre(result!)
+            let genreList = GenreList.parseGenre(result!)
             if !genreList.success {
                 callback(error:NSError(domain: "initGenre", code:0, userInfo:nil))
                 return
@@ -536,7 +535,7 @@ class ChannelViewController: AddableTrackListViewController,
                 return
             }
             self.channels.removeAll(keepCapacity: false)
-            var channels = Channel.fromListJson(result!, key: "data")
+            var channels = Channel.parseChannelList(result!)
             if initialLoad {
                 for channel in channels {
                     self.allChannels[channel.uid!] = channel
@@ -575,7 +574,7 @@ class ChannelViewController: AddableTrackListViewController,
     }
     
     @IBAction func onFindChannelBtnClicked(sender: AnyObject) {
-        pager.setSelectedIndex(1, animated: true, moveScrollView: true)
+        pager.setSelectedIndex(1, animated: true)
         scrollPager(pager, changedIndex: 1)
     }
     
@@ -898,6 +897,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
     }
     
     func loadChannel() {
+        self.channelInfoView.hidden = true
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("loading channel info..", comment:""))
         Requests.getChannelDetail(channelUid!, respCb: {
                 (req:NSURLRequest, resp: NSHTTPURLResponse?, result: AnyObject?, error:NSError?) -> Void in
@@ -915,7 +915,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
                 return
             }
             
-            self.channel = Channel.fromDetailJson(result!, key: "data")
+            self.channel = Channel.parseChannel(result!)
             if (self.channel == nil) {
                 var message = NSLocalizedString("Failed to fetch channel info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)

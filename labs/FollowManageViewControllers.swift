@@ -140,8 +140,7 @@ class FollowManageViewController: BaseViewController,
                 return
             }
             
-            let parser = Parser()
-            let info = parser.parseFollowing(result!)
+            let info = FollowingInfo.parseFollowing(result!)
             if !info.success {
                 var message = NSLocalizedString("Failed to load following info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
@@ -289,8 +288,7 @@ class FollowSearchViewController: BaseViewController,
                 return
             }
             
-            let parser = Parser()
-            let info = parser.parseSearchArtist(result!)
+            let info = SearchArtist.parseSearchArtist(result!)
             if !info.success {
                 var message = NSLocalizedString("Failed to load following info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
@@ -328,8 +326,7 @@ class FollowSearchViewController: BaseViewController,
                 return
             }
             
-            let parser = Parser()
-            let info = parser.parseFollowing(result!)
+            let info = FollowingInfo.parseFollowing(result!)
             if !info.success {
                 var message = NSLocalizedString("Failed to load following info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)

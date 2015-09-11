@@ -344,8 +344,7 @@ class SearchViewController: AddableTrackListViewController,
                 self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
                 return
             }
-            let parser = Parser()
-            self.searchResult = parser.parseSearch(result!)
+            self.searchResult = Search.parseSearch(result!)
             
             
             // clear sectionedTracks

@@ -292,8 +292,7 @@ class FeedViewController: AddableTrackListViewController,
                 return
             }
             
-            let parser = Parser()
-            let genreList = parser.parseGenre(result!)
+            let genreList = GenreList.parseGenre(result!)
             if !genreList.success {
                 callback(error:NSError(domain: "initGenre", code:0, userInfo:nil))
                 return
@@ -902,11 +901,10 @@ class FeedViewController: AddableTrackListViewController,
                 return
             }
             
-            let parser = Parser()
             var resultTracks:[Track]!
             
             if count(self.selectedGenre!.key) == 0 {
-                let streamTrending = parser.parseStreamTrending(result!)
+                let streamTrending = StreamTrending.parseStreamTrending(result!)
                 if !streamTrending.success {
                     var message = NSLocalizedString("Failed to load trending.", comment:"")
                     ViewUtils.showNoticeAlert(self,
@@ -915,7 +913,7 @@ class FeedViewController: AddableTrackListViewController,
                 }
                 resultTracks = streamTrending.results
             } else {
-                let beatportTrending = parser.parseStreamBeatportTrending(result!)
+                let beatportTrending = StreamBeatportTrending.parseStreamBeatportTrending(result!)
                 if !beatportTrending.success {
                     var message = NSLocalizedString("Failed to load trending.", comment:"")
                     ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
@@ -978,8 +976,7 @@ class FeedViewController: AddableTrackListViewController,
                 return
             }
             
-            var parser:Parser = Parser()
-            var chart = parser.parseBeatportChart(result!)
+            var chart = BeatportChart.parseBeatportChart(result!)
             
             if !chart.success {
                 var message = NSLocalizedString("Failed to load chart.", comment:"")
@@ -1010,8 +1007,7 @@ class FeedViewController: AddableTrackListViewController,
                 return
             }
             
-            let parser = Parser()
-            let info = parser.parseFollowing(result!)
+            let info = FollowingInfo.parseFollowing(result!)
             if !info.success {
                 callback(following: nil,
                     error: NSError(domain: NSLocalizedString("loadFollowingList", comment:""), code:0, userInfo: nil))
@@ -1057,8 +1053,7 @@ class FeedViewController: AddableTrackListViewController,
             }
             
             
-            let parser = Parser()
-            let streamFollowing = parser.parseStreamFollowing(result!)
+            let streamFollowing = StreamFollowing.parseStreamFollowing(result!)
             if !streamFollowing.success {
                 var message = NSLocalizedString("Failed to load following feed.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
@@ -1118,8 +1113,7 @@ class FeedViewController: AddableTrackListViewController,
             }
             
             
-            let parser = Parser()
-            let streamNew = parser.parseStreamNew(result!)
+            let streamNew = StreamNew.parseStreamNew(result!)
             if !streamNew.success {
                 var message = NSLocalizedString("Failed to load new release.", comment:"")
                 ViewUtils.showNoticeAlert(self,
@@ -1175,8 +1169,7 @@ class FeedViewController: AddableTrackListViewController,
             }
             
             
-            let parser = Parser()
-            let streamUserGroup = parser.parseStreamFriend(result!)
+            let streamUserGroup = StreamFriend.parseStreamFriend(result!)
             if !streamUserGroup.success {
                 var message = NSLocalizedString("Failed to load friend feed.", comment:"")
                 ViewUtils.showNoticeAlert(self,

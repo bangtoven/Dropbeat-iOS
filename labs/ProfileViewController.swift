@@ -230,7 +230,7 @@ UITableViewDelegate, UITableViewDataSource {
             
             var genreResult:GenreList?
             if result != nil {
-                genreResult = Parser().parseGenre(result!)
+                genreResult = GenreList.parseGenre(result!)
             }
             if error != nil || result == nil ||
                 (genreResult != nil && !genreResult!.success) {
@@ -258,7 +258,7 @@ UITableViewDelegate, UITableViewDataSource {
                     }, negativeBtnText: NSLocalizedString("Cancel", comment:""))
                 return
             }
-            let playlists = Parser().parsePlaylists(result!).reverse()
+            let playlists = Playlist.parsePlaylists(result!).reverse()
             if playlists.count == 0 {
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch playlists", comment:""), message: error!.description)
                 return

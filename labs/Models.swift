@@ -8,38 +8,93 @@
 
 import UIKit
 
+//\b(.*): (.*)
+//$1 <- map["$1"]
+
 class User {
     var id: String
     var email: String
     var firstName: String
     var lastName: String
+    var nickname: String
     var fbId: String?
-    var nickname:String
+    var num_tracks: Int
+    var num_following: Int
+    var num_followers: Int
+    var description: String
+    var profile_image: String
+    var resource_name: String
+    var tracks: [Track] = []
     
-    init(id: String, email: String, firstName: String, lastName: String,
-            nickname:String, fbId: String?) {
+//    required init?(_ map: Map){
+//        
+//    }
+//    
+//    // Mappable
+//    func mapping(map: Map) {
+//        id              <- map["id"]
+//        email           <- map["email"]
+//        firstName       <- map["firstName"]
+//        lastName        <- map["lastName"]
+//        fbId            <- map["fbId"]
+//        nickname        <- map["nickname"]
+//        num_tracks      <- map["num_tracks"]
+//        num_following   <- map["num_following"]
+//        num_followers   <- map["num_followers"]
+//        description     <- map["description"]
+//        profile_image   <- map["profile_image"]
+//        resource_name   <- map["resource_name"]
+//    }
+    
+    init(id: String, email: String, firstName: String, lastName: String, nickname:String, fbId: String?, num_tracks: Int, num_following: Int, num_followers: Int, description: String,profile_image: String, resource_name: String) {
         self.id = id
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
-        self.fbId = fbId
         self.nickname = nickname
+        self.fbId = fbId
+        self.num_tracks = num_tracks
+        self.num_following = num_following
+        self.num_followers = num_followers
+        self.description = description
+        self.profile_image = profile_image
+        self.resource_name = resource_name
     }
     
-    static private func parseUser(data: AnyObject) -> User {
+    static func parseUser(data: AnyObject, key: String = "user", secondKey: String?=nil) -> User {
         var json = JSON(data)
-        var fbId:String?
-        if json["fb_id"].string != nil && count(json["fb_id"].stringValue) > 0 {
-            fbId = json["fb_id"].stringValue
+        var userJson: JSON
+        if (secondKey != nil) {
+            userJson = json[key][secondKey!]
+        } else {
+            userJson = json[key]
         }
-        return User(
-                id: json["id"].stringValue,
-                email: json["email"].stringValue,
-                firstName: json["firstName"].stringValue,
-                lastName: json["lastName"].stringValue,
-                nickname: json["nickname"].stringValue,
-                fbId: fbId
+        
+        var fbId:String?
+        if userJson["fb_id"].string != nil && count(userJson["fb_id"].stringValue) > 0 {
+            fbId = userJson["fb_id"].stringValue
+        }
+        var user: User = User(
+            id: userJson["id"].stringValue,
+            email: userJson["email"].stringValue,
+            firstName: userJson["firstName"].stringValue,
+            lastName: userJson["lastName"].stringValue,
+            nickname: userJson["nickname"].stringValue,
+            fbId: fbId,
+            num_tracks: userJson["num_tracks"].intValue,
+            num_following: userJson["num_following"].intValue,
+            num_followers: userJson["num_followers"].intValue,
+            description: userJson["description"].stringValue,
+            profile_image: userJson["profile_image"].stringValue,
+            resource_name: userJson["resource_name"].stringValue
         )
+        
+        var tracksJson = json[key]["tracks"]
+        if tracksJson != nil {
+            user.tracks = Track.parseTracks(data, key: "data", secondKey: "tracks")
+        }
+        
+        return user
     }
 }
 
@@ -101,9 +156,15 @@ class Channel {
         return channels
     }
     
-    static func parseChannel(data: AnyObject) -> Channel? {
+    static func parseChannel(data: AnyObject, key: String = "data", secondKey: String?=nil) -> Channel? {
         var json = JSON(data)
-        var detail = json["data"]
+        var detail: JSON
+        if secondKey != nil {
+            detail = json[key][secondKey!]
+        } else {
+            detail = json[key]
+        }
+        
         if (detail["channel_name"].error != nil) {
             return nil
         }
@@ -196,7 +257,7 @@ class Artist {
                 callback(tracks: [], error: nil)
                 return
             }
-            self.sectionedTracks[SearchSections.RELEVANT] = Search.parseTracks(result!, key: "data", secondKey:"tracks")
+            self.sectionedTracks[SearchSections.RELEVANT] = Track.parseTracks(result!, key: "data", secondKey:"tracks")
             callback(tracks:self.sectionedTracks[SearchSections.RELEVANT], error:nil)
         })
     }
@@ -224,7 +285,7 @@ class Artist {
                 callback(tracks: [], error: nil)
                 return
             }
-            self.sectionedTracks[SearchSections.LIVESET] = Search.parseTracks(result!, key: "data")
+            self.sectionedTracks[SearchSections.LIVESET] = Track.parseTracks(result!, key: "data")
             callback(tracks:self.sectionedTracks[SearchSections.LIVESET], error:nil)
         })
     }
@@ -379,79 +440,6 @@ class Artist {
             search.sectionedTracks[sectionName]!.append(track)
         }
         return search
-    }
-    
-    static func parseTracks(data: AnyObject, key: String, secondKey: String?=nil) -> [Track] {
-        var tracks = [Track]()
-        var t = JSON(data)
-        var tracksObj:JSON
-        if (!t["success"].boolValue || t[key] == nil) {
-            return []
-        }
-        if (secondKey != nil) {
-            tracksObj = t[key][secondKey!]
-        } else {
-            tracksObj = t[key]
-        }
-        for (idx:String, s:JSON) in tracksObj {
-            var id: AnyObject
-            if s["id"].string == nil {
-                if s["id"].int != nil {
-                    id = String(s["id"].int!)
-                } else {
-                    continue
-                }
-            } else {
-                id = s["id"].string!
-            }
-            
-            var track = Track(
-                id: id as! String,
-                title: s["title"].stringValue,
-                type: s["type"].stringValue,
-                tag: s["tag"].stringValue
-            )
-            
-            var dropObj = s["drop"]
-            if dropObj != nil && dropObj["dref"].string != nil &&
-                count(dropObj["dref"].stringValue) > 0 &&
-                dropObj["type"].string != nil {
-                    track.drop = Drop(
-                        dref: dropObj["dref"].stringValue,
-                        type: dropObj["type"].stringValue,
-                        when: dropObj["when"].int)
-            }
-            
-            var dref = s["dref"]
-            if dref.error == nil {
-                track.dref = s["dref"].stringValue
-            }
-            
-            var tag = s["tag"]
-            if tag.error == nil {
-                track.tag = s["tag"].stringValue
-            }
-            
-            var topMatch = s["top_match"]
-            if topMatch.error == nil {
-                track.topMatch = s["top_match"].boolValue ?? false
-            }
-            
-            if (track.type == "youtube") {
-                track.thumbnailUrl = "http://img.youtube.com/vi/\(track.id)/mqdefault.jpg"
-            } else {
-                var artwork = s["artwork"]
-                if artwork.error == nil {
-                    track.thumbnailUrl = s["artwork"].stringValue
-                }
-            }
-            
-            if (track.tag == nil) {
-                continue
-            }
-            tracks.append(track)
-        }
-        return tracks
     }
 }
 
@@ -635,7 +623,7 @@ class Search {
                 callback(tracks: [], error: nil)
                 return
             }
-            self.sectionedTracks[SearchSections.RELEVANT] = Search.parseTracks(result!, key: "data", secondKey:"tracks")
+            self.sectionedTracks[SearchSections.RELEVANT] = Track.parseTracks(result!, key: "data", secondKey:"tracks")
             callback(tracks:self.sectionedTracks[SearchSections.RELEVANT], error:nil)
         })
     }
@@ -663,7 +651,7 @@ class Search {
                 callback(tracks: [], error: nil)
                 return
             }
-            self.sectionedTracks[SearchSections.LIVESET] = Search.parseTracks(result!, key: "data")
+            self.sectionedTracks[SearchSections.LIVESET] = Track.parseTracks(result!, key: "data")
             callback(tracks:self.sectionedTracks[SearchSections.LIVESET], error:nil)
         })
     }
@@ -817,79 +805,6 @@ class Search {
             search.sectionedTracks[sectionName]!.append(track)
         }
         return search
-    }
-    
-    static func parseTracks(data: AnyObject, key: String, secondKey: String?=nil) -> [Track] {
-        var tracks = [Track]()
-        var t = JSON(data)
-        var tracksObj:JSON
-        if (!t["success"].boolValue || t[key] == nil) {
-            return []
-        }
-        if (secondKey != nil) {
-            tracksObj = t[key][secondKey!]
-        } else {
-            tracksObj = t[key]
-        }
-        for (idx:String, s:JSON) in tracksObj {
-            var id: AnyObject
-            if s["id"].string == nil {
-                if s["id"].int != nil {
-                    id = String(s["id"].int!)
-                } else {
-                    continue
-                }
-            } else {
-                id = s["id"].string!
-            }
-            
-            var track = Track(
-                id: id as! String,
-                title: s["title"].stringValue,
-                type: s["type"].stringValue,
-                tag: s["tag"].stringValue
-            )
-            
-            var dropObj = s["drop"]
-            if dropObj != nil && dropObj["dref"].string != nil &&
-                count(dropObj["dref"].stringValue) > 0 &&
-                dropObj["type"].string != nil {
-                track.drop = Drop(
-                    dref: dropObj["dref"].stringValue,
-                    type: dropObj["type"].stringValue,
-                    when: dropObj["when"].int)
-            }
-            
-            var dref = s["dref"]
-            if dref.error == nil {
-                track.dref = s["dref"].stringValue
-            }
-            
-            var tag = s["tag"]
-            if tag.error == nil {
-                track.tag = s["tag"].stringValue
-            }
-            
-            var topMatch = s["top_match"]
-            if topMatch.error == nil {
-                track.topMatch = s["top_match"].boolValue ?? false
-            }
-            
-            if (track.type == "youtube") {
-                track.thumbnailUrl = "http://img.youtube.com/vi/\(track.id)/mqdefault.jpg"
-            } else {
-                var artwork = s["artwork"]
-                if artwork.error == nil {
-                    track.thumbnailUrl = s["artwork"].stringValue
-                }
-            }
-            
-            if (track.tag == nil) {
-                continue
-            }
-            tracks.append(track)
-        }
-        return tracks
     }
 }
 
@@ -1415,6 +1330,79 @@ class Track {
             }
             return true
         }
+    }
+    
+    static func parseTracks(data: AnyObject, key: String, secondKey: String?=nil) -> [Track] {
+        var tracks = [Track]()
+        var t = JSON(data)
+        var tracksObj:JSON
+        if (!t["success"].boolValue || t[key] == nil) {
+            return []
+        }
+        if (secondKey != nil) {
+            tracksObj = t[key][secondKey!]
+        } else {
+            tracksObj = t[key]
+        }
+        for (idx:String, s:JSON) in tracksObj {
+            var id: AnyObject
+            if s["id"].string == nil {
+                if s["id"].int != nil {
+                    id = String(s["id"].int!)
+                } else {
+                    continue
+                }
+            } else {
+                id = s["id"].string!
+            }
+            
+            var track = Track(
+                id: id as! String,
+                title: s["title"].stringValue,
+                type: s["type"].stringValue,
+                tag: s["tag"].stringValue
+            )
+            
+            var dropObj = s["drop"]
+            if dropObj != nil && dropObj["dref"].string != nil &&
+                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["type"].string != nil {
+                    track.drop = Drop(
+                        dref: dropObj["dref"].stringValue,
+                        type: dropObj["type"].stringValue,
+                        when: dropObj["when"].int)
+            }
+            
+            var dref = s["dref"]
+            if dref.error == nil {
+                track.dref = s["dref"].stringValue
+            }
+            
+            var tag = s["tag"]
+            if tag.error == nil {
+                track.tag = s["tag"].stringValue
+            }
+            
+            var topMatch = s["top_match"]
+            if topMatch.error == nil {
+                track.topMatch = s["top_match"].boolValue ?? false
+            }
+            
+            if (track.type == "youtube") {
+                track.thumbnailUrl = "http://img.youtube.com/vi/\(track.id)/mqdefault.jpg"
+            } else {
+                var artwork = s["artwork"]
+                if artwork.error == nil {
+                    track.thumbnailUrl = s["artwork"].stringValue
+                }
+            }
+            
+            if (track.tag == nil) {
+                continue
+            }
+            tracks.append(track)
+        }
+        return tracks
     }
     
     var isLiked: Bool {
@@ -1979,19 +1967,7 @@ class Account {
                 return
             }
             
-            var userObj = res["user"]
-            var fbId:String?
-            if userObj["fb_id"].string != nil && count(userObj["fb_id"].stringValue) > 0 {
-                fbId = userObj["fb_id"].stringValue
-            }
-            let user = User(
-                id: String(userObj["id"].intValue),
-                email: userObj["email"].stringValue,
-                firstName: userObj["first_name"].stringValue,
-                lastName: userObj["last_name"].stringValue,
-                nickname: userObj["nickname"].stringValue,
-                fbId: fbId
-            )
+            let user = User.parseUser(result!)
             var account = Account(token:token!, user:user)
             self.account = account
             responseHandler()

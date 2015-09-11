@@ -183,15 +183,7 @@ class FBSigninableViewController: BaseViewController {
                 }
                 
                 let token = res["token"].stringValue
-                var userObj = res["user"]
-                let user = User(
-                        id: String(userObj["id"].intValue),
-                        email: userObj["last_name"].stringValue,
-                        firstName: userObj["first_name"].stringValue,
-                        lastName: userObj["last_name"].stringValue,
-                        nickname: userObj["nickname"].stringValue,
-                        fbId: userObj["fb_id"].string
-                    )
+                let user = User.parseUser(result!)
                 
                 self.afterSignin(user, token: token)
             })

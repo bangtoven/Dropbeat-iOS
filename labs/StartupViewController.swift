@@ -232,8 +232,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                 return
             }
             
-            let parser = Parser()
-            let info:FollowingInfo = parser.parseFollowing(result!)
+            let info:FollowingInfo = FollowingInfo.parseFollowing(result!)
             if !info.success {
                 callback(needAutoFollow: nil, error:error)
                 return

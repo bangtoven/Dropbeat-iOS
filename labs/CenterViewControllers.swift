@@ -1642,8 +1642,8 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             if error != nil || result == nil {
                 success = false
             } else {
-                let parser = Parser()
-                track = parser.parseSharedTrack(result!)
+
+                track = Track.parseSharedTrack(result!)
                 if track == nil {
                     success = false
                 }
@@ -1685,8 +1685,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             if error != nil || result == nil {
                 success = false
             } else {
-                let parser = Parser()
-                playlist = parser.parseSharedPlaylist(result!)
+                playlist = Playlist.parseSharedPlaylist(result!)
                 if playlist == nil {
                     success = false
                 }

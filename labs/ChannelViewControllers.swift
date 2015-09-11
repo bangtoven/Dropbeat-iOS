@@ -416,8 +416,7 @@ class ChannelViewController: AddableTrackListViewController,
                 return
             }
             
-            let parser = Parser()
-            let genreList = parser.parseGenre(result!)
+            let genreList = GenreList.parseGenre(result!)
             if !genreList.success {
                 callback(error:NSError(domain: "initGenre", code:0, userInfo:nil))
                 return

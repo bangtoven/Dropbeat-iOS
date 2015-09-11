@@ -348,8 +348,7 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
                 return
             }
             
-            let parser = Parser()
-            let parseResult = parser.parseGenre(result!)
+            let parseResult = GenreList.parseGenre(result!)
             if !parseResult.success {
                 self.showError(nil, callback: { ()-> Void in
                     self.loadGenre()
@@ -759,7 +758,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
                 return
             }
             
-            var samples:[GenreSample]? = Parser().parseGenreSamples(result)
+            var samples:[GenreSample]? = GenreSample.parseGenreSamples(result)
             if samples == nil {
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to load", comment:""),

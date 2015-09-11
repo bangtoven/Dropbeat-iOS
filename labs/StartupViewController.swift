@@ -357,7 +357,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                 return
             }
             
-            let likes = FBPageLikes.fromJson(result)
+            let likes = FBPageLikes.parseFBPageLikes(result)
             if likes == nil {
                 callback(data:nil, error:NSError(domain: "requestLikeInfos", code: 0, userInfo: nil))
                 return
@@ -388,7 +388,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                 callback(data:nil, error:NSError(domain: "requestLikeInfos", code: 0, userInfo: nil))
                 return
             }
-            let likes = FBPageLikes.fromJson(result!)
+            let likes = FBPageLikes.parseFBPageLikes(result!)
             if likes == nil {
                 callback(data:nil, error:NSError(domain: "requestLikeInfos", code: 0, userInfo: nil))
                 return

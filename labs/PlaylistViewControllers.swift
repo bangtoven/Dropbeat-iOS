@@ -203,7 +203,9 @@ class PlaylistViewController: BaseViewController,
                     btnText: NSLocalizedString("Confirm", comment:""))
                 return
             }
-            var playlist:Playlist? = Playlist.fromJson(res["playlist"].rawValue)
+
+            var playlist:Playlist? = Playlist.parsePlaylist(res.rawValue, key: "playlist")
+
             if (playlist == nil) {
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to fetch", comment:""),

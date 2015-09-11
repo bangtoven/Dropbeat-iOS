@@ -535,7 +535,7 @@ class ChannelViewController: AddableTrackListViewController,
                 return
             }
             self.channels.removeAll(keepCapacity: false)
-            var channels = Channel.fromListJson(result!, key: "data")
+            var channels = Channel.parseChannelList(result!)
             if initialLoad {
                 for channel in channels {
                     self.allChannels[channel.uid!] = channel
@@ -915,7 +915,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
                 return
             }
             
-            self.channel = Channel.fromDetailJson(result!, key: "data")
+            self.channel = Channel.parseChannel(result!)
             if (self.channel == nil) {
                 var message = NSLocalizedString("Failed to fetch channel info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)

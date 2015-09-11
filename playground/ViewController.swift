@@ -44,11 +44,17 @@ class ViewController: UIViewController {
             
             switch userType {
             case "user":
-                var user: User = User.parseUser(result!,key:"data",secondKey: "user")
+                var user: User = User.parseUser(result!,key:"data",secondKey:"user")
                 break
             case "artist":
-                
-                
+                var artist: Artist = Artist.parseArtist(result!,key:"data",secondKey:"user")
+                artist.fetchEvents({ (artist, events, error) -> Void in
+                    artist.fetchLiveset({ (artist, tracks, error) -> Void in
+                        artist.fetchPodcast({ (artist, tracks, error) -> Void in
+                            println(artist)
+                        })
+                    })
+                })
                 break
             case "channel":
                 var channel: Channel! = Channel.parseChannel(result!,key:"data",secondKey: "user")

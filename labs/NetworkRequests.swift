@@ -87,6 +87,10 @@ class Requests {
         return sendGet(CorePath.searchOther, params: ["q": q], auth: false, respCb: respCb)
     }
     
+    static func searchEvent(q: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+        return sendGet(CorePath.event, params: ["q": q], auth: false, respCb: respCb)
+    }
+
     static func searchLiveset(q: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
         return sendGet(CorePath.searchLiveset, params: ["q": q], auth: false, respCb: respCb)
     }

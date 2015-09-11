@@ -135,27 +135,6 @@ class Channel {
             self.isBookmarked = false
     }
     
-    static func parseChannelList(data: AnyObject) -> [Channel] {
-        var json = JSON(data)
-        var channels: [Channel] = []
-        var index = 0
-        for (idx: String, s: JSON) in json["data"] {
-            if (s["uid"].error != nil || s["name"].error != nil) {
-                continue
-            }
-            var uid: String = s["uid"].stringValue
-            var name: String = s["name"].stringValue
-            var thumbnail: String? = nil
-            if (s["thumbnail"].error == nil) {
-                thumbnail = s["thumbnail"].stringValue
-            }
-            let c = Channel(uid:uid, name: name, thumbnail: thumbnail)
-            c.idx = index
-            channels.append(c)
-        }
-        return channels
-    }
-    
     static func parseChannel(data: AnyObject, key: String = "data", secondKey: String?=nil) -> Channel? {
         var json = JSON(data)
         var detail: JSON
@@ -193,129 +172,183 @@ class Channel {
         }
         return Channel(name:name, thumbnail: thumbnail, genre:genreArray, playlists: playlists)
     }
+    
+    static func parseChannelList(data: AnyObject) -> [Channel] {
+        var json = JSON(data)
+        var channels: [Channel] = []
+        var index = 0
+        for (idx: String, s: JSON) in json["data"] {
+            if (s["uid"].error != nil || s["name"].error != nil) {
+                continue
+            }
+            var uid: String = s["uid"].stringValue
+            var name: String = s["name"].stringValue
+            var thumbnail: String? = nil
+            if (s["thumbnail"].error == nil) {
+                thumbnail = s["thumbnail"].stringValue
+            }
+            let c = Channel(uid:uid, name: name, thumbnail: thumbnail)
+            c.idx = index
+            channels.append(c)
+        }
+        return channels
+    }
+}
+
+class ArtistEvent {
+    var date: NSDate
+    var detail: String
+    var info: String
+    var url: String
+    var venue: String
+    
+    private static var dateFormatter:NSDateFormatter {
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        return formatter
+    }
+    
+    init (json:JSON) {
+        self.date = ArtistEvent.dateFormatter.dateFromString(json["date"].stringValue)!
+        self.detail = json["detail"].stringValue
+        self.info = json["info"].stringValue
+        self.url = json["url"].stringValue
+        self.venue = json["venue"].stringValue
+    }
+    
+    static func parseEvents(data: AnyObject) -> [ArtistEvent] {
+        var eventsJson = JSON(data)["data"]
+        
+        var events = [ArtistEvent]()
+        for (idx: String, e:JSON) in eventsJson {
+            events.append(ArtistEvent(json: e))
+        }
+        return events
+    }
 }
 
 class Artist {
-    static var availableSections = [
-        SearchSections.OFFICIAL,
-        SearchSections.PODCAST,
-        SearchSections.LIVESET,
-        SearchSections.TOP_MATCH,
-        SearchSections.RELEVANT
-    ]
-    
+    var id: String
+    var image:String?
+    var name:String?
     var hasEvent:Bool = false
     var hasPodcast:Bool = false
     var hasLiveset:Bool = false
-    var artistImage:String?
-    var artistName:String?
     var sectionedTracks: [String:[Track]] = [String:[Track]]()
-    var showType:Int = SearchShowType.ROW
+    var events: [ArtistEvent] = []
     
-    init (artistName:String?, artistImage:String?) {
-        self.artistImage = artistImage
-        self.artistName = artistName
-        if (artistName == nil) {
-            self.showType = SearchShowType.ROW
+    init (id:String, name:String, image:String) {
+        self.id = id
+        self.name = name
+        self.image = image
+    }
+    
+    static func parseArtist(data: AnyObject, key: String = "data", secondKey: String?=nil) -> Artist {
+        var json = JSON(data)
+        var detail: JSON
+        if secondKey != nil {
+            detail = json[key][secondKey!]
         } else {
-            self.showType = SearchShowType.TAB
+            detail = json[key]
         }
+        
+        var artist = Artist(
+            id: detail["artist_id"].stringValue,
+            name: detail["artist_name"].stringValue,
+            image: detail["artist_image"].stringValue)
+        
+        artist.hasEvent = detail["has_event"].boolValue
+        artist.hasPodcast = detail["has_podcast"].boolValue
+        artist.hasLiveset = artist.name != nil
+        
+        var tracks = Track.parseTracks(data, key: "data", secondKey: "tracks")
+        for (t: Track) in tracks {
+            var sectionName = t.tag!
+            if artist.sectionedTracks[sectionName] == nil {
+                artist.sectionedTracks[sectionName] = []
+            }
+            artist.sectionedTracks[sectionName]!.append(t)
+        }
+        return artist
     }
     
-    func getConcatedSectionTracks () -> [Track] {
-        var tracks = [Track]()
-        if (sectionedTracks[SearchSections.TOP_MATCH] != nil) {
-            for track in sectionedTracks[SearchSections.TOP_MATCH]! {
-                tracks.append(track)
-            }
-        }
-        if (sectionedTracks[SearchSections.RELEVANT] != nil) {
-            for track in sectionedTracks[SearchSections.RELEVANT]! {
-                tracks.append(track)
-            }
-        }
-        return tracks
-    }
-    
-    
-    func fetchRelevant(callback:((tracks:[Track]?, error:NSError?) -> Void)) {
-        let sectionTracks = sectionedTracks[SearchSections.RELEVANT]
-        if (sectionTracks != nil) {
-            callback(tracks: sectionTracks!, error: nil)
+    func fetchEvents(callback:((artist:Artist, events:[ArtistEvent]?, error:NSError?) -> Void)) {
+        if (name == nil) {
+            callback(artist: self, events: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
             return
         }
-        if (artistName == nil) {
-            callback(tracks: nil, error: NSError(domain: "search", code: 1, userInfo: nil))
+        if (!hasEvent) {
+            callback(artist: self, events:[], error: nil)
             return
         }
-        Requests.searchOther(artistName!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.searchEvent(name!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil) {
-                callback(tracks: nil, error: error)
+                callback(artist: self, events: nil, error: error)
                 return
             }
             if (result == nil) {
-                callback(tracks: [], error: nil)
+                callback(artist: self, events: [], error: nil)
                 return
             }
-            self.sectionedTracks[SearchSections.RELEVANT] = Track.parseTracks(result!, key: "data", secondKey:"tracks")
-            callback(tracks:self.sectionedTracks[SearchSections.RELEVANT], error:nil)
+            self.events = ArtistEvent.parseEvents(result!)
+            callback(artist: self, events:self.events, error:nil)
         })
     }
     
-    func fetchListset(callback:((tracks:[Track]?, error:NSError?) -> Void)) {
+    func fetchLiveset(callback:((artist:Artist, tracks:[Track]?, error:NSError?) -> Void)) {
         let sectionTracks = sectionedTracks[SearchSections.LIVESET]
         if (sectionTracks != nil) {
-            callback(tracks: sectionTracks!, error: nil)
+            callback(artist: self, tracks: sectionTracks!, error: nil)
             return
         }
-        if (artistName == nil) {
-            callback(tracks: nil, error: NSError(domain: "search", code: 1, userInfo: nil))
+        if (name == nil) {
+            callback(artist: self, tracks: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
             return
         }
         if (!hasLiveset) {
-            callback(tracks: [], error: nil)
+            callback(artist: self, tracks: [], error: nil)
             return
         }
-        Requests.searchLiveset(artistName!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.searchLiveset(name!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil) {
-                callback(tracks: nil, error: error)
+                callback(artist: self, tracks: nil, error: error)
                 return
             }
             if (result == nil) {
-                callback(tracks: [], error: nil)
+                callback(artist: self, tracks: [], error: nil)
                 return
             }
             self.sectionedTracks[SearchSections.LIVESET] = Track.parseTracks(result!, key: "data")
-            callback(tracks:self.sectionedTracks[SearchSections.LIVESET], error:nil)
+            callback(artist: self, tracks:self.sectionedTracks[SearchSections.LIVESET], error:nil)
         })
     }
     
-    func fetchPodcast(callback:((tracks:[Track]?, error:NSError?) -> Void)) {
+    func fetchPodcast(callback:((artist:Artist, tracks:[Track]?, error:NSError?) -> Void)) {
         let sectionTracks = sectionedTracks[SearchSections.PODCAST]
         if (sectionTracks != nil) {
-            callback(tracks: sectionTracks!, error: nil)
+            callback(artist: self, tracks: sectionTracks!, error: nil)
             return
         }
-        if (artistName == nil) {
-            callback(tracks: nil, error: NSError(domain: "search", code: 1, userInfo: nil))
+        if (name == nil) {
+            callback(artist: self, tracks: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
             return
         }
         if (!hasPodcast) {
-            callback(tracks: [], error: nil)
+            callback(artist: self, tracks: [], error: nil)
             return
         }
-        Requests.searchPodcast(artistName!, page: -1, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.searchPodcast(name!, page: -1, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil) {
-                callback(tracks: nil, error: error)
+                callback(artist: self, tracks: nil, error: error)
                 return
             }
             if (result == nil) {
-                callback(tracks: [], error: nil)
+                callback(artist: self, tracks: [], error: nil)
                 return
             }
             var t = JSON(result!)
             if !t["success"].boolValue {
-                callback(tracks: [], error: nil)
+                callback(artist: self, tracks: [], error: nil)
                 return
             }
             
@@ -349,97 +382,8 @@ class Artist {
                 tracks.append(track)
             }
             self.sectionedTracks[SearchSections.PODCAST] = tracks
-            callback(tracks:self.sectionedTracks[SearchSections.PODCAST], error:nil)
+            callback(artist: self, tracks:self.sectionedTracks[SearchSections.PODCAST], error:nil)
         })
-    }
-    
-    static private func parseArtistasdfasdf(data: AnyObject, key: String) -> Search {
-        
-        var json = JSON(data)
-        var artistImage:String?
-        var artistName:String?
-        var hasEvent:Bool
-        var hasPodcast:Bool
-        var hasLiveset:Bool
-        var s = json[key]
-        
-        artistName = s["artist_name"].string
-        artistImage = s["artist_image"].string
-        hasEvent = s["has_event"].boolValue
-        hasPodcast = s["has_podcast"].boolValue
-        hasLiveset = artistName != nil
-        
-        var search = Search(artistName: artistName, artistImage: artistImage)
-        search.hasEvent = hasEvent
-        search.hasPodcast = hasPodcast
-        search.hasLiveset = hasLiveset
-        
-        for (idx:String, s:JSON) in s["tracks"] {
-            var id: AnyObject
-            if s["id"].string == nil {
-                if s["id"].int == nil {
-                    continue
-                }
-                id = String(s["id"].int!)
-            } else {
-                id = s["id"].string!
-            }
-            
-            var track = Track(
-                id: id as! String,
-                title: s["title"].stringValue,
-                type: s["type"].stringValue,
-                tag: s["tag"].stringValue
-            )
-            
-            var dropObj = s["drop"]
-            if dropObj != nil && dropObj["dref"].string != nil &&
-                count(dropObj["dref"].stringValue) > 0 &&
-                dropObj["type"].string != nil {
-                    track.drop = Drop(
-                        dref: dropObj["dref"].stringValue,
-                        type: dropObj["type"].stringValue,
-                        when: dropObj["when"].int)
-            }
-            
-            var dref = s["dref"]
-            if dref.error == nil {
-                track.dref = s["dref"].stringValue
-            }
-            
-            var tag = s["tag"]
-            if tag.error == nil {
-                track.tag = s["tag"].stringValue
-            }
-            
-            var topMatch = s["top_match"]
-            if topMatch.error == nil {
-                track.topMatch = s["top_match"].boolValue ?? false
-            }
-            
-            if (track.type == "youtube") {
-                track.thumbnailUrl = "http://img.youtube.com/vi/\(track.id)/mqdefault.jpg"
-            } else {
-                var artwork = s["artwork"]
-                if artwork.error == nil {
-                    track.thumbnailUrl = s["artwork"].stringValue
-                }
-            }
-            
-            if (track.tag == nil) {
-                continue
-            }
-            
-            var sectionName = track.tag!
-            if track.topMatch! {
-                sectionName = SearchSections.TOP_MATCH
-            }
-            if (search.sectionedTracks[sectionName] == nil) {
-                search.sectionedTracks[sectionName] = []
-            }
-            search.sectionedTracks[sectionName]!.append(track)
-        }
-        return search
     }
 }
 

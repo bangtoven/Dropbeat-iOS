@@ -26,7 +26,7 @@ class User {
         self.nickname = nickname
     }
     
-    static private func fromJson(data: AnyObject) -> User {
+    static private func parseUser(data: AnyObject) -> User {
         var json = JSON(data)
         var fbId:String?
         if json["fb_id"].string != nil && count(json["fb_id"].stringValue) > 0 {
@@ -292,7 +292,7 @@ class Artist {
         })
     }
     
-    static private func fromJson(data: AnyObject, key: String) -> Search {
+    static private func parseArtistasdfasdf(data: AnyObject, key: String) -> Search {
         
         var json = JSON(data)
         var artistImage:String?
@@ -476,8 +476,7 @@ class Playlist {
         return -1
     }
     
-    static private func fromJson(data: AnyObject) -> Playlist? {
-        var playlistDict = JSON(data)
+    static private func parsePlaylistJson(playlistDict: JSON) -> Playlist? {
         var playlistId: Int = playlistDict["id"].intValue
         var playlistName: String = playlistDict["name"].stringValue
         var tracks: [Track] = []
@@ -507,7 +506,7 @@ class Playlist {
         var json = JSON(data)
         var playlists :[Playlist] = []
         for (idx: String, s: JSON) in json["playlists"] {
-            if let playlist = Playlist.fromJson(s.rawValue) {
+            if let playlist = parsePlaylistJson(s) {
                 playlists.append(playlist)
             }
         }
@@ -515,7 +514,7 @@ class Playlist {
     }
     
     static func parsePlaylist(data: AnyObject, key: String = "obj") -> Playlist? {
-        return Playlist.fromJson(JSON(data)[key].rawValue)
+        return parsePlaylistJson(JSON(data)[key])
     }
     
     static func parseSharedPlaylist(data: AnyObject) -> Playlist? {
@@ -523,7 +522,7 @@ class Playlist {
         if !(json["success"].bool ?? false) || json["playlist"] == nil {
             return nil
         }
-        return Playlist.fromJson(json["playlist"].rawValue)
+        return parsePlaylistJson(json["playlist"])
     }
     
     func toJson() -> Dictionary<String, AnyObject> {
@@ -732,15 +731,14 @@ class Search {
         })
     }
     
-    static private func fromJson(data: AnyObject, key: String) -> Search {
-        
+    static func parseSearch(data: AnyObject) -> Search {
         var json = JSON(data)
         var artistImage:String?
         var artistName:String?
         var hasEvent:Bool
         var hasPodcast:Bool
         var hasLiveset:Bool
-        var s = json[key]
+        var s = json["data"]
         
         artistName = s["artist_name"].string
         artistImage = s["artist_image"].string
@@ -752,7 +750,7 @@ class Search {
         search.hasEvent = hasEvent
         search.hasPodcast = hasPodcast
         search.hasLiveset = hasLiveset
-       
+        
         for (idx:String, s:JSON) in s["tracks"] {
             var id: AnyObject
             if s["id"].string == nil {
@@ -775,10 +773,10 @@ class Search {
             if dropObj != nil && dropObj["dref"].string != nil &&
                 count(dropObj["dref"].stringValue) > 0 &&
                 dropObj["type"].string != nil {
-                track.drop = Drop(
-                    dref: dropObj["dref"].stringValue,
-                    type: dropObj["type"].stringValue,
-                    when: dropObj["when"].int)
+                    track.drop = Drop(
+                        dref: dropObj["dref"].stringValue,
+                        type: dropObj["type"].stringValue,
+                        when: dropObj["when"].int)
             }
             
             var dref = s["dref"]
@@ -819,10 +817,6 @@ class Search {
             search.sectionedTracks[sectionName]!.append(track)
         }
         return search
-    }
-    
-    static func parseSearch(data: AnyObject) -> Search {
-        return Search.fromJson(data, key: "data")
     }
     
     static func parseTracks(data: AnyObject, key: String, secondKey: String?=nil) -> [Track] {
@@ -905,10 +899,10 @@ class Feed {
         self.result = tracks
     }
     
-    static private func fromJson(data: AnyObject, key: String) -> Feed {
+    static func parseFeed(data: AnyObject) -> Feed {
         var json = JSON(data)
         var tracks: [Track] = []
-        for (idx: String, s: JSON) in json[key] {
+        for (idx: String, s: JSON) in json["feed"] {
             var id: AnyObject
             if s["id"].string == nil {
                 id = String(s["id"].int!)
@@ -927,10 +921,10 @@ class Feed {
             if dropObj != nil && dropObj["dref"].string != nil &&
                 count(dropObj["dref"].stringValue) > 0 &&
                 dropObj["type"].string != nil {
-                track.drop = Drop(
-                    dref: dropObj["dref"].stringValue,
-                    type: dropObj["type"].stringValue,
-                    when: dropObj["when"].int)
+                    track.drop = Drop(
+                        dref: dropObj["dref"].stringValue,
+                        type: dropObj["type"].stringValue,
+                        when: dropObj["when"].int)
             }
             
             var dref = s["dref"]
@@ -963,10 +957,6 @@ class Feed {
         var feed = Feed(tracks: tracks)
         return feed
     }
-    
-    static func parseFeed(data: AnyObject) -> Feed {
-        return Feed.fromJson(data, key: "feed")
-    }
 }
 
 class BeatportChart {
@@ -978,10 +968,6 @@ class BeatportChart {
     }
     
     static func parseBeatportChart(data: AnyObject) -> BeatportChart {
-        return BeatportChart.fromJson(data, key: "data")
-    }
-    
-    static private func fromJson(data:AnyObject, key:String) -> BeatportChart {
         var json = JSON(data)
         
         if !(json["success"].bool ?? false) {
@@ -1060,9 +1046,9 @@ class StreamNew {
         results = tracks
     }
     
-    static private func fromJson(data:AnyObject, key:String) ->StreamNew {
+    static func parseStreamNew(data: AnyObject) -> StreamNew {
         var json = JSON(data)
-        if !(json["success"].bool ?? false) || json[key] == nil {
+        if !(json["success"].bool ?? false) || json["data"] == nil {
             return StreamNew(success: false, tracks: nil)
         }
         
@@ -1070,7 +1056,7 @@ class StreamNew {
         var formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         
-        for (idx:String, s:JSON) in json[key] {
+        for (idx:String, s:JSON) in json["data"] {
             if s["id"].string == nil ||
                     s["track_name"].string == nil ||
                     s["type"].string == nil ||
@@ -1113,10 +1099,6 @@ class StreamNew {
         
         return StreamNew(success: true, tracks: tracks)
     }
-    
-    static func parseStreamNew(data: AnyObject) -> StreamNew {
-        return StreamNew.fromJson(data, key: "data")
-    }
 }
 
 class StreamTrending {
@@ -1127,9 +1109,9 @@ class StreamTrending {
         results = tracks
     }
     
-    static private func fromJson(data:AnyObject, key:String) -> StreamTrending {
+    static func parseStreamTrending(data: AnyObject) -> StreamTrending {
         var json = JSON(data)
-        if !(json["success"].bool ?? false) || json[key] == nil {
+        if !(json["success"].bool ?? false) || json["data"] == nil {
             return StreamTrending(success: false, tracks: nil)
         }
         
@@ -1137,7 +1119,7 @@ class StreamTrending {
         var formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         
-        for (idx:String, s:JSON) in json[key] {
+        for (idx:String, s:JSON) in json["data"] {
             if s["id"].string == nil ||
                     s["track_name"].string == nil ||
                     s["type"].string == nil ||
@@ -1173,10 +1155,6 @@ class StreamTrending {
         
         return StreamTrending(success: true, tracks: tracks)
     }
-    
-    static func parseStreamTrending(data: AnyObject) -> StreamTrending {
-        return StreamTrending.fromJson(data, key: "data")
-    }
 }
 
 class StreamBeatportTrending {
@@ -1187,7 +1165,7 @@ class StreamBeatportTrending {
         results = tracks
     }
     
-    static private func fromJson(data:AnyObject, key:String) -> StreamBeatportTrending {
+    static func parseStreamBeatportTrending(data: AnyObject) -> StreamBeatportTrending {
         var json = JSON(data)
         
         if !(json["success"].bool ?? false) {
@@ -1256,10 +1234,6 @@ class StreamBeatportTrending {
         }
         return StreamBeatportTrending(success: true, tracks: tracks)
     }
-    
-    static func parseStreamBeatportTrending(data: AnyObject) -> StreamBeatportTrending {
-        return StreamBeatportTrending.fromJson(data, key: "data")
-    }
 }
 
 class StreamFollowing {
@@ -1270,7 +1244,7 @@ class StreamFollowing {
         results = tracks
     }
     
-    static private func fromJson(data:AnyObject, key:String) -> StreamFollowing {
+    static func parseStreamFollowing(data: AnyObject) -> StreamFollowing {
         var json = JSON(data)
         
         if !(json["success"].bool ?? false) {
@@ -1281,7 +1255,7 @@ class StreamFollowing {
         dateFormatter.dateFormat = "yyyy-MM-dd"
         var tracks:[FollowingArtistTrack] = [FollowingArtistTrack]()
         
-        for (idx:String, s:JSON) in json[key] {
+        for (idx:String, s:JSON) in json["data"] {
             if s["id"].string == nil {
                 continue
             }
@@ -1342,10 +1316,6 @@ class StreamFollowing {
         }
         return StreamFollowing(success: true, tracks: tracks)
     }
-    
-    static func parseStreamFollowing(data: AnyObject) -> StreamFollowing {
-        return StreamFollowing.fromJson(data, key: "data")
-    }
 }
 
 class StreamFriend {
@@ -1356,7 +1326,7 @@ class StreamFriend {
         results = tracks
     }
     
-    static private func fromJson(data:AnyObject) -> StreamFriend {
+    static func parseStreamFriend(data: AnyObject) -> StreamFriend {
         var json = JSON(data)
         
         if !(json["success"].bool ?? false) {
@@ -1410,10 +1380,6 @@ class StreamFriend {
             tracks.append(track)
         }
         return StreamFriend(success:true, tracks:tracks)
-    }
-    
-    static func parseStreamFriend(data: AnyObject) -> StreamFriend {
-        return StreamFriend.fromJson(data)
     }
 
 }
@@ -1855,7 +1821,7 @@ class Like {
         self.track = track
     }
     
-    static private func fromJson(data:JSON) -> Like? {
+    static private func parseLikeJson(data:JSON) -> Like? {
         if data["id"].int == nil || data["data"] == nil {
             return nil
         }
@@ -1891,7 +1857,7 @@ class Like {
         
         var likes = [Like]()
         for (idx:String, obj:JSON) in json["like"] {
-            if let like = Like.fromJson(obj) {
+            if let like = Like.parseLikeJson(obj) {
                 likes.append(like)
             }
         }
@@ -2082,7 +2048,7 @@ class FBPageLikes {
         self.nextPageToken = nextPageToken
     }
     
-    static private func fromJson(data:AnyObject) -> FBPageLikes? {
+    static func parseFBPageLikes(data: AnyObject) -> FBPageLikes? {
         let json = JSON(data)
         var pages = [FBPage]()
         
@@ -2096,7 +2062,7 @@ class FBPageLikes {
         }
         
         for (idx:String, pageJson:JSON) in json["data"] {
-            let page = FBPage.fromJson(pageJson)
+            let page = FBPage.parseFBPageJson(pageJson)
             if page == nil {
                 continue
             }
@@ -2105,10 +2071,6 @@ class FBPageLikes {
         }
         
         return FBPageLikes(pages: pages, nextPageToken: nextPageToken)
-    }
-    
-    static func parseFBPageLikes(data: AnyObject) -> FBPageLikes? {
-        return FBPageLikes.fromJson(data)
     }
 }
 
@@ -2120,7 +2082,7 @@ class FBPage {
         self.name = name.uppercaseString
     }
     
-    static private func fromJson(json: JSON) -> FBPage? {
+    static private func parseFBPageJson(json: JSON) -> FBPage? {
         if json["id"].string == nil {
             return nil
         }
@@ -2154,10 +2116,6 @@ class GenreList {
     }
     
     static func parseGenre(data: AnyObject) -> GenreList {
-        return GenreList.fromJson(data)
-    }
-    
-    static private func fromJson(data:AnyObject) -> GenreList {
         var json = JSON(data)
         
         if !(json["success"].bool ?? false) {
@@ -2245,11 +2203,6 @@ class FollowingInfo {
     }
     
     static func parseFollowing(data: AnyObject) -> FollowingInfo {
-        return FollowingInfo.fromJson(data, key: "data")
-    }
-    
-    static private func fromJson(data:AnyObject, key:String) -> FollowingInfo {
-        
         var json = JSON(data)
         
         if !(json["success"].bool ?? false) {
@@ -2257,7 +2210,7 @@ class FollowingInfo {
         }
         
         var followings = [Following]()
-        for (idx:String, s:JSON) in json[key] {
+        for (idx:String, s:JSON) in json["data"] {
             if s["id"].int == nil {
                 continue
             }
@@ -2283,11 +2236,6 @@ class SearchArtist {
     }
     
     static func parseSearchArtist(data: AnyObject) -> SearchArtist {
-        return SearchArtist.fromJson(data, key:"data")
-    }
-    
-    static private func fromJson(data:AnyObject, key:String) -> SearchArtist {
-        
         var json = JSON(data)
         
         if !(json["success"].bool ?? false) {
@@ -2295,7 +2243,7 @@ class SearchArtist {
         }
         
         var followings = [Following]()
-        for (idx:String, s:JSON) in json[key] {
+        for (idx:String, s:JSON) in json["data"] {
             if s["id"].int == nil {
                 continue
             }

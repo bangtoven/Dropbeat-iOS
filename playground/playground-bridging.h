@@ -26,4 +26,12 @@
 
 #import "CommonCrypto/CommonCrypto.h"
 
+#import "AXStretchableHeaderTabViewController.h"
+#import "AXStretchableHeaderView.h"
+#import "AXTabBar.h"
+#import "AXTabBarItemButton.h"
+
+#import "UINavigationBar+Awesome.h"
+
+
 #endif

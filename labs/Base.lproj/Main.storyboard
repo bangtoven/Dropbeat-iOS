@@ -1178,7 +1178,7 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="dJi-jD-XAJ" firstAttribute="leading" secondItem="zqX-Ab-Rh2" secondAttribute="leading" id="49l-P3-X9n"/>
                             <constraint firstItem="CFK-be-l7t" firstAttribute="top" secondItem="SXP-bO-PWs" secondAttribute="bottom" id="731-6K-xyi"/>

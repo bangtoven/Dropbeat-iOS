@@ -12,14 +12,16 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        Requests.emailSignin("jungho@jungho.com", password: "jungho") { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            println("signed in")
-            
+//        self.performSegueWithIdentifier("showUser", sender: nil)
+        
+//        Requests.emailSignin("jungho@jungho.com", password: "jungho") { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+//            println("signed in")
+//            
 //            Account.getAccountWithCompletionHandler({ (account:Account?, error) -> Void in
 //                println(account)
 //            })
-            
-        }
+//            
+//        }
         
     }
     

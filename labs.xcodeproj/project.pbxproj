@@ -178,6 +178,7 @@
 		58EAB3DD1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EAB3DC1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift */; };
 		58EAB3DF1B0D11110075304E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EAB3DE1B0D11110075304E /* Utils.swift */; };
 		58EE1E2A1B46FBD100976FD0 /* restart_filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 58EE1E291B46FBD100976FD0 /* restart_filled.png */; };
+		730314721BA5B1E700133764 /* coverImage2.png in Resources */ = {isa = PBXBuildFile; fileRef = 730314711BA5B1E700133764 /* coverImage2.png */; };
 		7349F7131BA1ABB1006E9ABF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7349F7121BA1ABB1006E9ABF /* AppDelegate.swift */; };
 		7349F7151BA1ABB1006E9ABF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7349F7141BA1ABB1006E9ABF /* ViewController.swift */; };
 		7349F7311BA1AC48006E9ABF /* Playground.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7349F7301BA1AC48006E9ABF /* Playground.storyboard */; };
@@ -226,6 +227,7 @@
 		738BCA1F1BA4B66500D00D34 /* UserHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738BCA1E1BA4B66500D00D34 /* UserHeaderView.xib */; };
 		738BCA211BA4BA8600D00D34 /* UserDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA201BA4BA8600D00D34 /* UserDetailTableViewController.swift */; };
 		738BCA241BA4C40300D00D34 /* UINavigationBar+Awesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA231BA4C40300D00D34 /* UINavigationBar+Awesome.m */; };
+		738BCA2A1BA57E9700D00D34 /* DYAlertPickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA291BA57E9700D00D34 /* DYAlertPickView.m */; };
 		73AD145E1BA4744300C1AE15 /* coverImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 73AD145D1BA4744300C1AE15 /* coverImage.png */; };
 		73AD14601BA4749900C1AE15 /* avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 73AD145F1BA4749900C1AE15 /* avatar.png */; };
 		73AD14651BA481C900C1AE15 /* AXStretchableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AD14641BA481C900C1AE15 /* AXStretchableHeaderView.m */; };
@@ -492,6 +494,7 @@
 		58EAB3DC1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistSelectTableViewCell.swift; sourceTree = "<group>"; };
 		58EAB3DE1B0D11110075304E /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		58EE1E291B46FBD100976FD0 /* restart_filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = restart_filled.png; sourceTree = "<group>"; };
+		730314711BA5B1E700133764 /* coverImage2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coverImage2.png; sourceTree = "<group>"; };
 		7349F70E1BA1ABB1006E9ABF /* playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7349F7111BA1ABB1006E9ABF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7349F7121BA1ABB1006E9ABF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -542,6 +545,8 @@
 		738BCA201BA4BA8600D00D34 /* UserDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailTableViewController.swift; sourceTree = "<group>"; };
 		738BCA221BA4C40300D00D34 /* UINavigationBar+Awesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+Awesome.h"; sourceTree = "<group>"; };
 		738BCA231BA4C40300D00D34 /* UINavigationBar+Awesome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Awesome.m"; sourceTree = "<group>"; };
+		738BCA281BA57E9700D00D34 /* DYAlertPickView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYAlertPickView.h; sourceTree = "<group>"; };
+		738BCA291BA57E9700D00D34 /* DYAlertPickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYAlertPickView.m; sourceTree = "<group>"; };
 		73AD145D1BA4744300C1AE15 /* coverImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coverImage.png; sourceTree = "<group>"; };
 		73AD145F1BA4749900C1AE15 /* avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar.png; sourceTree = "<group>"; };
 		73AD14631BA481C900C1AE15 /* AXStretchableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AXStretchableHeaderView.h; sourceTree = "<group>"; };
@@ -869,11 +874,14 @@
 			children = (
 				73AD145F1BA4749900C1AE15 /* avatar.png */,
 				73AD145D1BA4744300C1AE15 /* coverImage.png */,
+				730314711BA5B1E700133764 /* coverImage2.png */,
 				7349F7121BA1ABB1006E9ABF /* AppDelegate.swift */,
 				7349F7141BA1ABB1006E9ABF /* ViewController.swift */,
 				738BCA181BA4B0B100D00D34 /* UserViewController.swift */,
 				738BCA201BA4BA8600D00D34 /* UserDetailTableViewController.swift */,
 				738BCA1E1BA4B66500D00D34 /* UserHeaderView.xib */,
+				738BCA281BA57E9700D00D34 /* DYAlertPickView.h */,
+				738BCA291BA57E9700D00D34 /* DYAlertPickView.m */,
 				738BCA171BA4B07C00D00D34 /* AXStretchableHeader */,
 				7349F7301BA1AC48006E9ABF /* Playground.storyboard */,
 				738A21C71BA22C2D004A575A /* PGLaunch.xib */,
@@ -1254,6 +1262,7 @@
 				73AD14601BA4749900C1AE15 /* avatar.png in Resources */,
 				73F5EBBF1BA1BD5900A925F0 /* logo_without_text.png in Resources */,
 				7349F7311BA1AC48006E9ABF /* Playground.storyboard in Resources */,
+				730314721BA5B1E700133764 /* coverImage2.png in Resources */,
 				73AD145E1BA4744300C1AE15 /* coverImage.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1383,6 +1392,7 @@
 				7349F7611BA1ADFC006E9ABF /* SwiftyJSON.swift in Sources */,
 				73AD146B1BA488A400C1AE15 /* UserProfileViewController.swift in Sources */,
 				7349F7631BA1ADFC006E9ABF /* MBProgressHUD.m in Sources */,
+				738BCA2A1BA57E9700D00D34 /* DYAlertPickView.m in Sources */,
 				7349F76E1BA1ADFC006E9ABF /* Alamofire.swift in Sources */,
 				7349F76F1BA1ADFC006E9ABF /* Download.swift in Sources */,
 				7349F7701BA1ADFC006E9ABF /* Manager.swift in Sources */,

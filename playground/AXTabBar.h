@@ -25,5 +25,5 @@ typedef enum : NSUInteger {
 @property (strong, nonatomic) UIFont *tabBarButtonFont;
 
 // TODO: implement this style option.
-//@property (nonatomic) AXTabBarStyle tabBarStyle;
+@property (nonatomic) AXTabBarStyle tabBarStyle;
 @end

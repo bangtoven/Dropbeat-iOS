@@ -8,25 +8,42 @@
 
 import UIKit
 
-class UserDetailTableViewController: UITableViewController {
-
-    var arg: String!
+class UserDetailTableViewController: UITableViewController, DYAlertPickViewDataSource, DYAlertPickViewDelegate {
+    
+    var arg: Int!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tabBarItem = UITabBarItem(title: "Tab "+arg, image: nil, tag: 0)
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        var title: String = String()
+        for i in 0...arg {
+            title += "Tab "
+        }
+        title += String(arg)
+        self.tabBarItem = UITabBarItem(title: title, image: nil, tag: 0)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    var selectedSection: Int = -1
+    
+    @IBOutlet weak var button: UIButton!
+    @IBAction func buttonTapped(sender: AnyObject) {
+        var picker: DYAlertPickView = DYAlertPickView(headerTitle: "Choose Section", cancelButtonTitle: nil, confirmButtonTitle: nil, switchButtonTitle: nil)
+        picker.dataSource = self
+        picker.delegate = self
+        picker.tintColor = UIColor.redColor();
+        picker.showAndSelectedIndex(self.selectedSection)
+    }
+    
+    func titleForRowInDYAlertPickView(titleForRow: Int) -> NSAttributedString! {
+        return NSAttributedString(string: "asdf"+String(titleForRow))
+    }
+    //
+    func numberOfRowsInDYAlertPickerView(pickerView: DYAlertPickView) -> Int {
+        return 10
+    }
+    
+    func didConfirmWithItemAtRowInDYAlertPickView(row: Int) {
+        self.selectedSection = row
+        println(row)
     }
 
     // MARK: - Table view data source
@@ -46,7 +63,7 @@ class UserDetailTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! UITableViewCell
 
-        cell.textLabel?.text = arg + String(indexPath.row)
+        cell.textLabel?.text = String(arg) + " . " + String(indexPath.row)
         
         return cell
     }

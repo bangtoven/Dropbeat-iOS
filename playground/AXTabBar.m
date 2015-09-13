@@ -27,6 +27,8 @@
     
     _toolbar = [[UIToolbar alloc] init];
     _toolbar.userInteractionEnabled = NO;
+      _toolbar.backgroundColor = [UIColor whiteColor];
+      _toolbar.barTintColor = [UIColor whiteColor];
     [self addSubview:_toolbar];
     
     _containerView = [[UIScrollView alloc] init];

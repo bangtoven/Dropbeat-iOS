@@ -194,6 +194,7 @@ static NSString * const AXStretchableHeaderTabViewControllerSelectedIndexKey = @
 - (void)layoutViewControllers
 {
   [self.view layoutSubviews];
+    
   CGSize size = _containerView.bounds.size;
   
   CGFloat headerOffset =
@@ -304,21 +305,29 @@ static NSString * const AXStretchableHeaderTabViewControllerSelectedIndexKey = @
   }
 }
 
+- (BOOL)scrollViewShouldScrollToTop:(UIScrollView *)scrollView
+{
+    NSLog(@"scrollViewShouldScrollToTop");
+    return NO;
+}
+
 #pragma mark - Tab bar delegate
 
 - (BOOL)tabBar:(AXTabBar *)tabBar shouldSelectItem:(UITabBarItem *)item
 {
-  [self layoutSubViewControllerToSelectedViewController];
-  return YES;
+    [self layoutSubViewControllerToSelectedViewController];
+    return YES;
 }
 
 - (void)tabBar:(UITabBar *)tabBar didSelectItem:(UITabBarItem *)item
 {
-  NSInteger newSelectedIndex = [[tabBar items] indexOfObject:item];
+    NSInteger newSelectedIndex = [[tabBar items] indexOfObject:item];
   if (_selectedIndex != newSelectedIndex) {
     [_containerView setContentOffset:(CGPoint){newSelectedIndex * CGRectGetWidth(_containerView.bounds), _containerView.contentOffset.y} animated:YES];
     [self changeSelectedIndex:newSelectedIndex];
   }
+    UIScrollView *scrollView = [self scrollViewWithSubViewController:self.viewControllers[newSelectedIndex]];
+    scrollView.scrollsToTop = YES;
 }
 
 #pragma mark - Private Method
@@ -336,6 +345,7 @@ static NSString * const AXStretchableHeaderTabViewControllerSelectedIndexKey = @
 
 - (void)changeSelectedIndex:(NSInteger)selectedIndex
 {
+    NSLog(@"%ld selected", selectedIndex);
   [self willChangeValueForKey:@"selectedIndex"];
   [self willChangeValueForKey:@"selectedViewController"];
   _selectedIndex = selectedIndex;

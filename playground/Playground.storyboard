@@ -96,6 +96,28 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="jlx-XI-rBA">
+                            <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k18-Ba-Hqi">
+                                    <rect key="frame" x="8" y="7" width="584" height="30"/>
+                                    <state key="normal" title="Button">
+                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                    </state>
+                                    <connections>
+                                        <action selector="buttonTapped:" destination="3y8-uZ-0lC" eventType="touchUpInside" id="uPH-JL-wqE"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstItem="k18-Ba-Hqi" firstAttribute="leading" secondItem="jlx-XI-rBA" secondAttribute="leading" constant="8" id="TxF-Gk-0js"/>
+                                <constraint firstAttribute="trailing" secondItem="k18-Ba-Hqi" secondAttribute="trailing" constant="8" id="UtE-Ab-viM"/>
+                                <constraint firstAttribute="bottom" secondItem="k18-Ba-Hqi" secondAttribute="bottom" constant="7" id="eFQ-ba-KbR"/>
+                                <constraint firstItem="k18-Ba-Hqi" firstAttribute="top" secondItem="jlx-XI-rBA" secondAttribute="top" constant="7" id="kxy-Iv-DjS"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" textLabel="gNo-jG-akc" style="IBUITableViewCellStyleDefault" id="r7i-RO-y0X">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -117,6 +139,9 @@
                             <outlet property="delegate" destination="3y8-uZ-0lC" id="XQa-ke-szS"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="button" destination="k18-Ba-Hqi" id="DXj-12-GCe"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="byi-VB-3tv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

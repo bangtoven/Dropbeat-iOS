@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -10,14 +11,14 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="333"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="coverImage.png" translatesAutoresizingMaskIntoConstraints="NO" id="Jmv-JD-IAi">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="coverImage2.png" translatesAutoresizingMaskIntoConstraints="NO" id="Jmv-JD-IAi">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="291"/>
                 </imageView>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar.png" translatesAutoresizingMaskIntoConstraints="NO" id="QRE-Ss-xsP">
-                    <rect key="frame" x="24" y="215" width="91" height="84"/>
+                    <rect key="frame" x="24" y="215" width="84" height="84"/>
                     <constraints>
+                        <constraint firstAttribute="width" secondItem="QRE-Ss-xsP" secondAttribute="height" id="DkH-Q5-Jme"/>
                         <constraint firstAttribute="height" constant="84" id="oKf-Ec-MiV"/>
-                        <constraint firstAttribute="width" constant="91" id="qrY-HN-xyA"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hYB-0b-NNb">
@@ -57,11 +58,12 @@
             <connections>
                 <outlet property="button" destination="Kj7-JN-unp" id="MuC-Ab-3QK"/>
                 <outlet property="imageView" destination="Jmv-JD-IAi" id="zHq-9m-dbf"/>
+                <outlet property="profileImageHeightConstraint" destination="oKf-Ec-MiV" id="5xW-oB-eBq"/>
             </connections>
         </view>
     </objects>
     <resources>
         <image name="avatar.png" width="82" height="82"/>
-        <image name="coverImage.png" width="1040" height="660"/>
+        <image name="coverImage2.png" width="567" height="432"/>
     </resources>
 </document>

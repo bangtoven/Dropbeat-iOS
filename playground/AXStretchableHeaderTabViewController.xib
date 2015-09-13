@@ -26,8 +26,8 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="fuc-l1-jWd" secondAttribute="trailing" id="Eh9-qs-skj"/>
                 <constraint firstItem="fuc-l1-jWd" firstAttribute="leading" secondItem="YMh-Kr-uaY" secondAttribute="leading" id="hat-xX-p53"/>
-                <constraint firstAttribute="bottom" secondItem="fuc-l1-jWd" secondAttribute="bottom" id="kew-qg-1oF"/>
                 <constraint firstItem="fuc-l1-jWd" firstAttribute="top" secondItem="YMh-Kr-uaY" secondAttribute="top" id="tcA-li-4v5"/>
+                <constraint firstAttribute="bottom" secondItem="fuc-l1-jWd" secondAttribute="bottom" id="wSB-vm-gdG"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>

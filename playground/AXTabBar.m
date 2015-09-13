@@ -23,7 +23,7 @@
 {
   self = [super initWithFrame:frame];
   if (self) {
-    _tabBarButtonFont = [UIFont systemFontOfSize:14.0];
+    _tabBarButtonFont = [UIFont boldSystemFontOfSize:14.0];
     
     _toolbar = [[UIToolbar alloc] init];
     _toolbar.userInteractionEnabled = NO;
@@ -107,6 +107,7 @@
         [button setTitle:item.title forState:UIControlStateNormal];
         [button setBadgeValue:item.badgeValue];
         [button addTarget:self action:@selector(touchesButton:) forControlEvents:UIControlEventTouchDown];
+          [button setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
         [button setTitleColor:self.tintColor forState:UIControlStateSelected];
         [button setTitleColor:self.tintColor forState:UIControlStateHighlighted];
         [_containerView addSubview:button];

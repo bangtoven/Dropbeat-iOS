@@ -17,7 +17,7 @@ class UserDetailTableViewController: UITableViewController, AXSubViewController,
         
         var title: String = String()
         for i in 0...arg {
-            title += "Tab "
+            title += "TAB "
         }
         title += String(arg)
         self.title = title

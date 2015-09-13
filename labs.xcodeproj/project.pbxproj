@@ -179,6 +179,13 @@
 		58EAB3DF1B0D11110075304E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EAB3DE1B0D11110075304E /* Utils.swift */; };
 		58EE1E2A1B46FBD100976FD0 /* restart_filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 58EE1E291B46FBD100976FD0 /* restart_filled.png */; };
 		730314721BA5B1E700133764 /* coverImage2.png in Resources */ = {isa = PBXBuildFile; fileRef = 730314711BA5B1E700133764 /* coverImage2.png */; };
+		730314741BA5E87500133764 /* UINavigationBar+Awesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA231BA4C40300D00D34 /* UINavigationBar+Awesome.m */; };
+		730314751BA5E87500133764 /* AXStretchableHeaderTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA0D1BA4B06C00D00D34 /* AXStretchableHeaderTabViewController.m */; };
+		730314761BA5E87500133764 /* AXStretchableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AD14641BA481C900C1AE15 /* AXStretchableHeaderView.m */; };
+		730314771BA5E87500133764 /* AXTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA0F1BA4B06C00D00D34 /* AXTabBar.m */; };
+		730314781BA5E87500133764 /* AXTabBarItemButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA111BA4B06C00D00D34 /* AXTabBarItemButton.m */; };
+		730314791BA5E87500133764 /* DYAlertPickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA291BA57E9700D00D34 /* DYAlertPickView.m */; };
+		7303147A1BA5E88C00133764 /* AXStretchableHeaderTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738BCA121BA4B06C00D00D34 /* AXStretchableHeaderTabViewController.xib */; };
 		7349F7131BA1ABB1006E9ABF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7349F7121BA1ABB1006E9ABF /* AppDelegate.swift */; };
 		7349F7151BA1ABB1006E9ABF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7349F7141BA1ABB1006E9ABF /* ViewController.swift */; };
 		7349F7311BA1AC48006E9ABF /* Playground.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7349F7301BA1AC48006E9ABF /* Playground.storyboard */; };
@@ -865,6 +872,16 @@
 			name = GAI;
 			sourceTree = "<group>";
 		};
+		730314731BA5E7FC00133764 /* DYAlertPickView */ = {
+			isa = PBXGroup;
+			children = (
+				738BCA281BA57E9700D00D34 /* DYAlertPickView.h */,
+				738BCA291BA57E9700D00D34 /* DYAlertPickView.m */,
+			);
+			name = DYAlertPickView;
+			path = ../playground;
+			sourceTree = "<group>";
+		};
 		7349F70F1BA1ABB1006E9ABF /* playground */ = {
 			isa = PBXGroup;
 			children = (
@@ -874,13 +891,8 @@
 				7349F7121BA1ABB1006E9ABF /* AppDelegate.swift */,
 				7349F7141BA1ABB1006E9ABF /* ViewController.swift */,
 				738BCA181BA4B0B100D00D34 /* UserViewController.swift */,
-				738BCA201BA4BA8600D00D34 /* UserDetailTableViewController.swift */,
 				738BCA1E1BA4B66500D00D34 /* UserHeaderView.xib */,
-				738BCA281BA57E9700D00D34 /* DYAlertPickView.h */,
-				738BCA291BA57E9700D00D34 /* DYAlertPickView.m */,
-				738BCA221BA4C40300D00D34 /* UINavigationBar+Awesome.h */,
-				738BCA231BA4C40300D00D34 /* UINavigationBar+Awesome.m */,
-				738BCA171BA4B07C00D00D34 /* AXStretchableHeader */,
+				738BCA201BA4BA8600D00D34 /* UserDetailTableViewController.swift */,
 				7349F7301BA1AC48006E9ABF /* Playground.storyboard */,
 				738A21C71BA22C2D004A575A /* PGLaunch.xib */,
 				7349F7101BA1ABB1006E9ABF /* Supporting Files */,
@@ -914,6 +926,8 @@
 				588693771B13B51300566124 /* SDWebImage */,
 				58BB0B111B122D8200B07279 /* GAI */,
 				58BB0ADD1B12221B00B07279 /* Alamofire */,
+				738BCA171BA4B07C00D00D34 /* AXStretchableHeader */,
+				730314731BA5E7FC00133764 /* DYAlertPickView */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1043,6 +1057,8 @@
 		738BCA171BA4B07C00D00D34 /* AXStretchableHeader */ = {
 			isa = PBXGroup;
 			children = (
+				738BCA221BA4C40300D00D34 /* UINavigationBar+Awesome.h */,
+				738BCA231BA4C40300D00D34 /* UINavigationBar+Awesome.m */,
 				738BCA0C1BA4B06C00D00D34 /* AXStretchableHeaderTabViewController.h */,
 				738BCA0D1BA4B06C00D00D34 /* AXStretchableHeaderTabViewController.m */,
 				738BCA121BA4B06C00D00D34 /* AXStretchableHeaderTabViewController.xib */,
@@ -1054,6 +1070,7 @@
 				738BCA111BA4B06C00D00D34 /* AXTabBarItemButton.m */,
 			);
 			name = AXStretchableHeader;
+			path = ../playground;
 			sourceTree = "<group>";
 		};
 		F98F65D2D15412F7828AF298 /* Frameworks */ = {
@@ -1283,6 +1300,7 @@
 				587837A01B43E6F8008DF480 /* ic_hq_off.png in Resources */,
 				586F49D71B8088AD0039CC6B /* FollowingFeedHeaderWithFollowing.xib in Resources */,
 				586F49B71B7FE5010039CC6B /* Localizable.strings in Resources */,
+				7303147A1BA5E88C00133764 /* AXStretchableHeaderTabViewController.xib in Resources */,
 				5816331A1B6A6F7800A4C902 /* default_cover_big@2x.png in Resources */,
 				588634811B67E7E4005ED6D4 /* ic_facebook@2x.png in Resources */,
 				5898FAF31B81D76E009CE97E /* ic_heart_fill_btn_big@2x.png in Resources */,
@@ -1440,6 +1458,7 @@
 				5890D61A1B05484A00AAEAE5 /* CenterViewControllers.swift in Sources */,
 				58EAB3DF1B0D11110075304E /* Utils.swift in Sources */,
 				7361FD0B1BA060ED00444179 /* RBStoryboardLink.m in Sources */,
+				730314761BA5E87500133764 /* AXStretchableHeaderView.m in Sources */,
 				58BB0AEB1B12222C00B07279 /* ResponseSerialization.swift in Sources */,
 				582709F71B0A8605003C44DA /* KeychainItemWrapper.swift in Sources */,
 				58BB0B161B12308000B07279 /* BaseViewController.swift in Sources */,
@@ -1454,9 +1473,11 @@
 				585BAD0D1B85ED9900FE137A /* DTConstants.m in Sources */,
 				58933A551B6618D400452EAB /* SectionTableViewCell.swift in Sources */,
 				FC0D9D551B09A70300E048CC /* PlayerContext.swift in Sources */,
+				730314771BA5E87500133764 /* AXTabBar.m in Sources */,
 				5886939D1B13B51300566124 /* SDWebImageDecoder.m in Sources */,
 				588693A71B13B51300566124 /* UIView+WebCacheOperation.m in Sources */,
 				58272D861B88D7D200BBF276 /* GenreSampleTableViewCell.swift in Sources */,
+				730314751BA5E87500133764 /* AXStretchableHeaderTabViewController.m in Sources */,
 				FC766BEF1B050D51006FD4FB /* NetworkPath.swift in Sources */,
 				FC766BF51B051AA4006FD4FB /* NetworkRequests.swift in Sources */,
 				7361FCDC1B9F5A7C00444179 /* ProfileViewController.swift in Sources */,
@@ -1467,6 +1488,7 @@
 				58BB0AEC1B12222C00B07279 /* Upload.swift in Sources */,
 				58BB0AED1B12222C00B07279 /* Validation.swift in Sources */,
 				58946E5B1B63AFCE005B4712 /* ChannelViewControllers.swift in Sources */,
+				730314791BA5E87500133764 /* DYAlertPickView.m in Sources */,
 				FC0D9D571B09F4F500E048CC /* Stream.swift in Sources */,
 				7361FCDE1B9F5B1A00444179 /* LikeBoxViewController.swift in Sources */,
 				588693A61B13B51300566124 /* UIImageView+WebCache.m in Sources */,
@@ -1486,6 +1508,7 @@
 				587837A41B4402D0008DF480 /* Reachability.m in Sources */,
 				5886939A1B13B51300566124 /* NSData+ImageContentType.m in Sources */,
 				58BB0AE91B12222C00B07279 /* ParameterEncoding.swift in Sources */,
+				730314781BA5E87500133764 /* AXTabBarItemButton.m in Sources */,
 				588693A11B13B51300566124 /* SDWebImagePrefetcher.m in Sources */,
 				588693A41B13B51300566124 /* UIImage+MultiFormat.m in Sources */,
 				5886939C1B13B51300566124 /* SDWebImageCompat.m in Sources */,
@@ -1500,6 +1523,7 @@
 				58C3E7A31B8A40C300822842 /* AddableTrackListViewController.swift in Sources */,
 				5858CC111B656BE4003EA698 /* GenreTableViewCell.swift in Sources */,
 				5854C7C41B6E94F5003A5A2A /* FollowingFeedHeaderView.swift in Sources */,
+				730314741BA5E87500133764 /* UINavigationBar+Awesome.m in Sources */,
 				5890D6181B053F4900AAEAE5 /* SettingsViewControllers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

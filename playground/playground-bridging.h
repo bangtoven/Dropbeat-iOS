@@ -9,8 +9,6 @@
 #ifndef labs_playground_bridging_h
 #define labs_playground_bridging_h
 
-#import "DYAlertPickView.h"
-
 #import "GAI.h"
 #import "GAIDictionaryBuilder.h"
 #import "GAIEcommerceFields.h"
@@ -34,6 +32,9 @@
 #import "AXTabBarItemButton.h"
 
 #import "UINavigationBar+Awesome.h"
+
+#import "DYAlertPickView.h"
+
 
 
 #endif

@@ -28,7 +28,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var reachability: Reachability?
     var sharedTrackUid: String?
     var sharedPlaylistUid: String?
-
+    
+    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+        super.touchesBegan(touches, withEvent: event)
+        let touch: UITouch = event.allTouches()?.first as! UITouch
+        let location = touch.locationInView(self.window)
+        let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
+        if (CGRectContainsPoint(statusBarFrame, location)) {
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.statusBarTapped, object: nil)
+        }
+    }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         

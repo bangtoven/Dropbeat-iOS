@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UserDetailTableViewController: UITableViewController, DYAlertPickViewDataSource, DYAlertPickViewDelegate {
+class UserDetailTableViewController: UITableViewController, AXSubViewController, DYAlertPickViewDataSource, DYAlertPickViewDelegate {
     
     var arg: Int!
     
@@ -20,8 +20,19 @@ class UserDetailTableViewController: UITableViewController, DYAlertPickViewDataS
             title += "Tab "
         }
         title += String(arg)
-        self.tabBarItem = UITabBarItem(title: title, image: nil, tag: 0)
+        self.title = title
     }
+    
+    func subViewWillDisappear() {
+        println(String(arg) + " subViewDidDisappear")
+    }
+    
+    func subViewWillAppear() {
+        println(String(arg) + " subViewWillAppear")
+    }
+    
+    // MARK: -
+    // MARK: DYAlertPickViewDataSource
     var selectedSection: Int = -1
     
     @IBOutlet weak var button: UIButton!

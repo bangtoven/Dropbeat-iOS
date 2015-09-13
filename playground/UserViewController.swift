@@ -8,24 +8,18 @@
 
 import UIKit
 
-class UserHeaderView: AXStretchableHeaderView, AXStretchableHeaderViewDelegate {
-    
+class UserHeaderView: AXStretchableHeaderView {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var button: UIButton!
     @IBOutlet weak var profileImageHeightConstraint: NSLayoutConstraint!
     
-    static func instantiate() -> UserHeaderView{
-        var nib = UINib(nibName: "UserHeaderView", bundle: nil)
-        var uhv: UserHeaderView = nib.instantiateWithOwner(self, options: nil).first as! UserHeaderView
-        uhv.delegate = uhv
-        
-        return uhv
-    }
-    
-    func interactiveSubviewsInStretchableHeaderView(stretchableHeaderView: AXStretchableHeaderView!) -> [AnyObject]! {
+    override func interactiveSubviews() -> [AnyObject]! {
         return [self.button]
     }
     
+    override func didHeightRatioChange(ratio: CGFloat) {
+        self.profileImageHeightConstraint.constant = 84 * ratio;
+    }
 }
 
 class UserViewController: AXStretchableHeaderTabViewController {
@@ -61,15 +55,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
         selectedVC.tableView.setContentOffset(CGPointMake(0, -self.headerView.maximumOfHeight-44), animated: true)
     }
     
-    override func layoutHeaderViewAndTabBar() {
-        super.layoutHeaderViewAndTabBar()
-        
-        var headerHeight = self.headerView.frame.height
-        var ratio = (headerHeight-64 - self.headerView.minimumOfHeight) /
-                    (self.headerView.maximumOfHeight - self.headerView.minimumOfHeight)
-        
-        ratio = ratio>1.0 ? 1.0 : ratio
-        
+    override func didHeightRatioChange(ratio: CGFloat) {
         switch ratio {
         case 0..<0.75:
             UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
@@ -79,13 +65,13 @@ class UserViewController: AXStretchableHeaderTabViewController {
             break
         }
 
+        var ratio = ratio>1.0 ? 1.0 : ratio;
+
         self.navigationController?.navigationBar.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 2.0 - 2*ratio))
         self.navigationController?.navigationBar.tintColor = UIColor(white: ratio, alpha: 1.0)
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor(white: ratio, alpha: 1-ratio)]
         
         self.headerView.alpha = ratio
-        
-//        (self.headerView as! UserHeaderView).profileImageHeightConstraint.constant = 84*ratio
     }
     
     override func viewWillAppear(animated: Bool) {

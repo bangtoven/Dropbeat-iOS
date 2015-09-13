@@ -14,6 +14,11 @@
 - (UIScrollView *)stretchableSubViewInSubViewController:(id)subViewController;
 @end
 
+@protocol AXSubViewController <NSObject>
+- (void)subViewWillAppear;
+- (void)subViewWillDisappear;
+@end
+
 @interface AXStretchableHeaderTabViewController : UIViewController <UIScrollViewDelegate, AXTabBarDelegate>
 @property (nonatomic) NSUInteger selectedIndex;
 @property (readwrite, nonatomic) UIViewController *selectedViewController;
@@ -28,4 +33,7 @@
 - (void)layoutHeaderViewAndTabBar;
 - (void)layoutViewControllers;
 - (void)layoutSubViewControllerToSelectedViewController;
+
+- (void)didHeightRatioChange:(CGFloat)ratio;
+
 @end

@@ -69,10 +69,10 @@
             </objects>
             <point key="canvasLocation" x="395" y="910"/>
         </scene>
-        <!--User View Controller-->
+        <!--Base User View Controller-->
         <scene sceneID="10W-2V-DkZ">
             <objects>
-                <viewController id="ZJ4-xY-4VA" customClass="UserViewController" customModule="playground" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ZJ4-xY-4VA" customClass="BaseUserViewController" customModule="playground" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rPW-eU-8Lc"/>
                         <viewControllerLayoutGuide type="bottom" id="4Rf-VU-ehf"/>

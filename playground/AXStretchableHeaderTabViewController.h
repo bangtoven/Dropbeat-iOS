@@ -22,6 +22,8 @@
 @interface AXStretchableHeaderTabViewController : UIViewController <UIScrollViewDelegate, AXTabBarDelegate>
 @property (nonatomic) NSUInteger selectedIndex;
 @property (readwrite, nonatomic) UIViewController *selectedViewController;
+@property (readonly, nonatomic) UIScrollView *selectedScrollView;
+
 @property (copy, nonatomic) NSArray *viewControllers;
 
 @property (weak, nonatomic) IBOutlet AXStretchableHeaderView *headerView;
@@ -35,5 +37,6 @@
 - (void)layoutSubViewControllerToSelectedViewController;
 
 - (void)didHeightRatioChange:(CGFloat)ratio;
+
 
 @end

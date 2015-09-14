@@ -230,9 +230,8 @@
 		738BCA141BA4B06C00D00D34 /* AXTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA0F1BA4B06C00D00D34 /* AXTabBar.m */; };
 		738BCA151BA4B06C00D00D34 /* AXTabBarItemButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA111BA4B06C00D00D34 /* AXTabBarItemButton.m */; };
 		738BCA161BA4B06C00D00D34 /* AXStretchableHeaderTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738BCA121BA4B06C00D00D34 /* AXStretchableHeaderTabViewController.xib */; };
-		738BCA191BA4B0B100D00D34 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA181BA4B0B100D00D34 /* UserViewController.swift */; };
-		738BCA1F1BA4B66500D00D34 /* UserHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738BCA1E1BA4B66500D00D34 /* UserHeaderView.xib */; };
-		738BCA211BA4BA8600D00D34 /* UserDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA201BA4BA8600D00D34 /* UserDetailTableViewController.swift */; };
+		738BCA191BA4B0B100D00D34 /* BaseUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA181BA4B0B100D00D34 /* BaseUserViewController.swift */; };
+		738BCA1F1BA4B66500D00D34 /* BaseUserHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738BCA1E1BA4B66500D00D34 /* BaseUserHeaderView.xib */; };
 		738BCA241BA4C40300D00D34 /* UINavigationBar+Awesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA231BA4C40300D00D34 /* UINavigationBar+Awesome.m */; };
 		738BCA2A1BA57E9700D00D34 /* DYAlertPickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA291BA57E9700D00D34 /* DYAlertPickView.m */; };
 		73AD145E1BA4744300C1AE15 /* coverImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 73AD145D1BA4744300C1AE15 /* coverImage.png */; };
@@ -545,9 +544,8 @@
 		738BCA101BA4B06C00D00D34 /* AXTabBarItemButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AXTabBarItemButton.h; sourceTree = "<group>"; };
 		738BCA111BA4B06C00D00D34 /* AXTabBarItemButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AXTabBarItemButton.m; sourceTree = "<group>"; };
 		738BCA121BA4B06C00D00D34 /* AXStretchableHeaderTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AXStretchableHeaderTabViewController.xib; sourceTree = "<group>"; };
-		738BCA181BA4B0B100D00D34 /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
-		738BCA1E1BA4B66500D00D34 /* UserHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserHeaderView.xib; sourceTree = "<group>"; };
-		738BCA201BA4BA8600D00D34 /* UserDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailTableViewController.swift; sourceTree = "<group>"; };
+		738BCA181BA4B0B100D00D34 /* BaseUserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseUserViewController.swift; sourceTree = "<group>"; };
+		738BCA1E1BA4B66500D00D34 /* BaseUserHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BaseUserHeaderView.xib; sourceTree = "<group>"; };
 		738BCA221BA4C40300D00D34 /* UINavigationBar+Awesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+Awesome.h"; sourceTree = "<group>"; };
 		738BCA231BA4C40300D00D34 /* UINavigationBar+Awesome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Awesome.m"; sourceTree = "<group>"; };
 		738BCA281BA57E9700D00D34 /* DYAlertPickView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYAlertPickView.h; sourceTree = "<group>"; };
@@ -890,9 +888,8 @@
 				730314711BA5B1E700133764 /* coverImage2.png */,
 				7349F7121BA1ABB1006E9ABF /* AppDelegate.swift */,
 				7349F7141BA1ABB1006E9ABF /* ViewController.swift */,
-				738BCA181BA4B0B100D00D34 /* UserViewController.swift */,
-				738BCA1E1BA4B66500D00D34 /* UserHeaderView.xib */,
-				738BCA201BA4BA8600D00D34 /* UserDetailTableViewController.swift */,
+				738BCA181BA4B0B100D00D34 /* BaseUserViewController.swift */,
+				738BCA1E1BA4B66500D00D34 /* BaseUserHeaderView.xib */,
 				7349F7301BA1AC48006E9ABF /* Playground.storyboard */,
 				738A21C71BA22C2D004A575A /* PGLaunch.xib */,
 				7349F7101BA1ABB1006E9ABF /* Supporting Files */,
@@ -1269,7 +1266,7 @@
 			files = (
 				738BCA161BA4B06C00D00D34 /* AXStretchableHeaderTabViewController.xib in Resources */,
 				738A21C81BA22C2D004A575A /* PGLaunch.xib in Resources */,
-				738BCA1F1BA4B66500D00D34 /* UserHeaderView.xib in Resources */,
+				738BCA1F1BA4B66500D00D34 /* BaseUserHeaderView.xib in Resources */,
 				73AD14601BA4749900C1AE15 /* avatar.png in Resources */,
 				73F5EBBF1BA1BD5900A925F0 /* logo_without_text.png in Resources */,
 				7349F7311BA1AC48006E9ABF /* Playground.storyboard in Resources */,
@@ -1412,7 +1409,6 @@
 				7349F7731BA1ADFC006E9ABF /* ResponseSerialization.swift in Sources */,
 				7349F7741BA1ADFC006E9ABF /* Upload.swift in Sources */,
 				7349F7751BA1ADFC006E9ABF /* Validation.swift in Sources */,
-				738BCA211BA4BA8600D00D34 /* UserDetailTableViewController.swift in Sources */,
 				738BCA141BA4B06C00D00D34 /* AXTabBar.m in Sources */,
 				7349F7151BA1ABB1006E9ABF /* ViewController.swift in Sources */,
 				7349F7131BA1ABB1006E9ABF /* AppDelegate.swift in Sources */,
@@ -1423,7 +1419,7 @@
 				7349F75A1BA1ADE6006E9ABF /* KeychainItemWrapper.swift in Sources */,
 				7349F75B1BA1ADE6006E9ABF /* Models.swift in Sources */,
 				7349F75C1BA1ADE6006E9ABF /* NetworkPath.swift in Sources */,
-				738BCA191BA4B0B100D00D34 /* UserViewController.swift in Sources */,
+				738BCA191BA4B0B100D00D34 /* BaseUserViewController.swift in Sources */,
 				73AD14651BA481C900C1AE15 /* AXStretchableHeaderView.m in Sources */,
 				7349F75D1BA1ADE6006E9ABF /* NetworkRequests.swift in Sources */,
 				7349F75E1BA1ADE6006E9ABF /* PlayerContext.swift in Sources */,

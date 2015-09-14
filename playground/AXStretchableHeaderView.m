@@ -33,8 +33,8 @@
 {
     self.clipsToBounds = YES;
     _bounces = YES;
-    _minimumOfHeight = 44.0;
-    _maximumOfHeight = 128.0;
+    _minimumOfHeight = 0;
+    _maximumOfHeight = 200;
 }
 
 - (NSArray*)interactiveSubviews

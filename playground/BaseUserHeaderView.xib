@@ -7,7 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UserHeaderView" customModule="playground" customModuleProvider="target"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="wQZ-ux-795" customClass="UserHeaderView" customModule="playground" customModuleProvider="target">
+        <view contentMode="scaleToFill" id="wQZ-ux-795" customClass="BaseUserHeaderView">
             <rect key="frame" x="0.0" y="0.0" width="320" height="333"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>

@@ -83,6 +83,11 @@ static NSString * const AXStretchableHeaderTabViewControllerSelectedIndexKey = @
     return _viewControllers[_selectedIndex];
 }
 
+- (UIScrollView*)selectedScrollView
+{
+    return [self scrollViewWithSubViewController:self.selectedViewController];
+}
+
 - (void)setSelectedViewController:(UIViewController *)selectedViewController
 {
     NSInteger newIndex = [_viewControllers indexOfObject:selectedViewController];

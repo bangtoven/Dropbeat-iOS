@@ -234,6 +234,9 @@
 		7361FD0E1BA060ED00444179 /* RBStoryboardPushSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 7361FD061BA060ED00444179 /* RBStoryboardPushSegue.m */; };
 		7361FD0F1BA060ED00444179 /* RBStoryboardSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 7361FD081BA060ED00444179 /* RBStoryboardSegue.m */; };
 		7361FD101BA060ED00444179 /* UIViewController+RBStoryboardLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 7361FD0A1BA060ED00444179 /* UIViewController+RBStoryboardLink.m */; };
+		738646121BA758BA00C21650 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738646111BA758BA00C21650 /* PlayerViewController.swift */; };
+		738646171BA7631D00C21650 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738646161BA7631D00C21650 /* GradientView.m */; };
+		738646181BA7695900C21650 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738646161BA7631D00C21650 /* GradientView.m */; };
 		738A21C81BA22C2D004A575A /* PGLaunch.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738A21C71BA22C2D004A575A /* PGLaunch.xib */; };
 		738BCA131BA4B06C00D00D34 /* AXStretchableHeaderTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA0D1BA4B06C00D00D34 /* AXStretchableHeaderTabViewController.m */; };
 		738BCA141BA4B06C00D00D34 /* AXTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA0F1BA4B06C00D00D34 /* AXTabBar.m */; };
@@ -546,6 +549,9 @@
 		7361FD0A1BA060ED00444179 /* UIViewController+RBStoryboardLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+RBStoryboardLink.m"; sourceTree = "<group>"; };
 		7361FD121BA0611400444179 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		7361FD131BA0611400444179 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		738646111BA758BA00C21650 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		738646151BA7631D00C21650 /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
+		738646161BA7631D00C21650 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
 		738A21C71BA22C2D004A575A /* PGLaunch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PGLaunch.xib; sourceTree = "<group>"; };
 		738BCA0C1BA4B06C00D00D34 /* AXStretchableHeaderTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AXStretchableHeaderTabViewController.h; sourceTree = "<group>"; };
 		738BCA0D1BA4B06C00D00D34 /* AXStretchableHeaderTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AXStretchableHeaderTabViewController.m; sourceTree = "<group>"; };
@@ -999,6 +1005,7 @@
 				FCD1DA8B1B04CCB200F9EA70 /* Main.storyboard */,
 				7361FCE71B9F67CE00444179 /* SplitStoryboard */,
 				586D166D1B0B972400C5147F /* StartupViewController.swift */,
+				738646111BA758BA00C21650 /* PlayerViewController.swift */,
 				5890D6191B05484A00AAEAE5 /* CenterViewControllers.swift */,
 				5890D6151B0538CD00AAEAE5 /* SearchViewController.swift */,
 				582E7D951B109B3100AB76A2 /* AutocomTableViewCell.swift */,
@@ -1022,6 +1029,8 @@
 				FC0D9D561B09F4F500E048CC /* Stream.swift */,
 				58EAB3DE1B0D11110075304E /* Utils.swift */,
 				587DCD121B6D91F900AF792D /* Extension.swift */,
+				738646151BA7631D00C21650 /* GradientView.h */,
+				738646161BA7631D00C21650 /* GradientView.m */,
 			);
 			name = "Model & etc";
 			sourceTree = "<group>";
@@ -1424,6 +1433,7 @@
 				7349F7721BA1ADFC006E9ABF /* Request.swift in Sources */,
 				7349F7731BA1ADFC006E9ABF /* ResponseSerialization.swift in Sources */,
 				7349F7741BA1ADFC006E9ABF /* Upload.swift in Sources */,
+				738646181BA7695900C21650 /* GradientView.m in Sources */,
 				7349F7751BA1ADFC006E9ABF /* Validation.swift in Sources */,
 				738BCA141BA4B06C00D00D34 /* AXTabBar.m in Sources */,
 				7349F7151BA1ABB1006E9ABF /* ViewController.swift in Sources */,
@@ -1472,6 +1482,7 @@
 				5890D61A1B05484A00AAEAE5 /* CenterViewControllers.swift in Sources */,
 				58EAB3DF1B0D11110075304E /* Utils.swift in Sources */,
 				7361FD0B1BA060ED00444179 /* RBStoryboardLink.m in Sources */,
+				738646171BA7631D00C21650 /* GradientView.m in Sources */,
 				730314761BA5E87500133764 /* AXStretchableHeaderView.m in Sources */,
 				58BB0AEB1B12222C00B07279 /* ResponseSerialization.swift in Sources */,
 				582709F71B0A8605003C44DA /* KeychainItemWrapper.swift in Sources */,
@@ -1499,6 +1510,7 @@
 				FCCAFE601B08BF920027F9D4 /* Models.swift in Sources */,
 				589413611B83C3F700395AFA /* TPKeyboardAvoidingScrollView.m in Sources */,
 				580621331B08CBAA009012D5 /* FeedViewController.swift in Sources */,
+				738646121BA758BA00C21650 /* PlayerViewController.swift in Sources */,
 				58BB0AEC1B12222C00B07279 /* Upload.swift in Sources */,
 				58BB0AED1B12222C00B07279 /* Validation.swift in Sources */,
 				58946E5B1B63AFCE005B4712 /* ChannelViewControllers.swift in Sources */,

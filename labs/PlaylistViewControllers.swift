@@ -30,15 +30,11 @@ class PlaylistViewController: BaseViewController,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let statusBarHeight:CGFloat = 20.0
         if fromPlayer {
             fakeNavigationBar.hidden = false
-//            frameHeightConstraint.constant = self.view.bounds.size.height - statusBarHeight
         } else {
-            var navigationHeight = navigationController!.navigationBar.frame.height
             fakeNavigationBar.hidden = true
             fakeNavigationBarHeightConstraint.constant = 0
-//            frameHeightConstraint.constant = self.view.bounds.size.height - navigationHeight - statusBarHeight - 49
         }
         
         if currentPlaylist.type == PlaylistType.EXTERNAL ||

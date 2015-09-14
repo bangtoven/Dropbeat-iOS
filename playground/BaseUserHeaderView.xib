@@ -40,6 +40,20 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                 </button>
+                <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xCQ-Sl-5NX" customClass="GradientView">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="E13-88-JMk"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="fillRatio">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
@@ -47,8 +61,11 @@
                 <constraint firstItem="QRE-Ss-xsP" firstAttribute="leading" secondItem="wQZ-ux-795" secondAttribute="leading" constant="24" id="B5x-3o-bPS"/>
                 <constraint firstItem="Jmv-JD-IAi" firstAttribute="leading" secondItem="wQZ-ux-795" secondAttribute="leading" id="BbL-p2-E60"/>
                 <constraint firstAttribute="trailing" secondItem="Jmv-JD-IAi" secondAttribute="trailing" id="CNE-Av-rMV"/>
+                <constraint firstItem="xCQ-Sl-5NX" firstAttribute="leading" secondItem="wQZ-ux-795" secondAttribute="leading" id="Og2-uV-A9C"/>
+                <constraint firstAttribute="trailing" secondItem="xCQ-Sl-5NX" secondAttribute="trailing" id="To3-Py-PCp"/>
                 <constraint firstAttribute="bottom" secondItem="QRE-Ss-xsP" secondAttribute="bottom" constant="34" id="Tt4-va-Y4e"/>
                 <constraint firstItem="Kj7-JN-unp" firstAttribute="top" secondItem="Jmv-JD-IAi" secondAttribute="bottom" constant="4" id="dyt-S2-oX9"/>
+                <constraint firstItem="xCQ-Sl-5NX" firstAttribute="top" secondItem="wQZ-ux-795" secondAttribute="top" id="gHh-xb-YBK"/>
                 <constraint firstItem="hYB-0b-NNb" firstAttribute="leading" secondItem="wQZ-ux-795" secondAttribute="leading" constant="8" id="kyR-mb-RCT"/>
                 <constraint firstAttribute="bottom" secondItem="hYB-0b-NNb" secondAttribute="bottom" constant="13" id="qVc-KR-p3E"/>
                 <constraint firstItem="Jmv-JD-IAi" firstAttribute="top" secondItem="wQZ-ux-795" secondAttribute="top" id="twq-Lw-Rwm"/>

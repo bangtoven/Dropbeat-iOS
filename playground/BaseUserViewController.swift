@@ -59,17 +59,6 @@ class BaseUserViewController: AXStretchableHeaderTabViewController {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
         self.navigationController?.navigationBar.shadowImage = UIImage()
-        
-        var mGradient = CAGradientLayer()
-        mGradient.frame = self.headerView.bounds
-        var colors = [CGColor]()
-        colors.append(UIColor(red: 0, green: 0, blue: 0, alpha: 0.5).CGColor)
-        colors.append(UIColor(red: 0, green: 0, blue: 0, alpha: 0).CGColor)
-        mGradient.startPoint = CGPointMake(0.0, 0.0)
-        mGradient.endPoint = CGPointMake(0.0, 0.1)
-        mGradient.colors = colors
-        
-        self.headerView.layer.addSublayer(mGradient)
     }
     
     override func viewWillDisappear(animated: Bool) {

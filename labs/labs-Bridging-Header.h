@@ -72,4 +72,6 @@
 
 #import "DYAlertPickView.h"
 
+#import "GradientView.h"
+
 #endif

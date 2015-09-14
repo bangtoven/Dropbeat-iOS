@@ -45,7 +45,6 @@ class BaseUserViewController: AXStretchableHeaderTabViewController {
         }
 
         var ratio = ratio>1.0 ? 1.0 : ratio
-
         self.navigationController?.navigationBar.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 2.0 - 2*ratio))
         self.navigationController?.navigationBar.tintColor = UIColor(white: ratio, alpha: 1.0)
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor(white: ratio, alpha: 1-ratio)]
@@ -55,6 +54,7 @@ class BaseUserViewController: AXStretchableHeaderTabViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         self.navigationController?.navigationBar.barTintColor = UIColor.clearColor()
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()

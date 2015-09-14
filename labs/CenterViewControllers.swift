@@ -1747,7 +1747,8 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             }
             break
         case .PLAYER:
-            showTabBarPlayer(!self.isTabBarPlayerVisible)
+            activeViewController = UIStoryboard(name: "Playground", bundle: nil).instantiateInitialViewController() as? UIViewController
+//            showTabBarPlayer(!self.isTabBarPlayerVisible)
 //            showPlayerView()
 //            let lastTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
 //            tabBar.selectedItem = lastTab
@@ -1755,9 +1756,9 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         default:
             break
         }
-        if type != MenuType.PLAYER {
+//        if type != MenuType.PLAYER {
             currentMenu = type
-        }
+//        }
     }
     
     func tabTagToMenuType (tag:Int) -> MenuType? {
@@ -1802,14 +1803,6 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         }
     }
     
-    override func prefersStatusBarHidden() -> Bool {
-        return isPlayerVisible
-    }
-    
-    override func preferredStatusBarUpdateAnimation() -> UIStatusBarAnimation {
-        return UIStatusBarAnimation.None
-    }
-    
 // MARK: PlayerView Show/Hide Layout
     @IBOutlet weak var containerTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var containerBottomConstraint: NSLayoutConstraint!
@@ -1829,8 +1822,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         self.tabBarTopInsetConstraint.constant = 0
         self.view.layoutIfNeeded()
         
-        let statusBarHeight = UIApplication.sharedApplication().statusBarFrame.size.height
-        self.containerTopConstraint.constant = -statusBarHeight
+        self.containerTopConstraint.constant = 0
         self.containerBottomConstraint.constant = self.tabBarContainerView.frame.height
     }
     
@@ -1951,17 +1943,15 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     
     func showPlayerView() {
         isPlayerVisible = true
-        setNeedsStatusBarAppearanceUpdate()
+        
+        UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.None)
         self.view.layoutIfNeeded()
-        UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
-//            self.containerTopConstraint.constant = 3 - self.containerHeightConstraint.constant
 
-            let statusBarHeight:CGFloat = 20.0
+        UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+
             let height = self.containerView.frame.size.height
-            var offset = height - statusBarHeight
-            
-            self.containerTopConstraint.constant -= offset
-            self.containerBottomConstraint.constant += offset
+            self.containerTopConstraint.constant -= height
+            self.containerBottomConstraint.constant += height
 
             self.tabBarBottomConstraint.constant = -1 * self.tabBarContainerView.frame.height
             self.tabBarContainerView.alpha = 0.0
@@ -1973,15 +1963,15 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     }
     
     func hidePlayerView() {
-        self.view.layoutIfNeeded()
-        
         isPlayerVisible = false
-        setNeedsStatusBarAppearanceUpdate()
+
+        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
+        self.view.layoutIfNeeded()
+
         UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
 
-            let statusBarHeight:CGFloat = 20.0
             self.containerBottomConstraint.constant = self.tabBarContainerView.frame.height
-            self.containerTopConstraint.constant = -1 * statusBarHeight
+            self.containerTopConstraint.constant = 0
             
             self.tabBarBottomConstraint.constant = 0
             self.tabBarContainerView.alpha = 1.0

@@ -11,8 +11,27 @@ import UIKit
 //\b(.*): (.*)
 //$1 <- map["$1"]
 
-class User {
-    var id: String
+enum UserType {
+    case USER
+    case ARTIST
+    case CHANNEL
+}
+
+class BaseUser {
+    var userType: UserType
+    var id: String?
+    var name: String?
+    var image: String?
+    
+    init(userType: UserType, id: String?, name: String?, image: String?) {
+        self.userType = userType
+        self.id = id
+        self.name = name
+        self.image = image
+    }
+}
+
+class User: BaseUser {
     var email: String
     var firstName: String
     var lastName: String
@@ -22,32 +41,10 @@ class User {
     var num_following: Int
     var num_followers: Int
     var description: String
-    var profile_image: String
     var resource_name: String
     var tracks: [Track] = []
     
-//    required init?(_ map: Map){
-//        
-//    }
-//    
-//    // Mappable
-//    func mapping(map: Map) {
-//        id              <- map["id"]
-//        email           <- map["email"]
-//        firstName       <- map["firstName"]
-//        lastName        <- map["lastName"]
-//        fbId            <- map["fbId"]
-//        nickname        <- map["nickname"]
-//        num_tracks      <- map["num_tracks"]
-//        num_following   <- map["num_following"]
-//        num_followers   <- map["num_followers"]
-//        description     <- map["description"]
-//        profile_image   <- map["profile_image"]
-//        resource_name   <- map["resource_name"]
-//    }
-    
     init(id: String, email: String, firstName: String, lastName: String, nickname:String, fbId: String?, num_tracks: Int, num_following: Int, num_followers: Int, description: String,profile_image: String, resource_name: String) {
-        self.id = id
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
@@ -57,8 +54,8 @@ class User {
         self.num_following = num_following
         self.num_followers = num_followers
         self.description = description
-        self.profile_image = profile_image
         self.resource_name = resource_name
+        super.init(userType: UserType.USER, id: id, name: nickname, image: profile_image)
     }
     
     static func parseUser(data: AnyObject, key: String = "user", secondKey: String?=nil) -> User {
@@ -107,32 +104,24 @@ class ChannelPlaylist {
     }
 }
 
-class Channel {
-    var uid: String?
-    var thumbnail: String?
-    var name :String
+class Channel: BaseUser {
     var genre: [String]
     var playlists: [ChannelPlaylist]
     var isBookmarked:Bool
     var idx:Int?
     
-    init(uid: String, name: String, thumbnail: String? = nil) {
-        self.uid = uid
-        self.name = name
-        self.thumbnail = thumbnail
+    init(id: String, name: String, thumbnail: String? = nil) {
         self.playlists = [ChannelPlaylist]()
         self.genre = []
         self.isBookmarked = false
+        super.init(userType: UserType.CHANNEL, id: id, name: name, image: thumbnail)
     }
     
-    init(name: String, thumbnail: String? = nil, genre: [String],
-        playlists: [ChannelPlaylist]) {
-            self.uid = nil
-            self.name = name
-            self.thumbnail = thumbnail
-            self.playlists = playlists
-            self.genre = genre
-            self.isBookmarked = false
+    init(name: String, thumbnail: String? = nil, genre: [String], playlists: [ChannelPlaylist]) {
+        self.playlists = playlists
+        self.genre = genre
+        self.isBookmarked = false
+        super.init(userType: UserType.CHANNEL, id: nil, name: name, image: thumbnail)
     }
     
     static func parseChannel(data: AnyObject, key: String = "data", secondKey: String?=nil) -> Channel? {
@@ -187,7 +176,7 @@ class Channel {
             if (s["thumbnail"].error == nil) {
                 thumbnail = s["thumbnail"].stringValue
             }
-            let c = Channel(uid:uid, name: name, thumbnail: thumbnail)
+            let c = Channel(id:uid, name: name, thumbnail: thumbnail)
             c.idx = index
             channels.append(c)
         }
@@ -227,10 +216,7 @@ class ArtistEvent {
     }
 }
 
-class Artist {
-    var id: String
-    var image:String?
-    var name:String?
+class Artist: BaseUser {
     var hasEvent:Bool = false
     var hasPodcast:Bool = false
     var hasLiveset:Bool = false
@@ -238,9 +224,7 @@ class Artist {
     var events: [ArtistEvent] = []
     
     init (id:String, name:String, image:String) {
-        self.id = id
-        self.name = name
-        self.image = image
+        super.init(userType: UserType.ARTIST, id: id, name: name, image: image)
     }
     
     static func parseArtist(data: AnyObject, key: String = "data", secondKey: String?=nil) -> Artist {

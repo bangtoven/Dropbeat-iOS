@@ -29,6 +29,10 @@ class Requests {
         return adapter.send(respCb)
     }
     
+    static func resolveUser (resource: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(ResolvePath.resolveUser+resource, auth: false, respCb: respCb)
+    }
+    
     static func userSelf(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         return sendGet(ApiPath.userSelf, auth: true, respCb: respCb)
     }

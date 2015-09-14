@@ -186,6 +186,8 @@
 		730314781BA5E87500133764 /* AXTabBarItemButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA111BA4B06C00D00D34 /* AXTabBarItemButton.m */; };
 		730314791BA5E87500133764 /* DYAlertPickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738BCA291BA57E9700D00D34 /* DYAlertPickView.m */; };
 		7303147A1BA5E88C00133764 /* AXStretchableHeaderTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738BCA121BA4B06C00D00D34 /* AXStretchableHeaderTabViewController.xib */; };
+		7303148B1BA70FB300133764 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7303148A1BA70FB300133764 /* UserViewController.swift */; };
+		7303148C1BA7397900133764 /* BaseUserHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738BCA1E1BA4B66500D00D34 /* BaseUserHeaderView.xib */; };
 		7349F7131BA1ABB1006E9ABF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7349F7121BA1ABB1006E9ABF /* AppDelegate.swift */; };
 		7349F7151BA1ABB1006E9ABF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7349F7141BA1ABB1006E9ABF /* ViewController.swift */; };
 		7349F7311BA1AC48006E9ABF /* Playground.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7349F7301BA1AC48006E9ABF /* Playground.storyboard */; };
@@ -499,6 +501,7 @@
 		58EAB3DE1B0D11110075304E /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		58EE1E291B46FBD100976FD0 /* restart_filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = restart_filled.png; sourceTree = "<group>"; };
 		730314711BA5B1E700133764 /* coverImage2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coverImage2.png; sourceTree = "<group>"; };
+		7303148A1BA70FB300133764 /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		7349F70E1BA1ABB1006E9ABF /* playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7349F7111BA1ABB1006E9ABF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7349F7121BA1ABB1006E9ABF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -888,6 +891,7 @@
 				730314711BA5B1E700133764 /* coverImage2.png */,
 				7349F7121BA1ABB1006E9ABF /* AppDelegate.swift */,
 				7349F7141BA1ABB1006E9ABF /* ViewController.swift */,
+				7303148A1BA70FB300133764 /* UserViewController.swift */,
 				738BCA181BA4B0B100D00D34 /* BaseUserViewController.swift */,
 				738BCA1E1BA4B66500D00D34 /* BaseUserHeaderView.xib */,
 				7349F7301BA1AC48006E9ABF /* Playground.storyboard */,
@@ -1309,6 +1313,7 @@
 				586D25AD1B67878C00C19D84 /* ic_star_filled.png in Resources */,
 				58CF0C381B11025500AD4BF0 /* empty.png in Resources */,
 				589F0F351B6A333F000851CC /* ic_dotdotdot_horizontal@2x.png in Resources */,
+				7303148C1BA7397900133764 /* BaseUserHeaderView.xib in Resources */,
 				FCD1DA8D1B04CCB200F9EA70 /* Main.storyboard in Resources */,
 				586F49C71B805D290039CC6B /* Localizable.stringsdict in Resources */,
 				73C7862F1B9EFB93001D2A2E /* ic_list_gray_small@2x.png in Resources */,
@@ -1417,6 +1422,7 @@
 				7349F7591BA1ADE6006E9ABF /* Extension.swift in Sources */,
 				738BCA241BA4C40300D00D34 /* UINavigationBar+Awesome.m in Sources */,
 				7349F75A1BA1ADE6006E9ABF /* KeychainItemWrapper.swift in Sources */,
+				7303148B1BA70FB300133764 /* UserViewController.swift in Sources */,
 				7349F75B1BA1ADE6006E9ABF /* Models.swift in Sources */,
 				7349F75C1BA1ADE6006E9ABF /* NetworkPath.swift in Sources */,
 				738BCA191BA4B0B100D00D34 /* BaseUserViewController.swift in Sources */,

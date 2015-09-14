@@ -16,8 +16,17 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6bx-IE-lDp">
+                                <rect key="frame" x="107" y="261" width="107" height="30"/>
+                                <state key="normal" title="Show ProfileVC">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="ZJ4-xY-4VA" kind="show" identifier="Show User" id="W6O-VY-5Pf"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="agn-e4-KGq">
-                                <rect key="frame" x="144" y="100" width="32" height="30"/>
+                                <rect key="frame" x="130" y="94" width="32" height="30"/>
                                 <state key="normal" title="User">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -26,7 +35,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T8L-cD-EtZ">
-                                <rect key="frame" x="142" y="155" width="36" height="30"/>
+                                <rect key="frame" x="180" y="94" width="36" height="30"/>
                                 <state key="normal" title="Artist">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -35,7 +44,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VX4-sY-dIm">
-                                <rect key="frame" x="132" y="210" width="57" height="30"/>
+                                <rect key="frame" x="239" y="94" width="57" height="30"/>
                                 <state key="normal" title="Channel">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -43,15 +52,17 @@
                                     <action selector="channelBtnTapped:" destination="FfF-Nj-8bO" eventType="touchUpInside" id="pr1-nN-EnQ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6bx-IE-lDp">
-                                <rect key="frame" x="128" y="262" width="64" height="30"/>
-                                <state key="normal" title="ProfileVC">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="ZJ4-xY-4VA" kind="show" identifier="" id="W6O-VY-5Pf"/>
-                                </connections>
-                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="resource" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FXA-fa-WWF">
+                                <rect key="frame" x="146" y="132" width="166" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Resource Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dxl-wR-u9m">
+                                <rect key="frame" x="8" y="136" width="123" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -60,6 +71,7 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="resourceTextField" destination="FXA-fa-WWF" id="czf-XN-XZB"/>
                         <segue destination="P0U-dN-NDP" kind="show" identifier="ShowUser" id="pJn-G2-lqI"/>
                         <segue destination="V6U-5f-1Ae" kind="show" identifier="ShowArtist" id="shB-Zs-MaK"/>
                         <segue destination="r3H-d4-CuX" kind="show" identifier="ShowChannel" id="tPJ-LM-FFh"/>
@@ -69,10 +81,10 @@
             </objects>
             <point key="canvasLocation" x="395" y="910"/>
         </scene>
-        <!--Base User View Controller-->
+        <!--User View Controller-->
         <scene sceneID="10W-2V-DkZ">
             <objects>
-                <viewController id="ZJ4-xY-4VA" customClass="BaseUserViewController" customModule="playground" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="ZJ4-xY-4VA" customClass="UserViewController" customModule="playground" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rPW-eU-8Lc"/>
                         <viewControllerLayoutGuide type="bottom" id="4Rf-VU-ehf"/>

@@ -134,6 +134,8 @@ public class CorePath {
 public class ResolvePath {
     static var host :String = "http://resolve.dropbeat.net/"
     static var resolveStream :String = host + "resolve/"
+    
+    static var resolveUser: String = "http://spark.coroutine.io/api/v1/resolve/?url=spark.coroutine.io/r/"
 }
 
 public class YoutubeApiPath {

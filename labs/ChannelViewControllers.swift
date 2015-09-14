@@ -202,9 +202,9 @@ class ChannelViewController: AddableTrackListViewController,
         cell.delegate = self
         
         var channel: Channel = channels[indexPath.row]
-        if (channel.thumbnail != nil) {
+        if (channel.image != nil) {
             cell.thumbView.sd_setImageWithURL(
-                NSURL(string: channel.thumbnail!),
+                NSURL(string: channel.image!),
                 placeholderImage: UIImage(named :"default_artwork.png"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                     
@@ -345,7 +345,7 @@ class ChannelViewController: AddableTrackListViewController,
     override func getPlaylistId() -> String? {
         var seed = ""
         for channel in bookmarkedChannels {
-            seed += channel.uid!
+            seed += channel.id!
         }
         return "seed_\(seed.md5)"
     }
@@ -455,7 +455,7 @@ class ChannelViewController: AddableTrackListViewController,
             
             self.bookmarkedChannels.removeAll(keepCapacity: false)
             for (uid:String, channel:Channel) in self.allChannels {
-                if bookmarkIds.contains(channel.uid!) {
+                if bookmarkIds.contains(channel.id!) {
                     channel.isBookmarked = true
                     self.bookmarkedChannels.append(channel)
                 } else {
@@ -538,12 +538,12 @@ class ChannelViewController: AddableTrackListViewController,
             var channels = Channel.parseChannelList(result!)
             if initialLoad {
                 for channel in channels {
-                    self.allChannels[channel.uid!] = channel
+                    self.allChannels[channel.id!] = channel
                 }
             }
             
             for channel in channels {
-                if let c = self.allChannels[channel.uid!] {
+                if let c = self.allChannels[channel.id!] {
                     self.channels.append(c)
                 }
             }
@@ -610,7 +610,7 @@ class ChannelViewController: AddableTrackListViewController,
         var newChannels = [Channel]()
         if (channel.isBookmarked) {
             for c in bookmarkedChannels {
-                if (c.uid != channel.uid) {
+                if (c.id != channel.id) {
                     newChannels.append(c)
                 }
             }
@@ -621,7 +621,7 @@ class ChannelViewController: AddableTrackListViewController,
             newChannels.append(channel)
         }
         newBookmarkedIds = newChannels.map({ (c:Channel) -> String in
-            return c.uid!
+            return c.id!
         })
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Saving..", comment:""))
         Requests.updateBookmarkList(newBookmarkedIds!, respCb:{
@@ -763,7 +763,7 @@ class ChannelViewController: AddableTrackListViewController,
             if let destination = segue.destinationViewController as? ChannelDetailViewController {
                 if let idx = trackTableView.indexPathForSelectedRow()?.row {
                     let channel = channels[idx]
-                    destination.channelUid = channel.uid
+                    destination.channelUid = channel.id
                     destination.channelName = channel.name
                 }
             }
@@ -865,7 +865,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
         if channel == nil || currSection == nil {
             return nil
         }
-        return "channel_playlist_\(channel!.uid)_\(currSection!.uid)"
+        return "channel_playlist_\(channel!.id)_\(currSection!.uid)"
     }
     
     override func getPlaylistName() -> String? {
@@ -921,11 +921,11 @@ class ChannelDetailViewController: AddableTrackListViewController,
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)
                 return
             }
-            self.channel!.uid = self.channelUid
+            self.channel!.id = self.channelUid
             self.genreView.text = ", ".join(self.channel!.genre)
             self.nameView.text = self.channel!.name
-            if (self.channel!.thumbnail != nil) {
-                self.thumbView.sd_setImageWithURL(NSURL(string:self.channel!.thumbnail!),
+            if (self.channel!.image != nil) {
+                self.thumbView.sd_setImageWithURL(NSURL(string:self.channel!.image!),
                     placeholderImage: UIImage(named: "default_artwork.png"))
             } else {
                 self.thumbView.image = UIImage(named: "default_artwork.png")
@@ -965,7 +965,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
             for (idx:String, s: JSON) in data {
                 self.bookmarkedIds.append(s.stringValue)
             }
-            self.channel!.isBookmarked = find(self.bookmarkedIds, self.channel!.uid!) != nil
+            self.channel!.isBookmarked = find(self.bookmarkedIds, self.channel!.id!) != nil
             self.updateBookmarkBtn()
         })
     }
@@ -1119,10 +1119,10 @@ class ChannelDetailViewController: AddableTrackListViewController,
                     title: NSLocalizedString("Failed to update", comment:""), message: message)
                 return
             }
-            if (isAdding && find(self.bookmarkedIds, self.channel!.uid!) == nil) {
-                self.bookmarkedIds.append(self.channel!.uid!)
+            if (isAdding && find(self.bookmarkedIds, self.channel!.id!) == nil) {
+                self.bookmarkedIds.append(self.channel!.id!)
             } else if (!isAdding) {
-                let idx = find(self.bookmarkedIds, self.channel!.uid!)
+                let idx = find(self.bookmarkedIds, self.channel!.id!)
                 if idx != nil {
                     self.bookmarkedIds.removeAtIndex(idx!)
                 }
@@ -1282,7 +1282,7 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
             if let destination = segue.destinationViewController as? ChannelDetailViewController {
                 if let idx = tableView.indexPathForSelectedRow()?.row {
                     let channel = bookmarkedChannels[idx]
-                    destination.channelUid = channel.uid
+                    destination.channelUid = channel.id
                     destination.channelName = channel.name
                 }
             }
@@ -1296,9 +1296,9 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
         cell.delegate = self
         
         var channel: Channel = bookmarkedChannels[indexPath.row]
-        if (channel.thumbnail != nil) {
+        if (channel.image != nil) {
             cell.thumbView.sd_setImageWithURL(
-                NSURL(string: channel.thumbnail!),
+                NSURL(string: channel.image!),
                 placeholderImage: UIImage(named :"default_artwork.png"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                     
@@ -1358,7 +1358,7 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
             
             self.bookmarkedChannels.removeAll(keepCapacity: false)
             for (uid:String, channel:Channel) in self.channels! {
-                channel.isBookmarked = bookmarkIds.contains(channel.uid!)
+                channel.isBookmarked = bookmarkIds.contains(channel.id!)
                 if channel.isBookmarked {
                     self.bookmarkedChannels.append(channel)
                 }
@@ -1382,15 +1382,15 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
         var newChannels = [Channel]()
         if (channel.isBookmarked) {
             for c in bookmarkedChannels {
-                if (c.uid != channel.uid) {
-                    newBookmarkedIds.insert(c.uid!)
+                if (c.id != channel.id) {
+                    newBookmarkedIds.insert(c.id!)
                 }
             }
         } else {
             for c in bookmarkedChannels {
-                newBookmarkedIds.insert(c.uid!)
+                newBookmarkedIds.insert(c.id!)
             }
-            newBookmarkedIds.insert(channel.uid!)
+            newBookmarkedIds.insert(channel.id!)
         }
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Saving..", comment:""))
         Requests.updateBookmarkList(Array(newBookmarkedIds), respCb:{

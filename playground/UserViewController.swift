@@ -9,15 +9,25 @@
 import UIKit
 
 class BaseUserHeaderView: AXStretchableHeaderView {
-    @IBOutlet weak var button: UIButton!
+    @IBOutlet weak var coverImageView: UIImageView!
+    @IBOutlet weak var profileImageView: UIImageView!
+    @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var labelHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var showMoreButton: UIButton!
+    @IBOutlet weak var followButton: UIButton!
     
     override func interactiveSubviews() -> [AnyObject]! {
-        return [self.button]
+        return [self.showMoreButton]
     }
     
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
-    
+    func loadView () {
+        self.profileImageView.layer.cornerRadius = 10
+        self.profileImageView.layer.borderWidth = 2
+        self.profileImageView.layer.borderColor = UIColor.whiteColor().CGColor;
+        self.profileImageView.clipsToBounds = true
+    }
 }
 
 class UserViewController: BaseUserViewController {
@@ -29,7 +39,13 @@ class UserViewController: BaseUserViewController {
         super.viewDidLoad()
         
         self.title = "adfasdf"
-        self.navigationItem.backBarButtonItem?.title = nil
+
+        self.headerView = BaseUserHeaderView.instantiate()
+        self.headerView.maximumOfHeight = 260;
+        
+        let header = self.headerView as! BaseUserHeaderView
+        header.loadView()
+
         
         Requests.resolveUser(self.resource) {(req, resp, result, error) -> Void in
             
@@ -58,12 +74,9 @@ class UserViewController: BaseUserViewController {
         }
         var testing = true
         if testing {
-            self.headerView = BaseUserHeaderView.instantiate()
-            
-            let header = self.headerView as! BaseUserHeaderView
             
             //            var header = self.headerView as! BaseUserHeaderView
-            header.button.addTarget(self, action: "buttonAction", forControlEvents: UIControlEvents.TouchUpInside)
+            header.showMoreButton.addTarget(self, action: "buttonAction", forControlEvents: UIControlEvents.TouchUpInside)
             
             var vcArr: [UIViewController] = []
             for x in 0..<3 {
@@ -88,7 +101,7 @@ class UserViewController: BaseUserViewController {
         
         if diff > 0 {
             self.headerView.maximumOfHeight += diff
-            header.textViewHeightConstraint.constant = contentHeight
+            header.labelHeightConstraint.constant = contentHeight
             self.layoutViewControllers()
             
             self.selectedScrollView.setContentOffset(CGPointMake(0, self.selectedScrollView.contentOffset.y-diff), animated: false)
@@ -104,7 +117,7 @@ class UserViewController: BaseUserViewController {
             let label = header.descriptionLabel
             let currentHeight = label.frame.height
             if currentHeight > 70 {
-                header.textViewHeightConstraint.constant = 70
+                header.labelHeightConstraint.constant = 70
                 self.headerView.maximumOfHeight -= (currentHeight-70)
                 self.layoutViewControllers()
             }

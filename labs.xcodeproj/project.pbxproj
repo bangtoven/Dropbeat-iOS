@@ -252,6 +252,8 @@
 		73C7862C1B9DB35F001D2A2E /* ic_play_purple@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73C7862A1B9DB35F001D2A2E /* ic_play_purple@2x.png */; };
 		73C7862D1B9DB35F001D2A2E /* ic_pause_purple@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73C7862B1B9DB35F001D2A2E /* ic_pause_purple@2x.png */; };
 		73C7862F1B9EFB93001D2A2E /* ic_list_gray_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 73C7862E1B9EFB93001D2A2E /* ic_list_gray_small@2x.png */; };
+		73F3D06A1BA8740000831785 /* default_cover_big@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 581633191B6A6F7800A4C902 /* default_cover_big@2x.png */; };
+		73F3D06B1BA8740000831785 /* default_profile.png in Resources */ = {isa = PBXBuildFile; fileRef = 5890D6431B081DD200AAEAE5 /* default_profile.png */; };
 		73F5EBBB1BA1BB9400A925F0 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 588693751B13B4ED00566124 /* libGoogleAnalyticsServices.a */; };
 		73F5EBBC1BA1BC0400A925F0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 58BB0AF51B122A7900B07279 /* libz.dylib */; };
 		73F5EBBD1BA1BC0E00A925F0 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 58BB0AF71B122A8600B07279 /* libsqlite3.dylib */; };
@@ -1286,8 +1288,10 @@
 			files = (
 				738BCA161BA4B06C00D00D34 /* AXStretchableHeaderTabViewController.xib in Resources */,
 				738A21C81BA22C2D004A575A /* PGLaunch.xib in Resources */,
+				73F3D06A1BA8740000831785 /* default_cover_big@2x.png in Resources */,
 				738BCA1F1BA4B66500D00D34 /* BaseUserHeaderView.xib in Resources */,
 				73AD14601BA4749900C1AE15 /* avatar.png in Resources */,
+				73F3D06B1BA8740000831785 /* default_profile.png in Resources */,
 				73F5EBBF1BA1BD5900A925F0 /* logo_without_text.png in Resources */,
 				7349F7311BA1AC48006E9ABF /* Playground.storyboard in Resources */,
 				730314721BA5B1E700133764 /* coverImage2.png in Resources */,

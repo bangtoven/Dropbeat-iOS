@@ -35,14 +35,14 @@ class User: BaseUser {
     var email: String
     var firstName: String
     var lastName: String
-    var nickname: String
+    var nickname: String //
     var fbId: String?
     var num_tracks: Int
-    var num_following: Int
-    var num_followers: Int
-    var description: String
+    var num_following: Int //
+    var num_followers: Int //
+    var description: String //
     var resource_name: String
-    var tracks: [Track] = []
+    var tracks: [Track] = [] //
     
     init(id: String, email: String, firstName: String, lastName: String, nickname:String, fbId: String?, num_tracks: Int, num_following: Int, num_followers: Int, description: String,profile_image: String, resource_name: String) {
         self.email = email
@@ -105,7 +105,7 @@ class ChannelPlaylist {
 }
 
 class Channel: BaseUser {
-    var genre: [String]
+    var genre: [String] // description ...
     var playlists: [ChannelPlaylist]
     var isBookmarked:Bool
     var idx:Int?

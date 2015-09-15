@@ -20,6 +20,12 @@ class BaseUserViewController: AXStretchableHeaderTabViewController {
         if testing {
             self.headerView = BaseUserHeaderView.instantiate()
             
+            
+            let header = self.headerView as! BaseUserHeaderView
+            
+//            var header = self.headerView as! BaseUserHeaderView
+            header.button.addTarget(self, action: "buttonAction", forControlEvents: UIControlEvents.TouchUpInside)
+            
             var vcArr: [UIViewController] = []
             for x in 0..<3 {
                 var vc: UserDetailTableViewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserDetailTableViewController") as! UserDetailTableViewController
@@ -27,6 +33,27 @@ class BaseUserViewController: AXStretchableHeaderTabViewController {
                 vcArr.append(vc)
             }
             self.viewControllers = vcArr
+        }
+    }
+    
+    func buttonAction() {
+        let header = self.headerView as! BaseUserHeaderView
+        let label = header.descriptionLabel
+        let currentHeight = label.frame.height
+        
+        let attr = [NSFontAttributeName:label.font]
+        let rect = label.text!.boundingRectWithSize(CGSizeMake(label.frame.width, CGFloat.max), options:NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: attr, context:nil)
+        let contentHeight = ceil(rect.height)
+        
+        var diff = contentHeight - currentHeight
+        
+        if diff > 0 {
+            self.headerView.maximumOfHeight += diff
+            header.textViewHeightConstraint.constant = contentHeight
+            self.layoutViewControllers()
+            
+            self.selectedScrollView.setContentOffset(CGPointMake(0, self.selectedScrollView.contentOffset.y-diff), animated: false)
+            self.layoutViewControllers()
         }
     }
     
@@ -50,6 +77,17 @@ class BaseUserViewController: AXStretchableHeaderTabViewController {
         self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor(white: ratio, alpha: 1-ratio)]
         
         self.headerView.alpha = ratio
+        
+        if ratio == 0.0 {
+            let header = self.headerView as! BaseUserHeaderView
+            let label = header.descriptionLabel
+            let currentHeight = label.frame.height
+            if currentHeight > 70 {
+                header.textViewHeightConstraint.constant = 70
+                self.headerView.maximumOfHeight -= (currentHeight-70)
+                self.layoutViewControllers()
+            }
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -78,17 +116,15 @@ class BaseUserViewController: AXStretchableHeaderTabViewController {
 // MARK: - For testing
 
 class BaseUserHeaderView: AXStretchableHeaderView {
-    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var button: UIButton!
-    @IBOutlet weak var profileImageHeightConstraint: NSLayoutConstraint!
     
     override func interactiveSubviews() -> [AnyObject]! {
         return [self.button]
     }
     
-    override func didHeightRatioChange(ratio: CGFloat) {
-        self.profileImageHeightConstraint.constant = 84 * ratio;
-    }
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
+    
 }
 
 class UserDetailTableViewController: UITableViewController, AXSubViewController, DYAlertPickViewDataSource, DYAlertPickViewDelegate {

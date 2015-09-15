@@ -35,11 +35,11 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
         footerViewHeightConstraint.constant = -60.0
         
         discoverBtn.layer.borderWidth = 1
-        discoverBtn.layer.borderColor = UIColor(netHex: 0x982EF4).CGColor
+        discoverBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         discoverBtn.layer.cornerRadius = 3.0
         
         doneBtn.layer.borderWidth = 1
-        doneBtn.layer.borderColor = UIColor(netHex: 0x982EF4).CGColor
+        doneBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         doneBtn.layer.cornerRadius = 3.0
         
         closeBtn.hidden = fromStartup

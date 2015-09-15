@@ -12,49 +12,8 @@ class BaseUserViewController: AXStretchableHeaderTabViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        self.tabBar.tintColor = UIColor(netHex: 0x982EF4)
+        self.view.tintColor = UIColor.dropbeatColor()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarTapped", name: NotifyKey.statusBarTapped, object: nil)
-        
-        var testing = true
-        if testing {
-            self.headerView = BaseUserHeaderView.instantiate()
-            
-            
-            let header = self.headerView as! BaseUserHeaderView
-            
-//            var header = self.headerView as! BaseUserHeaderView
-            header.button.addTarget(self, action: "buttonAction", forControlEvents: UIControlEvents.TouchUpInside)
-            
-            var vcArr: [UIViewController] = []
-            for x in 0..<3 {
-                var vc: UserDetailTableViewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserDetailTableViewController") as! UserDetailTableViewController
-                vc.arg = x
-                vcArr.append(vc)
-            }
-            self.viewControllers = vcArr
-        }
-    }
-    
-    func buttonAction() {
-        let header = self.headerView as! BaseUserHeaderView
-        let label = header.descriptionLabel
-        let currentHeight = label.frame.height
-        
-        let attr = [NSFontAttributeName:label.font]
-        let rect = label.text!.boundingRectWithSize(CGSizeMake(label.frame.width, CGFloat.max), options:NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: attr, context:nil)
-        let contentHeight = ceil(rect.height)
-        
-        var diff = contentHeight - currentHeight
-        
-        if diff > 0 {
-            self.headerView.maximumOfHeight += diff
-            header.textViewHeightConstraint.constant = contentHeight
-            self.layoutViewControllers()
-            
-            self.selectedScrollView.setContentOffset(CGPointMake(0, self.selectedScrollView.contentOffset.y-diff), animated: false)
-            self.layoutViewControllers()
-        }
     }
     
     func statusBarTapped() {
@@ -72,38 +31,31 @@ class BaseUserViewController: AXStretchableHeaderTabViewController {
         }
 
         var ratio = ratio>1.0 ? 1.0 : ratio
-        self.navigationController?.navigationBar.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 2.0 - 2*ratio))
-        self.navigationController?.navigationBar.tintColor = UIColor(white: ratio, alpha: 1.0)
-        self.navigationController?.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor(white: ratio, alpha: 1-ratio)]
+        var navBar = self.navigationController?.navigationBar
+        navBar!.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 2.0 - 2*ratio))
+        navBar!.tintColor = UIColor.dropbeatColor(saturation: 1-ratio)
+        navBar!.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(alpha: 1-ratio, saturation: 1-ratio)]
         
-        self.headerView.alpha = ratio
-        
-        if ratio == 0.0 {
-            let header = self.headerView as! BaseUserHeaderView
-            let label = header.descriptionLabel
-            let currentHeight = label.frame.height
-            if currentHeight > 70 {
-                header.textViewHeightConstraint.constant = 70
-                self.headerView.maximumOfHeight -= (currentHeight-70)
-                self.layoutViewControllers()
-            }
-        }
+//        self.headerView.alpha = ratio
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.navigationBar.barTintColor = UIColor.clearColor()
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-        self.navigationController?.navigationBar.tintColor = UIColor.whiteColor()
-        self.navigationController?.navigationBar.shadowImage = UIImage()
+        var navBar = self.navigationController?.navigationBar
+        navBar!.barTintColor = UIColor.clearColor()
+        navBar!.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+        navBar!.tintColor = UIColor.whiteColor()
+        navBar!.shadowImage = UIImage()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        self.navigationController?.navigationBar.barTintColor = nil
-        self.navigationController?.navigationBar.tintColor = nil
-        self.navigationController?.navigationBar.shadowImage = nil
+        
+        var navBar = self.navigationController?.navigationBar
+        navBar!.barTintColor = nil
+        navBar!.tintColor = nil
+        navBar!.shadowImage = nil
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -111,20 +63,6 @@ class BaseUserViewController: AXStretchableHeaderTabViewController {
         NSNotificationCenter.defaultCenter().removeObserver(self)
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: false)
     }
-}
-
-// MARK: - For testing
-
-class BaseUserHeaderView: AXStretchableHeaderView {
-    @IBOutlet weak var button: UIButton!
-    
-    override func interactiveSubviews() -> [AnyObject]! {
-        return [self.button]
-    }
-    
-    @IBOutlet weak var descriptionLabel: UILabel!
-    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
-    
 }
 
 class UserDetailTableViewController: UITableViewController, AXSubViewController, DYAlertPickViewDataSource, DYAlertPickViewDelegate {

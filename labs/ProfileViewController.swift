@@ -32,17 +32,17 @@ UITableViewDelegate, UITableViewDataSource {
         nameView.text = "\(account.user!.firstName) \(account.user!.lastName)"
         emailView.text = account.user!.email
         
-        nicknameChangeBtn.layer.borderColor = UIColor(netHex: 0x982EF4).CGColor
+        nicknameChangeBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         nicknameChangeBtn.layer.cornerRadius = 3.0
         nicknameChangeBtn.layer.borderWidth = 1
         
         likeBoxBtn.layer.borderWidth = 1
         likeBoxBtn.layer.cornerRadius = 3.0
-        likeBoxBtn.layer.borderColor = UIColor(netHex: 0x982EF4).CGColor
+        likeBoxBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         
         configFavoriteGenreBtn.layer.borderWidth = 1
         configFavoriteGenreBtn.layer.cornerRadius = 3.0
-        configFavoriteGenreBtn.layer.borderColor = UIColor(netHex: 0x982EF4).CGColor
+        configFavoriteGenreBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         
         if account.user!.fbId != nil && count(account.user!.fbId!) > 0 {
             let fbId = account.user!.fbId!

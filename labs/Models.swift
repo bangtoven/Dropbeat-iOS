@@ -22,12 +22,14 @@ class BaseUser {
     var id: String?
     var name: String?
     var image: String?
+    var coverImage: String?
     
-    init(userType: UserType, id: String?, name: String?, image: String?) {
+    init(userType: UserType, id: String?, name: String?, image: String?, coverImage: String?) {
         self.userType = userType
         self.id = id
         self.name = name
         self.image = image
+        self.coverImage = coverImage
     }
 }
 
@@ -44,7 +46,7 @@ class User: BaseUser {
     var resource_name: String
     var tracks: [Track] = [] //
     
-    init(id: String, email: String, firstName: String, lastName: String, nickname:String, fbId: String?, num_tracks: Int, num_following: Int, num_followers: Int, description: String,profile_image: String, resource_name: String) {
+    init(id: String, email: String, firstName: String, lastName: String, nickname:String, fbId: String?, num_tracks: Int, num_following: Int, num_followers: Int, description: String, profile_image: String, profile_cover_image: String, resource_name: String) {
         self.email = email
         self.firstName = firstName
         self.lastName = lastName
@@ -55,7 +57,7 @@ class User: BaseUser {
         self.num_followers = num_followers
         self.description = description
         self.resource_name = resource_name
-        super.init(userType: UserType.USER, id: id, name: nickname, image: profile_image)
+        super.init(userType: UserType.USER, id: id, name: nickname, image: profile_image, coverImage: profile_cover_image)
     }
     
     static func parseUser(data: AnyObject, key: String = "user", secondKey: String?=nil) -> User {
@@ -83,6 +85,7 @@ class User: BaseUser {
             num_followers: userJson["num_followers"].intValue,
             description: userJson["description"].stringValue,
             profile_image: userJson["profile_image"].stringValue,
+            profile_cover_image: userJson["profile_cover_image"].stringValue,
             resource_name: userJson["resource_name"].stringValue
         )
         
@@ -114,14 +117,14 @@ class Channel: BaseUser {
         self.playlists = [ChannelPlaylist]()
         self.genre = []
         self.isBookmarked = false
-        super.init(userType: UserType.CHANNEL, id: id, name: name, image: thumbnail)
+        super.init(userType: UserType.CHANNEL, id: id, name: name, image: thumbnail, coverImage: thumbnail)
     }
     
     init(name: String, thumbnail: String? = nil, genre: [String], playlists: [ChannelPlaylist]) {
         self.playlists = playlists
         self.genre = genre
         self.isBookmarked = false
-        super.init(userType: UserType.CHANNEL, id: nil, name: name, image: thumbnail)
+        super.init(userType: UserType.CHANNEL, id: nil, name: name, image: thumbnail, coverImage: thumbnail)
     }
     
     static func parseChannel(data: AnyObject, key: String = "data", secondKey: String?=nil) -> Channel? {
@@ -224,7 +227,7 @@ class Artist: BaseUser {
     var events: [ArtistEvent] = []
     
     init (id:String, name:String, image:String) {
-        super.init(userType: UserType.ARTIST, id: id, name: name, image: image)
+        super.init(userType: UserType.ARTIST, id: id, name: name, image: image, coverImage: image)
     }
     
     static func parseArtist(data: AnyObject, key: String = "data", secondKey: String?=nil) -> Artist {

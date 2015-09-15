@@ -66,11 +66,11 @@ class ChannelViewController: AddableTrackListViewController,
         
         signinBtn.layer.cornerRadius = 3.0
         signinBtn.layer.borderWidth = 1
-        signinBtn.layer.borderColor = UIColor(netHex:0x982EF4).CGColor
+        signinBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         
         signupBtn.layer.cornerRadius = 3.0
         signupBtn.layer.borderWidth = 1
-        signupBtn.layer.borderColor = UIColor(netHex:0x982EF4).CGColor
+        signupBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         
         
         needSigninScrollView.hidden = Account.getCachedAccount() != nil

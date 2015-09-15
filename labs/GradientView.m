@@ -41,10 +41,17 @@
     UIBezierPath* gradientPath = [UIBezierPath bezierPathWithRect: rect];
     CGContextSaveGState(context);
     [gradientPath addClip];
-    CGContextDrawLinearGradient(context, gradient2,
+    if (self.reverse == NO)
+        CGContextDrawLinearGradient(context, gradient2,
                                 CGPointMake(CGRectGetMidX(rect), CGRectGetMinY(rect)),
                                 CGPointMake(CGRectGetMidX(rect), CGRectGetMaxY(rect)),
                                 0);
+    else
+        CGContextDrawLinearGradient(context, gradient2,
+                                    CGPointMake(CGRectGetMidX(rect), CGRectGetMaxY(rect)),
+                                    CGPointMake(CGRectGetMidX(rect), CGRectGetMinY(rect)),
+                                    0);
+
     CGContextRestoreGState(context);
     
     

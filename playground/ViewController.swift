@@ -20,6 +20,7 @@ class ViewController: UIViewController {
         if segue.identifier == "Show User" {
             var uvc: UserViewController = segue.destinationViewController as! UserViewController
             uvc.resource = self.resourceTextField.text
+            self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.Plain, target:nil, action:nil)
         }
     }
     

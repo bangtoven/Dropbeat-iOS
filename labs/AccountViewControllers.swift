@@ -21,11 +21,11 @@ class NeedAuthViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        signinBtn.layer.borderColor = UIColor(netHex:0x982EF4).CGColor
+        signinBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         signinBtn.layer.borderWidth = 1
         signinBtn.layer.cornerRadius = 3.0
         
-        signupBtn.layer.borderColor = UIColor(netHex:0x982EF4).CGColor
+        signupBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         signupBtn.layer.borderWidth = 1
         signupBtn.layer.cornerRadius = 3.0
     }
@@ -222,13 +222,13 @@ class SigninViewController: FBSigninableViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        signinWithEmailBtn.layer.borderColor = UIColor(netHex: 0x982EF4).CGColor
+        signinWithEmailBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         signinWithEmailBtn.layer.borderWidth = 1
         signinWithEmailBtn.layer.cornerRadius = 3.0
         
         if self.navigationController!.viewControllers.count <= 1 {
             let barBtn = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: UIBarButtonItemStyle.Plain, target: self, action: "onCloseBtnClicked:")
-            barBtn.tintColor = UIColor(netHex: 0x982EF4)
+            barBtn.tintColor = UIColor.dropbeatColor()
             self.navigationItem.leftBarButtonItem = barBtn
         }
     }
@@ -273,7 +273,7 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         
         signinBtn.layer.borderWidth = 1
         signinBtn.layer.cornerRadius = 3.0
-        signinBtn.layer.borderColor = UIColor(netHex: 0x982EF4).CGColor
+        signinBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
     }
     
     override func didReceiveMemoryWarning() {
@@ -450,12 +450,12 @@ class SignupViewController: FBSigninableViewController {
         super.viewDidLoad()
         
         signupWithEmailBtn.layer.borderWidth = 1
-        signupWithEmailBtn.layer.borderColor = UIColor(netHex: 0x982EF4).CGColor
+        signupWithEmailBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         signupWithEmailBtn.layer.cornerRadius = 3.0
         
         if self.navigationController!.viewControllers.count <= 1 {
             let barBtn = UIBarButtonItem(title: NSLocalizedString("Close", comment: ""), style: UIBarButtonItemStyle.Plain, target: self, action: "onCloseBtnClicked:")
-            barBtn.tintColor = UIColor(netHex: 0x982EF4)
+            barBtn.tintColor = UIColor.dropbeatColor()
             self.navigationItem.leftBarButtonItem = barBtn
         }
     }
@@ -506,7 +506,7 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         super.viewDidLoad()
         
         createAccountBtn.layer.cornerRadius = 3.0
-        createAccountBtn.layer.borderColor = UIColor(netHex: 0x982EF4).CGColor
+        createAccountBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         createAccountBtn.layer.borderWidth = 1
         scrollInnerConstraint.constant = self.view.bounds.width
     }

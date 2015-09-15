@@ -13,5 +13,6 @@ IB_DESIGNABLE
 
 @property (nonatomic) IBInspectable UIColor *fillColor;
 @property (nonatomic) IBInspectable CGFloat fillRatio;
+@property (nonatomic) IBInspectable BOOL reverse;
 
 @end

@@ -34,7 +34,7 @@ class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate, UISc
     override func viewDidLoad() {
         super.viewDidLoad()
         submitBtn.layer.borderWidth = 1
-        submitBtn.layer.borderColor = UIColor(netHex: 0x982EF4).CGColor
+        submitBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         submitBtn.layer.cornerRadius = 3.0
         
         scrollInnerWidthConstraint.constant = view.bounds.width

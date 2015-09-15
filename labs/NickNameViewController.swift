@@ -35,7 +35,7 @@ class NicknameViewController: BaseViewController, UITextFieldDelegate, UIScrollV
         nicknameInputView.text = account.user!.nickname
         
         submitBtn.layer.cornerRadius = 3.0
-        submitBtn.layer.borderColor = UIColor(netHex: 0x982EF4).CGColor
+        submitBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         submitBtn.layer.borderWidth = 1
         
         scrollInnerViewWidthConstraint.constant = view.bounds.width

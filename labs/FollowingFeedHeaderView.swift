@@ -40,7 +40,7 @@ class FollowingFeedHeaderView:UIView {
         
         view.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
         
-        manageFollowBtn.layer.borderColor = UIColor(netHex: 0x982EF4).CGColor
+        manageFollowBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         manageFollowBtn.layer.borderWidth = 1
         manageFollowBtn.layer.cornerRadius = 3.0
         

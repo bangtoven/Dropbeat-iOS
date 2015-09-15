@@ -8,6 +8,18 @@
 
 import UIKit
 
+class BaseUserHeaderView: AXStretchableHeaderView {
+    @IBOutlet weak var button: UIButton!
+    
+    override func interactiveSubviews() -> [AnyObject]! {
+        return [self.button]
+    }
+    
+    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var textViewHeightConstraint: NSLayoutConstraint!
+    
+}
+
 class UserViewController: BaseUserViewController {
 
     var user: BaseUser!
@@ -16,6 +28,9 @@ class UserViewController: BaseUserViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.title = "adfasdf"
+        self.navigationItem.backBarButtonItem?.title = nil
+        
         Requests.resolveUser(self.resource) {(req, resp, result, error) -> Void in
             
             if (error != nil || JSON(result!)["success"] == false) {
@@ -23,23 +38,76 @@ class UserViewController: BaseUserViewController {
                 return
             }
             
-            var user: BaseUser?
             switch JSON(result!)["data"]["user_type"] {
             case "user":
-                user = User.parseUser(result!,key:"data",secondKey:"user")
+                var user = User.parseUser(result!,key:"data",secondKey:"user")
+                let header = self.headerView as! BaseUserHeaderView
+                let label = header.descriptionLabel
+                label.text = user.description
                 break
             case "artist":
-                user = Artist.parseArtist(result!,key:"data",secondKey:"user")
+                var artist = Artist.parseArtist(result!,key:"data",secondKey:"user")
                 break
             case "channel":
-                user = Channel.parseChannel(result!,key:"data",secondKey: "user")
+                var channel = Channel.parseChannel(result!,key:"data",secondKey: "user")
                 break
             default:
                 var message = "Unknown user_type"
                 return
             }
+        }
+        var testing = true
+        if testing {
+            self.headerView = BaseUserHeaderView.instantiate()
             
-            self.user = user
+            let header = self.headerView as! BaseUserHeaderView
+            
+            //            var header = self.headerView as! BaseUserHeaderView
+            header.button.addTarget(self, action: "buttonAction", forControlEvents: UIControlEvents.TouchUpInside)
+            
+            var vcArr: [UIViewController] = []
+            for x in 0..<3 {
+                var vc: UserDetailTableViewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserDetailTableViewController") as! UserDetailTableViewController
+                vc.arg = x
+                vcArr.append(vc)
+            }
+            self.viewControllers = vcArr
+        }
+    }
+    
+    func buttonAction() {
+        let header = self.headerView as! BaseUserHeaderView
+        let label = header.descriptionLabel
+        let currentHeight = label.frame.height
+        
+        let attr = [NSFontAttributeName:label.font]
+        let rect = label.text!.boundingRectWithSize(CGSizeMake(label.frame.width, CGFloat.max), options:NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: attr, context:nil)
+        let contentHeight = ceil(rect.height)
+        
+        var diff = contentHeight - currentHeight
+        
+        if diff > 0 {
+            self.headerView.maximumOfHeight += diff
+            header.textViewHeightConstraint.constant = contentHeight
+            self.layoutViewControllers()
+            
+            self.selectedScrollView.setContentOffset(CGPointMake(0, self.selectedScrollView.contentOffset.y-diff), animated: false)
+            self.layoutViewControllers()
+        }
+    }
+    
+    override func didHeightRatioChange(ratio: CGFloat) {
+        super.didHeightRatioChange(ratio)
+        
+        if ratio == 0.0 {
+            let header = self.headerView as! BaseUserHeaderView
+            let label = header.descriptionLabel
+            let currentHeight = label.frame.height
+            if currentHeight > 70 {
+                header.textViewHeightConstraint.constant = 70
+                self.headerView.maximumOfHeight -= (currentHeight-70)
+                self.layoutViewControllers()
+            }
         }
     }
 

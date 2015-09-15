@@ -38,6 +38,32 @@ extension UIColor {
     convenience init(netHex:Int) {
         self.init(red:(netHex >> 16) & 0xff, green:(netHex >> 8) & 0xff, blue:netHex & 0xff)
     }
+    
+    static func dropbeatColor(alpha: CGFloat = 1.0, saturation: CGFloat = 1.0) -> UIColor {
+        var c = UIColor(netHex:0x982EF4)
+        if alpha != 1.0 || saturation != 1.0 {
+            c = UIColor(baseColor: c, alpha: alpha, saturation: saturation)
+        }
+        return c
+    }
+    
+    convenience init(baseColor: UIColor, alpha: CGFloat = 1.0, saturation: CGFloat = 1.0) {
+        var r: CGFloat = 0.0
+        var g: CGFloat = 0.0
+        var b: CGFloat = 0.0
+        var a: CGFloat = 0.0
+        baseColor.getRed(&r, green: &g, blue: &b, alpha: &a)
+        
+        // alpha
+        a = a * alpha
+        
+        // saturation
+        func convert (v: CGFloat) -> CGFloat {
+            return v + (1-v)*(1-saturation)
+        }
+        
+        self.init(red: convert(r), green: convert(g), blue: convert(b), alpha: a)
+    }
 }
 
 class PaddingLabel:UILabel {

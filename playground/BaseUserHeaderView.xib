@@ -15,9 +15,9 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="215"/>
                 </imageView>
                 <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xCQ-Sl-5NX" customClass="GradientView">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="30"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="30" id="E13-88-JMk"/>
+                        <constraint firstAttribute="height" constant="20" id="E13-88-JMk"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
@@ -28,6 +28,32 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
+                <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3xL-rx-de8" customClass="GradientView">
+                    <rect key="frame" x="0.0" y="205" width="320" height="10"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="10" id="7mK-TY-2wg"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
+                            <color key="value" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="fillRatio">
+                            <real key="value" value="0.0"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="reverse" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kj7-JN-unp">
+                    <rect key="frame" x="222" y="295" width="64" height="30"/>
+                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="iWZ-qb-dTG"/>
+                        <constraint firstAttribute="width" constant="64" id="qIa-T0-RZ7"/>
+                    </constraints>
+                    <state key="normal" title="Button">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0eQ-zT-xH6">
                     <rect key="frame" x="8" y="223" width="304" height="70"/>
                     <color key="backgroundColor" red="1" green="0.43529412150000002" blue="0.81176471709999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -40,20 +66,10 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kj7-JN-unp">
-                    <rect key="frame" x="222" y="295" width="64" height="30"/>
-                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="30" id="iWZ-qb-dTG"/>
-                        <constraint firstAttribute="width" constant="64" id="qIa-T0-RZ7"/>
-                    </constraints>
-                    <state key="normal" title="Button">
-                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                    </state>
-                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="3xL-rx-de8" firstAttribute="trailing" secondItem="Jmv-JD-IAi" secondAttribute="trailing" id="3i4-XQ-vDb"/>
                 <constraint firstItem="Jmv-JD-IAi" firstAttribute="leading" secondItem="wQZ-ux-795" secondAttribute="leading" id="BbL-p2-E60"/>
                 <constraint firstAttribute="trailing" secondItem="Jmv-JD-IAi" secondAttribute="trailing" id="CNE-Av-rMV"/>
                 <constraint firstAttribute="trailing" secondItem="Kj7-JN-unp" secondAttribute="trailing" constant="34" id="Lxg-TG-eXk"/>
@@ -65,7 +81,9 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
                 <constraint firstItem="0eQ-zT-xH6" firstAttribute="top" secondItem="Jmv-JD-IAi" secondAttribute="bottom" priority="900" constant="8" id="iLE-7m-LQK"/>
                 <constraint firstItem="0eQ-zT-xH6" firstAttribute="leading" secondItem="wQZ-ux-795" secondAttribute="leading" constant="8" id="j4R-wP-hYH"/>
                 <constraint firstAttribute="trailing" secondItem="0eQ-zT-xH6" secondAttribute="trailing" constant="8" id="o4t-2G-mR3"/>
+                <constraint firstItem="3xL-rx-de8" firstAttribute="leading" secondItem="Jmv-JD-IAi" secondAttribute="leading" id="qgD-X6-GR8"/>
                 <constraint firstItem="Jmv-JD-IAi" firstAttribute="top" secondItem="wQZ-ux-795" secondAttribute="top" id="twq-Lw-Rwm"/>
+                <constraint firstItem="3xL-rx-de8" firstAttribute="bottom" secondItem="Jmv-JD-IAi" secondAttribute="bottom" id="wS0-ck-pRM"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
@@ -73,7 +91,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
                 <outlet property="descriptionLabel" destination="0eQ-zT-xH6" id="8JY-RX-u5J"/>
                 <outlet property="textViewHeightConstraint" destination="BSA-EH-69g" id="MIT-aj-my6"/>
             </connections>
-            <point key="canvasLocation" x="297" y="286.5"/>
+            <point key="canvasLocation" x="300" y="326.5"/>
         </view>
     </objects>
     <resources>

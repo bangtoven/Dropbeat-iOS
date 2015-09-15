@@ -190,7 +190,7 @@ static NSString * const AXStretchableHeaderTabViewControllerSelectedIndexKey = @
             [self didHeightRatioChange:ratio];
             [self.headerView didHeightRatioChange:ratio];
         }
-        
+    
         // Set scroll view indicator insets
         [scrollView setScrollIndicatorInsets:
          UIEdgeInsetsMake(CGRectGetMaxY(_tabBar.frame) - _containerView.contentInset.top, 0.0, scrollView.contentInset.bottom, 0.0)];

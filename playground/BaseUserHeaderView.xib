@@ -12,7 +12,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="default_cover_big.png" translatesAutoresizingMaskIntoConstraints="NO" id="Jmv-JD-IAi">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="165"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="197"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="Jmv-JD-IAi" secondAttribute="height" multiplier="2:1" id="GNw-gv-blC"/>
                     </constraints>
@@ -37,7 +37,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3xL-rx-de8" customClass="GradientView">
-                    <rect key="frame" x="0.0" y="155" width="320" height="10"/>
+                    <rect key="frame" x="0.0" y="187" width="320" height="10"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="10" id="7mK-TY-2wg"/>
                     </constraints>
@@ -51,15 +51,15 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="reverse" value="YES"/>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="Gwy-g4-0Zg">
-                    <rect key="frame" x="10" y="125" width="80" height="80"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="Gwy-g4-0Zg">
+                    <rect key="frame" x="10" y="157" width="80" height="80"/>
                     <constraints>
+                        <constraint firstAttribute="width" secondItem="Gwy-g4-0Zg" secondAttribute="height" multiplier="1:1" id="NEL-7G-zg3"/>
                         <constraint firstAttribute="height" constant="80" id="eBd-hq-P44"/>
-                        <constraint firstAttribute="width" constant="80" id="uZP-hj-vBP"/>
                     </constraints>
                 </imageView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wwz-Bg-Rfu" userLabel="follow info">
-                    <rect key="frame" x="98" y="170" width="123" height="33"/>
+                    <rect key="frame" x="100" y="202" width="109" height="33"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Followers" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rLz-5q-4wx">
                             <rect key="frame" x="0.0" y="0.0" width="51" height="16"/>
@@ -101,7 +101,7 @@
                         <constraint firstItem="oaW-cO-xwy" firstAttribute="leading" secondItem="rLz-5q-4wx" secondAttribute="trailing" constant="8" id="6Bw-mM-aEV"/>
                         <constraint firstItem="mhI-fX-KYd" firstAttribute="leading" secondItem="wwz-Bg-Rfu" secondAttribute="leading" id="8Tn-Fh-5RP"/>
                         <constraint firstAttribute="bottom" secondItem="6h8-yc-uh2" secondAttribute="bottom" id="CaB-Oq-PJr"/>
-                        <constraint firstAttribute="width" constant="123" id="LAj-Un-v9x"/>
+                        <constraint firstAttribute="width" constant="109" id="LAj-Un-v9x"/>
                         <constraint firstItem="oaW-cO-xwy" firstAttribute="top" secondItem="wwz-Bg-Rfu" secondAttribute="top" id="UEc-Vh-BsK"/>
                         <constraint firstItem="rLz-5q-4wx" firstAttribute="trailing" secondItem="mhI-fX-KYd" secondAttribute="trailing" id="VUG-2h-KLH"/>
                         <constraint firstItem="rLz-5q-4wx" firstAttribute="top" secondItem="wwz-Bg-Rfu" secondAttribute="top" id="d0G-sE-f9B"/>
@@ -109,27 +109,33 @@
                         <constraint firstAttribute="bottom" secondItem="mhI-fX-KYd" secondAttribute="bottom" id="pSg-mc-agj"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bih-t6-lsj">
-                    <rect key="frame" x="222" y="173" width="90" height="30"/>
-                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="bih-t6-lsj" customClass="GBFlatSelectableButton">
+                    <rect key="frame" x="205" y="202" width="105" height="33"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="90" id="F8v-kC-hWP"/>
+                        <constraint firstAttribute="width" constant="105" id="F8v-kC-hWP"/>
+                        <constraint firstAttribute="height" constant="33" id="y2X-fB-YSk"/>
                     </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
                     <state key="normal" title="+ FOLLOW">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <state key="selected" title="✓ FOLLOWING"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="radius">
+                            <real key="value" value="5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My name is Jungho" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="efv-lp-MaK">
-                    <rect key="frame" x="12" y="220" width="300" height="22"/>
+                    <rect key="frame" x="12" y="252" width="300" height="22"/>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0eQ-zT-xH6">
-                    <rect key="frame" x="12" y="252" width="298" height="64"/>
+                    <rect key="frame" x="12" y="284" width="298" height="32"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="64" id="Vhz-hc-PBC"/>
+                        <constraint firstAttribute="height" constant="32" id="Vhz-hc-PBC"/>
                     </constraints>
                     <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
 Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
@@ -138,7 +144,10 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kj7-JN-unp">
-                    <rect key="frame" x="12" y="286" width="298" height="30"/>
+                    <rect key="frame" x="12" y="284" width="298" height="32"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="qsm-oW-cZw"/>
+                    </constraints>
                     <state key="normal">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -150,10 +159,10 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 <constraint firstItem="Kj7-JN-unp" firstAttribute="bottom" secondItem="0eQ-zT-xH6" secondAttribute="bottom" id="2ua-WQ-cCa"/>
                 <constraint firstItem="3xL-rx-de8" firstAttribute="trailing" secondItem="Jmv-JD-IAi" secondAttribute="trailing" id="3i4-XQ-vDb"/>
                 <constraint firstAttribute="bottom" secondItem="0eQ-zT-xH6" secondAttribute="bottom" constant="8" id="7wh-eB-5Dt"/>
-                <constraint firstItem="wwz-Bg-Rfu" firstAttribute="leading" secondItem="Gwy-g4-0Zg" secondAttribute="trailing" constant="8" id="8IV-C8-ScU"/>
                 <constraint firstItem="wwz-Bg-Rfu" firstAttribute="bottom" secondItem="Gwy-g4-0Zg" secondAttribute="bottom" constant="-2" id="9wm-FO-UkP"/>
                 <constraint firstItem="Jmv-JD-IAi" firstAttribute="leading" secondItem="wQZ-ux-795" secondAttribute="leading" id="BbL-p2-E60"/>
                 <constraint firstAttribute="trailing" secondItem="Jmv-JD-IAi" secondAttribute="trailing" id="CNE-Av-rMV"/>
+                <constraint firstItem="Kj7-JN-unp" firstAttribute="top" secondItem="0eQ-zT-xH6" secondAttribute="top" id="K3y-QV-rh3"/>
                 <constraint firstItem="xCQ-Sl-5NX" firstAttribute="leading" secondItem="wQZ-ux-795" secondAttribute="leading" id="Og2-uV-A9C"/>
                 <constraint firstItem="Jmv-JD-IAi" firstAttribute="bottom" secondItem="Gwy-g4-0Zg" secondAttribute="bottom" priority="900" constant="-40" id="Qg0-Ow-ClI"/>
                 <constraint firstItem="Kj7-JN-unp" firstAttribute="leading" secondItem="0eQ-zT-xH6" secondAttribute="leading" id="TE5-8P-weo"/>
@@ -161,8 +170,9 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 <constraint firstItem="bih-t6-lsj" firstAttribute="bottom" secondItem="Gwy-g4-0Zg" secondAttribute="bottom" constant="-2" id="YFb-Mw-I12"/>
                 <constraint firstItem="0eQ-zT-xH6" firstAttribute="top" secondItem="efv-lp-MaK" secondAttribute="bottom" constant="10" id="ai7-Sa-ICc"/>
                 <constraint firstItem="Gwy-g4-0Zg" firstAttribute="leading" secondItem="wQZ-ux-795" secondAttribute="leading" constant="10" id="boJ-PA-qBQ"/>
-                <constraint firstAttribute="trailing" secondItem="bih-t6-lsj" secondAttribute="trailing" constant="8" id="euT-8b-ccY"/>
+                <constraint firstAttribute="trailing" secondItem="bih-t6-lsj" secondAttribute="trailing" constant="10" id="euT-8b-ccY"/>
                 <constraint firstItem="xCQ-Sl-5NX" firstAttribute="top" secondItem="wQZ-ux-795" secondAttribute="top" id="gHh-xb-YBK"/>
+                <constraint firstItem="wwz-Bg-Rfu" firstAttribute="leading" secondItem="wQZ-ux-795" secondAttribute="leading" constant="100" id="mTo-Qb-LMd"/>
                 <constraint firstAttribute="trailing" secondItem="0eQ-zT-xH6" secondAttribute="trailing" constant="10" id="n69-qi-wO2"/>
                 <constraint firstAttribute="trailing" secondItem="efv-lp-MaK" secondAttribute="trailing" constant="8" id="oX9-RE-mTU"/>
                 <constraint firstItem="Kj7-JN-unp" firstAttribute="trailing" secondItem="0eQ-zT-xH6" secondAttribute="trailing" id="qKN-AU-F5U"/>
@@ -174,12 +184,21 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 <constraint firstItem="efv-lp-MaK" firstAttribute="leading" secondItem="wQZ-ux-795" secondAttribute="leading" constant="12" id="xHg-96-Rpp"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="K3y-QV-rh3"/>
+                </mask>
+            </variation>
             <connections>
                 <outlet property="coverImageView" destination="Jmv-JD-IAi" id="kMC-ZO-H4D"/>
                 <outlet property="descriptionLabel" destination="0eQ-zT-xH6" id="8JY-RX-u5J"/>
                 <outlet property="followButton" destination="bih-t6-lsj" id="qpk-7i-b1z"/>
+                <outlet property="followInfoView" destination="wwz-Bg-Rfu" id="ntm-ye-WY8"/>
+                <outlet property="followersLabel" destination="oaW-cO-xwy" id="kcM-HH-C74"/>
+                <outlet property="followingLabel" destination="6h8-yc-uh2" id="qPt-9S-Cq1"/>
                 <outlet property="labelHeightConstraint" destination="Vhz-hc-PBC" id="9OM-bA-ntz"/>
                 <outlet property="nameLabel" destination="efv-lp-MaK" id="dzP-lW-WAe"/>
+                <outlet property="profileImageHeight" destination="eBd-hq-P44" id="rjr-5B-fOc"/>
                 <outlet property="profileImageView" destination="Gwy-g4-0Zg" id="zcH-gz-xUD"/>
                 <outlet property="showMoreButton" destination="Kj7-JN-unp" id="W5R-Ik-9FR"/>
             </connections>

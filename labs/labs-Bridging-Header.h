@@ -74,4 +74,7 @@
 
 #import "GradientView.h"
 
+#import "GBFlatButton.h"
+#import "GBFlatSelectableButton.h"
+
 #endif

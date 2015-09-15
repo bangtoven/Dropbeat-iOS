@@ -30,13 +30,33 @@ class BaseUserViewController: AXStretchableHeaderTabViewController {
             break
         }
 
-        var ratio = ratio>1.0 ? 1.0 : ratio
         var navBar = self.navigationController?.navigationBar
-        navBar!.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 2.0 - 2*ratio))
-        navBar!.tintColor = UIColor.dropbeatColor(saturation: 1-ratio)
-        navBar!.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(alpha: 1-ratio, saturation: 1-ratio)]
+        switch ratio {
+        case 0..<0.3:
+            navBar!.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 1))
+            navBar!.tintColor = UIColor.dropbeatColor()
+            navBar!.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor()]
+        case 0.3...1.0:
+            var r = 10/7 * (1-ratio)
+            navBar!.lt_setBackgroundColor(UIColor(white: 1.0, alpha: r))
+            navBar!.tintColor = UIColor.dropbeatColor(saturation: r)
+            navBar!.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(alpha: r, saturation: r)]
+        default:
+            navBar!.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 0))
+            navBar!.tintColor = UIColor.dropbeatColor(saturation: 0)
+            navBar!.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(alpha: 0, saturation: 0)]
+        }
         
-//        self.headerView.alpha = ratio
+//        switch ratio {
+//        case 0.0...0.3:
+//            navBar!.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor()]
+//        case 0.3...0.4:
+//            var r = (ratio-0.3)*10.0
+//            println(r)
+//            navBar!.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(alpha: 1-ratio)]
+//        default:
+//            navBar!.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.clearColor()]
+//        }
     }
     
     override func viewWillAppear(animated: Bool) {

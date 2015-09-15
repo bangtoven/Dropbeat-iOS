@@ -24,7 +24,7 @@ class BaseUser {
     var image: String?
     var coverImage: String?
     
-    init(userType: UserType, id: String?, name: String?, image: String?, coverImage: String?) {
+    init(userType: UserType, id: String?, name: String, image: String?, coverImage: String?) {
         self.userType = userType
         self.id = id
         self.name = name

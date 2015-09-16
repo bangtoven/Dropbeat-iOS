@@ -397,8 +397,8 @@ static NSString * const AXStretchableHeaderTabViewControllerSelectedIndexKey = @
 
 - (UIScrollView *)scrollViewWithSubViewController:(UIViewController *)viewController
 {
-    if ([viewController respondsToSelector:@selector(stretchableSubViewInSubViewController:)]) {
-        return [(id<AXStretchableSubViewControllerViewSource>)viewController stretchableSubViewInSubViewController:viewController];
+    if ([viewController respondsToSelector:@selector(stretchableSubViewInSubViewController)]) {
+        return [(id<AXStretchableSubViewControllerViewSource>)viewController stretchableSubViewInSubViewController];
     } else if ([viewController.view isKindOfClass:[UIScrollView class]]) {
         return (id)viewController.view;
     } else {

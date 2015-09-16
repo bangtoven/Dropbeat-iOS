@@ -180,8 +180,7 @@
         <!--Track List View Controller-->
         <scene sceneID="uTn-Zq-McQ">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="kgV-ih-hPd" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController automaticallyAdjustsScrollViewInsets="NO" id="Gv0-Fx-Mee" customClass="TrackListViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TrackListViewController" automaticallyAdjustsScrollViewInsets="NO" id="Gv0-Fx-Mee" customClass="TrackListViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3J2-d2-bwS"/>
                         <viewControllerLayoutGuide type="bottom" id="U6J-X0-P97"/>
@@ -324,6 +323,7 @@
                         <outlet property="trackTableView" destination="B7N-EI-kd9" id="UwR-x6-IXd"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="kgV-ih-hPd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1314" y="910"/>
         </scene>

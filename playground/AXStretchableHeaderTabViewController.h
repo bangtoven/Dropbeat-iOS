@@ -11,7 +11,7 @@
 
 @protocol AXStretchableSubViewControllerViewSource <NSObject>
 @optional
-- (UIScrollView *)stretchableSubViewInSubViewController:(id)subViewController;
+- (UIScrollView *)stretchableSubViewInSubViewController;
 @end
 
 @protocol AXSubViewController <NSObject>

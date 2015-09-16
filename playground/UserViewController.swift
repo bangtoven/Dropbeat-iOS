@@ -75,10 +75,22 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 header.followersLabel.text = String(user.num_followers)
                 header.followingLabel.text = String(user.num_following)
                 
-                println(user.tracks)
-                
-                user.fetchLikeList({ (user, tracks, error) -> Void in
-                    println(tracks)
+                user.fetchLikeList({ (u, likes, error) -> Void in
+                    var tlvc: TrackListViewController = self.storyboard?.instantiateViewControllerWithIdentifier("TrackListViewController") as! TrackListViewController
+                    tlvc.tracks = user.tracks
+                    tlvc.title = "Uploads"
+                    
+                    var tlvc2: TrackListViewController = self.storyboard?.instantiateViewControllerWithIdentifier("TrackListViewController") as! TrackListViewController
+                    if likes!.count != 0 {
+                        var tracks:[Track] = []
+                        for i in 0..<likes!.count {
+                            tracks.append(likes![i].track)
+                        }
+                        tlvc2.tracks = tracks
+                    }
+                    tlvc2.title = "Likes"
+                    
+                    self.viewControllers = [tlvc, tlvc2]
                 })
                 
                 baseUser = user
@@ -112,23 +124,14 @@ class UserViewController: AXStretchableHeaderTabViewController {
             } else {
                 self.headerView.maximumOfHeight += 32
                 header.labelHeightConstraint.constant = 64
-                self.selectedScrollView.setContentOffset(CGPointMake(0, self.selectedScrollView.contentOffset.y-32), animated: false)
+                if let scrollView = self.selectedScrollView {
+                    scrollView.setContentOffset(CGPointMake(0, scrollView.contentOffset.y-32), animated: false)
+                }
                 if descriptionHeight > 64 {
                     header.showMoreButton.hidden = false
                     header.showMoreButton.addTarget(self, action: "showMoreAction", forControlEvents: UIControlEvents.TouchUpInside)
                 }
             }
-        }
-        
-        var testing = true
-        if testing {
-            var vcArr: [UIViewController] = []
-            for x in 0..<3 {
-                var vc: UserDetailTableViewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserDetailTableViewController") as! UserDetailTableViewController
-                vc.arg = x
-                vcArr.append(vc)
-            }
-            self.viewControllers = vcArr
         }
     }
     
@@ -231,122 +234,83 @@ class UserViewController: AXStretchableHeaderTabViewController {
 }
 
 
+//var vcArr: [UIViewController] = []
+//for x in 0..<3 {
+//    var vc: UserDetailTableViewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserDetailTableViewController") as! UserDetailTableViewController
+//    vc.arg = x
+//    vcArr.append(vc)
+//}
+//self.viewControllers = vcArr
 
-
-class UserDetailTableViewController: UITableViewController, AXSubViewController, DYAlertPickViewDataSource, DYAlertPickViewDelegate {
-    
-    var arg: Int!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        var title: String = String()
-        for i in 0...arg {
-            title += "TAB "
-        }
-        title += String(arg)
-        self.title = title
-    }
-    
-    func subViewWillDisappear() {
-        println(String(arg) + " subViewDidDisappear")
-    }
-    
-    func subViewWillAppear() {
-        println(String(arg) + " subViewWillAppear")
-    }
-    
-    // MARK: -
-    // MARK: DYAlertPickViewDataSource
-    var selectedSection: Int = -1
-    
-    @IBOutlet weak var button: UIButton!
-    @IBAction func buttonTapped(sender: AnyObject) {
-        var picker: DYAlertPickView = DYAlertPickView(headerTitle: "Choose Section", cancelButtonTitle: nil, confirmButtonTitle: nil, switchButtonTitle: nil)
-        picker.dataSource = self
-        picker.delegate = self
-        picker.tintColor = UIColor.redColor();
-        picker.showAndSelectedIndex(self.selectedSection)
-    }
-    
-    func titleForRowInDYAlertPickView(titleForRow: Int) -> NSAttributedString! {
-        return NSAttributedString(string: "asdf"+String(titleForRow))
-    }
-    //
-    func numberOfRowsInDYAlertPickerView(pickerView: DYAlertPickView) -> Int {
-        return 10
-    }
-    
-    func didConfirmWithItemAtRowInDYAlertPickView(row: Int) {
-        self.selectedSection = row
-        println(row)
-    }
-    
-    // MARK: - Table view data source
-    
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
-        return 1
-    }
-    
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
-        return 30
-    }
-    
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! UITableViewCell
-        
-        cell.textLabel?.text = String(arg) + " . " + String(indexPath.row)
-        
-        return cell
-    }
-    
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return NO if you do not want the specified item to be editable.
-    return true
-    }
-    */
-    
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-    if editingStyle == .Delete {
-    // Delete the row from the data source
-    tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-    } else if editingStyle == .Insert {
-    // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }
-    }
-    */
-    
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-    
-    }
-    */
-    
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-    // Return NO if you do not want the item to be re-orderable.
-    return true
-    }
-    */
-    
-    /*
-    // MARK: - Navigation
-    
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-    }
-    */
-    
-}
+//class UserDetailTableViewController: UITableViewController, AXSubViewController, DYAlertPickViewDataSource, DYAlertPickViewDelegate {
+//    
+//    var arg: Int!
+//    
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//        
+//        var title: String = String()
+//        for i in 0...arg {
+//            title += "TAB "
+//        }
+//        title += String(arg)
+//        self.title = title
+//    }
+//    
+//    func subViewWillDisappear() {
+//        println(String(arg) + " subViewDidDisappear")
+//    }
+//    
+//    func subViewWillAppear() {
+//        println(String(arg) + " subViewWillAppear")
+//    }
+//    
+//    // MARK: -
+//    // MARK: DYAlertPickViewDataSource
+//    var selectedSection: Int = -1
+//    
+//    @IBOutlet weak var button: UIButton!
+//    @IBAction func buttonTapped(sender: AnyObject) {
+//        var picker: DYAlertPickView = DYAlertPickView(headerTitle: "Choose Section", cancelButtonTitle: nil, confirmButtonTitle: nil, switchButtonTitle: nil)
+//        picker.dataSource = self
+//        picker.delegate = self
+//        picker.tintColor = UIColor.redColor();
+//        picker.showAndSelectedIndex(self.selectedSection)
+//    }
+//    
+//    func titleForRowInDYAlertPickView(titleForRow: Int) -> NSAttributedString! {
+//        return NSAttributedString(string: "asdf"+String(titleForRow))
+//    }
+//    //
+//    func numberOfRowsInDYAlertPickerView(pickerView: DYAlertPickView) -> Int {
+//        return 10
+//    }
+//    
+//    func didConfirmWithItemAtRowInDYAlertPickView(row: Int) {
+//        self.selectedSection = row
+//        println(row)
+//    }
+//    
+//    // MARK: - Table view data source
+//    
+//    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+//        // #warning Potentially incomplete method implementation.
+//        // Return the number of sections.
+//        return 1
+//    }
+//    
+//    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        // #warning Incomplete method implementation.
+//        // Return the number of rows in the section.
+//        return 30
+//    }
+//    
+//    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! UITableViewCell
+//        
+//        cell.textLabel?.text = String(arg) + " . " + String(indexPath.row)
+//        
+//        return cell
+//    }
+//    
+//}

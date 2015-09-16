@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		580462F11B80D489004490E5 /* ic_playing_indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 580462F01B80D489004490E5 /* ic_playing_indicator.png */; };
-		580621331B08CBAA009012D5 /* TrackListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580621321B08CBAA009012D5 /* TrackListViewController.swift */; };
+		580621331B08CBAA009012D5 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580621321B08CBAA009012D5 /* FeedViewController.swift */; };
 		580E56001B8BB40200E0DDEF /* ic_drop_small@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 580E55FF1B8BB40200E0DDEF /* ic_drop_small@2x.png */; };
 		581531881B6AAD4600DCD470 /* ic_header_back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 581531871B6AAD4600DCD470 /* ic_header_back@2x.png */; };
 		5816331A1B6A6F7800A4C902 /* default_cover_big@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 581633191B6A6F7800A4C902 /* default_cover_big@2x.png */; };
@@ -279,7 +279,6 @@
 		73F3D08F1BA8EA9A00831785 /* AddableTrackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D3EBDD1B0BBC00000C6374 /* AddableTrackTableViewCell.swift */; };
 		73F3D0901BA8EB8200831785 /* PlaylistSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EAB3DC1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift */; };
 		73F3D0911BA8EB8200831785 /* PlaylistTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 581D4C9F1B0A0CCF0036BEBF /* PlaylistTableViewCell.swift */; };
-		73F3D0921BA8EBE200831785 /* TrackListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580621321B08CBAA009012D5 /* TrackListViewController.swift */; };
 		73F5EBBB1BA1BB9400A925F0 /* libGoogleAnalyticsServices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 588693751B13B4ED00566124 /* libGoogleAnalyticsServices.a */; };
 		73F5EBBC1BA1BC0400A925F0 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 58BB0AF51B122A7900B07279 /* libz.dylib */; };
 		73F5EBBD1BA1BC0E00A925F0 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 58BB0AF71B122A8600B07279 /* libsqlite3.dylib */; };
@@ -310,7 +309,7 @@
 
 /* Begin PBXFileReference section */
 		580462F01B80D489004490E5 /* ic_playing_indicator.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ic_playing_indicator.png; sourceTree = "<group>"; };
-		580621321B08CBAA009012D5 /* TrackListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TrackListViewController.swift; path = ../labs/TrackListViewController.swift; sourceTree = "<group>"; };
+		580621321B08CBAA009012D5 /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		580E55FF1B8BB40200E0DDEF /* ic_drop_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_drop_small@2x.png"; sourceTree = "<group>"; };
 		581531871B6AAD4600DCD470 /* ic_header_back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_header_back@2x.png"; sourceTree = "<group>"; };
 		581633191B6A6F7800A4C902 /* default_cover_big@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "default_cover_big@2x.png"; sourceTree = "<group>"; };
@@ -936,7 +935,6 @@
 				7349F7121BA1ABB1006E9ABF /* AppDelegate.swift */,
 				7349F7141BA1ABB1006E9ABF /* ViewController.swift */,
 				7303148A1BA70FB300133764 /* UserViewController.swift */,
-				580621321B08CBAA009012D5 /* TrackListViewController.swift */,
 				738BCA1E1BA4B66500D00D34 /* UserHeaderView.xib */,
 				7349F7301BA1AC48006E9ABF /* Playground.storyboard */,
 				738A21C71BA22C2D004A575A /* PGLaunch.xib */,
@@ -982,6 +980,7 @@
 			isa = PBXGroup;
 			children = (
 				7361FCEA1B9F683100444179 /* Feed.storyboard */,
+				580621321B08CBAA009012D5 /* FeedViewController.swift */,
 				587B5BD71B6AD2B6009BD05D /* FeedSelectTableViewCell.swift */,
 				5854C7C91B6EEB17003A5A2A /* FollowManageViewControllers.swift */,
 				5854C7C71B6EEA8B003A5A2A /* FollowingTableViewCell.swift */,
@@ -1506,7 +1505,6 @@
 				73F3D0781BA8A10900831785 /* GBFlatSelectableButton.m in Sources */,
 				73F3D0871BA8CAE100831785 /* UIView+WebCacheOperation.m in Sources */,
 				738BCA241BA4C40300D00D34 /* UINavigationBar+Awesome.m in Sources */,
-				73F3D0921BA8EBE200831785 /* TrackListViewController.swift in Sources */,
 				7349F75A1BA1ADE6006E9ABF /* KeychainItemWrapper.swift in Sources */,
 				73F3D0861BA8CAE100831785 /* UIImageView+WebCache.m in Sources */,
 				7303148B1BA70FB300133764 /* UserViewController.swift in Sources */,
@@ -1578,7 +1576,7 @@
 				FC0D9D591B0CC4DE00E048CC /* Constants.swift in Sources */,
 				FCCAFE601B08BF920027F9D4 /* Models.swift in Sources */,
 				589413611B83C3F700395AFA /* TPKeyboardAvoidingScrollView.m in Sources */,
-				580621331B08CBAA009012D5 /* TrackListViewController.swift in Sources */,
+				580621331B08CBAA009012D5 /* FeedViewController.swift in Sources */,
 				738646121BA758BA00C21650 /* PlayerViewController.swift in Sources */,
 				58BB0AEC1B12222C00B07279 /* Upload.swift in Sources */,
 				58BB0AED1B12222C00B07279 /* Validation.swift in Sources */,

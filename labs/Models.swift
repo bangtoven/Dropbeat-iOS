@@ -45,6 +45,7 @@ class User: BaseUser {
     var description: String //
     var resource_name: String
     var tracks: [Track] = [] //
+    var likes: [Like]?
     
     init(id: String, email: String, firstName: String, lastName: String, nickname:String, fbId: String?, num_tracks: Int, num_following: Int, num_followers: Int, description: String, profile_image: String, profile_cover_image: String, resource_name: String) {
         self.email = email
@@ -95,6 +96,30 @@ class User: BaseUser {
         }
         
         return user
+    }
+    
+    
+    func fetchLikeList(callback:((user:User, tracks:[Like]?, error:NSError?) -> Void)) {
+        if (likes != nil) {
+            callback(user: self, tracks: likes!, error: nil)
+            return
+        }
+        if (id == nil) {
+            callback(user: self, tracks: nil, error: NSError(domain: "likeList_fetch", code: 1, userInfo: nil))
+            return
+        }
+        Requests.getUserLikeList(id!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if (error != nil) {
+                callback(user: self, tracks: nil, error: error)
+                return
+            }
+            if (result == nil) {
+                callback(user: self, tracks: [], error: nil)
+                return
+            }
+            self.likes = Like.parseLikes(result!, key: "data")
+            callback(user: self, tracks:self.likes, error:nil)
+        })
     }
 }
 
@@ -1745,15 +1770,15 @@ class Like {
             return nil
         }
         var trackJson:JSON = data["data"]
-        if trackJson["id"].string == nil {
-            return nil
-        }
-        if trackJson["type"].string == nil {
-            return nil
-        }
-        if trackJson["title"].string == nil {
-            return nil
-        }
+//        if trackJson["id"].stringValue == nil {
+//            return nil
+//        }
+//        if trackJson["type"].stringValue == nil {
+//            return nil
+//        }
+//        if trackJson["title"].stringValue == nil {
+//            return nil
+//        }
         let trackId = trackJson["id"].stringValue
         let type = trackJson["type"].stringValue
         var thumbnailUrl:String?
@@ -1765,17 +1790,17 @@ class Like {
         return like
     }
     
-    static func parseLikes(data:AnyObject?) -> [Like]? {
+    static func parseLikes(data:AnyObject?, key: String = "like") -> [Like]? {
         if data == nil {
             return nil
         }
         let json = JSON(data!)
-        if !(json["success"].bool ?? false) || json["like"] == nil {
+        if !(json["success"].bool ?? false) || json[key] == nil {
             return nil
         }
         
         var likes = [Like]()
-        for (idx:String, obj:JSON) in json["like"] {
+        for (idx:String, obj:JSON) in json[key] {
             if let like = Like.parseLikeJson(obj) {
                 likes.append(like)
             }

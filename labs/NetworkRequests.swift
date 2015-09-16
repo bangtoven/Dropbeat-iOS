@@ -45,6 +45,9 @@ class Requests {
         return sendPost(ApiPath.userChangeEmail, params:["email":email], auth:true, respCb:respCb)
     }
     
+    static func getUserLikeList(id: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendGet(ApiPath.userLikeList, params: ["user_id": id], auth: true, respCb: respCb)
+    }
     static func getPlaylist(id: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         return sendGet(ApiPath.playlist, params: ["id": id], auth: true, respCb: respCb)
     }

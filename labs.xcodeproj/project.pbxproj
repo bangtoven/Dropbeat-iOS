@@ -248,6 +248,7 @@
 		73A686481BA8F9BD00DA29DC /* ic_header_dotdotdot@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 58AC78351B67EE7E00A2A248 /* ic_header_dotdotdot@2x.png */; };
 		73A686491BA8F9C400DA29DC /* ic_playing_indicator.png in Resources */ = {isa = PBXBuildFile; fileRef = 580462F01B80D489004490E5 /* ic_playing_indicator.png */; };
 		73A6864A1BA9A33600DA29DC /* Feed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCEA1B9F683100444179 /* Feed.storyboard */; };
+		73A6864C1BA9A44E00DA29DC /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A6864B1BA9A44E00DA29DC /* FeedViewController.swift */; };
 		73AD145E1BA4744300C1AE15 /* coverImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 73AD145D1BA4744300C1AE15 /* coverImage.png */; };
 		73AD14601BA4749900C1AE15 /* avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 73AD145F1BA4749900C1AE15 /* avatar.png */; };
 		73AD14651BA481C900C1AE15 /* AXStretchableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AD14641BA481C900C1AE15 /* AXStretchableHeaderView.m */; };
@@ -593,6 +594,7 @@
 		738BCA231BA4C40300D00D34 /* UINavigationBar+Awesome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Awesome.m"; sourceTree = "<group>"; };
 		738BCA281BA57E9700D00D34 /* DYAlertPickView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DYAlertPickView.h; sourceTree = "<group>"; };
 		738BCA291BA57E9700D00D34 /* DYAlertPickView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DYAlertPickView.m; sourceTree = "<group>"; };
+		73A6864B1BA9A44E00DA29DC /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		73AD145D1BA4744300C1AE15 /* coverImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coverImage.png; sourceTree = "<group>"; };
 		73AD145F1BA4749900C1AE15 /* avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar.png; sourceTree = "<group>"; };
 		73AD14631BA481C900C1AE15 /* AXStretchableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AXStretchableHeaderView.h; sourceTree = "<group>"; };
@@ -982,6 +984,7 @@
 			isa = PBXGroup;
 			children = (
 				7361FCEA1B9F683100444179 /* Feed.storyboard */,
+				73A6864B1BA9A44E00DA29DC /* FeedViewController.swift */,
 				587B5BD71B6AD2B6009BD05D /* FeedSelectTableViewCell.swift */,
 				5854C7C91B6EEB17003A5A2A /* FollowManageViewControllers.swift */,
 				5854C7C71B6EEA8B003A5A2A /* FollowingTableViewCell.swift */,
@@ -1571,6 +1574,7 @@
 				5886939D1B13B51300566124 /* SDWebImageDecoder.m in Sources */,
 				588693A71B13B51300566124 /* UIView+WebCacheOperation.m in Sources */,
 				58272D861B88D7D200BBF276 /* GenreSampleTableViewCell.swift in Sources */,
+				73A6864C1BA9A44E00DA29DC /* FeedViewController.swift in Sources */,
 				730314751BA5E87500133764 /* AXStretchableHeaderTabViewController.m in Sources */,
 				FC766BEF1B050D51006FD4FB /* NetworkPath.swift in Sources */,
 				FC766BF51B051AA4006FD4FB /* NetworkRequests.swift in Sources */,

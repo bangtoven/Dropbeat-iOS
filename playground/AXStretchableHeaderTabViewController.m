@@ -153,7 +153,9 @@ static NSString * const AXStretchableHeaderTabViewControllerSelectedIndexKey = @
             [self.shownViewController insertObject:@(NO) atIndex:i];
         }
         [self didEndScrollToIndex:0];
-
+        
+        // 왜 이게 되는지 나도 모르겠다만...
+        [self.selectedScrollView setContentOffset:CGPointMake(0, -1000)];
     }
 }
 
@@ -194,6 +196,7 @@ static NSString * const AXStretchableHeaderTabViewControllerSelectedIndexKey = @
         // Set scroll view indicator insets
         [scrollView setScrollIndicatorInsets:
          UIEdgeInsetsMake(CGRectGetMaxY(_tabBar.frame) - _containerView.contentInset.top, 0.0, scrollView.contentInset.bottom, 0.0)];
+        
     } else {
         // Set header view frame
         [_headerView setFrame:(CGRect){
@@ -357,6 +360,13 @@ static NSString * const AXStretchableHeaderTabViewControllerSelectedIndexKey = @
                 [vc subViewWillDisappear];
             }
         }
+    }
+    
+    UIScrollView *scrollView = self.selectedScrollView;
+    
+    CGFloat minHeight = self.view.frame.size.height - (CGRectGetMaxY(self.navigationController.navigationBar.frame)+ CGRectGetHeight(_tabBar.bounds));
+    if (scrollView.contentSize.height < minHeight) {
+        [scrollView setContentSize:CGSizeMake(scrollView.contentSize.width, minHeight)];
     }
 }
 

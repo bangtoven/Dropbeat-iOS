@@ -16,13 +16,13 @@ class TrackListViewController: AddableTrackListViewController, UITableViewDataSo
     }
     
     func subViewWillDisappear() {
-        println(" subViewDidDisappear")
+//        println(" subViewDidDisappear")
         
         onDropFinished()
     }
     
     func subViewWillAppear() {
-        println(" subViewWillAppear")
+//        println(" subViewWillAppear")
         
         self.trackTableView.reloadData()
         self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
@@ -90,12 +90,12 @@ class TrackListViewController: AddableTrackListViewController, UITableViewDataSo
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         // TODO: 이거 빼야돼
-        //        if segue.identifier == "PlaylistSelectSegue" {
-        //            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
-        //            playlistSelectVC.targetTrack = sender as? Track
-        //            playlistSelectVC.fromSection = "search"
-        //            playlistSelectVC.caller = self
-        //        }
+        if segue.identifier == "PlaylistSelectSegue" {
+            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
+            playlistSelectVC.targetTrack = sender as? Track
+            playlistSelectVC.fromSection = "search"
+            playlistSelectVC.caller = self
+        }
     }
     
     //    override func updatePlay(track:Track?, playlistId:String?) {

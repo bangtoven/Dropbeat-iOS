@@ -189,17 +189,17 @@ class UserViewController: AXStretchableHeaderTabViewController {
             navBar!.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(alpha: 0, saturation: 0)]
         }
         
-        if ratio == 0.0 {
-            let header = self.headerView as! UserHeaderView
-            var defaultDescriptionHeight: CGFloat = 64
-            let label = header.descriptionLabel
-            let currentHeight = label.frame.height
-            if currentHeight > defaultDescriptionHeight {
-                header.labelHeightConstraint.constant = defaultDescriptionHeight
-                self.headerView.maximumOfHeight -= (currentHeight-defaultDescriptionHeight)
-                self.layoutViewControllers()
-            }
-        }
+//        if ratio == 0.0 {
+//            let header = self.headerView as! UserHeaderView
+//            var defaultDescriptionHeight: CGFloat = 64
+//            let label = header.descriptionLabel
+//            let currentHeight = label.frame.height
+//            if currentHeight > defaultDescriptionHeight {
+//                header.labelHeightConstraint.constant = defaultDescriptionHeight
+//                self.headerView.maximumOfHeight -= (currentHeight-defaultDescriptionHeight)
+//                self.layoutViewControllers()
+//            }
+//        }
     }
     
     func statusBarTapped() {

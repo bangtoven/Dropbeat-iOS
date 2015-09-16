@@ -351,7 +351,6 @@ class WebAdapter {
     
     func prepare() {
         if (auth == true) {
-            // TODO: Get global session key.
             let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup: nil)
             if let token:String = keychainItemWrapper["auth_token"] as? String {
                 manager.session.configuration.HTTPAdditionalHeaders = [

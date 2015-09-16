@@ -190,11 +190,10 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     }
     
     func onTrackLikeBtnClicked(track:Track) {
-        // TODO: 이거 빼야돼!
-//        if (Account.getCachedAccount() == nil) {
-//            NeedAuthViewController.showNeedAuthViewController(self)
-//            return
-//        }
+        if (Account.getCachedAccount() == nil) {
+            NeedAuthViewController.showNeedAuthViewController(self)
+            return
+        }
         let progressHud = ViewUtils.showProgress(self, message: nil)
         if track.isLiked {
             track.doUnlike({ (error) -> Void in
@@ -235,11 +234,10 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     }
     
     func onTrackAddBtnClicked(track:Track) {
-        // TODO: 이거 빼야돼!
-//        if (Account.getCachedAccount() == nil) {
-//            NeedAuthViewController.showNeedAuthViewController(self)
-//            return
-//        }
+        if (Account.getCachedAccount() == nil) {
+            NeedAuthViewController.showNeedAuthViewController(self)
+            return
+        }
         performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
     }
     
@@ -383,9 +381,8 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         }
         actionSheet.delegate = self
         
-        // TODO: 이거 빼야돼!
-//        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//        actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
+        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
     }
     
     func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {

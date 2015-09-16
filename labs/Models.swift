@@ -1320,6 +1320,54 @@ class Like {
     }
 }
 
+// TODO: Track class structure has to be modified!!
+enum TrackType {
+    case TRACK
+    case MIXSET
+}
+
+class UserTrack: Track {
+    var userTrackId: String = "" // TODO: change to id
+    var userTrackType: TrackType = .TRACK
+    var description: String?
+    var genreId: Int = -1
+    var likeCount: Int = 0
+    var playCount: Int = 0
+    var repostCount: Int = 0
+    var createdAt: NSDate?
+    var userResourceName: String?
+    
+    // playlist에서는 id에 userTrackId, title은 필요 없음., type "dropbeat"
+    
+    // like는 endpoint 다름.
+    
+    static func parseUserTrack(data: JSON) -> UserTrack{
+        let name = data["name"].stringValue
+        let streamUrl = data["stream_url"].stringValue
+        let coverArt = data["coverart_url"].string
+        let dropStart = data["drop_start"].int
+        let drop = Drop(dref: streamUrl, type: "userTrack", when: dropStart)
+        
+        // TODO: streamUrl -> Track.id for now.
+        var track = UserTrack(id: streamUrl, title: name, type: "dropbeat", thumbnailUrl: coverArt, drop: drop)
+        
+        track.userTrackId = data["id"].stringValue
+        track.description = data["description"].stringValue
+        track.userResourceName = data["user_resource_name"].stringValue
+        track.userTrackType = (data["track_type"].stringValue == "TRACK") ? TrackType.TRACK : TrackType.MIXSET
+        
+        track.genreId = data["genre_id"].intValue
+        track.likeCount = data["like_count"].intValue
+        track.playCount = data["play_count"].intValue
+        track.repostCount = data["repost_count"].intValue
+        
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        track.createdAt = formatter.dateFromString(data["created_at"].stringValue)
+        return track
+    }
+}
+
 class Track {
     var id: String
     var title: String
@@ -1329,7 +1377,6 @@ class Track {
     var dref: String?
     var thumbnailUrl: String?
     var topMatch: Bool?
-    var rank: Int
     var hasHqThumbnail:Bool {
         get {
             if self.thumbnailUrl == nil {
@@ -1340,6 +1387,19 @@ class Track {
             }
             return true
         }
+    }
+    
+    init(id: String, title: String, type: String, tag: String? = nil,
+        thumbnailUrl: String? = nil, drop: Drop? = nil,
+        dref: String? = nil, topMatch: Bool? = false) {
+            self.id = id
+            self.title = title
+            self.drop = drop
+            self.type = type
+            self.dref = dref
+            self.tag = tag
+            self.thumbnailUrl = thumbnailUrl
+            self.topMatch = topMatch
     }
     
     static func parseTracks(data: AnyObject, key: String, secondKey: String?=nil) -> [Track] {
@@ -1422,20 +1482,6 @@ class Track {
             }
             return false
         }
-    }
-    
-    init(id: String, title: String, type: String, tag: String? = nil,
-            thumbnailUrl: String? = nil, drop: Drop? = nil,
-            dref: String? = nil, topMatch: Bool? = false) {
-        self.id = id
-        self.title = title
-        self.drop = drop
-        self.type = type
-        self.dref = dref
-        self.tag = tag
-        self.thumbnailUrl = thumbnailUrl
-        self.topMatch = topMatch
-        self.rank = -1
     }
     
     static func parseSharedTrack(data: AnyObject) -> Track? {

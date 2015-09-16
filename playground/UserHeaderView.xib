@@ -11,7 +11,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="324"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="default_cover_big.png" translatesAutoresizingMaskIntoConstraints="NO" id="Jmv-JD-IAi">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" ambiguous="YES" image="default_cover_big.png" translatesAutoresizingMaskIntoConstraints="NO" id="Jmv-JD-IAi">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="197"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="Jmv-JD-IAi" secondAttribute="height" multiplier="2:1" id="GNw-gv-blC"/>
@@ -36,7 +36,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3xL-rx-de8" customClass="GradientView">
+                <view opaque="NO" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3xL-rx-de8" customClass="GradientView">
                     <rect key="frame" x="0.0" y="187" width="320" height="10"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="10" id="7mK-TY-2wg"/>
@@ -51,17 +51,17 @@
                         <userDefinedRuntimeAttribute type="boolean" keyPath="reverse" value="YES"/>
                     </userDefinedRuntimeAttributes>
                 </view>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="Gwy-g4-0Zg">
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="default_profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="Gwy-g4-0Zg">
                     <rect key="frame" x="10" y="157" width="80" height="80"/>
                     <constraints>
                         <constraint firstAttribute="width" secondItem="Gwy-g4-0Zg" secondAttribute="height" multiplier="1:1" id="NEL-7G-zg3"/>
                         <constraint firstAttribute="height" constant="80" id="eBd-hq-P44"/>
                     </constraints>
                 </imageView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wwz-Bg-Rfu" userLabel="follow info">
+                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wwz-Bg-Rfu" userLabel="follow info">
                     <rect key="frame" x="100" y="202" width="109" height="33"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Followers" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rLz-5q-4wx">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Followers" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rLz-5q-4wx">
                             <rect key="frame" x="0.0" y="0.0" width="51" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="51" id="NwQ-6k-xqS"/>
@@ -70,7 +70,7 @@
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oaW-cO-xwy">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oaW-cO-xwy">
                             <rect key="frame" x="59" y="0.0" width="50" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="50" id="xXI-uF-B89"/>
@@ -79,13 +79,13 @@
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Following" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mhI-fX-KYd">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Following" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mhI-fX-KYd">
                             <rect key="frame" x="0.0" y="17" width="51" height="16"/>
                             <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6h8-yc-uh2">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6h8-yc-uh2">
                             <rect key="frame" x="59" y="17" width="50" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="50" id="2lv-Aw-EDO"/>
@@ -109,7 +109,7 @@
                         <constraint firstAttribute="bottom" secondItem="mhI-fX-KYd" secondAttribute="bottom" id="pSg-mc-agj"/>
                     </constraints>
                 </view>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="bih-t6-lsj" customClass="GBFlatSelectableButton">
+                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="bih-t6-lsj" customClass="GBFlatSelectableButton">
                     <rect key="frame" x="205" y="202" width="105" height="33"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="105" id="F8v-kC-hWP"/>
@@ -126,7 +126,7 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My name is Jungho" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="efv-lp-MaK">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="My name is Jungho" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="efv-lp-MaK">
                     <rect key="frame" x="12" y="252" width="300" height="22"/>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>

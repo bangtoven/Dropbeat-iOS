@@ -194,6 +194,8 @@
 		730314911BA7427C00133764 /* avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 73AD145F1BA4749900C1AE15 /* avatar.png */; };
 		730314921BA7427C00133764 /* coverImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 73AD145D1BA4744300C1AE15 /* coverImage.png */; };
 		730314931BA7427C00133764 /* coverImage2.png in Resources */ = {isa = PBXBuildFile; fileRef = 730314711BA5B1E700133764 /* coverImage2.png */; };
+		730E47B21BA9A98B00FEBEA5 /* TrackListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E47B11BA9A98B00FEBEA5 /* TrackListViewController.swift */; };
+		730E47B31BA9A98B00FEBEA5 /* TrackListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E47B11BA9A98B00FEBEA5 /* TrackListViewController.swift */; };
 		7349F7131BA1ABB1006E9ABF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7349F7121BA1ABB1006E9ABF /* AppDelegate.swift */; };
 		7349F7151BA1ABB1006E9ABF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7349F7141BA1ABB1006E9ABF /* ViewController.swift */; };
 		7349F7311BA1AC48006E9ABF /* Playground.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7349F7301BA1AC48006E9ABF /* Playground.storyboard */; };
@@ -539,6 +541,7 @@
 		58EE1E291B46FBD100976FD0 /* restart_filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = restart_filled.png; sourceTree = "<group>"; };
 		730314711BA5B1E700133764 /* coverImage2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coverImage2.png; sourceTree = "<group>"; };
 		7303148A1BA70FB300133764 /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
+		730E47B11BA9A98B00FEBEA5 /* TrackListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackListViewController.swift; sourceTree = "<group>"; };
 		7349F70E1BA1ABB1006E9ABF /* playground.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = playground.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7349F7111BA1ABB1006E9ABF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7349F7121BA1ABB1006E9ABF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -935,6 +938,7 @@
 				7349F7121BA1ABB1006E9ABF /* AppDelegate.swift */,
 				7349F7141BA1ABB1006E9ABF /* ViewController.swift */,
 				7303148A1BA70FB300133764 /* UserViewController.swift */,
+				730E47B11BA9A98B00FEBEA5 /* TrackListViewController.swift */,
 				738BCA1E1BA4B66500D00D34 /* UserHeaderView.xib */,
 				7349F7301BA1AC48006E9ABF /* Playground.storyboard */,
 				738A21C71BA22C2D004A575A /* PGLaunch.xib */,
@@ -1505,6 +1509,7 @@
 				73F3D0781BA8A10900831785 /* GBFlatSelectableButton.m in Sources */,
 				73F3D0871BA8CAE100831785 /* UIView+WebCacheOperation.m in Sources */,
 				738BCA241BA4C40300D00D34 /* UINavigationBar+Awesome.m in Sources */,
+				730E47B31BA9A98B00FEBEA5 /* TrackListViewController.swift in Sources */,
 				7349F75A1BA1ADE6006E9ABF /* KeychainItemWrapper.swift in Sources */,
 				73F3D0861BA8CAE100831785 /* UIImageView+WebCache.m in Sources */,
 				7303148B1BA70FB300133764 /* UserViewController.swift in Sources */,
@@ -1620,6 +1625,7 @@
 				5858CC111B656BE4003EA698 /* GenreTableViewCell.swift in Sources */,
 				5854C7C41B6E94F5003A5A2A /* FollowingFeedHeaderView.swift in Sources */,
 				730314741BA5E87500133764 /* UINavigationBar+Awesome.m in Sources */,
+				730E47B21BA9A98B00FEBEA5 /* TrackListViewController.swift in Sources */,
 				5890D6181B053F4900AAEAE5 /* SettingsViewControllers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

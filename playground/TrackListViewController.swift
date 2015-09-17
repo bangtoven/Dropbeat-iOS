@@ -10,6 +10,8 @@ import UIKit
 
 class TrackListViewController: AddableTrackListViewController, UITableViewDataSource, UITableViewDelegate, AddableTrackCellDelegate, AXSubViewController, AXStretchableSubViewControllerViewSource {
     
+    var user: BaseUser?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -88,42 +90,53 @@ class TrackListViewController: AddableTrackListViewController, UITableViewDataSo
         onTrackPlayBtnClicked(tracks[indexPath.row])
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // TODO: 이거 빼야돼
-        if segue.identifier == "PlaylistSelectSegue" {
-            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
-            playlistSelectVC.targetTrack = sender as? Track
-            playlistSelectVC.fromSection = "search"
-            playlistSelectVC.caller = self
+    override func getPlaylistId() -> String? {
+        return "user_\(self.user?.id)_\(self.title)"
+    }
+    
+    override func getPlaylistName() -> String? {
+        return self.user?.name
+    }
+    
+    override func getSectionName() -> String {
+        return "user_\(self.user?.name)_\(self.title)"
+    }
+    
+    override func updatePlay(track:Track?, playlistId:String?) {
+        super.updatePlay(track, playlistId: playlistId)
+        if track == nil {
+            return
+        }
+        var indexPath = trackTableView.indexPathForSelectedRow()
+        if (indexPath != nil) {
+            var preSelectedTrack:Track?
+            preSelectedTrack = tracks[indexPath!.row]
+            if (preSelectedTrack != nil &&
+                (preSelectedTrack!.id != track!.id ||
+                    (playlistId != nil && playlistId!.toInt() >= 0))) {
+                        trackTableView.deselectRowAtIndexPath(indexPath!, animated: false)
+            }
+        }
+        
+        if playlistId != nil {
+            return
+        }
+        
+        for (idx, t) in enumerate(tracks) {
+            if (t.id == track!.id) {
+                trackTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
+                    animated: false, scrollPosition: UITableViewScrollPosition.None)
+                break
+            }
         }
     }
     
-    //    override func updatePlay(track:Track?, playlistId:String?) {
-    //        super.updatePlay(track, playlistId: playlistId)
-    //        if track == nil {
-    //            return
-    //        }
-    //        var indexPath = trackTableView.indexPathForSelectedRow()
-    //        if (indexPath != nil) {
-    //            var preSelectedTrack:Track?
-    //            preSelectedTrack = tracks[indexPath!.row]
-    //            if (preSelectedTrack != nil &&
-    //                (preSelectedTrack!.id != track!.id ||
-    //                    (playlistId != nil && playlistId!.toInt() >= 0))) {
-    //                        trackTableView.deselectRowAtIndexPath(indexPath!, animated: false)
-    //            }
-    //        }
-    //
-    //        if playlistId != nil {
-    //            return
-    //        }
-    //
-    //        for (idx, t) in enumerate(tracks) {
-    //            if (t.id == track!.id) {
-    //                trackTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
-    //                    animated: false, scrollPosition: UITableViewScrollPosition.None)
-    //                break
-    //            }
-    //        }
-    //    }
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "PlaylistSelectSegue" {
+            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
+            playlistSelectVC.targetTrack = sender as? Track
+            playlistSelectVC.fromSection = "user view"
+            playlistSelectVC.caller = self
+        }
+    }
 }

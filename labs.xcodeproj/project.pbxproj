@@ -955,6 +955,7 @@
 			children = (
 				7361FCEA1B9F683100444179 /* Feed.storyboard */,
 				580621321B08CBAA009012D5 /* FeedViewController.swift */,
+				58D3EBDD1B0BBC00000C6374 /* AddableTrackTableViewCell.swift */,
 				587B5BD71B6AD2B6009BD05D /* FeedSelectTableViewCell.swift */,
 				5854C7C91B6EEB17003A5A2A /* FollowManageViewControllers.swift */,
 				5854C7C71B6EEA8B003A5A2A /* FollowingTableViewCell.swift */,
@@ -975,7 +976,6 @@
 				58933A541B6618D400452EAB /* SectionTableViewCell.swift */,
 				5858CC101B656BE4003EA698 /* GenreTableViewCell.swift */,
 				58946E601B6412E5005B4712 /* ChannelTableViewCell.swift */,
-				58D3EBDD1B0BBC00000C6374 /* AddableTrackTableViewCell.swift */,
 			);
 			name = Channel;
 			sourceTree = "<group>";

@@ -79,6 +79,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
                     var tlvc: TrackListViewController = self.storyboard?.instantiateViewControllerWithIdentifier("TrackListViewController") as! TrackListViewController
                     tlvc.tracks = user.tracks
                     tlvc.title = "Uploads"
+                    tlvc.user = user
                     
                     var tlvc2: TrackListViewController = self.storyboard?.instantiateViewControllerWithIdentifier("TrackListViewController") as! TrackListViewController
                     if likes!.count != 0 {
@@ -89,6 +90,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
                         tlvc2.tracks = tracks
                     }
                     tlvc2.title = "Likes"
+                    tlvc2.user = user
                     
                     self.viewControllers = [tlvc2, tlvc]
                 })

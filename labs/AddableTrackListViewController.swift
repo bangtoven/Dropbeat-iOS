@@ -268,7 +268,10 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         }
         
         var url:NSURL!
-        if let urlString = resolveLocal(track.drop!.dref, track.drop!.type) {
+        if let userTrack = track as? UserTrack {
+            println("playing user-uploaded drop")
+            url = NSURL(string:userTrack.streamUrl)
+        } else if let urlString = resolveLocal(track.drop!.dref, track.drop!.type) {
             url = NSURL(string:urlString)
         } else {
             return

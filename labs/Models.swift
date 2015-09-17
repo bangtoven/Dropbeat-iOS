@@ -1340,7 +1340,7 @@ class UserTrack: Track {
     var streamUrl: String = "" // TODO: change to id
     var userTrackType: TrackType = .TRACK
     var description: String?
-    var genreId: Int = -1
+    var genre: String?
     var likeCount: Int = 0
     var playCount: Int = 0
     var repostCount: Int = 0
@@ -1355,22 +1355,21 @@ class UserTrack: Track {
         let name = data["name"].stringValue
         let id = data["id"].stringValue
         let coverArt = data["coverart_url"].string
-        
-        var streamUrl = data["stream_url"].stringValue
+        let streamUrl = data["stream_url"].stringValue
         let dropStart = data["drop_start"].int
         let drop = Drop(dref: streamUrl, type: "dropbeat", when: dropStart)
-        
         var track = UserTrack(id: id, title: name, type: "dropbeat", thumbnailUrl: coverArt, drop: drop)
         
         track.streamUrl = streamUrl
         track.description = data["description"].stringValue
         track.userResourceName = data["user_resource_name"].stringValue
         track.userTrackType = (data["track_type"].stringValue == "TRACK") ? TrackType.TRACK : TrackType.MIXSET
-        
-        track.genreId = data["genre_id"].intValue
         track.likeCount = data["like_count"].intValue
         track.playCount = data["play_count"].intValue
         track.repostCount = data["repost_count"].intValue
+
+        var genreId = data["genre_id"].intValue
+        track.genre = GenreList.getGenreName(genreId)
         
         let formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -2106,6 +2105,21 @@ class GenreList {
         self.results = results
     }
     
+    static func getGenreName(id: Int, key: String = "dropbeat") -> String? {
+        if let genres = GenreList.cachedResult![key] {
+            var name: String?
+            for g: Genre in genres {
+                if g.key == String(id) {
+                    name = g.name
+                    break
+                }
+            }
+            return name
+        } else {
+            return nil
+        }
+    }
+    
     static func parseGenre(data: AnyObject) -> GenreList {
         var json = JSON(data)
         
@@ -2117,6 +2131,7 @@ class GenreList {
         var defaultGenres = [Genre]()
         var channelGenres = [Genre]()
         var trendingGenres = [Genre]()
+        var dropbeatGenres = [Genre]()
         
         
         defaultGenres.append(Genre(key:"", name:"ALL"))
@@ -2164,9 +2179,24 @@ class GenreList {
             trendingGenres.append(Genre(key:key, name:name))
         }
         
+        for (idx:String, s:JSON) in json["dropbeat"] {
+            if s["id"].int == nil {
+                continue
+            }
+            let key = s["id"].intValue
+            
+            if s["name"].string == nil {
+                continue
+            }
+            
+            let name = s["name"].stringValue
+            dropbeatGenres.append(Genre(key:"\(key)", name:name))
+        }
+        
         genres["default"] = defaultGenres
         genres["channel"] = channelGenres
         genres["trending"] = trendingGenres
+        genres["dropbeat"] = dropbeatGenres
         
         GenreList.cachedResult = genres
         return GenreList(success: true, results: genres)

@@ -189,8 +189,6 @@ class ChannelViewController: AddableTrackListViewController,
         super.appWillEnterForeground()
     }
     
-    func sender () {}
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -884,8 +882,6 @@ class ChannelDetailViewController: AddableTrackListViewController,
             playlistSelectVC.caller = self
         }
     }
-    
-    func sender () {}
     
     func selectSection (playlist: ChannelPlaylist) {
         updateSectionSelectBtnView(playlist.name)

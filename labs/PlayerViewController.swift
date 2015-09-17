@@ -1260,7 +1260,14 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         if (track.type == "youtube") {
             audioPlayerControl.videoIdentifier = track.id
         } else {
-            let url = resolveLocal(track.id, track.type)
+            var url: String?
+            if let userTrack = track as? UserTrack {
+                println("playing user-uploaded track")
+                url = userTrack.streamUrl
+            } else {
+                url = resolveLocal(track.id, track.type)
+            }
+            
             if (url == nil) {
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to play", comment:""),
                     message: NSLocalizedString("Unsupported track type", comment:""))

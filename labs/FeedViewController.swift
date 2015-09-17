@@ -263,8 +263,6 @@ class FeedViewController: AddableTrackListViewController,
         performSegueWithIdentifier("ManageFollowSegue", sender: nil)
     }
     
-    func sender () {}
-    
     func initGenres(callback:(error:NSError?) -> Void) {
         genres[FeedType.FOLLOWING] = [
             Genre(key: "shuffle", name: "SHUFFLE"),

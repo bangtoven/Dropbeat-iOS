@@ -44,7 +44,7 @@ class User: BaseUser {
     var num_followers: Int //
     var description: String //
     var resource_name: String
-    var tracks: [Track] = [] //
+    var tracks: [UserTrack] = [] //
     var likes: [Like]?
     
     init(id: String, email: String, firstName: String, lastName: String, nickname:String, fbId: String?, num_tracks: Int, num_following: Int, num_followers: Int, description: String, profile_image: String, profile_cover_image: String, resource_name: String) {
@@ -92,7 +92,11 @@ class User: BaseUser {
         
         var tracksJson = json[key]["tracks"]
         if tracksJson != nil {
-            user.tracks = Track.parseTracks(data, key: "data", secondKey: "tracks")
+            var tracks = [UserTrack]()
+            for (idx:String, t:JSON) in tracksJson {
+                tracks.append(UserTrack.parseUserTrack(t))
+            }
+            user.tracks = tracks
         }
         
         return user
@@ -1280,23 +1284,29 @@ class Like {
         if data["id"].int == nil || data["data"] == nil {
             return nil
         }
-        var trackJson:JSON = data["data"]
-        if trackJson["id"].string == nil {
-            return nil
+        
+        var track:Track
+        if data["type"].stringValue == "user_track" {
+            track = UserTrack.parseUserTrack(data["data"])
+        } else {
+            var trackJson:JSON = data["data"]
+            if trackJson["id"].string == nil {
+                return nil
+            }
+            if trackJson["type"].string == nil {
+                return nil
+            }
+            if trackJson["title"].string == nil {
+                return nil
+            }
+            let trackId = trackJson["id"].stringValue
+            let type = trackJson["type"].stringValue
+            var thumbnailUrl:String?
+            if type == "youtube" {
+                thumbnailUrl = "http://img.youtube.com/vi/\(trackId)/mqdefault.jpg"
+            }
+            track = Track(id: trackId, title: trackJson["title"].stringValue, type: type, tag: nil, thumbnailUrl: thumbnailUrl)
         }
-        if trackJson["type"].string == nil {
-            return nil
-        }
-        if trackJson["title"].string == nil {
-            return nil
-        }
-        let trackId = trackJson["id"].stringValue
-        let type = trackJson["type"].stringValue
-        var thumbnailUrl:String?
-        if type == "youtube" {
-            thumbnailUrl = "http://img.youtube.com/vi/\(trackId)/mqdefault.jpg"
-        }
-        let track:Track = Track(id: trackId, title: trackJson["title"].stringValue, type: type, tag: nil, thumbnailUrl: thumbnailUrl)
         let like:Like = Like(id: data["id"].intValue, track:track)
         return like
     }
@@ -1327,7 +1337,7 @@ enum TrackType {
 }
 
 class UserTrack: Track {
-    var userTrackId: String = "" // TODO: change to id
+    var streamUrl: String = "" // TODO: change to id
     var userTrackType: TrackType = .TRACK
     var description: String?
     var genreId: Int = -1
@@ -1343,15 +1353,16 @@ class UserTrack: Track {
     
     static func parseUserTrack(data: JSON) -> UserTrack{
         let name = data["name"].stringValue
-        let streamUrl = data["stream_url"].stringValue
+        let id = data["id"].stringValue
         let coverArt = data["coverart_url"].string
+        
+        var streamUrl = data["stream_url"].stringValue
         let dropStart = data["drop_start"].int
-        let drop = Drop(dref: streamUrl, type: "userTrack", when: dropStart)
+        let drop = Drop(dref: streamUrl, type: "dropbeat", when: dropStart)
         
-        // TODO: streamUrl -> Track.id for now.
-        var track = UserTrack(id: streamUrl, title: name, type: "dropbeat", thumbnailUrl: coverArt, drop: drop)
+        var track = UserTrack(id: id, title: name, type: "dropbeat", thumbnailUrl: coverArt, drop: drop)
         
-        track.userTrackId = data["id"].stringValue
+        track.streamUrl = streamUrl
         track.description = data["description"].stringValue
         track.userResourceName = data["user_resource_name"].stringValue
         track.userTrackType = (data["track_type"].stringValue == "TRACK") ? TrackType.TRACK : TrackType.MIXSET

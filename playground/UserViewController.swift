@@ -90,7 +90,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
                     }
                     tlvc2.title = "Likes"
                     
-                    self.viewControllers = [tlvc, tlvc2]
+                    self.viewControllers = [tlvc2, tlvc]
                 })
                 
                 baseUser = user

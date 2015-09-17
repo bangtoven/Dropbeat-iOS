@@ -71,6 +71,8 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
     }
     
+    func sender () {}
+    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)

@@ -134,9 +134,6 @@ class SearchViewController: AddableTrackListViewController,
         }
     }
 
-    
-    func sender () {}
-
     @IBAction func onTabed(sender: AnyObject) {
         searchBar!.endEditing(true)
     }

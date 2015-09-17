@@ -103,27 +103,46 @@ class User: BaseUser {
     }
     
     
-    func fetchLikeList(callback:((user:User, likes:[Like]?, error:NSError?) -> Void)) {
+    func fetchLikeList(callback:((likes:[Like]?, error:NSError?) -> Void)) {
         if (likes != nil) {
-            callback(user: self, likes: likes!, error: nil)
+            callback(likes: likes!, error: nil)
             return
         }
         if (id == nil) {
-            callback(user: self, likes: nil, error: NSError(domain: "likeList_fetch", code: 1, userInfo: nil))
+            callback(likes: nil, error: NSError(domain: "likeList_fetch", code: 1, userInfo: nil))
             return
         }
         Requests.getUserLikeList(id!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil) {
-                callback(user: self, likes: nil, error: error)
+                callback(likes: nil, error: error)
                 return
             }
             if (result == nil) {
-                callback(user: self, likes: [], error: nil)
+                callback(likes: [], error: nil)
                 return
             }
             self.likes = Like.parseLikes(result!, key: "data")
-            callback(user: self, likes:self.likes, error:nil)
+            callback(likes:self.likes, error:nil)
         })
+    }
+    
+    func fetchTracksFromLikeList(callback:((tracks:[Track]?, error:NSError?) -> Void)) {
+        self.fetchLikeList { (likes, error) -> Void in
+            if (error != nil) {
+                callback(tracks: nil, error: error)
+                return
+            }
+            if (likes == nil) {
+                callback(tracks: [], error: nil)
+                return
+            }
+            
+            var tracks:[Track] = []
+            for i in 0..<likes!.count {
+                tracks.append(likes![i].track)
+            }
+            callback(tracks: tracks, error: nil)
+        }
     }
 }
 
@@ -290,83 +309,83 @@ class Artist: BaseUser {
         return artist
     }
     
-    func fetchEvents(callback:((artist:Artist, events:[ArtistEvent]?, error:NSError?) -> Void)) {
+    func fetchEvents(callback:((events:[ArtistEvent]?, error:NSError?) -> Void)) {
         if (name == nil) {
-            callback(artist: self, events: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
+            callback(events: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
             return
         }
         if (!hasEvent) {
-            callback(artist: self, events:[], error: nil)
+            callback(events:[], error: nil)
             return
         }
         Requests.searchEvent(name!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil) {
-                callback(artist: self, events: nil, error: error)
+                callback(events: nil, error: error)
                 return
             }
             if (result == nil) {
-                callback(artist: self, events: [], error: nil)
+                callback(events: [], error: nil)
                 return
             }
             self.events = ArtistEvent.parseEvents(result!)
-            callback(artist: self, events:self.events, error:nil)
+            callback(events:self.events, error:nil)
         })
     }
     
-    func fetchLiveset(callback:((artist:Artist, tracks:[Track]?, error:NSError?) -> Void)) {
+    func fetchLiveset(callback:((tracks:[Track]?, error:NSError?) -> Void)) {
         let sectionTracks = sectionedTracks[SearchSections.LIVESET]
         if (sectionTracks != nil) {
-            callback(artist: self, tracks: sectionTracks!, error: nil)
+            callback(tracks: sectionTracks!, error: nil)
             return
         }
         if (name == nil) {
-            callback(artist: self, tracks: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
+            callback(tracks: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
             return
         }
         if (!hasLiveset) {
-            callback(artist: self, tracks: [], error: nil)
+            callback(tracks: [], error: nil)
             return
         }
         Requests.searchLiveset(name!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil) {
-                callback(artist: self, tracks: nil, error: error)
+                callback(tracks: nil, error: error)
                 return
             }
             if (result == nil) {
-                callback(artist: self, tracks: [], error: nil)
+                callback(tracks: [], error: nil)
                 return
             }
             self.sectionedTracks[SearchSections.LIVESET] = Track.parseTracks(result!, key: "data")
-            callback(artist: self, tracks:self.sectionedTracks[SearchSections.LIVESET], error:nil)
+            callback(tracks:self.sectionedTracks[SearchSections.LIVESET], error:nil)
         })
     }
     
-    func fetchPodcast(callback:((artist:Artist, tracks:[Track]?, error:NSError?) -> Void)) {
+    func fetchPodcast(callback:((tracks:[Track]?, error:NSError?) -> Void)) {
         let sectionTracks = sectionedTracks[SearchSections.PODCAST]
         if (sectionTracks != nil) {
-            callback(artist: self, tracks: sectionTracks!, error: nil)
+            callback(tracks: sectionTracks!, error: nil)
             return
         }
         if (name == nil) {
-            callback(artist: self, tracks: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
+            callback(tracks: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
             return
         }
         if (!hasPodcast) {
-            callback(artist: self, tracks: [], error: nil)
+            callback(tracks: [], error: nil)
             return
         }
         Requests.searchPodcast(name!, page: -1, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil) {
-                callback(artist: self, tracks: nil, error: error)
+                callback(tracks: nil, error: error)
                 return
             }
             if (result == nil) {
-                callback(artist: self, tracks: [], error: nil)
+                callback(tracks: [], error: nil)
                 return
             }
             var t = JSON(result!)
             if !t["success"].boolValue {
-                callback(artist: self, tracks: [], error: nil)
+                callback(tracks: [], error: nil)
                 return
             }
             
@@ -400,7 +419,7 @@ class Artist: BaseUser {
                 tracks.append(track)
             }
             self.sectionedTracks[SearchSections.PODCAST] = tracks
-            callback(artist: self, tracks:self.sectionedTracks[SearchSections.PODCAST], error:nil)
+            callback(tracks:self.sectionedTracks[SearchSections.PODCAST], error:nil)
         })
     }
 }

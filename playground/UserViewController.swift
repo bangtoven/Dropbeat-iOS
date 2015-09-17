@@ -30,7 +30,7 @@ class UserHeaderView: AXStretchableHeaderView {
     
     func loadView () {
         self.nameLabel.text = " "
-        self.descriptionLabel.text = "\n\n"
+        self.descriptionLabel.text = "\n"
         
         self.followInfoView.hidden = true
         self.showMoreButton.hidden = true
@@ -39,12 +39,18 @@ class UserHeaderView: AXStretchableHeaderView {
         self.profileImageView.layer.borderWidth = 2
         self.profileImageView.layer.borderColor = UIColor.whiteColor().CGColor;
         self.profileImageView.clipsToBounds = true
+        
+        self.coverImageView.clipsToBounds = true
     }
 }
 
 class UserViewController: AXStretchableHeaderTabViewController {
     var user: BaseUser!
     var resource: String!
+    
+    func instantiateSubVC () -> UserSubViewController {
+        return self.storyboard?.instantiateViewControllerWithIdentifier("UserSubViewController") as! UserSubViewController
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,34 +81,91 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 header.followersLabel.text = String(user.num_followers)
                 header.followingLabel.text = String(user.num_following)
                 
-                user.fetchLikeList({ (u, likes, error) -> Void in
-                    var tlvc: TrackListViewController = self.storyboard?.instantiateViewControllerWithIdentifier("TrackListViewController") as! TrackListViewController
-                    tlvc.tracks = user.tracks
-                    tlvc.title = "Uploads"
-                    tlvc.user = user
-                    
-                    var tlvc2: TrackListViewController = self.storyboard?.instantiateViewControllerWithIdentifier("TrackListViewController") as! TrackListViewController
-                    if likes!.count != 0 {
-                        var tracks:[Track] = []
-                        for i in 0..<likes!.count {
-                            tracks.append(likes![i].track)
-                        }
-                        tlvc2.tracks = tracks
-                    }
-                    tlvc2.title = "Likes"
-                    tlvc2.user = user
-                    
-                    self.viewControllers = [tlvc2, tlvc]
-                })
+                if let coverImage = user.coverImage {
+                    header.coverImageView.sd_setImageWithURL(NSURL(string: coverImage), placeholderImage: UIImage(named: "default_cover_big.png"))
+                }
+
+                var uploads = self.instantiateSubVC()
+                uploads.title = "Uploads"
+                uploads.tracks = user.tracks
+                uploads.baseUser = user
+
+                var likes = self.instantiateSubVC()
+                likes.title = "Likes"
+                likes.baseUser = user
+                likes.fetchFunc = user.fetchTracksFromLikeList
                 
+                if user.tracks.count == 0 {
+                    self.viewControllers = [likes, uploads]
+                } else {
+                    self.viewControllers = [uploads, likes]
+                }
+
                 baseUser = user
             case "artist":
                 var artist = Artist.parseArtist(result!,key:"data",secondKey:"user")
-                header.descriptionLabel.text = ""
+                
+                var subViewArr = [UserSubViewController]()
+                var imageForCover: String?
+                
+                for (section: String, tracks: [Track]) in artist.sectionedTracks {
+                    if imageForCover == nil {
+                        // pick first thumbnail Url from track list
+                        for t in tracks {
+                            if let thumbnailUrl = t.thumbnailUrl {
+                                imageForCover = thumbnailUrl
+                                break
+                            }
+                        }
+                    }
+                    
+                    var subView = self.instantiateSubVC()
+                    subView.title = section.capitalizedString
+                    subView.tracks = tracks
+                    subView.baseUser = artist
+                    subViewArr.append(subView)
+                }
+                
+                if imageForCover == nil {
+                    imageForCover = artist.coverImage
+                }
+                if let coverImage = imageForCover {
+                    // TODO: 이거 좀 깔끔하게 고치자
+                    header.coverImageView.sd_setImageWithURL(
+                        NSURL(string: coverImage),
+                        placeholderImage: UIImage(named: "default_cover_big.png"),
+                        completed: { (image:UIImage!, error:NSError!, type:SDImageCacheType, url:NSURL!) -> Void in
+                            let header = self.headerView as! UserHeaderView
+                        header.coverImageView.image = image.imageWithScaledToHeight(self.headerView.maximumOfHeight*2)
+                    })
+                }
+                
+                if artist.hasPodcast {
+                    var subView = self.instantiateSubVC()
+                    subView.title = "Podcast"
+                    subView.baseUser = artist
+                    subView.fetchFunc = artist.fetchPodcast
+                    subViewArr.append(subView)
+                }
+                
+                if artist.hasLiveset {
+                    var subView = self.instantiateSubVC()
+                    subView.title = "Liveset"
+                    subView.baseUser = artist
+                    subView.fetchFunc = artist.fetchLiveset
+                    subViewArr.append(subView)
+                }
+                
+                self.viewControllers = subViewArr
+                
                 baseUser = artist
             case "channel":
                 var channel = Channel.parseChannel(result!,key:"data",secondKey: "user")
                 header.descriptionLabel.text = ", ".join(channel!.genre)
+                if header.descriptionLabel.text?.length == 0 {
+                    header.descriptionLabel.text = "\n"
+                }
+                
                 baseUser = channel
             default:
                 var message = "Unknown user_type"
@@ -115,9 +178,6 @@ class UserViewController: AXStretchableHeaderTabViewController {
             }
             if let profileImage = baseUser?.image {
                 header.profileImageView.sd_setImageWithURL(NSURL(string: profileImage), placeholderImage: UIImage(named: "default_profile.png"))
-            }
-            if let coverImage = baseUser?.coverImage {
-                header.coverImageView.sd_setImageWithURL(NSURL(string: coverImage), placeholderImage: UIImage(named: "default_cover_big.png"))
             }
             
             var descriptionHeight = self.calculateDescriptionContentSize()

@@ -1,5 +1,5 @@
 //
-//  TrackListViewController
+//  UserSubViewController
 //  labs
 //
 //  Created by Jungho Bang on 2015. 9. 16..
@@ -8,26 +8,34 @@
 
 import UIKit
 
-class TrackListViewController: AddableTrackListViewController, UITableViewDataSource, UITableViewDelegate, AddableTrackCellDelegate, AXSubViewController, AXStretchableSubViewControllerViewSource {
+class UserSubViewController: AddableTrackListViewController, UITableViewDataSource, UITableViewDelegate, AddableTrackCellDelegate, AXSubViewController, AXStretchableSubViewControllerViewSource {
     
-    var user: BaseUser?
+    var baseUser: BaseUser?
+    var fetchFunc: ((([Track]?, NSError?) -> Void) -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-    }
-    
-    func subViewWillDisappear() {
-//        println(" subViewDidDisappear")
-        
-        onDropFinished()
     }
     
     func subViewWillAppear() {
-//        println(" subViewWillAppear")
+        if self.tracks.count == 0 && fetchFunc != nil{
+            println("start fetching \(self.title)")
+            fetchFunc!({ (tracks, error) -> Void in
+                if let t = tracks {
+                    self.tracks = tracks!
+                    self.trackTableView.reloadData()
+                } else {
+                    println(error)
+                }
+            })
+        }
         
         self.trackTableView.reloadData()
         self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+    }
+    
+    func subViewWillDisappear() {
+        onDropFinished()
     }
     
     func stretchableSubViewInSubViewController() -> UIScrollView! {
@@ -91,15 +99,15 @@ class TrackListViewController: AddableTrackListViewController, UITableViewDataSo
     }
     
     override func getPlaylistId() -> String? {
-        return "user_\(self.user?.id)_\(self.title)"
+        return "user_\(self.baseUser?.id)_\(self.title)"
     }
     
     override func getPlaylistName() -> String? {
-        return self.user?.name
+        return self.baseUser?.name
     }
     
     override func getSectionName() -> String {
-        return "user_\(self.user?.name)_\(self.title)"
+        return "user_\(self.baseUser?.name)_\(self.title)"
     }
     
     override func updatePlay(track:Track?, playlistId:String?) {

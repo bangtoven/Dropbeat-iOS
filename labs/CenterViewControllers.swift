@@ -320,11 +320,11 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         if (PlayerContext.currentTrack != nil) {
             println("resume with current track. show tab bar player")
             showTabBarPlayer(true)
-            super.playBtnClicked(nil)
+//            super.playBtnClicked(nil)
         }
-        else {
-            println("resume without current track")
-        }
+//        else {
+//            println("resume without current track")
+//        }
     }
     
     override func updatePlayView() {

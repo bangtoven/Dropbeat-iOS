@@ -57,12 +57,9 @@ class UserViewController: AXStretchableHeaderTabViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarTapped", name: NotifyKey.statusBarTapped, object: nil)
 
         self.headerView = UserHeaderView.instantiate()
-
         let header = self.headerView as! UserHeaderView
         header.maximumOfHeight = 260
-        
         header.loadView()
-        header.followButton.addTarget(self, action: "followAction:", forControlEvents: UIControlEvents.TouchUpInside)
         
         Requests.resolveUser(self.resource) {(req, resp, result, error) -> Void in
             
@@ -79,10 +76,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 header.followInfoView.hidden = false
                 header.followersLabel.text = String(user.num_followers)
                 header.followingLabel.text = String(user.num_following)
-                
-                if let coverImage = user.coverImage {
-                    header.coverImageView.sd_setImageWithURL(NSURL(string: coverImage), placeholderImage: UIImage(named: "default_cover_big.png"))
-                }
+                header.followButton.addTarget(self, action: "followAction:", forControlEvents: UIControlEvents.TouchUpInside)
 
                 var uploads = self.instantiateSubVC()
                 uploads.title = "Uploads"
@@ -105,8 +99,6 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 var artist = Artist.parseArtist(result!,key:"data",secondKey:"user")
                 
                 var subViewArr = [UserSubViewController]()
-                var imageForCover: String?
-                
                 for (section: String, tracks: [Track]) in artist.sectionedTracks {
 //                    // pick first thumbnail Url from track list
 //                    if imageForCover == nil {
@@ -117,23 +109,11 @@ class UserViewController: AXStretchableHeaderTabViewController {
 //                            }
 //                        }
 //                    }
-                    
                     var subView = self.instantiateSubVC()
                     subView.title = section.capitalizedString
                     subView.tracks = tracks
                     subView.baseUser = artist
                     subViewArr.append(subView)
-                }
-                
-                if imageForCover == nil {
-                    header.coverImageView.alpha = 0.8
-                    imageForCover = artist.coverImage
-                }
-                if let coverImage = imageForCover {
-                    header.coverImageView.sd_setImageWithURL(
-                        NSURL(string: coverImage),
-                        placeholderImage: UIImage(named: "default_cover_big.png"),
-                        forMinimumHeight: self.headerView.maximumOfHeight*2)
                 }
                 
                 if artist.hasPodcast {
@@ -153,7 +133,6 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 }
                 
                 self.viewControllers = subViewArr
-                
                 baseUser = artist
             case "channel":
                 var channel = Channel.parseChannel(result!,key:"data",secondKey: "user")
@@ -162,9 +141,21 @@ class UserViewController: AXStretchableHeaderTabViewController {
                     header.descriptionLabel.text = "\n"
                 }
                 
-                // TODO: 여기부터 채널에서 트랙 뽑아내기 시작해야 함.
-//                Requests.getChannelPlaylist(playlistUid, pageToken: pageToken) { (req: NSURLRequest, resp: NSHTTPURLResponse?, result: AnyObject?, error :NSError?) -> Void in
+                var subViewArr = [ChannelSubViewController]()
+                var recent = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
+                recent.title = "Recent"
+                recent.channel = channel
+                subViewArr.append(recent)
                 
+                if channel?.playlists.count > 1 {
+                    var sections = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
+                    sections.title = "Sections"
+                    sections.channel = channel
+                    sections.isSectioned = true
+                    subViewArr.append(sections)
+                }
+                
+                self.viewControllers = subViewArr
                 baseUser = channel
             default:
                 var message = "Unknown user_type"
@@ -177,6 +168,10 @@ class UserViewController: AXStretchableHeaderTabViewController {
             }
             if let profileImage = baseUser?.image {
                 header.profileImageView.sd_setImageWithURL(NSURL(string: profileImage), placeholderImage: UIImage(named: "default_profile.png"))
+            }
+            if let coverImage = baseUser?.coverImage {
+                header.coverImageView.sd_setImageWithURL(NSURL(string: coverImage), placeholderImage: UIImage(named: "default_cover_big.png"),
+                    forMinimumHeight: self.headerView.maximumOfHeight*1.5)
             }
             
             var descriptionHeight = self.calculateDescriptionContentSize()
@@ -295,85 +290,3 @@ class UserViewController: AXStretchableHeaderTabViewController {
     }
 
 }
-
-
-//var vcArr: [UIViewController] = []
-//for x in 0..<3 {
-//    var vc: UserDetailTableViewController = self.storyboard?.instantiateViewControllerWithIdentifier("UserDetailTableViewController") as! UserDetailTableViewController
-//    vc.arg = x
-//    vcArr.append(vc)
-//}
-//self.viewControllers = vcArr
-
-//class UserDetailTableViewController: UITableViewController, AXSubViewController, DYAlertPickViewDataSource, DYAlertPickViewDelegate {
-//    
-//    var arg: Int!
-//    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//        
-//        var title: String = String()
-//        for i in 0...arg {
-//            title += "TAB "
-//        }
-//        title += String(arg)
-//        self.title = title
-//    }
-//    
-//    func subViewWillDisappear() {
-//        println(String(arg) + " subViewDidDisappear")
-//    }
-//    
-//    func subViewWillAppear() {
-//        println(String(arg) + " subViewWillAppear")
-//    }
-//    
-//    // MARK: -
-//    // MARK: DYAlertPickViewDataSource
-//    var selectedSection: Int = -1
-//    
-//    @IBOutlet weak var button: UIButton!
-//    @IBAction func buttonTapped(sender: AnyObject) {
-//        var picker: DYAlertPickView = DYAlertPickView(headerTitle: "Choose Section", cancelButtonTitle: nil, confirmButtonTitle: nil, switchButtonTitle: nil)
-//        picker.dataSource = self
-//        picker.delegate = self
-//        picker.tintColor = UIColor.redColor();
-//        picker.showAndSelectedIndex(self.selectedSection)
-//    }
-//    
-//    func titleForRowInDYAlertPickView(titleForRow: Int) -> NSAttributedString! {
-//        return NSAttributedString(string: "asdf"+String(titleForRow))
-//    }
-//    //
-//    func numberOfRowsInDYAlertPickerView(pickerView: DYAlertPickView) -> Int {
-//        return 10
-//    }
-//    
-//    func didConfirmWithItemAtRowInDYAlertPickView(row: Int) {
-//        self.selectedSection = row
-//        println(row)
-//    }
-//    
-//    // MARK: - Table view data source
-//    
-//    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-//        // #warning Potentially incomplete method implementation.
-//        // Return the number of sections.
-//        return 1
-//    }
-//    
-//    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        // #warning Incomplete method implementation.
-//        // Return the number of rows in the section.
-//        return 30
-//    }
-//    
-//    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath) as! UITableViewCell
-//        
-//        cell.textLabel?.text = String(arg) + " . " + String(indexPath.row)
-//        
-//        return cell
-//    }
-//    
-//}

@@ -9,10 +9,10 @@
 #import "DYAlertPickView.h"
 
 #define DY_BACKGROUND_ALPHA 0.4
-#define DY_HEADER_HEIGHT 44.0
+#define DY_HEADER_HEIGHT 36.0
 #define DY_SWITCH_HEIGHT 35.0
 #define DY_FOOTER_HEIGHT 40.0
-#define DY_TABLEVIEW_CELL_HEIGHT 44.0
+#define DY_TABLEVIEW_CELL_HEIGHT 36.0
 
 
 @interface DYAlertPickView ()
@@ -106,7 +106,7 @@ typedef void (^DYAlertPickerViewDismissCallback)(void);
 
 
 - (UIView *)buildContainerView{
-    CGAffineTransform transform = CGAffineTransformMake(0.8, 0, 0.0, 0.6, 0, 0);
+    CGAffineTransform transform = CGAffineTransformMake(0.75, 0, 0.0, 0.6, 0, 0);
     CGRect newRect = CGRectApplyAffineTransform(self.frame, transform);
     UIView *bcv = [[UIView alloc] initWithFrame:newRect];
     bcv.layer.cornerRadius = 5.0f;
@@ -115,7 +115,7 @@ typedef void (^DYAlertPickerViewDismissCallback)(void);
 }
 
 - (UITableView *)buildTableView{
-    CGAffineTransform transform = CGAffineTransformMake(0.8, 0, 0, 0.6, 0, 0);
+    CGAffineTransform transform = CGAffineTransformMake(0.75, 0, 0, 0.6, 0, 0);
     CGRect newRect = CGRectApplyAffineTransform(self.frame, transform);
     NSInteger n = [self.dataSource numberOfRowsInDYAlertPickerView:self];
     CGRect tableRect;
@@ -126,9 +126,9 @@ typedef void (^DYAlertPickerViewDismissCallback)(void);
             height = newRect.size.height - heightOffset + DY_TABLEVIEW_CELL_HEIGHT/2.0;
         }
 //        height = height > newRect.size.height - heightOffset ? newRect.size.height - heightOffset : height;
-        tableRect = CGRectMake(0, DY_TABLEVIEW_CELL_HEIGHT, newRect.size.width, height);
+        tableRect = CGRectMake(0, DY_HEADER_HEIGHT, newRect.size.width, height);
     } else {
-        tableRect = CGRectMake(0, DY_TABLEVIEW_CELL_HEIGHT, newRect.size.width, newRect.size.height - heightOffset);
+        tableRect = CGRectMake(0, DY_HEADER_HEIGHT, newRect.size.width, newRect.size.height - heightOffset);
     }
     UITableView *tableView = [[UITableView alloc] initWithFrame:tableRect style:UITableViewStylePlain];
     tableView.delegate = self;
@@ -208,10 +208,10 @@ typedef void (^DYAlertPickerViewDismissCallback)(void);
 
 - (UIView *)buildHeaderView {
     UIView *bhv = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, DY_HEADER_HEIGHT)];
-    bhv.backgroundColor = self.headerBackgroundColor;
+    
     NSDictionary *dict = @{
                            NSForegroundColorAttributeName: self.headerTitleColor,
-                           NSFontAttributeName: [UIFont systemFontOfSize:16.0]
+                           NSFontAttributeName: [UIFont systemFontOfSize:14.0]
                            };
     NSAttributedString *at = [[NSAttributedString alloc] initWithString:self.headerTitle attributes:dict];
     UILabel *label = [[UILabel alloc] initWithFrame:bhv.frame];
@@ -219,6 +219,12 @@ typedef void (^DYAlertPickerViewDismissCallback)(void);
     [label sizeToFit];
     [bhv addSubview:label];
     label.center = bhv.center;
+    
+    bhv.backgroundColor = [UIColor whiteColor];
+    UIView *border = [[UIView alloc] initWithFrame:CGRectMake(0, DY_HEADER_HEIGHT-2, self.tableView.frame.size.width, 2)];
+    border.backgroundColor = self.headerBackgroundColor;
+    [bhv addSubview:border];
+
     return bhv;
 }
 
@@ -258,14 +264,14 @@ typedef void (^DYAlertPickerViewDismissCallback)(void);
     
     self.containerView.layer.opacity = 1.0f;
     self.layer.opacity = 0.5f;
-    self.layer.transform = CATransform3DMakeScale(1.25f, 1.25f, 1.0f);
+//    self.layer.transform = CATransform3DMakeScale(1.25f, 1.25f, 1.0f);
     
     [UIView animateWithDuration:0.2f delay:0.0 options:UIViewAnimationOptionCurveEaseIn
                      animations:^{
                          self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4f];
                          self.layer.opacity = 1.0f;
                          self.backgroundMaskView.layer.opacity = 0.5f;
-                         self.layer.transform = CATransform3DMakeScale(1, 1, 1);
+//                         self.layer.transform = CATransform3DMakeScale(1, 1, 1);
                      }
                      completion:^(BOOL finished) {
                          NSInteger numberOfRows = [self.tableView numberOfRowsInSection:0];
@@ -299,7 +305,7 @@ typedef void (^DYAlertPickerViewDismissCallback)(void);
                          animations:^{
                              self.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.4f];
                              self.layer.opacity = 0.1f;
-//                             self.layer.transform = CATransform3DMakeScale(3.0f, 3.0f, 1.0f);
+                             self.layer.transform = CATransform3DMakeScale(1.25f, 1.25f, 1.0f);
                          }
                          completion:^(BOOL finished) {
                              for (UIView *v in [self subviews]) {
@@ -401,6 +407,10 @@ typedef void (^DYAlertPickerViewDismissCallback)(void);
     return cell;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return DY_TABLEVIEW_CELL_HEIGHT;
+}
 
 #pragma mark - UITableViewDelegate
 

@@ -197,6 +197,9 @@ class UserViewController: AXStretchableHeaderTabViewController {
     func followAction(sender: UIButton) {
         let header = self.headerView as! UserHeaderView
         header.followButton.selected = !header.followButton.selected
+        // http://spark.coroutine.io/api/v1/user/follow/
+        // http://spark.coroutine.io/api/v1/user/unfollow/
+        // {"user_id":3}     
     }
     
     func showMoreAction() {

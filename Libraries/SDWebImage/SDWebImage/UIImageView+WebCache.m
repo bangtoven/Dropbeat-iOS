@@ -10,6 +10,27 @@
 #import "objc/runtime.h"
 #import "UIView+WebCacheOperation.h"
 
+//@interface UIImage (Resize)
+//- (UIImage *)imageWithScaledToHeight: (CGFloat) height;
+//@end
+
+@implementation UIImage (Resize)
+- (UIImage *)imageWithScaledToHeight: (CGFloat) height
+{
+    float oldHeight = self.size.height;
+    float scaleFactor = height / oldHeight;
+    
+    float newHeight = oldHeight * scaleFactor;
+    float newWidth = self.size.width * scaleFactor;
+    
+    UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight));
+    [self drawInRect:CGRectMake(0, 0, newWidth, newHeight)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+@end
+
 static char imageURLKey;
 
 @implementation UIImageView (WebCache)
@@ -21,6 +42,30 @@ static char imageURLKey;
 - (void)sd_setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder {
     [self sd_setImageWithURL:url placeholderImage:placeholder options:0 progress:nil completed:nil];
 }
+
+- (void)sd_setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder forMinimumHeight:(CGFloat)height {
+    [self sd_cancelCurrentImageLoad];
+    objc_setAssociatedObject(self, &imageURLKey, url, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+    self.image = placeholder;
+    
+    __weak UIImageView *wself = self;
+    id <SDWebImageOperation> operation = [SDWebImageManager.sharedManager downloadImageWithURL:url options:0 progress:nil completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+        if (!wself) return;
+        dispatch_main_sync_safe(^{
+            if (!wself) return;
+            if (image) {
+                if (image.size.height < height)
+                    wself.image = [image imageWithScaledToHeight:height];
+                else
+                    wself.image = image;
+                
+                [wself setNeedsLayout];
+            }
+        });
+    }];
+    [self sd_setImageLoadOperation:operation forKey:@"UIImageViewImageLoad"];
+}
+
 
 - (void)sd_setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options {
     [self sd_setImageWithURL:url placeholderImage:placeholder options:options progress:nil completed:nil];

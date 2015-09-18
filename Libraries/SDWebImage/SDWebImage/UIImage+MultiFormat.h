@@ -10,8 +10,6 @@
 
 @interface UIImage (MultiFormat)
 
-- (UIImage *)imageWithScaledToHeight: (CGFloat) height;
-
 + (UIImage *)sd_imageWithData:(NSData *)data;
 
 @end

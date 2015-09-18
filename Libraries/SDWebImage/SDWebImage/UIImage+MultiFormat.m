@@ -17,21 +17,6 @@
 
 @implementation UIImage (MultiFormat)
 
-- (UIImage *)imageWithScaledToHeight: (CGFloat) height
-{
-    float oldHeight = self.size.height;
-    float scaleFactor = height / oldHeight;
-    
-    float newHeight = oldHeight * scaleFactor;
-    float newWidth = self.size.height * scaleFactor;
-    
-    UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight));
-    [self drawInRect:CGRectMake(0, 0, newWidth, newHeight)];
-    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return newImage;
-}
-
 + (UIImage *)sd_imageWithData:(NSData *)data {
     UIImage *image;
     NSString *imageContentType = [NSData sd_contentTypeForImageData:data];

@@ -29,11 +29,10 @@ class UserHeaderView: AXStretchableHeaderView {
     }
     
     func loadView () {
-        self.nameLabel.text = " "
-        self.descriptionLabel.text = "\n"
+        self.nameLabel.text = ""
+        self.descriptionLabel.text = ""
         
         self.followInfoView.hidden = true
-        self.showMoreButton.hidden = true
         
         self.profileImageView.layer.cornerRadius = 10
         self.profileImageView.layer.borderWidth = 2
@@ -109,15 +108,15 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 var imageForCover: String?
                 
                 for (section: String, tracks: [Track]) in artist.sectionedTracks {
-                    if imageForCover == nil {
-                        // pick first thumbnail Url from track list
-                        for t in tracks {
-                            if let thumbnailUrl = t.thumbnailUrl {
-                                imageForCover = thumbnailUrl
-                                break
-                            }
-                        }
-                    }
+//                    // pick first thumbnail Url from track list
+//                    if imageForCover == nil {
+//                        for t in tracks {
+//                            if let thumbnailUrl = t.thumbnailUrl {
+//                                imageForCover = thumbnailUrl
+//                                break
+//                            }
+//                        }
+//                    }
                     
                     var subView = self.instantiateSubVC()
                     subView.title = section.capitalizedString
@@ -127,17 +126,14 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 }
                 
                 if imageForCover == nil {
+                    header.coverImageView.alpha = 0.8
                     imageForCover = artist.coverImage
                 }
                 if let coverImage = imageForCover {
-                    // TODO: 이거 좀 깔끔하게 고치자
                     header.coverImageView.sd_setImageWithURL(
                         NSURL(string: coverImage),
                         placeholderImage: UIImage(named: "default_cover_big.png"),
-                        completed: { (image:UIImage!, error:NSError!, type:SDImageCacheType, url:NSURL!) -> Void in
-                            let header = self.headerView as! UserHeaderView
-                        header.coverImageView.image = image.imageWithScaledToHeight(self.headerView.maximumOfHeight*2)
-                    })
+                        forMinimumHeight: self.headerView.maximumOfHeight*2)
                 }
                 
                 if artist.hasPodcast {
@@ -166,6 +162,9 @@ class UserViewController: AXStretchableHeaderTabViewController {
                     header.descriptionLabel.text = "\n"
                 }
                 
+                // TODO: 여기부터 채널에서 트랙 뽑아내기 시작해야 함.
+//                Requests.getChannelPlaylist(playlistUid, pageToken: pageToken) { (req: NSURLRequest, resp: NSHTTPURLResponse?, result: AnyObject?, error :NSError?) -> Void in
+                
                 baseUser = channel
             default:
                 var message = "Unknown user_type"
@@ -183,6 +182,8 @@ class UserViewController: AXStretchableHeaderTabViewController {
             var descriptionHeight = self.calculateDescriptionContentSize()
             if descriptionHeight <= 32 {
                 header.showMoreButton.hidden = true
+                self.headerView.maximumOfHeight -= (32-descriptionHeight)
+                header.labelHeightConstraint.constant = descriptionHeight
             } else {
                 self.headerView.maximumOfHeight += 32
                 header.labelHeightConstraint.constant = 64

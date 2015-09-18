@@ -1,0 +1,12 @@
+
+/* Class = "UIButton"; normalTitle = "+ FOLLOW"; ObjectID = "bih-t6-lsj"; */
+"bih-t6-lsj.normalTitle" = "+ 팔로우";
+
+/* Class = "UIButton"; selectedTitle = "✓ FOLLOWING"; ObjectID = "bih-t6-lsj"; */
+"bih-t6-lsj.selectedTitle" = "✓ 팔로잉";
+
+/* Class = "UILabel"; text = "Following"; ObjectID = "mhI-fX-KYd"; */
+"mhI-fX-KYd.text" = "팔로잉";
+
+/* Class = "UILabel"; text = "Followers"; ObjectID = "rLz-5q-4wx"; */
+"rLz-5q-4wx.text" = "팔로워";

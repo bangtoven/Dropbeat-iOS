@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cvL-BP-wNy">
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
@@ -98,67 +99,6 @@
             </objects>
             <point key="canvasLocation" x="892" y="910"/>
         </scene>
-        <!--User Detail Table View Controller-->
-        <scene sceneID="AUi-qc-ozW">
-            <objects>
-                <tableViewController storyboardIdentifier="UserDetailTableViewController" id="3y8-uZ-0lC" customClass="UserDetailTableViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Hv5-ZS-shd">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="jlx-XI-rBA">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k18-Ba-Hqi">
-                                    <rect key="frame" x="8" y="7" width="304" height="30"/>
-                                    <state key="normal" title="Button">
-                                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="buttonTapped:" destination="3y8-uZ-0lC" eventType="touchUpInside" id="uPH-JL-wqE"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <constraints>
-                                <constraint firstItem="k18-Ba-Hqi" firstAttribute="leading" secondItem="jlx-XI-rBA" secondAttribute="leading" constant="8" id="TxF-Gk-0js"/>
-                                <constraint firstAttribute="trailing" secondItem="k18-Ba-Hqi" secondAttribute="trailing" constant="8" id="UtE-Ab-viM"/>
-                                <constraint firstAttribute="bottom" secondItem="k18-Ba-Hqi" secondAttribute="bottom" constant="7" id="eFQ-ba-KbR"/>
-                                <constraint firstItem="k18-Ba-Hqi" firstAttribute="top" secondItem="jlx-XI-rBA" secondAttribute="top" constant="7" id="kxy-Iv-DjS"/>
-                            </constraints>
-                        </view>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseIdentifier" textLabel="gNo-jG-akc" style="IBUITableViewCellStyleDefault" id="r7i-RO-y0X">
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="r7i-RO-y0X" id="5pO-mu-EU3">
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="gNo-jG-akc">
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="3y8-uZ-0lC" id="Xfw-Fg-gac"/>
-                            <outlet property="delegate" destination="3y8-uZ-0lC" id="XQa-ke-szS"/>
-                        </connections>
-                    </tableView>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="320"/>
-                    <connections>
-                        <outlet property="button" destination="k18-Ba-Hqi" id="DXj-12-GCe"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="byi-VB-3tv" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="884" y="1467"/>
-        </scene>
         <!--Item-->
         <scene sceneID="yrl-zC-xTS">
             <objects>
@@ -236,7 +176,7 @@
                                                 <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ovK-As-6dX">
                                                     <rect key="frame" x="8" y="10" width="56" height="56"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="8r1-mp-7PB">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="8r1-mp-7PB">
                                                             <rect key="frame" x="-2" y="0.0" width="60" height="56"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="56" id="zXS-GH-MtF"/>
@@ -410,10 +350,10 @@
                                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="ic_arrow_down" translatesAutoresizingMaskIntoConstraints="NO" id="huG-LS-llG">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_arrow_down" translatesAutoresizingMaskIntoConstraints="NO" id="huG-LS-llG">
                                             <rect key="frame" x="76" y="19" width="9" height="7"/>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nNB-RL-Mjl">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nNB-RL-Mjl">
                                             <rect key="frame" x="87" y="0.0" width="213" height="44"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -483,7 +423,7 @@
                                                 <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KdL-zr-lRE">
                                                     <rect key="frame" x="8" y="10" width="56" height="56"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="ep0-eZ-crb">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="ep0-eZ-crb">
                                                             <rect key="frame" x="-2" y="0.0" width="60" height="56"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="56" id="z4l-Sm-OMr"/>
@@ -603,11 +543,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="default_artwork" width="20" height="20"/>
-        <image name="ic_arrow_down" width="20" height="20"/>
-        <image name="ic_drop_small" width="20" height="20"/>
-        <image name="ic_header_dotdotdot" width="20" height="20"/>
-        <image name="ic_playing_indicator" width="20" height="20"/>
+        <image name="default_artwork" width="60" height="60"/>
+        <image name="ic_arrow_down" width="9" height="7"/>
+        <image name="ic_drop_small" width="40" height="40"/>
+        <image name="ic_header_dotdotdot" width="22" height="22"/>
+        <image name="ic_playing_indicator" width="104" height="104"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="oVv-0f-qoK"/>

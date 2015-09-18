@@ -110,10 +110,10 @@
 		732717411BAC86EB003E0B68 /* KeychainItemWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717401BAC86EB003E0B68 /* KeychainItemWrapper.swift */; };
 		732717431BAC8721003E0B68 /* ScrollPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717421BAC8721003E0B68 /* ScrollPager.swift */; };
 		7327174A1BAC8836003E0B68 /* User.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 732717451BAC8836003E0B68 /* User.storyboard */; };
-		7327174B1BAC8836003E0B68 /* UserHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 732717461BAC8836003E0B68 /* UserHeaderView.xib */; };
 		7327174C1BAC8836003E0B68 /* UserSubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717471BAC8836003E0B68 /* UserSubViewController.swift */; };
 		7327174D1BAC8836003E0B68 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717481BAC8836003E0B68 /* UserViewController.swift */; };
 		7327174E1BAC8836003E0B68 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717491BAC8836003E0B68 /* ViewController.swift */; };
+		7327174F1BAC8C96003E0B68 /* UserHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 732717511BAC8C96003E0B68 /* UserHeaderView.xib */; };
 		7361FCDC1B9F5A7C00444179 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7361FCDB1B9F5A7C00444179 /* ProfileViewController.swift */; };
 		7361FCDE1B9F5B1A00444179 /* LikeBoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7361FCDD1B9F5B1A00444179 /* LikeBoxViewController.swift */; };
 		7361FCE01B9F5B6700444179 /* NickNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7361FCDF1B9F5B6700444179 /* NickNameViewController.swift */; };
@@ -314,10 +314,11 @@
 		732717401BAC86EB003E0B68 /* KeychainItemWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeychainItemWrapper.swift; path = Libraries/KeychainItemWrapper.swift; sourceTree = SOURCE_ROOT; };
 		732717421BAC8721003E0B68 /* ScrollPager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScrollPager.swift; path = Libraries/ScrollPager.swift; sourceTree = SOURCE_ROOT; };
 		732717451BAC8836003E0B68 /* User.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = User.storyboard; sourceTree = "<group>"; };
-		732717461BAC8836003E0B68 /* UserHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserHeaderView.xib; sourceTree = "<group>"; };
 		732717471BAC8836003E0B68 /* UserSubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSubViewController.swift; sourceTree = "<group>"; };
 		732717481BAC8836003E0B68 /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		732717491BAC8836003E0B68 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		732717501BAC8C96003E0B68 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserHeaderView.xib; sourceTree = "<group>"; };
+		732717531BAC8C98003E0B68 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/UserHeaderView.strings; sourceTree = "<group>"; };
 		7361FCDB1B9F5A7C00444179 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		7361FCDD1B9F5B1A00444179 /* LikeBoxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeBoxViewController.swift; sourceTree = "<group>"; };
 		7361FCDF1B9F5B6700444179 /* NickNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NickNameViewController.swift; sourceTree = "<group>"; };
@@ -559,7 +560,7 @@
 				732717491BAC8836003E0B68 /* ViewController.swift */,
 				732717451BAC8836003E0B68 /* User.storyboard */,
 				732717481BAC8836003E0B68 /* UserViewController.swift */,
-				732717461BAC8836003E0B68 /* UserHeaderView.xib */,
+				732717511BAC8C96003E0B68 /* UserHeaderView.xib */,
 				732717471BAC8836003E0B68 /* UserSubViewController.swift */,
 			);
 			name = User;
@@ -775,12 +776,12 @@
 				58BB0B151B12308000B07279 /* BaseViewController.swift */,
 				58C3E7A21B8A40C300822842 /* AddableTrackListViewController.swift */,
 				7361FCE51B9F628100444179 /* Model & etc */,
-				732717441BAC8814003E0B68 /* User */,
 				7361FCD81B9F58B900444179 /* Main */,
 				7361FCCF1B9F55BA00444179 /* Feed */,
 				7361FCD01B9F55C300444179 /* Channel */,
 				7361FCD11B9F55CE00444179 /* Profile */,
 				7361FCD21B9F55D500444179 /* Settings */,
+				732717441BAC8814003E0B68 /* User */,
 			);
 			name = Dropbeat;
 			path = labs;
@@ -910,7 +911,7 @@
 				FCD1DA921B04CCB200F9EA70 /* LaunchScreen.xib in Resources */,
 				7327174A1BAC8836003E0B68 /* User.storyboard in Resources */,
 				7327173C1BAC86BB003E0B68 /* AXStretchableHeaderTabViewController.xib in Resources */,
-				7327174B1BAC8836003E0B68 /* UserHeaderView.xib in Resources */,
+				7327174F1BAC8C96003E0B68 /* UserHeaderView.xib in Resources */,
 				586F49D21B8088220039CC6B /* FollowingFeedHeader.xib in Resources */,
 				FCD1DA8F1B04CCB200F9EA70 /* Images.xcassets in Resources */,
 				585BAD0C1B85ED9900FE137A /* DateTools.bundle in Resources */,
@@ -1092,6 +1093,15 @@
 				58CB66761B8DF60D00EF628A /* ko */,
 			);
 			name = FriendFeedHeader.xib;
+			sourceTree = "<group>";
+		};
+		732717511BAC8C96003E0B68 /* UserHeaderView.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				732717501BAC8C96003E0B68 /* Base */,
+				732717531BAC8C98003E0B68 /* ko */,
+			);
+			name = UserHeaderView.xib;
 			sourceTree = "<group>";
 		};
 		7361FCEA1B9F683100444179 /* Feed.storyboard */ = {

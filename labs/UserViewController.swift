@@ -61,7 +61,9 @@ class UserViewController: AXStretchableHeaderTabViewController {
         header.maximumOfHeight = 260
         header.loadView()
         
+        let progressHud = ViewUtils.showProgress(self, message: nil)
         Requests.resolveUser(self.resource) {(req, resp, result, error) -> Void in
+            progressHud.hide(true)
             
             if (error != nil || JSON(result!)["success"] == false) {
                 UIAlertView(title: "Error", message: JSON(result!)["error"].stringValue, delegate: nil, cancelButtonTitle: "I see").show()

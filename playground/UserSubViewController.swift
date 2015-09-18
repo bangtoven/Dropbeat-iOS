@@ -14,21 +14,13 @@ class ChannelSubViewController: UserSubViewController, DYAlertPickViewDataSource
             self.baseUser = channel
         }
     }
-    var isSectioned: Bool?
+    var isSectioned: Bool = false
     
     private var currentSectionIndex: Int = 0
     private var nextPageToken:String?
     private var listEnd:Bool = false
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        if self.isSectioned != true {
-            self.trackTableView.tableHeaderView = nil
-        } else {
-            
-        }
-    }
+    @IBOutlet weak var indicatorView: UIView!
     
     override func subViewWillAppear() {
         if self.tracks.count == 0 {
@@ -50,6 +42,10 @@ class ChannelSubViewController: UserSubViewController, DYAlertPickViewDataSource
         var playlist = self.channel!.playlists[index]
         nextPageToken = nil
         listEnd = false
+        
+        if self.isSectioned {
+            self.indicatorView.hidden = false
+        }
         
         if (self.trackTableView.tableHeaderView != nil) {
             self.selectSectionButton.setTitle(self.channel!.playlists[index].name, forState: UIControlState.Normal)
@@ -87,6 +83,12 @@ class ChannelSubViewController: UserSubViewController, DYAlertPickViewDataSource
         self.trackTableView.reloadData()
         
         Requests.getChannelPlaylist(playlistUid, pageToken: pageToken) { (req: NSURLRequest, resp: NSHTTPURLResponse?, result: AnyObject?, error :NSError?) -> Void in
+            if self.isSectioned != true {
+                self.trackTableView.tableHeaderView = nil
+            } else {
+                self.indicatorView.hidden = true
+            }
+            
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                     error!.code == NSURLErrorNotConnectedToInternet) {
@@ -159,10 +161,6 @@ class UserSubViewController: AddableTrackListViewController, UITableViewDataSour
     var baseUser: BaseUser?
     var fetchFunc: ((([Track]?, NSError?) -> Void) -> Void)?
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
     func subViewWillAppear() {
         if self.tracks.count == 0 && fetchFunc != nil {
             println("start fetching \(self.title)")
@@ -173,7 +171,10 @@ class UserSubViewController: AddableTrackListViewController, UITableViewDataSour
                 } else {
                     println(error)
                 }
+                self.trackTableView.tableHeaderView = nil
             })
+        } else {
+            self.trackTableView.tableHeaderView = nil
         }
         
         self.trackTableView.reloadData()

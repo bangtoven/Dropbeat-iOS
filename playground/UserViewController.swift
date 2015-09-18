@@ -116,19 +116,19 @@ class UserViewController: AXStretchableHeaderTabViewController {
                     subViewArr.append(subView)
                 }
                 
-                if artist.hasPodcast {
-                    var subView = self.instantiateSubVC()
-                    subView.title = "Podcast"
-                    subView.baseUser = artist
-                    subView.fetchFunc = artist.fetchPodcast
-                    subViewArr.append(subView)
-                }
-                
                 if artist.hasLiveset {
                     var subView = self.instantiateSubVC()
                     subView.title = "Liveset"
                     subView.baseUser = artist
                     subView.fetchFunc = artist.fetchLiveset
+                    subViewArr.append(subView)
+                }
+                
+                if artist.hasPodcast {
+                    var subView = self.instantiateSubVC()
+                    subView.title = "Podcast"
+                    subView.baseUser = artist
+                    subView.fetchFunc = artist.fetchPodcast
                     subViewArr.append(subView)
                 }
                 

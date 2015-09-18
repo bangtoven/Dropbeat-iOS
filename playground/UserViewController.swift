@@ -76,7 +76,6 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 header.followInfoView.hidden = false
                 header.followersLabel.text = String(user.num_followers)
                 header.followingLabel.text = String(user.num_following)
-                header.followButton.addTarget(self, action: "followAction:", forControlEvents: UIControlEvents.TouchUpInside)
 
                 var uploads = self.instantiateSubVC()
                 uploads.title = "Uploads"
@@ -190,11 +189,14 @@ class UserViewController: AXStretchableHeaderTabViewController {
                     header.showMoreButton.addTarget(self, action: "showMoreAction", forControlEvents: UIControlEvents.TouchUpInside)
                 }
             }
+            
+            header.followButton.addTarget(self, action: "followAction:", forControlEvents: UIControlEvents.TouchUpInside)
         }
     }
     
     func followAction(sender: UIButton) {
- 
+        let header = self.headerView as! UserHeaderView
+        header.followButton.selected = !header.followButton.selected
     }
     
     func showMoreAction() {

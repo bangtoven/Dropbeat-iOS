@@ -203,25 +203,25 @@ class ChannelViewController: AddableTrackListViewController,
         if (channel.image != nil) {
             cell.thumbView.sd_setImageWithURL(
                 NSURL(string: channel.image!),
-                placeholderImage: UIImage(named :"default_artwork.png"), completed: {
+                placeholderImage: UIImage(named :"default_artwork"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                     
                 if (error != nil) {
-                    cell.thumbView.image = UIImage(named: "default_artwork.png")
+                    cell.thumbView.image = UIImage(named: "default_artwork")
                 }
                     
             })
         } else {
-            cell.thumbView.image = UIImage(named: "default_artwork.png")
+            cell.thumbView.image = UIImage(named: "default_artwork")
         }
         
         cell.nameView.text = channel.name
         if channel.isBookmarked {
             cell.bookmarkBtn.setImage(
-                UIImage(named: "ic_star_filled.png"), forState: UIControlState.Normal)
+                UIImage(named: "ic_star_filled"), forState: UIControlState.Normal)
         } else {
             cell.bookmarkBtn.setImage(
-                UIImage(named: "ic_star.png"), forState: UIControlState.Normal)
+                UIImage(named: "ic_star"), forState: UIControlState.Normal)
         }
         
         return cell
@@ -236,14 +236,14 @@ class ChannelViewController: AddableTrackListViewController,
         cell.nameView.text = track.title
         if (track.thumbnailUrl != nil) {
             cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_artwork.png"), completed: {
+                    placeholderImage: UIImage(named: "default_artwork"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                 if (error != nil) {
-                    cell.thumbView.image = UIImage(named: "default_artwork.png")
+                    cell.thumbView.image = UIImage(named: "default_artwork")
                 }
             })
         } else {
-            cell.thumbView.image = UIImage(named: "default_artwork.png")
+            cell.thumbView.image = UIImage(named: "default_artwork")
         }
         if track.publishedAt != nil {
             var formatter = NSDateFormatter()
@@ -585,7 +585,7 @@ class ChannelViewController: AddableTrackListViewController,
         trackTableView.hidden = true
         genreTableView.hidden = false
         emptyChannelView.hidden = true
-        genreSelectBtn.setImage(UIImage(named:"ic_arrow_up.png"), forState: UIControlState.Normal)
+        genreSelectBtn.setImage(UIImage(named:"ic_arrow_up"), forState: UIControlState.Normal)
     }
     
     func toNonGenreSelectMode() {
@@ -594,7 +594,7 @@ class ChannelViewController: AddableTrackListViewController,
         genreTableView.hidden = true
         emptyChannelView.hidden = selectedTabIdx == 0 || channels.count != 0
         needSigninScrollView.hidden = selectedTabIdx != 0 || Account.getCachedAccount() != nil
-        genreSelectBtn.setImage(UIImage(named:"ic_arrow_down.png"), forState: UIControlState.Normal)
+        genreSelectBtn.setImage(UIImage(named:"ic_arrow_down"), forState: UIControlState.Normal)
     }
     
     func onBookmarkBtnClicked(sender: ChannelTableViewCell) {
@@ -922,9 +922,9 @@ class ChannelDetailViewController: AddableTrackListViewController,
             self.nameView.text = self.channel!.name
             if (self.channel!.image != nil) {
                 self.thumbView.sd_setImageWithURL(NSURL(string:self.channel!.image!),
-                    placeholderImage: UIImage(named: "default_artwork.png"))
+                    placeholderImage: UIImage(named: "default_artwork"))
             } else {
-                self.thumbView.image = UIImage(named: "default_artwork.png")
+                self.thumbView.image = UIImage(named: "default_artwork")
             }
             self.channelInfoView.hidden = false
             self.loadBookmarks()
@@ -1056,14 +1056,14 @@ class ChannelDetailViewController: AddableTrackListViewController,
         sectionSelectMode = true
         self.trackTableView.hidden = true
         self.sectionSelectTableView.hidden = false
-        sectionSelector.setImage(UIImage(named: "ic_arrow_up.png"), forState: UIControlState.Normal)
+        sectionSelector.setImage(UIImage(named: "ic_arrow_up"), forState: UIControlState.Normal)
     }
     
     func switchToNonSectionSelectMode() {
         sectionSelectMode = false
         self.trackTableView.hidden = false
         self.sectionSelectTableView.hidden = true
-        sectionSelector.setImage(UIImage(named: "ic_arrow_down.png"), forState: UIControlState.Normal)
+        sectionSelector.setImage(UIImage(named: "ic_arrow_down"), forState: UIControlState.Normal)
     }
     
     @IBAction func onSectionSelectorClicked(sender: AnyObject) {
@@ -1151,9 +1151,9 @@ class ChannelDetailViewController: AddableTrackListViewController,
     
     func updateBookmarkBtn() {
         if channel!.isBookmarked {
-            bookmarkBtn.setImage(UIImage(named: "ic_star_filled.png"), forState: UIControlState.Normal)
+            bookmarkBtn.setImage(UIImage(named: "ic_star_filled"), forState: UIControlState.Normal)
         } else {
-            bookmarkBtn.setImage(UIImage(named: "ic_star.png"), forState: UIControlState.Normal)
+            bookmarkBtn.setImage(UIImage(named: "ic_star"), forState: UIControlState.Normal)
         }
     }
     
@@ -1180,14 +1180,14 @@ class ChannelDetailViewController: AddableTrackListViewController,
             cell.nameView.text = track.title
             if (track.thumbnailUrl != nil) {
                 cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                        placeholderImage: UIImage(named: "default_artwork.png"), completed: {
+                        placeholderImage: UIImage(named: "default_artwork"), completed: {
                         (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                     if (error != nil) {
-                        cell.thumbView.image = UIImage(named: "default_artwork.png")
+                        cell.thumbView.image = UIImage(named: "default_artwork")
                     }
                 })
             } else {
-                cell.thumbView.image = UIImage(named: "default_artwork.png")
+                cell.thumbView.image = UIImage(named: "default_artwork")
             }
             if track.publishedAt != nil {
                 var formatter = NSDateFormatter()
@@ -1295,25 +1295,25 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
         if (channel.image != nil) {
             cell.thumbView.sd_setImageWithURL(
                 NSURL(string: channel.image!),
-                placeholderImage: UIImage(named :"default_artwork.png"), completed: {
+                placeholderImage: UIImage(named :"default_artwork"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                     
                     if (error != nil) {
-                        cell.thumbView.image = UIImage(named: "default_artwork.png")
+                        cell.thumbView.image = UIImage(named: "default_artwork")
                     }
                     
             })
         } else {
-            cell.thumbView.image = UIImage(named: "default_artwork.png")
+            cell.thumbView.image = UIImage(named: "default_artwork")
         }
         
         cell.nameView.text = channel.name
         if channel.isBookmarked {
             cell.bookmarkBtn.setImage(
-                UIImage(named: "ic_star_filled.png"), forState: UIControlState.Normal)
+                UIImage(named: "ic_star_filled"), forState: UIControlState.Normal)
         } else {
             cell.bookmarkBtn.setImage(
-                UIImage(named: "ic_star.png"), forState: UIControlState.Normal)
+                UIImage(named: "ic_star"), forState: UIControlState.Normal)
         }
         
         return cell

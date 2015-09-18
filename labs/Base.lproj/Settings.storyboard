@@ -101,7 +101,7 @@
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                     <inset key="titleEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                     <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                                    <state key="normal" title="CREATE ACCOUNT" image="ic_add_account.png">
+                                                    <state key="normal" title="CREATE ACCOUNT" image="ic_add_account">
                                                         <color key="titleColor" red="0.59607843140000005" green="0.18039215689999999" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -123,7 +123,7 @@
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                                     <inset key="titleEdgeInsets" minX="17" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                     <inset key="imageEdgeInsets" minX="9" minY="0.0" maxX="10" maxY="0.0"/>
-                                                    <state key="normal" title="SIGN IN" image="ic_account.png">
+                                                    <state key="normal" title="SIGN IN" image="ic_account">
                                                         <color key="titleColor" red="0.59607843140000005" green="0.18039215689999999" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -192,7 +192,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="next-96.png" translatesAutoresizingMaskIntoConstraints="NO" id="1y0-1e-pWw">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="next-96" translatesAutoresizingMaskIntoConstraints="NO" id="1y0-1e-pWw">
                                                     <rect key="frame" x="292" y="15" width="20" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="R6a-tG-zJz"/>
@@ -222,7 +222,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="next-96.png" translatesAutoresizingMaskIntoConstraints="NO" id="Nl2-ja-TWc">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="next-96" translatesAutoresizingMaskIntoConstraints="NO" id="Nl2-ja-TWc">
                                                     <rect key="frame" x="292" y="15" width="20" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="20" id="6RL-El-9h8"/>
@@ -423,7 +423,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <inset key="titleEdgeInsets" minX="14" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="Sign in with Facebook" image="ic_facebook.png">
+                                <state key="normal" title="Sign in with Facebook" image="ic_facebook">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -510,7 +510,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <inset key="titleEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                <state key="normal" title="CREATE ACCOUNT" image="ic_add_account.png">
+                                <state key="normal" title="CREATE ACCOUNT" image="ic_add_account">
                                     <color key="titleColor" red="0.59607843140000005" green="0.18039215689999999" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -538,7 +538,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <inset key="titleEdgeInsets" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <inset key="imageEdgeInsets" minX="10" minY="0.0" maxX="10" maxY="0.0"/>
-                                <state key="normal" title="SIGN IN" image="ic_account.png">
+                                <state key="normal" title="SIGN IN" image="ic_account">
                                     <color key="titleColor" red="0.59607843140000005" green="0.18039215689999999" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -615,7 +615,7 @@
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <inset key="titleEdgeInsets" minX="14" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <state key="normal" title="Sign up with Facebook" image="ic_facebook.png">
+                                <state key="normal" title="Sign up with Facebook" image="ic_facebook">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -1293,10 +1293,10 @@ PASSWORD</string>
         </scene>
     </scenes>
     <resources>
-        <image name="ic_account.png" width="35" height="35"/>
-        <image name="ic_add_account.png" width="30" height="30"/>
-        <image name="ic_facebook.png" width="9" height="18"/>
-        <image name="next-96.png" width="96" height="96"/>
+        <image name="ic_account" width="20" height="20"/>
+        <image name="ic_add_account" width="20" height="20"/>
+        <image name="ic_facebook" width="20" height="20"/>
+        <image name="next-96" width="20" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="8t3-qt-1PE"/>

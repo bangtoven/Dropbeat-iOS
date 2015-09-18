@@ -104,7 +104,7 @@ class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate, UISc
             Account.getCachedAccount()!.user!.email = email
             
             progressHud.mode = MBProgressHUDMode.CustomView
-            progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark.png"))
+            progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark"))
             progressHud.hide(true, afterDelay: 1)
             
             let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)));

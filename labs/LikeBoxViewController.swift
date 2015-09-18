@@ -291,7 +291,7 @@ UIActionSheetDelegate {
                     return
                 }
                 progressHud.mode = MBProgressHUDMode.CustomView
-                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike.png"))
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike"))
                 progressHud.hide(true, afterDelay: 1)
                 
             })
@@ -309,7 +309,7 @@ UIActionSheetDelegate {
                     return
                 }
                 progressHud.mode = MBProgressHUDMode.CustomView
-                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like.png"))
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like"))
                 progressHud.hide(true, afterDelay: 1)
             })
         }
@@ -398,7 +398,7 @@ UIActionSheetDelegate {
                 return
             }
             progressHud.mode = MBProgressHUDMode.CustomView
-            progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike.png"))
+            progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike"))
             progressHud.hide(true, afterDelay: 1)
             self.refresh()
         })

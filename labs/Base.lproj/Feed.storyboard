@@ -173,7 +173,7 @@
                                                 <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="btj-3y-XKZ">
                                                     <rect key="frame" x="8" y="10" width="56" height="56"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork.png" translatesAutoresizingMaskIntoConstraints="NO" id="6Sm-GE-OnJ">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="6Sm-GE-OnJ">
                                                             <rect key="frame" x="-2" y="0.0" width="60" height="56"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="56" id="TfS-f2-AAK"/>
@@ -182,7 +182,7 @@
                                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="whO-tR-it8">
                                                             <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator.png" translatesAutoresizingMaskIntoConstraints="NO" id="hZm-Wf-lbs">
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator" translatesAutoresizingMaskIntoConstraints="NO" id="hZm-Wf-lbs">
                                                                     <rect key="frame" x="14" y="14" width="28" height="28"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="28" id="mrk-x7-iie"/>
@@ -288,7 +288,7 @@
                                                         <constraint firstAttribute="height" constant="76" id="lqq-Ky-cHi"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                    <state key="normal" image="ic_header_dotdotdot.png">
+                                                    <state key="normal" image="ic_header_dotdotdot">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -302,7 +302,7 @@
                                                         <constraint firstAttribute="height" constant="76" id="RLK-CI-0Gl"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                    <state key="normal" image="ic_drop_small.png">
+                                                    <state key="normal" image="ic_drop_small">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -345,7 +345,7 @@
                                                 <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hJV-5U-q5D">
                                                     <rect key="frame" x="10" y="12" width="300" height="150"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_cover_big.png" translatesAutoresizingMaskIntoConstraints="NO" id="DfN-Cc-mUB">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_cover_big" translatesAutoresizingMaskIntoConstraints="NO" id="DfN-Cc-mUB">
                                                             <rect key="frame" x="0.0" y="0.0" width="300" height="150"/>
                                                             <color key="backgroundColor" red="0.56470588239999997" green="0.56470588239999997" blue="0.56470588239999997" alpha="1" colorSpace="calibratedRGB"/>
                                                         </imageView>
@@ -353,7 +353,7 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="300" height="150"/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
                                                         </view>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" highlightedImage="ic_playing_indicator.png" highlighted="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dL9-Pp-rvR" userLabel="playing indicator">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" highlightedImage="ic_playing_indicator" highlighted="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dL9-Pp-rvR" userLabel="playing indicator">
                                                             <rect key="frame" x="255" y="15" width="30" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="Kgg-Ss-xwl"/>
@@ -367,7 +367,7 @@
                                                                 <constraint firstAttribute="width" constant="80" id="gns-Cc-dVQ"/>
                                                             </constraints>
                                                             <inset key="contentEdgeInsets" minX="10" minY="10" maxX="0.0" maxY="0.0"/>
-                                                            <state key="normal" image="ic_drop.png">
+                                                            <state key="normal" image="ic_drop">
                                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
                                                             <connections>
@@ -447,7 +447,7 @@
                                                         <constraint firstAttribute="height" constant="53" id="Gbi-hG-Lf6"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="12" minY="5" maxX="12" maxY="12"/>
-                                                    <state key="normal" image="ic_menu_btn_big.png">
+                                                    <state key="normal" image="ic_menu_btn_big">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -498,7 +498,7 @@
                                                 <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="94O-Ko-xWw">
                                                     <rect key="frame" x="10" y="12" width="300" height="150"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_cover_big.png" translatesAutoresizingMaskIntoConstraints="NO" id="g0g-jN-lIX">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_cover_big" translatesAutoresizingMaskIntoConstraints="NO" id="g0g-jN-lIX">
                                                             <rect key="frame" x="0.0" y="0.0" width="300" height="150"/>
                                                             <color key="backgroundColor" red="0.56470588239999997" green="0.56470588239999997" blue="0.56470588239999997" alpha="1" colorSpace="calibratedRGB"/>
                                                         </imageView>
@@ -513,14 +513,14 @@
                                                                 <constraint firstAttribute="height" constant="80" id="8bc-Mo-KIN"/>
                                                             </constraints>
                                                             <inset key="contentEdgeInsets" minX="10" minY="10" maxX="0.0" maxY="0.0"/>
-                                                            <state key="normal" image="ic_drop.png">
+                                                            <state key="normal" image="ic_drop">
                                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
                                                             <connections>
                                                                 <action selector="onDropBtnClicked:" destination="Qyf-U0-8FT" eventType="touchUpInside" id="yB8-Vz-NCE"/>
                                                             </connections>
                                                         </button>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" highlightedImage="ic_playing_indicator.png" highlighted="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MDw-4R-i8v" userLabel="playing indicator">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" highlightedImage="ic_playing_indicator" highlighted="YES" translatesAutoresizingMaskIntoConstraints="NO" id="MDw-4R-i8v" userLabel="playing indicator">
                                                             <rect key="frame" x="255" y="15" width="30" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="30" id="2pG-kh-eGv"/>
@@ -622,7 +622,7 @@
                                                         <constraint firstAttribute="width" constant="60" id="exn-3y-rsK"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="12" minY="5" maxX="12" maxY="12"/>
-                                                    <state key="normal" image="ic_menu_btn_big.png">
+                                                    <state key="normal" image="ic_menu_btn_big">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -665,7 +665,7 @@
                                                 <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pug-KU-qna">
                                                     <rect key="frame" x="10" y="12" width="300" height="150"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="default_cover_big.png" translatesAutoresizingMaskIntoConstraints="NO" id="4Mu-mo-3SI">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="default_cover_big" translatesAutoresizingMaskIntoConstraints="NO" id="4Mu-mo-3SI">
                                                             <rect key="frame" x="0.0" y="0.0" width="300" height="170"/>
                                                             <color key="backgroundColor" red="0.56470588239999997" green="0.56470588239999997" blue="0.56470588239999997" alpha="1" colorSpace="calibratedRGB"/>
                                                         </imageView>
@@ -680,14 +680,14 @@
                                                                 <constraint firstAttribute="height" constant="80" id="cx2-ay-H9H"/>
                                                             </constraints>
                                                             <inset key="contentEdgeInsets" minX="10" minY="10" maxX="0.0" maxY="0.0"/>
-                                                            <state key="normal" image="ic_drop.png">
+                                                            <state key="normal" image="ic_drop">
                                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
                                                             <connections>
                                                                 <action selector="onDropBtnClicked:" destination="psg-Rt-wvG" eventType="touchUpInside" id="fSY-2p-eaP"/>
                                                             </connections>
                                                         </button>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" highlightedImage="ic_playing_indicator.png" highlighted="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fqn-Ae-9YF" userLabel="playing indicator">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" highlightedImage="ic_playing_indicator" highlighted="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fqn-Ae-9YF" userLabel="playing indicator">
                                                             <rect key="frame" x="255" y="15" width="30" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="2yn-RA-X6o"/>
@@ -780,7 +780,7 @@
                                                         <constraint firstAttribute="height" constant="53" id="nUm-d5-A9k"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="12" minY="5" maxX="12" maxY="12"/>
-                                                    <state key="normal" image="ic_menu_btn_big.png">
+                                                    <state key="normal" image="ic_menu_btn_big">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -902,7 +902,7 @@
                                                                 <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4AF-ox-iHP">
                                                                     <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
                                                                     <subviews>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork.png" translatesAutoresizingMaskIntoConstraints="NO" id="3uf-he-6SJ">
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="3uf-he-6SJ">
                                                                             <rect key="frame" x="-2" y="0.0" width="60" height="56"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="56" id="btB-jv-cFW"/>
@@ -911,7 +911,7 @@
                                                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eXF-25-i32">
                                                                             <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
                                                                             <subviews>
-                                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator.png" translatesAutoresizingMaskIntoConstraints="NO" id="NSh-Ja-1jt">
+                                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator" translatesAutoresizingMaskIntoConstraints="NO" id="NSh-Ja-1jt">
                                                                                     <rect key="frame" x="14" y="14" width="28" height="28"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="width" constant="28" id="Aru-4g-9ty"/>
@@ -967,7 +967,7 @@
                                                         <constraint firstAttribute="height" constant="76" id="t2K-Wx-YyF"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                    <state key="normal" image="ic_header_dotdotdot.png">
+                                                    <state key="normal" image="ic_header_dotdotdot">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -981,7 +981,7 @@
                                                         <constraint firstAttribute="width" constant="50" id="Vrf-K5-HUP"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                    <state key="normal" image="ic_drop_small.png">
+                                                    <state key="normal" image="ic_drop_small">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -1050,7 +1050,7 @@
                                         <constraint firstAttribute="width" constant="100" id="4Hm-0d-uyc"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                                    <state key="normal" title="Stream" image="ic_arrow_down.png">
+                                    <state key="normal" title="Stream" image="ic_arrow_down">
                                         <color key="titleColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="titleShadowColor" white="0.5" alpha="0.0" colorSpace="calibratedWhite"/>
                                     </state>
@@ -1091,7 +1091,7 @@
                             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="JMh-9b-dgN" id="vkS-53-lsa">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork.png" translatesAutoresizingMaskIntoConstraints="NO" id="5TH-12-ljX">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="5TH-12-ljX">
                                         <rect key="frame" x="8" y="8" width="56" height="56"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="56" id="1TP-aC-7XU"/>
@@ -1114,7 +1114,7 @@
                                             <constraint firstAttribute="height" constant="40" id="isx-Kg-Fc7"/>
                                         </constraints>
                                         <inset key="contentEdgeInsets" minX="7" minY="7" maxX="7" maxY="7"/>
-                                        <state key="normal" title="Button" image="ic_star.png">
+                                        <state key="normal" title="Button" image="ic_star">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -1239,7 +1239,7 @@
                                                         <constraint firstAttribute="width" constant="50" id="Phq-EA-HD8"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="15" minY="17" maxX="15" maxY="17"/>
-                                                    <state key="normal" image="ic_close.png">
+                                                    <state key="normal" image="ic_close">
                                                         <color key="titleColor" red="0.59607843140000005" green="0.18039215689999999" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -1355,7 +1355,7 @@
                                                         <constraint firstAttribute="width" constant="50" id="mfF-jE-nKN"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                                    <state key="normal" image="ic_add_btn.png">
+                                                    <state key="normal" image="ic_add_btn">
                                                         <color key="titleColor" red="0.59607843140000005" green="0.18039215689999999" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -1454,16 +1454,16 @@
         </scene>
     </scenes>
     <resources>
-        <image name="default_artwork.png" width="60" height="60"/>
-        <image name="default_cover_big.png" width="320" height="320"/>
-        <image name="ic_add_btn.png" width="50" height="50"/>
-        <image name="ic_arrow_down.png" width="9" height="7"/>
-        <image name="ic_close.png" width="100" height="100"/>
-        <image name="ic_drop.png" width="60" height="60"/>
-        <image name="ic_drop_small.png" width="40" height="40"/>
-        <image name="ic_header_dotdotdot.png" width="22" height="22"/>
-        <image name="ic_menu_btn_big.png" width="40" height="40"/>
-        <image name="ic_playing_indicator.png" width="104" height="104"/>
-        <image name="ic_star.png" width="100" height="100"/>
+        <image name="default_artwork" width="60" height="60"/>
+        <image name="default_cover_big" width="320" height="320"/>
+        <image name="ic_add_btn" width="50" height="50"/>
+        <image name="ic_arrow_down" width="9" height="7"/>
+        <image name="ic_close" width="100" height="100"/>
+        <image name="ic_drop" width="60" height="60"/>
+        <image name="ic_drop_small" width="40" height="40"/>
+        <image name="ic_header_dotdotdot" width="22" height="22"/>
+        <image name="ic_menu_btn_big" width="40" height="40"/>
+        <image name="ic_playing_indicator" width="104" height="104"/>
+        <image name="ic_star" width="100" height="100"/>
     </resources>
 </document>

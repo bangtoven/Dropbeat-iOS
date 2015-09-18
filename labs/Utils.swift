@@ -219,7 +219,7 @@ class ViewUtils {
         }
         var hud:MBProgressHUD = MBProgressHUD.showHUDAddedTo(vc.view, animated: true)
 //        hud.color = UIColor(netHex: 0x8F2CEF).colorWithAlphaComponent(0.8)
-        hud.customView = UIImageView(image: UIImage(named: "37x-Checkmark.png"))
+        hud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
     	hud.mode = MBProgressHUDMode.CustomView;
         hud.labelText = message
         hud.margin = 10.0

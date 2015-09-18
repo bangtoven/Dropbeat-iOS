@@ -239,10 +239,10 @@ class FollowSearchViewController: BaseViewController,
         cell.artistName.text = artist.name
         if artist.isFollowing {
             cell.actionBtn.contentEdgeInsets = UIEdgeInsetsMake(15, 15, 15, 15)
-            cell.actionBtn.setImage(UIImage(named:"ic_close.png"), forState: UIControlState.Normal)
+            cell.actionBtn.setImage(UIImage(named:"ic_close"), forState: UIControlState.Normal)
         } else {
             cell.actionBtn.contentEdgeInsets = UIEdgeInsetsMake(10, 10, 10, 10)
-            cell.actionBtn.setImage(UIImage(named:"ic_add_btn.png"), forState: UIControlState.Normal)
+            cell.actionBtn.setImage(UIImage(named:"ic_add_btn"), forState: UIControlState.Normal)
         }
         cell.delegate = self
         return cell

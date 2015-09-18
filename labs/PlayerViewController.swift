@@ -313,18 +313,18 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     func updateNextPrevBtn() {
         if PlayerContext.pickNextTrack() != nil {
             nextBtn.enabled = true
-            nextBtn.setImage(UIImage(named:"ic_forward.png"), forState: UIControlState.Normal)
+            nextBtn.setImage(UIImage(named:"ic_forward"), forState: UIControlState.Normal)
         } else {
             nextBtn.enabled = false
-            nextBtn.setImage(UIImage(named:"ic_forward_gray.png"), forState: UIControlState.Normal)
+            nextBtn.setImage(UIImage(named:"ic_forward_gray"), forState: UIControlState.Normal)
         }
         
         if PlayerContext.pickPrevTrack() != nil {
             prevBtn.enabled = true
-            prevBtn.setImage(UIImage(named:"ic_rewind.png"), forState: UIControlState.Normal)
+            prevBtn.setImage(UIImage(named:"ic_rewind"), forState: UIControlState.Normal)
         } else {
             prevBtn.enabled = false
-            prevBtn.setImage(UIImage(named:"ic_rewind_gray.png"), forState: UIControlState.Normal)
+            prevBtn.setImage(UIImage(named:"ic_rewind_gray"), forState: UIControlState.Normal)
         }
     }
     
@@ -355,8 +355,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         if track == nil || PlayerContext.playState == PlayState.STOPPED {
             videoView.hidden = true
             coverImageView.hidden = false
-            coverBgImageView.image = UIImage(named: "player_bg.png")
-            coverImageView.image = UIImage(named: "default_cover_big.png")
+            coverBgImageView.image = UIImage(named: "player_bg")
+            coverImageView.image = UIImage(named: "default_cover_big")
         } else if track!.type == "youtube" {
             videoView.hidden = false
             audioPlayerControl.view.hidden = false
@@ -368,39 +368,39 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
             
             if track!.hasHqThumbnail {
                 coverBgImageView.sd_setImageWithURL(NSURL(string: track!.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "player_bg.png"), completed: {
+                    placeholderImage: UIImage(named: "player_bg"), completed: {
                         (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                         if (error != nil) {
-                            self.coverBgImageView.image = UIImage(named: "player_bg.png")
+                            self.coverBgImageView.image = UIImage(named: "player_bg")
                         }
                 })
             } else {
-                coverBgImageView.image = UIImage(named: "player_bg.png")!
+                coverBgImageView.image = UIImage(named: "player_bg")!
             }
         } else {
             videoView.hidden = true
             coverImageView.hidden = false
-            coverBgImageView.image = UIImage(named: "player_bg.png")
+            coverBgImageView.image = UIImage(named: "player_bg")
             if track!.hasHqThumbnail {
                 coverImageView.sd_setImageWithURL(NSURL(string: track!.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_cover_big.png"), completed: {
+                    placeholderImage: UIImage(named: "default_cover_big"), completed: {
                         (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                         if (error != nil) {
-                            self.coverImageView.image = UIImage(named: "default_cover_big.png")
+                            self.coverImageView.image = UIImage(named: "default_cover_big")
                         }
                 })
             } else {
-                coverImageView.image = UIImage(named: "default_cover_big.png")!
+                coverImageView.image = UIImage(named: "default_cover_big")!
             }
         }
     }
     
     //    func updatePlayerPlaylistBtn () {
     //        if PlayerContext.currentPlaylistId == nil {
-    //            playlistBtn.setImage(UIImage(named:"ic_list_gray.png"), forState: UIControlState.Normal)
+    //            playlistBtn.setImage(UIImage(named:"ic_list_gray"), forState: UIControlState.Normal)
     //            playlistBtn.enabled = false
     //        } else {
-    //            playlistBtn.setImage(UIImage(named:"ic_list.png"), forState: UIControlState.Normal)
+    //            playlistBtn.setImage(UIImage(named:"ic_list"), forState: UIControlState.Normal)
     //            playlistBtn.enabled = true
     //        }
     //    }
@@ -434,9 +434,9 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
         prevShuffleBtnState = PlayerContext.shuffleState
         if (PlayerContext.shuffleState == ShuffleState.NOT_SHUFFLE) {
-            shuffleBtn.setImage(UIImage(named: "ic_shuffle_gray.png"), forState: UIControlState.Normal)
+            shuffleBtn.setImage(UIImage(named: "ic_shuffle_gray"), forState: UIControlState.Normal)
         } else {
-            shuffleBtn.setImage(UIImage(named: "ic_shuffle.png"), forState: UIControlState.Normal)
+            shuffleBtn.setImage(UIImage(named: "ic_shuffle"), forState: UIControlState.Normal)
         }
     }
     
@@ -448,14 +448,14 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         prevRepeatBtnState = PlayerContext.repeatState
         switch(PlayerContext.repeatState) {
         case RepeatState.NOT_REPEAT:
-            var image:UIImage = UIImage(named: "ic_repeat_gray.png")!
+            var image:UIImage = UIImage(named: "ic_repeat_gray")!
             repeatBtn.setImage(image, forState: UIControlState.Normal)
             break
         case RepeatState.REPEAT_ONE:
-            repeatBtn.setImage(UIImage(named: "ic_repeat_one.png"), forState: UIControlState.Normal)
+            repeatBtn.setImage(UIImage(named: "ic_repeat_one"), forState: UIControlState.Normal)
             break
         case RepeatState.REPEAT_PLAYLIST:
-            repeatBtn.setImage(UIImage(named: "ic_repeat.png"), forState: UIControlState.Normal)
+            repeatBtn.setImage(UIImage(named: "ic_repeat"), forState: UIControlState.Normal)
             break
         default:
             break
@@ -524,10 +524,10 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     
     func updateLikeBtn() {
         if PlayerContext.currentTrack?.isLiked ?? false {
-            likeBtn.setImage(UIImage(named:"ic_player_heart_fill_btn.png"),
+            likeBtn.setImage(UIImage(named:"ic_player_heart_fill_btn"),
                 forState: UIControlState.Normal)
         } else {
-            likeBtn.setImage(UIImage(named:"ic_player_heart_btn.png"),
+            likeBtn.setImage(UIImage(named:"ic_player_heart_btn"),
                 forState: UIControlState.Normal)
         }
     }

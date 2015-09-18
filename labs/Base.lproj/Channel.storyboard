@@ -132,7 +132,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9fq-LR-v4C" id="1N3-Hv-esT">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork.png" translatesAutoresizingMaskIntoConstraints="NO" id="vvY-Yo-iVV">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="vvY-Yo-iVV">
                                                     <rect key="frame" x="8" y="4" width="56" height="56"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="56" id="bU9-7t-4rs"/>
@@ -155,7 +155,7 @@
                                                         <constraint firstAttribute="width" constant="50" id="gcb-fw-xfB"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="7" minY="20" maxX="17" maxY="20"/>
-                                                    <state key="normal" image="ic_star.png">
+                                                    <state key="normal" image="ic_star">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -189,7 +189,7 @@
                                                 <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CkH-ZG-cy1">
                                                     <rect key="frame" x="8" y="16" width="56" height="56"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork.png" translatesAutoresizingMaskIntoConstraints="NO" id="UTw-py-1Yw">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="UTw-py-1Yw">
                                                             <rect key="frame" x="-2" y="0.0" width="60" height="56"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="56" id="9Ni-nb-27L"/>
@@ -198,7 +198,7 @@
                                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="90i-zI-vPF">
                                                             <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator.png" translatesAutoresizingMaskIntoConstraints="NO" id="hwZ-w6-M48">
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator" translatesAutoresizingMaskIntoConstraints="NO" id="hwZ-w6-M48">
                                                                     <rect key="frame" x="14" y="14" width="28" height="28"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="28" id="8WV-vL-97t"/>
@@ -272,7 +272,7 @@
                                                         <constraint firstAttribute="height" constant="86" id="qPz-n9-snK"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                                    <state key="normal" image="ic_header_dotdotdot.png">
+                                                    <state key="normal" image="ic_header_dotdotdot">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -323,7 +323,7 @@
                                             <constraint firstAttribute="height" constant="40" id="cOo-JU-5pp"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <state key="normal" title="HARDCORE / HARD TECHNO" image="ic_arrow_down.png">
+                                        <state key="normal" title="HARDCORE / HARD TECHNO" image="ic_arrow_down">
                                             <color key="titleColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="0.0" colorSpace="calibratedWhite"/>
                                         </state>
@@ -389,7 +389,7 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <inset key="titleEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="10" minY="5" maxX="10" maxY="5"/>
-                                                <state key="normal" title="CREATE ACCOUNT" image="ic_add_account.png">
+                                                <state key="normal" title="CREATE ACCOUNT" image="ic_add_account">
                                                     <color key="titleColor" red="0.59607843140000005" green="0.18039215689999999" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="titleShadowColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
                                                 </state>
@@ -414,7 +414,7 @@ EDM channels feed.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <inset key="titleEdgeInsets" minX="20" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 <inset key="imageEdgeInsets" minX="10" minY="5" maxX="10" maxY="5"/>
-                                                <state key="normal" title="SIGN IN" image="ic_account.png">
+                                                <state key="normal" title="SIGN IN" image="ic_account">
                                                     <color key="titleColor" red="0.59607843140000005" green="0.18039215689999999" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="titleShadowColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
                                                 </state>
@@ -491,7 +491,7 @@ EDM channels feed.</string>
                                         <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T6v-VP-QM8" userLabel="FindChannelBtn">
+                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T6v-VP-QM8" userLabel="FindChannelBtn">
                                         <rect key="frame" x="85" y="315" width="150" height="36"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="36" id="4pK-tr-p9B"/>
@@ -680,7 +680,7 @@ and find new tracks in the feed!
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p9h-B6-Jlm" id="9zZ-EE-tE8">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork.png" translatesAutoresizingMaskIntoConstraints="NO" id="7yP-Kh-xnp">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="7yP-Kh-xnp">
                                                     <rect key="frame" x="8" y="11" width="56" height="56"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="56" id="L3G-Dl-UhX"/>
@@ -703,7 +703,7 @@ and find new tracks in the feed!
                                                         <constraint firstAttribute="width" constant="40" id="auF-3b-2wb"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="7" minY="7" maxX="7" maxY="7"/>
-                                                    <state key="normal" image="ic_star.png">
+                                                    <state key="normal" image="ic_star">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -841,7 +841,7 @@ and find new tracks in the feed!
                                                 <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7ry-To-qTB">
                                                     <rect key="frame" x="8" y="15" width="56" height="56"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork.png" translatesAutoresizingMaskIntoConstraints="NO" id="sEu-zQ-gQT">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="sEu-zQ-gQT">
                                                             <rect key="frame" x="-2" y="0.0" width="60" height="56"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="56" id="uP5-3V-e24"/>
@@ -850,7 +850,7 @@ and find new tracks in the feed!
                                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fs7-QI-hPc">
                                                             <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator.png" translatesAutoresizingMaskIntoConstraints="NO" id="5Bt-jp-Alu">
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator" translatesAutoresizingMaskIntoConstraints="NO" id="5Bt-jp-Alu">
                                                                     <rect key="frame" x="14" y="14" width="28" height="28"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="28" id="2mW-hp-Edd"/>
@@ -914,7 +914,7 @@ and find new tracks in the feed!
                                                         <constraint firstAttribute="width" constant="50" id="uXZ-RE-7Zg"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                                    <state key="normal" image="ic_header_dotdotdot.png">
+                                                    <state key="normal" image="ic_header_dotdotdot">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -953,7 +953,7 @@ and find new tracks in the feed!
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nqI-tD-41n">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork.png" translatesAutoresizingMaskIntoConstraints="NO" id="Amh-xO-gUX">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="Amh-xO-gUX">
                                                 <rect key="frame" x="8" y="8" width="60" height="60"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="9i0-hg-2vJ"/>
@@ -976,7 +976,7 @@ and find new tracks in the feed!
                                                     <constraint firstAttribute="height" constant="40" id="wCS-Db-eAv"/>
                                                 </constraints>
                                                 <inset key="contentEdgeInsets" minX="7" minY="7" maxX="7" maxY="7"/>
-                                                <state key="normal" title="Button" image="ic_star.png">
+                                                <state key="normal" title="Button" image="ic_star">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -1025,7 +1025,7 @@ and find new tracks in the feed!
                                                     <constraint firstAttribute="height" constant="40" id="blb-nb-mfD"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                <state key="normal" title="RECENT" image="ic_arrow_down.png">
+                                                <state key="normal" title="RECENT" image="ic_arrow_down">
                                                     <color key="titleColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="0.0" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -1125,13 +1125,13 @@ and find new tracks in the feed!
         </scene>
     </scenes>
     <resources>
-        <image name="default_artwork.png" width="60" height="60"/>
-        <image name="ic_account.png" width="35" height="35"/>
-        <image name="ic_add_account.png" width="30" height="30"/>
-        <image name="ic_arrow_down.png" width="9" height="7"/>
-        <image name="ic_header_dotdotdot.png" width="22" height="22"/>
-        <image name="ic_playing_indicator.png" width="104" height="104"/>
-        <image name="ic_star.png" width="100" height="100"/>
+        <image name="default_artwork" width="60" height="60"/>
+        <image name="ic_account" width="35" height="35"/>
+        <image name="ic_add_account" width="30" height="30"/>
+        <image name="ic_arrow_down" width="9" height="7"/>
+        <image name="ic_header_dotdotdot" width="22" height="22"/>
+        <image name="ic_playing_indicator" width="104" height="104"/>
+        <image name="ic_star" width="100" height="100"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="r8q-Ix-YxE"/>

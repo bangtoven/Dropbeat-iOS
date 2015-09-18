@@ -236,7 +236,7 @@
                                                 <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ovK-As-6dX">
                                                     <rect key="frame" x="8" y="10" width="56" height="56"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork.png" translatesAutoresizingMaskIntoConstraints="NO" id="8r1-mp-7PB">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="8r1-mp-7PB">
                                                             <rect key="frame" x="-2" y="0.0" width="60" height="56"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="56" id="zXS-GH-MtF"/>
@@ -245,7 +245,7 @@
                                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iUr-IX-IZR">
                                                             <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator.png" translatesAutoresizingMaskIntoConstraints="NO" id="n4I-9g-h29">
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator" translatesAutoresizingMaskIntoConstraints="NO" id="n4I-9g-h29">
                                                                     <rect key="frame" x="14" y="14" width="28" height="28"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="28" id="Yxs-vk-n6K"/>
@@ -279,7 +279,7 @@
                                                         <constraint firstAttribute="height" constant="76" id="Muc-C4-YSF"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                    <state key="normal" image="ic_header_dotdotdot.png">
+                                                    <state key="normal" image="ic_header_dotdotdot">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -293,7 +293,7 @@
                                                         <constraint firstAttribute="height" constant="76" id="9Ww-cl-tdP"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                    <state key="normal" image="ic_drop_small.png">
+                                                    <state key="normal" image="ic_drop_small">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -410,10 +410,10 @@
                                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_arrow_down.png" translatesAutoresizingMaskIntoConstraints="NO" id="huG-LS-llG">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="ic_arrow_down" translatesAutoresizingMaskIntoConstraints="NO" id="huG-LS-llG">
                                             <rect key="frame" x="76" y="19" width="9" height="7"/>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nNB-RL-Mjl">
+                                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nNB-RL-Mjl">
                                             <rect key="frame" x="87" y="0.0" width="213" height="44"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
@@ -483,7 +483,7 @@
                                                 <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KdL-zr-lRE">
                                                     <rect key="frame" x="8" y="10" width="56" height="56"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork.png" translatesAutoresizingMaskIntoConstraints="NO" id="ep0-eZ-crb">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="ep0-eZ-crb">
                                                             <rect key="frame" x="-2" y="0.0" width="60" height="56"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="56" id="z4l-Sm-OMr"/>
@@ -492,7 +492,7 @@
                                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mw7-ql-KUC">
                                                             <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator.png" translatesAutoresizingMaskIntoConstraints="NO" id="oJ0-34-e2h">
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator" translatesAutoresizingMaskIntoConstraints="NO" id="oJ0-34-e2h">
                                                                     <rect key="frame" x="14" y="14" width="28" height="28"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="28" id="TU9-E8-pqU"/>
@@ -526,7 +526,7 @@
                                                         <constraint firstAttribute="height" constant="76" id="aqo-sQ-B27"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                    <state key="normal" image="ic_header_dotdotdot.png">
+                                                    <state key="normal" image="ic_header_dotdotdot">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -540,7 +540,7 @@
                                                         <constraint firstAttribute="height" constant="76" id="svi-po-7jt"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                    <state key="normal" image="ic_drop_small.png">
+                                                    <state key="normal" image="ic_drop_small">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -603,11 +603,11 @@
         </scene>
     </scenes>
     <resources>
-        <image name="default_artwork.png" width="60" height="60"/>
-        <image name="ic_arrow_down.png" width="9" height="7"/>
-        <image name="ic_drop_small.png" width="40" height="40"/>
-        <image name="ic_header_dotdotdot.png" width="22" height="22"/>
-        <image name="ic_playing_indicator.png" width="104" height="104"/>
+        <image name="default_artwork" width="20" height="20"/>
+        <image name="ic_arrow_down" width="20" height="20"/>
+        <image name="ic_drop_small" width="20" height="20"/>
+        <image name="ic_header_dotdotdot" width="20" height="20"/>
+        <image name="ic_playing_indicator" width="20" height="20"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="oVv-0f-qoK"/>

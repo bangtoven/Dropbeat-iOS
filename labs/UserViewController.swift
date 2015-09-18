@@ -166,10 +166,10 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 header.nameLabel.text = name
             }
             if let profileImage = baseUser?.image {
-                header.profileImageView.sd_setImageWithURL(NSURL(string: profileImage), placeholderImage: UIImage(named: "default_profile.png"))
+                header.profileImageView.sd_setImageWithURL(NSURL(string: profileImage), placeholderImage: UIImage(named: "default_profile"))
             }
             if let coverImage = baseUser?.coverImage {
-                header.coverImageView.sd_setImageWithURL(NSURL(string: coverImage), placeholderImage: UIImage(named: "default_cover_big.png"),
+                header.coverImageView.sd_setImageWithURL(NSURL(string: coverImage), placeholderImage: UIImage(named: "default_cover_big"),
                     forMinimumHeight: self.headerView.maximumOfHeight*1.5)
             }
             

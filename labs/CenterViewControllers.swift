@@ -335,17 +335,17 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             PlayerContext.playState == PlayState.BUFFERING) {
                 showTabBarPlayer(true)
                 self.playPauseButton.enabled = false
-                self.playPauseButton.setImage(UIImage(named: "ic_play_purple.png"), forState: UIControlState.Normal)
+                self.playPauseButton.setImage(UIImage(named: "ic_play_purple"), forState: UIControlState.Normal)
                 self.trackInfoLabel.textColor = UIColor.lightGrayColor()
         } else if (PlayerContext.playState == PlayState.PAUSED) {
             showTabBarPlayer(true)
             self.playPauseButton.enabled = true
-            self.playPauseButton.setImage(UIImage(named: "ic_play_purple.png"), forState: UIControlState.Normal)
+            self.playPauseButton.setImage(UIImage(named: "ic_play_purple"), forState: UIControlState.Normal)
             self.trackInfoLabel.textColor = UIColor.darkGrayColor()
         } else if (PlayerContext.playState == PlayState.PLAYING) {
             showTabBarPlayer(true)
             self.playPauseButton.enabled = true
-            self.playPauseButton.setImage(UIImage(named: "ic_pause_purple.png"), forState: UIControlState.Normal)
+            self.playPauseButton.setImage(UIImage(named: "ic_pause_purple"), forState: UIControlState.Normal)
             self.trackInfoLabel.textColor = UIColor.darkGrayColor()
         } else if (PlayerContext.playState == PlayState.STOPPED) {
             showTabBarPlayer(false)

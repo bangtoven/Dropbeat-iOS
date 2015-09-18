@@ -48,9 +48,9 @@ UITableViewDelegate, UITableViewDataSource {
             let fbId = account.user!.fbId!
             let profileUrl = "https://graph.facebook.com/\(fbId)/picture?type=large"
             profileView.sd_setImageWithURL(NSURL(string:profileUrl),
-                placeholderImage: UIImage(named: "default_profile.png"))
+                placeholderImage: UIImage(named: "default_profile"))
         } else {
-            profileView.image = UIImage(named: "default_profile.png")
+            profileView.image = UIImage(named: "default_profile")
         }
         nicknameView.text = account.user!.nickname
     }

@@ -190,31 +190,31 @@ class SearchViewController: AddableTrackListViewController,
             cell.nameView.text = track.title
             if track.thumbnailUrl != nil {
                 cell.thumbView.sd_setImageWithURL(NSURL(string: track!.thumbnailUrl!),
-                        placeholderImage: UIImage(named: "default_artwork.png"), completed: {
+                        placeholderImage: UIImage(named: "default_artwork"), completed: {
                         (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                     if error != nil {
-                        cell.thumbView.image = UIImage(named: "default_artwork.png")
+                        cell.thumbView.image = UIImage(named: "default_artwork")
                     }
                 })
             } else {
-                cell.thumbView.image = UIImage(named: "default_artwork.png")
+                cell.thumbView.image = UIImage(named: "default_artwork")
             }
             var dropBtnImageName:String!
             if dropPlayerContext.sectionName == getSectionName() &&
                 dropPlayerContext.currentTrack?.id == track.id {
                     switch(dropPlayerContext.playStatus) {
                     case .Playing:
-                        dropBtnImageName = "ic_drop_pause_small.png"
+                        dropBtnImageName = "ic_drop_pause_small"
                         break
                     case .Loading:
-                        dropBtnImageName = "ic_drop_loading_small.png"
+                        dropBtnImageName = "ic_drop_loading_small"
                         break
                     case .Ready:
-                        dropBtnImageName = "ic_drop_small.png"
+                        dropBtnImageName = "ic_drop_small"
                         break
                     }
             } else {
-                dropBtnImageName = "ic_drop_small.png"
+                dropBtnImageName = "ic_drop_small"
             }
             cell.dropBtn.setImage(UIImage(named: dropBtnImageName), forState: UIControlState.Normal)
             cell.dropBtn.hidden = track!.drop == nil

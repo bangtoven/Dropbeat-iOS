@@ -130,7 +130,7 @@ class NicknameViewController: BaseViewController, UITextFieldDelegate, UIScrollV
             }
             
             progressHud.mode = MBProgressHUDMode.CustomView
-            progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark.png"))
+            progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark"))
             progressHud.hide(true, afterDelay: 1)
             let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)));
             dispatch_after(popTime, dispatch_get_main_queue(), {() -> Void in

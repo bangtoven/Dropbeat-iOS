@@ -137,7 +137,7 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
             }
             
             progressHud.mode = MBProgressHUDMode.CustomView
-            progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark.png"))
+            progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark"))
             progressHud.hide(true, afterDelay: 1)
             
             
@@ -535,7 +535,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
             }
             
             progressHud.mode = MBProgressHUDMode.CustomView
-            progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark.png"))
+            progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark"))
             progressHud.hide(true, afterDelay: 1)
             
             if idsToAdd.count > 0 || idsToRemove.count > 0 {
@@ -702,14 +702,14 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
         if let thumbUrl = sample.thumbnailUrl {
             cell.thumbnailView.sd_setImageWithURL(
                 NSURL(string:thumbUrl),
-                placeholderImage: UIImage(named:"default_cover_big.png"),
+                placeholderImage: UIImage(named:"default_cover_big"),
                 completed: { (image:UIImage!, error:NSError!, type:SDImageCacheType, url:NSURL!) -> Void in
                     if error != nil {
-                        cell.thumbnailView.image = UIImage(named:"default_cover_big.png")
+                        cell.thumbnailView.image = UIImage(named:"default_cover_big")
                     }
                 })
         } else {
-            cell.thumbnailView.image = UIImage(named:"default_cover_big.png")
+            cell.thumbnailView.image = UIImage(named:"default_cover_big")
         }
         if currPlayingSampleIdx != nil && currPlayingSampleIdx == indexPath.row {
             if isPlaying {
@@ -728,11 +728,11 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
         }
         if likedSampleIds.contains(sample.id) {
             cell.likeBtn.setTitle("LIKED", forState: UIControlState.Normal)
-            cell.likeBtn.setImage(UIImage(named:"ic_like.png"), forState: UIControlState.Normal)
+            cell.likeBtn.setImage(UIImage(named:"ic_like"), forState: UIControlState.Normal)
             cell.likeBtn.backgroundColor = UIColor(netHex:0x8F2CEF)
         } else {
             cell.likeBtn.setTitle("LIKE", forState: UIControlState.Normal)
-            cell.likeBtn.setImage(UIImage(named:"ic_dislike.png"), forState: UIControlState.Normal)
+            cell.likeBtn.setImage(UIImage(named:"ic_dislike"), forState: UIControlState.Normal)
             cell.likeBtn.backgroundColor = UIColor(netHex:0xC87EF4)
         }
         cell.delegate = self

@@ -29,7 +29,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HVv-ka-XFx" id="zby-A7-QqN">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_nonplaying.png" highlightedImage="ic_playing.png" translatesAutoresizingMaskIntoConstraints="NO" id="aQ2-EV-8xY">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_nonplaying" highlightedImage="ic_playing" translatesAutoresizingMaskIntoConstraints="NO" id="aQ2-EV-8xY">
                                                     <rect key="frame" x="8" y="12" width="20" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="20" id="6Gj-Ig-zf7"/>
@@ -52,7 +52,7 @@
                                                         <constraint firstAttribute="width" constant="50" id="xgX-D7-db0"/>
                                                     </constraints>
                                                     <inset key="contentEdgeInsets" minX="9" minY="7" maxX="9" maxY="7"/>
-                                                    <state key="normal" image="ic_header_dotdotdot.png">
+                                                    <state key="normal" image="ic_header_dotdotdot">
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
@@ -103,7 +103,7 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                        <state key="normal" title="Shuffle" image="ic_shuffle_btn.png">
+                                        <state key="normal" title="Shuffle" image="ic_shuffle_btn">
                                             <color key="titleColor" red="0.56470588239999997" green="0.56470588239999997" blue="0.56470588239999997" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
                                         </state>
@@ -384,7 +384,7 @@
                                             <color key="textColor" red="0.56470588239999997" green="0.56470588239999997" blue="0.56470588239999997" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="default_profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="6rb-tf-eGv">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="default_profile" translatesAutoresizingMaskIntoConstraints="NO" id="6rb-tf-eGv">
                                             <rect key="frame" x="8" y="35" width="80" height="80"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="80" id="7zO-Qb-9JC"/>
@@ -501,7 +501,7 @@
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="20" maxY="0.0"/>
                                             <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                            <state key="normal" title="CREATE NEW PLAYLIST" image="ic_plus.png">
+                                            <state key="normal" title="CREATE NEW PLAYLIST" image="ic_plus">
                                                 <color key="titleColor" red="0.59607843140000005" green="0.18039215689999999" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                             </state>
@@ -580,7 +580,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="EJg-eA-ukQ" id="aI0-ax-xQa">
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playlist.png" highlightedImage="ic_playlist_selected.png" translatesAutoresizingMaskIntoConstraints="NO" id="rZW-yW-UmP">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playlist" highlightedImage="ic_playlist_selected" translatesAutoresizingMaskIntoConstraints="NO" id="rZW-yW-UmP">
                                                     <rect key="frame" x="10" y="10" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="30" id="2nV-jF-OhC"/>
@@ -593,7 +593,7 @@
                                                     <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_arrow_right.png" translatesAutoresizingMaskIntoConstraints="NO" id="Ght-ep-kHi">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_arrow_right" translatesAutoresizingMaskIntoConstraints="NO" id="Ght-ep-kHi">
                                                     <rect key="frame" x="292" y="15" width="20" height="20"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="20" id="Ovi-ph-tl2"/>
@@ -856,7 +856,7 @@ click below to discover your favorites</string>
                                                     <color key="textColor" red="0.35661300509999999" green="0.35661300509999999" blue="0.35661300509999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 </label>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" highlightedImage="ic_check.png" translatesAutoresizingMaskIntoConstraints="NO" id="G5i-eO-uha">
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" highlightedImage="ic_check" translatesAutoresizingMaskIntoConstraints="NO" id="G5i-eO-uha">
                                                     <rect key="frame" x="282" y="8" width="30" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="BAo-Pz-FE2"/>
@@ -995,7 +995,7 @@ and let us know your favorite genre.</string>
                                                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rAa-n3-MGE">
                                                     <rect key="frame" x="8" y="8" width="304" height="108"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sample_cover.png" translatesAutoresizingMaskIntoConstraints="NO" id="3bD-KG-JEN">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sample_cover" translatesAutoresizingMaskIntoConstraints="NO" id="3bD-KG-JEN">
                                                             <rect key="frame" x="0.0" y="0.0" width="304" height="108"/>
                                                         </imageView>
                                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="y7O-FQ-m1M" userLabel="filter">
@@ -1007,7 +1007,7 @@ and let us know your favorite genre.</string>
                                                                         <constraint firstAttribute="width" constant="108" id="Hug-bO-cT2"/>
                                                                         <constraint firstAttribute="height" constant="108" id="m9u-Td-D4R"/>
                                                                     </constraints>
-                                                                    <state key="normal" image="ic_pause.png">
+                                                                    <state key="normal" image="ic_pause">
                                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                                     </state>
                                                                     <connections>
@@ -1020,7 +1020,7 @@ and let us know your favorite genre.</string>
                                                                         <constraint firstAttribute="width" constant="108" id="75y-7m-Y9B"/>
                                                                         <constraint firstAttribute="height" constant="108" id="cKl-Tm-qts"/>
                                                                     </constraints>
-                                                                    <state key="normal" image="ic_play.png">
+                                                                    <state key="normal" image="ic_play">
                                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                                     </state>
                                                                     <connections>
@@ -1037,7 +1037,7 @@ and let us know your favorite genre.</string>
                                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                                                                     <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                                     <inset key="imageEdgeInsets" minX="-5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                                    <state key="normal" title="LIKE" image="ic_dislike.png">
+                                                                    <state key="normal" title="LIKE" image="ic_dislike">
                                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                         <color key="titleShadowColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="calibratedRGB"/>
                                                                     </state>
@@ -1157,7 +1157,7 @@ and let us know your favorite genre.</string>
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <items>
                                     <navigationItem title="Discover Favorites" id="SZC-b3-ddd">
-                                        <barButtonItem key="leftBarButtonItem" image="ic_header_back.png" style="plain" id="PKh-Op-dv1">
+                                        <barButtonItem key="leftBarButtonItem" image="ic_header_back" style="plain" id="PKh-Op-dv1">
                                             <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                             <connections>
                                                 <action selector="onBackBtnClicked:" destination="8LR-iH-BWO" id="faV-q4-M8g"/>
@@ -1260,20 +1260,20 @@ and let us know your favorite genre.</string>
         </scene>
     </scenes>
     <resources>
-        <image name="default_profile.png" width="80" height="80"/>
-        <image name="ic_arrow_right.png" width="50" height="50"/>
-        <image name="ic_check.png" width="47" height="47"/>
-        <image name="ic_dislike.png" width="25" height="25"/>
-        <image name="ic_header_back.png" width="22" height="22"/>
-        <image name="ic_header_dotdotdot.png" width="22" height="22"/>
-        <image name="ic_nonplaying.png" width="20" height="20"/>
-        <image name="ic_pause.png" width="47" height="47"/>
-        <image name="ic_play.png" width="47" height="47"/>
-        <image name="ic_playing.png" width="20" height="20"/>
-        <image name="ic_playlist.png" width="104" height="104"/>
-        <image name="ic_playlist_selected.png" width="104" height="104"/>
-        <image name="ic_plus.png" width="20" height="20"/>
-        <image name="ic_shuffle_btn.png" width="20" height="20"/>
-        <image name="sample_cover.png" width="225" height="225"/>
+        <image name="default_profile" width="80" height="80"/>
+        <image name="ic_arrow_right" width="50" height="50"/>
+        <image name="ic_check" width="47" height="47"/>
+        <image name="ic_dislike" width="25" height="25"/>
+        <image name="ic_header_back" width="22" height="22"/>
+        <image name="ic_header_dotdotdot" width="22" height="22"/>
+        <image name="ic_nonplaying" width="20" height="20"/>
+        <image name="ic_pause" width="47" height="47"/>
+        <image name="ic_play" width="47" height="47"/>
+        <image name="ic_playing" width="20" height="20"/>
+        <image name="ic_playlist" width="104" height="104"/>
+        <image name="ic_playlist_selected" width="104" height="104"/>
+        <image name="ic_plus" width="20" height="20"/>
+        <image name="ic_shuffle_btn" width="20" height="20"/>
+        <image name="sample_cover" width="225" height="225"/>
     </resources>
 </document>

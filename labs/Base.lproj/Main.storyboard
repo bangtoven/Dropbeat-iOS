@@ -41,7 +41,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="20" maxY="0.0"/>
                                                     <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                    <state key="normal" title="CREATE NEW PLAYLIST" image="ic_plus.png">
+                                                    <state key="normal" title="CREATE NEW PLAYLIST" image="ic_plus">
                                                         <color key="titleColor" red="0.59607843140000005" green="0.18039215689999999" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
@@ -63,7 +63,7 @@
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gAM-xD-L4K" id="mXQ-Ji-bXG">
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playlist.png" highlightedImage="ic_playlist_selected.png" translatesAutoresizingMaskIntoConstraints="NO" id="pQv-aO-5cE">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playlist" highlightedImage="ic_playlist_selected" translatesAutoresizingMaskIntoConstraints="NO" id="pQv-aO-5cE">
                                                             <rect key="frame" x="10" y="10" width="30" height="30"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="30" id="NYA-ch-KRq"/>
@@ -76,7 +76,7 @@
                                                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                                             <color key="highlightedColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                         </label>
-                                                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_arrow_right.png" translatesAutoresizingMaskIntoConstraints="NO" id="k20-8F-Wad">
+                                                        <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_arrow_right" translatesAutoresizingMaskIntoConstraints="NO" id="k20-8F-Wad">
                                                             <rect key="frame" x="312" y="15" width="0.0" height="20"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="20" id="0Dh-xB-dR5"/>
@@ -199,7 +199,7 @@
                                                     <constraint firstAttribute="width" constant="40" id="CTp-f3-f5C"/>
                                                     <constraint firstAttribute="height" constant="40" id="Rap-Du-03M"/>
                                                 </constraints>
-                                                <state key="normal" image="ic_play_btn_big.png">
+                                                <state key="normal" image="ic_play_btn_big">
                                                     <color key="titleColor" red="0.59607843140000005" green="0.18039215689999999" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -213,7 +213,7 @@
                                                     <constraint firstAttribute="width" constant="40" id="A2J-ih-38j"/>
                                                     <constraint firstAttribute="height" constant="40" id="OWQ-fe-5sh"/>
                                                 </constraints>
-                                                <state key="normal" image="ic_menu_btn_big.png">
+                                                <state key="normal" image="ic_menu_btn_big">
                                                     <color key="titleColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -241,7 +241,7 @@
                                                     <constraint firstAttribute="height" constant="40" id="kYc-Ju-nFx"/>
                                                 </constraints>
                                                 <inset key="contentEdgeInsets" minX="2" minY="2" maxX="2" maxY="2"/>
-                                                <state key="normal" image="ic_heart_btn_big.png">
+                                                <state key="normal" image="ic_heart_btn_big">
                                                     <color key="titleColor" red="0.59607843140000005" green="0.18039215689999999" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
@@ -282,7 +282,7 @@
                                                 <tableViewCellContentView key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="X29-M6-89Z" id="d9n-8L-2hN">
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_nonplaying.png" highlightedImage="ic_playing.png" translatesAutoresizingMaskIntoConstraints="NO" id="PMH-Pw-BFA">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_nonplaying" highlightedImage="ic_playing" translatesAutoresizingMaskIntoConstraints="NO" id="PMH-Pw-BFA">
                                                             <rect key="frame" x="8" y="12" width="20" height="20"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="20" id="X1y-Jo-VlN"/>
@@ -305,7 +305,7 @@
                                                                 <constraint firstAttribute="height" constant="44" id="cKU-xj-vRN"/>
                                                             </constraints>
                                                             <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                            <state key="normal" image="ic_header_dotdotdot.png">
+                                                            <state key="normal" image="ic_header_dotdotdot">
                                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
                                                             <connections>
@@ -480,7 +480,7 @@
                                                         <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mzq-bl-jH3">
                                                             <rect key="frame" x="8" y="10" width="56" height="56"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork.png" translatesAutoresizingMaskIntoConstraints="NO" id="aUB-59-ZPD">
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="aUB-59-ZPD">
                                                                     <rect key="frame" x="-2" y="0.0" width="60" height="56"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="56" id="A2x-nf-OBa"/>
@@ -489,7 +489,7 @@
                                                                 <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AHU-kh-Vo3">
                                                                     <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
                                                                     <subviews>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator.png" translatesAutoresizingMaskIntoConstraints="NO" id="ecA-n5-Ecf">
+                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator" translatesAutoresizingMaskIntoConstraints="NO" id="ecA-n5-Ecf">
                                                                             <rect key="frame" x="14" y="14" width="28" height="28"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="28" id="MZ8-t4-9Ib"/>
@@ -523,7 +523,7 @@
                                                                 <constraint firstAttribute="height" constant="76" id="dDE-nu-AvF"/>
                                                             </constraints>
                                                             <inset key="contentEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                            <state key="normal" image="ic_header_dotdotdot.png">
+                                                            <state key="normal" image="ic_header_dotdotdot">
                                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
                                                             <connections>
@@ -537,7 +537,7 @@
                                                                 <constraint firstAttribute="height" constant="76" id="KbG-kU-udN"/>
                                                             </constraints>
                                                             <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                                            <state key="normal" image="ic_drop_small.png">
+                                                            <state key="normal" image="ic_drop_small">
                                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
                                                             <connections>
@@ -677,7 +677,7 @@
                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PcA-I9-X1d" userLabel="CoverView">
                                         <rect key="frame" x="0.0" y="15" width="320" height="320"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_bg.png" translatesAutoresizingMaskIntoConstraints="NO" id="s5H-kF-Xly">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="player_bg" translatesAutoresizingMaskIntoConstraints="NO" id="s5H-kF-Xly">
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                                             </imageView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VFz-FF-eH7">
@@ -690,7 +690,7 @@
                                                     <constraint firstAttribute="width" secondItem="5ah-Rp-12s" secondAttribute="height" multiplier="16:9" priority="950" id="axi-cT-Db6"/>
                                                 </constraints>
                                             </view>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_cover_big.png" translatesAutoresizingMaskIntoConstraints="NO" id="EDo-cj-pO7">
+                                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_cover_big" translatesAutoresizingMaskIntoConstraints="NO" id="EDo-cj-pO7">
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                                             </imageView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dTv-mT-wAJ" userLabel="Glass">
@@ -815,7 +815,7 @@
                                             <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WsF-Ky-R0A" userLabel="PlayerControlView">
                                                 <rect key="frame" x="16" y="111" width="288" height="62"/>
                                                 <subviews>
-                                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_progress.png" translatesAutoresizingMaskIntoConstraints="NO" id="89A-55-w3l">
+                                                    <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="btn_progress" translatesAutoresizingMaskIntoConstraints="NO" id="89A-55-w3l">
                                                         <rect key="frame" x="114" y="1" width="60" height="60"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="60" id="jrm-Zl-jfe"/>
@@ -828,7 +828,7 @@
                                                             <constraint firstAttribute="width" constant="34" id="Le4-zj-xtk"/>
                                                             <constraint firstAttribute="height" constant="34" id="WQg-ON-7Sf"/>
                                                         </constraints>
-                                                        <state key="normal" image="ic_forward.png">
+                                                        <state key="normal" image="ic_forward">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -841,7 +841,7 @@
                                                             <constraint firstAttribute="width" constant="60" id="Gh6-53-hsC"/>
                                                             <constraint firstAttribute="height" constant="60" id="gFe-KW-p7v"/>
                                                         </constraints>
-                                                        <state key="normal" image="ic_pause.png">
+                                                        <state key="normal" image="ic_pause">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -854,7 +854,7 @@
                                                             <constraint firstAttribute="height" constant="34" id="54N-Q6-VT1"/>
                                                             <constraint firstAttribute="width" constant="34" id="Se8-jl-ATB"/>
                                                         </constraints>
-                                                        <state key="normal" image="ic_rewind.png">
+                                                        <state key="normal" image="ic_rewind">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -867,7 +867,7 @@
                                                             <constraint firstAttribute="height" constant="60" id="K0W-s5-UPw"/>
                                                             <constraint firstAttribute="width" constant="60" id="wbI-V5-J1T"/>
                                                         </constraints>
-                                                        <state key="normal" image="ic_play.png">
+                                                        <state key="normal" image="ic_play">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -881,7 +881,7 @@
                                                             <constraint firstAttribute="height" constant="40" id="ndU-vD-bFZ"/>
                                                         </constraints>
                                                         <inset key="contentEdgeInsets" minX="3" minY="3" maxX="3" maxY="3"/>
-                                                        <state key="normal" image="ic_share.png">
+                                                        <state key="normal" image="ic_share">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -895,7 +895,7 @@
                                                             <constraint firstAttribute="height" constant="40" id="Uow-OL-qko"/>
                                                         </constraints>
                                                         <inset key="contentEdgeInsets" minX="3" minY="3" maxX="3" maxY="3"/>
-                                                        <state key="normal" image="ic_player_heart_btn.png">
+                                                        <state key="normal" image="ic_player_heart_btn">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -950,7 +950,7 @@
                                                     <constraint firstAttribute="height" constant="34" id="YgJ-KS-FYy"/>
                                                 </constraints>
                                                 <inset key="contentEdgeInsets" minX="7" minY="2" maxX="7" maxY="2"/>
-                                                <state key="normal" image="ic_dotdotdot_horizontal.png">
+                                                <state key="normal" image="ic_dotdotdot_horizontal">
                                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -967,7 +967,7 @@
                                                             <constraint firstAttribute="height" constant="34" id="ifj-2s-iNI"/>
                                                         </constraints>
                                                         <inset key="contentEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
-                                                        <state key="normal" title="no repeat" image="ic_repeat.png">
+                                                        <state key="normal" title="no repeat" image="ic_repeat">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -981,7 +981,7 @@
                                                             <constraint firstAttribute="width" constant="46" id="yZJ-Fe-5SY"/>
                                                         </constraints>
                                                         <inset key="contentEdgeInsets" minX="2" minY="9" maxX="2" maxY="9"/>
-                                                        <state key="normal" title="HQ" image="ic_hq_off.png">
+                                                        <state key="normal" title="HQ" image="ic_hq_off">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -995,7 +995,7 @@
                                                             <constraint firstAttribute="height" constant="34" id="Uta-68-8T5"/>
                                                         </constraints>
                                                         <inset key="contentEdgeInsets" minX="4" minY="4" maxX="4" maxY="4"/>
-                                                        <state key="normal" title="no shuffle" image="ic_shuffle_gray.png">
+                                                        <state key="normal" title="no shuffle" image="ic_shuffle_gray">
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
                                                         <connections>
@@ -1114,7 +1114,7 @@
                                             <constraint firstAttribute="height" constant="41" id="QIQ-tu-u3K"/>
                                             <constraint firstAttribute="width" constant="41" id="a4E-iQ-RQy"/>
                                         </constraints>
-                                        <state key="normal" image="ic_pause_purple.png">
+                                        <state key="normal" image="ic_pause_purple">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -1136,7 +1136,7 @@
                                             <constraint firstAttribute="width" constant="41" id="FiN-M2-mqt"/>
                                             <constraint firstAttribute="height" constant="41" id="JhE-Fn-BUL"/>
                                         </constraints>
-                                        <state key="normal" image="ic_list_gray_small.png">
+                                        <state key="normal" image="ic_list_gray_small">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -1147,19 +1147,19 @@
                                         <rect key="frame" x="0.0" y="41" width="320" height="49"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <items>
-                                            <tabBarItem tag="1" title="" image="ic_home_gray.png" id="LhY-EL-Kgy">
+                                            <tabBarItem tag="1" title="" image="ic_home_gray" id="LhY-EL-Kgy">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="image" keyPath="selectedImage" value="ic_home.png"/>
                                                 </userDefinedRuntimeAttributes>
                                             </tabBarItem>
-                                            <tabBarItem tag="2" title="" image="ic_channel_gray.png" id="nZU-gk-3lR">
+                                            <tabBarItem tag="2" title="" image="ic_channel_gray" id="nZU-gk-3lR">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                                             </tabBarItem>
-                                            <tabBarItem tag="3" title="" image="ic_header_search.png" id="qT1-zU-yo5">
+                                            <tabBarItem tag="3" title="" image="ic_header_search" id="qT1-zU-yo5">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                                             </tabBarItem>
-                                            <tabBarItem tag="4" title="" image="ic_profile_gray.png" id="aXO-Xq-Gkh">
+                                            <tabBarItem tag="4" title="" image="ic_profile_gray" id="aXO-Xq-Gkh">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                                             </tabBarItem>
                                             <tabBarItem tag="5" title="" systemItem="more" id="O6n-Jm-nJ7">
@@ -1490,7 +1490,7 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_without_text.png" translatesAutoresizingMaskIntoConstraints="NO" id="whZ-zV-pSM">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_without_text" translatesAutoresizingMaskIntoConstraints="NO" id="whZ-zV-pSM">
                                 <rect key="frame" x="130" y="254" width="60" height="60"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="B67-3N-dnk"/>
@@ -1542,40 +1542,40 @@
         </scene>
     </scenes>
     <resources>
-        <image name="btn_progress.png" width="207" height="207"/>
-        <image name="default_artwork.png" width="60" height="60"/>
-        <image name="default_cover_big.png" width="320" height="320"/>
-        <image name="ic_arrow_right.png" width="50" height="50"/>
-        <image name="ic_channel_gray.png" width="25" height="25"/>
-        <image name="ic_dotdotdot_horizontal.png" width="47" height="47"/>
-        <image name="ic_drop_small.png" width="40" height="40"/>
-        <image name="ic_forward.png" width="47" height="47"/>
-        <image name="ic_header_dotdotdot.png" width="22" height="22"/>
-        <image name="ic_header_search.png" width="22" height="22"/>
-        <image name="ic_heart_btn_big.png" width="40" height="40"/>
+        <image name="btn_progress" width="207" height="207"/>
+        <image name="default_artwork" width="60" height="60"/>
+        <image name="default_cover_big" width="320" height="320"/>
+        <image name="ic_arrow_right" width="50" height="50"/>
+        <image name="ic_channel_gray" width="25" height="25"/>
+        <image name="ic_dotdotdot_horizontal" width="47" height="47"/>
+        <image name="ic_drop_small" width="40" height="40"/>
+        <image name="ic_forward" width="47" height="47"/>
+        <image name="ic_header_dotdotdot" width="22" height="22"/>
+        <image name="ic_header_search" width="22" height="22"/>
+        <image name="ic_heart_btn_big" width="40" height="40"/>
         <image name="ic_home.png" width="25" height="25"/>
-        <image name="ic_home_gray.png" width="25" height="25"/>
-        <image name="ic_hq_off.png" width="105" height="64"/>
-        <image name="ic_list_gray_small.png" width="24" height="24"/>
-        <image name="ic_menu_btn_big.png" width="40" height="40"/>
-        <image name="ic_nonplaying.png" width="20" height="20"/>
-        <image name="ic_pause.png" width="47" height="47"/>
-        <image name="ic_pause_purple.png" width="24" height="24"/>
-        <image name="ic_play.png" width="47" height="47"/>
-        <image name="ic_play_btn_big.png" width="40" height="40"/>
-        <image name="ic_player_heart_btn.png" width="50" height="50"/>
-        <image name="ic_playing.png" width="20" height="20"/>
-        <image name="ic_playing_indicator.png" width="104" height="104"/>
-        <image name="ic_playlist.png" width="104" height="104"/>
-        <image name="ic_playlist_selected.png" width="104" height="104"/>
-        <image name="ic_plus.png" width="20" height="20"/>
-        <image name="ic_profile_gray.png" width="25" height="25"/>
-        <image name="ic_repeat.png" width="47" height="47"/>
-        <image name="ic_rewind.png" width="47" height="47"/>
-        <image name="ic_share.png" width="50" height="50"/>
-        <image name="ic_shuffle_gray.png" width="47" height="47"/>
-        <image name="logo_without_text.png" width="219" height="247"/>
-        <image name="player_bg.png" width="817" height="1079"/>
+        <image name="ic_home_gray" width="25" height="25"/>
+        <image name="ic_hq_off" width="105" height="64"/>
+        <image name="ic_list_gray_small" width="24" height="24"/>
+        <image name="ic_menu_btn_big" width="40" height="40"/>
+        <image name="ic_nonplaying" width="20" height="20"/>
+        <image name="ic_pause" width="47" height="47"/>
+        <image name="ic_pause_purple" width="24" height="24"/>
+        <image name="ic_play" width="47" height="47"/>
+        <image name="ic_play_btn_big" width="40" height="40"/>
+        <image name="ic_player_heart_btn" width="50" height="50"/>
+        <image name="ic_playing" width="20" height="20"/>
+        <image name="ic_playing_indicator" width="104" height="104"/>
+        <image name="ic_playlist" width="104" height="104"/>
+        <image name="ic_playlist_selected" width="104" height="104"/>
+        <image name="ic_plus" width="20" height="20"/>
+        <image name="ic_profile_gray" width="25" height="25"/>
+        <image name="ic_repeat" width="47" height="47"/>
+        <image name="ic_rewind" width="47" height="47"/>
+        <image name="ic_share" width="50" height="50"/>
+        <image name="ic_shuffle_gray" width="47" height="47"/>
+        <image name="logo_without_text" width="219" height="247"/>
+        <image name="player_bg" width="817" height="1079"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="U4e-rv-WDI"/>

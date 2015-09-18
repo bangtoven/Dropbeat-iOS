@@ -368,7 +368,7 @@ class PlaylistViewController: BaseViewController,
                     return
                 }
                 progressHud.mode = MBProgressHUDMode.CustomView
-                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike.png"))
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike"))
                 progressHud.hide(true, afterDelay: 1)
                 
             })
@@ -386,7 +386,7 @@ class PlaylistViewController: BaseViewController,
                     return
                 }
                 progressHud.mode = MBProgressHUDMode.CustomView
-                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like.png"))
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like"))
                 progressHud.hide(true, afterDelay: 1)
             })
         }
@@ -838,9 +838,9 @@ class PlaylistViewController: BaseViewController,
     
     func updateLikeBtn() {
         if isLiked {
-            likeBtn.setImage(UIImage(named:"ic_heart_fill_btn_big.png"), forState: UIControlState.Normal)
+            likeBtn.setImage(UIImage(named:"ic_heart_fill_btn_big"), forState: UIControlState.Normal)
         } else {
-            likeBtn.setImage(UIImage(named:"ic_heart_btn_big.png"), forState: UIControlState.Normal)
+            likeBtn.setImage(UIImage(named:"ic_heart_btn_big"), forState: UIControlState.Normal)
         }
     }
 }

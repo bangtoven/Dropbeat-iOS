@@ -339,9 +339,9 @@ class FeedViewController: AddableTrackListViewController,
         }
         
         var dropBtn:UIButton?
-        var dropIcReadyName = "ic_drop.png"
-        var dropIcLoadingName = "ic_drop_loading.png"
-        var dropIcPlayingName = "ic_drop_pause.png"
+        var dropIcReadyName = "ic_drop"
+        var dropIcLoadingName = "ic_drop_loading"
+        var dropIcPlayingName = "ic_drop_pause"
         
         if selectedFeedMenu.type == FeedType.NEW_RELEASE {
             let trackCell = cell as! NewReleasedTrackTableViewCell
@@ -371,16 +371,16 @@ class FeedViewController: AddableTrackListViewController,
         } else if selectedFeedMenu.type == FeedType.BEATPORT_CHART {
             let trackCell = cell as! BpChartTrackTableViewCell
             dropBtn = trackCell.dropBtn
-            dropIcReadyName = "ic_drop_small.png"
-            dropIcLoadingName = "ic_drop_loading_small.png"
-            dropIcPlayingName = "ic_drop_pause_small.png"
+            dropIcReadyName = "ic_drop_small"
+            dropIcLoadingName = "ic_drop_loading_small"
+            dropIcPlayingName = "ic_drop_pause_small"
             
         } else if selectedFeedMenu.type == FeedType.USER_GROUP {
             let trackCell = cell as! UserTrackTableViewCell
             dropBtn = trackCell.dropBtn
-            dropIcReadyName = "ic_drop_small.png"
-            dropIcLoadingName = "ic_drop_loading_small.png"
-            dropIcPlayingName = "ic_drop_pause_small.png"
+            dropIcReadyName = "ic_drop_small"
+            dropIcLoadingName = "ic_drop_loading_small"
+            dropIcPlayingName = "ic_drop_pause_small"
         }
         if dropBtn != nil {
             if track.drop != nil {
@@ -476,14 +476,14 @@ class FeedViewController: AddableTrackListViewController,
         cell.nameView.text = track.trackName
         if (track.thumbnailUrl != nil) {
             cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_artwork.png"), completed: {
+                    placeholderImage: UIImage(named: "default_artwork"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                 if (error != nil) {
-                    cell.thumbView.image = UIImage(named: "default_artwork.png")
+                    cell.thumbView.image = UIImage(named: "default_artwork")
                 }
             })
         } else {
-            cell.thumbView.image = UIImage(named: "default_artwork.png")
+            cell.thumbView.image = UIImage(named: "default_artwork")
         }
         cell.genreName.text = track.genre
         cell.genreName.hidden = track.genre == nil
@@ -500,14 +500,14 @@ class FeedViewController: AddableTrackListViewController,
         cell.nameView.text = track.trackName
         if (track.thumbnailUrl != nil) {
             cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_cover_big.png"), completed: {
+                    placeholderImage: UIImage(named: "default_cover_big"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                 if (error != nil) {
-                    cell.thumbView.image = UIImage(named: "default_cover_big.png")
+                    cell.thumbView.image = UIImage(named: "default_cover_big")
                 }
             })
         } else {
-            cell.thumbView.image = UIImage(named: "default_cover_big.png")
+            cell.thumbView.image = UIImage(named: "default_cover_big")
         }
         cell.snippet.text = track.snippet
         cell.artistName.text = track.artist
@@ -523,14 +523,14 @@ class FeedViewController: AddableTrackListViewController,
         cell.nameView.text = track.trackName
         if (track.thumbnailUrl != nil) {
             cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_cover_big.png"), completed: {
+                    placeholderImage: UIImage(named: "default_cover_big"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                 if (error != nil) {
-                    cell.thumbView.image = UIImage(named: "default_cover_big.png")
+                    cell.thumbView.image = UIImage(named: "default_cover_big")
                 }
             })
         } else {
-            cell.thumbView.image = UIImage(named: "default_cover_big.png")
+            cell.thumbView.image = UIImage(named: "default_cover_big")
         }
         cell.releasedAt.hidden = track.releasedAt == nil
         if track.releasedAt != nil {
@@ -549,14 +549,14 @@ class FeedViewController: AddableTrackListViewController,
         cell.nameView.text = track.trackName
         if (track.thumbnailUrl != nil) {
             cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_cover_big.png"), completed: {
+                    placeholderImage: UIImage(named: "default_cover_big"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                 if (error != nil) {
-                    cell.thumbView.image = UIImage(named: "default_cover_big.png")
+                    cell.thumbView.image = UIImage(named: "default_cover_big")
                 }
             })
         } else {
-            cell.thumbView.image = UIImage(named: "default_cover_big.png")
+            cell.thumbView.image = UIImage(named: "default_cover_big")
         }
         cell.releasedAt.hidden = track.releasedAt == nil
         if track.releasedAt != nil {
@@ -574,14 +574,14 @@ class FeedViewController: AddableTrackListViewController,
         cell.nameView.text = track.trackName
         if (track.thumbnailUrl != nil) {
             cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_cover_big.png"), completed: {
+                    placeholderImage: UIImage(named: "default_cover_big"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                 if (error != nil) {
-                    cell.thumbView.image = UIImage(named: "default_cover_big.png")
+                    cell.thumbView.image = UIImage(named: "default_cover_big")
                 }
             })
         } else {
-            cell.thumbView.image = UIImage(named: "default_cover_big.png")
+            cell.thumbView.image = UIImage(named: "default_cover_big")
         }
         cell.releasedAt.hidden = track.releasedAt == nil
         if track.releasedAt != nil {
@@ -604,14 +604,14 @@ class FeedViewController: AddableTrackListViewController,
         cell.nameView.text = track.trackName
         if (track.thumbnailUrl != nil) {
             cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_artwork.png"), completed: {
+                    placeholderImage: UIImage(named: "default_artwork"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                 if (error != nil) {
-                    cell.thumbView.image = UIImage(named: "default_artwork.png")
+                    cell.thumbView.image = UIImage(named: "default_artwork")
                 }
             })
         } else {
-            cell.thumbView.image = UIImage(named: "default_artwork.png")
+            cell.thumbView.image = UIImage(named: "default_artwork")
         }
         var listenDate = NSDate(timeIntervalSinceNow: -60.0 * Double(track.ts))
         cell.listenTimeView.text = listenDate.timeAgoSinceNow()
@@ -1219,7 +1219,7 @@ class FeedViewController: AddableTrackListViewController,
         trackTableView.hidden = true
         feedTypeSelectTableView.hidden = false
         genreTableView.hidden = true
-        feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_up.png"), forState: UIControlState.Normal)
+        feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_up"), forState: UIControlState.Normal)
         if selectedFeedMenu.type == FeedType.FOLLOWING {
             genreSelectBtn.title = NSLocalizedString("Order by", comment:"")
         } else {
@@ -1232,7 +1232,7 @@ class FeedViewController: AddableTrackListViewController,
         trackTableView.hidden = false
         feedTypeSelectTableView.hidden = true
         genreTableView.hidden = true
-        feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_down.png"), forState: UIControlState.Normal)
+        feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_down"), forState: UIControlState.Normal)
         updateFeedTypeSelectBtn(selected)
         if selectedFeedMenu.type == FeedType.FOLLOWING {
             genreSelectBtn.title = NSLocalizedString("Order by", comment:"")
@@ -1246,7 +1246,7 @@ class FeedViewController: AddableTrackListViewController,
         trackTableView.hidden = true
         feedTypeSelectTableView.hidden = true
         genreTableView.hidden = false
-        feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_down.png"), forState: UIControlState.Normal)
+        feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_down"), forState: UIControlState.Normal)
         genreSelectBtn.title = NSLocalizedString("Close", comment:"")
     }
 }

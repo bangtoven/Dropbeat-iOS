@@ -174,14 +174,6 @@
 		58EAB3DD1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EAB3DC1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift */; };
 		58EAB3DF1B0D11110075304E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EAB3DE1B0D11110075304E /* Utils.swift */; };
 		58EE1E2A1B46FBD100976FD0 /* restart_filled.png in Resources */ = {isa = PBXBuildFile; fileRef = 58EE1E291B46FBD100976FD0 /* restart_filled.png */; };
-		7303148C1BA7397900133764 /* UserHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 738BCA1E1BA4B66500D00D34 /* UserHeaderView.xib */; };
-		7303148D1BA7424700133764 /* Playground.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7349F7301BA1AC48006E9ABF /* Playground.storyboard */; };
-		7303148E1BA7426700133764 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7349F7141BA1ABB1006E9ABF /* ViewController.swift */; };
-		7303148F1BA7427000133764 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7303148A1BA70FB300133764 /* UserViewController.swift */; };
-		730314911BA7427C00133764 /* avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 73AD145F1BA4749900C1AE15 /* avatar.png */; };
-		730314921BA7427C00133764 /* coverImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 73AD145D1BA4744300C1AE15 /* coverImage.png */; };
-		730314931BA7427C00133764 /* coverImage2.png in Resources */ = {isa = PBXBuildFile; fileRef = 730314711BA5B1E700133764 /* coverImage2.png */; };
-		730E47B21BA9A98B00FEBEA5 /* UserSubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 730E47B11BA9A98B00FEBEA5 /* UserSubViewController.swift */; };
 		732717021BAC8632003E0B68 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717011BAC8632003E0B68 /* SwiftyJSON.swift */; };
 		732717101BAC8649003E0B68 /* RBStoryboardLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 732717041BAC8649003E0B68 /* RBStoryboardLink.m */; };
 		732717111BAC8649003E0B68 /* RBStoryboardModalSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 732717071BAC8649003E0B68 /* RBStoryboardModalSegue.m */; };
@@ -201,6 +193,11 @@
 		7327173F1BAC86BB003E0B68 /* AXTabBarItemButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7327173A1BAC86BB003E0B68 /* AXTabBarItemButton.m */; };
 		732717411BAC86EB003E0B68 /* KeychainItemWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717401BAC86EB003E0B68 /* KeychainItemWrapper.swift */; };
 		732717431BAC8721003E0B68 /* ScrollPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717421BAC8721003E0B68 /* ScrollPager.swift */; };
+		7327174A1BAC8836003E0B68 /* User.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 732717451BAC8836003E0B68 /* User.storyboard */; };
+		7327174B1BAC8836003E0B68 /* UserHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 732717461BAC8836003E0B68 /* UserHeaderView.xib */; };
+		7327174C1BAC8836003E0B68 /* UserSubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717471BAC8836003E0B68 /* UserSubViewController.swift */; };
+		7327174D1BAC8836003E0B68 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717481BAC8836003E0B68 /* UserViewController.swift */; };
+		7327174E1BAC8836003E0B68 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717491BAC8836003E0B68 /* ViewController.swift */; };
 		7361FCDC1B9F5A7C00444179 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7361FCDB1B9F5A7C00444179 /* ProfileViewController.swift */; };
 		7361FCDE1B9F5B1A00444179 /* LikeBoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7361FCDD1B9F5B1A00444179 /* LikeBoxViewController.swift */; };
 		7361FCE01B9F5B6700444179 /* NickNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7361FCDF1B9F5B6700444179 /* NickNameViewController.swift */; };
@@ -442,9 +439,6 @@
 		58EAB3DC1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistSelectTableViewCell.swift; sourceTree = "<group>"; };
 		58EAB3DE1B0D11110075304E /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		58EE1E291B46FBD100976FD0 /* restart_filled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = restart_filled.png; sourceTree = "<group>"; };
-		730314711BA5B1E700133764 /* coverImage2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coverImage2.png; sourceTree = "<group>"; };
-		7303148A1BA70FB300133764 /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = UserViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
-		730E47B11BA9A98B00FEBEA5 /* UserSubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = UserSubViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		732717011BAC8632003E0B68 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = Libraries/SwiftyJSON.swift; sourceTree = SOURCE_ROOT; };
 		732717031BAC8649003E0B68 /* RBStoryboardLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RBStoryboardLink.h; path = Libraries/RBStoryboard/RBStoryboardLink.h; sourceTree = SOURCE_ROOT; };
 		732717041BAC8649003E0B68 /* RBStoryboardLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RBStoryboardLink.m; path = Libraries/RBStoryboard/RBStoryboardLink.m; sourceTree = SOURCE_ROOT; };
@@ -490,14 +484,11 @@
 		7327173A1BAC86BB003E0B68 /* AXTabBarItemButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AXTabBarItemButton.m; path = Libraries/AXStretchableHeaderTabView/AXTabBarItemButton.m; sourceTree = SOURCE_ROOT; };
 		732717401BAC86EB003E0B68 /* KeychainItemWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = KeychainItemWrapper.swift; path = Libraries/KeychainItemWrapper.swift; sourceTree = SOURCE_ROOT; };
 		732717421BAC8721003E0B68 /* ScrollPager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScrollPager.swift; path = Libraries/ScrollPager.swift; sourceTree = SOURCE_ROOT; };
-		7349F7111BA1ABB1006E9ABF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7349F7121BA1ABB1006E9ABF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		7349F7141BA1ABB1006E9ABF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		7349F7301BA1AC48006E9ABF /* Playground.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Playground.storyboard; sourceTree = "<group>"; };
-		7349F7501BA1ACC4006E9ABF /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		7349F7521BA1ACCB006E9ABF /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		7349F7541BA1ACD2006E9ABF /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		7349F7761BA1AEBB006E9ABF /* playground-bridging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "playground-bridging.h"; sourceTree = "<group>"; };
+		732717451BAC8836003E0B68 /* User.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = User.storyboard; sourceTree = "<group>"; };
+		732717461BAC8836003E0B68 /* UserHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserHeaderView.xib; sourceTree = "<group>"; };
+		732717471BAC8836003E0B68 /* UserSubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSubViewController.swift; sourceTree = "<group>"; };
+		732717481BAC8836003E0B68 /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
+		732717491BAC8836003E0B68 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		7361FCDB1B9F5A7C00444179 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		7361FCDD1B9F5B1A00444179 /* LikeBoxViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikeBoxViewController.swift; sourceTree = "<group>"; };
 		7361FCDF1B9F5B6700444179 /* NickNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NickNameViewController.swift; sourceTree = "<group>"; };
@@ -514,10 +505,6 @@
 		738646111BA758BA00C21650 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		738646151BA7631D00C21650 /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
 		738646161BA7631D00C21650 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
-		738A21C71BA22C2D004A575A /* PGLaunch.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PGLaunch.xib; sourceTree = "<group>"; };
-		738BCA1E1BA4B66500D00D34 /* UserHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserHeaderView.xib; sourceTree = "<group>"; };
-		73AD145D1BA4744300C1AE15 /* coverImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coverImage.png; sourceTree = "<group>"; };
-		73AD145F1BA4749900C1AE15 /* avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = avatar.png; sourceTree = "<group>"; };
 		73C7862A1B9DB35F001D2A2E /* ic_play_purple@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_play_purple@2x.png"; sourceTree = "<group>"; };
 		73C7862B1B9DB35F001D2A2E /* ic_pause_purple@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_pause_purple@2x.png"; sourceTree = "<group>"; };
 		73C7862E1B9EFB93001D2A2E /* ic_list_gray_small@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_list_gray_small@2x.png"; sourceTree = "<group>"; };
@@ -834,34 +821,16 @@
 			path = Libraries/GBFlatButton;
 			sourceTree = SOURCE_ROOT;
 		};
-		7349F70F1BA1ABB1006E9ABF /* playground */ = {
+		732717441BAC8814003E0B68 /* User */ = {
 			isa = PBXGroup;
 			children = (
-				73AD145F1BA4749900C1AE15 /* avatar.png */,
-				73AD145D1BA4744300C1AE15 /* coverImage.png */,
-				730314711BA5B1E700133764 /* coverImage2.png */,
-				7349F7121BA1ABB1006E9ABF /* AppDelegate.swift */,
-				7349F7141BA1ABB1006E9ABF /* ViewController.swift */,
-				7303148A1BA70FB300133764 /* UserViewController.swift */,
-				730E47B11BA9A98B00FEBEA5 /* UserSubViewController.swift */,
-				738BCA1E1BA4B66500D00D34 /* UserHeaderView.xib */,
-				7349F7301BA1AC48006E9ABF /* Playground.storyboard */,
-				738A21C71BA22C2D004A575A /* PGLaunch.xib */,
-				7349F7101BA1ABB1006E9ABF /* Supporting Files */,
+				732717491BAC8836003E0B68 /* ViewController.swift */,
+				732717451BAC8836003E0B68 /* User.storyboard */,
+				732717481BAC8836003E0B68 /* UserViewController.swift */,
+				732717461BAC8836003E0B68 /* UserHeaderView.xib */,
+				732717471BAC8836003E0B68 /* UserSubViewController.swift */,
 			);
-			path = playground;
-			sourceTree = "<group>";
-		};
-		7349F7101BA1ABB1006E9ABF /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				7349F7541BA1ACD2006E9ABF /* Security.framework */,
-				7349F7521BA1ACCB006E9ABF /* UIKit.framework */,
-				7349F7501BA1ACC4006E9ABF /* Foundation.framework */,
-				7349F7761BA1AEBB006E9ABF /* playground-bridging.h */,
-				7349F7111BA1ABB1006E9ABF /* Info.plist */,
-			);
-			name = "Supporting Files";
+			name = User;
 			sourceTree = "<group>";
 		};
 		7361FCCC1B9F457C00444179 /* Libraries */ = {
@@ -1052,7 +1021,6 @@
 		FCD1DA791B04CCB200F9EA70 = {
 			isa = PBXGroup;
 			children = (
-				7349F70F1BA1ABB1006E9ABF /* playground */,
 				FCD1DA841B04CCB200F9EA70 /* Dropbeat */,
 				7361FCE61B9F631100444179 /* Resources */,
 				FCD1DA851B04CCB200F9EA70 /* Supporting Files */,
@@ -1076,6 +1044,7 @@
 				58BB0B151B12308000B07279 /* BaseViewController.swift */,
 				58C3E7A21B8A40C300822842 /* AddableTrackListViewController.swift */,
 				7361FCE51B9F628100444179 /* Model & etc */,
+				732717441BAC8814003E0B68 /* User */,
 				7361FCD81B9F58B900444179 /* Main */,
 				7361FCCF1B9F55BA00444179 /* Feed */,
 				7361FCD01B9F55C300444179 /* Channel */,
@@ -1207,8 +1176,6 @@
 				5889106C1B8B8FDC00963178 /* ic_drop_pause@2x.png in Resources */,
 				58CCDC3D1B6F4F1700A9A3E9 /* ic_add_btn@2x.png in Resources */,
 				5898FAFC1B8259AE009CE97E /* ic_hud_unlike@2x.png in Resources */,
-				730314931BA7427C00133764 /* coverImage2.png in Resources */,
-				730314921BA7427C00133764 /* coverImage.png in Resources */,
 				5841BED61B8CF11300E77AE0 /* ic_drop_pause_small@2x.png in Resources */,
 				58CB66741B8DE4E800EF628A /* ic_shuffle_btn@2x.png in Resources */,
 				586D25B61B67AE0000C19D84 /* ic_home_gray@2x.png in Resources */,
@@ -1230,13 +1197,11 @@
 				586D25AD1B67878C00C19D84 /* ic_star_filled.png in Resources */,
 				58CF0C381B11025500AD4BF0 /* empty.png in Resources */,
 				589F0F351B6A333F000851CC /* ic_dotdotdot_horizontal@2x.png in Resources */,
-				7303148C1BA7397900133764 /* UserHeaderView.xib in Resources */,
 				FCD1DA8D1B04CCB200F9EA70 /* Main.storyboard in Resources */,
 				586F49C71B805D290039CC6B /* Localizable.stringsdict in Resources */,
 				73C7862F1B9EFB93001D2A2E /* ic_list_gray_small@2x.png in Resources */,
 				589F0F261B6A2C13000851CC /* ic_pause_gray@2x.png in Resources */,
 				586D25CB1B67B73200C19D84 /* ic_header_filter@2x.png in Resources */,
-				730314911BA7427C00133764 /* avatar.png in Resources */,
 				5898FAFF1B826BD3009CE97E /* ic_add_account@2x.png in Resources */,
 				586D25CF1B67B8B100C19D84 /* ic_arrow_down@2x.png in Resources */,
 				73C7862D1B9DB35F001D2A2E /* ic_pause_purple@2x.png in Resources */,
@@ -1257,12 +1222,12 @@
 				589F0F211B6A2BC3000851CC /* ic_play@2x.png in Resources */,
 				589F0F1F1B6A2BC3000851CC /* ic_forward@2x.png in Resources */,
 				FCD1DA921B04CCB200F9EA70 /* LaunchScreen.xib in Resources */,
-				7303148D1BA7424700133764 /* Playground.storyboard in Resources */,
 				5890D6701B081DD200AAEAE5 /* ic_edit.png in Resources */,
 				5890D66A1B081DD200AAEAE5 /* default_profile.png in Resources */,
 				589F0F201B6A2BC3000851CC /* ic_play_gray@2x.png in Resources */,
 				58AC784F1B681F0E00A2A248 /* ic_nonplaying@2x.png in Resources */,
 				582E7DA01B10D5F200AB76A2 /* next-96.png in Resources */,
+				7327174A1BAC8836003E0B68 /* User.storyboard in Resources */,
 				5878379E1B43D977008DF480 /* ic_hq_on.png in Resources */,
 				5890D66F1B081DD200AAEAE5 /* ic_edit_gray.png in Resources */,
 				586D85521B6968A900656844 /* sample_cover.png in Resources */,
@@ -1275,6 +1240,7 @@
 				586D854C1B695E8F00656844 /* ic_player@2x.png in Resources */,
 				58AC78401B67FBDB00A2A248 /* ic_playlist.png in Resources */,
 				586D25C91B67B62100C19D84 /* ic_header_search@2x.png in Resources */,
+				7327174B1BAC8836003E0B68 /* UserHeaderView.xib in Resources */,
 				584E2C641B81CC4B00555E76 /* ic_heart_btn_big@2x.png in Resources */,
 				58AC78501B681F0E00A2A248 /* ic_playing@2x.png in Resources */,
 				58AC78461B67FF2100A2A248 /* ic_plus@2x.png in Resources */,
@@ -1323,14 +1289,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				5890D6161B0538CD00AAEAE5 /* SearchViewController.swift in Sources */,
-				7303148F1BA7427000133764 /* UserViewController.swift in Sources */,
 				58B829C91B88879C009F6E51 /* GenreDiscoveryViewControllers.swift in Sources */,
 				588693C51B13B7A800566124 /* MBProgressHUD.m in Sources */,
+				7327174E1BAC8836003E0B68 /* ViewController.swift in Sources */,
 				581D4CA01B0A0CCF0036BEBF /* PlaylistTableViewCell.swift in Sources */,
 				585BAD0E1B85ED9900FE137A /* DTError.m in Sources */,
 				7327172F1BAC86A8003E0B68 /* DYAlertPickView.m in Sources */,
 				588693A01B13B51300566124 /* SDWebImageManager.m in Sources */,
 				5854C7C81B6EEA8B003A5A2A /* FollowingTableViewCell.swift in Sources */,
+				7327174D1BAC8836003E0B68 /* UserViewController.swift in Sources */,
 				7327173D1BAC86BB003E0B68 /* AXStretchableHeaderView.m in Sources */,
 				58BB0AEA1B12222C00B07279 /* Request.swift in Sources */,
 				58EAB3DD1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift in Sources */,
@@ -1352,6 +1319,7 @@
 				5886939E1B13B51300566124 /* SDWebImageDownloader.m in Sources */,
 				732717131BAC8649003E0B68 /* RBStoryboardPushSegue.m in Sources */,
 				588693A51B13B51300566124 /* UIImageView+HighlightedWebCache.m in Sources */,
+				7327174C1BAC8836003E0B68 /* UserSubViewController.swift in Sources */,
 				732717121BAC8649003E0B68 /* RBStoryboardPopoverSegue.m in Sources */,
 				58C5397A1B865AD000D7B8D0 /* FriendFeedHeaderView.swift in Sources */,
 				585BAD0D1B85ED9900FE137A /* DTConstants.m in Sources */,
@@ -1401,7 +1369,6 @@
 				5886939C1B13B51300566124 /* SDWebImageCompat.m in Sources */,
 				732717111BAC8649003E0B68 /* RBStoryboardModalSegue.m in Sources */,
 				7327173E1BAC86BB003E0B68 /* AXTabBar.m in Sources */,
-				7303148E1BA7426700133764 /* ViewController.swift in Sources */,
 				585BAD0F1B85ED9900FE137A /* DTTimePeriod.m in Sources */,
 				585BAD121B85ED9900FE137A /* DTTimePeriodGroup.m in Sources */,
 				732717021BAC8632003E0B68 /* SwiftyJSON.swift in Sources */,
@@ -1413,7 +1380,6 @@
 				58C3E7A31B8A40C300822842 /* AddableTrackListViewController.swift in Sources */,
 				5858CC111B656BE4003EA698 /* GenreTableViewCell.swift in Sources */,
 				5854C7C41B6E94F5003A5A2A /* FollowingFeedHeaderView.swift in Sources */,
-				730E47B21BA9A98B00FEBEA5 /* UserSubViewController.swift in Sources */,
 				5890D6181B053F4900AAEAE5 /* SettingsViewControllers.swift in Sources */,
 				7327173B1BAC86BB003E0B68 /* AXStretchableHeaderTabViewController.m in Sources */,
 				732717301BAC86A8003E0B68 /* GBFlatButton.m in Sources */,

@@ -201,7 +201,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             }
             break
         case .PLAYER:
-            activeViewController = UIStoryboard(name: "Playground", bundle: nil).instantiateInitialViewController() as? UIViewController
+            activeViewController = UIStoryboard(name: "User", bundle: nil).instantiateInitialViewController() as? UIViewController
 //            showTabBarPlayer(!self.isTabBarPlayerVisible)
 //            showPlayerView()
 //            let lastTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem

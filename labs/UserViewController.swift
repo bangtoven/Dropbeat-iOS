@@ -54,8 +54,10 @@ class UserViewController: AXStretchableHeaderTabViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.tintColor = UIColor.dropbeatColor()
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarTapped", name: NotifyKey.statusBarTapped, object: nil)
-
+        
+        
         self.headerView = UserHeaderView.instantiate()
         let header = self.headerView as! UserHeaderView
         header.maximumOfHeight = 260
@@ -89,20 +91,21 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 likes.baseUser = user
                 likes.fetchFunc = user.fetchTracksFromLikeList
                 
-                var v1 = self.instantiateSubVC()
-                v1.title = "Followers"
-                var v2 = self.instantiateSubVC()
-                v2.title = "Following"
-//                var v3 = self.instantiateSubVC()
-//                v3.title = "Playlist"
+                var f1 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
+                f1.title = "Followers"
+                f1.user = user
+                f1.followInfoType = .FOLLOWERS
                 
-                self.viewControllers = [likes, uploads, v1, v2]
+                var f2 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
+                f2.title = "Following"
+                f2.user = user
+                f2.followInfoType = .FOLLOWING
                 
-//                if user.tracks.count == 0 {
-//                    self.viewControllers = [likes, uploads]
-//                } else {
-//                    self.viewControllers = [uploads, likes]
-//                }
+                if user.tracks.count == 0 {
+                    self.viewControllers = [likes, f1, f2]
+                } else {
+                    self.viewControllers = [uploads, likes, f1, f2]
+                }
 
                 baseUser = user
             case "artist":
@@ -282,14 +285,16 @@ class UserViewController: AXStretchableHeaderTabViewController {
         self.selectedScrollView.setContentOffset(CGPointMake(0, -self.headerView.maximumOfHeight-44), animated: true)
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
         
         var navBar = self.navigationController?.navigationBar
         navBar!.barTintColor = UIColor.clearColor()
         navBar!.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         navBar!.tintColor = UIColor.whiteColor()
         navBar!.shadowImage = UIImage()
+        
+        self.didHeightRatioChange(self.headerViewHeightRatio)
     }
     
     override func viewWillDisappear(animated: Bool) {

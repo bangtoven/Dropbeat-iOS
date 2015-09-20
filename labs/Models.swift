@@ -19,17 +19,37 @@ enum UserType {
 
 class BaseUser {
     var userType: UserType
-    var id: String?
-    var name: String?
+    var id: String
+    var name: String
+    var resourceName: String
     var image: String?
     var coverImage: String?
     
-    init(userType: UserType, id: String?, name: String, image: String?, coverImage: String?) {
+    init(userType: UserType, id: String, name: String, image: String?, coverImage: String?, resourceName: String) {
         self.userType = userType
         self.id = id
         self.name = name
         self.image = image
         self.coverImage = coverImage
+        self.resourceName = resourceName
+    }
+    
+    init(json: JSON) {
+        self.id = json["id"].stringValue
+        self.name = json["name"].stringValue
+        self.resourceName = json["resource_name"].stringValue
+        self.image = json["image"].string
+        
+        switch json["user_type"].stringValue {
+        case "user":
+            self.userType = .USER
+        case "artist":
+            self.userType = .ARTIST
+        case "channel":
+            self.userType = .CHANNEL
+        default:
+            self.userType = .USER // throws
+        }
     }
 }
 
@@ -37,14 +57,13 @@ class User: BaseUser {
     var email: String
     var firstName: String
     var lastName: String
-    var nickname: String //
+    var nickname: String
     var fbId: String?
     var num_tracks: Int
-    var num_following: Int //
-    var num_followers: Int //
-    var description: String //
-    var resource_name: String
-    var tracks: [UserTrack] = [] //
+    var num_following: Int
+    var num_followers: Int
+    var description: String
+    var tracks: [UserTrack] = []
     var likes: [Like]?
     
     init(id: String, email: String, firstName: String, lastName: String, nickname:String, fbId: String?, num_tracks: Int, num_following: Int, num_followers: Int, description: String, profile_image: String, profile_cover_image: String, resource_name: String) {
@@ -57,8 +76,7 @@ class User: BaseUser {
         self.num_following = num_following
         self.num_followers = num_followers
         self.description = description
-        self.resource_name = resource_name
-        super.init(userType: UserType.USER, id: id, name: nickname, image: profile_image, coverImage: profile_cover_image)
+        super.init(userType: UserType.USER, id: id, name: nickname, image: profile_image, coverImage: profile_cover_image, resourceName: resource_name)
     }
     
     static func parseUser(data: AnyObject, key: String = "user", secondKey: String?=nil) -> User {
@@ -102,17 +120,41 @@ class User: BaseUser {
         return user
     }
     
+    enum FollowInfoType{
+        case FOLLOWERS
+        case FOLLOWING
+    }
+    
+    func fetchFollowInfo(follow: FollowInfoType, callback:((users: [BaseUser]?, error: NSError?) -> Void)) {
+        let path = follow == .FOLLOWERS ? ApiPath.userFollowers : ApiPath.userFollowing
+        Requests.sendGet(path, params: ["user_id": self.id], auth: false) { (req, resp, result, error) -> Void in
+            if (error != nil) {
+                callback(users: nil, error: error)
+                return
+            }
+            if (result == nil) {
+                callback(users: [], error: nil)
+                return
+            }
+            var users = [BaseUser]()
+            for (_, json): (String, JSON) in JSON(result!)["data"] {
+                var user = BaseUser(json: json)
+                users.append(user)
+            }
+            callback(users: users, error: nil)
+        }
+    }
     
     func fetchLikeList(callback:((likes:[Like]?, error:NSError?) -> Void)) {
         if (likes != nil) {
             callback(likes: likes!, error: nil)
             return
         }
-        if (id == nil) {
-            callback(likes: nil, error: NSError(domain: "likeList_fetch", code: 1, userInfo: nil))
-            return
-        }
-        Requests.getUserLikeList(id!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+//        if (id == nil) {
+//            callback(likes: nil, error: NSError(domain: "likeList_fetch", code: 1, userInfo: nil))
+//            return
+//        }
+        Requests.getUserLikeList(id, respCb: { (req, resp, result, error) -> Void in
             if (error != nil) {
                 callback(likes: nil, error: error)
                 return
@@ -163,18 +205,18 @@ class Channel: BaseUser {
     var isBookmarked:Bool
     var idx:Int?
     
-    init(id: String, name: String, thumbnail: String? = nil) {
+    init(id: String, name: String, thumbnail: String? = nil, resourceName: String) {
         self.playlists = [ChannelPlaylist]()
         self.genre = []
         self.isBookmarked = false
-        super.init(userType: UserType.CHANNEL, id: id, name: name, image: thumbnail, coverImage: thumbnail)
+        super.init(userType: UserType.CHANNEL, id: id, name: name, image: thumbnail, coverImage: thumbnail, resourceName: resourceName)
     }
     
-    init(name: String, thumbnail: String? = nil, genre: [String], playlists: [ChannelPlaylist]) {
+    init(id: String, name: String, thumbnail: String? = nil, genre: [String], playlists: [ChannelPlaylist], resourceName: String) {
         self.playlists = playlists
         self.genre = genre
         self.isBookmarked = false
-        super.init(userType: UserType.CHANNEL, id: nil, name: name, image: thumbnail, coverImage: thumbnail)
+        super.init(userType: UserType.CHANNEL, id: id, name: name, image: thumbnail, coverImage: thumbnail, resourceName: resourceName)
     }
     
     static func parseChannel(data: AnyObject, key: String = "data", secondKey: String?=nil) -> Channel? {
@@ -212,7 +254,10 @@ class Channel: BaseUser {
                 }
             }
         }
-        return Channel(name:name, thumbnail: thumbnail, genre:genreArray, playlists: playlists)
+        let resourceName = detail["resource_name"].stringValue
+        var id = detail["uid"].stringValue
+        
+        return Channel(id: id, name:name, thumbnail: thumbnail, genre:genreArray, playlists: playlists, resourceName: resourceName)
     }
     
     static func parseChannelList(data: AnyObject) -> [Channel] {
@@ -229,7 +274,9 @@ class Channel: BaseUser {
             if (s["thumbnail"].error == nil) {
                 thumbnail = s["thumbnail"].stringValue
             }
-            let c = Channel(id:uid, name: name, thumbnail: thumbnail)
+            
+            let resourceName = s["resource_name"].stringValue
+            let c = Channel(id:uid, name: name, thumbnail: thumbnail, resourceName: resourceName)
             c.idx = index
             channels.append(c)
         }
@@ -276,10 +323,10 @@ class Artist: BaseUser {
     var sectionedTracks: [String:[Track]] = [String:[Track]]()
     var events: [ArtistEvent] = []
     
-    init (id:String, name:String, image:String) {
-        super.init(userType: UserType.ARTIST, id: id, name: name, image: image, coverImage: image)
+    init (id:String, name:String, image:String, resourceName:String) {
+        super.init(userType: UserType.ARTIST, id: id, name: name, image: image, coverImage: image, resourceName: resourceName)
     }
-    
+//    let resourceName = s["resource_name"].stringValue
     static func parseArtist(data: AnyObject, key: String = "data", secondKey: String?=nil) -> Artist {
         var json = JSON(data)
         var detail: JSON
@@ -292,11 +339,12 @@ class Artist: BaseUser {
         var artist = Artist(
             id: detail["artist_id"].stringValue,
             name: detail["artist_name"].stringValue,
-            image: detail["artist_image"].stringValue)
+            image: detail["artist_image"].stringValue,
+            resourceName: detail["resource_name"].stringValue)
         
         artist.hasEvent = detail["has_event"].boolValue
         artist.hasPodcast = detail["has_podcast"].boolValue
-        artist.hasLiveset = artist.name != nil
+//        artist.hasLiveset = artist.name != nil
         
         var tracks = Track.parseTracks(data, key: "data", secondKey: "tracks")
         for (t: Track) in tracks {
@@ -310,15 +358,15 @@ class Artist: BaseUser {
     }
     
     func fetchEvents(callback:((events:[ArtistEvent]?, error:NSError?) -> Void)) {
-        if (name == nil) {
-            callback(events: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
-            return
-        }
+//        if (self.name == nil) {
+//            callback(events: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
+//            return
+//        }
         if (!hasEvent) {
             callback(events:[], error: nil)
             return
         }
-        Requests.searchEvent(name!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.searchEvent(name, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil) {
                 callback(events: nil, error: error)
                 return
@@ -338,15 +386,15 @@ class Artist: BaseUser {
             callback(tracks: sectionTracks!, error: nil)
             return
         }
-        if (name == nil) {
-            callback(tracks: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
-            return
-        }
+//        if (name == nil) {
+//            callback(tracks: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
+//            return
+//        }
         if (!hasLiveset) {
             callback(tracks: [], error: nil)
             return
         }
-        Requests.searchLiveset(name!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.searchLiveset(name, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil) {
                 callback(tracks: nil, error: error)
                 return
@@ -366,15 +414,15 @@ class Artist: BaseUser {
             callback(tracks: sectionTracks!, error: nil)
             return
         }
-        if (name == nil) {
-            callback(tracks: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
-            return
-        }
+//        if (name == nil) {
+//            callback(tracks: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
+//            return
+//        }
         if (!hasPodcast) {
             callback(tracks: [], error: nil)
             return
         }
-        Requests.searchPodcast(name!, page: -1, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.searchPodcast(name, page: -1, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil) {
                 callback(tracks: nil, error: error)
                 return

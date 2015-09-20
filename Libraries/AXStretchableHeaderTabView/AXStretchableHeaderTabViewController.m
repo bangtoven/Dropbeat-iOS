@@ -9,7 +9,6 @@ static NSString * const AXStretchableHeaderTabViewControllerSelectedIndexKey = @
 
 @interface AXStretchableHeaderTabViewController ()
 
-@property CGFloat headerViewHeightRatio;
 @property NSMutableArray *shownViewController;
 
 @end

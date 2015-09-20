@@ -19,7 +19,9 @@ public class ApiPath {
     static var userEmailSignup:String = user + "email_signup/"
     static var userEmailSignin:String = user + "email_signin/"
     static var userChangeNickname:String = user + "change_nickname/"
-    static var userLikeList:String = user + "like/"    
+    static var userLikeList:String = user + "like/"
+    static var userFollowers:String = user + "followers/"
+    static var userFollowing:String = user + "following/"
     
     // Feed
     static var feed :String = host + "feed/"

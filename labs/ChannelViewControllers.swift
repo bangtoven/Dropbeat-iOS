@@ -343,7 +343,7 @@ class ChannelViewController: AddableTrackListViewController,
     override func getPlaylistId() -> String? {
         var seed = ""
         for channel in bookmarkedChannels {
-            seed += channel.id!
+            seed += channel.id
         }
         return "seed_\(seed.md5)"
     }
@@ -453,7 +453,7 @@ class ChannelViewController: AddableTrackListViewController,
             
             self.bookmarkedChannels.removeAll(keepCapacity: false)
             for (uid:String, channel:Channel) in self.allChannels {
-                if bookmarkIds.contains(channel.id!) {
+                if bookmarkIds.contains(channel.id) {
                     channel.isBookmarked = true
                     self.bookmarkedChannels.append(channel)
                 } else {
@@ -536,12 +536,12 @@ class ChannelViewController: AddableTrackListViewController,
             var channels = Channel.parseChannelList(result!)
             if initialLoad {
                 for channel in channels {
-                    self.allChannels[channel.id!] = channel
+                    self.allChannels[channel.id] = channel
                 }
             }
             
             for channel in channels {
-                if let c = self.allChannels[channel.id!] {
+                if let c = self.allChannels[channel.id] {
                     self.channels.append(c)
                 }
             }
@@ -619,7 +619,7 @@ class ChannelViewController: AddableTrackListViewController,
             newChannels.append(channel)
         }
         newBookmarkedIds = newChannels.map({ (c:Channel) -> String in
-            return c.id!
+            return c.id
         })
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Saving..", comment:""))
         Requests.updateBookmarkList(newBookmarkedIds!, respCb:{
@@ -917,7 +917,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)
                 return
             }
-            self.channel!.id = self.channelUid
+            self.channel!.id = self.channelUid!
             self.genreView.text = ", ".join(self.channel!.genre)
             self.nameView.text = self.channel!.name
             if (self.channel!.image != nil) {
@@ -961,7 +961,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
             for (idx:String, s: JSON) in data {
                 self.bookmarkedIds.append(s.stringValue)
             }
-            self.channel!.isBookmarked = find(self.bookmarkedIds, self.channel!.id!) != nil
+            self.channel!.isBookmarked = find(self.bookmarkedIds, self.channel!.id) != nil
             self.updateBookmarkBtn()
         })
     }
@@ -1115,10 +1115,10 @@ class ChannelDetailViewController: AddableTrackListViewController,
                     title: NSLocalizedString("Failed to update", comment:""), message: message)
                 return
             }
-            if (isAdding && find(self.bookmarkedIds, self.channel!.id!) == nil) {
-                self.bookmarkedIds.append(self.channel!.id!)
+            if (isAdding && find(self.bookmarkedIds, self.channel!.id) == nil) {
+                self.bookmarkedIds.append(self.channel!.id)
             } else if (!isAdding) {
-                let idx = find(self.bookmarkedIds, self.channel!.id!)
+                let idx = find(self.bookmarkedIds, self.channel!.id)
                 if idx != nil {
                     self.bookmarkedIds.removeAtIndex(idx!)
                 }
@@ -1354,7 +1354,7 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
             
             self.bookmarkedChannels.removeAll(keepCapacity: false)
             for (uid:String, channel:Channel) in self.channels! {
-                channel.isBookmarked = bookmarkIds.contains(channel.id!)
+                channel.isBookmarked = bookmarkIds.contains(channel.id)
                 if channel.isBookmarked {
                     self.bookmarkedChannels.append(channel)
                 }
@@ -1379,14 +1379,14 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
         if (channel.isBookmarked) {
             for c in bookmarkedChannels {
                 if (c.id != channel.id) {
-                    newBookmarkedIds.insert(c.id!)
+                    newBookmarkedIds.insert(c.id)
                 }
             }
         } else {
             for c in bookmarkedChannels {
-                newBookmarkedIds.insert(c.id!)
+                newBookmarkedIds.insert(c.id)
             }
-            newBookmarkedIds.insert(channel.id!)
+            newBookmarkedIds.insert(channel.id)
         }
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Saving..", comment:""))
         Requests.updateBookmarkList(Array(newBookmarkedIds), respCb:{

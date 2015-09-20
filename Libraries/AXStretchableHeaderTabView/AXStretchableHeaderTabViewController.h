@@ -31,6 +31,8 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *containerView;
 @property (nonatomic) BOOL shouldBounceHeaderView;
 
+@property CGFloat headerViewHeightRatio;
+
 // Layout
 - (void)layoutHeaderViewAndTabBar;
 - (void)layoutViewControllers;

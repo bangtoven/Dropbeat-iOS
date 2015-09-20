@@ -156,7 +156,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                 
                 // GA
                 let tracker = GAI.sharedInstance().defaultTracker
-                let userId:String = account!.user!.id!
+                let userId:String = account!.user!.id
                 tracker.set("&uid", value:userId)
             }
             self.fetchUserInfo()

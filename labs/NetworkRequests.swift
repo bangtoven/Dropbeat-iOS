@@ -377,9 +377,9 @@ class AutocompleteRequester {
     var defaultParams:[String:String]
     var onTheFlyRequests = [String:Request]()
     
-    var handler:(keywords:Array<String>?, error:ErrorType?) -> Void
+    var handler:(keywords:Array<String>?, error:NSError?) -> Void
     
-    init (handler:(keywords:Array<String>?, error:ErrorType?) -> Void) {
+    init (handler:(keywords:Array<String>?, error:NSError?) -> Void) {
         self.handler = handler
         self.defaultParams = [
             "client": "youtube",
@@ -415,13 +415,13 @@ class AutocompleteRequester {
 //        
 //        Tuple types '(NSURLRequest?, NSHTTPURLResponse?, Result<String>)' (aka '(Optional<NSURLRequest>, Optional<NSHTTPURLResponse>, Result<String>)') and '(NSURLRequest, NSHTTPURLResponse?, String?, NSError?)' (aka '(NSURLRequest, Optional<NSHTTPURLResponse>, Optional<String>, Optional<NSError>)') have a different number of elements (3 vs. 4)
         
-        var req = request(Method.GET, self.youtubeApiPath, parameters: params).responseString(encoding: NSUTF8StringEncoding,
+        let req = request(Method.GET, self.youtubeApiPath, parameters: params).responseString(encoding: NSUTF8StringEncoding,
             completionHandler: {
                     (request:NSURLRequest?, response:NSHTTPURLResponse?, result:Result<String>) -> Void in
                 self.onTheFlyRequests.removeValueForKey(id!)
                 
                 if (result.error != nil) {
-                    self.handler(keywords: nil, error:result.error)
+                    self.handler(keywords: nil, error:result.error as? NSError)
                     return
                 }
                 let resultStr = result.value
@@ -430,21 +430,21 @@ class AutocompleteRequester {
                     return
                 }
                 let funcRegex = try! NSRegularExpression(pattern: self.funcRegexPattern, options: [])
-                let koreanRegex = try! NSRegularExpression(pattern: self.koreanRegexPattern, options: [])
+//                let koreanRegex = try! NSRegularExpression(pattern: self.koreanRegexPattern, options: [])
                 
                 let matches = funcRegex.matchesInString(resultStr!,
                     options: [],
                     range:NSMakeRange(0, resultStr!.characters.count)) 
                 if (matches.count > 0) {
                     let substring = NSString(string:resultStr!).substringWithRange(matches[0].rangeAtIndex(1))
-                    var data:NSData = substring.dataUsingEncoding(NSUTF8StringEncoding)!
+                    let data:NSData = substring.dataUsingEncoding(NSUTF8StringEncoding)!
                     var error: NSError?
                     
                     // convert NSData to 'AnyObject'
                     let anyObj: AnyObject?
                     do {
                         anyObj = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0))
-                    } catch var error1 as NSError {
+                    } catch let error1 as NSError {
                         error = error1
                         anyObj = nil
                     } catch {
@@ -458,9 +458,9 @@ class AutocompleteRequester {
                     if (anyObj is Array<AnyObject>) {
                         let argArray = anyObj as! Array<AnyObject>
                         if (argArray.count > 2) {
-                            let q:String = argArray[0] as! String
                             let words = argArray[1] as! Array<AnyObject>
-                            let appendix: AnyObject = argArray[2] as AnyObject
+//                            let q:String = argArray[0] as! String
+//                            let appendix: AnyObject = argArray[2] as AnyObject
                             
                             var keywords = [String]()
                             for word in words {
@@ -487,7 +487,7 @@ class AutocompleteRequester {
     private func makeRandId()->String {
         let possible = Array("abcdefghijklmnopqrstuvwxyz0123456789".characters)
         var id = ""
-        for i in 0...1 {
+        for _ in 0...1 {
             id.append(possible[random() % possible.count])
         }
         return id

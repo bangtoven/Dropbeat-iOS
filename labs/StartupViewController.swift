@@ -316,11 +316,11 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                     return
                 }
                 
-                var dataJson = JSON(result!)["data"]
+                let dataJson = JSON(result!)["data"]
                 print(dataJson)
                 var ids = [Int]()
                 
-                for (idx, s): (String, JSON) in dataJson {
+                for (_, s): (String, JSON) in dataJson {
                     if s["id"] != nil {
                         let id = s["id"].intValue
                         ids.append(id)

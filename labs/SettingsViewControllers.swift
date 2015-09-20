@@ -100,9 +100,9 @@ class CopyrightViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var htmlFile = NSBundle.mainBundle().pathForResource("copyright", ofType: "html")
+        let htmlFile = NSBundle.mainBundle().pathForResource("copyright", ofType: "html")
         if (htmlFile != nil) {
-            var request = NSURLRequest(URL: NSURL(fileURLWithPath: htmlFile!))
+            let request = NSURLRequest(URL: NSURL(fileURLWithPath: htmlFile!))
             webView.loadRequest(request)
         }
         

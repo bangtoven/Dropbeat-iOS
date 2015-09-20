@@ -138,9 +138,9 @@ class SearchViewController: AddableTrackListViewController,
         searchBar!.endEditing(true)
     }
     
-    func onHandleAutocomplete(keywords:Array<String>?, error:ErrorType?) {
+    func onHandleAutocomplete(keywords:Array<String>?, error:NSError?) {
         if (error != nil || keywords == nil) {
-            print("Failed to get autocomplete")
+            print("Failed to get autocomplete:\(error?.description)")
             return
         }
         autocomKeywords.removeAll(keepCapacity: false)

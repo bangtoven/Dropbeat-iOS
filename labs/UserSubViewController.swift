@@ -97,7 +97,7 @@ class ChannelSubViewController: UserSubViewController, DYAlertPickViewDataSource
                             message: NSLocalizedString("Internet is not connected", comment:""))
                         return
                 }
-                var message = NSLocalizedString("Failed to load tracks.", comment:"")
+                let message = NSLocalizedString("Failed to load tracks.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
@@ -116,7 +116,7 @@ class ChannelSubViewController: UserSubViewController, DYAlertPickViewDataSource
                 self.listEnd = true
             }
             
-            for (idx, item): (String, JSON) in json["items"] {
+            for (_, item): (String, JSON) in json["items"] {
                 if item["snippet"].error != nil {
                     continue
                 }
@@ -166,7 +166,7 @@ class UserSubViewController: AddableTrackListViewController, UITableViewDataSour
             print("start fetching \(self.title)")
             fetchFunc!({ (tracks, error) -> Void in
                 if let t = tracks {
-                    self.tracks = tracks!
+                    self.tracks = t
                     self.trackTableView.reloadData()
                 } else {
                     print(error)

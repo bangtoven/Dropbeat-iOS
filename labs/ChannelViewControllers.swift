@@ -91,7 +91,6 @@ class ChannelViewController: AddableTrackListViewController, UITableViewDelegate
     
     func updateGenreSelectBtnView(genre: String) {
         let image = genreSelectBtn.imageView!.image
-        var titleLabel = genreSelectBtn.titleLabel
         let genreStr:NSString = genre as NSString
         genreSelectBtn.setTitle(genre, forState: UIControlState.Normal)
         
@@ -436,20 +435,20 @@ class ChannelViewController: AddableTrackListViewController, UITableViewDelegate
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = NSLocalizedString("Failed to fetch bookmark", comment:"")
+                let message = NSLocalizedString("Failed to fetch bookmark", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)
                 return
             }
             
             var json = JSON(result!)
-            var data = json["bookmark"]
+            let data = json["bookmark"]
             var bookmarkIds = Set<String>()
-            for (idx, s): (String, JSON) in data {
+            for (_, s): (String, JSON) in data {
                 bookmarkIds.insert(s.stringValue)
             }
             
             self.bookmarkedChannels.removeAll(keepCapacity: false)
-            for (uid, channel): (String, Channel) in self.allChannels {
+            for (_, channel): (String, Channel) in self.allChannels {
                 if bookmarkIds.contains(channel.id!) {
                     channel.isBookmarked = true
                     self.bookmarkedChannels.append(channel)
@@ -525,12 +524,12 @@ class ChannelViewController: AddableTrackListViewController, UITableViewDelegate
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = NSLocalizedString("Failed to fetch channels.", comment:"")
+                let message = NSLocalizedString("Failed to fetch channels.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)
                 return
             }
             self.channels.removeAll(keepCapacity: false)
-            var channels = Channel.parseChannelList(result!)
+            let channels = Channel.parseChannelList(result!)
             if initialLoad {
                 for channel in channels {
                     self.allChannels[channel.id!] = channel
@@ -684,20 +683,20 @@ class ChannelViewController: AddableTrackListViewController, UITableViewDelegate
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = "Failed to load channel feed."
+                let message = "Failed to load channel feed."
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
             let respObj = JSON(result!)
             if !(respObj["success"].bool ?? false) {
-                var message = NSLocalizedString("Failed to load channel feed.", comment:"")
+                let message = NSLocalizedString("Failed to load channel feed.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
             var particals = [ChannelFeedTrack]()
-            for (idx, s): (String, JSON) in respObj["data"] {
+            for (_, s): (String, JSON) in respObj["data"] {
                 if s["video_id"].string == nil {
                     continue
                 }
@@ -716,7 +715,7 @@ class ChannelViewController: AddableTrackListViewController, UITableViewDelegate
                 if s["published_at"].string == nil {
                     continue
                 }
-                var publishedAt = self.dateFormatter.dateFromString(s["published_at"].stringValue)
+                let publishedAt = self.dateFormatter.dateFromString(s["published_at"].stringValue)
                 if publishedAt == nil {
                     continue
                 }
@@ -947,15 +946,15 @@ class ChannelDetailViewController: AddableTrackListViewController,
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = NSLocalizedString("Failed to fetch bookmark", comment:"")
+                let message = NSLocalizedString("Failed to fetch bookmark", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)
                 return
             }
             
             var json = JSON(result!)
-            var data = json["bookmark"]
+            let data = json["bookmark"]
             self.bookmarkedIds.removeAll(keepCapacity: false)
-            for (idx, s): (String, JSON) in data {
+            for (_, s): (String, JSON) in data {
                 self.bookmarkedIds.append(s.stringValue)
             }
             self.channel!.isBookmarked = self.bookmarkedIds.indexOf((self.channel!.id!)) != nil
@@ -991,7 +990,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = NSLocalizedString("Failed to load tracks.", comment:"")
+                let message = NSLocalizedString("Failed to load tracks.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
@@ -1012,7 +1011,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
                 self.loadMoreSpinner.stopAnimating()
             }
             
-            for (idx, item): (String, JSON) in json["items"] {
+            for (_, item): (String, JSON) in json["items"] {
                 if item["snippet"].error != nil {
                     continue
                 }
@@ -1024,23 +1023,22 @@ class ChannelDetailViewController: AddableTrackListViewController,
                 if resourceId["videoId"].error != nil {
                     continue
                 }
-                var id = resourceId["videoId"].stringValue
+                let id = resourceId["videoId"].stringValue
                 
                 if snippet["title"].error != nil {
                     continue
                 }
-                var title = snippet["title"].stringValue
+                let title = snippet["title"].stringValue
                 
                 if snippet["description"].error != nil {
                     continue
                 }
-                var desc = snippet["description"].stringValue
                 
                 if snippet["publishedAt"].error != nil {
                     continue
                 }
-                var publishedAtStr = snippet["publishedAt"].stringValue
-                var publishedAt = self.dateFormatter.dateFromString(publishedAtStr)
+                let publishedAtStr = snippet["publishedAt"].stringValue
+                let publishedAt = self.dateFormatter.dateFromString(publishedAtStr)
                 self.tracks.append(ChannelTrack(id: id, title:title, publishedAt: publishedAt))
             }
             self.updatePlaylist(false)
@@ -1127,7 +1125,6 @@ class ChannelDetailViewController: AddableTrackListViewController,
     
     func updateSectionSelectBtnView(sectionName: String) {
         let image = sectionSelector.imageView!.image
-        var titleLabel = sectionSelector.titleLabel
         let genreStr:NSString = sectionName as NSString
         sectionSelector.setTitle(sectionName, forState: UIControlState.Normal)
         
@@ -1337,20 +1334,20 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
                             message: NSLocalizedString("Internet is not connected", comment:""))
                         return
                 }
-                var message = NSLocalizedString("Failed to fetch bookmark", comment:"")
+                let message = NSLocalizedString("Failed to fetch bookmark", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)
                 return
             }
             
             var json = JSON(result!)
-            var data = json["bookmark"]
+            let data = json["bookmark"]
             var bookmarkIds = Set<String>()
-            for (idx, s): (String, JSON) in data {
+            for (_, s): (String, JSON) in data {
                 bookmarkIds.insert(s.stringValue)
             }
             
             self.bookmarkedChannels.removeAll(keepCapacity: false)
-            for (uid, channel): (String, Channel) in self.channels! {
+            for (_, channel): (String, Channel) in self.channels! {
                 channel.isBookmarked = bookmarkIds.contains(channel.id!)
                 if channel.isBookmarked {
                     self.bookmarkedChannels.append(channel)
@@ -1372,7 +1369,6 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
         }
         let channel = bookmarkedChannels[indexPath.row]
         var newBookmarkedIds = Set<String>()
-        var newChannels = [Channel]()
         if (channel.isBookmarked) {
             for c in bookmarkedChannels {
                 if (c.id != channel.id) {

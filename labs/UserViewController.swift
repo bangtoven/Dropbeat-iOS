@@ -66,32 +66,33 @@ class UserViewController: AXStretchableHeaderTabViewController {
             progressHud.hide(true)
             
             if (error != nil || JSON(result!)["success"] == false) {
-                ViewUtils.showConfirmAlert(self, title: "Error", message: (error?.description)!)
+                ViewUtils.showNoticeAlert(self, title: "Error", message: (error?.description)!)
                 return
             }
             
             var baseUser : BaseUser?
-            switch JSON(result!)["data"]["user_type"] {
+            let type = JSON(result!)["data"]["user_type"]
+            switch type {
             case "user":
-                var user = User.parseUser(result!,key:"data",secondKey:"user")
+                let user = User.parseUser(result!,key:"data",secondKey:"user")
                 header.descriptionLabel.text = user.description
                 header.followInfoView.hidden = false
                 header.followersLabel.text = String(user.num_followers)
                 header.followingLabel.text = String(user.num_following)
 
-                var uploads = self.instantiateSubVC()
+                let uploads = self.instantiateSubVC()
                 uploads.title = "Uploads"
                 uploads.tracks = user.tracks
                 uploads.baseUser = user
 
-                var likes = self.instantiateSubVC()
+                let likes = self.instantiateSubVC()
                 likes.title = "Likes"
                 likes.baseUser = user
                 likes.fetchFunc = user.fetchTracksFromLikeList
                 
-                var v1 = self.instantiateSubVC()
+                let v1 = self.instantiateSubVC()
                 v1.title = "Followers"
-                var v2 = self.instantiateSubVC()
+                let v2 = self.instantiateSubVC()
                 v2.title = "Following"
 //                var v3 = self.instantiateSubVC()
 //                v3.title = "Playlist"
@@ -106,7 +107,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
 
                 baseUser = user
             case "artist":
-                var artist = Artist.parseArtist(result!,key:"data",secondKey:"user")
+                let artist = Artist.parseArtist(result!,key:"data",secondKey:"user")
                 
                 var subViewArr = [UserSubViewController]()
                 for (section, tracks): (String, [Track]) in artist.sectionedTracks {
@@ -119,7 +120,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
 //                            }
 //                        }
 //                    }
-                    var subView = self.instantiateSubVC()
+                    let subView = self.instantiateSubVC()
                     subView.title = section.capitalizedString
                     subView.tracks = tracks
                     subView.baseUser = artist
@@ -127,7 +128,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 }
                 
                 if artist.hasLiveset {
-                    var subView = self.instantiateSubVC()
+                    let subView = self.instantiateSubVC()
                     subView.title = "Liveset"
                     subView.baseUser = artist
                     subView.fetchFunc = artist.fetchLiveset
@@ -135,7 +136,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 }
                 
                 if artist.hasPodcast {
-                    var subView = self.instantiateSubVC()
+                    let subView = self.instantiateSubVC()
                     subView.title = "Podcast"
                     subView.baseUser = artist
                     subView.fetchFunc = artist.fetchPodcast
@@ -145,20 +146,20 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 self.viewControllers = subViewArr
                 baseUser = artist
             case "channel":
-                var channel = Channel.parseChannel(result!,key:"data",secondKey: "user")
+                let channel = Channel.parseChannel(result!,key:"data",secondKey: "user")
                 header.descriptionLabel.text = channel!.genre.joinWithSeparator(", ")
                 if header.descriptionLabel.text?.length == 0 {
                     header.descriptionLabel.text = "\n"
                 }
                 
                 var subViewArr = [ChannelSubViewController]()
-                var recent = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
+                let recent = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
                 recent.title = "Recent"
                 recent.channel = channel
                 subViewArr.append(recent)
                 
                 if channel?.playlists.count > 1 {
-                    var sections = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
+                    let sections = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
                     sections.title = "Sections"
                     sections.channel = channel
                     sections.isSectioned = true
@@ -168,7 +169,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 self.viewControllers = subViewArr
                 baseUser = channel
             default:
-                var message = "Unknown user_type"
+                ViewUtils.showNoticeAlert(self, title: "Error", message: "Unknown user type: \(type)")
                 return
             }
             
@@ -184,7 +185,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
                     forMinimumHeight: self.headerView!.maximumOfHeight*1.5)
             }
             
-            var descriptionHeight = self.calculateDescriptionContentSize()
+            let descriptionHeight = self.calculateDescriptionContentSize()
             if descriptionHeight <= 32 {
                 header.showMoreButton.hidden = true
                 self.headerView!.maximumOfHeight -= (32-descriptionHeight)
@@ -220,7 +221,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
         let label = header.descriptionLabel
         let currentHeight = label.frame.height
         let contentHeight = calculateDescriptionContentSize()
-        var diff = contentHeight - currentHeight
+        let diff = contentHeight - currentHeight
         
         if diff > 0 {
             self.headerView!.maximumOfHeight += diff
@@ -248,21 +249,22 @@ class UserViewController: AXStretchableHeaderTabViewController {
             break
         }
         
-        var navBar = self.navigationController?.navigationBar
-        switch ratio {
-        case 0..<0.3:
-            navBar!.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 1))
-            navBar!.tintColor = UIColor.dropbeatColor()
-            navBar!.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor()]
-        case 0.3...1.0:
-            var r = 10/7 * (1-ratio)
-            navBar!.lt_setBackgroundColor(UIColor(white: 1.0, alpha: r))
-            navBar!.tintColor = UIColor.dropbeatColor(saturation: r)
-            navBar!.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(r, saturation: r)]
-        default:
-            navBar!.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 0))
-            navBar!.tintColor = UIColor.dropbeatColor(saturation: 0)
-            navBar!.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(0, saturation: 0)]
+        if let navBar = self.navigationController?.navigationBar {
+            switch ratio {
+            case 0..<0.3:
+                navBar.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 1))
+                navBar.tintColor = UIColor.dropbeatColor()
+                navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor()]
+            case 0.3...1.0:
+                let r = 10/7 * (1-ratio)
+                navBar.lt_setBackgroundColor(UIColor(white: 1.0, alpha: r))
+                navBar.tintColor = UIColor.dropbeatColor(saturation: r)
+                navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(r, saturation: r)]
+            default:
+                navBar.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 0))
+                navBar.tintColor = UIColor.dropbeatColor(saturation: 0)
+                navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(0, saturation: 0)]
+            }
         }
         
 //        if ratio == 0.0 {

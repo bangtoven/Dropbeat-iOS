@@ -334,7 +334,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         let player = audioPlayerControl.moviePlayer
         player.controlStyle = show ? MPMovieControlStyle.Embedded : MPMovieControlStyle.None
         if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO("8") {
-            var subViewObjs = player.backgroundView.superview?.superview?.subviews
+            let subViewObjs = player.backgroundView.superview?.superview?.subviews
             if subViewObjs == nil {
                 return
             }
@@ -511,7 +511,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 progressSliderBar.value = (curr * 100) / total
             }
             
-            var state = PlayerContext.playState
             if (PlayerContext.playState == PlayState.PLAYING) {
                 progressSliderBar.enabled = true
             } else {
@@ -785,7 +784,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 let reason = Int(resultValue!)
                 if (reason == MPMovieFinishReason.PlaybackError.rawValue) {
                     // Finished with error
-                    var err:NSError? = userInfo!["error"] as? NSError
                     let errMsg = NSLocalizedString("This track is not streamable", comment:"")
                     ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to play", comment:""),
                         message: errMsg)

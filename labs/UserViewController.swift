@@ -89,11 +89,20 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 likes.baseUser = user
                 likes.fetchFunc = user.fetchTracksFromLikeList
                 
-                if user.tracks.count == 0 {
-                    self.viewControllers = [likes, uploads]
-                } else {
-                    self.viewControllers = [uploads, likes]
-                }
+                var v1 = self.instantiateSubVC()
+                v1.title = "Followers"
+                var v2 = self.instantiateSubVC()
+                v2.title = "Following"
+//                var v3 = self.instantiateSubVC()
+//                v3.title = "Playlist"
+                
+                self.viewControllers = [likes, uploads, v1, v2]
+                
+//                if user.tracks.count == 0 {
+//                    self.viewControllers = [likes, uploads]
+//                } else {
+//                    self.viewControllers = [uploads, likes]
+//                }
 
                 baseUser = user
             case "artist":
@@ -201,7 +210,9 @@ class UserViewController: AXStretchableHeaderTabViewController {
         header.followButton.selected = !header.followButton.selected
         // http://spark.coroutine.io/api/v1/user/follow/
         // http://spark.coroutine.io/api/v1/user/unfollow/
-        // {"user_id":3}     
+        // {"user_id":3}    
+        // {"artist_id":2025}
+        // {"channel_id":9}     
     }
     
     func showMoreAction() {

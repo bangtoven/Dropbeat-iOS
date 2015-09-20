@@ -129,6 +129,7 @@
 		73FC90CA1BAE4AFA00284B8A /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90BD1BAE4AFA00284B8A /* Upload.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90CB1BAE4AFA00284B8A /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90BE1BAE4AFA00284B8A /* Validation.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90CE1BAE5DCC00284B8A /* KeychainItemWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90CC1BAE5C9000284B8A /* KeychainItemWrapper.swift */; settings = {ASSET_TAGS = (); }; };
+		73FC90D01BAE79CD00284B8A /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73FC90CF1BAE79CD00284B8A /* FBSDKShareKit.framework */; };
 		FC0D9D551B09A70300E048CC /* PlayerContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0D9D541B09A70300E048CC /* PlayerContext.swift */; };
 		FC0D9D591B0CC4DE00E048CC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0D9D581B0CC4DE00E048CC /* Constants.swift */; };
 		FC766BEF1B050D51006FD4FB /* NetworkPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC766BEE1B050D51006FD4FB /* NetworkPath.swift */; };
@@ -344,6 +345,7 @@
 		73FC90BD1BAE4AFA00284B8A /* Upload.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Upload.swift; path = Libraries/Alamofire/Upload.swift; sourceTree = SOURCE_ROOT; };
 		73FC90BE1BAE4AFA00284B8A /* Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Validation.swift; path = Libraries/Alamofire/Validation.swift; sourceTree = SOURCE_ROOT; };
 		73FC90CC1BAE5C9000284B8A /* KeychainItemWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainItemWrapper.swift; sourceTree = "<group>"; };
+		73FC90CF1BAE79CD00284B8A /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Libraries/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		FC0D9D541B09A70300E048CC /* PlayerContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerContext.swift; sourceTree = "<group>"; };
 		FC0D9D581B0CC4DE00E048CC /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		FC766BEE1B050D51006FD4FB /* NetworkPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkPath.swift; sourceTree = "<group>"; };
@@ -365,6 +367,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73FC90D01BAE79CD00284B8A /* FBSDKShareKit.framework in Frameworks */,
 				58B829D21B888F3B009F6E51 /* CoreMedia.framework in Frameworks */,
 				587837E81B45C66E008DF480 /* libXCDYouTubeKit.a in Frameworks */,
 				587837E41B451DE7008DF480 /* JavaScriptCore.framework in Frameworks */,
@@ -742,21 +745,22 @@
 		F98F65D2D15412F7828AF298 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				58B829D11B888F3B009F6E51 /* CoreMedia.framework */,
-				587837E71B45C66E008DF480 /* libXCDYouTubeKit.a */,
-				587837E31B451DE7008DF480 /* JavaScriptCore.framework */,
-				588693CD1B13C4C500566124 /* Raygun4iOS.framework */,
-				588693C71B13C3F600566124 /* Bolts.framework */,
-				588693C81B13C3F600566124 /* FBSDKCoreKit.framework */,
-				588693C91B13C3F600566124 /* FBSDKLoginKit.framework */,
 				588693751B13B4ED00566124 /* libGoogleAnalyticsServices.a */,
+				587837E71B45C66E008DF480 /* libXCDYouTubeKit.a */,
 				58BB0AF71B122A8600B07279 /* libsqlite3.dylib */,
 				58BB0AF51B122A7900B07279 /* libz.dylib */,
-				58BB0AF31B122A6D00B07279 /* SystemConfiguration.framework */,
-				58BB0AF11B122A6300B07279 /* CoreData.framework */,
-				582E7D851B0F9A2D00AB76A2 /* QuartzCore.framework */,
-				5890D6291B081C1100AAEAE5 /* MediaPlayer.framework */,
 				5890D6271B081C0800AAEAE5 /* AVFoundation.framework */,
+				588693C71B13C3F600566124 /* Bolts.framework */,
+				58BB0AF11B122A6300B07279 /* CoreData.framework */,
+				58B829D11B888F3B009F6E51 /* CoreMedia.framework */,
+				588693C81B13C3F600566124 /* FBSDKCoreKit.framework */,
+				588693C91B13C3F600566124 /* FBSDKLoginKit.framework */,
+				73FC90CF1BAE79CD00284B8A /* FBSDKShareKit.framework */,
+				587837E31B451DE7008DF480 /* JavaScriptCore.framework */,
+				5890D6291B081C1100AAEAE5 /* MediaPlayer.framework */,
+				582E7D851B0F9A2D00AB76A2 /* QuartzCore.framework */,
+				588693CD1B13C4C500566124 /* Raygun4iOS.framework */,
+				58BB0AF31B122A6D00B07279 /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
 			path = ..;
@@ -875,7 +879,7 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0600;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = dropbeat;
 				TargetAttributes = {
 					FCD1DA811B04CCB200F9EA70 = {
@@ -1199,6 +1203,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -1267,7 +1272,6 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/build/Debug-iphoneos/Pods",
 					"$(PROJECT_DIR)/Libraries",
 					"$(PROJECT_DIR)/Libraries/Raygun4iOS",
 				);
@@ -1276,14 +1280,11 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/vulpes/Downloads/GoogleAnalyticsServicesiOS_3.12,
-					"/Users/parkilsu/dev/xcode-repo",
 					"$(PROJECT_DIR)/Libraries/GA",
-					"/Users/vulpes/Documents/iphone/XCDYouTubeKit/build/Debug-iphoneos",
 					"$(PROJECT_DIR)/Libraries",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/labsWorkspace-enlawibbbrwbfxaarobsinbrlhgb/Build/Products/Debug-iphoneos",
 					"$(PROJECT_DIR)/labs",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.dropbeat.prod;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/labs/labs-Bridging-Header.h";
@@ -1299,7 +1300,6 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"$(PROJECT_DIR)/build/Debug-iphoneos/Pods",
 					"$(PROJECT_DIR)/Libraries",
 					"$(PROJECT_DIR)/Libraries/Raygun4iOS",
 				);
@@ -1308,14 +1308,11 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					/Users/vulpes/Downloads/GoogleAnalyticsServicesiOS_3.12,
-					"/Users/parkilsu/dev/xcode-repo",
 					"$(PROJECT_DIR)/Libraries/GA",
-					"/Users/vulpes/Documents/iphone/XCDYouTubeKit/build/Debug-iphoneos",
 					"$(PROJECT_DIR)/Libraries",
-					"$(USER_LIBRARY_DIR)/Developer/Xcode/DerivedData/labsWorkspace-enlawibbbrwbfxaarobsinbrlhgb/Build/Products/Debug-iphoneos",
 					"$(PROJECT_DIR)/labs",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.dropbeat.prod;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/labs/labs-Bridging-Header.h";
@@ -1336,6 +1333,7 @@
 				);
 				INFOPLIST_FILE = labsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.dropbeat.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/labs.app/labs";
 			};
@@ -1351,6 +1349,7 @@
 				);
 				INFOPLIST_FILE = labsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "net.dropbeat.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/labs.app/labs";
 			};

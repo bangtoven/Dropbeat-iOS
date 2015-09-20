@@ -232,7 +232,6 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     }
     
     func menuTypeToTabIdx (type:MenuType) -> Int {
-        var idx : Int
         switch(type) {
         case .FEED:
             return 0
@@ -244,8 +243,6 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             return 3
         case .PLAYER:
             return 4
-        default:
-            return 0
         }
     }
     

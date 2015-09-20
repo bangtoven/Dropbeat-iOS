@@ -779,9 +779,8 @@ class PlaylistViewController: BaseViewController,
             Requests.setPlaylist(importedPlaylist!.id, data: data, respCb: {
                     (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                 if (result == nil || error != nil || !(JSON(result!)["success"].bool ?? false)) {
-                    var message = "Failed to save playlist"
                     Requests.deletePlaylist(importedPlaylist!.id, respCb: Requests.EMPTY_RESPONSE_CALLBACK)
-                    callback(playlist:nil, error: NSError(domain: "importPlaylist", code: 0, userInfo: nil))
+                    callback(playlist:nil, error: NSError(domain: "importPlaylist", code: 0, userInfo: ["message":"Failed to save playlist"]))
                     return
                 }
                 callback(playlist:importedPlaylist, error:nil)

@@ -179,7 +179,6 @@ class BpTrendingTrackTableViewCell: AddableTrackTableViewCell {
     override func setSelected(selected: Bool, animated: Bool) {
         let artistWrapperColor = artistWrapper.backgroundColor
         let titleWrapperColor = titleWrapper.backgroundColor
-        let rankWarapperColor = rank.backgroundColor
         super.setSelected(selected, animated: animated)
         
         if(selected) {
@@ -192,7 +191,6 @@ class BpTrendingTrackTableViewCell: AddableTrackTableViewCell {
     override func setHighlighted(highlighted: Bool, animated: Bool) {
         let artistWrapperColor = artistWrapper.backgroundColor
         let titleWrapperColor = titleWrapper.backgroundColor
-        let rankWarapperColor = rank.backgroundColor
         super.setHighlighted(highlighted, animated: animated)
         
         if(highlighted) {

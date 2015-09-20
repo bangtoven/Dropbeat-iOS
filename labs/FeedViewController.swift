@@ -168,8 +168,6 @@ class FeedViewController: AddableTrackListViewController,
         case .USER_GROUP:
             prefix = "social_feed"
             break
-        default:
-            break
         }
         if prefix != nil && selectedGenre != nil{
             prefix! += "_\(selectedGenre!.key)"
@@ -194,8 +192,6 @@ class FeedViewController: AddableTrackListViewController,
             break
         case .USER_GROUP:
             prefix = NSLocalizedString("Social Feed", comment:"")
-            break
-        default:
             break
         }
         if prefix != nil && selectedGenre != nil {
@@ -222,9 +218,6 @@ class FeedViewController: AddableTrackListViewController,
             break
         case .USER_GROUP:
             postfix = "social_feed"
-            break
-        default:
-            postfix = "unknown"
             break
         }
         return section + postfix
@@ -457,9 +450,6 @@ class FeedViewController: AddableTrackListViewController,
             case .USER_GROUP:
                 cell = getUserGroupCell(indexPath)
                 break
-            default:
-                // not reach
-                cell = UITableViewCell()
             }
             let track = tracks[indexPath.row]
             if (getPlaylistId() == PlayerContext.currentPlaylistId &&
@@ -670,10 +660,7 @@ class FeedViewController: AddableTrackListViewController,
         case .USER_GROUP:
 //            return calculateUserGroupCellHeight(indexPath)
             return 150
-        default:
-            break
         }
-        return 60
     }
     
     func calculateUserGroupCellHeight(indexPath:NSIndexPath) -> CGFloat {
@@ -813,13 +800,8 @@ class FeedViewController: AddableTrackListViewController,
         case .NEW_RELEASE:
             action = "new_release"
             break
-        case .NEW_RELEASE:
-            action = "user_group"
-            break
         case .USER_GROUP:
             action = "social_feed"
-            break
-        default:
             break
         }
         if selectedGenre != nil {
@@ -854,8 +836,6 @@ class FeedViewController: AddableTrackListViewController,
             break
         case .USER_GROUP:
             loadUserGroupFeed(forceRefresh)
-            break
-        default:
             break
         }
     }

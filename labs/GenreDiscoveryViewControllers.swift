@@ -288,7 +288,7 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
                 return
             }
             
-            for (idx, s): (String, JSON) in json["data"] {
+            for (_, s): (String, JSON) in json["data"] {
                 self.selectedGenreIds.insert(String(s.intValue))
                 self.remoteSelectedGenreIds.insert(String(s.intValue))
             }
@@ -341,7 +341,6 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
             self.isLoading = false
             
             if error != nil || result == nil {
-                var message:String!
                 self.showError(error, callback: { ()-> Void in
                     self.loadGenre()
                 })

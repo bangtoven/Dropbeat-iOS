@@ -588,7 +588,6 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         let lastname = lastNameInputView.text
         let nickname = nicknameInputView.text
         let password = passwordInputView.text
-        let passwordConfirm = passwordConfirmInputView.text
         
         isSubmitting = true
         

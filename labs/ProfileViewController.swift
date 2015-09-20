@@ -44,7 +44,7 @@ UITableViewDelegate, UITableViewDataSource {
         configFavoriteGenreBtn.layer.cornerRadius = 3.0
         configFavoriteGenreBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         
-        if account.user!.fbId != nil && count(account.user!.fbId!) > 0 {
+        if account.user!.fbId != nil && (account.user!.fbId!).characters.count > 0 {
             let fbId = account.user!.fbId!
             let profileUrl = "https://graph.facebook.com/\(fbId)/picture?type=large"
             profileView.sd_setImageWithURL(NSURL(string:profileUrl),
@@ -79,8 +79,8 @@ UITableViewDelegate, UITableViewDataSource {
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "appWillEnterForeground", name: UIApplicationWillEnterForegroundNotification, object: nil)
         
-        if tableView.indexPathForSelectedRow() != nil {
-            tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: false)
+        if tableView.indexPathForSelectedRow != nil {
+            tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: false)
         }
         loadPlaylist()
         loadFavoriteGenres()
@@ -93,7 +93,7 @@ UITableViewDelegate, UITableViewDataSource {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "PlaylistSegue" {
-            let playlist = playlists[tableView.indexPathForSelectedRow()!.row]
+            let playlist = playlists[tableView.indexPathForSelectedRow!.row]
             let playlistVC = segue.destinationViewController as! PlaylistViewController
             playlistVC.currentPlaylist = playlist
         }
@@ -106,7 +106,7 @@ UITableViewDelegate, UITableViewDataSource {
             placeholder: NSLocalizedString("Playlist 01", comment:""),
             positiveBtnText: NSLocalizedString("Create", comment:""),
             positiveBtnCallback: { (result) -> Void in
-                if (count(result) == 0) {
+                if (result.characters.count == 0) {
                     return
                 }
                 let progressHud = ViewUtils.showProgress(self,
@@ -135,7 +135,7 @@ UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let playlist = playlists[indexPath.row]
-        var cell:PlaylistSelectTableViewCell = tableView.dequeueReusableCellWithIdentifier(
+        let cell:PlaylistSelectTableViewCell = tableView.dequeueReusableCellWithIdentifier(
             "PlaylistSelectTableViewCell", forIndexPath: indexPath) as! PlaylistSelectTableViewCell
         cell.nameView.text = playlist.name
         let trackCount = playlist.tracks.count
@@ -156,11 +156,11 @@ UITableViewDelegate, UITableViewDataSource {
             tableView.separatorInset = UIEdgeInsetsMake(0, 8, 0, 8)
         }
         
-        if tableView.respondsToSelector("layoutMargins") {
+        if #available(iOS 8.0, *) {
             tableView.layoutMargins = UIEdgeInsetsZero
         }
         
-        if cell.respondsToSelector("layoutMargins") {
+        if #available(iOS 8.0, *) {
             cell.layoutMargins = UIEdgeInsetsZero
         }
     }
@@ -188,11 +188,11 @@ UITableViewDelegate, UITableViewDataSource {
                         break
                     }
                 }
-                message = ", ".join(selectedGenres)
+                message = selectedGenres.joinWithSeparator(", ")
                 
                 let total = account.favoriteGenreIds.count
                 let selected = selectedGenres.count
-                var remain = total - selected
+                let remain = total - selected
                 if remain > 0 {
                     message += NSString.localizedStringWithFormat(
                         NSLocalizedString(" and %d others", comment:""),
@@ -258,7 +258,7 @@ UITableViewDelegate, UITableViewDataSource {
                     }, negativeBtnText: NSLocalizedString("Cancel", comment:""))
                 return
             }
-            let playlists = Playlist.parsePlaylists(result!).reverse()
+            let playlists = Array(Playlist.parsePlaylists(result!).reverse())
             if playlists.count == 0 {
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch playlists", comment:""), message: error!.description)
                 return

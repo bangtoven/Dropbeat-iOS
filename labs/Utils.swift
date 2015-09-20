@@ -98,16 +98,14 @@ class Utils {
 }
 
 class ViewUtils {
-    static func showNoticeAlert(viewController:UIViewController, title:String,
-            message:String, btnText:String=NSLocalizedString("Confirm", comment:""), callback:(() -> Void)?=nil) {
-                
-        if (NSClassFromString("UIAlertController") != nil) {
+    static func showNoticeAlert(viewController:UIViewController, title:String, message:String, btnText:String=NSLocalizedString("Confirm", comment:""), callback:(() -> Void)?=nil) {
+        
+        if #available(iOS 8.0, *) {
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: btnText, style: UIAlertActionStyle.Default,
                 handler:{ (action:UIAlertAction!) -> Void in
                     callback?()
-                }))
-            var app = UIApplication.sharedApplication()
+            }))
             viewController.presentViewController(alert, animated: true, completion: nil)
         } else {
             let alert = UIAlertView()
@@ -132,7 +130,7 @@ class ViewUtils {
             positiveBtnText:String=NSLocalizedString("Proceed", comment:""), positiveBtnCallback: (() -> Void)?=nil,
             negativeBtnText:String=NSLocalizedString("Cancel", comment:""), negativeBtnCallback: (() -> Void)?=nil) {
             
-        if (NSClassFromString("UIAlertController") != nil) {
+        if #available(iOS 8.0, *) {
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: positiveBtnText, style: UIAlertActionStyle.Default,
                     handler:{ (action:UIAlertAction!) -> Void in
@@ -169,15 +167,15 @@ class ViewUtils {
             positiveBtnText:String=NSLocalizedString("Submit", comment:""), positiveBtnCallback: (result:String) -> Void,
             negativeBtnText:String=NSLocalizedString("Cancel", comment:""), negativeBtnCallback: (() -> Void)?=nil) {
     
-        if (NSClassFromString("UIAlertController") != nil) {
+        if #available(iOS 8.0, *) {
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addTextFieldWithConfigurationHandler({ (textField: UITextField!) in
+            alert.addTextFieldWithConfigurationHandler({ (textField: UITextField) in
                 textField.placeholder = placeholder
             })
             alert.addAction(UIAlertAction(title: positiveBtnText, style: UIAlertActionStyle.Default,
-                    handler:{ (action:UIAlertAction!) -> Void in
-                        let textField = (alert.textFields as! [UITextField])[0]
-                        positiveBtnCallback(result: textField.text)
+                    handler:{ (action:UIAlertAction) -> Void in
+                        let textField = alert.textFields![0]
+                        positiveBtnCallback(result: textField.text!)
                     }))
             alert.addAction(UIAlertAction(title: negativeBtnText, style: UIAlertActionStyle.Default,
                     handler:{ (action:UIAlertAction!) -> Void in
@@ -193,7 +191,7 @@ class ViewUtils {
             alertDelegate.onClickedButtonAtIndex = { (alertView:UIAlertView, buttonIndex:Int) -> Void in
                 if (buttonIndex == 0) {
                     let textField = alertView.textFieldAtIndex(0)!
-                    positiveBtnCallback(result: textField.text)
+                    positiveBtnCallback(result: textField.text!)
                 } else {
                     negativeBtnCallback?()
                 }
@@ -217,7 +215,7 @@ class ViewUtils {
         if viewController.navigationController != nil {
             vc = viewController.navigationController!
         }
-        var hud:MBProgressHUD = MBProgressHUD.showHUDAddedTo(vc.view, animated: true)
+        let hud:MBProgressHUD = MBProgressHUD.showHUDAddedTo(vc.view, animated: true)
 //        hud.color = UIColor(netHex: 0x8F2CEF).colorWithAlphaComponent(0.8)
         hud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
     	hud.mode = MBProgressHUDMode.CustomView;
@@ -233,7 +231,7 @@ class ViewUtils {
         if viewController.navigationController != nil {
             vc = viewController.navigationController!
         }
-        var hud:MBProgressHUD = MBProgressHUD.showHUDAddedTo(vc.view, animated: true)
+        let hud:MBProgressHUD = MBProgressHUD.showHUDAddedTo(vc.view, animated: true)
         hud.mode = MBProgressHUDMode.Text
         hud.labelText = message
         hud.margin = 10.0

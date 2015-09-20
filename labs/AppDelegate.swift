@@ -29,10 +29,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var sharedTrackUid: String?
     var sharedPlaylistUid: String?
     
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         super.touchesBegan(touches, withEvent: event)
-        let touch: UITouch = event.allTouches()?.first as! UITouch
-        let location = touch.locationInView(self.window)
+        let touch = event!.allTouches()?.first
+        let location = touch!.locationInView(self.window)
         let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
         if (CGRectContainsPoint(statusBarFrame, location)) {
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.statusBarTapped, object: nil)
@@ -83,10 +83,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    override func remoteControlReceivedWithEvent(event: UIEvent) {
-        switch(event.subtype) {
+    override func remoteControlReceivedWithEvent(event: UIEvent?) {
+        switch(event!.subtype) {
         case UIEventSubtype.RemoteControlPlay:
-            println("play clicked")
+            print("play clicked")
             if PlayerContext.currentTrack == nil {
                 return
             }
@@ -100,25 +100,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             break;
         
         case UIEventSubtype.RemoteControlPause:
-            println("pause clicked")
+            print("pause clicked")
             NSNotificationCenter.defaultCenter().postNotificationName(
                 NotifyKey.playerPause, object: nil)
             break;
         
         case UIEventSubtype.RemoteControlPreviousTrack:
-            println("prev clicked")
+            print("prev clicked")
             NSNotificationCenter.defaultCenter().postNotificationName(
                 NotifyKey.playerPrev, object: nil)
             break;
         
         case UIEventSubtype.RemoteControlNextTrack:
-            println("next clicked")
+            print("next clicked")
             NSNotificationCenter.defaultCenter().postNotificationName(
                 NotifyKey.playerNext, object: nil)
             break;
             
         case UIEventSubtype.RemoteControlStop:
-            println("stop clicked")
+            print("stop clicked")
             break;
         case UIEventSubtype.RemoteControlTogglePlayPause:
             // XXX: For IOS 6 compat.
@@ -190,7 +190,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject?) -> Bool {
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
         handleCustomURL(url)
         return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
     }
@@ -198,12 +198,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func handleCustomURL(url:NSURL) {
         if url.scheme == ExternalUrlKey.scheme && url.host == ExternalUrlKey.defaultIdentifier {
             if let query = url.getKeyVals() {
-                var sharedTrackUid:String? = query["track"]
+                let sharedTrackUid:String? = query["track"]
                 if sharedTrackUid != nil {
                     redirectSharedTrack(sharedTrackUid!)
                     return
                 }
-                var sharedPlaylistUid:String? = query["playlist"]
+                let sharedPlaylistUid:String? = query["playlist"]
                 if sharedPlaylistUid != nil {
                     redirectSharedPlaylist(sharedPlaylistUid!)
                     return
@@ -219,8 +219,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func networkReachabilityChanged (noti: NSNotification) {
-        var status = reachability!.currentReachabilityStatus()
-        networkStatus = status.value
+        let status = reachability!.currentReachabilityStatus()
+        networkStatus = status.rawValue
         if (networkStatus != NetworkStatus.NOT_REACHABLE) {
             let quality = networkStatus == NetworkStatus.WIFI ?
                     QualityState.HQ : QualityState.LQ
@@ -236,13 +236,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         switch (networkStatus) {
         case 0:
-            println("networkReachability: NotReachable")
+            print("networkReachability: NotReachable")
             break
         case 1:
-            println("networkReachability: ReachableViaWiFi")
+            print("networkReachability: ReachableViaWiFi")
             break
         case 2:
-            println("networkReachability: ReachableViaWWAN")
+            print("networkReachability: ReachableViaWWAN")
             break
         default:
             break

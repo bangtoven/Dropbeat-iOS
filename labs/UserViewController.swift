@@ -66,7 +66,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
             progressHud.hide(true)
             
             if (error != nil || JSON(result!)["success"] == false) {
-                UIAlertView(title: "Error", message: JSON(result!)["error"].stringValue, delegate: nil, cancelButtonTitle: "I see").show()
+                ViewUtils.showConfirmAlert(self, title: "Error", message: (error?.description)!)
                 return
             }
             
@@ -109,7 +109,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 var artist = Artist.parseArtist(result!,key:"data",secondKey:"user")
                 
                 var subViewArr = [UserSubViewController]()
-                for (section: String, tracks: [Track]) in artist.sectionedTracks {
+                for (section, tracks): (String, [Track]) in artist.sectionedTracks {
 //                    // pick first thumbnail Url from track list
 //                    if imageForCover == nil {
 //                        for t in tracks {
@@ -146,7 +146,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 baseUser = artist
             case "channel":
                 var channel = Channel.parseChannel(result!,key:"data",secondKey: "user")
-                header.descriptionLabel.text = ", ".join(channel!.genre)
+                header.descriptionLabel.text = channel!.genre.joinWithSeparator(", ")
                 if header.descriptionLabel.text?.length == 0 {
                     header.descriptionLabel.text = "\n"
                 }
@@ -181,16 +181,16 @@ class UserViewController: AXStretchableHeaderTabViewController {
             }
             if let coverImage = baseUser?.coverImage {
                 header.coverImageView.sd_setImageWithURL(NSURL(string: coverImage), placeholderImage: UIImage(named: "default_cover_big"),
-                    forMinimumHeight: self.headerView.maximumOfHeight*1.5)
+                    forMinimumHeight: self.headerView!.maximumOfHeight*1.5)
             }
             
             var descriptionHeight = self.calculateDescriptionContentSize()
             if descriptionHeight <= 32 {
                 header.showMoreButton.hidden = true
-                self.headerView.maximumOfHeight -= (32-descriptionHeight)
+                self.headerView!.maximumOfHeight -= (32-descriptionHeight)
                 header.labelHeightConstraint.constant = descriptionHeight
             } else {
-                self.headerView.maximumOfHeight += 32
+                self.headerView!.maximumOfHeight += 32
                 header.labelHeightConstraint.constant = 64
                 if let scrollView = self.selectedScrollView {
                     scrollView.setContentOffset(CGPointMake(0, scrollView.contentOffset.y-32), animated: false)
@@ -223,7 +223,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
         var diff = contentHeight - currentHeight
         
         if diff > 0 {
-            self.headerView.maximumOfHeight += diff
+            self.headerView!.maximumOfHeight += diff
             header.labelHeightConstraint.constant = contentHeight
             self.selectedScrollView.setContentOffset(CGPointMake(0, self.selectedScrollView.contentOffset.y-diff), animated: false)
             self.layoutViewControllers()
@@ -258,11 +258,11 @@ class UserViewController: AXStretchableHeaderTabViewController {
             var r = 10/7 * (1-ratio)
             navBar!.lt_setBackgroundColor(UIColor(white: 1.0, alpha: r))
             navBar!.tintColor = UIColor.dropbeatColor(saturation: r)
-            navBar!.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(alpha: r, saturation: r)]
+            navBar!.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(r, saturation: r)]
         default:
             navBar!.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 0))
             navBar!.tintColor = UIColor.dropbeatColor(saturation: 0)
-            navBar!.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(alpha: 0, saturation: 0)]
+            navBar!.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(0, saturation: 0)]
         }
         
 //        if ratio == 0.0 {
@@ -279,13 +279,13 @@ class UserViewController: AXStretchableHeaderTabViewController {
     }
     
     func statusBarTapped() {
-        self.selectedScrollView.setContentOffset(CGPointMake(0, -self.headerView.maximumOfHeight-44), animated: true)
+        self.selectedScrollView.setContentOffset(CGPointMake(0, -self.headerView!.maximumOfHeight-44), animated: true)
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        var navBar = self.navigationController?.navigationBar
+        let navBar = self.navigationController?.navigationBar
         navBar!.barTintColor = UIColor.clearColor()
         navBar!.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         navBar!.tintColor = UIColor.whiteColor()
@@ -295,7 +295,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        var navBar = self.navigationController?.navigationBar
+        let navBar = self.navigationController?.navigationBar
         navBar!.barTintColor = nil
         navBar!.tintColor = nil
         navBar!.shadowImage = nil

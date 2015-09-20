@@ -151,7 +151,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     
     func onTrackShareBtnClicked(track:Track) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        var section = getSectionName()
+        let section = getSectionName()
         track.shareTrack(section, afterShare: { (error, uid) -> Void in
             progressHud.hide(true)
             if error != nil {
@@ -174,7 +174,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
             let shareUrl = "http://dropbeat.net/?track=" + uid!
             let shareTitle = track.title
             
-            var items:[AnyObject] = [shareTitle, shareUrl]
+            let items:[AnyObject] = [shareTitle, shareUrl]
             
             let activityController = UIActivityViewController(
                     activityItems: items, applicationActivities: nil)
@@ -184,7 +184,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
                     UIActivityTypeAirDrop,
                     UIActivityTypeAssignToContact
                 ]
-            if activityController.respondsToSelector("popoverPresentationController:") {
+            if #available(iOS 8.0, *) {
                 activityController.popoverPresentationController?.sourceView = self.view
             }
             self.presentViewController(activityController, animated:true, completion: nil)
@@ -269,9 +269,9 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         
         var url:NSURL!
         if let userTrack = track as? UserTrack {
-            println("playing user-uploaded drop")
+            print("playing user-uploaded drop")
             url = NSURL(string:userTrack.streamUrl)
-        } else if let urlString = resolveLocal(track.drop!.dref, track.drop!.type) {
+        } else if let urlString = track.drop!.resolveStreamUrl() {
             url = NSURL(string:urlString)
         } else {
             return
@@ -284,18 +284,22 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         let noti = NSNotification(name: NotifyKey.playerPause, object: nil)
         NSNotificationCenter.defaultCenter().postNotification(noti)
         
-        var sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
-        var audioSessionError:NSError?
-        if (!sharedInstance.setCategory(AVAudioSessionCategoryPlayback, error: &audioSessionError)) {
-            println("Audio session error \(audioSessionError) \(audioSessionError?.userInfo)")
+        let sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
+        do {
+            try sharedInstance.setCategory(AVAudioSessionCategoryPlayback)
+        } catch let audioSessionError as NSError {
+            print("Audio session error \(audioSessionError) \(audioSessionError.userInfo)")
         }
         
-        sharedInstance.setActive(true, error: nil)
+        do {
+            try sharedInstance.setActive(true)
+        } catch _ {
+        }
         dropPlayableItem = AVPlayerItem(URL: url)
         
         dropPlayer = AVPlayer(playerItem: dropPlayableItem!)
         
-        var selectedIndexPath = trackTableView.indexPathForSelectedRow()
+        let selectedIndexPath = trackTableView.indexPathForSelectedRow
         if selectedIndexPath != nil {
             trackTableView.deselectRowAtIndexPath(selectedIndexPath!, animated: false)
         }
@@ -304,7 +308,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         self.updateDropPlayStatus(DropPlayStatus.Loading)
         
         let player = dropPlayer!
-        let kvoOption = NSKeyValueObservingOptions(0)
+        let kvoOption = NSKeyValueObservingOptions(rawValue: 0)
         player.addObserver(self, forKeyPath: "status", options: kvoOption, context: nil)
         
         
@@ -319,10 +323,14 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
             label: track.title,
             value: 0
             ).build()
-        tracker.send(event as [NSObject: AnyObject]!)
+        var eventDict = [NSObject: AnyObject]()
+        for (key,value) in event {
+            eventDict[key as! NSObject] = value
+        }
+        tracker.send(eventDict)
     }
     
-    override func observeValueForKeyPath(keyPath: String, ofObject object: AnyObject, change: [NSObject : AnyObject], context: UnsafeMutablePointer<Void>) {
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         if object as? NSObject != dropPlayer ||
             keyPath != "status" || dropPlayer == nil {
             return
@@ -386,15 +394,15 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         }
         actionSheet.delegate = self
         
-        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
     }
     
     func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
-        var track:Track? = actionSheetTargetTrack
+        let track:Track? = actionSheetTargetTrack
         var foundIdx = -1
         if track != nil {
-            for (idx, t)  in enumerate(tracks) {
+            for (idx, t)  in tracks.enumerate() {
                 if t.id == track!.id {
                     foundIdx = idx
                     break
@@ -414,8 +422,8 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         updateDropPlayStatus(DropPlayStatus.Ready)
         
         var params = noti.object as! Dictionary<String, AnyObject>
-        var track = params["track"] as! Track
-        var playlistId:String? = params["playlistId"] as? String
+        let track = params["track"] as! Track
+        let playlistId:String? = params["playlistId"] as? String
         
         updatePlay(track, playlistId: playlistId)
     }
@@ -424,11 +432,11 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         if track == nil {
             return
         }
-        var indexPath = trackTableView.indexPathForSelectedRow()
+        let indexPath = trackTableView.indexPathForSelectedRow
         if indexPath != nil {
-            var preSelectedTrack = tracks[indexPath!.row]
+            let preSelectedTrack = tracks[indexPath!.row]
             if preSelectedTrack.id != track!.id ||
-                (playlistId != nil && playlistId!.toInt() >= 0) {
+                (playlistId != nil && Int(playlistId!) >= 0) {
                 trackTableView.deselectRowAtIndexPath(indexPath!, animated: false)
             }
         }
@@ -438,7 +446,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
             return
         }
         
-        for (idx, t) in enumerate(tracks) {
+        for (idx, t) in tracks.enumerate() {
             if (t.id == track!.id) {
                 trackTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
                     animated: false, scrollPosition: UITableViewScrollPosition.None)

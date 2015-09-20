@@ -8,10 +8,7 @@
 
 import UIKit
 
-class ChannelViewController: AddableTrackListViewController,
-        UITableViewDelegate, UITableViewDataSource, ScrollPagerDelegate, ChannelTableViewCellDelegate, AddableTrackCellDelegate,
-            UIActionSheetDelegate,
-            UIScrollViewDelegate{
+class ChannelViewController: AddableTrackListViewController, UITableViewDelegate, UITableViewDataSource, ScrollPagerDelegate, ChannelTableViewCellDelegate, UIScrollViewDelegate{
     
     @IBOutlet weak var signinBtn: UIButton!
     @IBOutlet weak var signupBtn: UIButton!
@@ -44,7 +41,7 @@ class ChannelViewController: AddableTrackListViewController,
     private var refreshControl:UIRefreshControl!
     
     private var dateFormatter:NSDateFormatter {
-        var formatter = NSDateFormatter()
+        let formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.000Z"
         return formatter
     }
@@ -93,19 +90,19 @@ class ChannelViewController: AddableTrackListViewController,
     }
     
     func updateGenreSelectBtnView(genre: String) {
-        var image = genreSelectBtn.imageView!.image
+        let image = genreSelectBtn.imageView!.image
         var titleLabel = genreSelectBtn.titleLabel
-        var genreStr:NSString = genre as NSString
+        let genreStr:NSString = genre as NSString
         genreSelectBtn.setTitle(genre, forState: UIControlState.Normal)
         
         var attr:[String : UIFont] = [String: UIFont]()
         attr[ NSFontAttributeName] = UIFont.systemFontOfSize(12)
-        var textSize:CGSize = genreStr.sizeWithAttributes(attr)
-        var textWidth = textSize.width;
+        let textSize:CGSize = genreStr.sizeWithAttributes(attr)
+        let textWidth = textSize.width;
         
         //or whatever font you're using
-        var frame = genreSelectBtn.frame
-        var origin = genreSelectBtn.frame.origin
+        let frame = genreSelectBtn.frame
+        let origin = genreSelectBtn.frame.origin
         genreSelectBtn.frame = CGRectMake(origin.x, origin.y, textWidth + 50, frame.height)
         genreSelectorWidthConstraint.constant = textWidth + 50
         genreSelectBtn.layer.cornerRadius = 4
@@ -123,7 +120,7 @@ class ChannelViewController: AddableTrackListViewController,
             if Account.getCachedAccount() == nil {
                 trackTableView.tableHeaderView = nil
             }
-            loadBookmarks(refreshFeed: true)
+            loadBookmarks(true)
             if refreshControl.superview == nil {
                 trackTableView.insertSubview(refreshControl, atIndex: 0)
             }
@@ -148,8 +145,8 @@ class ChannelViewController: AddableTrackListViewController,
         super.viewWillAppear(animated)
         self.screenName = "ChannelViewScreen"
         
-        if trackTableView.indexPathForSelectedRow() != nil {
-            trackTableView.deselectRowAtIndexPath(trackTableView.indexPathForSelectedRow()!, animated: false)
+        if trackTableView.indexPathForSelectedRow != nil {
+            trackTableView.deselectRowAtIndexPath(trackTableView.indexPathForSelectedRow!, animated: false)
         }
         
         if !genreLoaded {
@@ -182,7 +179,7 @@ class ChannelViewController: AddableTrackListViewController,
     
     override func appWillEnterForeground() {
         if (channelLoaded) {
-            loadBookmarks(refreshFeed: true)
+            loadBookmarks(true)
         } else {
             loadChannels(genres[0], initialLoad: true)
         }
@@ -199,7 +196,7 @@ class ChannelViewController: AddableTrackListViewController,
                 "ChannelTableViewCell", forIndexPath: indexPath) as! ChannelTableViewCell
         cell.delegate = self
         
-        var channel: Channel = channels[indexPath.row]
+        let channel: Channel = channels[indexPath.row]
         if (channel.image != nil) {
             cell.thumbView.sd_setImageWithURL(
                 NSURL(string: channel.image!),
@@ -246,7 +243,7 @@ class ChannelViewController: AddableTrackListViewController,
             cell.thumbView.image = UIImage(named: "default_artwork")
         }
         if track.publishedAt != nil {
-            var formatter = NSDateFormatter()
+            let formatter = NSDateFormatter()
             formatter.dateFormat = "yyyy-MM-dd"
             cell.publishedAt.text = formatter.stringFromDate(track.publishedAt!)
         } else {
@@ -314,7 +311,7 @@ class ChannelViewController: AddableTrackListViewController,
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if tableView == self.genreTableView {
-            var genre = self.genres[indexPath.row]
+            let genre = self.genres[indexPath.row]
             loadChannels(genre, initialLoad: false)
             toNonGenreSelectMode()
             return
@@ -447,12 +444,12 @@ class ChannelViewController: AddableTrackListViewController,
             var json = JSON(result!)
             var data = json["bookmark"]
             var bookmarkIds = Set<String>()
-            for (idx:String, s: JSON) in data {
+            for (idx, s): (String, JSON) in data {
                 bookmarkIds.insert(s.stringValue)
             }
             
             self.bookmarkedChannels.removeAll(keepCapacity: false)
-            for (uid:String, channel:Channel) in self.allChannels {
+            for (uid, channel): (String, Channel) in self.allChannels {
                 if bookmarkIds.contains(channel.id!) {
                     channel.isBookmarked = true
                     self.bookmarkedChannels.append(channel)
@@ -513,7 +510,7 @@ class ChannelViewController: AddableTrackListViewController,
         updateGenreSelectBtnView(genre.name)
         
         var genreKey = genre.name.lowercaseString
-        if count(genreKey) == 0 {
+        if genreKey.characters.count == 0 {
             genreKey = "all"
         }
         
@@ -550,7 +547,7 @@ class ChannelViewController: AddableTrackListViewController,
             
             if initialLoad {
                 if Account.getCachedAccount() != nil {
-                    self.loadBookmarks(refreshFeed: true)
+                    self.loadBookmarks(true)
                 } else if self.selectedTabIdx == 0 {
                     self.needSigninScrollView.hidden = false
                 }
@@ -603,7 +600,7 @@ class ChannelViewController: AddableTrackListViewController,
             NeedAuthViewController.showNeedAuthViewController(self)
             return
         }
-        var channel = channels[indexPath.row]
+        let channel = channels[indexPath.row]
         var newBookmarkedIds: [String]?
         var newChannels = [Channel]()
         if (channel.isBookmarked) {
@@ -633,7 +630,7 @@ class ChannelViewController: AddableTrackListViewController,
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = "Failed to update bookmarks."
+                let message = "Failed to update bookmarks."
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to update", comment:""), message: message)
                 return
@@ -700,7 +697,7 @@ class ChannelViewController: AddableTrackListViewController,
             }
             
             var particals = [ChannelFeedTrack]()
-            for (idx:String, s:JSON) in respObj["data"] {
+            for (idx, s): (String, JSON) in respObj["data"] {
                 if s["video_id"].string == nil {
                     continue
                 }
@@ -759,7 +756,7 @@ class ChannelViewController: AddableTrackListViewController,
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowChannelSegue" {
             if let destination = segue.destinationViewController as? ChannelDetailViewController {
-                if let idx = trackTableView.indexPathForSelectedRow()?.row {
+                if let idx = trackTableView.indexPathForSelectedRow?.row {
                     let channel = channels[idx]
                     destination.channelUid = channel.id
                     destination.channelName = channel.name
@@ -813,7 +810,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
     private var channel:Channel?
     private var bookmarkedIds: [String] = [String]()
     private var dateFormatter:NSDateFormatter {
-        var formatter = NSDateFormatter()
+        let formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.000Z"
         return formatter
     }
@@ -906,19 +903,19 @@ class ChannelDetailViewController: AddableTrackListViewController,
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = NSLocalizedString("Failed to fetch channel info.", comment:"")
+                let message = NSLocalizedString("Failed to fetch channel info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)
                 return
             }
             
             self.channel = Channel.parseChannel(result!)
             if (self.channel == nil) {
-                var message = NSLocalizedString("Failed to fetch channel info.", comment:"")
+                let message = NSLocalizedString("Failed to fetch channel info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)
                 return
             }
             self.channel!.id = self.channelUid
-            self.genreView.text = ", ".join(self.channel!.genre)
+            self.genreView.text = self.channel!.genre.joinWithSeparator(", ")
             self.nameView.text = self.channel!.name
             if (self.channel!.image != nil) {
                 self.thumbView.sd_setImageWithURL(NSURL(string:self.channel!.image!),
@@ -958,10 +955,10 @@ class ChannelDetailViewController: AddableTrackListViewController,
             var json = JSON(result!)
             var data = json["bookmark"]
             self.bookmarkedIds.removeAll(keepCapacity: false)
-            for (idx:String, s: JSON) in data {
+            for (idx, s): (String, JSON) in data {
                 self.bookmarkedIds.append(s.stringValue)
             }
-            self.channel!.isBookmarked = find(self.bookmarkedIds, self.channel!.id!) != nil
+            self.channel!.isBookmarked = self.bookmarkedIds.indexOf((self.channel!.id!)) != nil
             self.updateBookmarkBtn()
         })
     }
@@ -1015,7 +1012,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
                 self.loadMoreSpinner.stopAnimating()
             }
             
-            for (idx: String, item:JSON) in json["items"] {
+            for (idx, item): (String, JSON) in json["items"] {
                 if item["snippet"].error != nil {
                     continue
                 }
@@ -1088,11 +1085,11 @@ class ChannelDetailViewController: AddableTrackListViewController,
         var isAdding:Bool = true
         
         if (!channel!.isBookmarked) {
-            if (find(newBookmarkedIds, channelUid!) == nil) {
+            if (newBookmarkedIds.indexOf((channelUid!)) == nil) {
                 newBookmarkedIds.append(channelUid!)
             }
         } else {
-            let idx = find(newBookmarkedIds, channelUid!)
+            let idx = newBookmarkedIds.indexOf((channelUid!))
             if (idx != nil) {
                 newBookmarkedIds.removeAtIndex(idx!)
             }
@@ -1110,15 +1107,15 @@ class ChannelDetailViewController: AddableTrackListViewController,
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = NSLocalizedString("Failed to update bookmarks.", comment:"")
+                let message = NSLocalizedString("Failed to update bookmarks.", comment:"")
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to update", comment:""), message: message)
                 return
             }
-            if (isAdding && find(self.bookmarkedIds, self.channel!.id!) == nil) {
+            if (isAdding && self.bookmarkedIds.indexOf((self.channel!.id!)) == nil) {
                 self.bookmarkedIds.append(self.channel!.id!)
             } else if (!isAdding) {
-                let idx = find(self.bookmarkedIds, self.channel!.id!)
+                let idx = self.bookmarkedIds.indexOf((self.channel!.id!))
                 if idx != nil {
                     self.bookmarkedIds.removeAtIndex(idx!)
                 }
@@ -1129,19 +1126,19 @@ class ChannelDetailViewController: AddableTrackListViewController,
     }
     
     func updateSectionSelectBtnView(sectionName: String) {
-        var image = sectionSelector.imageView!.image
+        let image = sectionSelector.imageView!.image
         var titleLabel = sectionSelector.titleLabel
-        var genreStr:NSString = sectionName as NSString
+        let genreStr:NSString = sectionName as NSString
         sectionSelector.setTitle(sectionName, forState: UIControlState.Normal)
         
         var attr:[String : UIFont] = [String: UIFont]()
         attr[ NSFontAttributeName] = UIFont.systemFontOfSize(12)
-        var textSize:CGSize = genreStr.sizeWithAttributes(attr)
-        var textWidth = textSize.width;
+        let textSize:CGSize = genreStr.sizeWithAttributes(attr)
+        let textWidth = textSize.width;
         
         //or whatever font you're using
-        var frame = sectionSelector.frame
-        var origin = sectionSelector.frame.origin
+        let frame = sectionSelector.frame
+        let origin = sectionSelector.frame.origin
         sectionSelector.frame = CGRectMake(origin.x, origin.y, textWidth + 50, frame.height)
         sectionSelectorWidthConstraint.constant = textWidth + 50
         sectionSelector.layer.cornerRadius = 4
@@ -1190,7 +1187,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
                 cell.thumbView.image = UIImage(named: "default_artwork")
             }
             if track.publishedAt != nil {
-                var formatter = NSDateFormatter()
+                let formatter = NSDateFormatter()
                 formatter.dateFormat = "yyyy-MM-dd"
                 cell.publishedAt.text = formatter.stringFromDate(track.publishedAt!)
             } else {
@@ -1276,7 +1273,7 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowChannelSegue" {
             if let destination = segue.destinationViewController as? ChannelDetailViewController {
-                if let idx = tableView.indexPathForSelectedRow()?.row {
+                if let idx = tableView.indexPathForSelectedRow?.row {
                     let channel = bookmarkedChannels[idx]
                     destination.channelUid = channel.id
                     destination.channelName = channel.name
@@ -1291,7 +1288,7 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
             "ChannelTableViewCell", forIndexPath: indexPath) as! ChannelTableViewCell
         cell.delegate = self
         
-        var channel: Channel = bookmarkedChannels[indexPath.row]
+        let channel: Channel = bookmarkedChannels[indexPath.row]
         if (channel.image != nil) {
             cell.thumbView.sd_setImageWithURL(
                 NSURL(string: channel.image!),
@@ -1348,18 +1345,18 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
             var json = JSON(result!)
             var data = json["bookmark"]
             var bookmarkIds = Set<String>()
-            for (idx:String, s: JSON) in data {
+            for (idx, s): (String, JSON) in data {
                 bookmarkIds.insert(s.stringValue)
             }
             
             self.bookmarkedChannels.removeAll(keepCapacity: false)
-            for (uid:String, channel:Channel) in self.channels! {
+            for (uid, channel): (String, Channel) in self.channels! {
                 channel.isBookmarked = bookmarkIds.contains(channel.id!)
                 if channel.isBookmarked {
                     self.bookmarkedChannels.append(channel)
                 }
             }
-            self.bookmarkedChannels.sort({ (lhs:Channel, rhs:Channel) -> Bool in
+            self.bookmarkedChannels.sortInPlace({ (lhs:Channel, rhs:Channel) -> Bool in
                 return lhs.idx! < rhs.idx!
             })
             self.noBookmarkView.hidden = self.bookmarkedChannels.count != 0
@@ -1373,7 +1370,7 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
             NeedAuthViewController.showNeedAuthViewController(self)
             return
         }
-        var channel = bookmarkedChannels[indexPath.row]
+        let channel = bookmarkedChannels[indexPath.row]
         var newBookmarkedIds = Set<String>()
         var newChannels = [Channel]()
         if (channel.isBookmarked) {
@@ -1400,18 +1397,18 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
                             message: NSLocalizedString("Internet is not connected", comment:""))
                         return
                 }
-                var message = NSLocalizedString("Failed to update bookmarks.", comment:"")
+                let message = NSLocalizedString("Failed to update bookmarks.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to update", comment:""), message: message)
                 return
             }
             self.bookmarkedChannels.removeAll(keepCapacity: false)
-            for (uid:String, channel:Channel) in self.channels! {
+            for (uid, channel): (String, Channel) in self.channels! {
                 channel.isBookmarked = newBookmarkedIds.contains(uid)
                 if channel.isBookmarked {
                     self.bookmarkedChannels.append(channel)
                 }
             }
-            self.bookmarkedChannels.sort({ (lhs:Channel, rhs:Channel) -> Bool in
+            self.bookmarkedChannels.sortInPlace({ (lhs:Channel, rhs:Channel) -> Bool in
                 return lhs.idx! < rhs.idx!
             })
             self.tableView.reloadData()

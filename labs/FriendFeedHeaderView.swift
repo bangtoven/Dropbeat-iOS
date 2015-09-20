@@ -11,7 +11,7 @@ import UIKit
 class FriendFeedHeaderView: UIView {
     var view: UIView!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         xibSetup()
     }
@@ -29,7 +29,7 @@ class FriendFeedHeaderView: UIView {
         view = loadViewFromNib()
         view.frame = bounds
         
-        view.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+        view.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
         
         addSubview(view)
     }

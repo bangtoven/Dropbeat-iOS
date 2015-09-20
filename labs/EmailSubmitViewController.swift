@@ -69,13 +69,13 @@ class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate, UISc
         }
         let email = emailInputView.text
         emailErrorView.hidden = true
-        if count(email) == 0 {
+        if email!.characters.count == 0 {
             emailErrorView.hidden = false
             emailErrorView.text = NSLocalizedString("Required Field", comment:"")
-        } else if !Utils.isValidEmail(email) {
+        } else if !Utils.isValidEmail(email!) {
             emailErrorView.hidden = false
             emailErrorView.text = NSLocalizedString("Invalid email format", comment:"")
-        } else if email.indexOf("@dropbeat.net") > -1 {
+        } else if email!.indexOf("@dropbeat.net") > -1 {
             emailErrorView.hidden = false
             emailErrorView.text = NSLocalizedString("Invalid email domain", comment:"")
         }
@@ -85,7 +85,7 @@ class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate, UISc
         }
         isSubmitting = true
         let progressHud = ViewUtils.showProgress(self, message: "")
-        Requests.userChangeEmail(email, respCb: {
+        Requests.userChangeEmail(email!, respCb: {
             (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             self.isSubmitting = false
             if error != nil || result == nil {
@@ -101,7 +101,7 @@ class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate, UISc
                 return
             }
             
-            Account.getCachedAccount()!.user!.email = email
+            Account.getCachedAccount()!.user!.email = email!
             
             progressHud.mode = MBProgressHUDMode.CustomView
             progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark"))

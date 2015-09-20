@@ -89,7 +89,7 @@ class NicknameViewController: BaseViewController, UITextFieldDelegate, UIScrollV
                 return
             }
         }
-        if !isValid(newNickname) {
+        if !isValid(newNickname!) {
             return
         }
         
@@ -97,7 +97,7 @@ class NicknameViewController: BaseViewController, UITextFieldDelegate, UIScrollV
         isSubmitting = true
         
         let progressHud = ViewUtils.showProgress(self, message: "")
-        Requests.changeNickname(newNickname, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.changeNickname(newNickname!, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if error != nil || result == nil {
                 progressHud.hide(true)
                 self.isSubmitting = false
@@ -134,19 +134,19 @@ class NicknameViewController: BaseViewController, UITextFieldDelegate, UIScrollV
             progressHud.hide(true, afterDelay: 1)
             let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)));
             dispatch_after(popTime, dispatch_get_main_queue(), {() -> Void in
-                Account.getCachedAccount()!.user!.nickname = newNickname
+                Account.getCachedAccount()!.user!.nickname = newNickname!
                 self.presentingViewController?.dismissViewControllerAnimated(true, completion: nil)
             })
         })
     }
     
     func isValid(nickname:String) -> Bool {
-        if count(nickname) == 0 {
+        if nickname.characters.count == 0 {
             nicknameErrorView.text = NSLocalizedString("Required Field", comment:"")
             nicknameErrorView.hidden = false
             return false
         }
-        if count(nickname) > 25 {
+        if nickname.characters.count > 25 {
             nicknameErrorView.text = NSString.localizedStringWithFormat(
                 NSLocalizedString("Must be less than %d characters long", comment:""), 25) as String
             nicknameErrorView.hidden = false

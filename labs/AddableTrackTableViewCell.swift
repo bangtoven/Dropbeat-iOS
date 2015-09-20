@@ -24,8 +24,8 @@ class AddableTrackTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 //        // Initialization code
-        var selectedBgView = UIView(frame: self.bounds)
-        selectedBgView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
+        let selectedBgView = UIView(frame: self.bounds)
+        selectedBgView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
         selectedBgView.backgroundColor = UIColor(netHex: 0xffffff)
         self.selectedBackgroundView = selectedBgView
     }
@@ -61,8 +61,8 @@ class UserTrackTableViewCell: AddableTrackTableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        var selectedBgView = UIView(frame: self.bounds)
-        selectedBgView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
+        let selectedBgView = UIView(frame: self.bounds)
+        selectedBgView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
         selectedBgView.backgroundColor = UIColor(netHex: 0xEFEFF4)
         self.selectedBackgroundView = selectedBgView
         
@@ -116,8 +116,8 @@ class TrendingTrackTableViewCell: AddableTrackTableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        var selectedBgView = UIView(frame: self.bounds)
-        selectedBgView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
+        let selectedBgView = UIView(frame: self.bounds)
+        selectedBgView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
         selectedBgView.backgroundColor = UIColor(netHex: 0xffffff)
         
         self.selectedBackgroundView = selectedBgView
@@ -166,8 +166,8 @@ class BpTrendingTrackTableViewCell: AddableTrackTableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        var selectedBgView = UIView(frame: self.bounds)
-        selectedBgView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
+        let selectedBgView = UIView(frame: self.bounds)
+        selectedBgView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
         selectedBgView.backgroundColor = UIColor(netHex: 0xffffff)
         
         self.selectedBackgroundView = selectedBgView
@@ -215,8 +215,8 @@ class NewReleasedTrackTableViewCell: AddableTrackTableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        var selectedBgView = UIView(frame: self.bounds)
-        selectedBgView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
+        let selectedBgView = UIView(frame: self.bounds)
+        selectedBgView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
         selectedBgView.backgroundColor = UIColor(netHex: 0xffffff)
 
         self.selectedBackgroundView = selectedBgView

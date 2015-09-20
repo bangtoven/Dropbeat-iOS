@@ -55,8 +55,8 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "main" {
-            var vc:CenterViewController = segue.destinationViewController as! CenterViewController
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            let vc:CenterViewController = segue.destinationViewController as! CenterViewController
+            let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             appDelegate.centerContainer = vc
         }
         if segue.identifier == "genre_tutorial" {
@@ -92,7 +92,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
             }
             
             let res = result as! NSDictionary
-            var iosVersion:String? = res.objectForKey("ios_version") as! String?
+            let iosVersion:String? = res.objectForKey("ios_version") as! String?
             if (iosVersion == nil) {
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to fetch version info", comment:""),
@@ -135,7 +135,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                 } else {
                     message = NSLocalizedString("Failed to fetch user info", comment:"")
                     let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
-                    keychainItemWrapper["auth_token"] = nil
+                    keychainItemWrapper.setObject(nil, forKey: "auth_token")
                 }
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to fetch user info", comment:""),
@@ -147,7 +147,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                     })
                 return
             }
-            var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             appDelegate.account = account
             
             if (account != nil) {
@@ -178,8 +178,8 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
             return
         }
         
-        var defaultDb:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        var didAutoFollow:Bool? = defaultDb.objectForKey(UserDataKey.didAutoFollow) as? Bool
+        let defaultDb:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let didAutoFollow:Bool? = defaultDb.objectForKey(UserDataKey.didAutoFollow) as? Bool
         if !(didAutoFollow ?? false) && account.user!.fbId != nil {
             checkFollowingCount({ (needAutoFollow:Bool?, error:NSError?) -> Void in
                 if error != nil {
@@ -204,11 +204,11 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     }
     
     func showMainController() {
-        var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
+        let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) {
             self.progressHud?.hide(true)
             if let account = Account.getCachedAccount() {
-                if count(account.favoriteGenreIds) == 0 {
+                if account.favoriteGenreIds.count == 0 {
                     self.performSegueWithIdentifier("genre_tutorial", sender: self)
                     return
                 }
@@ -218,7 +218,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     }
     
     @IBAction func unwindFromGenreTutorialToStart(sender: UIStoryboardSegue) {
-        println("unwindFromGenreTutorialToStart")
+        print("unwindFromGenreTutorialToStart")
     }
     
     func checkFollowingCount(callback:(needAutoFollow:Bool?, error:NSError?) -> Void) {
@@ -306,7 +306,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
             Requests.artistFilter(names, respCb: {
                     (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                 if error != nil {
-                    println(error!)
+                    print(error!)
                     callback(error:error)
                     return
                 }
@@ -317,10 +317,10 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                 }
                 
                 var dataJson = JSON(result!)["data"]
-                println(dataJson)
+                print(dataJson)
                 var ids = [Int]()
                 
-                for (idx:String, s:JSON) in dataJson {
+                for (idx, s): (String, JSON) in dataJson {
                     if s["id"] != nil {
                         let id = s["id"].intValue
                         ids.append(id)
@@ -418,7 +418,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                 positiveBtnText: NSLocalizedString("OK", comment:""),
                 positiveBtnCallback: { () -> Void in
             
-            var fbManager:FBSDKLoginManager = FBSDKLoginManager()
+            let fbManager:FBSDKLoginManager = FBSDKLoginManager()
                     
             fbManager.logInWithReadPermissions(["user_likes"], handler: { (result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
                 

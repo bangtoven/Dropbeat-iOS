@@ -20,7 +20,7 @@ class FollowingFeedHeaderView:UIView {
     var delegate:FollowingFeedHeaderViewDelegate?
     var view: UIView!
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         xibSetup()
     }
@@ -38,7 +38,7 @@ class FollowingFeedHeaderView:UIView {
         view = loadViewFromNib()
         view.frame = bounds
         
-        view.autoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight
+        view.autoresizingMask = [UIViewAutoresizing.FlexibleWidth, UIViewAutoresizing.FlexibleHeight]
         
         manageFollowBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         manageFollowBtn.layer.borderWidth = 1

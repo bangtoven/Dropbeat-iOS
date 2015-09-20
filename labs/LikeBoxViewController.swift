@@ -41,7 +41,7 @@ UIActionSheetDelegate {
         
         let account = Account.getCachedAccount()!
         if account.likes.count > 0 {
-            for i in reverse(0...account.likes.count - 1) {
+            for i in Array((0...account.likes.count - 1).reverse()) {
                 let like = account.likes[i]
                 self.tracks.append(like.track)
             }
@@ -92,7 +92,7 @@ UIActionSheetDelegate {
         }
         
         let randomIndex = Int(arc4random_uniform(UInt32(tracks.count)))
-        var selectedTrack: Track = tracks[randomIndex] as Track
+        let selectedTrack: Track = tracks[randomIndex] as Track
         
         PlayerContext.shuffleState = ShuffleState.SHUFFLE
         PlayerContext.externalPlaylist = Playlist(
@@ -101,7 +101,7 @@ UIActionSheetDelegate {
             tracks: tracks
         )
         
-        var params: Dictionary<String, AnyObject> = [
+        let params: Dictionary<String, AnyObject> = [
             "track": selectedTrack,
             "playlistId": getPlaylistId(),
             "section": "like_list"
@@ -136,7 +136,7 @@ UIActionSheetDelegate {
         let track = menuSelectedTrack
         var foundIdx = -1
         if track != nil {
-            for (idx, track) in enumerate(tracks) {
+            for (idx, track) in tracks.enumerate() {
                 if track.id == track.id {
                     foundIdx = idx
                     break
@@ -173,7 +173,7 @@ UIActionSheetDelegate {
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var selectedTrack: Track = tracks[indexPath.row] as Track
+        let selectedTrack: Track = tracks[indexPath.row] as Track
         onPlayTrackBtnClicked(selectedTrack)
     }
     
@@ -182,18 +182,18 @@ UIActionSheetDelegate {
             tableView.separatorInset = UIEdgeInsetsZero
         }
         
-        if tableView.respondsToSelector("layoutMargins") {
+        if #available(iOS 8.0, *) {
             tableView.layoutMargins = UIEdgeInsetsZero
         }
         
-        if cell.respondsToSelector("layoutMargins") {
+        if #available(iOS 8.0, *) {
             cell.layoutMargins = UIEdgeInsetsZero
         }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let track:Track = tracks[indexPath.row]
-        var cell:PlaylistTableViewCell = tableView.dequeueReusableCellWithIdentifier(
+        let cell:PlaylistTableViewCell = tableView.dequeueReusableCellWithIdentifier(
             "PlaylistTableViewCell", forIndexPath: indexPath) as! PlaylistTableViewCell
         if (getPlaylistId() == PlayerContext.currentPlaylistId &&
             PlayerContext.currentTrack != nil &&
@@ -206,20 +206,20 @@ UIActionSheetDelegate {
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return count(tracks)
+        return tracks.count
     }
     
     func updatePlayTrack(noti: NSNotification) {
         var params = noti.object as! Dictionary<String, AnyObject>
-        var track = params["track"] as! Track
-        var playlistId:String? = params["playlistId"] as? String
+        let track = params["track"] as! Track
+        let playlistId:String? = params["playlistId"] as? String
         updatePlayTrack(track, playlistId: playlistId)
     }
     
     func updatePlayTrack(track:Track?, playlistId:String?) {
-        var indexPath = tableView.indexPathForSelectedRow()
+        let indexPath = tableView.indexPathForSelectedRow
         if (indexPath != nil) {
-            var preSelectedTrack:Track = tracks[indexPath!.row]
+            let preSelectedTrack:Track = tracks[indexPath!.row]
             if (preSelectedTrack.id != track!.id ||
                 (playlistId == nil && playlistId != getPlaylistId())) {
                     tableView.deselectRowAtIndexPath(indexPath!, animated: false)
@@ -230,7 +230,7 @@ UIActionSheetDelegate {
             return
         }
         
-        for (idx, t) in enumerate(tracks) {
+        for (idx, t) in tracks.enumerate() {
             if (t.id == track!.id) {
                 tableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
                     animated: true, scrollPosition: UITableViewScrollPosition.None)
@@ -263,7 +263,7 @@ UIActionSheetDelegate {
             }
             self.tracks.removeAll(keepCapacity: false)
             if account.likes.count > 0 {
-                for i in reverse(0...account.likes.count - 1) {
+                for i in Array((0...account.likes.count - 1).reverse()) {
                     let like = account.likes[i]
                     self.tracks.append(like.track)
                 }
@@ -321,7 +321,7 @@ UIActionSheetDelegate {
             name: getPlaylistName(),
             tracks: tracks)
         
-        var params: Dictionary<String, AnyObject> = [
+        let params: Dictionary<String, AnyObject> = [
             "track": track,
             "playlistId": getPlaylistId(),
             "section": "like_list"
@@ -359,7 +359,7 @@ UIActionSheetDelegate {
             let shareUrl = "http://dropbeat.net/?track=" + uid!
             let shareTitle = track.title
             
-            var items:[AnyObject] = [shareTitle, shareUrl]
+            let items:[AnyObject] = [shareTitle, shareUrl]
             
             let activityController = UIActivityViewController(
                 activityItems: items, applicationActivities: nil)
@@ -369,7 +369,7 @@ UIActionSheetDelegate {
                 UIActivityTypeAirDrop,
                 UIActivityTypeAssignToContact
             ]
-            if activityController.respondsToSelector("popoverPresentationController:") {
+            if #available(iOS 8.0, *) {
                 activityController.popoverPresentationController?.sourceView = self.view
             }
             self.presentViewController(activityController, animated:true, completion: nil)

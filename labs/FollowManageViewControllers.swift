@@ -61,7 +61,7 @@ class FollowManageViewController: BaseViewController,
     }
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        if count(searchBar.text) == 0 {
+        if searchBar.text!.characters.count == 0 {
             searchBar.endEditing(true)
             return
         }
@@ -84,7 +84,7 @@ class FollowManageViewController: BaseViewController,
     }
     
     func onActionBtnClicked(sender: FollowingTableViewCell) {
-        var indexPath = tableView.indexPathForCell(sender)
+        let indexPath = tableView.indexPathForCell(sender)
         let artist = artists[indexPath!.row]
         unfollow(artist.id)
     }
@@ -105,7 +105,7 @@ class FollowManageViewController: BaseViewController,
                         negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                var message = NSLocalizedString("Failed to save follow info.", comment:"")
+                let message = NSLocalizedString("Failed to save follow info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to save", comment:""), message: message)
                 return
             }
@@ -135,14 +135,14 @@ class FollowManageViewController: BaseViewController,
                         negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                var message = NSLocalizedString("Failed to load following info.", comment:"")
+                let message = NSLocalizedString("Failed to load following info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
             let info = FollowingInfo.parseFollowing(result!)
             if !info.success {
-                var message = NSLocalizedString("Failed to load following info.", comment:"")
+                let message = NSLocalizedString("Failed to load following info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
@@ -225,11 +225,11 @@ class FollowSearchViewController: BaseViewController,
     }
 
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        if count(searchBar.text) == 0 {
+        if searchBar.text!.characters.count == 0 {
             searchBar.endEditing(true)
             return
         }
-        search(searchBar.text)
+        search(searchBar.text!)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -257,7 +257,7 @@ class FollowSearchViewController: BaseViewController,
     }
     
     func onActionBtnClicked(sender: FollowingTableViewCell) {
-        var indexPath = tableView.indexPathForCell(sender)
+        let indexPath = tableView.indexPathForCell(sender)
         let artist = artists[indexPath!.row]
         if artist.isFollowing {
             unfollow(artist.id)
@@ -283,14 +283,14 @@ class FollowSearchViewController: BaseViewController,
                         negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                var message = NSLocalizedString("Failed to load following info.", comment:"")
+                let message = NSLocalizedString("Failed to load following info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
             let info = SearchArtist.parseSearchArtist(result!)
             if !info.success {
-                var message = NSLocalizedString("Failed to load following info.", comment:"")
+                let message = NSLocalizedString("Failed to load following info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
@@ -321,14 +321,14 @@ class FollowSearchViewController: BaseViewController,
                         negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                var message = NSLocalizedString("Failed to load following info.", comment:"")
+                let message = NSLocalizedString("Failed to load following info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
             let info = FollowingInfo.parseFollowing(result!)
             if !info.success {
-                var message = NSLocalizedString("Failed to load following info.", comment:"")
+                let message = NSLocalizedString("Failed to load following info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
@@ -363,13 +363,13 @@ class FollowSearchViewController: BaseViewController,
                         negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                var message = NSLocalizedString("Failed to save follow info.", comment:"")
+                let message = NSLocalizedString("Failed to save follow info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to follow", comment:""), message: message)
                 return
             }
             
             if !(JSON(result!)["success"].bool ?? false) {
-                var message = NSLocalizedString("Failed to save follow info.", comment:"")
+                let message = NSLocalizedString("Failed to save follow info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to follow", comment:""), message: message)
                 return
             }
@@ -394,13 +394,13 @@ class FollowSearchViewController: BaseViewController,
                         negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                     return
                 }
-                var message = NSLocalizedString("Failed to save unfollow info.", comment:"")
+                let message = NSLocalizedString("Failed to save unfollow info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to unfollow", comment:""), message: message)
                 return
             }
             
             if !(JSON(result!)["success"].bool ?? false) {
-                var message = NSLocalizedString("Failed to save unfollow info.", comment:"")
+                let message = NSLocalizedString("Failed to save unfollow info.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to unfollow", comment:""), message: message)
                 return
             }

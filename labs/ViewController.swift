@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "Show User" {
-            var uvc: UserViewController = segue.destinationViewController as! UserViewController
+            let uvc: UserViewController = segue.destinationViewController as! UserViewController
             uvc.resource = self.resourceTextField.text
             self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.Plain, target:nil, action:nil)
         }

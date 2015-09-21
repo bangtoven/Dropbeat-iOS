@@ -9,6 +9,8 @@ let RELEASE = false
 public class ApiPath {
     static var host :String = RELEASE ? "http://dropbeat.net/api/v1/" : "http://spark.coroutine.io/api/v1/"
     
+    static var resolveUser = host + "resolve/"
+    
     // User
     static var user :String = host + "user/"
     static var userSignIn :String = user + "signin_fb_android/"
@@ -136,8 +138,6 @@ public class CorePath {
 public class ResolvePath {
     static var host :String = "http://resolve.dropbeat.net/"
     static var resolveStream :String = host + "resolve/"
-    
-    static var resolveUser: String = "http://spark.coroutine.io/api/v1/resolve/?url=spark.coroutine.io/r/"
 }
 
 public class YoutubeApiPath {

@@ -25,7 +25,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func userBtnTapped(sender: AnyObject) {
-        self.resourceTextField.text = "teksu5"
+        self.resourceTextField.text = "Ukyb3mNf2Q3"
     }
     
     @IBAction func artistBtnTapped(sender: AnyObject) {

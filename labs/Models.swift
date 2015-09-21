@@ -135,7 +135,7 @@ class User: BaseUser {
             userJson = json[key]
         }
         
-        var user: User = User(json: userJson)
+        let user: User = User(json: userJson)
         
         let tracksJson = json[key]["tracks"]
         if tracksJson != nil {
@@ -161,7 +161,7 @@ class User: BaseUser {
             }
             var users = [BaseUser]()
             for (_, json): (String, JSON) in JSON(result!)["data"] {
-                var user = BaseUser(json: json)
+                let user = BaseUser(json: json)
                 users.append(user)
             }
             callback(users: users, error: nil)
@@ -280,7 +280,7 @@ class Channel: BaseUser {
             }
         }
         let resourceName = detail["resource_name"].stringValue
-        var id = detail["uid"].stringValue
+        let id = detail["uid"].stringValue
         
         return Channel(id: id, name:name, thumbnail: thumbnail, genre:genreArray, playlists: playlists, resourceName: resourceName)
     }

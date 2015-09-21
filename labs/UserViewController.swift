@@ -62,6 +62,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
         header.maximumOfHeight = 260
         header.loadView()
         
+        var isSelf = false
         let progressHud = ViewUtils.showProgress(self, message: nil)
         Requests.resolveUser(self.resource) {(req, resp, result, error) -> Void in
             progressHud.hide(true)
@@ -105,6 +106,10 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 } else {
                     self.viewControllers = [uploads, likes, f1, f2]
                 }
+                
+                if user.id == Account.getCachedAccount()?.user?.id {
+                    isSelf = true
+                }
 
                 self.baseUser = user
             case "artist":
@@ -112,15 +117,6 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 
                 var subViewArr = [UserSubViewController]()
                 for (section, tracks): (String, [Track]) in artist.sectionedTracks {
-//                    // pick first thumbnail Url from track list
-//                    if imageForCover == nil {
-//                        for t in tracks {
-//                            if let thumbnailUrl = t.thumbnailUrl {
-//                                imageForCover = thumbnailUrl
-//                                break
-//                            }
-//                        }
-//                    }
                     let subView = self.instantiateSubVC()
                     subView.title = section.capitalizedString
                     subView.tracks = tracks
@@ -186,6 +182,15 @@ class UserViewController: AXStretchableHeaderTabViewController {
                     forMinimumHeight: self.headerView!.maximumOfHeight*1.5)
             }
             
+            if isSelf {
+                header.followButton.enabled = false
+            } else {
+                if let followed = self.baseUser?.isFollowed() {
+                    header.followButton.selected = followed
+                }
+                header.followButton.addTarget(self, action: "followAction:", forControlEvents: UIControlEvents.TouchUpInside)
+            }
+            
             let descriptionHeight = self.calculateDescriptionContentSize()
             if descriptionHeight <= 32 {
                 header.showMoreButton.hidden = true
@@ -202,25 +207,32 @@ class UserViewController: AXStretchableHeaderTabViewController {
                     header.showMoreButton.addTarget(self, action: "showMoreAction", forControlEvents: UIControlEvents.TouchUpInside)
                 }
             }
-            
-            header.followButton.addTarget(self, action: "followAction:", forControlEvents: UIControlEvents.TouchUpInside)
         }
     }
     
     func followAction(sender: UIButton) {
-        let followButton = sender
-        if followButton.selected {
-            self.baseUser.unfollow({ (error) -> Void in
-                if (error == nil) {
-                    followButton.selected = false
+        let progressHud = ViewUtils.showProgress(self, message: nil)
+        let handler = { (error: NSError?) -> Void in
+            progressHud.hide(true)
+            if (error == nil) {
+                sender.selected = self.baseUser.isFollowed()
+                
+                if let user = self.baseUser as? User {
+                    user.num_followers += user.isFollowed() ? 1 : -1
+                    let header = self.headerView as! UserHeaderView
+                    header.followersLabel.text = String(user.num_followers)
+                    
+                    if let followerView = self.viewControllers[self.viewControllers.count-2] as? FollowInfoTableViewController {
+                        followerView.userArray = []
+                        followerView.subViewWillAppear()
+                    }
                 }
-            })
+            }
+        }
+        if sender.selected {
+            self.baseUser.unfollow(handler)
         } else {
-            self.baseUser.follow({ (error) -> Void in
-                if (error == nil) {
-                    followButton.selected = true
-                }
-            })
+            self.baseUser.follow(handler)
         }   
     }
     

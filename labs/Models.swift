@@ -31,14 +31,15 @@ class BaseUser {
         if let isFollowed = self._isFollowed {
             return isFollowed
         } else if let following = Account.getCachedAccount()?.following {
+            var isFollowed = false
             for u in following {
                 if u.userType == self.userType && u.id == self.id {
-                    _isFollowed = true
-                    return true
+                    isFollowed = true
+                    break
                 }
             }
-            _isFollowed = false
-            return false
+            self._isFollowed = isFollowed
+            return isFollowed
         } else {
             return false
         }

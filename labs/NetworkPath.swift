@@ -4,10 +4,10 @@
 
 import Foundation
 
+let RELEASE = false
+
 public class ApiPath {
-    static var host :String = "http://spark.coroutine.io/api/v1/"
-//    static var host :String = "http://coroutine.io:19050/api/v1/"
-//    static var host :String = "http://dropbeat.net/api/v1/"
+    static var host :String = RELEASE ? "http://dropbeat.net/api/v1/" : "http://spark.coroutine.io/api/v1/"
     
     // User
     static var user :String = host + "user/"
@@ -81,8 +81,7 @@ public class ApiPath {
 }
 
 public class CorePath {
-    static var host :String = "http://core.coroutine.io/api/"
-//    static var host :String = "http://core.dropbeat.net/api/"
+    static var host :String = RELEASE ? "http://core.dropbeat.net/api/" : "http://core.coroutine.io/api/"
     
     // core.search
     static var search :String = host + "search/"

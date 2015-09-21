@@ -6,7 +6,7 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--뭐라카노-->
         <scene sceneID="zHB-D0-h86">
             <objects>
                 <viewController id="FfF-Nj-8bO" customClass="ViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
@@ -75,9 +75,7 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="uBa-M5-3cw">
-                        <barButtonItem key="leftBarButtonItem" title="Item" id="13V-w3-vOf"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="뭐라카노" id="uBa-M5-3cw"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="resourceTextField" destination="FXA-fa-WWF" id="czf-XN-XZB"/>
@@ -665,7 +663,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="oVv-0f-qoK"/>
-        <segue reference="nWZ-tF-3vK"/>
+        <segue reference="W6O-VY-5Pf"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
 </document>

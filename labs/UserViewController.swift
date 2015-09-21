@@ -284,14 +284,19 @@ class UserViewController: AXStretchableHeaderTabViewController {
         self.selectedScrollView.setContentOffset(CGPointMake(0, -self.headerView.maximumOfHeight-44), animated: true)
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if let navBar = self.navigationController?.navigationBar {
+            navBar.barTintColor = UIColor.clearColor()
+            navBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+            navBar.tintColor = UIColor.whiteColor()
+            navBar.shadowImage = UIImage()
+        }
+    }
+    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-        var navBar = self.navigationController?.navigationBar
-        navBar!.barTintColor = UIColor.clearColor()
-        navBar!.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-        navBar!.tintColor = UIColor.whiteColor()
-        navBar!.shadowImage = UIImage()
         
         self.didHeightRatioChange(self.headerViewHeightRatio)
     }
@@ -299,10 +304,10 @@ class UserViewController: AXStretchableHeaderTabViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        var navBar = self.navigationController?.navigationBar
-        navBar!.barTintColor = nil
-        navBar!.tintColor = nil
-        navBar!.shadowImage = nil
+//        var navBar = self.navigationController?.navigationBar
+//        navBar!.barTintColor = nil
+//        navBar!.tintColor = nil
+//        navBar!.shadowImage = nil
     }
     
     override func viewDidDisappear(animated: Bool) {

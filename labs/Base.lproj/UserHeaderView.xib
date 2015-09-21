@@ -26,10 +26,10 @@
                     </variation>
                 </imageView>
                 <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xCQ-Sl-5NX" customClass="GradientView">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="20"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                     <animations/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="20" id="E13-88-JMk"/>
+                        <constraint firstAttribute="height" constant="60" id="E13-88-JMk"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="color" keyPath="fillColor">

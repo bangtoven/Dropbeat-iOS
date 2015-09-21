@@ -166,7 +166,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func fetchUserLikeInfo() {
         if let account = Account.getCachedAccount() {
-            account.syncLikeInfo({ (error) -> Void in
+            account.syncLikeInfo{ (error) -> Void in
                 if error != nil {
                     if self.window != nil && self.window!.rootViewController != nil{
                         ViewUtils.showConfirmAlert(
@@ -182,7 +182,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
                 NSNotificationCenter.defaultCenter().postNotificationName(
                     NotifyKey.likeUpdated, object: nil)
-            })
+            }
+            
+            account.syncFollowingInfo { (error) -> Void in
+                if error != nil {
+                    if self.window != nil && self.window!.rootViewController != nil{
+                        ViewUtils.showConfirmAlert(
+                            self.window!.rootViewController!,
+                            title: NSLocalizedString("Failed to load", comment:""),
+                            message: NSLocalizedString("Failed to fetch user following information.", comment:""),
+                            positiveBtnText: NSLocalizedString("Retry", comment: ""),
+                            positiveBtnCallback: { () -> Void in
+                                self.fetchUserLikeInfo()
+                        })
+                    }
+                    return
+                }
+            }
         }
     }
 

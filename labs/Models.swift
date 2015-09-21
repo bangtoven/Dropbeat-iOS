@@ -1,3 +1,4 @@
+
 //
 //  Models.swift
 //  labs
@@ -25,6 +26,24 @@ class BaseUser {
     var image: String?
     var coverImage: String?
     
+    private var _isFollowed: Bool?
+    func isFollowed() -> Bool {
+        if let isFollowed = self._isFollowed {
+            return isFollowed
+        } else if let following = Account.getCachedAccount()?.following {
+            for u in following {
+                if u.userType == self.userType && u.id == self.id {
+                    _isFollowed = true
+                    return true
+                }
+            }
+            _isFollowed = false
+            return false
+        } else {
+            return false
+        }
+    }
+    
     init(userType: UserType, id: String, name: String, image: String?, coverImage: String?, resourceName: String) {
         self.userType = userType
         self.id = id
@@ -34,7 +53,7 @@ class BaseUser {
         self.resourceName = resourceName
     }
     
-    init(json: JSON) {
+    init(json: JSON) throws {
         self.id = json["id"].stringValue
         self.name = json["name"].stringValue
         self.resourceName = json["resource_name"].stringValue
@@ -48,11 +67,14 @@ class BaseUser {
         case "channel":
             self.userType = .CHANNEL
         default:
-            self.userType = .USER // TODO: throws
+            self.userType = .USER
+            throw NSError(domain: "BaseUser", code: -1, userInfo: nil)
         }
     }
     
-    private func _follow(path: String, callback:((error: NSError?) -> Void)) {
+    private func _follow(follow: Bool, callback:((error: NSError?) -> Void)) {
+        let path = follow ? ApiPath.followUser : ApiPath.unfollowUser
+        
         var params = [String:String]()
         var key:String
         switch self.userType {
@@ -73,17 +95,22 @@ class BaseUser {
             if JSON(result!)["success"].boolValue != true {
                 callback(error: error)
             } else {
+                self._isFollowed = follow
+                Account.getCachedAccount()?.syncFollowingInfo({ (error) -> Void in
+                    self._isFollowed = nil
+                    self.isFollowed()
+                })
                 callback(error: nil)
             }
         }
     }
     
     func follow(callback:((error: NSError?) -> Void)) {
-        self._follow(ApiPath.followUser, callback: callback)
+        self._follow(true, callback: callback)
     }
     
     func unfollow(callback:((error: NSError?) -> Void)) {
-        self._follow(ApiPath.unfollowUser, callback: callback)
+        self._follow(false, callback: callback)
     }
 }
 
@@ -161,8 +188,12 @@ class User: BaseUser {
             }
             var users = [BaseUser]()
             for (_, json): (String, JSON) in JSON(result!)["data"] {
-                let user = BaseUser(json: json)
-                users.append(user)
+                do {
+                    let user = try BaseUser(json: json)
+                    users.append(user)
+                } catch {
+                    print("undefined user type")
+                }
             }
             callback(users: users, error: nil)
         }
@@ -1980,9 +2011,10 @@ class FriendTrack: Track {
 class Account {
     var user:User?
     var token:String
-    var likes:[Like] = [Like]()
-    var likedTrackIds:Set<String> = Set<String>()
-    var favoriteGenreIds:Set<String> = Set<String>()
+    var likes = [Like]()
+    var likedTrackIds = Set<String>()
+    var favoriteGenreIds = Set<String>()
+    var following = [BaseUser]()
     
     init(token:String, user:User?) {
         self.user = user
@@ -2010,19 +2042,18 @@ class Account {
         }
     }
     
-    static var account:Account?
+    func syncFollowingInfo(callback:((error: NSError?) -> Void)?) {
+        self.user?.fetchFollowing({ (users, error) -> Void in
+            if error != nil {
+                callback!(error: error)
+            } else {
+                self.following = users!
+                callback!(error: nil)
+            }
+        })
+    }
     
-//    -> SettingsViewController > onSignoutBtnClicked()
-//    static func signout() {
-//        let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
-//        keychainItemWrapper.resetKeychain()
-//        Account.account = nil
-//        let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//        appDelegate.account = nil
-//        PlayerViewController.sharedInstance!.resignObservers()
-//        var navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
-//        navController.popToRootViewControllerAnimated(false)
-//    }
+    static var account:Account?
     
     static func getCachedAccount() -> Account? {
         return account
@@ -2094,6 +2125,13 @@ class Account {
             let user = User.parseUser(result!)
             let account = Account(token:token!, user:user)
             self.account = account
+            
+            account.syncFollowingInfo({ (error) -> Void in
+                if error != nil {
+                    errorHandler(error!)
+                    return
+                }
+            })
             responseHandler()
         })
         

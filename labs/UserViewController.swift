@@ -208,8 +208,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
     }
     
     func followAction(sender: UIButton) {
-        let header = self.headerView as! UserHeaderView
-        let followButton = header.followButton as UIButton
+        let followButton = sender
         if followButton.selected {
             self.baseUser.unfollow({ (error) -> Void in
                 if (error == nil) {

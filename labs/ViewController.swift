@@ -20,12 +20,12 @@ class ViewController: UIViewController {
         if segue.identifier == "Show User" {
             let uvc: UserViewController = segue.destinationViewController as! UserViewController
             uvc.resource = self.resourceTextField.text
-            self.navigationItem.backBarButtonItem = UIBarButtonItem(title:"", style:.Plain, target:nil, action:nil)
+            self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
         }
     }
     
     @IBAction func userBtnTapped(sender: AnyObject) {
-        self.resourceTextField.text = "Ukyb3mNf2Q3"
+        self.resourceTextField.text = "teksu5"
     }
     
     @IBAction func artistBtnTapped(sender: AnyObject) {

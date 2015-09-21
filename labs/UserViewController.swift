@@ -71,13 +71,8 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 return
             }
             
-<<<<<<< HEAD
-            switch JSON(result!)["data"]["user_type"] {
-=======
-            var baseUser : BaseUser?
-            let type = JSON(result!)["data"]["user_type"]
+            let type: String = JSON(result!)["data"]["user_type"].stringValue
             switch type {
->>>>>>> xcode7
             case "user":
                 let user = User.parseUser(result!,key:"data",secondKey:"user")
                 header.descriptionLabel.text = user.description
@@ -95,21 +90,12 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 likes.baseUser = user
                 likes.fetchFunc = user.fetchTracksFromLikeList
                 
-<<<<<<< HEAD
-                var f1 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
+                let f1 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
                 f1.title = "Followers"
                 f1.user = user
                 f1.fetchFunc = user.fetchFollowers
-=======
-                let v1 = self.instantiateSubVC()
-                v1.title = "Followers"
-                let v2 = self.instantiateSubVC()
-                v2.title = "Following"
-//                var v3 = self.instantiateSubVC()
-//                v3.title = "Playlist"
->>>>>>> xcode7
                 
-                var f2 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
+                let f2 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
                 f2.title = "Following"
                 f2.user = user
                 f2.fetchFunc = user.fetchFollowing
@@ -310,7 +296,6 @@ class UserViewController: AXStretchableHeaderTabViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-<<<<<<< HEAD
         if let navBar = self.navigationController?.navigationBar {
             navBar.barTintColor = UIColor.clearColor()
             navBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
@@ -323,29 +308,15 @@ class UserViewController: AXStretchableHeaderTabViewController {
         super.viewDidAppear(animated)
         
         self.didHeightRatioChange(self.headerViewHeightRatio)
-=======
-        let navBar = self.navigationController?.navigationBar
-        navBar!.barTintColor = UIColor.clearColor()
-        navBar!.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-        navBar!.tintColor = UIColor.whiteColor()
-        navBar!.shadowImage = UIImage()
->>>>>>> xcode7
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-<<<<<<< HEAD
 //        var navBar = self.navigationController?.navigationBar
 //        navBar!.barTintColor = nil
 //        navBar!.tintColor = nil
 //        navBar!.shadowImage = nil
-=======
-        let navBar = self.navigationController?.navigationBar
-        navBar!.barTintColor = nil
-        navBar!.tintColor = nil
-        navBar!.shadowImage = nil
->>>>>>> xcode7
     }
     
     override func viewDidDisappear(animated: Bool) {

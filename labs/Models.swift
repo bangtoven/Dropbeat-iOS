@@ -111,7 +111,7 @@ class User: BaseUser {
         self.description = json["description"].stringValue
         
         var fbId:String?
-        if json["fb_id"].string != nil && count(json["fb_id"].stringValue) > 0 {
+        if json["fb_id"].string != nil && json["fb_id"].stringValue.characters.count > 0 {
             fbId = json["fb_id"].stringValue
         }
         self.fbId = fbId
@@ -135,25 +135,7 @@ class User: BaseUser {
             userJson = json[key]
         }
         
-        var fbId:String?
-        if userJson["fb_id"].string != nil && userJson["fb_id"].stringValue.characters.count > 0 {
-            fbId = userJson["fb_id"].stringValue
-        }
-        let user: User = User(
-            id: userJson["id"].stringValue,
-            email: userJson["email"].stringValue,
-            firstName: userJson["firstName"].stringValue,
-            lastName: userJson["lastName"].stringValue,
-            nickname: userJson["nickname"].stringValue,
-            fbId: fbId,
-            num_tracks: userJson["num_tracks"].intValue,
-            num_following: userJson["num_following"].intValue,
-            num_followers: userJson["num_followers"].intValue,
-            description: userJson["description"].stringValue,
-            profile_image: userJson["profile_image"].stringValue,
-            profile_cover_image: userJson["profile_cover_image"].stringValue,
-            resource_name: userJson["resource_name"].stringValue
-        )
+        var user: User = User(json: userJson)
         
         let tracksJson = json[key]["tracks"]
         if tracksJson != nil {

@@ -16,7 +16,7 @@ class FollowInfoTableViewController: UITableViewController, AXSubViewController 
     
     func subViewWillAppear() {
         if self.userArray.count == 0 {
-            println("start fetching \(self.title)")
+            print("start fetching \(self.title)")
             fetchFunc!({ (users, error) -> Void in
                 self.userArray = users!
                 self.tableView.reloadData()
@@ -62,16 +62,16 @@ class FollowInfoTableViewController: UITableViewController, AXSubViewController 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (indexPath.row >= userArray.count) {
             let identifier = "EmptyCell"
-            var cell = tableView.dequeueReusableCellWithIdentifier(identifier) as? UITableViewCell
+            var cell = tableView.dequeueReusableCellWithIdentifier(identifier)
             if (cell == nil) {
-                cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "EmptyCell")
+                cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: identifier)
             }
             cell?.backgroundColor = UIColor.whiteColor()
             cell?.userInteractionEnabled = false
             return cell!
         }
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("FollowInfoTableViewCell", forIndexPath: indexPath) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier("FollowInfoTableViewCell", forIndexPath: indexPath) 
         let u = self.userArray[indexPath.row]
         cell.textLabel?.text = u.name
         if let image = u.image {
@@ -92,7 +92,7 @@ class FollowInfoTableViewController: UITableViewController, AXSubViewController 
         if segue.identifier == "ShowUserSegue" {
             let indexPath = self.tableView.indexPathForCell(sender as! UITableViewCell)
             let u = self.userArray[indexPath!.row]
-            var uvc: UserViewController = segue.destinationViewController as! UserViewController
+            let uvc: UserViewController = segue.destinationViewController as! UserViewController
             uvc.resource = u.resourceName
         }
     }

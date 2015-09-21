@@ -216,29 +216,19 @@ class UserSubViewController: AddableTrackListViewController, UITableViewDataSour
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-<<<<<<< HEAD
         if (indexPath.row >= tracks.count) {
             let identifier = "EmptyCell"
-            var cell = tableView.dequeueReusableCellWithIdentifier(identifier) as? UITableViewCell
+            var cell = tableView.dequeueReusableCellWithIdentifier(identifier)
             if (cell == nil) {
-                cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "EmptyCell")
+                cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: identifier)
             }
             cell?.backgroundColor = UIColor.whiteColor()
             cell?.userInteractionEnabled = false
             return cell!
-=======
-        let cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
-        var track:Track!
-        if indexPath.section == 0 {
-            track = tracks[indexPath.row]
-        } else {
-            let firstSectionCount:Int = self.tableView(tableView, numberOfRowsInSection: 0)
-            track = tracks[indexPath.row + firstSectionCount]
->>>>>>> xcode7
         }
         
-        var cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
-        var track = tracks[indexPath.row]
+        let cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
+        let track = tracks[indexPath.row]
 
         cell.delegate = self
         cell.nameView.text = track.title

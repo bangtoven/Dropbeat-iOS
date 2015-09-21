@@ -420,7 +420,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
             
             let fbManager:FBSDKLoginManager = FBSDKLoginManager()
                     
-            fbManager.logInWithReadPermissions(["user_likes"], handler: { (result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
+            fbManager.logInWithReadPermissions(["user_likes"], fromViewController:self, handler: { (result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
                 
                 if error != nil || result.isCancelled || !result.grantedPermissions.contains("user_likes") {
                     // Process error

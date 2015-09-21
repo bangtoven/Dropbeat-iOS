@@ -448,13 +448,8 @@ class ChannelViewController: AddableTrackListViewController, UITableViewDelegate
             }
             
             self.bookmarkedChannels.removeAll(keepCapacity: false)
-<<<<<<< HEAD
-            for (uid:String, channel:Channel) in self.allChannels {
-                if bookmarkIds.contains(channel.id) {
-=======
             for (_, channel): (String, Channel) in self.allChannels {
-                if bookmarkIds.contains(channel.id!) {
->>>>>>> xcode7
+                if bookmarkIds.contains(channel.id) {
                     channel.isBookmarked = true
                     self.bookmarkedChannels.append(channel)
                 } else {
@@ -918,13 +913,8 @@ class ChannelDetailViewController: AddableTrackListViewController,
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch", comment:""), message: message)
                 return
             }
-<<<<<<< HEAD
             self.channel!.id = self.channelUid!
-            self.genreView.text = ", ".join(self.channel!.genre)
-=======
-            self.channel!.id = self.channelUid
             self.genreView.text = self.channel!.genre.joinWithSeparator(", ")
->>>>>>> xcode7
             self.nameView.text = self.channel!.name
             if (self.channel!.image != nil) {
                 self.thumbView.sd_setImageWithURL(NSURL(string:self.channel!.image!),
@@ -967,11 +957,7 @@ class ChannelDetailViewController: AddableTrackListViewController,
             for (_, s): (String, JSON) in data {
                 self.bookmarkedIds.append(s.stringValue)
             }
-<<<<<<< HEAD
-            self.channel!.isBookmarked = find(self.bookmarkedIds, self.channel!.id) != nil
-=======
-            self.channel!.isBookmarked = self.bookmarkedIds.indexOf((self.channel!.id!)) != nil
->>>>>>> xcode7
+            self.channel!.isBookmarked = self.bookmarkedIds.indexOf((self.channel!.id)) != nil
             self.updateBookmarkBtn()
         })
     }
@@ -1124,17 +1110,10 @@ class ChannelDetailViewController: AddableTrackListViewController,
                     title: NSLocalizedString("Failed to update", comment:""), message: message)
                 return
             }
-<<<<<<< HEAD
-            if (isAdding && find(self.bookmarkedIds, self.channel!.id) == nil) {
+            if (isAdding && self.bookmarkedIds.indexOf((self.channel!.id)) == nil) {
                 self.bookmarkedIds.append(self.channel!.id)
             } else if (!isAdding) {
-                let idx = find(self.bookmarkedIds, self.channel!.id)
-=======
-            if (isAdding && self.bookmarkedIds.indexOf((self.channel!.id!)) == nil) {
-                self.bookmarkedIds.append(self.channel!.id!)
-            } else if (!isAdding) {
-                let idx = self.bookmarkedIds.indexOf((self.channel!.id!))
->>>>>>> xcode7
+                let idx = self.bookmarkedIds.indexOf((self.channel!.id))
                 if idx != nil {
                     self.bookmarkedIds.removeAtIndex(idx!)
                 }
@@ -1368,13 +1347,8 @@ UITableViewDelegate, UITableViewDataSource, ChannelTableViewCellDelegate {
             }
             
             self.bookmarkedChannels.removeAll(keepCapacity: false)
-<<<<<<< HEAD
-            for (uid:String, channel:Channel) in self.channels! {
-                channel.isBookmarked = bookmarkIds.contains(channel.id)
-=======
             for (_, channel): (String, Channel) in self.channels! {
-                channel.isBookmarked = bookmarkIds.contains(channel.id!)
->>>>>>> xcode7
+                channel.isBookmarked = bookmarkIds.contains(channel.id)
                 if channel.isBookmarked {
                     self.bookmarkedChannels.append(channel)
                 }

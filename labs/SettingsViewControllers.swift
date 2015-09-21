@@ -38,8 +38,8 @@ class SettingsViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "sender", name: NotifyKey.appSignout, object: nil)
-        if tableView.indexPathForSelectedRow() != nil {
-            tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: false)
+        if tableView.indexPathForSelectedRow != nil {
+            tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: false)
         }
     }
     
@@ -64,12 +64,12 @@ class SettingsViewController: UITableViewController {
                     
 //            Account.signout()
                     let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
-                    keychainItemWrapper.resetKeychain()
+                    keychainItemWrapper.resetKeychainItem()
                     Account.account = nil
                     let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
                     appDelegate.account = nil
                     PlayerViewController.sharedInstance!.resignObservers()
-                    var navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
+                    let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
                     navController.popToRootViewControllerAnimated(false)
         })
     }
@@ -100,9 +100,9 @@ class CopyrightViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var htmlFile = NSBundle.mainBundle().pathForResource("copyright", ofType: "html")
+        let htmlFile = NSBundle.mainBundle().pathForResource("copyright", ofType: "html")
         if (htmlFile != nil) {
-            var request = NSURLRequest(URL: NSURL(fileURLWithPath: htmlFile!)!)
+            let request = NSURLRequest(URL: NSURL(fileURLWithPath: htmlFile!))
             webView.loadRequest(request)
         }
         
@@ -202,7 +202,7 @@ class FeedbackViewController: BaseViewController,
         textView.endEditing(true)
         senderEmail = emailView.text
         
-        if senderEmail == nil || count(senderEmail!) == 0 {
+        if senderEmail == nil || (senderEmail!).characters.count == 0 {
             ViewUtils.showNoticeAlert(self,
                 title: NSLocalizedString("Invalid format", comment:""),
                 message: NSLocalizedString("Email is required", comment:""))
@@ -217,7 +217,7 @@ class FeedbackViewController: BaseViewController,
         }
         
         let text = textView.text
-        if text == nil || count(text) == 0 {
+        if text == nil || text.characters.count == 0 {
             ViewUtils.showNoticeAlert(self,
                 title: NSLocalizedString("Invalid format", comment:""),
                 message: NSLocalizedString("Empty message cannot be sent", comment:""))

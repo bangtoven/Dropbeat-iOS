@@ -19,7 +19,7 @@ class SearchResultSections {
 
 class SearchViewController: AddableTrackListViewController,
     UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate,
-    UISearchBarDelegate, UIActionSheetDelegate, AddableTrackCellDelegate, ScrollPagerDelegate{
+    UISearchBarDelegate, ScrollPagerDelegate{
     
     private static var sectionTitles = [
         SearchResultSections.RELEASED: NSLocalizedString("OFFICIAL", comment:""),
@@ -101,13 +101,13 @@ class SearchViewController: AddableTrackListViewController,
         if track == nil {
             return
         }
-        var indexPath = trackTableView.indexPathForSelectedRow()
+        let indexPath = trackTableView.indexPathForSelectedRow
         if (indexPath != nil) {
             var preSelectedTrack:Track?
             preSelectedTrack = tracks[indexPath!.row]
             if (preSelectedTrack != nil &&
                 (preSelectedTrack!.id != track!.id ||
-                (playlistId != nil && playlistId!.toInt() >= 0))) {
+                (playlistId != nil && Int(playlistId!) >= 0))) {
                 trackTableView.deselectRowAtIndexPath(indexPath!, animated: false)
             }
         }
@@ -116,7 +116,7 @@ class SearchViewController: AddableTrackListViewController,
             return
         }
         
-        for (idx, t) in enumerate(tracks) {
+        for (idx, t) in tracks.enumerate() {
             if (t.id == track!.id) {
                 trackTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
                     animated: false, scrollPosition: UITableViewScrollPosition.None)
@@ -140,7 +140,7 @@ class SearchViewController: AddableTrackListViewController,
     
     func onHandleAutocomplete(keywords:Array<String>?, error:NSError?) {
         if (error != nil || keywords == nil) {
-            println("Failed to get autocomplete:\(error?.description)")
+            print("Failed to get autocomplete:\(error?.description)")
             return
         }
         autocomKeywords.removeAll(keepCapacity: false)
@@ -149,12 +149,12 @@ class SearchViewController: AddableTrackListViewController,
         }
         autocomTableView.reloadData()
         if (autocomTableView.hidden) {
-            showAutocomplete(clear: true)
+            showAutocomplete(true)
         }
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        if (count(searchText) == 0) {
+        if (searchText.characters.count == 0) {
             hideAutocomplete()
             searchResultView.hidden = false
         } else {
@@ -170,20 +170,20 @@ class SearchViewController: AddableTrackListViewController,
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         searchBar.endEditing(true)
         let keyword = searchBar.text
-        if count(keyword) == 0 {
+        if keyword!.characters.count == 0 {
             return
         }
-        doSearch(keyword)
+        doSearch(keyword!)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (tableView == trackTableView) {
-            var cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
+            let cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
             var track:Track!
             if indexPath.section == 0 {
                 track = tracks[indexPath.row]
             } else {
-                var firstSectionCount:Int = self.tableView(tableView, numberOfRowsInSection: 0)
+                let firstSectionCount:Int = self.tableView(tableView, numberOfRowsInSection: 0)
                 track = tracks[indexPath.row + firstSectionCount]
             }
             cell.delegate = self
@@ -220,7 +220,7 @@ class SearchViewController: AddableTrackListViewController,
             cell.dropBtn.hidden = track!.drop == nil
             return cell
         } else {
-            var cell:AutocomTableViewCell = tableView.dequeueReusableCellWithIdentifier("AutocomItem", forIndexPath: indexPath) as! AutocomTableViewCell
+            let cell:AutocomTableViewCell = tableView.dequeueReusableCellWithIdentifier("AutocomItem", forIndexPath: indexPath) as! AutocomTableViewCell
             let keyword = autocomKeywords[indexPath.row]
             cell.keywordView?.text = keyword
             return cell
@@ -327,7 +327,7 @@ class SearchViewController: AddableTrackListViewController,
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = NSLocalizedString("Failed to search.", comment:"")
+                let message = NSLocalizedString("Failed to search.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to search", comment:""), message: message)
                 self.searchResult = nil
                 self.sectionedTracks = [String:[Track]]()
@@ -354,20 +354,20 @@ class SearchViewController: AddableTrackListViewController,
             }
             
             // sectionize
-            var foundSections:[String] = self.sectionedTracks.keys.array
+            var foundSections:[String] = Array(self.sectionedTracks.keys)
             if (self.searchResult!.hasPodcast) {
                 foundSections.append(SearchSections.PODCAST)
             }
             if (self.searchResult!.hasLiveset) {
                 foundSections.append(SearchSections.LIVESET)
             }
-            if (find(foundSections, SearchSections.RELEVANT) ?? -1 == -1) {
+            if (foundSections.indexOf(SearchSections.RELEVANT) ?? -1 == -1) {
                 foundSections.append(SearchSections.RELEVANT)
             }
             
-            foundSections.sort({ (lhs:String, rhs:String) -> Bool in
-                var lhsIdx:Int = find(Search.availableSections, lhs) ?? -1
-                var rhsIdx:Int = find(Search.availableSections, rhs) ?? -1
+            foundSections.sortInPlace({ (lhs:String, rhs:String) -> Bool in
+                let lhsIdx:Int = Search.availableSections.indexOf(lhs) ?? -1
+                let rhsIdx:Int = Search.availableSections.indexOf(rhs) ?? -1
                 if lhsIdx > -1 && rhsIdx > -1 {
                     return lhsIdx < rhsIdx
                 }
@@ -379,7 +379,7 @@ class SearchViewController: AddableTrackListViewController,
                 }
                 return true
             })
-            var foundTitles:[String] = foundSections.map {
+            let foundTitles:[String] = foundSections.map {
                 return SearchViewController.sectionTitles[$0]!
             }
             if (foundSections.count > 0) {
@@ -413,7 +413,7 @@ class SearchViewController: AddableTrackListViewController,
             }
             
             self.tracks.removeAll(keepCapacity: false)
-            var tracks = self.sectionedTracks[self.currentSection!]
+            let tracks = self.sectionedTracks[self.currentSection!]
             if tracks != nil {
                 for track in tracks! {
                     self.tracks.append(track)
@@ -435,9 +435,9 @@ class SearchViewController: AddableTrackListViewController,
         onDropFinished()
         
         self.currentSection = section
-        var tracks = self.sectionedTracks[self.currentSection!]
+        let tracks = self.sectionedTracks[self.currentSection!]
         if (tracks == nil) {
-            var progress = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+            let progress = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
             let callback = { (tracks: [Track]?, error:NSError?) -> Void in
                 progress.hide(true)
                 if (error != nil || tracks == nil) {
@@ -448,7 +448,7 @@ class SearchViewController: AddableTrackListViewController,
                             message: NSLocalizedString("Internet is not connected", comment:""))
                         return
                     }
-                    var message = NSLocalizedString("Failed to fetch data.", comment:"")
+                    let message = NSLocalizedString("Failed to fetch data.", comment:"")
                     ViewUtils.showNoticeAlert(self,
                         title: NSLocalizedString("Failed to fetch data", comment:""), message: message)
                     return

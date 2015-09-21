@@ -14,8 +14,8 @@ class FeedSelectTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        var selectedBgView = UIView(frame: self.bounds)
-        selectedBgView.autoresizingMask = UIViewAutoresizing.FlexibleHeight | UIViewAutoresizing.FlexibleWidth
+        let selectedBgView = UIView(frame: self.bounds)
+        selectedBgView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
         selectedBgView.backgroundColor = UIColor(netHex: 0xffffff)
         self.selectedBackgroundView = selectedBgView
     }

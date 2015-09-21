@@ -135,12 +135,30 @@ class User: BaseUser {
             userJson = json[key]
         }
         
-        var user: User = User(json: userJson)
-            
-        var tracksJson = json[key]["tracks"]
+        var fbId:String?
+        if userJson["fb_id"].string != nil && userJson["fb_id"].stringValue.characters.count > 0 {
+            fbId = userJson["fb_id"].stringValue
+        }
+        let user: User = User(
+            id: userJson["id"].stringValue,
+            email: userJson["email"].stringValue,
+            firstName: userJson["firstName"].stringValue,
+            lastName: userJson["lastName"].stringValue,
+            nickname: userJson["nickname"].stringValue,
+            fbId: fbId,
+            num_tracks: userJson["num_tracks"].intValue,
+            num_following: userJson["num_following"].intValue,
+            num_followers: userJson["num_followers"].intValue,
+            description: userJson["description"].stringValue,
+            profile_image: userJson["profile_image"].stringValue,
+            profile_cover_image: userJson["profile_cover_image"].stringValue,
+            resource_name: userJson["resource_name"].stringValue
+        )
+        
+        let tracksJson = json[key]["tracks"]
         if tracksJson != nil {
             var tracks = [UserTrack]()
-            for (idx:String, t:JSON) in tracksJson {
+            for (_, t): (String, JSON) in tracksJson {
                 tracks.append(UserTrack.parseUserTrack(t))
             }
             user.tracks = tracks
@@ -256,15 +274,15 @@ class Channel: BaseUser {
         if (detail["channel_name"].error != nil) {
             return nil
         }
-        var name = detail["channel_name"].stringValue
+        let name = detail["channel_name"].stringValue
         var thumbnail:String?
         if (detail["channel_thumbnail"].error == nil) {
             thumbnail = detail["channel_thumbnail"].stringValue
         }
         var genreArray:[String] = []
         if (detail["genre"].error == nil) {
-            var genres = detail["genre"]
-            for (idx: String, g: JSON) in genres {
+            let genres = detail["genre"]
+            for (_, g): (String, JSON) in genres {
                 genreArray.append(g.stringValue)
             }
         }
@@ -273,7 +291,7 @@ class Channel: BaseUser {
             playlists.append(ChannelPlaylist(uid: detail["uploads"].stringValue, name: "RECENT"))
         }
         if (detail["playlist"].error == nil) {
-            for (idx: String, s:JSON) in detail["playlist"] {
+            for (_, s): (String, JSON) in detail["playlist"] {
                 if (s["uid"].error == nil && s["title"].error == nil) {
                     playlists.append(ChannelPlaylist(uid:s["uid"].stringValue, name: s["title"].stringValue))
                 }
@@ -288,13 +306,13 @@ class Channel: BaseUser {
     static func parseChannelList(data: AnyObject) -> [Channel] {
         var json = JSON(data)
         var channels: [Channel] = []
-        var index = 0
-        for (idx: String, s: JSON) in json["data"] {
+        let index = 0
+        for (_, s): (String, JSON) in json["data"] {
             if (s["uid"].error != nil || s["name"].error != nil) {
                 continue
             }
-            var uid: String = s["uid"].stringValue
-            var name: String = s["name"].stringValue
+            let uid: String = s["uid"].stringValue
+            let name: String = s["name"].stringValue
             var thumbnail: String? = nil
             if (s["thumbnail"].error == nil) {
                 thumbnail = s["thumbnail"].stringValue
@@ -331,10 +349,10 @@ class ArtistEvent {
     }
     
     static func parseEvents(data: AnyObject) -> [ArtistEvent] {
-        var eventsJson = JSON(data)["data"]
+        let eventsJson = JSON(data)["data"]
         
         var events = [ArtistEvent]()
-        for (idx: String, e:JSON) in eventsJson {
+        for (_, e): (String, JSON) in eventsJson {
             events.append(ArtistEvent(json: e))
         }
         return events
@@ -361,7 +379,7 @@ class Artist: BaseUser {
             detail = json[key]
         }
         
-        var artist = Artist(
+        let artist = Artist(
             id: detail["artist_id"].stringValue,
             name: detail["artist_name"].stringValue,
             image: detail["artist_image"].stringValue,
@@ -371,9 +389,9 @@ class Artist: BaseUser {
         artist.hasPodcast = detail["has_podcast"].boolValue
 //        artist.hasLiveset = artist.name != nil
         
-        var tracks = Track.parseTracks(data, key: "data", secondKey: "tracks")
-        for (t: Track) in tracks {
-            var sectionName = t.tag!
+        let tracks = Track.parseTracks(data, key: "data", secondKey: "tracks")
+        for t: Track in tracks {
+            let sectionName = t.tag!
             if artist.sectionedTracks[sectionName] == nil {
                 artist.sectionedTracks[sectionName] = []
             }
@@ -463,13 +481,13 @@ class Artist: BaseUser {
             }
             
             var tracks = [Track]()
-            for (idx: String, s:JSON) in t["data"] {
-                var id = s["stream_url"].string
-                var title = s["title"].string
+            for (_, s): (String, JSON) in t["data"] {
+                let id = s["stream_url"].string
+                let title = s["title"].string
                 if (id == nil || title == nil) {
                     continue
                 }
-                var track = Track(
+                let track = Track(
                     id: id!,
                     title: title!,
                     type: "podcast",
@@ -479,7 +497,7 @@ class Artist: BaseUser {
                 var drop:Drop?
                 var dropObj = s["drop"]
                 if dropObj != nil && dropObj["dref"].string != nil &&
-                    count(dropObj["dref"].stringValue) > 0 &&
+                    dropObj["dref"].stringValue.characters.count > 0 &&
                     dropObj["type"].string != nil {
                         
                         drop = Drop(
@@ -510,7 +528,7 @@ class Playlist {
     }
     
     func getTrackIdx(track:Track) -> Int {
-        for (idx:Int, t:Track) in enumerate(tracks) {
+        for (idx, t): (Int, Track) in tracks.enumerate() {
             if t.id == track.id {
                 return idx
             }
@@ -519,10 +537,10 @@ class Playlist {
     }
     
     static private func parsePlaylistJson(playlistDict: JSON) -> Playlist? {
-        var playlistId: Int = playlistDict["id"].intValue
-        var playlistName: String = playlistDict["name"].stringValue
+        let playlistId: Int = playlistDict["id"].intValue
+        let playlistName: String = playlistDict["name"].stringValue
         var tracks: [Track] = []
-        for (idx: String, s: JSON) in playlistDict["data"] {
+        for (_, s): (String, JSON) in playlistDict["data"] {
             var id: AnyObject
             if s["id"].string == nil {
                 id = String(s["id"].int!)
@@ -547,7 +565,7 @@ class Playlist {
     static func parsePlaylists(data: AnyObject) -> [Playlist] {
         var json = JSON(data)
         var playlists :[Playlist] = []
-        for (idx: String, s: JSON) in json["playlists"] {
+        for (_, s): (String, JSON) in json["playlists"] {
             if let playlist = parsePlaylistJson(s) {
                 playlists.append(playlist)
             }
@@ -740,13 +758,13 @@ class Search {
             }
             
             var tracks = [Track]()
-            for (idx: String, s:JSON) in t["data"] {
-                var id = s["stream_url"].string
-                var title = s["title"].string
+            for (_, s): (String, JSON) in t["data"] {
+                let id = s["stream_url"].string
+                let title = s["title"].string
                 if (id == nil || title == nil) {
                     continue
                 }
-                var track = Track(
+                let track = Track(
                     id: id!,
                     title: title!,
                     type: "podcast",
@@ -756,7 +774,7 @@ class Search {
                 var drop:Drop?
                 var dropObj = s["drop"]
                 if dropObj != nil && dropObj["dref"].string != nil &&
-                    count(dropObj["dref"].stringValue) > 0 &&
+                    dropObj["dref"].stringValue.characters.count > 0 &&
                     dropObj["type"].string != nil {
                     
                     drop = Drop(
@@ -788,12 +806,12 @@ class Search {
         hasPodcast = s["has_podcast"].boolValue
         hasLiveset = artistName != nil
         
-        var search = Search(artistName: artistName, artistImage: artistImage)
+        let search = Search(artistName: artistName, artistImage: artistImage)
         search.hasEvent = hasEvent
         search.hasPodcast = hasPodcast
         search.hasLiveset = hasLiveset
         
-        for (idx:String, s:JSON) in s["tracks"] {
+        for (_, s): (String, JSON) in s["tracks"] {
             var id: AnyObject
             if s["id"].string == nil {
                 if s["id"].int == nil {
@@ -804,7 +822,7 @@ class Search {
                 id = s["id"].string!
             }
             
-            var track = Track(
+            let track = Track(
                 id: id as! String,
                 title: s["title"].stringValue,
                 type: s["type"].stringValue,
@@ -813,7 +831,7 @@ class Search {
             
             var dropObj = s["drop"]
             if dropObj != nil && dropObj["dref"].string != nil &&
-                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["dref"].stringValue.characters.count > 0 &&
                 dropObj["type"].string != nil {
                     track.drop = Drop(
                         dref: dropObj["dref"].stringValue,
@@ -821,17 +839,17 @@ class Search {
                         when: dropObj["when"].int)
             }
             
-            var dref = s["dref"]
+            let dref = s["dref"]
             if dref.error == nil {
                 track.dref = s["dref"].stringValue
             }
             
-            var tag = s["tag"]
+            let tag = s["tag"]
             if tag.error == nil {
                 track.tag = s["tag"].stringValue
             }
             
-            var topMatch = s["top_match"]
+            let topMatch = s["top_match"]
             if topMatch.error == nil {
                 track.topMatch = s["top_match"].boolValue ?? false
             }
@@ -839,7 +857,7 @@ class Search {
             if (track.type == "youtube") {
                 track.thumbnailUrl = "http://img.youtube.com/vi/\(track.id)/mqdefault.jpg"
             } else {
-                var artwork = s["artwork"]
+                let artwork = s["artwork"]
                 if artwork.error == nil {
                     track.thumbnailUrl = s["artwork"].stringValue
                 }
@@ -871,7 +889,7 @@ class Feed {
     static func parseFeed(data: AnyObject) -> Feed {
         var json = JSON(data)
         var tracks: [Track] = []
-        for (idx: String, s: JSON) in json["feed"] {
+        for (_, s): (String, JSON) in json["feed"] {
             var id: AnyObject
             if s["id"].string == nil {
                 id = String(s["id"].int!)
@@ -879,7 +897,7 @@ class Feed {
                 id = s["id"].string!
             }
             
-            var track = Track(
+            let track = Track(
                 id: id as! String,
                 title: s["title"].stringValue,
                 type: s["type"].stringValue,
@@ -888,7 +906,7 @@ class Feed {
             
             var dropObj = s["drop"]
             if dropObj != nil && dropObj["dref"].string != nil &&
-                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["dref"].stringValue.characters.count > 0 &&
                 dropObj["type"].string != nil {
                     track.drop = Drop(
                         dref: dropObj["dref"].stringValue,
@@ -896,17 +914,17 @@ class Feed {
                         when: dropObj["when"].int)
             }
             
-            var dref = s["dref"]
+            let dref = s["dref"]
             if dref.error == nil {
                 track.dref = s["dref"].stringValue
             }
             
-            var tag = s["tag"]
+            let tag = s["tag"]
             if tag.error == nil {
                 track.tag = s["tag"].stringValue
             }
             
-            var topMatch = s["top_match"]
+            let topMatch = s["top_match"]
             if topMatch.error == nil {
                 track.topMatch = s["top_match"].boolValue
             }
@@ -914,7 +932,7 @@ class Feed {
             if (track.type == "youtube") {
                 track.thumbnailUrl = "http://img.youtube.com/vi/\(track.id)/mqdefault.jpg"
             } else {
-                var artwork = s["artwork"]
+                let artwork = s["artwork"]
                 if artwork.error == nil {
                     track.thumbnailUrl = s["artwork"].stringValue
                 }
@@ -923,7 +941,7 @@ class Feed {
             
             tracks.append(track)
         }
-        var feed = Feed(tracks: tracks)
+        let feed = Feed(tracks: tracks)
         return feed
     }
 }
@@ -943,10 +961,10 @@ class BeatportChart {
             return BeatportChart(success:false, tracks:nil)
         }
         
-        var dateFormatter = NSDateFormatter()
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         var tracks:[BeatportTrack] = [BeatportTrack]()
-        for (idx:String, s:JSON) in json["data"] {
+        for (_, s): (String, JSON) in json["data"] {
             if s["artist_name"].string == nil {
                 continue
             }
@@ -970,7 +988,7 @@ class BeatportChart {
             if s["released"].string == nil {
                 continue
             }
-            var releasedAtStr = s["released"].stringValue
+            let releasedAtStr = s["released"].stringValue
             var releasedAt:NSDate?
             if releasedAtStr.length >= 10 {
                 releasedAt = dateFormatter.dateFromString(releasedAtStr.subString(0, length: 10))
@@ -979,7 +997,7 @@ class BeatportChart {
             var drop:Drop?
             var dropObj = s["drop"]
             if dropObj != nil && dropObj["dref"].string != nil &&
-                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["dref"].stringValue.characters.count > 0 &&
                 dropObj["type"].string != nil {
                     
                 drop = Drop(
@@ -1022,10 +1040,10 @@ class StreamNew {
         }
         
         var tracks:[NewReleaseTrack] = []
-        var formatter = NSDateFormatter()
+        let formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         
-        for (idx:String, s:JSON) in json["data"] {
+        for (_, s): (String, JSON) in json["data"] {
             if s["id"].string == nil ||
                     s["track_name"].string == nil ||
                     s["type"].string == nil ||
@@ -1035,13 +1053,13 @@ class StreamNew {
                 continue
             }
             
-            var releasedAtStr = s["release_date"].stringValue
+            let releasedAtStr = s["release_date"].stringValue
             var releasedAt:NSDate?
             if releasedAtStr.length >= 10 {
                 releasedAt = formatter.dateFromString(releasedAtStr.subString(0, length: 10))
             }
             
-            var track = NewReleaseTrack(
+            let track = NewReleaseTrack(
                 id: s["id"].stringValue,
                 trackName: s["track_name"].stringValue,
                 artist: s["artist_name"].stringValue,
@@ -1053,7 +1071,7 @@ class StreamNew {
             var drop:Drop?
             var dropObj = s["drop"]
             if dropObj != nil && dropObj["dref"].string != nil &&
-                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["dref"].stringValue.characters.count > 0 &&
                 dropObj["type"].string != nil {
                     
                 drop = Drop(
@@ -1085,10 +1103,10 @@ class StreamTrending {
         }
         
         var tracks:[TrendingTrack] = []
-        var formatter = NSDateFormatter()
+        let formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         
-        for (idx:String, s:JSON) in json["data"] {
+        for (_, s): (String, JSON) in json["data"] {
             if s["id"].string == nil ||
                     s["track_name"].string == nil ||
                     s["type"].string == nil ||
@@ -1098,7 +1116,7 @@ class StreamTrending {
             }
             
             
-            var track = TrendingTrack(
+            let track = TrendingTrack(
                 id: s["id"].stringValue,
                 trackName: s["track_name"].stringValue,
                 artist: s["artist_name"].stringValue,
@@ -1109,7 +1127,7 @@ class StreamTrending {
             var drop:Drop?
             var dropObj = s["drop"]
             if dropObj != nil && dropObj["dref"].string != nil &&
-                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["dref"].stringValue.characters.count > 0 &&
                 dropObj["type"].string != nil {
                     
                 drop = Drop(
@@ -1141,10 +1159,10 @@ class StreamBeatportTrending {
             return StreamBeatportTrending(success:false, tracks:nil)
         }
         
-        var dateFormatter = NSDateFormatter()
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         var tracks:[BeatportTrack] = [BeatportTrack]()
-        for (idx:String, s:JSON) in json["data"] {
+        for (_, s): (String, JSON) in json["data"] {
             if s["artist_name"].string == nil {
                 continue
             }
@@ -1168,7 +1186,7 @@ class StreamBeatportTrending {
             if s["released"].string == nil {
                 continue
             }
-            var releasedAtStr = s["released"].stringValue
+            let releasedAtStr = s["released"].stringValue
             var releasedAt:NSDate?
             if releasedAtStr.length >= 10 {
                 releasedAt = dateFormatter.dateFromString(releasedAtStr.subString(0, length: 10))
@@ -1189,7 +1207,7 @@ class StreamBeatportTrending {
             var drop:Drop?
             var dropObj = s["drop"]
             if dropObj != nil && dropObj["dref"].string != nil &&
-                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["dref"].stringValue.characters.count > 0 &&
                 dropObj["type"].string != nil {
                     
                 drop = Drop(
@@ -1220,11 +1238,11 @@ class StreamFollowing {
             return StreamFollowing(success:false, tracks:nil)
         }
         
-        var dateFormatter = NSDateFormatter()
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         var tracks:[FollowingArtistTrack] = [FollowingArtistTrack]()
         
-        for (idx:String, s:JSON) in json["data"] {
+        for (_, s): (String, JSON) in json["data"] {
             if s["id"].string == nil {
                 continue
             }
@@ -1259,7 +1277,7 @@ class StreamFollowing {
                 thumbnail = "http://img.youtube.com/vi/\(id)/mqdefault.jpg"
             }
             
-            var track = FollowingArtistTrack(
+            let track = FollowingArtistTrack(
                 id: id,
                 trackName: title,
                 artist: artist,
@@ -1271,7 +1289,7 @@ class StreamFollowing {
             var drop:Drop?
             var dropObj = s["drop"]
             if dropObj != nil && dropObj["dref"].string != nil &&
-                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["dref"].stringValue.characters.count > 0 &&
                 dropObj["type"].string != nil {
                     
                 drop = Drop(
@@ -1310,7 +1328,7 @@ class StreamFriend {
         
         var tracks = [FriendTrack]()
         
-        for(idx:String, s:JSON) in dataObj["tracks"] {
+        for(_, s): (String, JSON) in dataObj["tracks"] {
             if s["id"].string == nil ||
                     s["nickname"].string == nil ||
                     s["release_date"].string == nil ||
@@ -1336,7 +1354,7 @@ class StreamFriend {
             var drop:Drop?
             var dropObj = s["drop"]
             if dropObj != nil && dropObj["dref"].string != nil &&
-                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["dref"].stringValue.characters.count > 0 &&
                 dropObj["type"].string != nil {
                     
                 drop = Drop(
@@ -1361,6 +1379,15 @@ class Drop {
         self.type = type
         self.dref = dref
         self.when = when
+    }
+    
+    func resolveStreamUrl() -> String? {
+        if self.type == "soundcloud" {
+            return "https://api.soundcloud.com/tracks/\(self.dref)/stream?client_id=b45b1aa10f1ac2941910a7f0d10f8e28"
+        } else if (self.type != "youtube" && self.dref.characters.startsWith("http".characters)) {
+            return self.dref.stringByRemovingPercentEncoding!
+        }
+        return nil
     }
 }
 
@@ -1413,7 +1440,7 @@ class Like {
         }
         
         var likes = [Like]()
-        for (idx:String, obj:JSON) in json[key] {
+        for (_, obj): (String, JSON) in json[key] {
             if let like = Like.parseLikeJson(obj) {
                 likes.append(like)
             }
@@ -1450,7 +1477,7 @@ class UserTrack: Track {
         let streamUrl = data["stream_url"].stringValue
         let dropStart = data["drop_start"].int
         let drop = Drop(dref: streamUrl, type: "dropbeat", when: dropStart)
-        var track = UserTrack(id: id, title: name, type: "dropbeat", thumbnailUrl: coverArt, drop: drop)
+        let track = UserTrack(id: id, title: name, type: "dropbeat", thumbnailUrl: coverArt, drop: drop)
         
         track.streamUrl = streamUrl
         track.description = data["description"].stringValue
@@ -1460,7 +1487,7 @@ class UserTrack: Track {
         track.playCount = data["play_count"].intValue
         track.repostCount = data["repost_count"].intValue
 
-        var genreId = data["genre_id"].intValue
+        let genreId = data["genre_id"].intValue
         track.genre = GenreList.getGenreName(genreId)
         
         let formatter = NSDateFormatter()
@@ -1504,6 +1531,15 @@ class Track {
             self.topMatch = topMatch
     }
     
+    func resolveStreamUrl() -> String? {
+        if self.type == "soundcloud" {
+            return "https://api.soundcloud.com/tracks/\(self.id)/stream?client_id=b45b1aa10f1ac2941910a7f0d10f8e28"
+        } else if (self.type != "youtube" && self.id.characters.startsWith("http".characters)) {
+            return self.id.stringByRemovingPercentEncoding!
+        }
+        return nil
+    }
+    
     static func parseTracks(data: AnyObject, key: String, secondKey: String?=nil) -> [Track] {
         var tracks = [Track]()
         var t = JSON(data)
@@ -1516,7 +1552,7 @@ class Track {
         } else {
             tracksObj = t[key]
         }
-        for (idx:String, s:JSON) in tracksObj {
+        for (_, s): (String, JSON) in tracksObj {
             var id: AnyObject
             if s["id"].string == nil {
                 if s["id"].int != nil {
@@ -1528,7 +1564,7 @@ class Track {
                 id = s["id"].string!
             }
             
-            var track = Track(
+            let track = Track(
                 id: id as! String,
                 title: s["title"].stringValue,
                 type: s["type"].stringValue,
@@ -1537,7 +1573,7 @@ class Track {
             
             var dropObj = s["drop"]
             if dropObj != nil && dropObj["dref"].string != nil &&
-                count(dropObj["dref"].stringValue) > 0 &&
+                dropObj["dref"].stringValue.characters.count > 0 &&
                 dropObj["type"].string != nil {
                     track.drop = Drop(
                         dref: dropObj["dref"].stringValue,
@@ -1545,17 +1581,17 @@ class Track {
                         when: dropObj["when"].int)
             }
             
-            var dref = s["dref"]
+            let dref = s["dref"]
             if dref.error == nil {
                 track.dref = s["dref"].stringValue
             }
             
-            var tag = s["tag"]
+            let tag = s["tag"]
             if tag.error == nil {
                 track.tag = s["tag"].stringValue
             }
             
-            var topMatch = s["top_match"]
+            let topMatch = s["top_match"]
             if topMatch.error == nil {
                 track.topMatch = s["top_match"].boolValue ?? false
             }
@@ -1563,7 +1599,7 @@ class Track {
             if (track.type == "youtube") {
                 track.thumbnailUrl = "http://img.youtube.com/vi/\(track.id)/mqdefault.jpg"
             } else {
-                var artwork = s["artwork"]
+                let artwork = s["artwork"]
                 if artwork.error == nil {
                     track.thumbnailUrl = s["artwork"].stringValue
                 }
@@ -1663,7 +1699,7 @@ class Track {
         }
         var likeId:Int?
         let account = Account.getCachedAccount()!
-        for (idx:Int, like:Like) in enumerate(account.likes) {
+        for (_, like): (Int, Like) in account.likes.enumerate() {
             if like.track.id == self.id {
                 likeId = like.id
                 break
@@ -1683,7 +1719,7 @@ class Track {
                 return
             }
             var foundIdx = -1
-            for (idx:Int, like:Like) in enumerate(account.likes) {
+            for (idx, like): (Int, Like) in account.likes.enumerate() {
                 if like.track.id == self.id {
                     foundIdx = idx
                     break
@@ -1748,7 +1784,7 @@ class Track {
     }
     
     func addToPlaylist(playlist: Playlist, section:String, afterAdd: (error:NSError?) -> Void) {
-        var tracks = playlist.tracks
+        let tracks = playlist.tracks
         
         var dummyTracks = [[String:AnyObject]]()
         for t in tracks {
@@ -1805,7 +1841,7 @@ class Track {
     }
     
     func deleteFromPlaylist(selectedPlaylist:Playlist, afterDelete:(error:NSError?) -> Void) {
-        var tracks = selectedPlaylist.tracks
+        let tracks = selectedPlaylist.tracks
         
         var dummyTracks = [[String:AnyObject]]()
         for t in tracks {
@@ -1832,7 +1868,7 @@ class Track {
                 return
             }
             var foundIdx:Int?
-            for (idx, track) in enumerate(playlist!.tracks) {
+            for (idx, track) in playlist!.tracks.enumerate() {
                 if (track.id == self.id) {
                     foundIdx = idx
                 }
@@ -1848,7 +1884,7 @@ class Track {
             if (playingTrack != nil &&
                     PlayerContext.currentPlaylistId != nil &&
                     PlayerContext.currentPlaylistId == selectedPlaylist.id) {
-                for (idx, track) in enumerate(playlist!.tracks) {
+                for (idx, track) in playlist!.tracks.enumerate() {
                     if (track.id == playingTrack!.id) {
                         PlayerContext.currentTrackIdx = idx
                         break
@@ -2012,7 +2048,7 @@ class Account {
     
     static func getAccountWithCompletionHandler(handler:(account: Account?, error: NSError?) -> Void) {
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
-        let token:String? = keychainItemWrapper["auth_token"] as! String?
+        let token:String? = keychainItemWrapper.objectForKey("auth_token") as? String
         if (token == nil) {
             handler(account: nil, error: nil)
             return
@@ -2026,7 +2062,7 @@ class Account {
         var likes:[Like] = [Like]()
         var favoriteGenreIds:[String] = [String]()
         
-        var responseHandler = {() -> Void in
+        let responseHandler = {() -> Void in
             if !gotLikeInfo || !gotFavoriteInfo || self.account == nil {
                 return
             }
@@ -2049,7 +2085,7 @@ class Account {
             handler(account:self.account, error: nil)
         }
         
-        var errorHandler = {(error:NSError) -> Void in
+        let errorHandler = {(error:NSError) -> Void in
             if didErrorHandlerFire {
                 return
             }
@@ -2067,14 +2103,14 @@ class Account {
             }
             
             let res = JSON(result!)
-            var success:Bool = res["success"].bool ?? false
+            let success:Bool = res["success"].bool ?? false
             if !success {
                 errorHandler(NSError(domain: "account", code: 101, userInfo: nil))
                 return
             }
             
             let user = User.parseUser(result!)
-            var account = Account(token:token!, user:user)
+            let account = Account(token:token!, user:user)
             self.account = account
             responseHandler()
         })
@@ -2111,7 +2147,7 @@ class Account {
                 return
             }
             
-            for (idx:String, s:JSON) in json["data"] {
+            for (_, s): (String, JSON) in json["data"] {
                 favoriteGenreIds.append(String(s.intValue))
             }
             
@@ -2143,7 +2179,7 @@ class FBPageLikes {
             nextPageToken = json["paging"]["next"].string
         }
         
-        for (idx:String, pageJson:JSON) in json["data"] {
+        for (_, pageJson): (String, JSON) in json["data"] {
             let page = FBPage.parseFBPageJson(pageJson)
             if page == nil {
                 continue
@@ -2227,7 +2263,7 @@ class GenreList {
         
         
         defaultGenres.append(Genre(key:"", name:"ALL"))
-        for (idx:String, s:JSON) in json["default"] {
+        for (_, s): (String, JSON) in json["default"] {
             if s["id"].int == nil {
                 continue
             }
@@ -2242,7 +2278,7 @@ class GenreList {
         }
         
         channelGenres.append(Genre(key:"", name:"ALL"))
-        for (idx:String, s:JSON) in json["channel"] {
+        for (_, s): (String, JSON) in json["channel"] {
             if s["id"].int == nil {
                 continue
             }
@@ -2257,7 +2293,7 @@ class GenreList {
         }
         
         trendingGenres.append(Genre(key:"", name:"NOW TRENDING"))
-        for (idx:String, s:JSON) in json["trending"] {
+        for (_, s): (String, JSON) in json["trending"] {
             if s["key"].string == nil {
                 continue
             }
@@ -2271,7 +2307,7 @@ class GenreList {
             trendingGenres.append(Genre(key:key, name:name))
         }
         
-        for (idx:String, s:JSON) in json["dropbeat"] {
+        for (_, s): (String, JSON) in json["dropbeat"] {
             if s["id"].int == nil {
                 continue
             }
@@ -2323,13 +2359,13 @@ class FollowingInfo {
         }
         
         var followings = [Following]()
-        for (idx:String, s:JSON) in json["data"] {
+        for (_, s): (String, JSON) in json["data"] {
             if s["id"].int == nil {
                 continue
             }
             let id = s["id"].intValue
             
-            if s["name"].string == nil || count(s["name"].stringValue) == 0 {
+            if s["name"].string == nil || s["name"].stringValue.characters.count == 0 {
                 continue
             }
             let name = s["name"].stringValue
@@ -2356,13 +2392,13 @@ class SearchArtist {
         }
         
         var followings = [Following]()
-        for (idx:String, s:JSON) in json["data"] {
+        for (_, s): (String, JSON) in json["data"] {
             if s["id"].int == nil {
                 continue
             }
             let id = s["id"].intValue
             
-            if s["name"].string == nil || count(s["name"].stringValue) == 0 {
+            if s["name"].string == nil || s["name"].stringValue.characters.count == 0 {
                 continue
             }
             let name = s["name"].stringValue
@@ -2400,7 +2436,7 @@ class GenreSample {
         
         var samples = [GenreSample]()
         var count = 0
-        for (idx:String, s:JSON) in json["data"] {
+        for (_, s): (String, JSON) in json["data"] {
             if s["id"].int == nil ||
                 s["name"].string == nil ||
                 s["sample_track"] == nil {

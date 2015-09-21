@@ -41,7 +41,7 @@ class PlayerContext {
     
     static func pickNextTrack() -> Track? {
         var track :Track? = nil
-        var playlist :Playlist? = getPlaylist(currentPlaylistId)
+        let playlist :Playlist? = getPlaylist(currentPlaylistId)
         let size = playlist?.tracks.count ?? 0
         
         if currentPlaylistId == nil || playlist == nil || size == 0{
@@ -76,7 +76,7 @@ class PlayerContext {
     
     static func pickPrevTrack() -> Track? {
         var track :Track? = nil
-        var playlist :Playlist? = getPlaylist(currentPlaylistId)
+        let playlist :Playlist? = getPlaylist(currentPlaylistId)
         let size = playlist?.tracks.count ?? 0
         
         if currentPlaylistId == nil || playlist == nil || size == 0{
@@ -107,14 +107,14 @@ class PlayerContext {
     static func randomPick() -> Track? {
         // Randomly pick next track in shuffle mode.
         // NOTE that this method should exclude current track in next candidates.
-        var playlist :Playlist? = getPlaylist(currentPlaylistId)
+        let playlist :Playlist? = getPlaylist(currentPlaylistId)
         let size = playlist?.tracks.count
         if size <= 1 {
             return nil
         }
         
         while (true) {
-            var idx = Int(arc4random_uniform(UInt32(size!)))
+            let idx = Int(arc4random_uniform(UInt32(size!)))
             if idx != currentTrackIdx {
                 return playlist!.tracks[idx] as Track
             }

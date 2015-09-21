@@ -24,7 +24,7 @@ class ChannelSubViewController: UserSubViewController, DYAlertPickViewDataSource
     
     override func subViewWillAppear() {
         if self.tracks.count == 0 {
-            println("start fetching channel \(self.title)")
+            print("start fetching channel \(self.title)")
             
             if self.isSectioned != true {
                 self.selectSection(0)
@@ -39,7 +39,7 @@ class ChannelSubViewController: UserSubViewController, DYAlertPickViewDataSource
     
     func selectSection (index: Int) {
         self.currentSectionIndex = index
-        var playlist = self.channel!.playlists[index]
+        let playlist = self.channel!.playlists[index]
         nextPageToken = nil
         listEnd = false
         
@@ -56,7 +56,7 @@ class ChannelSubViewController: UserSubViewController, DYAlertPickViewDataSource
     
     @IBOutlet weak var selectSectionButton: UIButton!
     @IBAction func showSelectSection(sender: AnyObject) {
-        var picker: DYAlertPickView = DYAlertPickView(headerTitle: "Choose Section", cancelButtonTitle: nil, confirmButtonTitle: nil, switchButtonTitle: nil)
+        let picker: DYAlertPickView = DYAlertPickView(headerTitle: "Choose Section", cancelButtonTitle: nil, confirmButtonTitle: nil, switchButtonTitle: nil)
         picker.dataSource = self
         picker.delegate = self
         picker.tintColor = UIColor.dropbeatColor()
@@ -70,7 +70,7 @@ class ChannelSubViewController: UserSubViewController, DYAlertPickViewDataSource
     }
     
     func titleForRowInDYAlertPickView(titleForRow: Int) -> NSAttributedString! {
-        var attr = [NSFontAttributeName: UIFont.systemFontOfSize(12)]
+        let attr = [NSFontAttributeName: UIFont.systemFontOfSize(12)]
         return NSAttributedString(string:self.channel!.playlists[titleForRow+1].name, attributes:attr)
     }
     
@@ -97,7 +97,7 @@ class ChannelSubViewController: UserSubViewController, DYAlertPickViewDataSource
                             message: NSLocalizedString("Internet is not connected", comment:""))
                         return
                 }
-                var message = NSLocalizedString("Failed to load tracks.", comment:"")
+                let message = NSLocalizedString("Failed to load tracks.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
@@ -116,7 +116,7 @@ class ChannelSubViewController: UserSubViewController, DYAlertPickViewDataSource
                 self.listEnd = true
             }
             
-            for (idx: String, item:JSON) in json["items"] {
+            for (_, item): (String, JSON) in json["items"] {
                 if item["snippet"].error != nil {
                     continue
                 }
@@ -128,25 +128,25 @@ class ChannelSubViewController: UserSubViewController, DYAlertPickViewDataSource
                 if resourceId["videoId"].error != nil {
                     continue
                 }
-                var id = resourceId["videoId"].stringValue
+                let id = resourceId["videoId"].stringValue
                 
                 if snippet["title"].error != nil {
                     continue
                 }
-                var title = snippet["title"].stringValue
+                let title = snippet["title"].stringValue
                 
                 if snippet["description"].error != nil {
                     continue
                 }
-                var desc = snippet["description"].stringValue
+                _ = snippet["description"].stringValue
                 
                 if snippet["publishedAt"].error != nil {
                     continue
                 }
-                var publishedAtStr = snippet["publishedAt"].stringValue
-                var formatter = NSDateFormatter()
+                let publishedAtStr = snippet["publishedAt"].stringValue
+                let formatter = NSDateFormatter()
                 formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.000Z"
-                var publishedAt = formatter.dateFromString(publishedAtStr)
+                let publishedAt = formatter.dateFromString(publishedAtStr)
                 self.tracks.append(ChannelTrack(id: id, title:title, publishedAt: publishedAt))
             }
             self.updatePlaylist(false)
@@ -156,20 +156,20 @@ class ChannelSubViewController: UserSubViewController, DYAlertPickViewDataSource
     }
 }
 
-class UserSubViewController: AddableTrackListViewController, UITableViewDataSource, UITableViewDelegate, AddableTrackCellDelegate, AXSubViewController, AXStretchableSubViewControllerViewSource {
+class UserSubViewController: AddableTrackListViewController, UITableViewDataSource, UITableViewDelegate, AXSubViewController, AXStretchableSubViewControllerViewSource {
     
     var baseUser: BaseUser?
     var fetchFunc: ((([Track]?, NSError?) -> Void) -> Void)?
     
     func subViewWillAppear() {
         if self.tracks.count == 0 && fetchFunc != nil {
-            println("start fetching \(self.title)")
+            print("start fetching \(self.title)")
             fetchFunc!({ (tracks, error) -> Void in
                 if let t = tracks {
-                    self.tracks = tracks!
+                    self.tracks = t
                     self.trackTableView.reloadData()
                 } else {
-                    println(error)
+                    print(error)
                 }
                 self.trackTableView.tableHeaderView = nil
             })
@@ -216,6 +216,7 @@ class UserSubViewController: AddableTrackListViewController, UITableViewDataSour
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+<<<<<<< HEAD
         if (indexPath.row >= tracks.count) {
             let identifier = "EmptyCell"
             var cell = tableView.dequeueReusableCellWithIdentifier(identifier) as? UITableViewCell
@@ -225,6 +226,15 @@ class UserSubViewController: AddableTrackListViewController, UITableViewDataSour
             cell?.backgroundColor = UIColor.whiteColor()
             cell?.userInteractionEnabled = false
             return cell!
+=======
+        let cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
+        var track:Track!
+        if indexPath.section == 0 {
+            track = tracks[indexPath.row]
+        } else {
+            let firstSectionCount:Int = self.tableView(tableView, numberOfRowsInSection: 0)
+            track = tracks[indexPath.row + firstSectionCount]
+>>>>>>> xcode7
         }
         
         var cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
@@ -286,13 +296,13 @@ class UserSubViewController: AddableTrackListViewController, UITableViewDataSour
         if track == nil {
             return
         }
-        var indexPath = trackTableView.indexPathForSelectedRow()
+        let indexPath = trackTableView.indexPathForSelectedRow
         if (indexPath != nil) {
             var preSelectedTrack:Track?
             preSelectedTrack = tracks[indexPath!.row]
             if (preSelectedTrack != nil &&
                 (preSelectedTrack!.id != track!.id ||
-                    (playlistId != nil && playlistId!.toInt() >= 0))) {
+                    (playlistId != nil && Int(playlistId!) >= 0))) {
                         trackTableView.deselectRowAtIndexPath(indexPath!, animated: false)
             }
         }
@@ -301,7 +311,7 @@ class UserSubViewController: AddableTrackListViewController, UITableViewDataSour
             return
         }
         
-        for (idx, t) in enumerate(tracks) {
+        for (idx, t) in tracks.enumerate() {
             if (t.id == track!.id) {
                 trackTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
                     animated: false, scrollPosition: UITableViewScrollPosition.None)

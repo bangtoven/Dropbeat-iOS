@@ -8,6 +8,13 @@ class Requests {
     static var EMPTY_RESPONSE_CALLBACK = {(req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
     }
     
+    static func send(method: Method, url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, background: Bool = false,respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        let adapter = WebAdapter(url: url, method: method, params: params, auth: auth, background:background)
+        return adapter.send({ (request, response, result) -> Void in
+            respCb(request!, response, result.value, result.error as? NSError)
+        })
+    }
+    
     static func sendGet(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, background: Bool = false, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         return send(Method.GET, url: url, params: params, auth: auth, background:background, respCb: respCb)
     }
@@ -22,11 +29,6 @@ class Requests {
     
     static func sendHead(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         return send(Method.HEAD, url: url, params: params, auth: auth, respCb: respCb)
-    }
-    
-    static func send(method: Method, url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, background: Bool = false,respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
-        var adapter = WebAdapter(url: url, method: method, params: params, auth: auth, background:background)
-        return adapter.send(respCb)
     }
     
     static func resolveUser (resource: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
@@ -109,16 +111,16 @@ class Requests {
     static func streamResolve(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
         let systemVersion = UIDevice.currentDevice().systemVersion
         var firstDigit = ""
-        if (count(systemVersion) > 0) {
-            firstDigit = systemVersion.substringToIndex(advance(systemVersion.startIndex, 1))
+        if (systemVersion.characters.count > 0) {
+            firstDigit = systemVersion.substringToIndex(systemVersion.startIndex.advancedBy(1))
         }
         return sendGet(ResolvePath.resolveStream, params: ["uid": uid, "v": 1, "t": "ios\(firstDigit)"], auth: false, background: false, respCb: respCb)
     }
     
     static func fetchFeed(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup: nil)
-        var key :String? = keychainItemWrapper["auth_token"] as? String
-        var authenticated = key != nil
+        let key = keychainItemWrapper.objectForKey("auth_token") as? String
+        let authenticated = key != nil
         return sendGet(ApiPath.feed, auth: authenticated, respCb: respCb)
     }
     
@@ -140,14 +142,6 @@ class Requests {
     
     static func getClientVersion(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         return sendGet(ApiPath.metaVersion, auth: false, respCb: respCb)
-    }
-    
-    static func soundcloudHead(url: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
-        let manager =  Manager.sharedInstance
-        let enc = ParameterEncoding.URL
-        var req = manager.request(Method.HEAD, url, parameters: Dictionary<String, AnyObject>(), encoding: enc)
-        req.validate().response(respCb)
-        return req
     }
     
     static func getChannelList(genre: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
@@ -180,7 +174,7 @@ class Requests {
     }
     
     static func sharePlaylist(playlist:Playlist, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
-        var playlistData = playlist.toJson()
+        let playlistData = playlist.toJson()
         return sendPost(ApiPath.playlistShared, params: playlistData, auth: true, respCb: respCb)
     }
     
@@ -227,7 +221,7 @@ class Requests {
     
     static func getStreamNew(genre:String?, pageIdx:Int, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         var params:[String:AnyObject] = ["p": pageIdx]
-        if genre != nil && count(genre!) > 0 {
+        if genre != nil && (genre!).characters.count > 0 {
             params["g"] = genre
         }
         return sendGet(CorePath.streamNew, params:params, auth:false, respCb: respCb)
@@ -235,20 +229,20 @@ class Requests {
     
     static func getStreamTrending(genre:String?, pageIdx:Int, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         var params:[String:AnyObject] = ["p": pageIdx]
-        if genre != nil && count(genre!) > 0 {
+        if genre != nil && (genre!).characters.count > 0 {
             params["g"] = genre
         }
         return sendGet(CorePath.streamTrending, params:params, auth:false, respCb: respCb)
     }
     
     static func getStreamFollowing(forceRefresh:Bool, pageIdx:Int, order:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
-        var params:[String:AnyObject] = ["p": pageIdx, "order": order, "f": forceRefresh ? 1 : 0]
+        let params:[String:AnyObject] = ["p": pageIdx, "order": order, "f": forceRefresh ? 1 : 0]
         return sendGet(ApiPath.streamFollowing, params:params, auth:true, respCb: respCb)
     }
     
     static func getStreamFriend(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         var params:[String:AnyObject]?
-        var defaultDb:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+        let defaultDb:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         if let expireDate:NSDate = defaultDb.objectForKey(UserDataKey.maxFavoriteCacheExpireDate) as? NSDate {
             if expireDate.compare(NSDate()) == NSComparisonResult.OrderedDescending {
                 params = ["f": "1"]
@@ -352,7 +346,7 @@ class WebAdapter {
     func prepare() {
         if (auth == true) {
             let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup: nil)
-            if let token:String = keychainItemWrapper["auth_token"] as? String {
+            if let token:String = (keychainItemWrapper.objectForKey("auth_token") as? String) {
                 manager.session.configuration.HTTPAdditionalHeaders = [
                     "Cookie": "sessionid=" + token
                 ]
@@ -360,7 +354,7 @@ class WebAdapter {
         }
     }
     
-    func send(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    func send(respCb: ((NSURLRequest?, NSHTTPURLResponse?, Result<AnyObject>) -> Void)) -> Request {
         prepare()
         
         var enc :ParameterEncoding?
@@ -369,7 +363,7 @@ class WebAdapter {
         } else {
             enc = .JSON
         }
-        var req = manager.request(self.method!, self.url!, parameters: self.params, encoding: enc!)
+        let req = manager.request(self.method!, self.url!, parameters: self.params, encoding: enc!)
         req.validate().responseJSON(completionHandler: respCb)
         return req
     }
@@ -401,7 +395,7 @@ class AutocompleteRequester {
     }
     
     func send(keyword:String) {
-        if (count(keyword) == 0) {
+        if (keyword.characters.count == 0) {
             self.handler(keywords: [], error: nil)
             return
         }
@@ -412,41 +406,50 @@ class AutocompleteRequester {
         
         var id:String?
         
-        do {
+        repeat {
             id = makeRandId()
         } while(onTheFlyRequests[id!] != nil)
         
         params["q"] = keyword
         params["gs_id"] = id!
+//        
+//        Tuple types '(NSURLRequest?, NSHTTPURLResponse?, Result<String>)' (aka '(Optional<NSURLRequest>, Optional<NSHTTPURLResponse>, Result<String>)') and '(NSURLRequest, NSHTTPURLResponse?, String?, NSError?)' (aka '(NSURLRequest, Optional<NSHTTPURLResponse>, Optional<String>, Optional<NSError>)') have a different number of elements (3 vs. 4)
         
-        var req = request(Method.GET, self.youtubeApiPath, parameters: params)
-        .responseString(encoding: NSUTF8StringEncoding,
+        let req = request(Method.GET, self.youtubeApiPath, parameters: params).responseString(encoding: NSUTF8StringEncoding,
             completionHandler: {
-                    (request:NSURLRequest, response:NSHTTPURLResponse?, result:String?, error:NSError?) -> Void in
+                    (request:NSURLRequest?, response:NSHTTPURLResponse?, result:Result<String>) -> Void in
                 self.onTheFlyRequests.removeValueForKey(id!)
                 
-                if (error != nil) {
-                    self.handler(keywords: nil, error:error)
+                if (result.error != nil) {
+                    self.handler(keywords: nil, error:result.error as? NSError)
                     return
                 }
-                if (result == nil) {
+                let resultStr = result.value
+                if (resultStr == nil) {
                     self.handler(keywords: nil, error:NSError(domain: "autocompleteRequester", code: 0, userInfo: nil))
                     return
                 }
-                let funcRegex = NSRegularExpression(pattern: self.funcRegexPattern, options: nil, error: nil)!
-                let koreanRegex = NSRegularExpression(pattern: self.koreanRegexPattern, options: nil, error: nil)!
+                let funcRegex = try! NSRegularExpression(pattern: self.funcRegexPattern, options: [])
+//                let koreanRegex = try! NSRegularExpression(pattern: self.koreanRegexPattern, options: [])
                 
-                let matches = funcRegex.matchesInString(result!,
-                    options: nil,
-                    range:NSMakeRange(0, count(result!))) as! [NSTextCheckingResult]
+                let matches = funcRegex.matchesInString(resultStr!,
+                    options: [],
+                    range:NSMakeRange(0, resultStr!.characters.count)) 
                 if (matches.count > 0) {
-                    let substring = (result! as NSString).substringWithRange(matches[0].rangeAtIndex(1))
-                    var data:NSData = substring.dataUsingEncoding(NSUTF8StringEncoding)!
+                    let substring = NSString(string:resultStr!).substringWithRange(matches[0].rangeAtIndex(1))
+                    let data:NSData = substring.dataUsingEncoding(NSUTF8StringEncoding)!
                     var error: NSError?
                     
                     // convert NSData to 'AnyObject'
-                    let anyObj: AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(0),
-                        error: &error)
+                    let anyObj: AnyObject?
+                    do {
+                        anyObj = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0))
+                    } catch let error1 as NSError {
+                        error = error1
+                        anyObj = nil
+                    } catch {
+                        fatalError()
+                    }
                     
                     if (error != nil) {
                         self.handler(keywords:nil, error:error)
@@ -455,9 +458,9 @@ class AutocompleteRequester {
                     if (anyObj is Array<AnyObject>) {
                         let argArray = anyObj as! Array<AnyObject>
                         if (argArray.count > 2) {
-                            let q:String = argArray[0] as! String
                             let words = argArray[1] as! Array<AnyObject>
-                            let appendix: AnyObject = argArray[2] as AnyObject
+//                            let q:String = argArray[0] as! String
+//                            let appendix: AnyObject = argArray[2] as AnyObject
                             
                             var keywords = [String]()
                             for word in words {
@@ -482,9 +485,9 @@ class AutocompleteRequester {
     }
     
     private func makeRandId()->String {
-        let possible = Array("abcdefghijklmnopqrstuvwxyz0123456789")
+        let possible = Array("abcdefghijklmnopqrstuvwxyz0123456789".characters)
         var id = ""
-        for i in 0...1 {
+        for _ in 0...1 {
             id.append(possible[random() % possible.count])
         }
         return id

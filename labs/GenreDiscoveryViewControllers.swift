@@ -142,7 +142,7 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
             
             
             if idsToAdd.count > 0 || idsToRemove.count > 0 {
-                var defaultDb:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                let defaultDb:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 defaultDb.setObject(
                     NSDate(timeIntervalSinceNow: 60 * 60 * 2),
                     forKey: UserDataKey.maxFavoriteCacheExpireDate)
@@ -219,11 +219,11 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
             tableView.separatorInset = UIEdgeInsetsZero
         }
         
-        if tableView.respondsToSelector("layoutMargins") {
+        if #available(iOS 8.0, *) {
             tableView.layoutMargins = UIEdgeInsetsZero
         }
         
-        if cell.respondsToSelector("layoutMargins") {
+        if #available(iOS 8.0, *) {
             cell.layoutMargins = UIEdgeInsetsZero
         }
     }
@@ -288,7 +288,7 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
                 return
             }
             
-            for (idx:String, s:JSON) in json["data"] {
+            for (_, s): (String, JSON) in json["data"] {
                 self.selectedGenreIds.insert(String(s.intValue))
                 self.remoteSelectedGenreIds.insert(String(s.intValue))
             }
@@ -313,12 +313,12 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
             }
             self.genres.removeAll(keepCapacity: false)
             for genre:Genre in genres! {
-                if count(genre.key) > 0 {
+                if genre.key.characters.count > 0 {
                     self.genres.append(genre)
                 }
             }
             self.tableView.reloadData()
-            for (idx:Int, genre:Genre) in enumerate(self.genres) {
+            for (idx, genre): (Int, Genre) in self.genres.enumerate() {
                 if self.selectedGenreIds.contains(genre.key) {
                     self.tableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
                         animated: false, scrollPosition: UITableViewScrollPosition.None)
@@ -341,7 +341,6 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
             self.isLoading = false
             
             if error != nil || result == nil {
-                var message:String!
                 self.showError(error, callback: { ()-> Void in
                     self.loadGenre()
                 })
@@ -539,7 +538,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
             progressHud.hide(true, afterDelay: 1)
             
             if idsToAdd.count > 0 || idsToRemove.count > 0 {
-                var defaultDb:NSUserDefaults = NSUserDefaults.standardUserDefaults()
+                let defaultDb:NSUserDefaults = NSUserDefaults.standardUserDefaults()
                 defaultDb.setObject(
                     NSDate(timeIntervalSinceNow: 60 * 60 * 2),
                     forKey: UserDataKey.maxFavoriteCacheExpireDate)
@@ -601,13 +600,17 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
     func playDrop(url:NSURL) {
         stopPlayer()
         
-        var sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
-        var audioSessionError:NSError?
-        if (!sharedInstance.setCategory(AVAudioSessionCategoryPlayback, error: &audioSessionError)) {
-            println("Audio session error \(audioSessionError) \(audioSessionError?.userInfo)")
+        let sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
+        do {
+            try sharedInstance.setCategory(AVAudioSessionCategoryPlayback)
+        } catch let audioSessionError as NSError {
+            print("Audio session error \(audioSessionError) \(audioSessionError.userInfo)")
         }
         
-        sharedInstance.setActive(true, error: nil)
+        do {
+            try sharedInstance.setActive(true)
+        } catch _ {
+        }
         currItem = AVPlayerItem(URL: url)
         
         currPlayer = AVPlayer(playerItem: currItem!)
@@ -758,7 +761,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
                 return
             }
             
-            var samples:[GenreSample]? = GenreSample.parseGenreSamples(result)
+            let samples:[GenreSample]? = GenreSample.parseGenreSamples(result)
             if samples == nil {
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to load", comment:""),

@@ -54,7 +54,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         initConstaints()
         
         // set first item
-        let firstTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
+        let firstTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] 
         tabBar.selectedItem = firstTab
         onMenuSelected(currentMenu, forceUpdate:true)
         
@@ -80,7 +80,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     }
     
     func loadSharedTrackIfExist() {
-        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         if appDelegate.sharedTrackUid == nil {
             return
         }
@@ -113,7 +113,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
                 return
             }
             
-            var params: [String: AnyObject] = [
+            let params: [String: AnyObject] = [
                 "track": track!,
                 "section": "shared_track"
             ]
@@ -124,7 +124,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     }
     
     func loadSharedPlaylistIfExist() {
-        var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         if appDelegate.sharedPlaylistUid == nil {
             return
         }
@@ -170,7 +170,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playlistShare, object: nil)
     }
     
-    func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem!) {
+    func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
         let menuType:MenuType? = tabTagToMenuType(item.tag)
         if menuType != nil {
             onMenuSelected(menuType!)
@@ -183,32 +183,24 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         }
         switch(type) {
         case .FEED:
-            activeViewController = UIStoryboard(name: "Feed", bundle: nil).instantiateInitialViewController() as? UIViewController
-            break
+            activeViewController = UIStoryboard(name: "Feed", bundle: nil).instantiateInitialViewController()
         case .CHANNEL:
-            activeViewController = UIStoryboard(name: "Channel", bundle: nil).instantiateInitialViewController() as? UIViewController
-            break
+            activeViewController = UIStoryboard(name: "Channel", bundle: nil).instantiateInitialViewController()
         case .SEARCH:
             activeViewController = UIStoryboard(name: "Main", bundle: nil)
                 .instantiateViewControllerWithIdentifier("SearchNavigationController")
-                as? UIViewController
-            break
         case .PROFILE:
             if Account.getCachedAccount() == nil {
-                activeViewController = UIStoryboard(name: "Settings", bundle: nil).instantiateInitialViewController() as? UIViewController
+                activeViewController = UIStoryboard(name: "Settings", bundle: nil).instantiateInitialViewController()
             } else {
-                activeViewController = UIStoryboard(name: "Profile", bundle: nil).instantiateInitialViewController() as? UIViewController
+                activeViewController = UIStoryboard(name: "Profile", bundle: nil).instantiateInitialViewController()
             }
-            break
         case .PLAYER:
-            activeViewController = UIStoryboard(name: "User", bundle: nil).instantiateInitialViewController() as? UIViewController
+            activeViewController = UIStoryboard(name: "User", bundle: nil).instantiateInitialViewController()
 //            showTabBarPlayer(!self.isTabBarPlayerVisible)
 //            showPlayerView()
 //            let lastTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
 //            tabBar.selectedItem = lastTab
-            break
-        default:
-            break
         }
 //        if type != MenuType.PLAYER {
             currentMenu = type
@@ -240,7 +232,6 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     }
     
     func menuTypeToTabIdx (type:MenuType) -> Int {
-        var idx : Int
         switch(type) {
         case .FEED:
             return 0
@@ -252,8 +243,6 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             return 3
         case .PLAYER:
             return 4
-        default:
-            return 0
         }
     }
     
@@ -318,7 +307,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     override func resumePlay() {
         super.resumePlay()
         if (PlayerContext.currentTrack != nil) {
-            println("resume with current track. show tab bar player")
+            print("resume with current track. show tab bar player")
             showTabBarPlayer(true)
 //            super.playBtnClicked(nil)
         }

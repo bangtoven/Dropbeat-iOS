@@ -100,7 +100,7 @@ class FBSigninableViewController: BaseViewController {
     }
     
     @IBAction func onSigninWithFacebookBtnClicked(sender: UIButton) {
-        var fbManager:FBSDKLoginManager = FBSDKLoginManager()
+        let fbManager:FBSDKLoginManager = FBSDKLoginManager()
         progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Signining in..", comment:""))
         fbManager.logOut()
         fbManager.logInWithReadPermissions(["email", "user_likes"], handler: { (result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
@@ -141,12 +141,12 @@ class FBSigninableViewController: BaseViewController {
                 return
             }
             let userData = result as! NSDictionary
-            var fbId:String = userData.objectForKey("id") as! String
-            var firstName:String = userData.objectForKey("first_name") as! String
-            var lastName:String = userData.objectForKey("last_name") as! String
+            let fbId:String = userData.objectForKey("id") as! String
+            let firstName:String = userData.objectForKey("first_name") as! String
+            let lastName:String = userData.objectForKey("last_name") as! String
             var email:String? = userData.objectForKey("email") as! String?
             if (email == nil) {
-                var randId = Int(arc4random_uniform(89999999)) + 10000000
+                let randId = Int(arc4random_uniform(89999999)) + 10000000
                 email = "user\(randId)@dropbeat.net"
             }
             let userParam:[String:String] = [
@@ -173,10 +173,10 @@ class FBSigninableViewController: BaseViewController {
                     return
                 }
                 let res = JSON(result!)
-                var success:Bool = res["success"].bool ?? false
+                let success:Bool = res["success"].bool ?? false
                 if (!success) {
                     fbManager.logOut()
-                    var errorMsg:String = res["error"].string ?? NSLocalizedString("Failed to sign in", comment:"")
+                    let errorMsg:String = res["error"].string ?? NSLocalizedString("Failed to sign in", comment:"")
                     ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to sign in", comment:""), message: errorMsg)
                     self.progressHud?.hide(true)
                     return
@@ -193,16 +193,16 @@ class FBSigninableViewController: BaseViewController {
     
     func afterSignin(user:User, token:String) {
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
-        keychainItemWrapper.resetKeychain()
-        keychainItemWrapper["auth_token"] = token
+        keychainItemWrapper.resetKeychainItem()
+        keychainItemWrapper.setObject(token, forKey: "auth_token")
         
         self.dismissViewControllerAnimated(false, completion: nil)
         self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
         
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.appSignin, object: nil)
         PlayerViewController.sharedInstance!.resignObservers()
-        var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        var navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
+        let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
         navController.popToRootViewControllerAnimated(false)
         
     }
@@ -331,7 +331,7 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         let progressHud = ViewUtils.showProgress(self, message: "")
         isSubmitting = true
         
-        Requests.emailSignin(email, password: password) { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.emailSignin(email!, password: password!) { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if error != nil || result == nil {
                 self.isSubmitting = false
                 progressHud.hide(true)
@@ -360,8 +360,8 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                 progressHud.hide(true)
                 
                 if json["error"].string != nil &&
-                    json["error"].stringValue.toInt() != nil &&
-                    self.handleRemoteError(json["error"].stringValue.toInt()!) {
+                    Int(json["error"].stringValue) != nil &&
+                    self.handleRemoteError(Int(json["error"].stringValue)!) {
                         return
                 }
                 
@@ -382,18 +382,18 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         var valid = true
         
         emailErrorView.text = ""
-        if count(email) == 0 {
+        if email!.characters.count == 0 {
             emailErrorView.text = NSLocalizedString("Required Field", comment:"")
-        } else if !Utils.isValidEmail(email) {
+        } else if !Utils.isValidEmail(email!) {
             emailErrorView.text = NSLocalizedString("Invalid email format", comment: "")
         }
-        if count(emailErrorView.text!) > 0 {
+        if (emailErrorView.text!).characters.count > 0 {
             emailErrorView.hidden = false
             valid = false
         }
         
         passwordErrorView.text = ""
-        if count(password) == 0 {
+        if password!.characters.count == 0 {
             passwordErrorView.text = NSLocalizedString("Required Field", comment:"")
             passwordErrorView.hidden = false
             valid = false
@@ -418,8 +418,8 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
     
     func afterSignin(token:String) {
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
-        keychainItemWrapper.resetKeychain()
-        keychainItemWrapper["auth_token"] = token
+        keychainItemWrapper.resetKeychainItem()
+        keychainItemWrapper.setObject(token, forKey: "auth_token")
         
         self.dismissViewControllerAnimated(false, completion: nil)
         self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
@@ -427,8 +427,8 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.appSignin, object: nil)
         
         PlayerViewController.sharedInstance!.resignObservers()
-        var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        var navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
+        let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
         navController.popToRootViewControllerAnimated(false)
         
     }
@@ -588,13 +588,12 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         let lastname = lastNameInputView.text
         let nickname = nicknameInputView.text
         let password = passwordInputView.text
-        let passwordConfirm = passwordConfirmInputView.text
         
         isSubmitting = true
         
         let progressHud = ViewUtils.showProgress(self, message: "")
-        Requests.emailSignup(email, firstName: firstname, lastName: lastname,
-            nickname: nickname, password: password,
+        Requests.emailSignup(email!, firstName: firstname!, lastName: lastname!,
+            nickname: nickname!, password: password!,
             respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                 
                 if error != nil || result == nil {
@@ -626,8 +625,8 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                     progressHud.hide(true)
                     
                     if json["error"].string != nil &&
-                        json["error"].stringValue.toInt() != nil &&
-                        self.handleRemoteError(json["error"].stringValue.toInt()!) {
+                        Int(json["error"].stringValue) != nil &&
+                        self.handleRemoteError(Int(json["error"].stringValue)!) {
                             return
                     }
                     
@@ -649,8 +648,8 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
     
     func afterSignup(token:String) {
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
-        keychainItemWrapper.resetKeychain()
-        keychainItemWrapper["auth_token"] = token
+        keychainItemWrapper.resetKeychainItem()
+        keychainItemWrapper.setObject(token, forKey: "auth_token")
         
         self.dismissViewControllerAnimated(false, completion: nil)
         self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
@@ -658,8 +657,8 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.appSignin, object: nil)
         
         PlayerViewController.sharedInstance!.resignObservers()
-        var appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        var navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
+        let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
         navController.popToRootViewControllerAnimated(false)
         
     }
@@ -690,76 +689,76 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         var valid = true
         
         emailErrorView.text = ""
-        if count(email) == 0 {
+        if email!.characters.count == 0 {
             emailErrorView.text = NSLocalizedString("Required Field", comment:"")
-        } else if !Utils.isValidEmail(email) {
+        } else if !Utils.isValidEmail(email!) {
             emailErrorView.text = NSLocalizedString("Invalid email format", comment: "")
-        } else if email.indexOf("@dropbeat.net") > -1 {
+        } else if email!.indexOf("@dropbeat.net") > -1 {
             emailErrorView.text = NSLocalizedString("Invalid email domain", comment:"")
         }
-        if count(emailErrorView.text!) > 0 {
+        if (emailErrorView.text!).characters.count > 0 {
             emailErrorView.hidden = false
             valid = false
         }
         
         firstNameErrorView.text = ""
-        if count(firstname) == 0 {
+        if firstname!.characters.count == 0 {
             firstNameErrorView.text = NSLocalizedString("Required Field", comment:"")
-        } else if count(firstname) > 30 {
+        } else if firstname!.characters.count > 30 {
             firstNameErrorView.text = NSString.localizedStringWithFormat(
                 NSLocalizedString("Must be less than %d charaters long", comment:""), 30) as String
         }
-        if count(firstNameErrorView.text!) > 0 {
+        if (firstNameErrorView.text!).characters.count > 0 {
             firstNameErrorView.hidden = false
             valid = false
         }
         
         lastNameErrorView.text = ""
-        if count(lastname) == 0 {
+        if lastname!.characters.count == 0 {
             lastNameErrorView.text = NSLocalizedString("Required Field", comment:"")
-        } else if count(lastname) > 30 {
+        } else if lastname!.characters.count > 30 {
             lastNameErrorView.text = NSString.localizedStringWithFormat(
                 NSLocalizedString("Must be less than %d charaters long", comment:""), 30) as String
         }
-        if count(firstNameErrorView.text!) > 0 {
+        if (firstNameErrorView.text!).characters.count > 0 {
             lastNameErrorView.hidden = false
             valid = false
         }
         
         nicknameErrorView.text = ""
-        if count(nickname) == 0 {
+        if nickname!.characters.count == 0 {
             nicknameErrorView.text = NSLocalizedString("Required Field", comment:"")
-        } else if count(nickname) > 25 {
+        } else if nickname!.characters.count > 25 {
             nicknameErrorView.text = NSString.localizedStringWithFormat(
                 NSLocalizedString("Must be less than %d charaters long", comment:""), 25) as String
         }
-        if count(nicknameErrorView.text!) > 0 {
+        if (nicknameErrorView.text!).characters.count > 0 {
             nicknameErrorView.hidden = false
             valid = false
         }
         
         passwordErrorView.text = ""
-        if count(password) == 0 {
+        if password!.characters.count == 0 {
             passwordErrorView.text = NSLocalizedString("Required Field", comment:"")
-        } else if count(password) > 25 {
+        } else if password!.characters.count > 25 {
             passwordErrorView.text = NSString.localizedStringWithFormat(
                 NSLocalizedString("Must be less than %d charaters long", comment:""), 25) as String
-        } else if count(password) < 6 {
+        } else if password!.characters.count < 6 {
             passwordErrorView.text = NSString.localizedStringWithFormat(
                 NSLocalizedString("Must be longer than %d charaters", comment:""), 6) as String
         }
-        if count(passwordErrorView.text!) > 0 {
+        if (passwordErrorView.text!).characters.count > 0 {
             passwordErrorView.hidden = false
             valid = false
         }
         
         passwordConfirmErrorView.text = ""
-        if count(passwordConfirm) == 0 {
+        if passwordConfirm!.characters.count == 0 {
             passwordConfirmErrorView.text = NSLocalizedString("Required Field", comment:"")
         } else if passwordConfirm != password {
             passwordConfirmErrorView.text = NSLocalizedString("Confirmation password for not match original", comment:"")
         }
-        if count(passwordConfirmErrorView.text!) > 0 {
+        if (passwordConfirmErrorView.text!).characters.count > 0 {
             passwordConfirmErrorView.hidden = false
             valid = false
         }

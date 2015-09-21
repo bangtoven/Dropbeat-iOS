@@ -74,7 +74,7 @@ class FeedViewController: AddableTrackListViewController,
     private var onceToken:dispatch_once_t = 0
     
     private var dateFormatter:NSDateFormatter {
-        var formatter = NSDateFormatter()
+        let formatter = NSDateFormatter()
         formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
         formatter.dateFormat = "MMMM dd, yyyy"
         return formatter
@@ -168,8 +168,6 @@ class FeedViewController: AddableTrackListViewController,
         case .USER_GROUP:
             prefix = "social_feed"
             break
-        default:
-            break
         }
         if prefix != nil && selectedGenre != nil{
             prefix! += "_\(selectedGenre!.key)"
@@ -195,8 +193,6 @@ class FeedViewController: AddableTrackListViewController,
         case .USER_GROUP:
             prefix = NSLocalizedString("Social Feed", comment:"")
             break
-        default:
-            break
         }
         if prefix != nil && selectedGenre != nil {
             prefix! += " - \(selectedGenre!.name)"
@@ -205,7 +201,7 @@ class FeedViewController: AddableTrackListViewController,
     }
     
     override func getSectionName() -> String {
-        var section = "feed_"
+        let section = "feed_"
         var postfix:String!
         switch (selectedFeedMenu.type) {
         case .BEATPORT_CHART:
@@ -223,9 +219,6 @@ class FeedViewController: AddableTrackListViewController,
         case .USER_GROUP:
             postfix = "social_feed"
             break
-        default:
-            postfix = "unknown"
-            break
         }
         return section + postfix
     }
@@ -238,13 +231,13 @@ class FeedViewController: AddableTrackListViewController,
     
     func getFollowingHeaderView(followings:[Following]) -> UIView {
         if followings.count == 0 {
-            var view:FollowingFeedHeaderView = FollowingFeedHeaderView(frame: CGRectMake(0, 0, self.trackTableView.bounds.width, 200))
+            let view:FollowingFeedHeaderView = FollowingFeedHeaderView(frame: CGRectMake(0, 0, self.trackTableView.bounds.width, 200))
             view.delegate = self
             return view
         }
         let view:FollowingFeedHeaderWithFollowingView =
             FollowingFeedHeaderWithFollowingView(frame: CGRectMake(0, 0, self.trackTableView.bounds.width, 100))
-        var text = NSString.localizedStringWithFormat(
+        let text = NSString.localizedStringWithFormat(
             NSLocalizedString("You are following %d artists", comment:""), followings.count)
         view.followingInfoView.text = text as String
         view.delegate = self
@@ -305,23 +298,26 @@ class FeedViewController: AddableTrackListViewController,
             return
         }
         feedTypeSelectBtn.hidden = false
-        var image = feedTypeSelectBtn.imageView!.image
-        var titleLabel = feedTypeSelectBtn.titleLabel
-        var genreStr:NSString = typeName! as NSString
+        let image = feedTypeSelectBtn.imageView!.image
+        let genreStr:NSString = typeName! as NSString
         feedTypeSelectBtn.setTitle(typeName!, forState: UIControlState.Normal)
         
         var attr:[String : UIFont] = [String: UIFont]()
         if SYSTEM_VERSION_LESS_THAN("8.2") {
             attr[ NSFontAttributeName] = UIFont.systemFontOfSize(18)
         } else {
-            attr[ NSFontAttributeName] = UIFont.systemFontOfSize(18, weight: UIFontWeightBold)
+            if #available(iOS 8.2, *) {
+                attr[ NSFontAttributeName] = UIFont.systemFontOfSize(18, weight: UIFontWeightBold)
+            } else {
+                // Fallback on earlier versions
+            }
         }
-        var textSize:CGSize = genreStr.sizeWithAttributes(attr)
-        var textWidth = textSize.width;
+        let textSize:CGSize = genreStr.sizeWithAttributes(attr)
+        let textWidth = textSize.width;
         
         //or whatever font you're using
-        var frame = feedTypeSelectBtn.frame
-        var origin = feedTypeSelectBtn.frame.origin
+        let frame = feedTypeSelectBtn.frame
+        let origin = feedTypeSelectBtn.frame.origin
         feedTypeSelectBtn.frame = CGRectMake(origin.x, origin.y, textWidth + 55, frame.height)
         feedTypeSelectBtnWidthConstraint.constant = textWidth + 55
         feedTypeSelectBtn.imageEdgeInsets = UIEdgeInsetsMake(2, textWidth + 55 - (image!.size.width + 20), 0, 0)
@@ -350,7 +346,7 @@ class FeedViewController: AddableTrackListViewController,
             dropBtn = trackCell.dropBtn
             
         } else if selectedFeedMenu.type == FeedType.TRENDING {
-            if selectedGenre != nil && count(selectedGenre!.key) > 0 {
+            if selectedGenre != nil && selectedGenre!.key.characters.count > 0 {
                 let trackCell = cell as! BpTrendingTrackTableViewCell
                 trackCell.titleWidthConstaint.constant = self.view.bounds.width - marginWidth
                 trackCell.artistWidthConstraint.constant = self.view.bounds.width - marginWidth
@@ -384,7 +380,7 @@ class FeedViewController: AddableTrackListViewController,
         }
         if dropBtn != nil {
             if track.drop != nil {
-                var currDropTrack = dropPlayerContext.currentTrack
+                let currDropTrack = dropPlayerContext.currentTrack
                 
                 if currDropTrack != nil &&
                     currDropTrack!.id == track.id &&
@@ -445,7 +441,7 @@ class FeedViewController: AddableTrackListViewController,
                 cell = getNewReleaseCell(indexPath)
                 break
             case .TRENDING:
-                cell = selectedGenre != nil && count(selectedGenre!.key) > 0 ?
+                cell = selectedGenre != nil && selectedGenre!.key.characters.count > 0 ?
                     getBeatportTrendingCell(indexPath) : getTrendingCell(indexPath)
                 break
             case .FOLLOWING:
@@ -454,9 +450,6 @@ class FeedViewController: AddableTrackListViewController,
             case .USER_GROUP:
                 cell = getUserGroupCell(indexPath)
                 break
-            default:
-                // not reach
-                cell = UITableViewCell()
             }
             let track = tracks[indexPath.row]
             if (getPlaylistId() == PlayerContext.currentPlaylistId &&
@@ -613,7 +606,7 @@ class FeedViewController: AddableTrackListViewController,
         } else {
             cell.thumbView.image = UIImage(named: "default_artwork")
         }
-        var listenDate = NSDate(timeIntervalSinceNow: -60.0 * Double(track.ts))
+        let listenDate = NSDate(timeIntervalSinceNow: -60.0 * Double(track.ts))
         cell.listenTimeView.text = listenDate.timeAgoSinceNow()
         cell.userNameView.text = track.nickname
         cell.artistName.text = track.artistName
@@ -667,10 +660,7 @@ class FeedViewController: AddableTrackListViewController,
         case .USER_GROUP:
 //            return calculateUserGroupCellHeight(indexPath)
             return 150
-        default:
-            break
         }
-        return 60
     }
     
     func calculateUserGroupCellHeight(indexPath:NSIndexPath) -> CGFloat {
@@ -682,7 +672,7 @@ class FeedViewController: AddableTrackListViewController,
         userGroupSizingCell.setNeedsLayout()
         userGroupSizingCell.layoutIfNeeded()
         let val = userGroupSizingCell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize).height
-        println("cal height:\(val)")
+        print("cal height:\(val)")
         return val
     }
     
@@ -728,8 +718,8 @@ class FeedViewController: AddableTrackListViewController,
             navigationItem.leftBarButtonItem = nil
         }
         
-        if genreTableView.indexPathForSelectedRow() != nil {
-            let selectedIndexPath = genreTableView.indexPathForSelectedRow()!
+        if genreTableView.indexPathForSelectedRow != nil {
+            let selectedIndexPath = genreTableView.indexPathForSelectedRow!
             genreTableView.deselectRowAtIndexPath(selectedIndexPath, animated: false)
         }
         
@@ -746,7 +736,7 @@ class FeedViewController: AddableTrackListViewController,
         
         if selectedGenre != nil && menuGenres != nil {
             var foundIdx = -1
-            for (idx:Int, g:Genre) in enumerate(menuGenres!) {
+            for (idx, g): (Int, Genre) in (menuGenres!).enumerate() {
                 if g.name == selectedGenre!.name {
                     foundIdx = idx
                     break
@@ -757,8 +747,8 @@ class FeedViewController: AddableTrackListViewController,
             }
         }
         
-        if trackTableView.indexPathForSelectedRow() != nil {
-            let selectedIndexPath = trackTableView.indexPathForSelectedRow()!
+        if trackTableView.indexPathForSelectedRow != nil {
+            let selectedIndexPath = trackTableView.indexPathForSelectedRow!
             trackTableView.deselectRowAtIndexPath(selectedIndexPath, animated: false)
         }
         
@@ -779,13 +769,13 @@ class FeedViewController: AddableTrackListViewController,
                             message: NSLocalizedString("Internet is not connected", comment:""))
                         return
                     }
-                    var message = NSLocalizedString("Failed to load trending.", comment:"")
+                    let message = NSLocalizedString("Failed to load trending.", comment:"")
                     ViewUtils.showNoticeAlert(self,
                         title: NSLocalizedString("Failed to load", comment:""), message: message)
                     return
                 }
                 self.trackTableView.tableHeaderView = self.getFollowingHeaderView(following!)
-                self.loadFollowingFeed(forceRefresh: forceRefresh, remoteRefresh: remoteRefresh)
+                self.loadFollowingFeed(forceRefresh, remoteRefresh: remoteRefresh)
             })
             return
         } else if menu.type == .USER_GROUP {
@@ -810,13 +800,8 @@ class FeedViewController: AddableTrackListViewController,
         case .NEW_RELEASE:
             action = "new_release"
             break
-        case .NEW_RELEASE:
-            action = "user_group"
-            break
         case .USER_GROUP:
             action = "social_feed"
-            break
-        default:
             break
         }
         if selectedGenre != nil {
@@ -838,21 +823,19 @@ class FeedViewController: AddableTrackListViewController,
     func loadFeed(type:FeedType, forceRefresh:Bool=false) {
         switch(type) {
         case .TRENDING:
-            loadTrendingFeed(forceRefresh: forceRefresh)
+            loadTrendingFeed(forceRefresh)
             break
         case .FOLLOWING:
-            loadFollowingFeed(forceRefresh: forceRefresh)
+            loadFollowingFeed(forceRefresh)
             break
         case .BEATPORT_CHART:
-            loadBeatportChartFeed(forceRefresh: forceRefresh)
+            loadBeatportChartFeed(forceRefresh)
             break
         case .NEW_RELEASE:
-            loadNewReleaseFeed(forceRefresh: forceRefresh)
+            loadNewReleaseFeed(forceRefresh)
             break
         case .USER_GROUP:
-            loadUserGroupFeed(forceRefresh: forceRefresh)
-            break
-        default:
+            loadUserGroupFeed(forceRefresh)
             break
         }
     }
@@ -894,17 +877,17 @@ class FeedViewController: AddableTrackListViewController,
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = NSLocalizedString("Failed to load trending.", comment:"")
+                let message = NSLocalizedString("Failed to load trending.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
             var resultTracks:[Track]!
             
-            if count(self.selectedGenre!.key) == 0 {
+            if self.selectedGenre!.key.characters.count == 0 {
                 let streamTrending = StreamTrending.parseStreamTrending(result!)
                 if !streamTrending.success {
-                    var message = NSLocalizedString("Failed to load trending.", comment:"")
+                    let message = NSLocalizedString("Failed to load trending.", comment:"")
                     ViewUtils.showNoticeAlert(self,
                         title: NSLocalizedString("Failed to load", comment:""), message: message)
                     return
@@ -913,7 +896,7 @@ class FeedViewController: AddableTrackListViewController,
             } else {
                 let beatportTrending = StreamBeatportTrending.parseStreamBeatportTrending(result!)
                 if !beatportTrending.success {
-                    var message = NSLocalizedString("Failed to load trending.", comment:"")
+                    let message = NSLocalizedString("Failed to load trending.", comment:"")
                     ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                     return
                 }
@@ -951,7 +934,7 @@ class FeedViewController: AddableTrackListViewController,
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
         var genreKey = selectedGenre!.name
-        if count(selectedGenre!.key) == 0 {
+        if selectedGenre!.key.characters.count == 0 {
             genreKey = "TOP100"
         }
         Requests.fetchBeatportChart(genreKey, respCb: {
@@ -969,15 +952,15 @@ class FeedViewController: AddableTrackListViewController,
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = NSLocalizedString("Failed to load chart.", comment:"")
+                let message = NSLocalizedString("Failed to load chart.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
-            var chart = BeatportChart.parseBeatportChart(result!)
+            let chart = BeatportChart.parseBeatportChart(result!)
             
             if !chart.success {
-                var message = NSLocalizedString("Failed to load chart.", comment:"")
+                let message = NSLocalizedString("Failed to load chart.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
@@ -1045,7 +1028,7 @@ class FeedViewController: AddableTrackListViewController,
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = NSLocalizedString("Failed to load following feed.", comment:"")
+                let message = NSLocalizedString("Failed to load following feed.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
@@ -1053,7 +1036,7 @@ class FeedViewController: AddableTrackListViewController,
             
             let streamFollowing = StreamFollowing.parseStreamFollowing(result!)
             if !streamFollowing.success {
-                var message = NSLocalizedString("Failed to load following feed.", comment:"")
+                let message = NSLocalizedString("Failed to load following feed.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
@@ -1105,7 +1088,7 @@ class FeedViewController: AddableTrackListViewController,
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = NSLocalizedString("Failed to load new release.", comment:"")
+                let message = NSLocalizedString("Failed to load new release.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
@@ -1113,7 +1096,7 @@ class FeedViewController: AddableTrackListViewController,
             
             let streamNew = StreamNew.parseStreamNew(result!)
             if !streamNew.success {
-                var message = NSLocalizedString("Failed to load new release.", comment:"")
+                let message = NSLocalizedString("Failed to load new release.", comment:"")
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
@@ -1161,7 +1144,7 @@ class FeedViewController: AddableTrackListViewController,
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                var message = NSLocalizedString("Failed to load friend feed.", comment:"")
+                let message = NSLocalizedString("Failed to load friend feed.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
@@ -1169,7 +1152,7 @@ class FeedViewController: AddableTrackListViewController,
             
             let streamUserGroup = StreamFriend.parseStreamFriend(result!)
             if !streamUserGroup.success {
-                var message = NSLocalizedString("Failed to load friend feed.", comment:"")
+                let message = NSLocalizedString("Failed to load friend feed.", comment:"")
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return

@@ -121,7 +121,7 @@ class PlaylistViewController: BaseViewController,
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let track:Track = tracks[indexPath.row]
-        var cell:PlaylistTableViewCell = tableView.dequeueReusableCellWithIdentifier(
+        let cell:PlaylistTableViewCell = tableView.dequeueReusableCellWithIdentifier(
                 "PlaylistTableViewCell", forIndexPath: indexPath) as! PlaylistTableViewCell
         if (currentPlaylist!.id == PlayerContext.currentPlaylistId &&
                 PlayerContext.currentTrack != nil &&
@@ -134,7 +134,7 @@ class PlaylistViewController: BaseViewController,
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var selectedTrack: Track = tracks[indexPath.row] as Track
+        let selectedTrack: Track = tracks[indexPath.row] as Track
         onPlayTrackBtnClicked(selectedTrack)
     }
     
@@ -143,11 +143,11 @@ class PlaylistViewController: BaseViewController,
             tableView.separatorInset = UIEdgeInsetsZero
         }
         
-        if tableView.respondsToSelector("layoutMargins") {
+        if #available(iOS 8.0, *) {
             tableView.layoutMargins = UIEdgeInsetsZero
         }
         
-        if cell.respondsToSelector("layoutMargins") {
+        if #available(iOS 8.0, *) {
             cell.layoutMargins = UIEdgeInsetsZero
         }
     }
@@ -174,7 +174,7 @@ class PlaylistViewController: BaseViewController,
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    var message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
+                    let message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
                     ViewUtils.showConfirmAlert(self,
                         title: NSLocalizedString("Failed to fetch", comment:""),
                         message: message,
@@ -200,7 +200,7 @@ class PlaylistViewController: BaseViewController,
                 return
             }
 
-            var playlist:Playlist? = Playlist.parsePlaylist(res.rawValue, key: "playlist")
+            let playlist:Playlist? = Playlist.parsePlaylist(res.rawValue, key: "playlist")
 
             if (playlist == nil) {
                 ViewUtils.showNoticeAlert(self,
@@ -210,7 +210,7 @@ class PlaylistViewController: BaseViewController,
                 return
             }
             
-            var original = self.currentPlaylist!
+            let original = self.currentPlaylist!
             original.name = playlist!.name
             original.tracks.removeAll(keepCapacity: false)
             self.tracks.removeAll(keepCapacity: false)
@@ -231,7 +231,7 @@ class PlaylistViewController: BaseViewController,
             return
         }
         
-        var selectedTrack: Track = tracks[0] as Track
+        let selectedTrack: Track = tracks[0] as Track
         
         PlayerContext.shuffleState = ShuffleState.NOT_SHUFFLE
         
@@ -252,7 +252,7 @@ class PlaylistViewController: BaseViewController,
             break
         }
         
-        var params: Dictionary<String, AnyObject> = [
+        let params: Dictionary<String, AnyObject> = [
             "track": selectedTrack,
             "playlistId": currentPlaylist!.id,
             "section": section
@@ -277,7 +277,7 @@ class PlaylistViewController: BaseViewController,
         if fromPlayer {
             playlistActionSheet!.showInView(self.view)
         } else {
-            var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             
             playlistActionSheet!.showFromTabBar(appDelegate.centerContainer!.tabBar)
         }
@@ -307,7 +307,7 @@ class PlaylistViewController: BaseViewController,
             let track = menuSelectedTrack
             var foundIdx = -1
             if track != nil {
-                for (idx, track) in enumerate(tracks) {
+                for (idx, track) in tracks.enumerate() {
                     if track.id == track.id {
                         foundIdx = idx
                         break
@@ -408,7 +408,7 @@ class PlaylistViewController: BaseViewController,
             section = currentPlaylist.id
             break
         }
-        var params: Dictionary<String, AnyObject> = [
+        let params: Dictionary<String, AnyObject> = [
             "track": track,
             "playlistId": currentPlaylist!.id,
             "section": section
@@ -449,7 +449,7 @@ class PlaylistViewController: BaseViewController,
             let shareUrl = "http://dropbeat.net/?track=" + uid!
             let shareTitle = track.title
             
-            var items:[AnyObject] = [shareTitle, shareUrl]
+            let items:[AnyObject] = [shareTitle, shareUrl]
             
             let activityController = UIActivityViewController(
                     activityItems: items, applicationActivities: nil)
@@ -459,7 +459,7 @@ class PlaylistViewController: BaseViewController,
                     UIActivityTypeAirDrop,
                     UIActivityTypeAssignToContact
                 ]
-            if activityController.respondsToSelector("popoverPresentationController:") {
+            if #available(iOS 8.0, *) {
                 activityController.popoverPresentationController?.sourceView = self.view
             }
             self.presentViewController(activityController, animated:true, completion: nil)
@@ -508,7 +508,7 @@ class PlaylistViewController: BaseViewController,
         }
         
         let randomIndex = Int(arc4random_uniform(UInt32(tracks.count)))
-        var selectedTrack: Track = tracks[randomIndex] as Track
+        let selectedTrack: Track = tracks[randomIndex] as Track
         
         PlayerContext.shuffleState = ShuffleState.SHUFFLE
         
@@ -528,7 +528,7 @@ class PlaylistViewController: BaseViewController,
             break
         }
         
-        var params: Dictionary<String, AnyObject> = [
+        let params: Dictionary<String, AnyObject> = [
             "track": selectedTrack,
             "playlistId": currentPlaylist!.id,
             "section": section
@@ -570,7 +570,7 @@ class PlaylistViewController: BaseViewController,
                 let uid = json["obj"]["uid"].string
                 let url = "http://dropbeat.net/?playlist=\(uid!)"
                         
-                var items:[AnyObject] = [self.currentPlaylist!.name, url]
+                let items:[AnyObject] = [self.currentPlaylist!.name, url]
                 
                 let activityController = UIActivityViewController(
                         activityItems: items, applicationActivities: nil)
@@ -580,7 +580,7 @@ class PlaylistViewController: BaseViewController,
                         UIActivityTypeAirDrop,
                         UIActivityTypeAssignToContact
                     ]
-                if activityController.respondsToSelector("popoverPresentationController:") {
+                if #available(iOS 8.0, *) {
                     activityController.popoverPresentationController?.sourceView = self.view
                 }
                 self.presentViewController(activityController, animated:true, completion: nil)
@@ -630,9 +630,9 @@ class PlaylistViewController: BaseViewController,
                         return
                     }
                     let res = result as! NSDictionary
-                    var success:Bool = res.objectForKey("success") as! Bool? ?? false
+                    let success:Bool = res.objectForKey("success") as! Bool? ?? false
                     if (!success) {
-                        var message = "Failed to update playlist"
+                        let message = "Failed to update playlist"
                         ViewUtils.showNoticeAlert(self,
                             title: NSLocalizedString("Failed to delete", comment:""), message: message)
                         return
@@ -659,7 +659,7 @@ class PlaylistViewController: BaseViewController,
             placeholder: NSLocalizedString("Playlist 01", comment:""),
             positiveBtnText: NSLocalizedString("Change", comment:""),
             positiveBtnCallback: { (result) -> Void in
-                if (count(result) == 0) {
+                if (result.characters.count == 0) {
                     return
                 }
                 
@@ -716,7 +716,7 @@ class PlaylistViewController: BaseViewController,
         if fromPlayer {
             actionSheet.showInView(self.view)
         } else {
-            var appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             
             actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
         }
@@ -725,15 +725,15 @@ class PlaylistViewController: BaseViewController,
     
     func updatePlayTrack(noti: NSNotification) {
         var params = noti.object as! Dictionary<String, AnyObject>
-        var track = params["track"] as! Track
-        var playlistId:String? = params["playlistId"] as? String
+        let track = params["track"] as! Track
+        let playlistId:String? = params["playlistId"] as? String
         updatePlayTrack(track, playlistId: playlistId)
     }
     
     func updatePlayTrack(track:Track?, playlistId:String?) {
-        var indexPath = playlistTableView.indexPathForSelectedRow()
+        let indexPath = playlistTableView.indexPathForSelectedRow
         if (indexPath != nil) {
-            var preSelectedTrack:Track = tracks[indexPath!.row]
+            let preSelectedTrack:Track = tracks[indexPath!.row]
             if (preSelectedTrack.id != track!.id ||
                 (playlistId == nil && playlistId != currentPlaylist!.id)) {
                 playlistTableView.deselectRowAtIndexPath(indexPath!, animated: false)
@@ -744,7 +744,7 @@ class PlaylistViewController: BaseViewController,
             return
         }
         
-        for (idx, t) in enumerate(currentPlaylist!.tracks) {
+        for (idx, t) in currentPlaylist!.tracks.enumerate() {
             if (t.id == track!.id) {
                 playlistTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
                     animated: true, scrollPosition: UITableViewScrollPosition.None)
@@ -779,9 +779,8 @@ class PlaylistViewController: BaseViewController,
             Requests.setPlaylist(importedPlaylist!.id, data: data, respCb: {
                     (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                 if (result == nil || error != nil || !(JSON(result!)["success"].bool ?? false)) {
-                    var message = "Failed to save playlist"
                     Requests.deletePlaylist(importedPlaylist!.id, respCb: Requests.EMPTY_RESPONSE_CALLBACK)
-                    callback(playlist:nil, error: NSError(domain: "importPlaylist", code: 0, userInfo: nil))
+                    callback(playlist:nil, error: NSError(domain: "importPlaylist", code: 0, userInfo: ["message":"Failed to save playlist"]))
                     return
                 }
                 callback(playlist:importedPlaylist, error:nil)
@@ -906,7 +905,7 @@ class PlaylistSelectViewController: BaseViewController,
                 placeholder: NSLocalizedString("Playlist 01", comment:""),
             positiveBtnText: NSLocalizedString("Create", comment:""),
             positiveBtnCallback: { (result) -> Void in
-                if (count(result) == 0) {
+                if (result.characters.count == 0) {
                     return
                 }
                 let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Creating playlist..", comment:""))
@@ -940,12 +939,12 @@ class PlaylistSelectViewController: BaseViewController,
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var playlist = playlists[indexPath.row]
+        let playlist = playlists[indexPath.row]
         addToPlaylist(playlist)
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:PlaylistSelectTableViewCell = tableView.dequeueReusableCellWithIdentifier(
+        let cell:PlaylistSelectTableViewCell = tableView.dequeueReusableCellWithIdentifier(
                 "PlaylistSelectTableViewCell", forIndexPath: indexPath) as! PlaylistSelectTableViewCell
         let playlist = playlists[indexPath.row]
         cell.nameView.text = playlist.name
@@ -960,11 +959,11 @@ class PlaylistSelectViewController: BaseViewController,
             tableView.separatorInset = UIEdgeInsetsMake(0, 8, 0, 8)
         }
         
-        if tableView.respondsToSelector("layoutMargins") {
+        if #available(iOS 8.0, *) {
             tableView.layoutMargins = UIEdgeInsetsZero
         }
         
-        if cell.respondsToSelector("layoutMargins") {
+        if #available(iOS 8.0, *) {
             cell.layoutMargins = UIEdgeInsetsZero
         }
     }
@@ -981,7 +980,7 @@ class PlaylistSelectViewController: BaseViewController,
                 }, negativeBtnText: NSLocalizedString("Cancel", comment:""))
                 return
             }
-            let playlists = Playlist.parsePlaylists(result!).reverse()
+            let playlists = Array(Playlist.parsePlaylists(result!).reverse())
             if (playlists.count == 0) {
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to fetch playlists", comment:""),
@@ -1008,8 +1007,8 @@ class PlaylistSelectViewController: BaseViewController,
         }
         if hasAlready {
             ViewUtils.showToast(self, message: NSLocalizedString("Already in Playlist", comment:""))
-            if tableView.indexPathForSelectedRow() != nil {
-                tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow()!, animated: false)
+            if tableView.indexPathForSelectedRow != nil {
+                tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: false)
             }
             return
         }

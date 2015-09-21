@@ -194,7 +194,7 @@ static NSString * const AXStretchableHeaderTabViewControllerSelectedIndexKey = @
     
         // Set scroll view indicator insets
         [scrollView setScrollIndicatorInsets:
-         UIEdgeInsetsMake(CGRectGetMaxY(_tabBar.frame) - _containerView.contentInset.top, 0.0, scrollView.contentInset.bottom, 0.0)];
+         UIEdgeInsetsMake(scrollView.contentInset.top, 0.0, scrollView.contentInset.bottom, 0.0)];
         
     } else {
         // Set header view frame
@@ -361,12 +361,12 @@ static NSString * const AXStretchableHeaderTabViewControllerSelectedIndexKey = @
         }
     }
     
-    UIScrollView *scrollView = self.selectedScrollView;
-    
-    CGFloat minHeight = self.view.frame.size.height - (CGRectGetMaxY(self.navigationController.navigationBar.frame)+ CGRectGetHeight(_tabBar.bounds));
-    if (scrollView.contentSize.height < minHeight) {
-        [scrollView setContentSize:CGSizeMake(scrollView.contentSize.width, minHeight)];
-    }
+//    UIScrollView *scrollView = self.selectedScrollView;
+//    
+//    CGFloat minHeight = self.view.frame.size.height - (CGRectGetMaxY(self.navigationController.navigationBar.frame)+ CGRectGetHeight(_tabBar.bounds));
+//    if (scrollView.contentSize.height < minHeight) {
+//        [scrollView setContentSize:CGSizeMake(scrollView.contentSize.width, minHeight)];
+//    }
 }
 
 - (void)didSubViewAppearWithIndex:(NSInteger)index

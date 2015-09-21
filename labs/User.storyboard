@@ -664,8 +664,8 @@
         <image name="ic_playing_indicator" width="104" height="104"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="W6O-VY-5Pf"/>
         <segue reference="oVv-0f-qoK"/>
+        <segue reference="nWZ-tF-3vK"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
 </document>

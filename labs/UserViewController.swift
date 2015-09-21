@@ -57,7 +57,6 @@ class UserViewController: AXStretchableHeaderTabViewController {
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarTapped", name: NotifyKey.statusBarTapped, object: nil)
         
-        
         self.headerView = UserHeaderView.instantiate()
         let header = self.headerView as! UserHeaderView
         header.maximumOfHeight = 260

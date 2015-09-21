@@ -194,22 +194,46 @@ class UserSubViewController: AddableTrackListViewController, UITableViewDataSour
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tracks.count
+        return tracks.count + 1
+    }
+    
+    let CELL_HIGHT:CGFloat = 76
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        var cellHeight: CGFloat = 0
+        if (indexPath.row < tracks.count) {
+            cellHeight = 76
+        } else if let parentVc = self.parentViewController as? UserViewController {
+            if let navigationBar = parentVc.navigationController?.navigationBar {
+                let minHeight = parentVc.view.frame.size.height - (CGRectGetMaxY(navigationBar.frame)+CGRectGetHeight(parentVc.tabBar.bounds))
+                let diff = minHeight - (CELL_HIGHT * CGFloat(tracks.count))
+                if diff > 0 {
+                    cellHeight = diff
+                }
+            }
+        }
+        return cellHeight
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
-        var track:Track!
-        if indexPath.section == 0 {
-            track = tracks[indexPath.row]
-        } else {
-            var firstSectionCount:Int = self.tableView(tableView, numberOfRowsInSection: 0)
-            track = tracks[indexPath.row + firstSectionCount]
+        if (indexPath.row >= tracks.count) {
+            let identifier = "EmptyCell"
+            var cell = tableView.dequeueReusableCellWithIdentifier(identifier) as? UITableViewCell
+            if (cell == nil) {
+                cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "EmptyCell")
+            }
+            cell?.backgroundColor = UIColor.whiteColor()
+            cell?.userInteractionEnabled = false
+            return cell!
         }
+        
+        var cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
+        var track = tracks[indexPath.row]
+
         cell.delegate = self
         cell.nameView.text = track.title
-        if track.thumbnailUrl != nil {
-            cell.thumbView.sd_setImageWithURL(NSURL(string: track!.thumbnailUrl!),
+        if let thumbnailUrl = track.thumbnailUrl {
+            cell.thumbView.sd_setImageWithURL(NSURL(string: thumbnailUrl),
                 placeholderImage: UIImage(named: "default_artwork"), completed: {
                     (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
                     if error != nil {
@@ -237,7 +261,7 @@ class UserSubViewController: AddableTrackListViewController, UITableViewDataSour
             dropBtnImageName = "ic_drop_small"
         }
         cell.dropBtn.setImage(UIImage(named: dropBtnImageName), forState: UIControlState.Normal)
-        cell.dropBtn.hidden = track!.drop == nil
+        cell.dropBtn.hidden = track.drop == nil
         return cell
     }
     

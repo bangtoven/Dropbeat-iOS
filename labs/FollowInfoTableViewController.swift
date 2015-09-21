@@ -44,12 +44,40 @@ class FollowInfoTableViewController: UITableViewController, AXSubViewController 
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return userArray.count
+        return userArray.count + 1
+    }
+    
+    let CELL_HIGHT:CGFloat = 76
+
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        var cellHeight: CGFloat = 0
+        if (indexPath.row < userArray.count) {
+            cellHeight = 76
+        } else if let parentVc = self.parentViewController as? UserViewController {
+            if let navigationBar = parentVc.navigationController?.navigationBar {
+                let minHeight = parentVc.view.frame.size.height - (CGRectGetMaxY(navigationBar.frame)+CGRectGetHeight(parentVc.tabBar.bounds))
+                let diff = minHeight - (CELL_HIGHT * CGFloat(userArray.count))
+                if diff > 0 {
+                    cellHeight = diff
+                }
+            }
+        }
+        return cellHeight
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("FollowInfoTableViewCell", forIndexPath: indexPath) as! UITableViewCell
+        if (indexPath.row >= userArray.count) {
+            let identifier = "EmptyCell"
+            var cell = tableView.dequeueReusableCellWithIdentifier(identifier) as? UITableViewCell
+            if (cell == nil) {
+                cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "EmptyCell")
+            }
+            cell?.backgroundColor = UIColor.whiteColor()
+            cell?.userInteractionEnabled = false
+            return cell!
+        }
         
+        let cell = tableView.dequeueReusableCellWithIdentifier("FollowInfoTableViewCell", forIndexPath: indexPath) as! UITableViewCell
         let u = self.userArray[indexPath.row]
         cell.textLabel?.text = u.name
         if let image = u.image {

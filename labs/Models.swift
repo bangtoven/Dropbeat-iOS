@@ -48,8 +48,42 @@ class BaseUser {
         case "channel":
             self.userType = .CHANNEL
         default:
-            self.userType = .USER // throws
+            self.userType = .USER // TODO: throws
         }
+    }
+    
+    private func _follow(path: String, callback:((error: NSError?) -> Void)) {
+        var params = [String:String]()
+        var key:String
+        switch self.userType {
+        case .USER:
+            key = "user_id"
+        case .ARTIST:
+            key = "artist_id"
+        case .CHANNEL:
+            key = "channel_id"
+        }
+        params[key] = self.id
+        
+        Requests.sendPost(path, params: params, auth: true) { (req, resp, result, error) -> Void in
+            if error != nil {
+                callback(error: error)
+                return
+            }
+            if JSON(result!)["success"].boolValue != true {
+                callback(error: error)
+            } else {
+                callback(error: nil)
+            }
+        }
+    }
+    
+    func follow(callback:((error: NSError?) -> Void)) {
+        self._follow(ApiPath.followUser, callback: callback)
+    }
+    
+    func unfollow(callback:((error: NSError?) -> Void)) {
+        self._follow(ApiPath.unfollowUser, callback: callback)
     }
 }
 
@@ -66,17 +100,30 @@ class User: BaseUser {
     var tracks: [UserTrack] = []
     var likes: [Like]?
     
-    init(id: String, email: String, firstName: String, lastName: String, nickname:String, fbId: String?, num_tracks: Int, num_following: Int, num_followers: Int, description: String, profile_image: String, profile_cover_image: String, resource_name: String) {
-        self.email = email
-        self.firstName = firstName
-        self.lastName = lastName
-        self.nickname = nickname
+    override init(json: JSON) {
+        self.email = json["email"].stringValue
+        self.firstName = json["firstName"].stringValue
+        self.lastName = json["lastName"].stringValue
+        self.nickname = json["nickname"].stringValue
+        self.num_tracks = json["num_tracks"].intValue
+        self.num_following = json["num_following"].intValue
+        self.num_followers = json["num_followers"].intValue
+        self.description = json["description"].stringValue
+        
+        var fbId:String?
+        if json["fb_id"].string != nil && count(json["fb_id"].stringValue) > 0 {
+            fbId = json["fb_id"].stringValue
+        }
         self.fbId = fbId
-        self.num_tracks = num_tracks
-        self.num_following = num_following
-        self.num_followers = num_followers
-        self.description = description
-        super.init(userType: UserType.USER, id: id, name: nickname, image: profile_image, coverImage: profile_cover_image, resourceName: resource_name)
+
+        super.init(
+            userType: UserType.USER,
+            id: json["id"].stringValue,
+            name: self.nickname,
+            image: json["profile_image"].string,
+            coverImage: json["profile_cover_image"].string,
+            resourceName: json["resource_name"].stringValue
+        )
     }
     
     static func parseUser(data: AnyObject, key: String = "user", secondKey: String?=nil) -> User {
@@ -88,26 +135,8 @@ class User: BaseUser {
             userJson = json[key]
         }
         
-        var fbId:String?
-        if userJson["fb_id"].string != nil && count(userJson["fb_id"].stringValue) > 0 {
-            fbId = userJson["fb_id"].stringValue
-        }
-        var user: User = User(
-            id: userJson["id"].stringValue,
-            email: userJson["email"].stringValue,
-            firstName: userJson["firstName"].stringValue,
-            lastName: userJson["lastName"].stringValue,
-            nickname: userJson["nickname"].stringValue,
-            fbId: fbId,
-            num_tracks: userJson["num_tracks"].intValue,
-            num_following: userJson["num_following"].intValue,
-            num_followers: userJson["num_followers"].intValue,
-            description: userJson["description"].stringValue,
-            profile_image: userJson["profile_image"].stringValue,
-            profile_cover_image: userJson["profile_cover_image"].stringValue,
-            resource_name: userJson["resource_name"].stringValue
-        )
-        
+        var user: User = User(json: userJson)
+            
         var tracksJson = json[key]["tracks"]
         if tracksJson != nil {
             var tracks = [UserTrack]()
@@ -120,13 +149,7 @@ class User: BaseUser {
         return user
     }
     
-    enum FollowInfoType{
-        case FOLLOWERS
-        case FOLLOWING
-    }
-    
-    func fetchFollowInfo(follow: FollowInfoType, callback:((users: [BaseUser]?, error: NSError?) -> Void)) {
-        let path = follow == .FOLLOWERS ? ApiPath.userFollowers : ApiPath.userFollowing
+    private func _fetchFollowInfo(path: String, callback:((users: [BaseUser]?, error: NSError?) -> Void)) {
         Requests.sendGet(path, params: ["user_id": self.id], auth: false) { (req, resp, result, error) -> Void in
             if (error != nil) {
                 callback(users: nil, error: error)
@@ -145,15 +168,19 @@ class User: BaseUser {
         }
     }
     
+    func fetchFollowers(callback:((users: [BaseUser]?, error: NSError?) -> Void)) {
+        self._fetchFollowInfo(ApiPath.userFollowers, callback: callback)
+    }
+    
+    func fetchFollowing(callback:((users: [BaseUser]?, error: NSError?) -> Void)) {
+        self._fetchFollowInfo(ApiPath.userFollowing, callback: callback)
+    }
+    
     func fetchLikeList(callback:((likes:[Like]?, error:NSError?) -> Void)) {
         if (likes != nil) {
             callback(likes: likes!, error: nil)
             return
         }
-//        if (id == nil) {
-//            callback(likes: nil, error: NSError(domain: "likeList_fetch", code: 1, userInfo: nil))
-//            return
-//        }
         Requests.getUserLikeList(id, respCb: { (req, resp, result, error) -> Void in
             if (error != nil) {
                 callback(likes: nil, error: error)
@@ -187,8 +214,6 @@ class User: BaseUser {
         }
     }
 }
-
-
 
 class ChannelPlaylist {
     var name:String
@@ -326,7 +351,7 @@ class Artist: BaseUser {
     init (id:String, name:String, image:String, resourceName:String) {
         super.init(userType: UserType.ARTIST, id: id, name: name, image: image, coverImage: image, resourceName: resourceName)
     }
-//    let resourceName = s["resource_name"].stringValue
+
     static func parseArtist(data: AnyObject, key: String = "data", secondKey: String?=nil) -> Artist {
         var json = JSON(data)
         var detail: JSON

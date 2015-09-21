@@ -44,7 +44,7 @@ class UserHeaderView: AXStretchableHeaderView {
 }
 
 class UserViewController: AXStretchableHeaderTabViewController {
-    var user: BaseUser!
+    var baseUser: BaseUser!
     var resource: String!
     
     func instantiateSubVC () -> UserSubViewController {
@@ -71,7 +71,6 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 return
             }
             
-            var baseUser : BaseUser?
             switch JSON(result!)["data"]["user_type"] {
             case "user":
                 var user = User.parseUser(result!,key:"data",secondKey:"user")
@@ -93,12 +92,12 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 var f1 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
                 f1.title = "Followers"
                 f1.user = user
-                f1.followInfoType = .FOLLOWERS
+                f1.fetchFunc = user.fetchFollowers
                 
                 var f2 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
                 f2.title = "Following"
                 f2.user = user
-                f2.followInfoType = .FOLLOWING
+                f2.fetchFunc = user.fetchFollowing
                 
                 if user.tracks.count == 0 {
                     self.viewControllers = [likes, f1, f2]
@@ -106,7 +105,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
                     self.viewControllers = [uploads, likes, f1, f2]
                 }
 
-                baseUser = user
+                self.baseUser = user
             case "artist":
                 var artist = Artist.parseArtist(result!,key:"data",secondKey:"user")
                 
@@ -145,7 +144,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 }
                 
                 self.viewControllers = subViewArr
-                baseUser = artist
+                self.baseUser = artist
             case "channel":
                 var channel = Channel.parseChannel(result!,key:"data",secondKey: "user")
                 header.descriptionLabel.text = ", ".join(channel!.genre)
@@ -168,20 +167,20 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 }
                 
                 self.viewControllers = subViewArr
-                baseUser = channel
+                self.baseUser = channel
             default:
                 var message = "Unknown user_type"
                 return
             }
             
-            if let name = baseUser?.name {
+            if let name = self.baseUser?.name {
                 self.title = name
                 header.nameLabel.text = name
             }
-            if let profileImage = baseUser?.image {
+            if let profileImage = self.baseUser?.image {
                 header.profileImageView.sd_setImageWithURL(NSURL(string: profileImage), placeholderImage: UIImage(named: "default_profile"))
             }
-            if let coverImage = baseUser?.coverImage {
+            if let coverImage = self.baseUser?.coverImage {
                 header.coverImageView.sd_setImageWithURL(NSURL(string: coverImage), placeholderImage: UIImage(named: "default_cover_big"),
                     forMinimumHeight: self.headerView.maximumOfHeight*1.5)
             }
@@ -209,12 +208,20 @@ class UserViewController: AXStretchableHeaderTabViewController {
     
     func followAction(sender: UIButton) {
         let header = self.headerView as! UserHeaderView
-        header.followButton.selected = !header.followButton.selected
-        // http://spark.coroutine.io/api/v1/user/follow/
-        // http://spark.coroutine.io/api/v1/user/unfollow/
-        // {"user_id":3}    
-        // {"artist_id":2025}
-        // {"channel_id":9}     
+        let followButton = header.followButton as UIButton
+        if followButton.selected {
+            self.baseUser.unfollow({ (error) -> Void in
+                if (error == nil) {
+                    followButton.selected = false
+                }
+            })
+        } else {
+            self.baseUser.follow({ (error) -> Void in
+                if (error == nil) {
+                    followButton.selected = true
+                }
+            })
+        }   
     }
     
     func showMoreAction() {

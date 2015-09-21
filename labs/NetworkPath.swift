@@ -7,140 +7,142 @@ import Foundation
 let RELEASE = false
 
 public class ApiPath {
-    static var host :String = RELEASE ? "http://dropbeat.net/api/v1/" : "http://spark.coroutine.io/api/v1/"
-    
-    static var resolveUser = host + "resolve/"
+    static let host = RELEASE ? "http://dropbeat.net/api/v1/" : "http://spark.coroutine.io/api/v1/"
     
     // User
-    static var user :String = host + "user/"
-    static var userSignIn :String = user + "signin_fb_android/"
-    static var userSelf :String = user + "self/"
-    static var userSignOut :String = user + "signout/"
-    static var userUnlock :String = user + "unlock/"
-    static var userChangeEmail :String = user + "change_email/"
-    static var userEmailSignup:String = user + "email_signup/"
-    static var userEmailSignin:String = user + "email_signin/"
-    static var userChangeNickname:String = user + "change_nickname/"
-    static var userLikeList:String = user + "like/"
-    static var userFollowers:String = user + "followers/"
-    static var userFollowing:String = user + "following/"
+    static let user = host + "user/"
+    static let userSignIn = user + "signin_fb_android/"
+    static let userSelf = user + "self/"
+    static let userSignOut = user + "signout/"
+    static let userUnlock = user + "unlock/"
+    static let userChangeEmail = user + "change_email/"
+    static let userEmailSignup = user + "email_signup/"
+    static let userEmailSignin = user + "email_signin/"
+    static let userChangeNickname = user + "change_nickname/"
+    static let userLikeList = user + "like/"
+    static let userFollowers = user + "followers/"
+    static let userFollowing = user + "following/"
+    
+    static let resolveUser = host + "resolve/"
+    static let followUser = user + "follow/"
+    static let unfollowUser = user + "unfollow/"
     
     // Feed
-    static var feed :String = host + "feed/"
-    static var feedChannel :String = feed + "channel/"
-    static var feedFriend :String = feed + "friend/"
+    static let feed = host + "feed/"
+    static let feedChannel = feed + "channel/"
+    static let feedFriend = feed + "friend/"
     
     // Playlist
-    static var playlist :String = host + "playlist/"
-    static var playlistAll :String = playlist + "all/"
-    static var playlistSet :String = playlist + "set/"
-    static var playlistIntial :String = playlist + "initial/"
-    static var playlistShared :String = playlist + "shared/"
-    static var playlistImport :String = playlist + "import/"
-    static var playlistDel :String = playlist + "del/"
+    static let playlist = host + "playlist/"
+    static let playlistAll = playlist + "all/"
+    static let playlistSet = playlist + "set/"
+    static let playlistIntial = playlist + "initial/"
+    static let playlistShared = playlist + "shared/"
+    static let playlistImport = playlist + "import/"
+    static let playlistDel = playlist + "del/"
     
     // Log
-    static var log :String = host + "log/"
-    static var logSearch :String = log + "search/"
-    static var logResolve :String = log + "resolve/"
-    static var logTrackAdd :String = log + "trackadd/"
-    static var logPlay :String = log + "play/"
-    static var logPlayDrop :String = log + "playdrop/"
-    static var logDebug :String = log + "debug/"
+    static let log = host + "log/"
+    static let logSearch = log + "search/"
+    static let logResolve = log + "resolve/"
+    static let logTrackAdd = log + "trackadd/"
+    static let logPlay = log + "play/"
+    static let logPlayDrop = log + "playdrop/"
+    static let logDebug = log + "debug/"
     
     // Meta
-    static var meta :String = host + "meta/"
-    static var metaVersion :String = meta + "version/"
+    static let meta = host + "meta/"
+    static let metaVersion = meta + "version/"
     
     // Bookmark
-    static var bookmark :String = host + "channelbookmark/"
+    static let bookmark = host + "channelbookmark/"
     
     // Genre
-    static var genre:String = host + "genre/"
-    static var genreFavorite:String = genre + "favorite/"
-    static var genreAddFavorite:String = genre + "add_favorite/"
-    static var genreDelFavorite:String = genre + "del_favorite/"
+    static let genre = host + "genre/"
+    static let genreFavorite = genre + "favorite/"
+    static let genreAddFavorite = genre + "add_favorite/"
+    static let genreDelFavorite = genre + "del_favorite/"
     
     // Track
-    static var track :String = host + "track/"
-    static var trackShare :String = track + "shared/"
-    static var trackLike:String = track + "like/"
-    static var trackDislike:String = track + "dislike/"
+    static let track = host + "track/"
+    static let trackShare = track + "shared/"
+    static let trackLike = track + "like/"
+    static let trackDislike = track + "dislike/"
     
     // Artist
-    static var artist :String = host + "artist/"
-    static var artistFollow :String = artist + "follow/"
-    static var artistUnfollow :String = artist + "unfollow/"
-    static var artistFollowing :String = artist + "following/"
+    static let artist = host + "artist/"
+    static let artistFollow = artist + "follow/"
+    static let artistUnfollow = artist + "unfollow/"
+    static let artistFollowing = artist + "following/"
     
     // Stream
-    static var stream :String = host + "stream/"
-    static var streamFollowing: String = stream + "following/"
+    static let stream = host + "stream/"
+    static let streamFollowing = stream + "following/"
     
     // Feedback
-    static var feedback :String = host + "async/feedback/"
+    static let feedback = host + "async/feedback/"
     
 }
 
 public class CorePath {
-    static var host :String = RELEASE ? "http://core.dropbeat.net/api/" : "http://core.coroutine.io/api/"
+    static let host = RELEASE ? "http://core.dropbeat.net/api/" : "http://core.coroutine.io/api/"
     
     // core.search
-    static var search :String = host + "search/"
-    static var searchRelated :String = search + "related/"
-    static var searchLiveset :String = search + "liveset/"
-    static var searchOther :String = search + "other/"
-    static var searchArtist: String = search + "artist/"
+    static let search = host + "search/"
+    static let searchRelated = search + "related/"
+    static let searchLiveset = search + "liveset/"
+    static let searchOther = search + "other/"
+    static let searchArtist = search + "artist/"
     
     // core.resolve
-    static var resolve :String = host + "resolve/"
+    static let resolve = host + "resolve/"
     
     // core.related
-    static var related :String = host + "related/"
+    static let related = host + "related/"
     
     // core.live
-    static var live :String = host + "live/"
-    static var liveTracklist :String = live + "tracklist/"
+    static let live = host + "live/"
+    static let liveTracklist = live + "tracklist/"
 
     // core.trending
-    static var trending :String = host + "trending/"
-    static var trendingChart :String = trending + "bpchart/"
-    static var trendingFeaturedPlaylist :String = trending + "featured_playlist/"
+    static let trending = host + "trending/"
+    static let trendingChart = trending + "bpchart/"
+    static let trendingFeaturedPlaylist = trending + "featured_playlist/"
     
     // core.podcast
-    static var podcast :String = host + "podcast/"
+    static let podcast = host + "podcast/"
     
     // core.event
-    static var event :String = host + "event/"
+    static let event = host + "event/"
     
     // core.channel
-    static var channel :String = host + "channel/"
-    static var channelList: String = channel + "list/"
-    static var channelDetail: String = channel + "detail/"
-    static var channelDescExtractUrl: String = channel + "extract/"
+    static let channel = host + "channel/"
+    static let channelList = channel + "list/"
+    static let channelDetail = channel + "detail/"
+    static let channelDescExtractUrl = channel + "extract/"
     // core.channel playlist
-    static var channelGproxy: String = channel + "gproxy/"
+    static let channelGproxy = channel + "gproxy/"
     
     // core.artistFilter
-    static var artistFilter: String = host + "artist/filter/"
+    static let artistFilter = host + "artist/filter/"
     
     // core.genre
-    static var genre: String = host + "genre/"
-    static var genreSample: String = host + "genre/sample_tracks/"
+    static let genre = host + "genre/"
+    static let genreSample = host + "genre/sample_tracks/"
     
     // core.stream
-    static var stream: String = host + "stream/"
-    static var streamNew: String = stream + "new/"
-    static var streamTrending: String = stream + "trending/"
+    static let stream = host + "stream/"
+    static let streamNew = stream + "new/"
+    static let streamTrending = stream + "trending/"
     
 }
 
 public class ResolvePath {
-    static var host :String = "http://resolve.dropbeat.net/"
-    static var resolveStream :String = host + "resolve/"
+    static let host = "http://resolve.dropbeat.net/"
+    static let resolveStream = host + "resolve/"
 }
 
 public class YoutubeApiPath {
-    static var host :String = "https://www.googleapis.com/youtube/v3/"
-    static var playlistItems :String = host + "playlistItems/"
+    static let host = "https://www.googleapis.com/youtube/v3/"
+    static let playlistItems = host + "playlistItems/"
 }

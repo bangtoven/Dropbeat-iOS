@@ -11,19 +11,13 @@ import UIKit
 class FollowInfoTableViewController: UITableViewController, AXSubViewController {
 
     var user: User?
-    var followInfoType: User.FollowInfoType?
+    var fetchFunc: (((users: [BaseUser]?, error: NSError?) -> Void) -> Void)?
     var userArray: [BaseUser] = []
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        
-    }
     
     func subViewWillAppear() {
         if self.userArray.count == 0 {
             println("start fetching \(self.title)")
-            user!.fetchFollowInfo(self.followInfoType!, callback: { (users, error) -> Void in
+            fetchFunc!({ (users, error) -> Void in
                 self.userArray = users!
                 self.tableView.reloadData()
                 self.tableView.tableHeaderView = nil

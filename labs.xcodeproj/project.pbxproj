@@ -116,6 +116,7 @@
 		738646121BA758BA00C21650 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738646111BA758BA00C21650 /* PlayerViewController.swift */; };
 		738646171BA7631D00C21650 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738646161BA7631D00C21650 /* GradientView.m */; };
 		73A6864A1BA9A33600DA29DC /* Feed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCEA1B9F683100444179 /* Feed.storyboard */; };
+		73AB346B1BB15AAE0031E2CC /* JHImageTransitionSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AB346A1BB15AAE0031E2CC /* JHImageTransitionSegue.m */; settings = {ASSET_TAGS = (); }; };
 		73FC90BF1BAE4AFA00284B8A /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B21BAE4AFA00284B8A /* Alamofire.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90C01BAE4AFA00284B8A /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B31BAE4AFA00284B8A /* Download.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90C11BAE4AFA00284B8A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B41BAE4AFA00284B8A /* Error.swift */; settings = {ASSET_TAGS = (); }; };
@@ -333,6 +334,8 @@
 		738646111BA758BA00C21650 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		738646151BA7631D00C21650 /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
 		738646161BA7631D00C21650 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
+		73AB34691BB15AAE0031E2CC /* JHImageTransitionSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHImageTransitionSegue.h; sourceTree = "<group>"; };
+		73AB346A1BB15AAE0031E2CC /* JHImageTransitionSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHImageTransitionSegue.m; sourceTree = "<group>"; };
 		73FC90B21BAE4AFA00284B8A /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Alamofire.swift; path = Libraries/Alamofire/Alamofire.swift; sourceTree = SOURCE_ROOT; };
 		73FC90B31BAE4AFA00284B8A /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Download.swift; path = Libraries/Alamofire/Download.swift; sourceTree = SOURCE_ROOT; };
 		73FC90B41BAE4AFA00284B8A /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = Libraries/Alamofire/Error.swift; sourceTree = SOURCE_ROOT; };
@@ -581,6 +584,8 @@
 				732717511BAC8C96003E0B68 /* UserHeaderView.xib */,
 				732717471BAC8836003E0B68 /* UserSubViewController.swift */,
 				731D92711BAEE4FB0068742A /* FollowInfoTableViewController.swift */,
+				73AB34691BB15AAE0031E2CC /* JHImageTransitionSegue.h */,
+				73AB346A1BB15AAE0031E2CC /* JHImageTransitionSegue.m */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -968,6 +973,7 @@
 				7327174D1BAC8836003E0B68 /* UserViewController.swift in Sources */,
 				73FC90C31BAE4AFA00284B8A /* MultipartFormData.swift in Sources */,
 				73FC90C91BAE4AFA00284B8A /* Stream.swift in Sources */,
+				73AB346B1BB15AAE0031E2CC /* JHImageTransitionSegue.m in Sources */,
 				7327173D1BAC86BB003E0B68 /* AXStretchableHeaderView.m in Sources */,
 				58EAB3DD1B0D0BB00075304E /* PlaylistSelectTableViewCell.swift in Sources */,
 				7361FCE41B9F5E7F00444179 /* EmailSubmitViewController.swift in Sources */,

@@ -32,20 +32,23 @@ class UserHeaderView: AXStretchableHeaderView {
         self.nameLabel.text = ""
         self.descriptionLabel.text = ""
         
-        self.followInfoView.hidden = true
-        
         self.profileImageView.layer.cornerRadius = 10
         self.profileImageView.layer.borderWidth = 2
         self.profileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
         self.profileImageView.clipsToBounds = true
         
         self.coverImageView.clipsToBounds = true
+        
+        self.nameLabel.hidden = true
+        self.followInfoView.hidden = true
+        self.profileImageView.hidden = true
     }
 }
 
 class UserViewController: AXStretchableHeaderTabViewController {
     var baseUser: BaseUser!
     var resource: String!
+    var showUserFromFollowInfo: Bool = false
     
     func instantiateSubVC () -> UserSubViewController {
         return self.storyboard?.instantiateViewControllerWithIdentifier("UserSubViewController") as! UserSubViewController
@@ -61,6 +64,11 @@ class UserViewController: AXStretchableHeaderTabViewController {
         let header = self.headerView as! UserHeaderView
         header.maximumOfHeight = 224
         header.loadView()
+        
+        if self.showUserFromFollowInfo == false {
+            header.nameLabel.hidden = false
+            header.profileImageView.hidden = false
+        }
         
         var isSelf = false
         let progressHud = ViewUtils.showProgress(self, message: nil)
@@ -316,17 +324,25 @@ class UserViewController: AXStretchableHeaderTabViewController {
         super.viewWillAppear(animated)
         
         if let navBar = self.navigationController?.navigationBar {
+            navBar.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 0))
             navBar.barTintColor = UIColor.clearColor()
             navBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
             navBar.tintColor = UIColor.whiteColor()
             navBar.shadowImage = UIImage()
+        }
+        
+        if self.isMovingToParentViewController() == false{
+            // back from navigation stack. previous page was popped!!
+            self.didHeightRatioChange(self.headerViewHeightRatio)
         }
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        self.didHeightRatioChange(self.headerViewHeightRatio)
+        let header = self.headerView as! UserHeaderView
+        header.nameLabel.hidden = false
+        header.profileImageView.hidden = false
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -341,7 +357,6 @@ class UserViewController: AXStretchableHeaderTabViewController {
     override func viewDidDisappear(animated: Bool) {
         super.viewDidDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self)
-        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: false)
     }
 
 }

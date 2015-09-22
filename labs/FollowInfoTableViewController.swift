@@ -8,6 +8,13 @@
 
 import UIKit
 
+class FollowInfoTableViewCell: UITableViewCell {
+    
+    @IBOutlet var profileImageView: UIImageView!
+    @IBOutlet var nameLabel: UILabel!
+    
+}
+
 class FollowInfoTableViewController: UITableViewController, AXSubViewController {
 
     var user: User?
@@ -71,31 +78,68 @@ class FollowInfoTableViewController: UITableViewController, AXSubViewController 
             return cell!
         }
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("FollowInfoTableViewCell", forIndexPath: indexPath) 
+        let cell = tableView.dequeueReusableCellWithIdentifier("FollowInfoTableViewCell", forIndexPath: indexPath) as! FollowInfoTableViewCell
         let u = self.userArray[indexPath.row]
-        cell.textLabel?.text = u.name
+        cell.nameLabel.text = u.name
         if let image = u.image {
-            cell.imageView?.sd_setImageWithURL(NSURL(string: image), placeholderImage: UIImage(named: "default_profile"))
+            cell.profileImageView.sd_setImageWithURL(NSURL(string: image), placeholderImage: UIImage(named: "default_profile"))
         } else {
-            cell.imageView?.image = UIImage(named: "default_profile")
+            cell.profileImageView.image = UIImage(named: "default_profile")
         }
         
-        cell.imageView?.contentMode = UIViewContentMode.ScaleAspectFill
-        cell.imageView!.layer.cornerRadius = 10
-        cell.imageView!.layer.borderWidth = 5
-        cell.imageView!.layer.borderColor = UIColor.whiteColor().CGColor;
+        cell.profileImageView.layer.cornerRadius = 10
+        cell.profileImageView.layer.borderWidth = 2
+        cell.profileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
 
         return cell
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowUserSegue" {
-            let indexPath = self.tableView.indexPathForCell(sender as! UITableViewCell)
+            let cell = sender as! FollowInfoTableViewCell
+            let indexPath = self.tableView.indexPathForCell(cell)
             let u = self.userArray[indexPath!.row]
+         
+            let mySegue = segue as! JHImageTransitionSegue
+            let sourceImageView = cell.profileImageView
+            mySegue.setSourceImageView(sourceImageView)
+            mySegue.sourceRect = sourceImageView.convertRect(sourceImageView.bounds, toView: self.view)
+            mySegue.destinationRect = self.view.convertRect(CGRectMake(10, 157, 80, 80), fromView: nil)
+            
+            mySegue.setSourceLable(cell.nameLabel)
+            mySegue.labelSourceRect = cell.nameLabel.convertRect(cell.nameLabel.bounds, toView: self.view)
+            mySegue.labelDestinationRect = self.view.convertRect(CGRectMake(100, 169, 210, 22), fromView: nil)
+
             let uvc: UserViewController = segue.destinationViewController as! UserViewController
             uvc.resource = u.resourceName
+            uvc.showUserFromFollowInfo = true
         }
     }
+    
+    /*
+    
+    
+    - (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+    {
+    if (![segue isKindOfClass:[JKImageTransitionSegue class]]) {
+    return;
+    }
+    
+    JKImageViewController *imageController = (JKImageViewController *)segue.destinationViewController;
+    
+    // provide destination with full image
+    imageController.image = [UIImage imageNamed:@"BeachFull.jpg"];
+    
+    // configure segue
+    UIButton *imageButton = (UIButton *)sender;
+    JKImageTransitionSegue *imageSegue = (JKImageTransitionSegue *)segue;
+    
+    imageSegue.sourceRect = imageButton.frame;
+    imageSegue.transitionImage = imageButton.imageView.image;
+    
+    imageButton.hidden = YES;
+    }
+    */
     
     /*
     // Override to support conditional editing of the table view.

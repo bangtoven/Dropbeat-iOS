@@ -188,7 +188,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Moj-rF-a3E" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="kwI-99-hKo" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="41" y="2223"/>
+            <point key="canvasLocation" x="39" y="2575"/>
         </scene>
         <!--About me-->
         <scene sceneID="vLG-NA-5Qe">
@@ -219,7 +219,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gbF-of-3MD" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="IKo-xG-5i7" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="395" y="2223"/>
+            <point key="canvasLocation" x="393" y="2575"/>
         </scene>
         <!--Self Profile View Controller-->
         <scene sceneID="WK1-Fe-VLM">
@@ -250,6 +250,13 @@
                             <constraint firstItem="auO-9J-wxQ" firstAttribute="leading" secondItem="7se-B1-SZn" secondAttribute="leading" id="plk-7b-4Pb"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="0uf-eu-ueC">
+                        <barButtonItem key="rightBarButtonItem" title="Settings" id="A4Z-g0-obm">
+                            <connections>
+                                <segue destination="BdV-AA-UMZ" kind="custom" customClass="RBStoryboardPushSegue" id="3I1-S8-OZw"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="containerView" destination="auO-9J-wxQ" id="HB9-Fb-znr"/>
                         <segue destination="8bU-SJ-acY" kind="show" identifier="editNickname" id="lcE-1I-mzK"/>
@@ -259,7 +266,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oGl-sG-Oui" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="395" y="1571"/>
+            <point key="canvasLocation" x="393" y="1887"/>
         </scene>
         <!--User View Controller-->
         <scene sceneID="10W-2V-DkZ">
@@ -1105,7 +1112,7 @@ click below to discover your favorites</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ww1-mV-Trg" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="92y-9e-pvT" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="892" y="1775"/>
+            <point key="canvasLocation" x="876" y="1887"/>
         </scene>
         <!--Favor Discovery-->
         <scene sceneID="CgO-Bs-Zug">
@@ -1350,7 +1357,40 @@ and let us know your favorite genre.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JAp-fS-auG" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="cNm-tq-YQC" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1315" y="1775"/>
+            <point key="canvasLocation" x="1299" y="1887"/>
+        </scene>
+        <!--Storyboard Link-->
+        <scene sceneID="Cpm-cz-Nhv">
+            <objects>
+                <viewController id="BdV-AA-UMZ" customClass="RBStoryboardLink" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0cH-4i-l07"/>
+                        <viewControllerLayoutGuide type="bottom" id="Clf-Wu-51u"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="sBK-NK-O2p">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="To Settings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMi-ho-Lmd">
+                                <rect key="frame" x="16" y="20" width="86" height="21"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Settings"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="SettingsViewController"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lga-ln-Ocf" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="763" y="2575"/>
         </scene>
     </scenes>
     <resources>

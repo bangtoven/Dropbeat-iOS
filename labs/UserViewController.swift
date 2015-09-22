@@ -32,12 +32,16 @@ class UserHeaderView: AXStretchableHeaderView {
         self.nameLabel.text = ""
         self.descriptionLabel.text = ""
         
+        self.coverImageView.clipsToBounds = true
+        
         self.profileImageView.layer.cornerRadius = 10
         self.profileImageView.layer.borderWidth = 2
         self.profileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
         self.profileImageView.clipsToBounds = true
-        
-        self.coverImageView.clipsToBounds = true
+
+        self.followButton.titleLabel!.numberOfLines = 1
+        self.followButton.titleLabel!.adjustsFontSizeToFitWidth = true
+        self.followButton.titleLabel!.lineBreakMode = .ByClipping
         
         self.nameLabel.hidden = true
         self.followInfoView.hidden = true

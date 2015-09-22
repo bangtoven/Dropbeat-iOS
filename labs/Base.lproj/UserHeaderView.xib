@@ -59,8 +59,8 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wwz-Bg-Rfu" userLabel="follow info">
                     <rect key="frame" x="100" y="202" width="109" height="33"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Followers" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rLz-5q-4wx">
-                            <rect key="frame" x="0.0" y="0.0" width="51" height="16"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Followers" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rLz-5q-4wx">
+                            <rect key="frame" x="0.0" y="0.0" width="57" height="16"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="51" id="NwQ-6k-xqS"/>
@@ -74,8 +74,8 @@
                                 </mask>
                             </variation>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oaW-cO-xwy">
-                            <rect key="frame" x="59" y="0.0" width="50" height="16"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oaW-cO-xwy">
+                            <rect key="frame" x="65" y="0.0" width="50" height="16"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="50" id="xXI-uF-B89"/>
@@ -84,15 +84,15 @@
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Following" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mhI-fX-KYd">
-                            <rect key="frame" x="0.0" y="17" width="51" height="16"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Following" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mhI-fX-KYd">
+                            <rect key="frame" x="0.0" y="17" width="57" height="16"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" weight="thin" pointSize="13"/>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6h8-yc-uh2">
-                            <rect key="frame" x="59" y="17" width="50" height="16"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6h8-yc-uh2">
+                            <rect key="frame" x="65" y="17" width="50" height="16"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="50" id="2lv-Aw-EDO"/>
@@ -118,13 +118,13 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="bih-t6-lsj" customClass="GBFlatButton">
-                    <rect key="frame" x="205" y="202" width="105" height="33"/>
+                    <rect key="frame" x="205" y="203" width="105" height="30"/>
                     <animations/>
                     <constraints>
                         <constraint firstAttribute="width" constant="105" id="F8v-kC-hWP"/>
-                        <constraint firstAttribute="height" constant="33" id="y2X-fB-YSk"/>
+                        <constraint firstAttribute="height" constant="30" id="y2X-fB-YSk"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <state key="normal" title="+ FOLLOW">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -193,7 +193,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 <constraint firstItem="xCQ-Sl-5NX" firstAttribute="leading" secondItem="wQZ-ux-795" secondAttribute="leading" id="Og2-uV-A9C"/>
                 <constraint firstItem="Jmv-JD-IAi" firstAttribute="bottom" secondItem="Gwy-g4-0Zg" secondAttribute="bottom" priority="900" constant="-40" id="Qg0-Ow-ClI"/>
                 <constraint firstAttribute="trailing" secondItem="xCQ-Sl-5NX" secondAttribute="trailing" id="To3-Py-PCp"/>
-                <constraint firstItem="bih-t6-lsj" firstAttribute="bottom" secondItem="Gwy-g4-0Zg" secondAttribute="bottom" constant="-2" id="YFb-Mw-I12"/>
+                <constraint firstItem="bih-t6-lsj" firstAttribute="bottom" secondItem="Gwy-g4-0Zg" secondAttribute="bottom" constant="-4" id="YFb-Mw-I12"/>
                 <constraint firstItem="efv-lp-MaK" firstAttribute="leading" secondItem="Gwy-g4-0Zg" secondAttribute="trailing" constant="10" id="Z75-ZN-2vK"/>
                 <constraint firstItem="Gwy-g4-0Zg" firstAttribute="leading" secondItem="wQZ-ux-795" secondAttribute="leading" constant="10" id="boJ-PA-qBQ"/>
                 <constraint firstItem="Jmv-JD-IAi" firstAttribute="bottom" secondItem="efv-lp-MaK" secondAttribute="bottom" constant="6" id="e0f-vd-R3Z"/>

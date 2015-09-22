@@ -8,20 +8,20 @@
 
 import UIKit
 
-protocol GenreSampleTableViewCellDelegate {
-    func onPlayBtnClicked(sender:GenreSampleTableViewCell)
-    func onPauseBtnClicked(sender:GenreSampleTableViewCell)
-    func onLikeBtnClicked(sender:GenreSampleTableViewCell)
+protocol _GenreSampleTableViewCellDelegate {
+    func onPlayBtnClicked(sender:_GenreSampleTableViewCell)
+    func onPauseBtnClicked(sender:_GenreSampleTableViewCell)
+    func onLikeBtnClicked(sender:_GenreSampleTableViewCell)
 }
 
-class GenreSampleTableViewCell: UITableViewCell {
+class _GenreSampleTableViewCell: UITableViewCell {
     
     @IBOutlet weak var loaderView: UIActivityIndicatorView!
     @IBOutlet weak var thumbnailView: UIImageView!
     @IBOutlet weak var likeBtn: UIButton!
     @IBOutlet weak var playBtn: UIButton!
     @IBOutlet weak var pauseBtn: UIButton!
-    var delegate:GenreSampleTableViewCellDelegate?
+    var delegate:_GenreSampleTableViewCell?
 
     override func awakeFromNib() {
         super.awakeFromNib()

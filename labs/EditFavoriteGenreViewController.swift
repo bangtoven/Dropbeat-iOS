@@ -1,17 +1,16 @@
+//
+//  EditFavoriteGenreViewController.swift
+//  labs
+//
+//  Created by Jungho Bang on 2015. 9. 23..
+//  Copyright © 2015년 dropbeat. All rights reserved.
+//
+
 import UIKit
 import AVKit
 import AVFoundation
 
-
-//
-//  FavoriteGenreTutorialViewController.swift
-//  labs
-//
-//  Created by vulpes on 2015. 8. 20..
-//  Copyright (c) 2015년 dropbeat. All rights reserved.
-//
-
-class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
+class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var discoverBtn: UIButton!
@@ -19,18 +18,17 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
     @IBOutlet weak var footerViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet weak var doneBtn: UIButton!
     @IBOutlet weak var selectStatus: UILabel!
-    @IBOutlet weak var closeBtn: UIButton!
     
     private var genres:[Genre] = [Genre]()
     private var selectedGenreIds:Set<String> = Set<String>()
     private var remoteSelectedGenreIds:Set<String> = Set<String>()
     private var isLoading:Bool = false
     private var progressHud:MBProgressHUD?
-    
-    var fromStartup = false
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
+
         footerView.hidden = true
         footerViewHeightConstraint.constant = -60.0
         
@@ -41,14 +39,8 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
         doneBtn.layer.borderWidth = 1
         doneBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         doneBtn.layer.cornerRadius = 3.0
-        
-        closeBtn.hidden = fromStartup
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
+
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "FavoriteGenreTutorialViewScreen"
@@ -66,20 +58,11 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "discover" {
-            let vc = segue.destinationViewController as! _GenreDiscoveryViewController
+            let vc = segue.destinationViewController as! GenreDiscoveryViewController
             for id in remoteSelectedGenreIds {
                 vc.remoteFavoriteIds.insert(id)
             }
-            vc.fromStartup = fromStartup
         }
-    }
-    
-    @IBAction func onCloseBtnClicked(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    @IBAction func onDiscoverBtnClicked(sender: AnyObject) {
-        
     }
     
     @IBAction func onDoneBtnClicked(sender: AnyObject) {
@@ -100,7 +83,7 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
         var doneRemove = false
         var doneAdd = false
         var firedError = false
-    
+        
         let handler = { (error:NSError?) -> Void in
             if error != nil {
                 if firedError {
@@ -110,16 +93,16 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
                 progressHud.hide(true)
                 
                 if (error != nil && error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                            
-                    ViewUtils.showConfirmAlert(self,
-                        title: NSLocalizedString("Failed to save", comment:""),
-                        message: NSLocalizedString("Internet is not connected", comment:""),
-                        positiveBtnText: NSLocalizedString("Retry", comment: ""),
-                        positiveBtnCallback: { () -> Void in
-                            self.onSaveGenreClicked()
+                    error!.code == NSURLErrorNotConnectedToInternet) {
+                        
+                        ViewUtils.showConfirmAlert(self,
+                            title: NSLocalizedString("Failed to save", comment:""),
+                            message: NSLocalizedString("Internet is not connected", comment:""),
+                            positiveBtnText: NSLocalizedString("Retry", comment: ""),
+                            positiveBtnCallback: { () -> Void in
+                                self.onSaveGenreClicked()
                         })
-                    return
+                        return
                 }
                 
                 ViewUtils.showNoticeAlert(self,
@@ -150,13 +133,7 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
             
             let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)));
             dispatch_after(popTime, dispatch_get_main_queue(), {() -> Void in
-                if self.fromStartup {
-                    self.performSegueWithIdentifier("unwindFromGenreTutorialToStart", sender: nil)
-                } else if self.navigationController != nil {
-                    self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
-                } else {
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                }
+                self.performSegueWithIdentifier("unwindFromEditFavoriteGenres", sender: nil)
             })
             
         }
@@ -168,9 +145,9 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
             }
             Requests.delFavorite(genreIds, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                 if error != nil || result == nil ||
-                        !(JSON(result!)["success"].bool ?? false) {
-                    handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
-                    return
+                    !(JSON(result!)["success"].bool ?? false) {
+                        handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
+                        return
                 }
                 doneRemove = true
                 handler(nil)
@@ -188,9 +165,9 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
             }
             Requests.addFavorite(genreIds, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                 if error != nil || result == nil ||
-                        !(JSON(result!)["success"].bool ?? false) {
-                    handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
-                    return
+                    !(JSON(result!)["success"].bool ?? false) {
+                        handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
+                        return
                 }
                 
                 doneAdd = true
@@ -252,7 +229,7 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
             UIView.animateWithDuration(0.3, animations: { () -> Void in
                 self.view.layoutIfNeeded()
                 }, completion: { (finished:Bool) -> Void in
-                self.footerView.hidden = true
+                    self.footerView.hidden = true
             })
         }
         selectStatus.text = NSString.localizedStringWithFormat(
@@ -361,9 +338,9 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
     func showError(error:NSError?, callback: () -> Void) {
         var message:String!
         if (error != nil && error!.domain == NSURLErrorDomain &&
-                error!.code == NSURLErrorNotConnectedToInternet) {
-            message = NSLocalizedString("Internet is not connected", comment:"")
-            return
+            error!.code == NSURLErrorNotConnectedToInternet) {
+                message = NSLocalizedString("Internet is not connected", comment:"")
+                return
         } else {
             message = NSLocalizedString("Failed to load genre", comment:"")
         }
@@ -374,31 +351,15 @@ class FavoriteGenreTutorialViewController: BaseViewController, UITableViewDelega
             positiveBtnCallback: { () -> Void in
                 self.loadGenre()
             },
-            negativeBtnText: self.fromStartup ?
-                NSLocalizedString("Skip", comment:"") :
-                NSLocalizedString("Cancel", comment:""),
+            negativeBtnText: NSLocalizedString("Cancel", comment:""),
             negativeBtnCallback: { () -> Void in
-                if self.fromStartup {
-                    self.performSegueWithIdentifier("unwindFromGenreTutorialToStart", sender: nil)
-                } else {
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                }
-            })
+                self.performSegueWithIdentifier("unwindFromEditFavoriteGenres", sender: nil)
+        })
     }
 }
 
 
-
-//
-//  GenreDiscoveryViewController.swift
-//  labs
-//
-//  Created by vulpes on 2015. 8. 22..
-//  Copyright (c) 2015년 dropbeat. All rights reserved.
-//
-
-
-class _GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCellDelegate, UITableViewDelegate, UITableViewDataSource {
+class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCellDelegate, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var footerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var footerView: UIView!
@@ -415,7 +376,6 @@ class _GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCel
     private var playerPreloadObserver:AnyObject?
     
     var remoteFavoriteIds:Set<String> = Set<String>()
-    var fromStartup = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -427,7 +387,7 @@ class _GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCel
         footerView.hidden = true
         loadSamples()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -474,7 +434,7 @@ class _GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCel
     @IBAction func onBackBtnClicked(sender: AnyObject) {
         self.navigationController?.popViewControllerAnimated(true)
     }
-
+    
     @IBAction func onDoneBtnClicked(sender: AnyObject) {
         
         var selectedGenreIds = Set<String>()
@@ -497,7 +457,7 @@ class _GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCel
         var doneRemove = false
         var doneAdd = false
         var firedError = false
-    
+        
         let handler = { (error:NSError?) -> Void in
             if error != nil {
                 if firedError {
@@ -507,16 +467,16 @@ class _GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCel
                 progressHud.hide(true)
                 
                 if (error != nil && error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                            
-                    ViewUtils.showConfirmAlert(self,
-                        title: NSLocalizedString("Failed to save", comment:""),
-                        message: NSLocalizedString("Internet is not connected", comment:""),
-                        positiveBtnText: NSLocalizedString("Retry", comment: ""),
-                        positiveBtnCallback: { () -> Void in
-                            self.onDoneBtnClicked(sender)
+                    error!.code == NSURLErrorNotConnectedToInternet) {
+                        
+                        ViewUtils.showConfirmAlert(self,
+                            title: NSLocalizedString("Failed to save", comment:""),
+                            message: NSLocalizedString("Internet is not connected", comment:""),
+                            positiveBtnText: NSLocalizedString("Retry", comment: ""),
+                            positiveBtnCallback: { () -> Void in
+                                self.onDoneBtnClicked(sender)
                         })
-                    return
+                        return
                 }
                 
                 ViewUtils.showNoticeAlert(self,
@@ -546,13 +506,7 @@ class _GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCel
             
             let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)));
             dispatch_after(popTime, dispatch_get_main_queue(), {() -> Void in
-                if self.fromStartup {
-                    self.performSegueWithIdentifier("main", sender: nil)
-                } else if self.navigationController != nil {
-                    self.navigationController!.dismissViewControllerAnimated(true, completion: nil)
-                } else {
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                }
+                self.performSegueWithIdentifier("unwindFromEditFavoriteGenres", sender: nil)
             })
         }
         
@@ -563,9 +517,9 @@ class _GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCel
             }
             Requests.delFavorite(genreIds, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                 if error != nil || result == nil ||
-                        !(JSON(result!)["success"].bool ?? false) {
-                    handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
-                    return
+                    !(JSON(result!)["success"].bool ?? false) {
+                        handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
+                        return
                 }
                 doneRemove = true
                 handler(nil)
@@ -583,9 +537,9 @@ class _GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCel
             }
             Requests.addFavorite(genreIds, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                 if error != nil || result == nil ||
-                        !(JSON(result!)["success"].bool ?? false) {
-                    handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
-                    return
+                    !(JSON(result!)["success"].bool ?? false) {
+                        handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
+                        return
                 }
                 
                 doneAdd = true
@@ -619,13 +573,13 @@ class _GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCel
             [NSValue(CMTime: CMTimeMake(1, 3))],
             queue: nil,
             usingBlock: { () -> Void in
-                    NSNotificationCenter.defaultCenter()
-                        .postNotificationName("PlaybackStartedNotification", object: url)
+                NSNotificationCenter.defaultCenter()
+                    .postNotificationName("PlaybackStartedNotification", object: url)
                 if self.playerPreloadObserver != nil {
                     player.removeTimeObserver(self.playerPreloadObserver!)
                     self.playerPreloadObserver = nil
                 }
-            })
+        })
         currPlayer!.play()
     }
     
@@ -668,18 +622,18 @@ class _GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCel
             footerView.hidden = false
             footerBottomConstraint.constant = 0
             UIView.animateWithDuration(0.3, animations: { () -> Void in
-                    self.view.layoutIfNeeded()
+                self.view.layoutIfNeeded()
                 }, completion: { (finished:Bool) -> Void in
-                
-                })
+                    
+            })
         } else if likedSampleIds.count == 0 {
             self.view.layoutIfNeeded()
             footerBottomConstraint.constant = -60.0
             UIView.animateWithDuration(0.3, animations: { () -> Void in
-                    self.view.layoutIfNeeded()
+                self.view.layoutIfNeeded()
                 }, completion: { (finished:Bool) -> Void in
                     self.footerView.hidden = true
-                })
+            })
         }
         tableView.reloadData()
     }
@@ -710,7 +664,7 @@ class _GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCel
                     if error != nil {
                         cell.thumbnailView.image = UIImage(named:"default_cover_big")
                     }
-                })
+            })
         } else {
             cell.thumbnailView.image = UIImage(named:"default_cover_big")
         }
@@ -757,7 +711,7 @@ class _GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCel
                     positiveBtnText: "Retry",
                     positiveBtnCallback: { () -> Void in
                         self.loadSamples()
-                    })
+                })
                 return
             }
             
@@ -774,5 +728,41 @@ class _GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCel
             }
             self.tableView.reloadData()
         }
+    }
+}
+
+
+protocol GenreSampleTableViewCellDelegate {
+    func onPlayBtnClicked(sender:GenreSampleTableViewCell)
+    func onPauseBtnClicked(sender:GenreSampleTableViewCell)
+    func onLikeBtnClicked(sender:GenreSampleTableViewCell)
+}
+
+class GenreSampleTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var loaderView: UIActivityIndicatorView!
+    @IBOutlet weak var thumbnailView: UIImageView!
+    @IBOutlet weak var likeBtn: UIButton!
+    @IBOutlet weak var playBtn: UIButton!
+    @IBOutlet weak var pauseBtn: UIButton!
+    var delegate:GenreSampleTableViewCellDelegate?
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.likeBtn.layer.cornerRadius = 3.0
+    }
+    
+    override func setSelected(selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+    
+    @IBAction func onPauseBtnClicked(sender: AnyObject) {
+        delegate?.onPauseBtnClicked(self)
+    }
+    @IBAction func onPlayBtnClicked(sender: AnyObject) {
+        delegate?.onPlayBtnClicked(self)
+    }
+    @IBAction func onLikeBtnClicked(sender: AnyObject) {
+        delegate?.onLikeBtnClicked(self)
     }
 }

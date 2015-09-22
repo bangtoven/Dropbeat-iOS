@@ -214,10 +214,10 @@
                         <viewControllerLayoutGuide type="bottom" id="6rL-Rm-5Ln"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="QhF-n2-2wd">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hzI-zG-osk">
+                            <navigationBar contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hzI-zG-osk">
                                 <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                 <animations/>
                                 <constraints>
@@ -238,7 +238,7 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" directionalLockEnabled="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="wTe-gm-h3c" customClass="TPKeyboardAvoidingScrollView">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" directionalLockEnabled="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="wTe-gm-h3c" customClass="TPKeyboardAvoidingScrollView">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GY0-7c-C1e">
@@ -465,7 +465,7 @@
                                                         <color key="titleShadowColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
                                                     </state>
                                                     <connections>
-                                                        <segue destination="gEZ-LK-Afc" kind="presentation" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="Mub-et-L0l"/>
+                                                        <segue destination="gEZ-LK-Afc" kind="show" id="4xc-Nt-3Os"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -570,12 +570,12 @@
                                                 <constraint firstAttribute="height" constant="36" id="uBK-SX-gd5"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <state key="normal" title="CHANGE">
+                                            <state key="normal" title="asdf">
                                                 <color key="titleColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
                                             </state>
                                             <connections>
-                                                <segue destination="XRa-Gj-1I8" kind="presentation" modalPresentationStyle="fullScreen" modalTransitionStyle="coverVertical" id="JaV-wH-Q7W"/>
+                                                <segue destination="weO-F7-5fG" kind="show" id="yhA-sg-jy2"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -762,11 +762,11 @@
                         <viewControllerLayoutGuide type="bottom" id="nGt-ij-Fj9"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="tnc-KO-P0M">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PA0-X7-wdY">
-                                <rect key="frame" x="0.0" y="568" width="320" height="60"/>
+                                <rect key="frame" x="0.0" y="504" width="320" height="60"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eQF-fT-jZH" userLabel="border">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
@@ -813,7 +813,7 @@
                                     <constraint firstItem="eQF-fT-jZH" firstAttribute="leading" secondItem="PA0-X7-wdY" secondAttribute="leading" id="rjt-x2-Rf1"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsMultipleSelection="YES" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="n1l-Oz-ELD">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsMultipleSelection="YES" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="n1l-Oz-ELD">
                                 <rect key="frame" x="0.0" y="20" width="320" height="548"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -952,7 +952,7 @@ click below to discover your favorites</string>
                                     <outlet property="delegate" destination="weO-F7-5fG" id="C9J-gc-He1"/>
                                 </connections>
                             </tableView>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VHH-CQ-fUv">
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VHH-CQ-fUv">
                                 <rect key="frame" x="8" y="20" width="46" height="40"/>
                                 <animations/>
                                 <constraints>
@@ -1000,28 +1000,6 @@ click below to discover your favorites</string>
             </objects>
             <point key="canvasLocation" x="290" y="-2439"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="Wfr-7o-u4u">
-            <objects>
-                <navigationController navigationBarHidden="YES" id="XRa-Gj-1I8" sceneMemberID="viewController">
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="jC2-Ij-SBb">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
-                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <textAttributes key="titleTextAttributes">
-                            <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
-                        </textAttributes>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="weO-F7-5fG" kind="relationship" relationship="rootViewController" id="e6B-Vf-YN3"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fow-6q-1TE" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-128" y="-2439"/>
-        </scene>
         <!--Favor Discovery-->
         <scene sceneID="m6k-wn-uu8">
             <objects>
@@ -1031,10 +1009,10 @@ click below to discover your favorites</string>
                         <viewControllerLayoutGuide type="bottom" id="Tdw-cB-5Ep"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="VYI-WF-N97">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="168" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="0ox-c0-2oE">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="168" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="0ox-c0-2oE">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1195,7 +1173,7 @@ and let us know your favorite genre.</string>
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Uc-tO-oNo">
-                                <rect key="frame" x="0.0" y="568" width="320" height="60"/>
+                                <rect key="frame" x="0.0" y="504" width="320" height="60"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fm9-HZ-DSQ">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
@@ -1238,7 +1216,7 @@ and let us know your favorite genre.</string>
                                     </mask>
                                 </variation>
                             </view>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V4V-6C-dgb">
+                            <navigationBar contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="V4V-6C-dgb">
                                 <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                 <animations/>
                                 <constraints>

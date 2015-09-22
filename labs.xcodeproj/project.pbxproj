@@ -122,6 +122,7 @@
 		73AB34761BB1D34A0031E2CC /* ACEExpandableTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AB34731BB1D34A0031E2CC /* ACEExpandableTextCell.m */; settings = {ASSET_TAGS = (); }; };
 		73AB34771BB1D34A0031E2CC /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AB34751BB1D34A0031E2CC /* SZTextView.m */; settings = {ASSET_TAGS = (); }; };
 		73AB347A1BB1D42B0031E2CC /* EditAboutMeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AB34791BB1D42B0031E2CC /* EditAboutMeViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		73AB347C1BB1E8FE0031E2CC /* EditFavoriteGenreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AB347B1BB1E8FE0031E2CC /* EditFavoriteGenreViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90BF1BAE4AFA00284B8A /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B21BAE4AFA00284B8A /* Alamofire.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90C01BAE4AFA00284B8A /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B31BAE4AFA00284B8A /* Download.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90C11BAE4AFA00284B8A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B41BAE4AFA00284B8A /* Error.swift */; settings = {ASSET_TAGS = (); }; };
@@ -348,6 +349,7 @@
 		73AB34741BB1D34A0031E2CC /* SZTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SZTextView.h; path = Libraries/ACEExpandableTextCell/SZTextView.h; sourceTree = SOURCE_ROOT; };
 		73AB34751BB1D34A0031E2CC /* SZTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SZTextView.m; path = Libraries/ACEExpandableTextCell/SZTextView.m; sourceTree = SOURCE_ROOT; };
 		73AB34791BB1D42B0031E2CC /* EditAboutMeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditAboutMeViewController.swift; sourceTree = "<group>"; };
+		73AB347B1BB1E8FE0031E2CC /* EditFavoriteGenreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditFavoriteGenreViewController.swift; sourceTree = "<group>"; };
 		73FC90B21BAE4AFA00284B8A /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Alamofire.swift; path = Libraries/Alamofire/Alamofire.swift; sourceTree = SOURCE_ROOT; };
 		73FC90B31BAE4AFA00284B8A /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Download.swift; path = Libraries/Alamofire/Download.swift; sourceTree = SOURCE_ROOT; };
 		73FC90B41BAE4AFA00284B8A /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = Libraries/Alamofire/Error.swift; sourceTree = SOURCE_ROOT; };
@@ -602,6 +604,7 @@
 				73AB346E1BB1937C0031E2CC /* ProfileHeaderView.xib */,
 				73AB34701BB1B2A40031E2CC /* EditNicknameViewController.swift */,
 				73AB34791BB1D42B0031E2CC /* EditAboutMeViewController.swift */,
+				73AB347B1BB1E8FE0031E2CC /* EditFavoriteGenreViewController.swift */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -1032,6 +1035,7 @@
 				731D92721BAEE4FB0068742A /* FollowInfoTableViewController.swift in Sources */,
 				FC0D9D551B09A70300E048CC /* PlayerContext.swift in Sources */,
 				732717311BAC86A8003E0B68 /* GBFlatSelectableButton.m in Sources */,
+				73AB347C1BB1E8FE0031E2CC /* EditFavoriteGenreViewController.swift in Sources */,
 				5886939D1B13B51300566124 /* SDWebImageDecoder.m in Sources */,
 				588693A71B13B51300566124 /* UIView+WebCacheOperation.m in Sources */,
 				58272D861B88D7D200BBF276 /* GenreSampleTableViewCell.swift in Sources */,

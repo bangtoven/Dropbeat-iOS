@@ -9,11 +9,11 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="uqo-OH-Q7o" customClass="ProfileHeaderView" customModule="labs" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="288"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="default_cover_big" translatesAutoresizingMaskIntoConstraints="NO" id="pm5-nC-zNc">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="197"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="116"/>
                     <animations/>
                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -41,7 +41,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FBs-9Y-tE6" customClass="GradientView">
-                    <rect key="frame" x="0.0" y="147" width="320" height="50"/>
+                    <rect key="frame" x="0.0" y="66" width="320" height="50"/>
                     <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="50" id="ceh-D2-4gm"/>
@@ -57,7 +57,7 @@
                     </userDefinedRuntimeAttributes>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PIw-c2-LPX" userLabel="follow info">
-                    <rect key="frame" x="100" y="202" width="109" height="33"/>
+                    <rect key="frame" x="100" y="121" width="109" height="33"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Followers" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4nG-Zf-ggv">
                             <rect key="frame" x="0.0" y="0.0" width="57" height="16"/>
@@ -118,7 +118,7 @@
                     </constraints>
                 </view>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jungho jungho" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DgZ-FQ-7a3">
-                    <rect key="frame" x="100" y="169" width="121" height="22"/>
+                    <rect key="frame" x="100" y="88" width="121" height="22"/>
                     <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="22" id="NxJ-fh-iHJ"/>
@@ -128,9 +128,9 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IrM-ZX-mfQ">
-                    <rect key="frame" x="284" y="167" width="26" height="26"/>
+                    <rect key="frame" x="284" y="86" width="26" height="26"/>
                     <animations/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="26" id="46t-qw-d0w"/>
                         <constraint firstAttribute="height" constant="26" id="ZVU-IA-QWX"/>
@@ -139,7 +139,7 @@
                     <state key="normal" image="ic_edit_small"/>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mui-6D-mjH">
-                    <rect key="frame" x="12" y="252" width="298" height="32"/>
+                    <rect key="frame" x="12" y="284" width="298" height="32"/>
                     <animations/>
                     <constraints>
                         <constraint firstAttribute="height" constant="32" id="fXS-Tq-Cl3"/>
@@ -150,19 +150,10 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_profile" translatesAutoresizingMaskIntoConstraints="NO" id="88j-dy-xAm">
-                    <rect key="frame" x="10" y="157" width="80" height="80"/>
-                    <animations/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="80" id="Xgj-Ep-JN6"/>
-                        <constraint firstAttribute="width" secondItem="88j-dy-xAm" secondAttribute="height" multiplier="1:1" id="sD9-Mt-aXd"/>
-                    </constraints>
-                </imageView>
                 <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tmL-cB-i01">
-                    <rect key="frame" x="284" y="257" width="26" height="26"/>
+                    <rect key="frame" x="284" y="254" width="26" height="26"/>
                     <animations/>
-                    <color key="backgroundColor" white="1" alpha="0.5" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="26" id="ErX-r9-Br2"/>
                         <constraint firstAttribute="width" constant="26" id="Sdo-Ca-fAq"/>
@@ -170,6 +161,52 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                     <state key="normal" image="ic_edit_small"/>
                 </button>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_profile" translatesAutoresizingMaskIntoConstraints="NO" id="88j-dy-xAm">
+                    <rect key="frame" x="10" y="76" width="80" height="80"/>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="80" id="Xgj-Ep-JN6"/>
+                        <constraint firstAttribute="width" secondItem="88j-dy-xAm" secondAttribute="height" multiplier="1:1" id="sD9-Mt-aXd"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UV8-nI-8Zk">
+                    <rect key="frame" x="12" y="258" width="262" height="18"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u9B-Rb-EEC">
+                    <rect key="frame" x="284" y="174" width="26" height="26"/>
+                    <animations/>
+                    <color key="backgroundColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="26" id="QUH-eR-h1Q"/>
+                        <constraint firstAttribute="width" constant="26" id="ccl-Du-IqY"/>
+                    </constraints>
+                    <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                    <state key="normal" image="ic_edit_small"/>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorite Genres" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GX3-W1-avb">
+                    <rect key="frame" x="12" y="178" width="262" height="18"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E4E-k0-aVz">
+                    <rect key="frame" x="12" y="204" width="298" height="32"/>
+                    <animations/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="WrY-Ki-539"/>
+                    </constraints>
+                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. 
+Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                    <fontDescription key="fontDescription" type="system" weight="light" pointSize="13"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <animations/>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -177,28 +214,40 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 <constraint firstItem="DgZ-FQ-7a3" firstAttribute="leading" secondItem="88j-dy-xAm" secondAttribute="trailing" constant="10" id="1HA-91-pWY"/>
                 <constraint firstItem="pm5-nC-zNc" firstAttribute="leading" secondItem="uqo-OH-Q7o" secondAttribute="leading" id="1Of-zJ-p0a"/>
                 <constraint firstItem="mui-6D-mjH" firstAttribute="leading" secondItem="uqo-OH-Q7o" secondAttribute="leading" constant="12" id="1eV-1d-viD"/>
-                <constraint firstItem="tmL-cB-i01" firstAttribute="bottom" secondItem="mui-6D-mjH" secondAttribute="bottom" constant="-1" id="1uJ-w5-WUk"/>
+                <constraint firstItem="tmL-cB-i01" firstAttribute="leading" secondItem="UV8-nI-8Zk" secondAttribute="trailing" constant="10" id="3kt-Ph-bLh"/>
+                <constraint firstAttribute="trailing" secondItem="tmL-cB-i01" secondAttribute="trailing" constant="10" id="47i-j8-Z34"/>
+                <constraint firstItem="E4E-k0-aVz" firstAttribute="top" secondItem="GX3-W1-avb" secondAttribute="bottom" constant="8" id="7Ga-AI-y0L"/>
                 <constraint firstItem="pm5-nC-zNc" firstAttribute="bottom" secondItem="88j-dy-xAm" secondAttribute="bottom" priority="900" constant="-40" id="98e-2w-hR6"/>
                 <constraint firstItem="tmL-cB-i01" firstAttribute="top" secondItem="mui-6D-mjH" secondAttribute="top" id="9Jc-rm-lN0"/>
                 <constraint firstItem="88j-dy-xAm" firstAttribute="leading" secondItem="uqo-OH-Q7o" secondAttribute="leading" constant="10" id="CZh-MN-wVe"/>
+                <constraint firstItem="UV8-nI-8Zk" firstAttribute="top" secondItem="E4E-k0-aVz" secondAttribute="bottom" constant="22" id="EcB-Uj-L8T"/>
+                <constraint firstItem="tmL-cB-i01" firstAttribute="centerY" secondItem="UV8-nI-8Zk" secondAttribute="centerY" id="GGX-H6-gwk"/>
+                <constraint firstItem="UV8-nI-8Zk" firstAttribute="leading" secondItem="mui-6D-mjH" secondAttribute="leading" id="GH3-Jp-DS0"/>
                 <constraint firstItem="tmL-cB-i01" firstAttribute="trailing" secondItem="mui-6D-mjH" secondAttribute="trailing" id="Hh9-Iv-KD4"/>
+                <constraint firstAttribute="trailing" secondItem="E4E-k0-aVz" secondAttribute="trailing" constant="10" id="L0d-nG-Dbr"/>
                 <constraint firstItem="FBs-9Y-tE6" firstAttribute="leading" secondItem="pm5-nC-zNc" secondAttribute="leading" id="NCV-ie-x4S"/>
+                <constraint firstItem="GX3-W1-avb" firstAttribute="leading" secondItem="uqo-OH-Q7o" secondAttribute="leading" constant="12" id="RPw-ym-qsW"/>
                 <constraint firstItem="pm5-nC-zNc" firstAttribute="bottom" secondItem="DgZ-FQ-7a3" secondAttribute="bottom" constant="6" id="RzX-uy-S6k"/>
                 <constraint firstAttribute="trailing" secondItem="mui-6D-mjH" secondAttribute="trailing" constant="10" id="SIN-cH-eil"/>
-                <constraint firstItem="mui-6D-mjH" firstAttribute="top" secondItem="88j-dy-xAm" secondAttribute="bottom" constant="15" id="TSy-tI-JqT"/>
                 <constraint firstAttribute="trailing" secondItem="4NA-Ky-x1m" secondAttribute="trailing" id="UTP-sH-WTy"/>
                 <constraint firstItem="FBs-9Y-tE6" firstAttribute="trailing" secondItem="pm5-nC-zNc" secondAttribute="trailing" id="bw2-sE-skg"/>
                 <constraint firstItem="4NA-Ky-x1m" firstAttribute="leading" secondItem="uqo-OH-Q7o" secondAttribute="leading" id="c5T-gh-GHN"/>
                 <constraint firstItem="FBs-9Y-tE6" firstAttribute="bottom" secondItem="pm5-nC-zNc" secondAttribute="bottom" id="dLg-fO-MtB"/>
                 <constraint firstItem="PIw-c2-LPX" firstAttribute="bottom" secondItem="88j-dy-xAm" secondAttribute="bottom" constant="-2" id="e3i-0C-Dq0"/>
+                <constraint firstItem="u9B-Rb-EEC" firstAttribute="leading" secondItem="GX3-W1-avb" secondAttribute="trailing" constant="10" id="fce-Jf-OgO"/>
                 <constraint firstItem="PIw-c2-LPX" firstAttribute="leading" secondItem="uqo-OH-Q7o" secondAttribute="leading" constant="100" id="jze-hU-y4I"/>
                 <constraint firstItem="4NA-Ky-x1m" firstAttribute="top" secondItem="uqo-OH-Q7o" secondAttribute="top" id="kWX-0x-zOo"/>
                 <constraint firstItem="IrM-ZX-mfQ" firstAttribute="centerY" secondItem="DgZ-FQ-7a3" secondAttribute="centerY" id="lRV-bT-q6X"/>
                 <constraint firstItem="pm5-nC-zNc" firstAttribute="top" secondItem="uqo-OH-Q7o" secondAttribute="top" id="n9P-1X-rNE"/>
+                <constraint firstItem="mui-6D-mjH" firstAttribute="top" secondItem="UV8-nI-8Zk" secondAttribute="bottom" constant="8" id="nwi-Fb-Ego"/>
                 <constraint firstItem="IrM-ZX-mfQ" firstAttribute="trailing" secondItem="tmL-cB-i01" secondAttribute="trailing" id="qVJ-91-Qqd"/>
                 <constraint firstAttribute="trailing" secondItem="DgZ-FQ-7a3" secondAttribute="trailing" constant="10" id="qus-fh-9o7"/>
+                <constraint firstItem="GX3-W1-avb" firstAttribute="top" secondItem="88j-dy-xAm" secondAttribute="bottom" constant="22" id="s1r-bO-N9f"/>
                 <constraint firstAttribute="bottom" secondItem="mui-6D-mjH" secondAttribute="bottom" constant="4" id="tBB-X7-fd5"/>
                 <constraint firstAttribute="trailing" secondItem="pm5-nC-zNc" secondAttribute="trailing" id="tb2-lD-uBb"/>
+                <constraint firstItem="E4E-k0-aVz" firstAttribute="leading" secondItem="uqo-OH-Q7o" secondAttribute="leading" constant="12" id="uAH-c2-D56"/>
+                <constraint firstItem="u9B-Rb-EEC" firstAttribute="centerY" secondItem="GX3-W1-avb" secondAttribute="centerY" id="ud0-Hk-HVE"/>
+                <constraint firstAttribute="trailing" secondItem="u9B-Rb-EEC" secondAttribute="trailing" constant="10" id="wDt-jj-hO7"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <variation key="default">
@@ -211,7 +260,9 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 <outlet property="aboutMeLabel" destination="mui-6D-mjH" id="Jpp-km-4UD"/>
                 <outlet property="coverImageView" destination="pm5-nC-zNc" id="aPV-Sg-eIA"/>
                 <outlet property="editAboutMeButton" destination="tmL-cB-i01" id="rJR-lt-Zb2"/>
+                <outlet property="editGenresButton" destination="u9B-Rb-EEC" id="aaJ-yJ-VEK"/>
                 <outlet property="editNicknameButton" destination="IrM-ZX-mfQ" id="NhF-Gd-szw"/>
+                <outlet property="favoriteGenresLabel" destination="E4E-k0-aVz" id="Vx2-N1-6l8"/>
                 <outlet property="followInfoView" destination="PIw-c2-LPX" id="omU-Tn-rTR"/>
                 <outlet property="followersLabel" destination="0f4-qN-837" id="hh5-fQ-XZD"/>
                 <outlet property="followingLabel" destination="aEU-AW-1Q9" id="zdk-TL-Kdx"/>
@@ -220,7 +271,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 <outlet property="profileImageHeight" destination="Xgj-Ep-JN6" id="jO5-Pa-Oht"/>
                 <outlet property="profileImageView" destination="88j-dy-xAm" id="xmr-Bb-kg0"/>
             </connections>
-            <point key="canvasLocation" x="347" y="222"/>
+            <point key="canvasLocation" x="347" y="276"/>
         </view>
     </objects>
     <resources>

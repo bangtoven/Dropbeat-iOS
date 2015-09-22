@@ -118,24 +118,24 @@
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="bih-t6-lsj" customClass="GBFlatButton">
-                    <rect key="frame" x="205" y="203" width="105" height="30"/>
+                    <rect key="frame" x="220" y="203" width="90" height="30"/>
                     <animations/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="105" id="F8v-kC-hWP"/>
+                        <constraint firstAttribute="width" constant="90" id="F8v-kC-hWP"/>
                         <constraint firstAttribute="height" constant="30" id="y2X-fB-YSk"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <state key="normal" title="+ FOLLOW">
+                    <state key="normal" title="+FOLLOW">
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
-                    <state key="selected" title="✓ FOLLOWING"/>
+                    <state key="selected" title="✓FOLLOWING"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="radius">
                             <real key="value" value="5"/>
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My name is Jungho" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="efv-lp-MaK">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jungho jungho" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="efv-lp-MaK">
                     <rect key="frame" x="100" y="169" width="210" height="22"/>
                     <animations/>
                     <constraints>
@@ -209,8 +209,8 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="aboutMeLabel" destination="0eQ-zT-xH6" id="8JY-RX-u5J"/>
                 <outlet property="coverImageView" destination="Jmv-JD-IAi" id="kMC-ZO-H4D"/>
-                <outlet property="descriptionLabel" destination="0eQ-zT-xH6" id="8JY-RX-u5J"/>
                 <outlet property="followButton" destination="bih-t6-lsj" id="qpk-7i-b1z"/>
                 <outlet property="followInfoView" destination="wwz-Bg-Rfu" id="ntm-ye-WY8"/>
                 <outlet property="followersLabel" destination="oaW-cO-xwy" id="kcM-HH-C74"/>

@@ -1,5 +1,5 @@
 //
-//  UserSubViewController
+//  TrackSubViewController
 //  labs
 //
 //  Created by Jungho Bang on 2015. 9. 16..
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChannelSubViewController: UserSubViewController, DYAlertPickViewDataSource, DYAlertPickViewDelegate {
+class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSource, DYAlertPickViewDelegate {
     var channel: Channel? {
         willSet {
             self.baseUser = channel
@@ -156,7 +156,7 @@ class ChannelSubViewController: UserSubViewController, DYAlertPickViewDataSource
     }
 }
 
-class UserSubViewController: AddableTrackListViewController, UITableViewDataSource, UITableViewDelegate, AXSubViewController, AXStretchableSubViewControllerViewSource {
+class TrackSubViewController: AddableTrackListViewController, UITableViewDataSource, UITableViewDelegate, AXSubViewController, AXStretchableSubViewControllerViewSource {
     
     var baseUser: BaseUser?
     var fetchFunc: ((([Track]?, NSError?) -> Void) -> Void)?

@@ -479,7 +479,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     func getTrackActionSheetTitleAtPosition(track: Track, index: Int) -> String {
         switch(index) {
         case 0:
-            return track.isLiked ? NSLocalizedString("Liked", comment:"") :
+            return track.isLiked ? NSLocalizedString("Unlike", comment:"") :
                 NSLocalizedString("Like", comment:"")
         case 1:
             return NSLocalizedString("Add to playlist", comment:"")

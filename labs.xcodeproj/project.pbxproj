@@ -96,13 +96,12 @@
 		732717301BAC86A8003E0B68 /* GBFlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7327172C1BAC86A8003E0B68 /* GBFlatButton.m */; };
 		732717311BAC86A8003E0B68 /* GBFlatSelectableButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7327172E1BAC86A8003E0B68 /* GBFlatSelectableButton.m */; };
 		7327173B1BAC86BB003E0B68 /* AXStretchableHeaderTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 732717331BAC86BB003E0B68 /* AXStretchableHeaderTabViewController.m */; };
-		7327173C1BAC86BB003E0B68 /* AXStretchableHeaderTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 732717341BAC86BB003E0B68 /* AXStretchableHeaderTabViewController.xib */; };
 		7327173D1BAC86BB003E0B68 /* AXStretchableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 732717361BAC86BB003E0B68 /* AXStretchableHeaderView.m */; };
 		7327173E1BAC86BB003E0B68 /* AXTabBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 732717381BAC86BB003E0B68 /* AXTabBar.m */; };
 		7327173F1BAC86BB003E0B68 /* AXTabBarItemButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7327173A1BAC86BB003E0B68 /* AXTabBarItemButton.m */; };
 		732717431BAC8721003E0B68 /* ScrollPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717421BAC8721003E0B68 /* ScrollPager.swift */; };
 		7327174A1BAC8836003E0B68 /* User.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 732717451BAC8836003E0B68 /* User.storyboard */; };
-		7327174C1BAC8836003E0B68 /* UserSubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717471BAC8836003E0B68 /* UserSubViewController.swift */; };
+		7327174C1BAC8836003E0B68 /* TrackSubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717471BAC8836003E0B68 /* TrackSubViewController.swift */; };
 		7327174D1BAC8836003E0B68 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717481BAC8836003E0B68 /* UserViewController.swift */; };
 		7327174E1BAC8836003E0B68 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717491BAC8836003E0B68 /* ViewController.swift */; };
 		7327174F1BAC8C96003E0B68 /* UserHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 732717511BAC8C96003E0B68 /* UserHeaderView.xib */; };
@@ -117,6 +116,12 @@
 		738646171BA7631D00C21650 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738646161BA7631D00C21650 /* GradientView.m */; };
 		73A6864A1BA9A33600DA29DC /* Feed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCEA1B9F683100444179 /* Feed.storyboard */; };
 		73AB346B1BB15AAE0031E2CC /* JHImageTransitionSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AB346A1BB15AAE0031E2CC /* JHImageTransitionSegue.m */; settings = {ASSET_TAGS = (); }; };
+		73AB346D1BB186B90031E2CC /* SelfProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AB346C1BB186B90031E2CC /* SelfProfileViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		73AB346F1BB1937C0031E2CC /* ProfileHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 73AB346E1BB1937C0031E2CC /* ProfileHeaderView.xib */; settings = {ASSET_TAGS = (); }; };
+		73AB34711BB1B2A40031E2CC /* EditNicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AB34701BB1B2A40031E2CC /* EditNicknameViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		73AB34761BB1D34A0031E2CC /* ACEExpandableTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AB34731BB1D34A0031E2CC /* ACEExpandableTextCell.m */; settings = {ASSET_TAGS = (); }; };
+		73AB34771BB1D34A0031E2CC /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AB34751BB1D34A0031E2CC /* SZTextView.m */; settings = {ASSET_TAGS = (); }; };
+		73AB347A1BB1D42B0031E2CC /* EditAboutMeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AB34791BB1D42B0031E2CC /* EditAboutMeViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90BF1BAE4AFA00284B8A /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B21BAE4AFA00284B8A /* Alamofire.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90C01BAE4AFA00284B8A /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B31BAE4AFA00284B8A /* Download.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90C11BAE4AFA00284B8A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B41BAE4AFA00284B8A /* Error.swift */; settings = {ASSET_TAGS = (); }; };
@@ -304,7 +309,6 @@
 		7327172E1BAC86A8003E0B68 /* GBFlatSelectableButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GBFlatSelectableButton.m; sourceTree = "<group>"; };
 		732717321BAC86BB003E0B68 /* AXStretchableHeaderTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AXStretchableHeaderTabViewController.h; path = Libraries/AXStretchableHeaderTabView/AXStretchableHeaderTabViewController.h; sourceTree = SOURCE_ROOT; };
 		732717331BAC86BB003E0B68 /* AXStretchableHeaderTabViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AXStretchableHeaderTabViewController.m; path = Libraries/AXStretchableHeaderTabView/AXStretchableHeaderTabViewController.m; sourceTree = SOURCE_ROOT; };
-		732717341BAC86BB003E0B68 /* AXStretchableHeaderTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = AXStretchableHeaderTabViewController.xib; path = Libraries/AXStretchableHeaderTabView/AXStretchableHeaderTabViewController.xib; sourceTree = SOURCE_ROOT; };
 		732717351BAC86BB003E0B68 /* AXStretchableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AXStretchableHeaderView.h; path = Libraries/AXStretchableHeaderTabView/AXStretchableHeaderView.h; sourceTree = SOURCE_ROOT; };
 		732717361BAC86BB003E0B68 /* AXStretchableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AXStretchableHeaderView.m; path = Libraries/AXStretchableHeaderTabView/AXStretchableHeaderView.m; sourceTree = SOURCE_ROOT; };
 		732717371BAC86BB003E0B68 /* AXTabBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AXTabBar.h; path = Libraries/AXStretchableHeaderTabView/AXTabBar.h; sourceTree = SOURCE_ROOT; };
@@ -313,7 +317,7 @@
 		7327173A1BAC86BB003E0B68 /* AXTabBarItemButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AXTabBarItemButton.m; path = Libraries/AXStretchableHeaderTabView/AXTabBarItemButton.m; sourceTree = SOURCE_ROOT; };
 		732717421BAC8721003E0B68 /* ScrollPager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ScrollPager.swift; path = Libraries/ScrollPager.swift; sourceTree = SOURCE_ROOT; };
 		732717451BAC8836003E0B68 /* User.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = User.storyboard; sourceTree = "<group>"; };
-		732717471BAC8836003E0B68 /* UserSubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSubViewController.swift; sourceTree = "<group>"; };
+		732717471BAC8836003E0B68 /* TrackSubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackSubViewController.swift; sourceTree = "<group>"; };
 		732717481BAC8836003E0B68 /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		732717491BAC8836003E0B68 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		732717501BAC8C96003E0B68 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/UserHeaderView.xib; sourceTree = "<group>"; };
@@ -336,6 +340,14 @@
 		738646161BA7631D00C21650 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
 		73AB34691BB15AAE0031E2CC /* JHImageTransitionSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHImageTransitionSegue.h; sourceTree = "<group>"; };
 		73AB346A1BB15AAE0031E2CC /* JHImageTransitionSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHImageTransitionSegue.m; sourceTree = "<group>"; };
+		73AB346C1BB186B90031E2CC /* SelfProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfProfileViewController.swift; sourceTree = "<group>"; };
+		73AB346E1BB1937C0031E2CC /* ProfileHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileHeaderView.xib; sourceTree = "<group>"; };
+		73AB34701BB1B2A40031E2CC /* EditNicknameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditNicknameViewController.swift; sourceTree = "<group>"; };
+		73AB34721BB1D34A0031E2CC /* ACEExpandableTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ACEExpandableTextCell.h; path = Libraries/ACEExpandableTextCell/ACEExpandableTextCell.h; sourceTree = SOURCE_ROOT; };
+		73AB34731BB1D34A0031E2CC /* ACEExpandableTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ACEExpandableTextCell.m; path = Libraries/ACEExpandableTextCell/ACEExpandableTextCell.m; sourceTree = SOURCE_ROOT; };
+		73AB34741BB1D34A0031E2CC /* SZTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SZTextView.h; path = Libraries/ACEExpandableTextCell/SZTextView.h; sourceTree = SOURCE_ROOT; };
+		73AB34751BB1D34A0031E2CC /* SZTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SZTextView.m; path = Libraries/ACEExpandableTextCell/SZTextView.m; sourceTree = SOURCE_ROOT; };
+		73AB34791BB1D42B0031E2CC /* EditAboutMeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditAboutMeViewController.swift; sourceTree = "<group>"; };
 		73FC90B21BAE4AFA00284B8A /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Alamofire.swift; path = Libraries/Alamofire/Alamofire.swift; sourceTree = SOURCE_ROOT; };
 		73FC90B31BAE4AFA00284B8A /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Download.swift; path = Libraries/Alamofire/Download.swift; sourceTree = SOURCE_ROOT; };
 		73FC90B41BAE4AFA00284B8A /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = Libraries/Alamofire/Error.swift; sourceTree = SOURCE_ROOT; };
@@ -582,10 +594,14 @@
 				732717451BAC8836003E0B68 /* User.storyboard */,
 				732717481BAC8836003E0B68 /* UserViewController.swift */,
 				732717511BAC8C96003E0B68 /* UserHeaderView.xib */,
-				732717471BAC8836003E0B68 /* UserSubViewController.swift */,
+				732717471BAC8836003E0B68 /* TrackSubViewController.swift */,
 				731D92711BAEE4FB0068742A /* FollowInfoTableViewController.swift */,
 				73AB34691BB15AAE0031E2CC /* JHImageTransitionSegue.h */,
 				73AB346A1BB15AAE0031E2CC /* JHImageTransitionSegue.m */,
+				73AB346C1BB186B90031E2CC /* SelfProfileViewController.swift */,
+				73AB346E1BB1937C0031E2CC /* ProfileHeaderView.xib */,
+				73AB34701BB1B2A40031E2CC /* EditNicknameViewController.swift */,
+				73AB34791BB1D42B0031E2CC /* EditAboutMeViewController.swift */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -596,6 +612,7 @@
 				732717011BAC8632003E0B68 /* SwiftyJSON.swift */,
 				732717421BAC8721003E0B68 /* ScrollPager.swift */,
 				73FC90CC1BAE5C9000284B8A /* KeychainItemWrapper.swift */,
+				73AB34781BB1D3580031E2CC /* ACEExpandableTextCell */,
 				7361FD111BA060F400444179 /* RBStoryboardLink */,
 				585BACF91B85ED9900FE137A /* DateTool */,
 				589413531B83C3F700395AFA /* TPKeyboardAvoiding */,
@@ -738,7 +755,6 @@
 			children = (
 				732717321BAC86BB003E0B68 /* AXStretchableHeaderTabViewController.h */,
 				732717331BAC86BB003E0B68 /* AXStretchableHeaderTabViewController.m */,
-				732717341BAC86BB003E0B68 /* AXStretchableHeaderTabViewController.xib */,
 				732717351BAC86BB003E0B68 /* AXStretchableHeaderView.h */,
 				732717361BAC86BB003E0B68 /* AXStretchableHeaderView.m */,
 				732717371BAC86BB003E0B68 /* AXTabBar.h */,
@@ -748,6 +764,17 @@
 			);
 			name = AXStretchableHeader;
 			path = ../playground;
+			sourceTree = "<group>";
+		};
+		73AB34781BB1D3580031E2CC /* ACEExpandableTextCell */ = {
+			isa = PBXGroup;
+			children = (
+				73AB34721BB1D34A0031E2CC /* ACEExpandableTextCell.h */,
+				73AB34731BB1D34A0031E2CC /* ACEExpandableTextCell.m */,
+				73AB34741BB1D34A0031E2CC /* SZTextView.h */,
+				73AB34751BB1D34A0031E2CC /* SZTextView.m */,
+			);
+			name = ACEExpandableTextCell;
 			sourceTree = "<group>";
 		};
 		F98F65D2D15412F7828AF298 /* Frameworks */ = {
@@ -932,11 +959,11 @@
 				73A6864A1BA9A33600DA29DC /* Feed.storyboard in Resources */,
 				7361FCF71B9F687E00444179 /* Settings.storyboard in Resources */,
 				FCD1DA8D1B04CCB200F9EA70 /* Main.storyboard in Resources */,
+				73AB346F1BB1937C0031E2CC /* ProfileHeaderView.xib in Resources */,
 				586F49C71B805D290039CC6B /* Localizable.stringsdict in Resources */,
 				58B829CC1B888987009F6E51 /* FriendFeedHeader.xib in Resources */,
 				FCD1DA921B04CCB200F9EA70 /* LaunchScreen.xib in Resources */,
 				7327174A1BAC8836003E0B68 /* User.storyboard in Resources */,
-				7327173C1BAC86BB003E0B68 /* AXStretchableHeaderTabViewController.xib in Resources */,
 				7327174F1BAC8C96003E0B68 /* UserHeaderView.xib in Resources */,
 				586F49D21B8088220039CC6B /* FollowingFeedHeader.xib in Resources */,
 				FCD1DA8F1B04CCB200F9EA70 /* Images.xcassets in Resources */,
@@ -970,6 +997,7 @@
 				7327172F1BAC86A8003E0B68 /* DYAlertPickView.m in Sources */,
 				588693A01B13B51300566124 /* SDWebImageManager.m in Sources */,
 				5854C7C81B6EEA8B003A5A2A /* FollowingTableViewCell.swift in Sources */,
+				73AB34771BB1D34A0031E2CC /* SZTextView.m in Sources */,
 				7327174D1BAC8836003E0B68 /* UserViewController.swift in Sources */,
 				73FC90C31BAE4AFA00284B8A /* MultipartFormData.swift in Sources */,
 				73FC90C91BAE4AFA00284B8A /* Stream.swift in Sources */,
@@ -994,7 +1022,7 @@
 				5886939E1B13B51300566124 /* SDWebImageDownloader.m in Sources */,
 				732717131BAC8649003E0B68 /* RBStoryboardPushSegue.m in Sources */,
 				588693A51B13B51300566124 /* UIImageView+HighlightedWebCache.m in Sources */,
-				7327174C1BAC8836003E0B68 /* UserSubViewController.swift in Sources */,
+				7327174C1BAC8836003E0B68 /* TrackSubViewController.swift in Sources */,
 				732717121BAC8649003E0B68 /* RBStoryboardPopoverSegue.m in Sources */,
 				58C5397A1B865AD000D7B8D0 /* FriendFeedHeaderView.swift in Sources */,
 				73FC90CE1BAE5DCC00284B8A /* KeychainItemWrapper.swift in Sources */,
@@ -1025,6 +1053,7 @@
 				7361FCDE1B9F5B1A00444179 /* LikeBoxViewController.swift in Sources */,
 				588693A61B13B51300566124 /* UIImageView+WebCache.m in Sources */,
 				589413601B83C3F700395AFA /* TPKeyboardAvoidingCollectionView.m in Sources */,
+				73AB346D1BB186B90031E2CC /* SelfProfileViewController.swift in Sources */,
 				7327173F1BAC86BB003E0B68 /* AXTabBarItemButton.m in Sources */,
 				582E7D961B109B3100AB76A2 /* AutocomTableViewCell.swift in Sources */,
 				587DCD131B6D91F900AF792D /* Extension.swift in Sources */,
@@ -1055,8 +1084,11 @@
 				732717181BAC865E003E0B68 /* MarqueeLabel.m in Sources */,
 				58C3E7A31B8A40C300822842 /* AddableTrackListViewController.swift in Sources */,
 				5858CC111B656BE4003EA698 /* GenreTableViewCell.swift in Sources */,
+				73AB347A1BB1D42B0031E2CC /* EditAboutMeViewController.swift in Sources */,
+				73AB34711BB1B2A40031E2CC /* EditNicknameViewController.swift in Sources */,
 				5854C7C41B6E94F5003A5A2A /* FollowingFeedHeaderView.swift in Sources */,
 				5890D6181B053F4900AAEAE5 /* SettingsViewControllers.swift in Sources */,
+				73AB34761BB1D34A0031E2CC /* ACEExpandableTextCell.m in Sources */,
 				7327173B1BAC86BB003E0B68 /* AXStretchableHeaderTabViewController.m in Sources */,
 				73FC90C11BAE4AFA00284B8A /* Error.swift in Sources */,
 				732717301BAC86A8003E0B68 /* GBFlatButton.m in Sources */,

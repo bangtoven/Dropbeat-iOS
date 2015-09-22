@@ -83,6 +83,8 @@ static CGFloat const kHorizontalPadding = 14.0f;
 
 - (void)drawRect:(CGRect)rect
 {
+    [super drawRect:rect];
+    
     self.layer.borderColor = self.tintColor.CGColor;
     [self setTitleColor:self.tintColor
                forState:UIControlStateNormal];

@@ -17,17 +17,7 @@ static NSString * const AXStretchableHeaderTabViewControllerSelectedIndexKey = @
 
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
-    return [self initWithNibName:nil bundle:nil];
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    // MEMO:
-    // An inherited class does not load xib file.
-    // So, this code assigns class name of AXStretchableHeaderTabViewController clearly.
-    self = [super initWithNibName:NSStringFromClass([AXStretchableHeaderTabViewController class]) bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
+    if (self = [super initWithCoder:aDecoder]) {
         _shouldBounceHeaderView = YES;
         
         _tabBar = [[AXTabBar alloc] init];

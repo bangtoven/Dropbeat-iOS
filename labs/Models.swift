@@ -119,12 +119,19 @@ class User: BaseUser {
     var email: String
     var firstName: String
     var lastName: String
-    var nickname: String
+    var nickname: String {
+        get {
+            return self.name
+        }
+        set(n) {
+            self.name = n
+        }
+    }
     var fbId: String?
     var num_tracks: Int
     var num_following: Int
     var num_followers: Int
-    var description: String
+    var aboutMe: String
     var tracks: [UserTrack] = []
     var likes: [Like]?
     
@@ -132,11 +139,10 @@ class User: BaseUser {
         self.email = json["email"].stringValue
         self.firstName = json["firstName"].stringValue
         self.lastName = json["lastName"].stringValue
-        self.nickname = json["nickname"].stringValue
         self.num_tracks = json["num_tracks"].intValue
         self.num_following = json["num_following"].intValue
         self.num_followers = json["num_followers"].intValue
-        self.description = json["description"].stringValue
+        self.aboutMe = json["description"].stringValue
         
         var fbId:String?
         if json["fb_id"].string != nil && json["fb_id"].stringValue.characters.count > 0 {
@@ -147,7 +153,7 @@ class User: BaseUser {
         super.init(
             userType: UserType.USER,
             id: json["id"].stringValue,
-            name: self.nickname,
+            name: json["nickname"].stringValue,
             image: json["profile_image"].string,
             coverImage: json["profile_cover_image"].string,
             resourceName: json["resource_name"].stringValue

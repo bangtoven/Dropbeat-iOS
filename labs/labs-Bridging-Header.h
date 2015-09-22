@@ -78,6 +78,7 @@
 #import "GBFlatSelectableButton.h"
 
 #import "JHImageTransitionSegue.h"
+#import "ACEExpandableTextCell.h"
 
 
 #endif

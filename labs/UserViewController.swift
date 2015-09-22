@@ -18,7 +18,7 @@ class UserHeaderView: AXStretchableHeaderView {
     @IBOutlet weak var followingLabel: UILabel!
     
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var aboutMeLabel: UILabel!
     @IBOutlet weak var labelHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var showMoreButton: UIButton!
@@ -30,7 +30,7 @@ class UserHeaderView: AXStretchableHeaderView {
     
     func loadView () {
         self.nameLabel.text = ""
-        self.descriptionLabel.text = ""
+        self.aboutMeLabel.text = ""
         
         self.coverImageView.clipsToBounds = true
         
@@ -39,9 +39,9 @@ class UserHeaderView: AXStretchableHeaderView {
         self.profileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
         self.profileImageView.clipsToBounds = true
 
-        self.followButton.titleLabel!.numberOfLines = 1
-        self.followButton.titleLabel!.adjustsFontSizeToFitWidth = true
-        self.followButton.titleLabel!.lineBreakMode = .ByClipping
+        self.followButton?.titleLabel!.numberOfLines = 1
+        self.followButton?.titleLabel!.adjustsFontSizeToFitWidth = true
+        self.followButton?.titleLabel!.lineBreakMode = .ByClipping
         
         self.nameLabel.hidden = true
         self.followInfoView.hidden = true
@@ -52,11 +52,10 @@ class UserHeaderView: AXStretchableHeaderView {
 class UserViewController: AXStretchableHeaderTabViewController {
     var baseUser: BaseUser!
     var resource: String!
-    var showUserFromFollowInfo: Bool = false
-    
-    func instantiateSubVC () -> UserSubViewController {
-        return self.storyboard?.instantiateViewControllerWithIdentifier("UserSubViewController") as! UserSubViewController
-    }
+
+    var fromFollowInfo: Bool = false
+    var passedName: String?
+    var passedImage: UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,17 +63,20 @@ class UserViewController: AXStretchableHeaderTabViewController {
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarTapped", name: NotifyKey.statusBarTapped, object: nil)
         
+        self.fetchUserInfo()
+    }
+    
+    func fetchUserInfo() {
         self.headerView = UserHeaderView.instantiate()
         let header = self.headerView as! UserHeaderView
         header.maximumOfHeight = 224
         header.loadView()
         
-        if self.showUserFromFollowInfo == false {
+        if self.fromFollowInfo == false {
             header.nameLabel.hidden = false
             header.profileImageView.hidden = false
         }
-        
-        var isSelf = false
+
         let progressHud = ViewUtils.showProgress(self, message: nil)
         Requests.resolveUser(self.resource) {(req, resp, result, error) -> Void in
             progressHud.hide(true)
@@ -87,125 +89,144 @@ class UserViewController: AXStretchableHeaderTabViewController {
             let type: String = JSON(result!)["data"]["user_type"].stringValue
             switch type {
             case "user":
-                let user = User.parseUser(result!,key:"data",secondKey:"user")
-                header.descriptionLabel.text = user.description
-                header.followInfoView.hidden = false
-                header.followersLabel.text = String(user.num_followers)
-                header.followingLabel.text = String(user.num_following)
-
-                let uploads = self.instantiateSubVC()
-                uploads.title = "Uploads"
-                uploads.tracks = user.tracks
-                uploads.baseUser = user
-
-                let likes = self.instantiateSubVC()
-                likes.title = "Likes"
-                likes.baseUser = user
-                likes.fetchFunc = user.fetchTracksFromLikeList
-                
-                let f1 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
-                f1.title = "Followers"
-                f1.user = user
-                f1.fetchFunc = user.fetchFollowers
-                
-                let f2 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
-                f2.title = "Following"
-                f2.user = user
-                f2.fetchFunc = user.fetchFollowing
-                
-                if user.tracks.count == 0 {
-                    self.viewControllers = [likes, f1, f2]
-                } else {
-                    self.viewControllers = [uploads, likes, f1, f2]
-                }
-                
-                if user.id == Account.getCachedAccount()?.user?.id {
-                    isSelf = true
-                }
-
-                self.baseUser = user
+                self.baseUser = User.parseUser(result!,key:"data",secondKey:"user")
             case "artist":
-                let artist = Artist.parseArtist(result!,key:"data",secondKey:"user")
-                
-                var subViewArr = [UserSubViewController]()
-                for (section, tracks): (String, [Track]) in artist.sectionedTracks {
-                    let subView = self.instantiateSubVC()
-                    subView.title = section.capitalizedString
-                    subView.tracks = tracks
-                    subView.baseUser = artist
-                    subViewArr.append(subView)
-                }
-                
-                if artist.hasLiveset {
-                    let subView = self.instantiateSubVC()
-                    subView.title = "Liveset"
-                    subView.baseUser = artist
-                    subView.fetchFunc = artist.fetchLiveset
-                    subViewArr.append(subView)
-                }
-                
-                if artist.hasPodcast {
-                    let subView = self.instantiateSubVC()
-                    subView.title = "Podcast"
-                    subView.baseUser = artist
-                    subView.fetchFunc = artist.fetchPodcast
-                    subViewArr.append(subView)
-                }
-                
-                self.viewControllers = subViewArr
-                self.baseUser = artist
+                self.baseUser = Artist.parseArtist(result!,key:"data",secondKey:"user")
             case "channel":
-                let channel = Channel.parseChannel(result!,key:"data",secondKey: "user")
-                header.descriptionLabel.text = channel!.genre.joinWithSeparator(", ")
-                if header.descriptionLabel.text?.length == 0 {
-                    header.descriptionLabel.text = "\n"
-                }
-                
-                var subViewArr = [ChannelSubViewController]()
-                let recent = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
-                recent.title = "Recent"
-                recent.channel = channel
-                subViewArr.append(recent)
-                
-                if channel?.playlists.count > 1 {
-                    let sections = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
-                    sections.title = "Sections"
-                    sections.channel = channel
-                    sections.isSectioned = true
-                    subViewArr.append(sections)
-                }
-                
-                self.viewControllers = subViewArr
-                self.baseUser = channel
+                self.baseUser = Channel.parseChannel(result!,key:"data",secondKey: "user")
             default:
                 ViewUtils.showNoticeAlert(self, title: "Error", message: "Unknown user type: \(type)")
                 return
             }
+            self.applyFetchedInfoToView()
+        }
+    }
+    
+    func instantiateSubVC() -> TrackSubViewController {
+        return self.storyboard?.instantiateViewControllerWithIdentifier("TrackSubViewController") as! TrackSubViewController
+    }
+    
+    func applyFetchedInfoToView() {
+        let header = self.headerView as! UserHeaderView
+        var isSelf = false
+        switch self.baseUser.userType {
+        case .USER:
+            let user = self.baseUser as! User
             
-            if let name = self.baseUser?.name {
-                self.title = name
-                header.nameLabel.text = name
-            }
-            if let profileImage = self.baseUser?.image {
-                header.profileImageView.sd_setImageWithURL(NSURL(string: profileImage), placeholderImage: UIImage(named: "default_profile"))
-            }
-            if let coverImage = self.baseUser?.coverImage {
-                header.coverImageView.sd_setImageWithURL(NSURL(string: coverImage), placeholderImage: UIImage(named: "default_cover_big"),
-                    forMinimumHeight: self.headerView!.maximumOfHeight*1.5)
-            }
+            header.aboutMeLabel.text = user.aboutMe
+            header.followInfoView.hidden = false
+            header.followersLabel.text = String(user.num_followers)
+            header.followingLabel.text = String(user.num_following)
             
-            if isSelf {
-                header.followButton.enabled = false
+            let uploads = instantiateSubVC()
+            uploads.title = "Uploads"
+            uploads.tracks = user.tracks
+            uploads.baseUser = user
+            
+            let likes = instantiateSubVC()
+            likes.title = "Likes"
+            likes.baseUser = user
+            likes.fetchFunc = user.fetchTracksFromLikeList
+            
+            let f1 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
+            f1.title = "Followers"
+            f1.user = user
+            f1.fetchFunc = user.fetchFollowers
+            
+            let f2 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
+            f2.title = "Following"
+            f2.user = user
+            f2.fetchFunc = user.fetchFollowing
+            
+            if user.tracks.count == 0 {
+                self.viewControllers = [likes, f1, f2]
             } else {
-                if let followed = self.baseUser?.isFollowed() {
-                    header.followButton.selected = followed
-                }
-                header.followButton.addTarget(self, action: "followAction:", forControlEvents: UIControlEvents.TouchUpInside)
+                self.viewControllers = [uploads, likes, f1, f2]
             }
             
+            if user.id == Account.getCachedAccount()?.user?.id {
+                isSelf = true
+            }
+        case .ARTIST:
+            let artist = self.baseUser as! Artist
+            
+            var subViewArr = [TrackSubViewController]()
+            for (section, tracks): (String, [Track]) in artist.sectionedTracks {
+                let subView = instantiateSubVC()
+                subView.title = section.capitalizedString
+                subView.tracks = tracks
+                subView.baseUser = artist
+                subViewArr.append(subView)
+            }
+            
+            if artist.hasLiveset {
+                let subView = instantiateSubVC()
+                subView.title = "Liveset"
+                subView.baseUser = artist
+                subView.fetchFunc = artist.fetchLiveset
+                subViewArr.append(subView)
+            }
+            
+            if artist.hasPodcast {
+                let subView = instantiateSubVC()
+                subView.title = "Podcast"
+                subView.baseUser = artist
+                subView.fetchFunc = artist.fetchPodcast
+                subViewArr.append(subView)
+            }
+            
+            self.viewControllers = subViewArr
+        case .CHANNEL:
+            let channel = self.baseUser as! Channel
+            
+            header.aboutMeLabel.text = channel.genre.joinWithSeparator(", ")
+            if header.aboutMeLabel.text?.length == 0 {
+                header.aboutMeLabel.text = "\n"
+            }
+            
+            var subViewArr = [ChannelSubViewController]()
+            let recent = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
+            recent.title = "Recent"
+            recent.channel = channel
+            subViewArr.append(recent)
+            
+            if channel.playlists.count > 1 {
+                let sections = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
+                sections.title = "Sections"
+                sections.channel = channel
+                sections.isSectioned = true
+                subViewArr.append(sections)
+            }
+            
+            self.viewControllers = subViewArr
+            self.baseUser = channel
+        }
+        
+        if let name = self.baseUser?.name {
+            self.title = name
+            header.nameLabel.text = name
+        }
+        if let profileImage = self.baseUser?.image {
+            header.profileImageView.sd_setImageWithURL(NSURL(string: profileImage), placeholderImage: UIImage(named: "default_profile"))
+        }
+        if let coverImage = self.baseUser?.coverImage {
+            header.coverImageView.sd_setImageWithURL(NSURL(string: coverImage), placeholderImage: UIImage(named: "default_cover_big"),
+                forMinimumHeight: self.headerView!.maximumOfHeight*1.5)
+        }
+        
+        if isSelf {
+            header.followButton?.enabled = false
+        } else {
+            if let followed = self.baseUser?.isFollowed() {
+                header.followButton.selected = followed
+            }
+            header.followButton.addTarget(self, action: "followAction:", forControlEvents: UIControlEvents.TouchUpInside)
+        }
+        
+        if let showMoreButton = header.showMoreButton {
             let descriptionHeight = self.calculateDescriptionContentSize()
             if descriptionHeight <= 32 {
-                header.showMoreButton.hidden = true
+                showMoreButton.hidden = true
                 self.headerView!.maximumOfHeight -= (32-descriptionHeight)
                 header.labelHeightConstraint.constant = descriptionHeight
             } else {
@@ -215,8 +236,8 @@ class UserViewController: AXStretchableHeaderTabViewController {
                     scrollView.setContentOffset(CGPointMake(0, scrollView.contentOffset.y-32), animated: false)
                 }
                 if descriptionHeight > 64 {
-                    header.showMoreButton.hidden = false
-                    header.showMoreButton.addTarget(self, action: "showMoreAction", forControlEvents: UIControlEvents.TouchUpInside)
+                    showMoreButton.hidden = false
+                    showMoreButton.addTarget(self, action: "showMoreAction", forControlEvents: UIControlEvents.TouchUpInside)
                 }
             }
         }
@@ -250,7 +271,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
     
     func showMoreAction() {
         let header = self.headerView as! UserHeaderView
-        let label = header.descriptionLabel
+        let label = header.aboutMeLabel
         let currentHeight = label.frame.height
         let contentHeight = calculateDescriptionContentSize()
         let diff = contentHeight - currentHeight
@@ -265,7 +286,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
     
     func calculateDescriptionContentSize() -> CGFloat {
         let header = self.headerView as! UserHeaderView
-        let label = header.descriptionLabel
+        let label = header.aboutMeLabel
         let attr = [NSFontAttributeName:label.font]
         let rect = label.text!.boundingRectWithSize(CGSizeMake(label.frame.width, CGFloat.max), options:NSStringDrawingOptions.UsesLineFragmentOrigin, attributes: attr, context:nil)
         return ceil(rect.height)
@@ -306,18 +327,6 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(0, saturation: 0)]
             }
         }
-        
-//        if ratio == 0.0 {
-//            let header = self.headerView as! UserHeaderView
-//            var defaultDescriptionHeight: CGFloat = 64
-//            let label = header.descriptionLabel
-//            let currentHeight = label.frame.height
-//            if currentHeight > defaultDescriptionHeight {
-//                header.labelHeightConstraint.constant = defaultDescriptionHeight
-//                self.headerView.maximumOfHeight -= (currentHeight-defaultDescriptionHeight)
-//                self.layoutViewControllers()
-//            }
-//        }
     }
     
     func statusBarTapped() {
@@ -330,9 +339,9 @@ class UserViewController: AXStretchableHeaderTabViewController {
         if let navBar = self.navigationController?.navigationBar {
             navBar.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 0))
             navBar.barTintColor = UIColor.clearColor()
-            navBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
             navBar.tintColor = UIColor.whiteColor()
             navBar.shadowImage = UIImage()
+            navBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         }
         
         if self.isMovingToParentViewController() == false{
@@ -345,6 +354,12 @@ class UserViewController: AXStretchableHeaderTabViewController {
         super.viewDidAppear(animated)
         
         let header = self.headerView as! UserHeaderView
+        
+        if self.fromFollowInfo {
+            header.nameLabel.text = passedName!
+            header.profileImageView.image = passedImage!
+        }
+        
         header.nameLabel.hidden = false
         header.profileImageView.hidden = false
     }
@@ -352,10 +367,19 @@ class UserViewController: AXStretchableHeaderTabViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-//        var navBar = self.navigationController?.navigationBar
-//        navBar!.barTintColor = nil
-//        navBar!.tintColor = nil
-//        navBar!.shadowImage = nil
+        if let _ = self.navigationController?.topViewController as? UserViewController {
+            print("Pushed to another user view controller")
+        } else {
+            print("Back to none-user view controller")
+            if let navBar = self.navigationController?.navigationBar {
+                navBar.barTintColor = nil
+                navBar.tintColor = nil
+                navBar.shadowImage = nil
+                navBar.setBackgroundImage(nil, forBarMetrics: UIBarMetrics.Default)
+                navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.blackColor()]
+            }
+            UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
+        }
     }
     
     override func viewDidDisappear(animated: Bool) {

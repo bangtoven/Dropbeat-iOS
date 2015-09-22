@@ -695,7 +695,7 @@ class PlaylistViewController: BaseViewController,
         
         if currentPlaylist.type != PlaylistType.USER {
             if menuSelectedTrack!.isLiked {
-                actionSheet.addButtonWithTitle(NSLocalizedString("Liked", comment:""))
+                actionSheet.addButtonWithTitle(NSLocalizedString("Unike", comment:""))
             } else {
                 actionSheet.addButtonWithTitle(NSLocalizedString("Like", comment:""))
             }

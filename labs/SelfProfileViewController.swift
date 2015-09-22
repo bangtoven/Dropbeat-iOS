@@ -41,8 +41,6 @@ class SelfProfileViewController: UserViewController {
     }
     
     @IBAction func unwindFromEditAboutMe(sender: UIStoryboardSegue) {
-        let header = self.headerView as! ProfileHeaderView
-        header.aboutMeLabel.text = (baseUser as! User).aboutMe
         self.setAboutMeLabel()
     }
     

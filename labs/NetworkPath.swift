@@ -19,6 +19,7 @@ public class ApiPath {
     static let userEmailSignup = user + "email_signup/"
     static let userEmailSignin = user + "email_signin/"
     static let userChangeNickname = user + "change_nickname/"
+    static let userChangeAboutMe = user + "change_desc/"
     static let userLikeList = user + "like/"
     static let userFollowers = user + "followers/"
     static let userFollowing = user + "following/"

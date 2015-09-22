@@ -312,7 +312,7 @@ class Channel: BaseUser {
             }
         }
         let resourceName = detail["resource_name"].stringValue
-        let id = detail["uid"].stringValue
+        let id = detail["channel_id"].stringValue
         
         return Channel(id: id, name:name, thumbnail: thumbnail, genre:genreArray, playlists: playlists, resourceName: resourceName)
     }

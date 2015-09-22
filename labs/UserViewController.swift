@@ -36,7 +36,7 @@ class UserHeaderView: AXStretchableHeaderView {
         
         self.profileImageView.layer.cornerRadius = 10
         self.profileImageView.layer.borderWidth = 2
-        self.profileImageView.layer.borderColor = UIColor.whiteColor().CGColor;
+        self.profileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
         self.profileImageView.clipsToBounds = true
         
         self.coverImageView.clipsToBounds = true
@@ -59,7 +59,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
         
         self.headerView = UserHeaderView.instantiate()
         let header = self.headerView as! UserHeaderView
-        header.maximumOfHeight = 260
+        header.maximumOfHeight = 224
         header.loadView()
         
         var isSelf = false
@@ -270,19 +270,27 @@ class UserViewController: AXStretchableHeaderTabViewController {
         }
         
         if let navBar = self.navigationController?.navigationBar {
+            let transitionPoint: CGFloat = 0.6
             switch ratio {
-            case 0..<0.3:
+            case 0..<transitionPoint:
                 navBar.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 1))
                 navBar.tintColor = UIColor.dropbeatColor()
-                navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor()]
-            case 0.3...1.0:
-                let r = 10/7 * (1-ratio)
+            case transitionPoint...1.0:
+                let r = 1/(1-transitionPoint) * (1-ratio)
                 navBar.lt_setBackgroundColor(UIColor(white: 1.0, alpha: r))
                 navBar.tintColor = UIColor.dropbeatColor(saturation: r)
-                navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(r, saturation: r)]
             default:
                 navBar.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 0))
                 navBar.tintColor = UIColor.dropbeatColor(saturation: 0)
+            }
+            
+            switch ratio {
+            case 0..<0.5:
+                navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor()]
+            case 0.5..<0.6:
+                let r = 6 - 10*ratio
+                navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(r, saturation: r)]
+            default:
                 navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(0, saturation: 0)]
             }
         }

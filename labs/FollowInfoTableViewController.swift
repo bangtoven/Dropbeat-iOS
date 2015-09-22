@@ -16,7 +16,7 @@ class FollowInfoTableViewController: UITableViewController, AXSubViewController 
     
     func subViewWillAppear() {
         if self.userArray.count == 0 {
-            print("start fetching \(self.title)")
+            print("start fetching \(self.title!)")
             fetchFunc!({ (users, error) -> Void in
                 self.userArray = users!
                 self.tableView.reloadData()

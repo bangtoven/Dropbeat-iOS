@@ -24,7 +24,7 @@ class ChannelSubViewController: UserSubViewController, DYAlertPickViewDataSource
     
     override func subViewWillAppear() {
         if self.tracks.count == 0 {
-            print("start fetching channel \(self.title)")
+            print("start fetching channel \(self.title!)")
             
             if self.isSectioned != true {
                 self.selectSection(0)
@@ -163,7 +163,7 @@ class UserSubViewController: AddableTrackListViewController, UITableViewDataSour
     
     func subViewWillAppear() {
         if self.tracks.count == 0 && fetchFunc != nil {
-            print("start fetching \(self.title)")
+            print("start fetching \(self.title!)")
             fetchFunc!({ (tracks, error) -> Void in
                 if let t = tracks {
                     self.tracks = t

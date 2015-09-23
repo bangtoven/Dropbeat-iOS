@@ -74,12 +74,35 @@ class PlaylistListTableViewController: UITableViewController {
         })
     }
     
+    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return PlayerContext.externalPlaylist != nil ? 2 : 1
+    }
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return playlists.count
+        if let _ = PlayerContext.externalPlaylist {
+            if section == 0 {
+                return 1
+            } else {
+                return playlists.count
+            }
+        } else {
+            return playlists.count
+        }
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let playlist = playlists[indexPath.row]
+        var playlist: Playlist
+        
+        if let externalPlaylist = PlayerContext.externalPlaylist {
+            if indexPath.section == 0 {
+                playlist = externalPlaylist
+            } else {
+                playlist = playlists[indexPath.row]
+            }
+        } else {
+            playlist = playlists[indexPath.row]
+        }
+        
         let cell:PlaylistSelectTableViewCell = tableView.dequeueReusableCellWithIdentifier(
             "PlaylistSelectTableViewCell", forIndexPath: indexPath) as! PlaylistSelectTableViewCell
         cell.nameView.text = playlist.name

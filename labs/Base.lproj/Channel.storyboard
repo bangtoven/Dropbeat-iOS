@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7ym-3o-eX2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A282b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7ym-3o-eX2">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -14,6 +14,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="qfB-pk-je6">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
                         <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <textAttributes key="titleTextAttributes">
@@ -37,11 +38,12 @@
                         <viewControllerLayoutGuide type="bottom" id="rHN-hc-Uzb"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="DZH-uf-vSB">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rxz-cd-uV2" customClass="ScrollPager" customModule="labs" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="KJO-sK-tKQ"/>
                                 </constraints>
@@ -75,21 +77,25 @@
                             </view>
                             <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="1ne-4C-jPl" userLabel="GenreTableView">
                                 <rect key="frame" x="0.0" y="90" width="320" height="370"/>
+                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="8" reuseIdentifier="GenreItem" rowHeight="50" id="QZL-Kv-cxS" customClass="GenreTableViewCell" customModule="labs" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="262" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="22" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="QZL-Kv-cxS" id="ghV-Lo-f0L">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="keyword" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TTJ-mC-Z1W">
                                                     <rect key="frame" x="8" y="16" width="304" height="17"/>
+                                                    <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" red="0.35661300509999999" green="0.35661300509999999" blue="0.35661300509999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 </label>
                                             </subviews>
+                                            <animations/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="centerY" secondItem="TTJ-mC-Z1W" secondAttribute="centerY" constant="0.5" id="8Qo-Ax-aCx"/>
@@ -97,6 +103,7 @@
                                                 <constraint firstItem="TTJ-mC-Z1W" firstAttribute="trailing" secondItem="ghV-Lo-f0L" secondAttribute="trailingMargin" id="uqf-eh-sdH"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <animations/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="genreView" destination="TTJ-mC-Z1W" id="5SY-tD-07I"/>
@@ -110,15 +117,18 @@
                             </tableView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="80" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="86J-yG-0b2" userLabel="ChannelTableView">
                                 <rect key="frame" x="0.0" y="95" width="320" height="365"/>
+                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableFooterView" hidden="YES" contentMode="scaleToFill" id="wex-Zf-VXc">
-                                    <rect key="frame" x="0.0" y="232" width="320" height="40"/>
+                                    <rect key="frame" x="0.0" y="178" width="320" height="40"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="LxC-0w-anV">
                                             <rect key="frame" x="150" y="10" width="20" height="20"/>
+                                            <animations/>
                                         </activityIndicatorView>
                                     </subviews>
+                                    <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="centerX" secondItem="LxC-0w-anV" secondAttribute="centerX" id="5md-Y9-7jr"/>
@@ -127,13 +137,15 @@
                                 </view>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="ChannelTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChannelTableViewCell" rowHeight="66" id="9fq-LR-v4C" customClass="ChannelTableViewCell" customModule="labs" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="22" width="320" height="66"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9fq-LR-v4C" id="1N3-Hv-esT">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="66"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="vvY-Yo-iVV">
                                                     <rect key="frame" x="8" y="4" width="56" height="56"/>
+                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="56" id="bU9-7t-4rs"/>
                                                         <constraint firstAttribute="width" constant="56" id="wbl-bj-Pzq"/>
@@ -141,6 +153,7 @@
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="asdfasdfasdfsdfsdafasdf asfasd fasdf asdf asdf ads" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TqZ-pz-qrn">
                                                     <rect key="frame" x="72" y="4" width="190" height="56"/>
+                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="56" id="xy7-mE-Qvf"/>
                                                     </constraints>
@@ -150,6 +163,7 @@
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T5d-wr-Ux1">
                                                     <rect key="frame" x="270" y="0.0" width="50" height="66"/>
+                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="66" id="R4r-Ue-g1O"/>
                                                         <constraint firstAttribute="width" constant="50" id="gcb-fw-xfB"/>
@@ -163,6 +177,7 @@
                                                     </connections>
                                                 </button>
                                             </subviews>
+                                            <animations/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="centerY" secondItem="vvY-Yo-iVV" secondAttribute="centerY" constant="1.5" id="E4T-D4-PdE"/>
@@ -174,6 +189,7 @@
                                                 <constraint firstItem="T5d-wr-Ux1" firstAttribute="leading" secondItem="TqZ-pz-qrn" secondAttribute="trailing" constant="8" id="yPg-Cp-b0O"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <animations/>
                                         <connections>
                                             <outlet property="bookmarkBtn" destination="T5d-wr-Ux1" id="ArZ-ND-bHd"/>
                                             <outlet property="nameView" destination="TqZ-pz-qrn" id="sx9-gR-WGh"/>
@@ -181,9 +197,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="AddableTrackTableViewCell" rowHeight="90" id="Z9E-fD-00e" customClass="AddableChannelFeedTrackTableViewCell" customModule="labs" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="209" width="320" height="86"/>
+                                        <rect key="frame" x="0.0" y="88" width="320" height="90"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Z9E-fD-00e" id="Hm6-dU-yJW">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CkH-ZG-cy1">
@@ -191,6 +208,7 @@
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="UTw-py-1Yw">
                                                             <rect key="frame" x="-2" y="0.0" width="60" height="56"/>
+                                                            <animations/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="56" id="9Ni-nb-27L"/>
                                                             </constraints>
@@ -200,12 +218,14 @@
                                                             <subviews>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator" translatesAutoresizingMaskIntoConstraints="NO" id="hwZ-w6-M48">
                                                                     <rect key="frame" x="14" y="14" width="28" height="28"/>
+                                                                    <animations/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="28" id="8WV-vL-97t"/>
                                                                         <constraint firstAttribute="width" constant="28" id="Cir-Ab-ECo"/>
                                                                     </constraints>
                                                                 </imageView>
                                                             </subviews>
+                                                            <animations/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="centerX" secondItem="hwZ-w6-M48" secondAttribute="centerX" id="2zR-nL-kjm"/>
@@ -213,6 +233,7 @@
                                                             </constraints>
                                                         </view>
                                                     </subviews>
+                                                    <animations/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="56" id="1FX-86-E5Y"/>
@@ -231,12 +252,14 @@
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Proximity" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="S1P-hL-iPU" userLabel="ChannelName">
                                                             <rect key="frame" x="0.0" y="38" width="196" height="17"/>
+                                                            <animations/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <color key="textColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                             <color key="highlightedColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="sdsdfsdf sadfa sdfasd fasdf asdf sadf asd sasd fsad sad asd fasd fasd fasd fasd " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xIF-KD-UGM" userLabel="sdsdfsdf sfasd fsd fasdf asdf asdadfa sdfasd fasdf asdf sadf asd sasd fsad sad asd fasd fasd fasd fasd">
                                                             <rect key="frame" x="0.0" y="0.0" width="196" height="34"/>
+                                                            <animations/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="34" id="q7d-rx-r4R"/>
                                                             </constraints>
@@ -246,11 +269,13 @@
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="2014-07-21" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nxS-ZA-Vce">
                                                             <rect key="frame" x="0.0" y="59" width="196" height="14"/>
+                                                            <animations/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                             <color key="textColor" red="0.56470588239999997" green="0.56470588239999997" blue="0.56470588239999997" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
+                                                    <animations/>
                                                     <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstItem="xIF-KD-UGM" firstAttribute="leading" secondItem="43x-hX-64B" secondAttribute="leading" id="8L7-Tx-PJK"/>
@@ -267,6 +292,7 @@
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MEd-K5-uZF" userLabel="menu">
                                                     <rect key="frame" x="270" y="2" width="50" height="86"/>
+                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="50" id="p3F-cQ-4Iv"/>
                                                         <constraint firstAttribute="height" constant="86" id="qPz-n9-snK"/>
@@ -280,6 +306,7 @@
                                                     </connections>
                                                 </button>
                                             </subviews>
+                                            <animations/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailing" secondItem="43x-hX-64B" secondAttribute="trailing" constant="39" id="8KG-dK-YGY"/>
@@ -291,6 +318,7 @@
                                                 <constraint firstAttribute="centerY" secondItem="MEd-K5-uZF" secondAttribute="centerY" id="xm4-FI-83l"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <animations/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="channelName" destination="S1P-hL-iPU" id="buD-A0-5Ol"/>
@@ -311,12 +339,14 @@
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="GENRE:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JJM-fq-NUY">
                                         <rect key="frame" x="14" y="13" width="48" height="21"/>
+                                        <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QuF-6m-yBg">
                                         <rect key="frame" x="64" y="0.0" width="211" height="40"/>
+                                        <animations/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="100" id="8e6-ob-QzS"/>
@@ -332,6 +362,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
+                                <animations/>
                                 <constraints>
                                     <constraint firstAttribute="centerY" secondItem="JJM-fq-NUY" secondAttribute="centerY" id="Bp1-Qq-DEW"/>
                                     <constraint firstAttribute="height" constant="40" id="Gga-u3-c8T"/>
@@ -340,8 +371,9 @@
                                     <constraint firstAttribute="centerY" secondItem="QuF-6m-yBg" secondAttribute="centerY" id="yZq-GA-aOy"/>
                                 </constraints>
                             </view>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No channel exists" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kw8-bi-bey">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No channel exists" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kw8-bi-bey">
                                 <rect key="frame" x="103" y="244" width="115" height="17"/>
+                                <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.70081676140000004" green="0.70081676140000004" blue="0.70081676140000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -354,6 +386,7 @@
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Listen to awesome tracks" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QxJ-NV-sGY">
                                                 <rect key="frame" x="16" y="66" width="288" height="29"/>
+                                                <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="29" id="4eE-l1-mva"/>
                                                 </constraints>
@@ -363,6 +396,7 @@
                                             </label>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4ws-EW-KzZ">
                                                 <rect key="frame" x="16" y="96" width="288" height="22"/>
+                                                <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="22" id="Wgq-C3-Otf"/>
                                                 </constraints>
@@ -374,6 +408,7 @@
                                             </label>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kc8-2t-fBb">
                                                 <rect key="frame" x="140" y="135" width="40" height="3"/>
+                                                <animations/>
                                                 <color key="backgroundColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="AAR-uB-aDg"/>
@@ -382,6 +417,7 @@
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MpM-QP-SDl">
                                                 <rect key="frame" x="50" y="253" width="220" height="46"/>
+                                                <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="220" id="Kr4-7A-gan"/>
                                                     <constraint firstAttribute="height" constant="46" id="yah-Av-1LZ"/>
@@ -399,6 +435,7 @@
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ICg-Hq-v1m">
                                                 <rect key="frame" x="16" y="193" width="288" height="65"/>
+                                                <animations/>
                                                 <string key="text">Sign in to see your bookmarked
 EDM channels feed.</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -407,6 +444,7 @@ EDM channels feed.</string>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="idg-3G-Xhe" userLabel="SIGN IN">
                                                 <rect key="frame" x="50" y="310" width="220" height="54"/>
+                                                <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="220" id="VLE-cp-SJG"/>
                                                     <constraint firstAttribute="height" constant="46" id="X8Y-1O-gL5"/>
@@ -423,6 +461,7 @@ EDM channels feed.</string>
                                                 </connections>
                                             </button>
                                         </subviews>
+                                        <animations/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="QxJ-NV-sGY" firstAttribute="leading" secondItem="A9f-l4-ZDi" secondAttribute="leading" constant="16" id="ATc-d6-dX6"/>
@@ -444,6 +483,7 @@ EDM channels feed.</string>
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <animations/>
                                 <constraints>
                                     <constraint firstItem="A9f-l4-ZDi" firstAttribute="leading" secondItem="fFU-Uj-dMf" secondAttribute="leading" id="2re-Pl-ROA"/>
                                     <constraint firstAttribute="bottom" secondItem="A9f-l4-ZDi" secondAttribute="bottom" id="KyV-Hx-w6n"/>
@@ -459,6 +499,7 @@ EDM channels feed.</string>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Listen to awesome tracks" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="94N-Wa-H7z">
                                         <rect key="frame" x="16" y="66" width="288" height="29"/>
+                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="29" id="tlM-IV-hfV"/>
                                         </constraints>
@@ -468,6 +509,7 @@ EDM channels feed.</string>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BKc-ma-ARU">
                                         <rect key="frame" x="16" y="96" width="288" height="22"/>
+                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="3kf-lA-oa1"/>
                                         </constraints>
@@ -479,6 +521,7 @@ EDM channels feed.</string>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jZc-Le-zCl" userLabel="Border">
                                         <rect key="frame" x="140" y="135" width="40" height="3"/>
+                                        <animations/>
                                         <color key="backgroundColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="9jh-T1-C4T"/>
@@ -487,12 +530,14 @@ EDM channels feed.</string>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No bookmarked channels found" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DHc-Yc-tG3" userLabel="NoBookmarkText">
                                         <rect key="frame" x="16" y="182" width="288" height="20"/>
+                                        <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                         <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T6v-VP-QM8" userLabel="FindChannelBtn">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T6v-VP-QM8" userLabel="FindChannelBtn">
                                         <rect key="frame" x="85" y="315" width="150" height="36"/>
+                                        <animations/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="36" id="4pK-tr-p9B"/>
                                             <constraint firstAttribute="width" constant="150" id="ymX-L4-TD2"/>
@@ -508,6 +553,7 @@ EDM channels feed.</string>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mnp-VJ-16S" userLabel="BookmarkPromoteText">
                                         <rect key="frame" x="16" y="237" width="288" height="58"/>
+                                        <animations/>
                                         <string key="text">Bookmark your favorite channels
 and find new tracks in the feed!
 </string>
@@ -516,6 +562,7 @@ and find new tracks in the feed!
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
+                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="DHc-Yc-tG3" secondAttribute="trailing" constant="16" id="0KB-LG-dqS"/>
@@ -537,6 +584,7 @@ and find new tracks in the feed!
                                 </constraints>
                             </view>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="86J-yG-0b2" firstAttribute="leading" secondItem="DZH-uf-vSB" secondAttribute="leading" id="3ma-9h-jI5"/>
@@ -610,11 +658,13 @@ and find new tracks in the feed!
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CREATE ACCOUNT -&gt; Sign Up" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f76-36-ADi">
                                 <rect key="frame" x="16" y="20" width="241" height="21"/>
+                                <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
@@ -641,11 +691,13 @@ and find new tracks in the feed!
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="SIGN IN -&gt; Sign In @ Settings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1YB-jA-oqb">
                                 <rect key="frame" x="16" y="20" width="229" height="21"/>
+                                <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
@@ -667,21 +719,24 @@ and find new tracks in the feed!
                         <viewControllerLayoutGuide type="bottom" id="04Q-g6-JXk"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="fvC-1u-Uss">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="80" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="p5C-pc-X8o">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" restorationIdentifier="ChannelTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChannelTableViewCell" rowHeight="80" id="p9h-B6-Jlm" customClass="ChannelTableViewCell" customModule="labs" customModuleProvider="target">
-                                        <rect key="frame" x="10" y="74" width="320" height="66"/>
+                                        <rect key="frame" x="0.0" y="22" width="320" height="80"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p9h-B6-Jlm" id="9zZ-EE-tE8">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="80"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="7yP-Kh-xnp">
                                                     <rect key="frame" x="8" y="11" width="56" height="56"/>
+                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="56" id="L3G-Dl-UhX"/>
                                                         <constraint firstAttribute="height" constant="56" id="TVm-Dm-9hJ"/>
@@ -689,6 +744,7 @@ and find new tracks in the feed!
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="asdfasdfasdfsdfsdafasdf asfasd fasdf asdf asdf ads" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="izC-UH-A5b">
                                                     <rect key="frame" x="72" y="11" width="188" height="56"/>
+                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="56" id="nXn-RD-mCu"/>
                                                     </constraints>
@@ -698,6 +754,7 @@ and find new tracks in the feed!
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eei-Mi-xJY">
                                                     <rect key="frame" x="268" y="19" width="40" height="40"/>
+                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="40" id="F2Z-G5-QPk"/>
                                                         <constraint firstAttribute="width" constant="40" id="auF-3b-2wb"/>
@@ -711,6 +768,7 @@ and find new tracks in the feed!
                                                     </connections>
                                                 </button>
                                             </subviews>
+                                            <animations/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Eei-Mi-xJY" secondAttribute="trailing" constant="4" id="1iJ-n8-SmD"/>
@@ -722,6 +780,7 @@ and find new tracks in the feed!
                                                 <constraint firstAttribute="centerY" secondItem="izC-UH-A5b" secondAttribute="centerY" constant="1.5" id="u9Y-re-Anx"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <animations/>
                                         <connections>
                                             <outlet property="bookmarkBtn" destination="Eei-Mi-xJY" id="uvo-2v-J7Q"/>
                                             <outlet property="nameView" destination="izC-UH-A5b" id="7Rx-lm-Rgx"/>
@@ -735,13 +794,15 @@ and find new tracks in the feed!
                                     <outlet property="delegate" destination="o6C-1Z-BQs" id="E3G-hV-CdI"/>
                                 </connections>
                             </tableView>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No bookmarked channel exists" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rWr-Q4-RbF" userLabel="NoBookmark">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="No bookmarked channel exists" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rWr-Q4-RbF" userLabel="NoBookmark">
                                 <rect key="frame" x="60" y="244" width="200" height="17"/>
+                                <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.70081676140000004" green="0.70081676140000004" blue="0.70081676140000004" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="04Q-g6-JXk" firstAttribute="top" secondItem="p5C-pc-X8o" secondAttribute="bottom" id="6E9-o0-nvj"/>
@@ -774,27 +835,31 @@ and find new tracks in the feed!
                         <viewControllerLayoutGuide type="bottom" id="HcV-jW-FCA"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="26G-zs-Oc9">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" bouncesZoom="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="60" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="KvN-A0-3lm">
                                 <rect key="frame" x="0.0" y="120" width="320" height="340"/>
+                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="8" reuseIdentifier="SectionItem" rowHeight="60" id="xqL-7M-MYg" customClass="SectionTableViewCell" customModule="labs" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="262" width="320" height="44"/>
+                                        <rect key="frame" x="0.0" y="22" width="320" height="60"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="xqL-7M-MYg" id="8KX-06-7qy">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="keyword" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vsh-ge-fYI">
                                                     <rect key="frame" x="8" y="21" width="304" height="17"/>
+                                                    <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" red="0.35661300509999999" green="0.35661300509999999" blue="0.35661300509999999" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 </label>
                                             </subviews>
+                                            <animations/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="centerY" secondItem="Vsh-ge-fYI" secondAttribute="centerY" constant="0.5" id="3zJ-Us-OV5"/>
@@ -802,6 +867,7 @@ and find new tracks in the feed!
                                                 <constraint firstItem="Vsh-ge-fYI" firstAttribute="trailing" secondItem="8KX-06-7qy" secondAttribute="trailingMargin" id="fOH-ht-RG6"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <animations/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="sectionNameView" destination="Vsh-ge-fYI" id="uZu-79-AUm"/>
@@ -815,6 +881,7 @@ and find new tracks in the feed!
                             </tableView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="86" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="h0l-EB-tUn">
                                 <rect key="frame" x="0.0" y="120" width="320" height="340"/>
+                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableFooterView" hidden="YES" contentMode="scaleToFill" id="6L9-Qu-jOm">
@@ -823,8 +890,10 @@ and find new tracks in the feed!
                                     <subviews>
                                         <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="nBr-Zd-XuX">
                                             <rect key="frame" x="150" y="10" width="20" height="20"/>
+                                            <animations/>
                                         </activityIndicatorView>
                                     </subviews>
+                                    <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
                                         <constraint firstAttribute="centerX" secondItem="nBr-Zd-XuX" secondAttribute="centerX" id="956-sM-vD2"/>
@@ -833,9 +902,10 @@ and find new tracks in the feed!
                                 </view>
                                 <prototypes>
                                     <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="AddableTrackTableViewCell" rowHeight="86" id="kQt-sa-ZnT" customClass="AddableChannelTrackTableViewCell" customModule="labs" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="246" width="320" height="76"/>
+                                        <rect key="frame" x="0.0" y="22" width="320" height="86"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kQt-sa-ZnT" id="j8D-c7-wp0">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="86"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7ry-To-qTB">
@@ -843,6 +913,7 @@ and find new tracks in the feed!
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="sEu-zQ-gQT">
                                                             <rect key="frame" x="-2" y="0.0" width="60" height="56"/>
+                                                            <animations/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="56" id="uP5-3V-e24"/>
                                                             </constraints>
@@ -852,12 +923,14 @@ and find new tracks in the feed!
                                                             <subviews>
                                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator" translatesAutoresizingMaskIntoConstraints="NO" id="5Bt-jp-Alu">
                                                                     <rect key="frame" x="14" y="14" width="28" height="28"/>
+                                                                    <animations/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="28" id="2mW-hp-Edd"/>
                                                                         <constraint firstAttribute="width" constant="28" id="hk0-XT-AWe"/>
                                                                     </constraints>
                                                                 </imageView>
                                                             </subviews>
+                                                            <animations/>
                                                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="centerY" secondItem="5Bt-jp-Alu" secondAttribute="centerY" id="E3d-MW-DFv"/>
@@ -865,6 +938,7 @@ and find new tracks in the feed!
                                                             </constraints>
                                                         </view>
                                                     </subviews>
+                                                    <animations/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstItem="fs7-QI-hPc" firstAttribute="leading" secondItem="7ry-To-qTB" secondAttribute="leading" id="AMV-iq-ebP"/>
@@ -882,12 +956,14 @@ and find new tracks in the feed!
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2014-07-21" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ECe-wL-jS0">
                                                             <rect key="frame" x="0.0" y="21" width="208" height="14"/>
+                                                            <animations/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                             <color key="textColor" red="0.56470588239999997" green="0.56470588239999997" blue="0.56470588239999997" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text=" fasdfasdfasdfasdfasdf" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jVU-J0-OCX">
                                                             <rect key="frame" x="0.0" y="0.0" width="208" height="17"/>
+                                                            <animations/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="45" id="7MR-rh-vKb"/>
                                                             </constraints>
@@ -896,6 +972,7 @@ and find new tracks in the feed!
                                                             <color key="highlightedColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                         </label>
                                                     </subviews>
+                                                    <animations/>
                                                     <color key="backgroundColor" white="1" alpha="0.0" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailing" secondItem="ECe-wL-jS0" secondAttribute="trailing" id="4R2-dU-lf4"/>
@@ -909,6 +986,7 @@ and find new tracks in the feed!
                                                 </view>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sva-pT-itJ" userLabel="menu">
                                                     <rect key="frame" x="270" y="0.0" width="50" height="86"/>
+                                                    <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="86" id="1HL-iy-hXB"/>
                                                         <constraint firstAttribute="width" constant="50" id="uXZ-RE-7Zg"/>
@@ -922,6 +1000,7 @@ and find new tracks in the feed!
                                                     </connections>
                                                 </button>
                                             </subviews>
+                                            <animations/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstItem="7ry-To-qTB" firstAttribute="leading" secondItem="j8D-c7-wp0" secondAttribute="leadingMargin" id="2cq-a9-UVx"/>
@@ -933,6 +1012,7 @@ and find new tracks in the feed!
                                                 <constraint firstAttribute="trailing" secondItem="Sva-pT-itJ" secondAttribute="trailing" id="xxN-wU-KPz"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <animations/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <connections>
                                             <outlet property="filterView" destination="fs7-QI-hPc" id="1eg-cg-6gi"/>
@@ -955,6 +1035,7 @@ and find new tracks in the feed!
                                         <subviews>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_artwork" translatesAutoresizingMaskIntoConstraints="NO" id="Amh-xO-gUX">
                                                 <rect key="frame" x="8" y="8" width="60" height="60"/>
+                                                <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="60" id="9i0-hg-2vJ"/>
                                                     <constraint firstAttribute="width" constant="60" id="VM2-No-kCV"/>
@@ -962,6 +1043,7 @@ and find new tracks in the feed!
                                             </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TurnThatDamMusicDown" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qi9-dI-ZXp">
                                                 <rect key="frame" x="76" y="8" width="188" height="26"/>
+                                                <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="26" id="L9U-J9-2F5"/>
                                                 </constraints>
@@ -971,6 +1053,7 @@ and find new tracks in the feed!
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kCf-At-unF">
                                                 <rect key="frame" x="272" y="20" width="40" height="40"/>
+                                                <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="E3q-Ag-Y8y"/>
                                                     <constraint firstAttribute="height" constant="40" id="wCS-Db-eAv"/>
@@ -985,6 +1068,7 @@ and find new tracks in the feed!
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="HOUSE, CHILL OUT, INDIE DANCE / NU DISCO, DRUM &amp; BASS" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cc9-eU-wGy">
                                                 <rect key="frame" x="76" y="34" width="188" height="32"/>
+                                                <animations/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="32" id="7S3-lP-yFG"/>
                                                 </constraints>
@@ -993,6 +1077,7 @@ and find new tracks in the feed!
                                                 <color key="highlightedColor" red="0.70081676140000004" green="0.70081676140000004" blue="0.70081676140000004" alpha="1" colorSpace="calibratedRGB"/>
                                             </label>
                                         </subviews>
+                                        <animations/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstItem="Amh-xO-gUX" firstAttribute="leading" secondItem="nqI-tD-41n" secondAttribute="leading" constant="8" id="C3A-ko-Jjh"/>
@@ -1011,14 +1096,16 @@ and find new tracks in the feed!
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bHA-og-EZd">
                                         <rect key="frame" x="0.0" y="80" width="320" height="40"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SECTION:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zPW-Rd-TNh">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="SECTION:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zPW-Rd-TNh">
                                                 <rect key="frame" x="16" y="13" width="57" height="15"/>
+                                                <animations/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OyC-Q5-4YJ">
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OyC-Q5-4YJ">
                                                 <rect key="frame" x="77" y="0.0" width="100" height="40"/>
+                                                <animations/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="100" id="V6x-JQ-YD4"/>
@@ -1034,6 +1121,7 @@ and find new tracks in the feed!
                                                 </connections>
                                             </button>
                                         </subviews>
+                                        <animations/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="9se-j8-18x"/>
@@ -1044,6 +1132,7 @@ and find new tracks in the feed!
                                         </constraints>
                                     </view>
                                 </subviews>
+                                <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="bHA-og-EZd" firstAttribute="leading" secondItem="lbc-Jz-IWK" secondAttribute="leading" id="2u3-Qj-CwT"/>
@@ -1056,6 +1145,7 @@ and find new tracks in the feed!
                                 </constraints>
                             </view>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="h0l-EB-tUn" secondAttribute="trailing" id="Coe-7p-qDu"/>
@@ -1106,16 +1196,18 @@ and find new tracks in the feed!
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="PlaylistSelectSegue" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f8f-De-kNX">
                                 <rect key="frame" x="16" y="28" width="152" height="21"/>
+                                <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
+                        <animations/>
                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Main"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Playlist"/>
                         <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="PlaylistSelect"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
@@ -1134,7 +1226,7 @@ and find new tracks in the feed!
         <image name="ic_star" width="100" height="100"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="usz-KR-Wk3"/>
         <segue reference="r8q-Ix-YxE"/>
-        <segue reference="UPw-IS-ujt"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -6,21 +6,15 @@
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
-enum MenuType {
-    case FEED
+enum MenuType : Int {
+    case FEED = 0
     case CHANNEL
     case SEARCH
-    case PROFILE
     case PLAYLIST
+    case PROFILE
 }
 
 class CenterViewController: PlayerViewController, UITabBarDelegate{
-    
-    static let TAB_FEED = 1
-    static let TAB_CHANNEL = 2
-    static let TAB_SEARCH = 3
-    static let TAB_PROFILE = 4
-    static let TAB_PLAYLIST = 5
     
     @IBOutlet weak var containerFrame: UIView!
     
@@ -54,7 +48,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         initConstaints()
         
         // set first item
-        let firstTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] 
+        let firstTab:UITabBarItem = tabBar.items![0]
         tabBar.selectedItem = firstTab
         onMenuSelected(currentMenu, forceUpdate:true)
         
@@ -171,9 +165,9 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     }
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
-        let menuType:MenuType? = tabTagToMenuType(item.tag)
-        if menuType != nil {
-            onMenuSelected(menuType!)
+        let index = tabBar.items?.indexOf(item)
+        if let menuType = MenuType(rawValue: index!) {
+            onMenuSelected(menuType)
         }
     }
     
@@ -208,45 +202,6 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         }
         
         currentMenu = type
-    }
-    
-    func tabTagToMenuType (tag:Int) -> MenuType? {
-        var menuType:MenuType?
-        switch(tag) {
-        case CenterViewController.TAB_FEED:
-            menuType = MenuType.FEED
-            break
-        case CenterViewController.TAB_CHANNEL:
-            menuType = MenuType.CHANNEL
-            break
-        case CenterViewController.TAB_SEARCH:
-            menuType = MenuType.SEARCH
-            break
-        case CenterViewController.TAB_PROFILE:
-            menuType = MenuType.PROFILE
-            break
-        case CenterViewController.TAB_PLAYLIST:
-            menuType = MenuType.PLAYLIST
-            break
-        default:
-            break
-        }
-        return menuType
-    }
-    
-    func menuTypeToTabIdx (type:MenuType) -> Int {
-        switch(type) {
-        case .FEED:
-            return 0
-        case .CHANNEL:
-            return 1
-        case .SEARCH:
-            return 2
-        case .PROFILE:
-            return 3
-        case .PLAYLIST:
-            return 4
-        }
     }
     
 // MARK: PlayerView Show/Hide Layout

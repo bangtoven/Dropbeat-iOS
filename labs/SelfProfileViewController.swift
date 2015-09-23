@@ -13,7 +13,8 @@ class SelfProfileViewController: UserViewController {
     private var genres:[String:Genre] = [String:Genre]()
 
     override func fetchUserInfo() {
-        self.baseUser = Account.getCachedAccount()?.user
+        let user = Account.getCachedAccount()?.user
+        self.baseUser = user
 
         self.headerView = ProfileHeaderView.instantiate()
         let header = self.headerView as! ProfileHeaderView
@@ -30,7 +31,7 @@ class SelfProfileViewController: UserViewController {
         self.setFavoriteGenreLabel()
         self.setAboutMeLabel()
         
-        self.title = ""
+        self.title = "Profile"
     }
     
     func editNickname(sender: UIButton) {

@@ -11,7 +11,7 @@ enum MenuType {
     case CHANNEL
     case SEARCH
     case PROFILE
-    case PLAYER
+    case PLAYLIST
 }
 
 class CenterViewController: PlayerViewController, UITabBarDelegate{
@@ -20,7 +20,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     static let TAB_CHANNEL = 2
     static let TAB_SEARCH = 3
     static let TAB_PROFILE = 4
-    static let TAB_PLAYER = 5
+    static let TAB_PLAYLIST = 5
     
     @IBOutlet weak var containerFrame: UIView!
     
@@ -195,16 +195,19 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             } else {
                 activeViewController = UIStoryboard(name: "Profile", bundle: nil).instantiateInitialViewController()
             }
-        case .PLAYER:
-            activeViewController = UIStoryboard(name: "User", bundle: nil).instantiateInitialViewController()
-//            showTabBarPlayer(!self.isTabBarPlayerVisible)
-//            showPlayerView()
-//            let lastTab:UITabBarItem = tabBar.items![menuTypeToTabIdx(currentMenu)] as! UITabBarItem
-//            tabBar.selectedItem = lastTab
+        case .PLAYLIST:
+            if Account.getCachedAccount() == nil {
+                activeViewController = UIStoryboard(name: "Settings", bundle: nil).instantiateInitialViewController()
+            } else {
+                activeViewController = UIStoryboard(name: "Playlist", bundle: nil).instantiateInitialViewController()
+            }
         }
-//        if type != MenuType.PLAYER {
-            currentMenu = type
-//        }
+        
+        if currentMenu == .PROFILE {
+            UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
+        }
+        
+        currentMenu = type
     }
     
     func tabTagToMenuType (tag:Int) -> MenuType? {
@@ -222,8 +225,8 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         case CenterViewController.TAB_PROFILE:
             menuType = MenuType.PROFILE
             break
-        case CenterViewController.TAB_PLAYER:
-            menuType = MenuType.PLAYER
+        case CenterViewController.TAB_PLAYLIST:
+            menuType = MenuType.PLAYLIST
             break
         default:
             break
@@ -241,7 +244,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             return 2
         case .PROFILE:
             return 3
-        case .PLAYER:
+        case .PLAYLIST:
             return 4
         }
     }

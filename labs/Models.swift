@@ -150,14 +150,20 @@ class User: BaseUser {
         }
         self.fbId = fbId
 
+        var profileImage = json["profile_image"].string
+        if profileImage == nil && fbId != nil{
+            profileImage = "https://graph.facebook.com/\(fbId)/picture?type=large"
+        }
+        
         super.init(
             userType: UserType.USER,
             id: json["id"].stringValue,
             name: json["nickname"].stringValue,
-            image: json["profile_image"].string,
+            image: profileImage,
             coverImage: json["profile_cover_image"].string,
             resourceName: json["resource_name"].stringValue
         )
+        
     }
     
     static func parseUser(data: AnyObject, key: String = "user", secondKey: String?=nil) -> User {

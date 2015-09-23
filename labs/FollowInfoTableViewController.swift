@@ -97,7 +97,7 @@ class FollowInfoTableViewController: UITableViewController, AXSubViewController 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowUserSegue" {
             let cell = sender as! FollowInfoTableViewCell
-            let indexPath = self.tableView.indexPathForCell(cell)
+            let indexPath = self.tableView.indexPathForSelectedRow
             let u = self.userArray[indexPath!.row]
          
             let mySegue = segue as! JHImageTransitionSegue

@@ -1226,7 +1226,7 @@
                                             <constraint firstAttribute="width" constant="41" id="FiN-M2-mqt"/>
                                             <constraint firstAttribute="height" constant="41" id="JhE-Fn-BUL"/>
                                         </constraints>
-                                        <state key="normal" image="ic_list_gray_small">
+                                        <state key="normal" image="ic_playlist_small">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
@@ -1253,7 +1253,7 @@
                                             <tabBarItem tag="4" title="" image="ic_profile_gray" id="aXO-Xq-Gkh">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                                             </tabBarItem>
-                                            <tabBarItem tag="5" title="" systemItem="more" id="O6n-Jm-nJ7">
+                                            <tabBarItem tag="5" title="" image="ic_list_gray_small" id="O6n-Jm-nJ7">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                                             </tabBarItem>
                                         </items>
@@ -1676,8 +1676,9 @@
         <image name="ic_player_heart_btn" width="50" height="50"/>
         <image name="ic_playing" width="20" height="20"/>
         <image name="ic_playing_indicator" width="104" height="104"/>
-        <image name="ic_playlist" width="104" height="104"/>
-        <image name="ic_playlist_selected" width="104" height="104"/>
+        <image name="ic_playlist" width="52" height="52"/>
+        <image name="ic_playlist_selected" width="52" height="52"/>
+        <image name="ic_playlist_small" width="24" height="24"/>
         <image name="ic_plus" width="20" height="20"/>
         <image name="ic_profile_gray" width="25" height="25"/>
         <image name="ic_repeat" width="47" height="47"/>
@@ -1688,7 +1689,7 @@
         <image name="player_bg" width="817" height="1079"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="U4e-rv-WDI"/>
+        <segue reference="1xR-MJ-eI3"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
 </document>

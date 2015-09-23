@@ -216,12 +216,12 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 <constraint firstItem="mui-6D-mjH" firstAttribute="leading" secondItem="uqo-OH-Q7o" secondAttribute="leading" constant="12" id="1eV-1d-viD"/>
                 <constraint firstItem="tmL-cB-i01" firstAttribute="leading" secondItem="UV8-nI-8Zk" secondAttribute="trailing" constant="10" id="3kt-Ph-bLh"/>
                 <constraint firstAttribute="trailing" secondItem="tmL-cB-i01" secondAttribute="trailing" constant="10" id="47i-j8-Z34"/>
+                <constraint firstItem="mui-6D-mjH" firstAttribute="top" secondItem="tmL-cB-i01" secondAttribute="bottom" constant="4" id="6jZ-Su-DqC"/>
                 <constraint firstItem="E4E-k0-aVz" firstAttribute="top" secondItem="GX3-W1-avb" secondAttribute="bottom" constant="8" id="7Ga-AI-y0L"/>
                 <constraint firstItem="pm5-nC-zNc" firstAttribute="bottom" secondItem="88j-dy-xAm" secondAttribute="bottom" priority="900" constant="-40" id="98e-2w-hR6"/>
                 <constraint firstItem="tmL-cB-i01" firstAttribute="top" secondItem="mui-6D-mjH" secondAttribute="top" id="9Jc-rm-lN0"/>
                 <constraint firstItem="88j-dy-xAm" firstAttribute="leading" secondItem="uqo-OH-Q7o" secondAttribute="leading" constant="10" id="CZh-MN-wVe"/>
                 <constraint firstItem="UV8-nI-8Zk" firstAttribute="top" secondItem="E4E-k0-aVz" secondAttribute="bottom" constant="22" id="EcB-Uj-L8T"/>
-                <constraint firstItem="tmL-cB-i01" firstAttribute="centerY" secondItem="UV8-nI-8Zk" secondAttribute="centerY" id="GGX-H6-gwk"/>
                 <constraint firstItem="UV8-nI-8Zk" firstAttribute="leading" secondItem="mui-6D-mjH" secondAttribute="leading" id="GH3-Jp-DS0"/>
                 <constraint firstItem="tmL-cB-i01" firstAttribute="trailing" secondItem="mui-6D-mjH" secondAttribute="trailing" id="Hh9-Iv-KD4"/>
                 <constraint firstAttribute="trailing" secondItem="E4E-k0-aVz" secondAttribute="trailing" constant="10" id="L0d-nG-Dbr"/>
@@ -246,8 +246,8 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 <constraint firstAttribute="bottom" secondItem="mui-6D-mjH" secondAttribute="bottom" constant="4" id="tBB-X7-fd5"/>
                 <constraint firstAttribute="trailing" secondItem="pm5-nC-zNc" secondAttribute="trailing" id="tb2-lD-uBb"/>
                 <constraint firstItem="E4E-k0-aVz" firstAttribute="leading" secondItem="uqo-OH-Q7o" secondAttribute="leading" constant="12" id="uAH-c2-D56"/>
-                <constraint firstItem="u9B-Rb-EEC" firstAttribute="centerY" secondItem="GX3-W1-avb" secondAttribute="centerY" id="ud0-Hk-HVE"/>
                 <constraint firstAttribute="trailing" secondItem="u9B-Rb-EEC" secondAttribute="trailing" constant="10" id="wDt-jj-hO7"/>
+                <constraint firstItem="E4E-k0-aVz" firstAttribute="top" secondItem="u9B-Rb-EEC" secondAttribute="bottom" constant="4" id="xYX-MV-zsR"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <variation key="default">

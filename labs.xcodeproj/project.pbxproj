@@ -105,6 +105,10 @@
 		7361FCF71B9F687E00444179 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCF91B9F687E00444179 /* Settings.storyboard */; };
 		738646121BA758BA00C21650 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738646111BA758BA00C21650 /* PlayerViewController.swift */; };
 		738646171BA7631D00C21650 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738646161BA7631D00C21650 /* GradientView.m */; };
+		739C8F511BB32A9A00BC9EB7 /* Feeds.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 739C8F501BB32A9A00BC9EB7 /* Feeds.storyboard */; settings = {ASSET_TAGS = (); }; };
+		739C8F571BB32CB300BC9EB7 /* DropdownMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F541BB32CB300BC9EB7 /* DropdownMenuController.m */; settings = {ASSET_TAGS = (); }; };
+		739C8F581BB32CB300BC9EB7 /* DropdownMenuSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F561BB32CB300BC9EB7 /* DropdownMenuSegue.m */; settings = {ASSET_TAGS = (); }; };
+		739C8F5A1BB32D2A00BC9EB7 /* FeedMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F591BB32D2A00BC9EB7 /* FeedMainViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		73A6864A1BA9A33600DA29DC /* Feed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCEA1B9F683100444179 /* Feed.storyboard */; };
 		73AB346B1BB15AAE0031E2CC /* JHImageTransitionSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AB346A1BB15AAE0031E2CC /* JHImageTransitionSegue.m */; settings = {ASSET_TAGS = (); }; };
 		73AB346D1BB186B90031E2CC /* SelfProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AB346C1BB186B90031E2CC /* SelfProfileViewController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -320,6 +324,12 @@
 		738646111BA758BA00C21650 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		738646151BA7631D00C21650 /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
 		738646161BA7631D00C21650 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
+		739C8F501BB32A9A00BC9EB7 /* Feeds.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Feeds.storyboard; sourceTree = "<group>"; };
+		739C8F531BB32CB300BC9EB7 /* DropdownMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropdownMenuController.h; sourceTree = "<group>"; };
+		739C8F541BB32CB300BC9EB7 /* DropdownMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropdownMenuController.m; sourceTree = "<group>"; };
+		739C8F551BB32CB300BC9EB7 /* DropdownMenuSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropdownMenuSegue.h; sourceTree = "<group>"; };
+		739C8F561BB32CB300BC9EB7 /* DropdownMenuSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropdownMenuSegue.m; sourceTree = "<group>"; };
+		739C8F591BB32D2A00BC9EB7 /* FeedMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedMainViewController.swift; sourceTree = "<group>"; };
 		73AB34691BB15AAE0031E2CC /* JHImageTransitionSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHImageTransitionSegue.h; sourceTree = "<group>"; };
 		73AB346A1BB15AAE0031E2CC /* JHImageTransitionSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHImageTransitionSegue.m; sourceTree = "<group>"; };
 		73AB346C1BB186B90031E2CC /* SelfProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfProfileViewController.swift; sourceTree = "<group>"; };
@@ -594,6 +604,7 @@
 				73AB34781BB1D3580031E2CC /* ACEExpandableTextCell */,
 				7361FD111BA060F400444179 /* RBStoryboardLink */,
 				585BACF91B85ED9900FE137A /* DateTool */,
+				739C8F521BB32CB300BC9EB7 /* DropdownMenu */,
 				589413531B83C3F700395AFA /* TPKeyboardAvoiding */,
 				589F0F0A1B6A0DE6000851CC /* MarqueeLabel */,
 				587837A11B440225008DF480 /* Reachability */,
@@ -729,6 +740,27 @@
 			path = ../playground;
 			sourceTree = "<group>";
 		};
+		739C8F4F1BB32A8000BC9EB7 /* NEW_FEED */ = {
+			isa = PBXGroup;
+			children = (
+				739C8F501BB32A9A00BC9EB7 /* Feeds.storyboard */,
+				739C8F591BB32D2A00BC9EB7 /* FeedMainViewController.swift */,
+			);
+			name = NEW_FEED;
+			sourceTree = "<group>";
+		};
+		739C8F521BB32CB300BC9EB7 /* DropdownMenu */ = {
+			isa = PBXGroup;
+			children = (
+				739C8F531BB32CB300BC9EB7 /* DropdownMenuController.h */,
+				739C8F541BB32CB300BC9EB7 /* DropdownMenuController.m */,
+				739C8F551BB32CB300BC9EB7 /* DropdownMenuSegue.h */,
+				739C8F561BB32CB300BC9EB7 /* DropdownMenuSegue.m */,
+			);
+			name = DropdownMenu;
+			path = Libraries/DropdownMenu;
+			sourceTree = SOURCE_ROOT;
+		};
 		73AB34781BB1D3580031E2CC /* ACEExpandableTextCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -818,6 +850,7 @@
 				7361FCD01B9F55C300444179 /* Channel */,
 				732717441BAC8814003E0B68 /* Profile */,
 				73AB34801BB2C72C0031E2CC /* Playlist */,
+				739C8F4F1BB32A8000BC9EB7 /* NEW_FEED */,
 			);
 			name = Dropbeat;
 			path = labs;
@@ -951,6 +984,7 @@
 				586F49D21B8088220039CC6B /* FollowingFeedHeader.xib in Resources */,
 				FCD1DA8F1B04CCB200F9EA70 /* Images.xcassets in Resources */,
 				585BAD0C1B85ED9900FE137A /* DateTools.bundle in Resources */,
+				739C8F511BB32A9A00BC9EB7 /* Feeds.storyboard in Resources */,
 				7361FCED1B9F684500444179 /* Channel.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -994,11 +1028,13 @@
 				738646171BA7631D00C21650 /* GradientView.m in Sources */,
 				58BB0B161B12308000B07279 /* BaseViewController.swift in Sources */,
 				589413631B83C3F700395AFA /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
+				739C8F581BB32CB300BC9EB7 /* DropdownMenuSegue.m in Sources */,
 				73FC90CA1BAE4AFA00284B8A /* Upload.swift in Sources */,
 				58D3EBDE1B0BBC00000C6374 /* AddableTrackTableViewCell.swift in Sources */,
 				588693A21B13B51300566124 /* UIButton+WebCache.m in Sources */,
 				5854C7CA1B6EEB17003A5A2A /* FollowManageViewControllers.swift in Sources */,
 				73FC90C41BAE4AFA00284B8A /* ParameterEncoding.swift in Sources */,
+				739C8F5A1BB32D2A00BC9EB7 /* FeedMainViewController.swift in Sources */,
 				5886939E1B13B51300566124 /* SDWebImageDownloader.m in Sources */,
 				732717131BAC8649003E0B68 /* RBStoryboardPushSegue.m in Sources */,
 				588693A51B13B51300566124 /* UIImageView+HighlightedWebCache.m in Sources */,
@@ -1018,6 +1054,7 @@
 				FC766BEF1B050D51006FD4FB /* NetworkPath.swift in Sources */,
 				73AB34841BB2D9C60031E2CC /* PlaylistListTableViewController.swift in Sources */,
 				FC766BF51B051AA4006FD4FB /* NetworkRequests.swift in Sources */,
+				739C8F571BB32CB300BC9EB7 /* DropdownMenuController.m in Sources */,
 				732717431BAC8721003E0B68 /* ScrollPager.swift in Sources */,
 				732717151BAC8649003E0B68 /* UIViewController+RBStoryboardLink.m in Sources */,
 				FC0D9D591B0CC4DE00E048CC /* Constants.swift in Sources */,

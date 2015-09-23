@@ -12,6 +12,7 @@ enum MenuType : Int {
     case SEARCH
     case PLAYLIST
     case PROFILE
+    case TEST
 }
 
 class CenterViewController: PlayerViewController, UITabBarDelegate{
@@ -195,8 +196,9 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             } else {
                 activeViewController = UIStoryboard(name: "Playlist", bundle: nil).instantiateInitialViewController()
             }
+        case .TEST:
+            activeViewController = UIStoryboard(name: "Feeds", bundle: nil).instantiateInitialViewController()
         }
-        
         if currentMenu == .PROFILE {
             UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
         }

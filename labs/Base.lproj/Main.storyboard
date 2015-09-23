@@ -918,6 +918,12 @@
                                             <tabBarItem title="" image="ic_profile_gray" id="aXO-Xq-Gkh">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                                             </tabBarItem>
+                                            <tabBarItem title="" image="ic_audio_wave" id="0Fp-Yv-QTZ">
+                                                <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="image" keyPath="selectedImage" value="ic_home.png"/>
+                                                </userDefinedRuntimeAttributes>
+                                            </tabBarItem>
                                         </items>
                                         <color key="barTintColor" red="0.1647058824" green="0.18039215689999999" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>
                                         <connections>
@@ -1317,6 +1323,7 @@
         <image name="btn_progress" width="207" height="207"/>
         <image name="default_artwork" width="60" height="60"/>
         <image name="default_cover_big" width="320" height="320"/>
+        <image name="ic_audio_wave" width="24" height="24"/>
         <image name="ic_compass" width="25" height="25"/>
         <image name="ic_dotdotdot_horizontal" width="47" height="47"/>
         <image name="ic_drop_small" width="40" height="40"/>

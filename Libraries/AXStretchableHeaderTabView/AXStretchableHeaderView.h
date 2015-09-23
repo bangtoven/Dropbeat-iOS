@@ -13,7 +13,6 @@
 @property (nonatomic) CGFloat maximumOfHeight;
 @property (nonatomic) BOOL bounces;
 
-+ (instancetype)instantiate;
 - (NSArray*)interactiveSubviews;
 - (void)didHeightRatioChange:(CGFloat)ratio;
 

@@ -88,14 +88,14 @@ static NSString * const AXStretchableHeaderTabViewControllerSelectedIndexKey = @
     }
 }
 
-- (void)setHeaderView:(AXStretchableHeaderView *)headerView
-{
-    if (_headerView != headerView) {
-        [_headerView removeFromSuperview];
-        _headerView = headerView;
-        [self.view addSubview:_headerView];
-    }
-}
+//- (void)setHeaderView:(AXStretchableHeaderView *)headerView
+//{
+//    if (_headerView != headerView) {
+//        [_headerView removeFromSuperview];
+//        _headerView = headerView;
+//        [self.view addSubview:_headerView];
+//    }
+//}
 
 - (void)setViewControllers:(NSArray *)viewControllers
 {

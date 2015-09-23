@@ -7,11 +7,6 @@
 
 @implementation AXStretchableHeaderView
 
-+ (instancetype)instantiate {
-    AXStretchableHeaderView *view = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass(self).pathExtension owner:self options:nil].lastObject;
-    return view;
-}
-
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];

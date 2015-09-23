@@ -8,6 +8,35 @@
 
 import UIKit
 
+class ProfileHeaderView: UserHeaderView {
+    
+    @IBOutlet weak var editNicknameButton: UIButton!
+    @IBOutlet weak var editGenresButton: UIButton!
+    @IBOutlet weak var editAboutMeButton: UIButton!
+    @IBOutlet weak var favoriteGenresLabel: UILabel!
+    
+    func setButtonSetting(button: UIButton) {
+        button.tintColor = UIColor.dropbeatColor()
+        button.backgroundColor = UIColor.whiteColor()
+        button.layer.cornerRadius = 5
+        button.layer.borderWidth = 1
+        button.layer.borderColor = UIColor.dropbeatColor().CGColor
+        button.clipsToBounds = true
+    }
+    
+    override func interactiveSubviews() -> [AnyObject]! {
+        return [self.editNicknameButton, self.editGenresButton, self.editAboutMeButton]
+    }
+    
+    override func loadView() {
+        super.loadView()
+        
+        for button:UIButton in [editNicknameButton,editGenresButton,editAboutMeButton] {
+            self.setButtonSetting(button)
+        }
+    }
+}
+
 class SelfProfileViewController: UserViewController {
 
     private var genres:[String:Genre] = [String:Genre]()
@@ -16,39 +45,16 @@ class SelfProfileViewController: UserViewController {
         let user = Account.getCachedAccount()?.user
         self.baseUser = user
 
-        self.headerView = ProfileHeaderView.instantiate()
         let header = self.headerView as! ProfileHeaderView
         header.maximumOfHeight = (320-64)
-        header.loadView()
         header.nameLabel.hidden = false
         header.profileImageView.hidden = false
-        
-        header.editNicknameButton.addTarget(self, action: "editNickname:", forControlEvents: .TouchUpInside)
-        header.editGenresButton.addTarget(self, action: "editGenre:", forControlEvents: .TouchUpInside)
-        header.editAboutMeButton.addTarget(self, action: "editAboutMe:", forControlEvents: .TouchUpInside)
         
         self.applyFetchedInfoToView()
         self.setFavoriteGenreLabel()
         self.setAboutMeLabel()
         
         self.title = "Profile"
-    }
-    
-    func editNickname(sender: UIButton) {
-        self.performSegueWithIdentifier("editNickname", sender: nil)
-    }
-    
-    @IBAction func unwindFromEditNickname(sender: UIStoryboardSegue) {
-        let header = self.headerView as! ProfileHeaderView
-        header.nameLabel.text = baseUser.name
-    }
-    
-    func editAboutMe(sender: UIButton) {
-        self.performSegueWithIdentifier("editAboutMe", sender: nil)
-    }
-    
-    @IBAction func unwindFromEditAboutMe(sender: UIStoryboardSegue) {
-        self.setAboutMeLabel()
     }
     
     func setAboutMeLabel() {
@@ -60,8 +66,13 @@ class SelfProfileViewController: UserViewController {
         }
     }
     
-    func editGenre(sender: UIButton) {
-        self.performSegueWithIdentifier("editFavoriteGenres", sender: nil)
+    @IBAction func unwindFromEditAboutMe(sender: UIStoryboardSegue) {
+        self.setAboutMeLabel()
+    }
+    
+    @IBAction func unwindFromEditNickname(sender: UIStoryboardSegue) {
+        let header = self.headerView as! ProfileHeaderView
+        header.nameLabel.text = baseUser.name
     }
     
     @IBAction func unwindFromEditFavoriteGenres(sender: UIStoryboardSegue) {
@@ -144,34 +155,5 @@ class SelfProfileViewController: UserViewController {
             
             genreHandler(genreResult!.results!)
         }
-    }
-}
-
-class ProfileHeaderView: UserHeaderView {
-    
-    @IBOutlet weak var editNicknameButton: UIButton!
-    @IBOutlet weak var editGenresButton: UIButton!
-    @IBOutlet weak var editAboutMeButton: UIButton!
-    @IBOutlet weak var favoriteGenresLabel: UILabel!
-    
-    func setButtonSetting(button: UIButton) {
-        button.tintColor = UIColor.dropbeatColor()
-        button.backgroundColor = UIColor.whiteColor()
-        button.layer.cornerRadius = 5
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.dropbeatColor().CGColor
-        button.clipsToBounds = true
-    }
-    
-    override func loadView() {
-        super.loadView()
-        
-        for button:UIButton in [editNicknameButton,editGenresButton,editAboutMeButton] {
-            self.setButtonSetting(button)
-        }
-    }
-    
-    override func interactiveSubviews() -> [AnyObject]! {
-        return [self.editNicknameButton, self.editGenresButton, self.editAboutMeButton]
     }
 }

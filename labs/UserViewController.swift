@@ -28,7 +28,18 @@ class UserHeaderView: AXStretchableHeaderView {
         return [self.showMoreButton, self.followButton]
     }
     
-    func loadView () {
+    private var loaded = false
+
+    override func willMoveToSuperview(newSuperview: UIView?) {
+        super.willMoveToSuperview(newSuperview)
+
+        if self.loaded == false {
+            self.loadView()
+            self.loaded = true
+        }
+    }
+    
+    func loadView() {
         self.nameLabel.text = ""
         self.aboutMeLabel.text = ""
         
@@ -38,7 +49,7 @@ class UserHeaderView: AXStretchableHeaderView {
         self.profileImageView.layer.borderWidth = 2
         self.profileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
         self.profileImageView.clipsToBounds = true
-
+        
         self.followButton?.titleLabel!.numberOfLines = 1
         self.followButton?.titleLabel!.adjustsFontSizeToFitWidth = true
         self.followButton?.titleLabel!.lineBreakMode = .ByClipping
@@ -62,15 +73,15 @@ class UserViewController: AXStretchableHeaderTabViewController {
         self.view.tintColor = UIColor.dropbeatColor()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarTapped", name: NotifyKey.statusBarTapped, object: nil)
-        
+
+        self.view.addSubview(self.headerView!)
+
         self.fetchUserInfo()
     }
     
     func fetchUserInfo() {
-        self.headerView = UserHeaderView.instantiate()
         let header = self.headerView as! UserHeaderView
         header.maximumOfHeight = 224
-        header.loadView()
         
         if self.fromFollowInfo == false {
             header.nameLabel.hidden = false
@@ -216,11 +227,11 @@ class UserViewController: AXStretchableHeaderTabViewController {
         
         if isSelf {
             header.followButton?.enabled = false
+            header.followButton?.userInteractionEnabled = false
         } else {
             if let followed = self.baseUser?.isFollowed() {
                 header.followButton.selected = followed
             }
-            header.followButton.addTarget(self, action: "followAction:", forControlEvents: UIControlEvents.TouchUpInside)
         }
         
         if let showMoreButton = header.showMoreButton {
@@ -237,13 +248,12 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 }
                 if descriptionHeight > 64 {
                     showMoreButton.hidden = false
-                    showMoreButton.addTarget(self, action: "showMoreAction", forControlEvents: UIControlEvents.TouchUpInside)
                 }
             }
         }
     }
     
-    func followAction(sender: UIButton) {
+    @IBAction func followAction(sender: UIButton) {
         let progressHud = ViewUtils.showProgress(self, message: nil)
         let handler = { (error: NSError?) -> Void in
             progressHud.hide(true)
@@ -269,7 +279,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
         }   
     }
     
-    func showMoreAction() {
+    @IBAction func showMoreAction(sender: AnyObject) {
         let header = self.headerView as! UserHeaderView
         let label = header.aboutMeLabel
         let currentHeight = label.frame.height

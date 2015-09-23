@@ -906,7 +906,7 @@
                                                     <userDefinedRuntimeAttribute type="image" keyPath="selectedImage" value="ic_home.png"/>
                                                 </userDefinedRuntimeAttributes>
                                             </tabBarItem>
-                                            <tabBarItem tag="2" title="" image="ic_channel_gray" id="nZU-gk-3lR">
+                                            <tabBarItem tag="2" title="" image="ic_compass" id="nZU-gk-3lR">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                                             </tabBarItem>
                                             <tabBarItem tag="3" title="" image="ic_header_search" id="qT1-zU-yo5">
@@ -1317,7 +1317,7 @@
         <image name="btn_progress" width="207" height="207"/>
         <image name="default_artwork" width="60" height="60"/>
         <image name="default_cover_big" width="320" height="320"/>
-        <image name="ic_channel_gray" width="25" height="25"/>
+        <image name="ic_compass" width="25" height="25"/>
         <image name="ic_dotdotdot_horizontal" width="47" height="47"/>
         <image name="ic_drop_small" width="40" height="40"/>
         <image name="ic_forward" width="47" height="47"/>

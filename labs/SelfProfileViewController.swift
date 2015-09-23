@@ -29,6 +29,8 @@ class SelfProfileViewController: UserViewController {
         self.applyFetchedInfoToView()
         self.setFavoriteGenreLabel()
         self.setAboutMeLabel()
+        
+        self.title = ""
     }
     
     func editNickname(sender: UIButton) {

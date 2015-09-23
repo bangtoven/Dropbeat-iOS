@@ -25,6 +25,8 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
     private var isLoading:Bool = false
     private var progressHud:MBProgressHUD?
 
+    var fromStartup = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
@@ -62,6 +64,7 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
             for id in remoteSelectedGenreIds {
                 vc.remoteFavoriteIds.insert(id)
             }
+            vc.fromStartup = self.fromStartup
         }
     }
     
@@ -133,7 +136,11 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
             
             let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)));
             dispatch_after(popTime, dispatch_get_main_queue(), {() -> Void in
-                self.performSegueWithIdentifier("unwindFromEditFavoriteGenres", sender: nil)
+                if self.fromStartup {
+                    self.performSegueWithIdentifier("unwindToStart", sender: nil)
+                } else {
+                    self.performSegueWithIdentifier("unwindFromEditFavoriteGenres", sender: nil)
+                }
             })
             
         }
@@ -351,9 +358,15 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
             positiveBtnCallback: { () -> Void in
                 self.loadGenre()
             },
-            negativeBtnText: NSLocalizedString("Cancel", comment:""),
+            negativeBtnText: self.fromStartup ?
+                NSLocalizedString("Skip", comment:"") :
+                NSLocalizedString("Cancel", comment:""),
             negativeBtnCallback: { () -> Void in
-                self.performSegueWithIdentifier("unwindFromEditFavoriteGenres", sender: nil)
+                if self.fromStartup {
+                    self.performSegueWithIdentifier("unwindToStart", sender: nil)
+                } else {
+                    self.performSegueWithIdentifier("unwindFromEditFavoriteGenres", sender: nil)
+                }
         })
     }
 }
@@ -376,6 +389,8 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
     private var playerPreloadObserver:AnyObject?
     
     var remoteFavoriteIds:Set<String> = Set<String>()
+    
+    var fromStartup = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -506,7 +521,11 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
             
             let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)));
             dispatch_after(popTime, dispatch_get_main_queue(), {() -> Void in
-                self.performSegueWithIdentifier("unwindFromEditFavoriteGenres", sender: nil)
+                if self.fromStartup {
+                    self.performSegueWithIdentifier("unwindToStart", sender: nil)
+                } else {
+                    self.performSegueWithIdentifier("unwindFromEditFavoriteGenres", sender: nil)
+                }
             })
         }
         

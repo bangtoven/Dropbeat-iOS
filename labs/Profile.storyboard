@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A282b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="cvL-BP-wNy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A282b" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="MPe-vs-g2a">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -7,99 +7,12 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--뭐라카노-->
-        <scene sceneID="zHB-D0-h86">
-            <objects>
-                <viewController id="FfF-Nj-8bO" customClass="ViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Ykv-iY-hHt"/>
-                        <viewControllerLayoutGuide type="bottom" id="YUA-gJ-jYM"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="AaV-iD-rdE">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="agn-e4-KGq">
-                                <rect key="frame" x="130" y="94" width="32" height="30"/>
-                                <animations/>
-                                <state key="normal" title="User">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="userBtnTapped:" destination="FfF-Nj-8bO" eventType="touchUpInside" id="29L-3d-Yw3"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T8L-cD-EtZ">
-                                <rect key="frame" x="180" y="94" width="36" height="30"/>
-                                <animations/>
-                                <state key="normal" title="Artist">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="artistBtnTapped:" destination="FfF-Nj-8bO" eventType="touchUpInside" id="deQ-73-oOh"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VX4-sY-dIm">
-                                <rect key="frame" x="239" y="94" width="57" height="30"/>
-                                <animations/>
-                                <state key="normal" title="Channel">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="channelBtnTapped:" destination="FfF-Nj-8bO" eventType="touchUpInside" id="pr1-nN-EnQ"/>
-                                </connections>
-                            </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="1234" borderStyle="roundedRect" placeholder="resource" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="FXA-fa-WWF">
-                                <rect key="frame" x="146" y="132" width="166" height="30"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Resource Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dxl-wR-u9m">
-                                <rect key="frame" x="8" y="136" width="123" height="21"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gXQ-rx-cR0">
-                                <rect key="frame" x="137" y="283" width="46" height="30"/>
-                                <animations/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <segue destination="O7I-Zd-rw2" kind="show" id="pDN-fU-WRQ"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6bx-IE-lDp">
-                                <rect key="frame" x="109" y="182" width="107" height="30"/>
-                                <animations/>
-                                <state key="normal" title="Show User VC">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="ZJ4-xY-4VA" kind="show" identifier="Show User" id="W6O-VY-5Pf"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <navigationItem key="navigationItem" title="뭐라카노" id="uBa-M5-3cw"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-                    <connections>
-                        <outlet property="resourceTextField" destination="FXA-fa-WWF" id="czf-XN-XZB"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="BBO-h1-GKw" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="395" y="910"/>
-        </scene>
         <!--Edit nickname-->
         <scene sceneID="j5X-Z4-MnJ">
             <objects>
                 <tableViewController id="8bU-SJ-acY" customClass="EditNicknameViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="e5G-vq-ehL" customClass="TPKeyboardAvoidingTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -179,6 +92,8 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="300"/>
                     <connections>
                         <outlet property="nicknameErrorView" destination="Ga7-vB-f92" id="PyE-CD-b3j"/>
                         <outlet property="nicknameInputView" destination="7hH-81-ZOl" id="CwQ-sz-GII"/>
@@ -188,14 +103,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Moj-rF-a3E" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="kwI-99-hKo" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="39" y="2575"/>
+            <point key="canvasLocation" x="-2657" y="2480"/>
         </scene>
         <!--About me-->
         <scene sceneID="vLG-NA-5Qe">
             <objects>
                 <tableViewController id="etP-Ps-FGE" customClass="EditAboutMeViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="YjR-yB-Nnt">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
@@ -212,6 +127,8 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="300"/>
                     <connections>
                         <segue destination="IKo-xG-5i7" kind="unwind" identifier="unwindFromEditAboutMe" unwindAction="unwindFromEditAboutMe:" id="ZP1-Ax-XqI"/>
                     </connections>
@@ -219,9 +136,27 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gbF-of-3MD" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="IKo-xG-5i7" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="393" y="2575"/>
+            <point key="canvasLocation" x="-2287" y="2480"/>
         </scene>
-        <!--Self Profile View Controller-->
+        <!--Navigation Controller-->
+        <scene sceneID="eaK-tE-QuB">
+            <objects>
+                <navigationController id="MPe-vs-g2a" sceneMemberID="viewController">
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="m0I-JF-h5h">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="O7I-Zd-rw2" kind="relationship" relationship="rootViewController" id="gfT-uk-kJJ"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sgt-ET-2Gc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2762" y="1887"/>
+        </scene>
+        <!--Profile-->
         <scene sceneID="WK1-Fe-VLM">
             <objects>
                 <viewController id="O7I-Zd-rw2" customClass="SelfProfileViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
@@ -230,11 +165,11 @@
                         <viewControllerLayoutGuide type="bottom" id="qwd-cc-Rrk"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="7se-B1-SZn">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="auO-9J-wxQ">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <animations/>
                                 <connections>
                                     <outlet property="delegate" destination="O7I-Zd-rw2" id="H86-P7-CTx"/>
@@ -250,7 +185,7 @@
                             <constraint firstItem="auO-9J-wxQ" firstAttribute="leading" secondItem="7se-B1-SZn" secondAttribute="leading" id="plk-7b-4Pb"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="0uf-eu-ueC">
+                    <navigationItem key="navigationItem" title="Profile" id="0uf-eu-ueC">
                         <barButtonItem key="rightBarButtonItem" title="Settings" id="A4Z-g0-obm">
                             <connections>
                                 <segue destination="BdV-AA-UMZ" kind="custom" customClass="RBStoryboardPushSegue" id="3I1-S8-OZw"/>
@@ -266,12 +201,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oGl-sG-Oui" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="393" y="1887"/>
+            <point key="canvasLocation" x="-2287" y="1887"/>
         </scene>
         <!--User View Controller-->
         <scene sceneID="10W-2V-DkZ">
             <objects>
-                <viewController id="ZJ4-xY-4VA" customClass="UserViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UserViewController" id="ZJ4-xY-4VA" customClass="UserViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rPW-eU-8Lc"/>
                         <viewControllerLayoutGuide type="bottom" id="4Rf-VU-ehf"/>
@@ -305,28 +240,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aCV-kH-mc3" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="892" y="910"/>
-        </scene>
-        <!--Item-->
-        <scene sceneID="yrl-zC-xTS">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="cvL-BP-wNy" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="eic-iA-tE1"/>
-                    <toolbarItems/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="ta0-q3-28Y">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="FfF-Nj-8bO" kind="relationship" relationship="rootViewController" id="1ql-qb-ch5"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="GCj-B2-SjA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-66" y="910"/>
+            <point key="canvasLocation" x="-834" y="1883"/>
         </scene>
         <!--Track Sub View Controller-->
         <scene sceneID="uTn-Zq-McQ">
@@ -337,11 +251,11 @@
                         <viewControllerLayoutGuide type="bottom" id="U6J-X0-P97"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="0kQ-hG-eJS">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" bouncesZoom="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="B7N-EI-kd9" userLabel="tracks view">
-                                <rect key="frame" x="0.0" y="20" width="320" height="300"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="180"/>
                                 <animations/>
                                 <color key="sectionIndexColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -505,7 +419,7 @@
                         <nil key="title"/>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="320"/>
+                    <size key="freeformSize" width="320" height="200"/>
                     <connections>
                         <outlet property="trackTableView" destination="B7N-EI-kd9" id="UwR-x6-IXd"/>
                         <segue destination="daU-Ft-fj3" kind="custom" identifier="PlaylistSelectSegue" customClass="RBStoryboardModalSegue" id="1Ug-8x-1FD"/>
@@ -513,7 +427,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kgV-ih-hPd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1362" y="401"/>
+            <point key="canvasLocation" x="-408" y="1640"/>
         </scene>
         <!--Storyboard Link-->
         <scene sceneID="O5x-k0-Rmj">
@@ -524,7 +438,7 @@
                         <viewControllerLayoutGuide type="bottom" id="VAK-pc-wgl"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="6yd-6S-yCT">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="200" height="100"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="PlaylistSelectSegue" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mdY-ZZ-z7R">
@@ -538,7 +452,8 @@
                         <animations/>
                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="200" height="100"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Main"/>
                         <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="PlaylistSelect"/>
@@ -546,7 +461,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rGu-rB-Fsz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1831" y="700"/>
+            <point key="canvasLocation" x="-23" y="1768"/>
         </scene>
         <!--Channel Sub View Controller-->
         <scene sceneID="bOq-ky-gkS">
@@ -557,11 +472,11 @@
                         <viewControllerLayoutGuide type="bottom" id="DAj-ea-AUS"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="W4b-J7-7Ls">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" bouncesZoom="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="sU8-KC-zct" userLabel="tracks view">
-                                <rect key="frame" x="0.0" y="20" width="320" height="300"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="180"/>
                                 <animations/>
                                 <color key="sectionIndexColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -772,7 +687,7 @@
                         <nil key="title"/>
                     </navigationItem>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="320"/>
+                    <size key="freeformSize" width="320" height="200"/>
                     <connections>
                         <outlet property="indicatorView" destination="HRe-7P-qeb" id="VV5-ks-2Ei"/>
                         <outlet property="selectSectionButton" destination="nNB-RL-Mjl" id="Gal-rs-d5y"/>
@@ -782,14 +697,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xFM-ei-Azc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1362" y="780"/>
+            <point key="canvasLocation" x="-408" y="1883"/>
         </scene>
         <!--Follow Info Table View Controller-->
         <scene sceneID="z5Z-qg-Lbv">
             <objects>
                 <tableViewController storyboardIdentifier="FollowInfoTableViewController" id="mrk-gN-oWf" customClass="FollowInfoTableViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="ueT-tE-veK">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -868,11 +783,11 @@
                         </connections>
                     </tableView>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="320"/>
+                    <size key="freeformSize" width="320" height="200"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p5b-Xv-e8o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1362" y="1211"/>
+            <point key="canvasLocation" x="-408" y="2152"/>
         </scene>
         <!--Favorite Genres-->
         <scene sceneID="7kG-Tq-P2k">
@@ -1107,12 +1022,13 @@ click below to discover your favorites</string>
                         <outlet property="selectStatus" destination="02y-O3-L1E" id="KAC-rr-nSQ"/>
                         <outlet property="tableView" destination="42A-3X-iro" id="U7D-hk-YBr"/>
                         <segue destination="92y-9e-pvT" kind="unwind" identifier="unwindFromEditFavoriteGenres" unwindAction="unwindFromEditFavoriteGenres:" id="dte-ee-fAb"/>
+                        <segue destination="92y-9e-pvT" kind="unwind" identifier="unwindToStart" unwindAction="unwindFromGenreTutorialToStart:" id="7CA-R8-fex"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ww1-mV-Trg" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="92y-9e-pvT" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="876" y="1887"/>
+            <point key="canvasLocation" x="-1868" y="1887"/>
         </scene>
         <!--Favor Discovery-->
         <scene sceneID="CgO-Bs-Zug">
@@ -1352,12 +1268,13 @@ and let us know your favorite genre.</string>
                         <outlet property="footerView" destination="KK7-Pw-Ttz" id="nqs-Bi-hz3"/>
                         <outlet property="tableView" destination="TcC-s4-hBI" id="W4y-wU-Vey"/>
                         <segue destination="cNm-tq-YQC" kind="unwind" identifier="unwindFromEditFavoriteGenres" unwindAction="unwindFromEditFavoriteGenres:" id="2tA-z8-8HR"/>
+                        <segue destination="cNm-tq-YQC" kind="unwind" identifier="unwindToStart" unwindAction="unwindFromGenreTutorialToStart:" id="3yN-Ne-nwa"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JAp-fS-auG" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="cNm-tq-YQC" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1299" y="1887"/>
+            <point key="canvasLocation" x="-1445" y="1887"/>
         </scene>
         <!--Storyboard Link-->
         <scene sceneID="Cpm-cz-Nhv">
@@ -1368,7 +1285,7 @@ and let us know your favorite genre.</string>
                         <viewControllerLayoutGuide type="bottom" id="Clf-Wu-51u"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="sBK-NK-O2p">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="200" height="100"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="To Settings" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JMi-ho-Lmd">
@@ -1382,7 +1299,8 @@ and let us know your favorite genre.</string>
                         <animations/>
                         <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="200" height="100"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Settings"/>
                         <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="SettingsViewController"/>
@@ -1390,7 +1308,7 @@ and let us know your favorite genre.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lga-ln-Ocf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="763" y="2575"/>
+            <point key="canvasLocation" x="-1917" y="2480"/>
         </scene>
     </scenes>
     <resources>
@@ -1407,7 +1325,6 @@ and let us know your favorite genre.</string>
         <image name="sample_cover" width="225" height="225"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="W6O-VY-5Pf"/>
         <segue reference="oVv-0f-qoK"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>

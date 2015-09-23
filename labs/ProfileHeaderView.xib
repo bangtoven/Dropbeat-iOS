@@ -170,7 +170,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                         <constraint firstAttribute="width" secondItem="88j-dy-xAm" secondAttribute="height" multiplier="1:1" id="sD9-Mt-aXd"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UV8-nI-8Zk">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorite Genres" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UV8-nI-8Zk">
                     <rect key="frame" x="12" y="258" width="262" height="18"/>
                     <animations/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -188,7 +188,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                     <state key="normal" image="ic_edit_small"/>
                 </button>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorite Genres" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GX3-W1-avb">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About Me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GX3-W1-avb">
                     <rect key="frame" x="12" y="178" width="262" height="18"/>
                     <animations/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -257,12 +257,12 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 </mask>
             </variation>
             <connections>
-                <outlet property="aboutMeLabel" destination="mui-6D-mjH" id="Jpp-km-4UD"/>
+                <outlet property="aboutMeLabel" destination="E4E-k0-aVz" id="3Ft-C8-Xza"/>
                 <outlet property="coverImageView" destination="pm5-nC-zNc" id="aPV-Sg-eIA"/>
-                <outlet property="editAboutMeButton" destination="tmL-cB-i01" id="rJR-lt-Zb2"/>
-                <outlet property="editGenresButton" destination="u9B-Rb-EEC" id="aaJ-yJ-VEK"/>
+                <outlet property="editAboutMeButton" destination="u9B-Rb-EEC" id="T5a-XI-BFv"/>
+                <outlet property="editGenresButton" destination="tmL-cB-i01" id="TFy-Co-3hI"/>
                 <outlet property="editNicknameButton" destination="IrM-ZX-mfQ" id="NhF-Gd-szw"/>
-                <outlet property="favoriteGenresLabel" destination="E4E-k0-aVz" id="Vx2-N1-6l8"/>
+                <outlet property="favoriteGenresLabel" destination="mui-6D-mjH" id="RSs-dT-B6f"/>
                 <outlet property="followInfoView" destination="PIw-c2-LPX" id="omU-Tn-rTR"/>
                 <outlet property="followersLabel" destination="0f4-qN-837" id="hh5-fQ-XZD"/>
                 <outlet property="followingLabel" destination="aEU-AW-1Q9" id="zdk-TL-Kdx"/>

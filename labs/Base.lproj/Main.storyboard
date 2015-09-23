@@ -1556,7 +1556,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Profile"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="FavoriteGenreTutorial"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="EditFavoriteGenre"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FX0-o0-jqN" userLabel="First Responder" sceneMemberID="firstResponder"/>

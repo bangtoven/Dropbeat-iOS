@@ -60,7 +60,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
             appDelegate.centerContainer = vc
         }
         if segue.identifier == "genre_tutorial" {
-            let vc = segue.destinationViewController as! FavoriteGenreTutorialViewController
+            let vc = segue.destinationViewController as! EditFavoriteGenreViewController
             vc.fromStartup = true
         }
         if segue.identifier == "need_email" {

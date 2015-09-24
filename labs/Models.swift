@@ -1833,7 +1833,8 @@ class Track {
     }
     
     func addToPlaylist(playlist: Playlist, section:String, afterAdd: (error:NSError?) -> Void) {
-        let tracks = playlist.tracks
+        var tracks = [Track](playlist.tracks)
+        tracks.append(self)
         
         var dummyTracks = [[String:AnyObject]]()
         for t in tracks {
@@ -1841,9 +1842,9 @@ class Track {
                 afterAdd(error: NSError(domain: "addTrack", code:101, userInfo: nil))
                 return
             }
-            dummyTracks.append(["title": t.title, "id": t.id, "type": t.type])
+//            dummyTracks.append(["title": t.title, "id": t.id, "type": t.type])
+            dummyTracks.append(["id": t.id, "type": t.type])
         }
-        dummyTracks.append(["title": self.title, "id": self.id, "type": self.type])
         
         if Account.getCachedAccount() != nil {
             // Log to us
@@ -1895,7 +1896,8 @@ class Track {
         var dummyTracks = [[String:AnyObject]]()
         for t in tracks {
             if (t.id != self.id) {
-                dummyTracks.append(["title": t.title, "id": t.id, "type": t.type])
+//                dummyTracks.append(["title": t.title, "id": t.id, "type": t.type])
+                dummyTracks.append(["id": t.id, "type": t.type])
             }
         }
         

@@ -857,7 +857,6 @@
 		FCD1DA841B04CCB200F9EA70 /* Dropbeat */ = {
 			isa = PBXGroup;
 			children = (
-				739C8F5B1BB340D400BC9EB7 /* Explore */,
 				FCD1DA871B04CCB200F9EA70 /* AppDelegate.swift */,
 				58BB0B151B12308000B07279 /* BaseViewController.swift */,
 				58C3E7A21B8A40C300822842 /* AddableTrackListViewController.swift */,
@@ -865,6 +864,7 @@
 				7361FCE51B9F628100444179 /* Model & etc */,
 				7361FCD81B9F58B900444179 /* Main */,
 				7361FCCF1B9F55BA00444179 /* Feed */,
+				739C8F5B1BB340D400BC9EB7 /* Explore */,
 				732717441BAC8814003E0B68 /* Profile */,
 				73AB34801BB2C72C0031E2CC /* Playlist */,
 				739C8F4F1BB32A8000BC9EB7 /* NEW_FEED */,

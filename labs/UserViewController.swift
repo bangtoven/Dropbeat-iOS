@@ -353,6 +353,12 @@ class UserViewController: AXStretchableHeaderTabViewController {
         
         if self.isMovingToParentViewController() == false{
             // back from navigation stack. previous page was popped!!
+            self.baseUser.updateFollowInfo()
+            let header = self.headerView as! UserHeaderView
+            if let followed = self.baseUser?.isFollowed() {
+                header.followButton?.selected = followed
+            }
+            
             self.didHeightRatioChange(self.headerViewHeightRatio)
         }
     }

@@ -43,6 +43,9 @@ class BaseUser {
             return false
         }
     }
+    func updateFollowInfo() {
+        self._isFollowed = nil
+    }
     
     init(userType: UserType, id: String, name: String, image: String?, coverImage: String?, resourceName: String) {
         self.userType = userType

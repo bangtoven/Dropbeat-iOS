@@ -54,6 +54,18 @@ class SearchViewController: AddableTrackListViewController,
         self.screenName = "SearchViewScreen"
     }
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if self.isMovingToParentViewController() == false{
+            // back from navigation stack. previous page was popped!!
+            for u in self.users {
+                u.updateFollowInfo()
+            }
+            self.trackTableView.reloadData()
+        }
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         switch segue.identifier! {
         case "PlaylistSelectSegue":

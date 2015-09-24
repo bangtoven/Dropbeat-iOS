@@ -8,6 +8,10 @@
 
 import UIKit
 
+class SearchResultUserCell: FollowInfoTableViewCell {
+    @IBOutlet weak var isFollowedImageView: UIImageView!
+}
+
 class SearchViewController: AddableTrackListViewController,
     UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate,
     UISearchBarDelegate {
@@ -50,21 +54,39 @@ class SearchViewController: AddableTrackListViewController,
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "PlaylistSelectSegue" {
-            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
+        switch segue.identifier! {
+        case "PlaylistSelectSegue":
+            let playlistSelectVC = segue.destinationViewController as! PlaylistSelectViewController
             playlistSelectVC.targetTrack = sender as? Track
             playlistSelectVC.fromSection = "search"
             playlistSelectVC.caller = self
+        case "showChannelInfo":
+            let cell = sender as! FollowInfoTableViewCell
+            let indexPath = self.trackTableView.indexPathForSelectedRow
+            let u = self.users[indexPath!.row]
+            
+            let mySegue = segue as! JHImageTransitionSegue
+            let sourceImageView = cell.profileImageView
+            mySegue.setSourceImageView(sourceImageView)
+            mySegue.sourceRect = sourceImageView.convertRect(sourceImageView.bounds, toView: self.view)
+            mySegue.destinationRect = self.view.convertRect(CGRectMake(10, 157, 80, 80), fromView: nil)
+            
+            let uvc = segue.destinationViewController as! UserViewController
+            uvc.resource = u.resourceName
+            uvc.passedImage = sourceImageView.image
+            
+        default:
+            break
         }
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if (tableView == trackTableView) {
-            var index:Int = indexPath.row
-            if (indexPath.section != 0) {
-                index += self.tableView(tableView, numberOfRowsInSection: 0)
+        if tableView == trackTableView {
+            if indexPath.section == 0 {
+                return
+            } else {
+                onTrackPlayBtnClicked(tracks[indexPath.row])
             }
-            onTrackPlayBtnClicked(tracks[index])
         } else {
             let keyword = autocomKeywords[indexPath.row]
             searchBar!.text = keyword
@@ -108,7 +130,7 @@ class SearchViewController: AddableTrackListViewController,
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if (tableView == trackTableView) {
             if indexPath.section == 0 {
-                let cell = tableView.dequeueReusableCellWithIdentifier("FollowInfoTableViewCell", forIndexPath: indexPath) as! FollowInfoTableViewCell
+                let cell = tableView.dequeueReusableCellWithIdentifier("SearchResultUserCell", forIndexPath: indexPath) as! SearchResultUserCell
                 let u = self.users[indexPath.row]
                 cell.nameLabel.text = u.name
                 if let image = u.image {
@@ -120,6 +142,8 @@ class SearchViewController: AddableTrackListViewController,
                 cell.profileImageView.layer.cornerRadius = 10
                 cell.profileImageView.layer.borderWidth = 2
                 cell.profileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
+                
+                cell.isFollowedImageView.hidden = !u.isFollowed()
                 
                 return cell
 
@@ -295,6 +319,10 @@ class SearchViewController: AddableTrackListViewController,
     
     // MARK: etc
     
+    override func getPlaylistId() -> String? {
+        return "Explore"
+    }
+    
     override func getSectionName() -> String {
         return "search"
     }
@@ -325,5 +353,39 @@ class SearchViewController: AddableTrackListViewController,
                 break
             }
         }
+    }
+    
+    override func updatePlaylist(forceUpdate:Bool) {
+        if !forceUpdate &&
+            (getPlaylistId() == nil ||
+                PlayerContext.currentPlaylistId != getPlaylistId()) {
+                    return
+        }
+        
+        var playlist:Playlist!
+        if PlayerContext.externalPlaylist != nil &&
+            PlayerContext.externalPlaylist!.id == getPlaylistId() {
+                playlist = PlayerContext.externalPlaylist!
+                playlist.tracks.removeAll(keepCapacity: false)
+                for track in tracks {
+                    playlist.tracks.append(track)
+                }
+        } else {
+            playlist = Playlist(
+                id: getPlaylistId()!,
+                name: "Search",
+                tracks: tracks)
+            playlist.type = PlaylistType.EXTERNAL
+            PlayerContext.externalPlaylist = playlist
+        }
+        
+        if PlayerContext.currentPlaylistId == playlist.id {
+            if PlayerContext.currentTrack == nil {
+                PlayerContext.currentTrackIdx = -1
+            } else {
+                PlayerContext.currentTrackIdx = playlist.getTrackIdx(PlayerContext.currentTrack!)
+            }
+        }
+        return
     }
 }

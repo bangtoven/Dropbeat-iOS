@@ -148,7 +148,7 @@
                                         <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <color key="sectionIndexTrackingBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <prototypes>
-                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationLevel="1" indentationWidth="10" reuseIdentifier="FollowInfoTableViewCell" rowHeight="76" id="2EW-GP-Mvu" customClass="FollowInfoTableViewCell" customModule="labs" customModuleProvider="target">
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationLevel="1" indentationWidth="10" reuseIdentifier="SearchResultUserCell" rowHeight="76" id="2EW-GP-Mvu" customClass="SearchResultUserCell" customModule="labs" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="50" width="320" height="76"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2EW-GP-Mvu" id="yDc-D1-3hK">
@@ -156,7 +156,7 @@
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_profile" translatesAutoresizingMaskIntoConstraints="NO" id="8Au-Ef-V4M">
-                                                            <rect key="frame" x="16" y="6" width="64" height="64"/>
+                                                            <rect key="frame" x="8" y="6" width="64" height="64"/>
                                                             <animations/>
                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                             <constraints>
@@ -165,30 +165,45 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My name is Jungho" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aIP-Z6-cwC">
-                                                            <rect key="frame" x="90" y="27" width="222" height="22"/>
+                                                            <rect key="frame" x="82" y="27" width="141" height="22"/>
                                                             <animations/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="22" id="jZW-LJ-V55"/>
                                                             </constraints>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_following" translatesAutoresizingMaskIntoConstraints="NO" id="q65-w9-g7K">
+                                                            <rect key="frame" x="287" y="25" width="25" height="25"/>
+                                                            <animations/>
+                                                        </imageView>
                                                     </subviews>
                                                     <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="trailingMargin" secondItem="aIP-Z6-cwC" secondAttribute="trailing" id="01q-5M-3by"/>
                                                         <constraint firstItem="aIP-Z6-cwC" firstAttribute="centerY" secondItem="yDc-D1-3hK" secondAttribute="centerY" id="6lC-tX-vhs"/>
-                                                        <constraint firstItem="8Au-Ef-V4M" firstAttribute="leading" secondItem="yDc-D1-3hK" secondAttribute="leadingMargin" constant="8" id="fRg-tQ-QLT"/>
+                                                        <constraint firstItem="8Au-Ef-V4M" firstAttribute="leading" secondItem="yDc-D1-3hK" secondAttribute="leadingMargin" id="fRg-tQ-QLT"/>
                                                         <constraint firstItem="aIP-Z6-cwC" firstAttribute="leading" secondItem="8Au-Ef-V4M" secondAttribute="trailing" constant="10" id="nqr-6K-vf6"/>
                                                         <constraint firstItem="8Au-Ef-V4M" firstAttribute="centerY" secondItem="yDc-D1-3hK" secondAttribute="centerY" id="zU1-z0-yr7"/>
                                                     </constraints>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="01q-5M-3by"/>
+                                                        </mask>
+                                                    </variation>
                                                 </tableViewCellContentView>
                                                 <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="q65-w9-g7K" secondAttribute="trailing" constant="8" id="lpP-0a-Q3O"/>
+                                                    <constraint firstItem="q65-w9-g7K" firstAttribute="centerY" secondItem="2EW-GP-Mvu" secondAttribute="centerY" id="wDo-wA-GCe"/>
+                                                </constraints>
                                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                 <connections>
+                                                    <outlet property="isFollowedImageView" destination="q65-w9-g7K" id="KAJ-1Y-i35"/>
                                                     <outlet property="nameLabel" destination="aIP-Z6-cwC" id="Vgs-iT-ENJ"/>
                                                     <outlet property="profileImageView" destination="8Au-Ef-V4M" id="ZMy-jJ-HP5"/>
+                                                    <segue destination="qd0-T9-4Xp" kind="custom" identifier="showChannelInfo" customClass="LinkedImageTransitionSegue" id="BKA-l4-SBR"/>
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="AddableTrackTableViewCell" rowHeight="76" id="eYx-8G-TaG" customClass="AddableTrackTableViewCell" customModule="labs" customModuleProvider="target">
@@ -341,6 +356,7 @@
                             <outletCollection property="gestureRecognizers" destination="cHN-4n-eU9" appends="YES" id="8nt-HT-fgR"/>
                         </connections>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="jq4-xf-xcU">
                         <nil key="title"/>
                     </navigationItem>
@@ -1295,7 +1311,7 @@
                 <navigationController storyboardIdentifier="SearchNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="39v-uc-SBt" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="lLf-Bs-khb">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="lLf-Bs-khb">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
@@ -1314,6 +1330,40 @@
             </objects>
             <point key="canvasLocation" x="944" y="-1243"/>
         </scene>
+        <!--Storyboard Link-->
+        <scene sceneID="eca-4k-cnZ">
+            <objects>
+                <viewController id="qd0-T9-4Xp" customClass="RBStoryboardLink" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hay-sX-gUK"/>
+                        <viewControllerLayoutGuide type="bottom" id="sZq-Oy-gGd"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cCD-S0-9od">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Channel profile view" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n35-Be-eFr">
+                                <rect key="frame" x="16" y="28" width="155" height="21"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="320"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Profile"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="UserViewController"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7ze-cs-ZdD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1778" y="-1243"/>
+        </scene>
     </scenes>
     <resources>
         <image name="btn_progress" width="207" height="207"/>
@@ -1324,6 +1374,7 @@
         <image name="ic_compass" width="25" height="25"/>
         <image name="ic_dotdotdot_horizontal" width="47" height="47"/>
         <image name="ic_drop_small" width="40" height="40"/>
+        <image name="ic_following" width="25" height="25"/>
         <image name="ic_forward" width="47" height="47"/>
         <image name="ic_header_dotdotdot" width="22" height="22"/>
         <image name="ic_header_search" width="22" height="22"/>

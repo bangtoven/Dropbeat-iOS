@@ -8,6 +8,12 @@
 
 import UIKit
 
+class ExploreTableViewCell: AddableTrackTableViewCell {
+    @IBOutlet weak var channelImageView: UIImageView!
+    @IBOutlet weak var channelName: UILabel!
+    @IBOutlet weak var publishedAt: UILabel!
+}
+
 class ExploreViewController: AddableTrackListViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var loadMoreSpinner: UIActivityIndicatorView!
@@ -48,14 +54,18 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
         self.loadChannelFeed(self.nextPage)
     }
     
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tracks.count
     }
     
     func tableView(tableView: UITableView,
         cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-            let cell:AddableChannelFeedTrackTableViewCell = trackTableView.dequeueReusableCellWithIdentifier(
-                "AddableTrackTableViewCell", forIndexPath: indexPath) as!AddableChannelFeedTrackTableViewCell
+            let cell = trackTableView.dequeueReusableCellWithIdentifier(
+                "ExploreTableViewCell", forIndexPath: indexPath) as! ExploreTableViewCell
             let track:ChannelFeedTrack = tracks[indexPath.row] as! ChannelFeedTrack
             cell.delegate = self
             cell.channelName.text = track.channelTitle
@@ -78,6 +88,10 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             } else {
                 cell.publishedAt.hidden = true
             }
+            
+            cell.layer.borderWidth = 1.5
+            cell.layer.borderColor = UIColor(white: 0.9, alpha: 1.0).CGColor
+
             return cell
     }
     
@@ -94,6 +108,15 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             loadMoreSpinnerWrapper.hidden = false
             loadMoreSpinner.startAnimating()
             loadChannelFeed(nextPage)
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "PlaylistSelectSegue" {
+            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
+            playlistSelectVC.targetTrack = sender as? Track
+            playlistSelectVC.fromSection = "explore"
+            playlistSelectVC.caller = self
         }
     }
     
@@ -117,7 +140,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
             trackTableView.scrollsToTop = true
         }
-        Requests.fetchChannelFeed(pageIdx, respCb: {
+        Requests.fetchExploreChannelFeed(pageIdx, respCb: {
             (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             
             progressHud?.hide(true)

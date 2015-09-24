@@ -64,7 +64,6 @@ class UserViewController: AXStretchableHeaderTabViewController {
     var baseUser: BaseUser!
     var resource: String!
 
-    var fromFollowInfo: Bool = false
     var passedName: String?
     var passedImage: UIImage?
     
@@ -83,10 +82,8 @@ class UserViewController: AXStretchableHeaderTabViewController {
         let header = self.headerView as! UserHeaderView
         header.maximumOfHeight = 224
         
-        if self.fromFollowInfo == false {
-            header.nameLabel.hidden = false
-            header.profileImageView.hidden = false
-        }
+        header.nameLabel.hidden = (self.passedName != nil)
+        header.profileImageView.hidden = (self.passedImage != nil)
 
         let progressHud = ViewUtils.showProgress(self, message: nil)
         Requests.resolveUser(self.resource) {(req, resp, result, error) -> Void in
@@ -365,9 +362,11 @@ class UserViewController: AXStretchableHeaderTabViewController {
         
         let header = self.headerView as! UserHeaderView
         
-        if self.fromFollowInfo {
-            header.nameLabel.text = passedName!
-            header.profileImageView.image = passedImage!
+        if let passedName = self.passedName {
+            header.nameLabel.text = passedName
+        }
+        if let passedImage = self.passedImage {
+            header.profileImageView.image = passedImage
         }
         
         header.nameLabel.hidden = false

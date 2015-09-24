@@ -69,7 +69,7 @@ public class Manager {
                 let version: AnyObject = info[kCFBundleVersionKey as String] ?? "Unknown"
                 let os: AnyObject = NSProcessInfo.processInfo().operatingSystemVersionString ?? "Unknown"
 
-                var mutableUserAgent = NSMutableString(string: "\(executable)/\(bundle) (\(version); OS \(os))") as CFMutableString
+                var mutableUserAgent = NSMutableString(string: "\(executable)/\(bundle) (Dbt/\(version); OS \(os))") as CFMutableString
                 let transform = NSString(string: "Any-Latin; Latin-ASCII; [:^ASCII:] Remove") as CFString
 
                 if CFStringTransform(mutableUserAgent, UnsafeMutablePointer<CFRange>(nil), transform, false) {

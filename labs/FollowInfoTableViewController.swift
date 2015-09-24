@@ -110,9 +110,8 @@ class FollowInfoTableViewController: UITableViewController, AXSubViewController 
             mySegue.labelSourceRect = cell.nameLabel.convertRect(cell.nameLabel.bounds, toView: self.view)
             mySegue.labelDestinationRect = self.view.convertRect(CGRectMake(100, 169, 210, 22), fromView: nil)
 
-            let uvc: UserViewController = segue.destinationViewController as! UserViewController
+            let uvc = segue.destinationViewController as! UserViewController
             uvc.resource = u.resourceName
-            uvc.fromFollowInfo = true
             uvc.passedName = cell.nameLabel.text
             uvc.passedImage = sourceImageView.image
         }

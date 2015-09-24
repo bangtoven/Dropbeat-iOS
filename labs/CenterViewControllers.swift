@@ -180,7 +180,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         case .FEED:
             activeViewController = UIStoryboard(name: "Feed", bundle: nil).instantiateInitialViewController()
         case .CHANNEL:
-            activeViewController = UIStoryboard(name: "Channel", bundle: nil).instantiateInitialViewController()
+            activeViewController = UIStoryboard(name: "Explore", bundle: nil).instantiateInitialViewController()
         case .SEARCH:
             activeViewController = UIStoryboard(name: "Main", bundle: nil)
                 .instantiateViewControllerWithIdentifier("SearchNavigationController")
@@ -199,6 +199,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         case .TEST:
             activeViewController = UIStoryboard(name: "Explore", bundle: nil).instantiateInitialViewController()
         }
+        
         if currentMenu == .PROFILE {
             UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
         }

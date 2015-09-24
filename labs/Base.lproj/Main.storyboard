@@ -900,11 +900,8 @@
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <items>
-                                            <tabBarItem tag="1" title="" image="ic_home_gray" id="LhY-EL-Kgy">
+                                            <tabBarItem tag="1" title="" image="ic_audio_wave" id="LhY-EL-Kgy">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="image" keyPath="selectedImage" value="ic_home.png"/>
-                                                </userDefinedRuntimeAttributes>
                                             </tabBarItem>
                                             <tabBarItem tag="2" title="" image="ic_compass" id="nZU-gk-3lR">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
@@ -916,9 +913,6 @@
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                                             </tabBarItem>
                                             <tabBarItem title="" image="ic_profile_gray" id="aXO-Xq-Gkh">
-                                                <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
-                                            </tabBarItem>
-                                            <tabBarItem title="" image="ic_audio_wave" id="0Fp-Yv-QTZ">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                                             </tabBarItem>
                                         </items>
@@ -1327,8 +1321,6 @@
         <image name="ic_forward" width="47" height="47"/>
         <image name="ic_header_dotdotdot" width="22" height="22"/>
         <image name="ic_header_search" width="22" height="22"/>
-        <image name="ic_home.png" width="25" height="25"/>
-        <image name="ic_home_gray" width="25" height="25"/>
         <image name="ic_hq_off" width="105" height="64"/>
         <image name="ic_list_gray_small" width="24" height="24"/>
         <image name="ic_pause" width="47" height="47"/>

@@ -100,6 +100,7 @@
 		7327174A1BAC8836003E0B68 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 732717451BAC8836003E0B68 /* Profile.storyboard */; };
 		7327174C1BAC8836003E0B68 /* TrackSubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717471BAC8836003E0B68 /* TrackSubViewController.swift */; };
 		7327174D1BAC8836003E0B68 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717481BAC8836003E0B68 /* UserViewController.swift */; };
+		734C7D591BB457EB0071678C /* LinkedImageTransitionSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 734C7D581BB457EB0071678C /* LinkedImageTransitionSegue.m */; settings = {ASSET_TAGS = (); }; };
 		7361FCE41B9F5E7F00444179 /* EmailSubmitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7361FCE31B9F5E7F00444179 /* EmailSubmitViewController.swift */; };
 		7361FCED1B9F684500444179 /* Channel.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCEF1B9F684500444179 /* Channel.storyboard */; };
 		7361FCF71B9F687E00444179 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCF91B9F687E00444179 /* Settings.storyboard */; };
@@ -315,6 +316,8 @@
 		732717451BAC8836003E0B68 /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		732717471BAC8836003E0B68 /* TrackSubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackSubViewController.swift; sourceTree = "<group>"; };
 		732717481BAC8836003E0B68 /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
+		734C7D571BB457EB0071678C /* LinkedImageTransitionSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkedImageTransitionSegue.h; sourceTree = "<group>"; };
+		734C7D581BB457EB0071678C /* LinkedImageTransitionSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinkedImageTransitionSegue.m; sourceTree = "<group>"; };
 		7361FCE31B9F5E7F00444179 /* EmailSubmitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailSubmitViewController.swift; sourceTree = "<group>"; };
 		7361FCE71B9F67CE00444179 /* SplitStoryboard */ = {isa = PBXFileReference; lastKnownFileType = text; path = SplitStoryboard; sourceTree = "<group>"; };
 		7361FCE91B9F683100444179 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Feed.storyboard; sourceTree = "<group>"; };
@@ -792,6 +795,8 @@
 				731D92711BAEE4FB0068742A /* FollowInfoTableViewController.swift */,
 				73AB34691BB15AAE0031E2CC /* JHImageTransitionSegue.h */,
 				73AB346A1BB15AAE0031E2CC /* JHImageTransitionSegue.m */,
+				734C7D571BB457EB0071678C /* LinkedImageTransitionSegue.h */,
+				734C7D581BB457EB0071678C /* LinkedImageTransitionSegue.m */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -1025,6 +1030,7 @@
 				585BAD0E1B85ED9900FE137A /* DTError.m in Sources */,
 				7327172F1BAC86A8003E0B68 /* DYAlertPickView.m in Sources */,
 				588693A01B13B51300566124 /* SDWebImageManager.m in Sources */,
+				734C7D591BB457EB0071678C /* LinkedImageTransitionSegue.m in Sources */,
 				5854C7C81B6EEA8B003A5A2A /* FollowingTableViewCell.swift in Sources */,
 				73AB34771BB1D34A0031E2CC /* SZTextView.m in Sources */,
 				7327174D1BAC8836003E0B68 /* UserViewController.swift in Sources */,

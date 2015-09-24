@@ -78,6 +78,8 @@
 #import "GBFlatSelectableButton.h"
 
 #import "JHImageTransitionSegue.h"
+#import "LinkedImageTransitionSegue.h"
+
 #import "ACEExpandableTextCell.h"
 
 #import "DropdownMenuController.h"

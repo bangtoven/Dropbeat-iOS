@@ -25,6 +25,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
         
         refreshControl = UIRefreshControl()
         refreshControl.tintColor = UIColor(netHex:0xc380fc)
@@ -68,7 +69,10 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
                 "ExploreTableViewCell", forIndexPath: indexPath) as! ExploreTableViewCell
             let track:ChannelFeedTrack = tracks[indexPath.row] as! ChannelFeedTrack
             cell.delegate = self
+            
             cell.channelName.text = track.channelTitle
+            cell.channelImageView.sd_setImageWithURL(NSURL(string: track.channelImage!), placeholderImage: UIImage(named: "default_profile"))
+            
             cell.nameView.text = track.title
             if (track.thumbnailUrl != nil) {
                 cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
@@ -89,8 +93,12 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
                 cell.publishedAt.hidden = true
             }
             
-            cell.layer.borderWidth = 1.5
-            cell.layer.borderColor = UIColor(white: 0.9, alpha: 1.0).CGColor
+            cell.channelImageView.layer.cornerRadius = 4
+            cell.channelImageView.layer.borderWidth = 1
+            cell.channelImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
+            
+            cell.layer.borderWidth = 4
+            cell.layer.borderColor = UIColor(netHex: 0xE0DFEA).CGColor
 
             return cell
     }
@@ -111,12 +119,42 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
         }
     }
     
+    func getIndexOfSender(tableView:UITableView, sender: UIView) -> NSIndexPath? {
+        var view:UIView? = sender
+        repeat {
+            if let cell = view as? UITableViewCell {
+                return tableView.indexPathForCell(cell)
+            }
+            view = view!.superview
+        } while view != nil
+        
+        return nil
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "PlaylistSelectSegue" {
-            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
+        switch segue.identifier! {
+        case "PlaylistSelectSegue":
+            let playlistSelectVC = segue.destinationViewController as! PlaylistSelectViewController
             playlistSelectVC.targetTrack = sender as? Track
             playlistSelectVC.fromSection = "explore"
             playlistSelectVC.caller = self
+        case "showChannelInfo":
+            let indexPath = self.getIndexOfSender(self.trackTableView, sender: sender as! UIButton)
+            let track = self.tracks[indexPath!.row] as! ChannelFeedTrack
+
+            let mySegue = segue as! JHImageTransitionSegue
+            let sourceImageView = (self.trackTableView.cellForRowAtIndexPath(indexPath!) as! ExploreTableViewCell).channelImageView
+            
+            mySegue.setSourceImageView(sourceImageView)
+            mySegue.sourceRect = sourceImageView.convertRect(sourceImageView.bounds, toView: self.view)
+            mySegue.destinationRect = self.view.convertRect(CGRectMake(10, 157, 80, 80), fromView: nil)
+            
+            let uvc = segue.destinationViewController as! UserViewController
+            uvc.resource = track.channelResourceName
+            uvc.passedImage = sourceImageView.image
+
+        default:
+            break
         }
     }
     

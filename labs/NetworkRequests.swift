@@ -195,6 +195,10 @@ class Requests {
         return sendGet(ApiPath.feedChannel, params: ["p": pageIdx], auth:true, respCb: respCb)
     }
     
+    static func fetchExploreChannelFeed(pageIdx:Int, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+        return sendPost(CorePath.channelFeed, params: ["p": pageIdx], auth:false, respCb: respCb)
+    }
+    
     static func artistFilter(names:[String], respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         return sendPost(CorePath.artistFilter, params: ["q": names], auth:false, respCb: respCb)
     }

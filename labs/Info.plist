@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>0.0.4</string>
+	<string>0.0.5</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -38,7 +38,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>4</string>
+	<string>501</string>
 	<key>FacebookAppID</key>
 	<string>754181154701901</string>
 	<key>FacebookDisplayName</key>
@@ -53,48 +53,6 @@
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
-<!--		<key>NSExceptionDomains</key>-->
-<!--		<dict>-->
-<!--			<key>coroutine.io</key>-->
-<!--			<dict>-->
-<!--				<key>NSIncludesSubdomains</key>-->
-<!--				<true/>-->
-<!--				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>-->
-<!--				<true/>-->
-<!--				<key>NSTemporaryExceptionMinimumTLSVersion</key>-->
-<!--				<string>TLSv1.1</string>-->
-<!--			</dict>-->
-<!--			<key>dropbeat.net</key>-->
-<!--			<dict>-->
-<!--				<key>NSIncludesSubdomains</key>-->
-<!--				<true/>-->
-<!--				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>-->
-<!--				<true/>-->
-<!--				<key>NSTemporaryExceptionMinimumTLSVersion</key>-->
-<!--				<string>TLSv1.1</string>-->
-<!--			</dict>-->
-<!--			<key>facebook.com</key>-->
-<!--			<dict>-->
-<!--				<key>NSIncludesSubdomains</key>-->
-<!--				<true/>-->
-<!--				<key>NSExceptionRequiresForwardSecrecy</key>-->
-<!--				<false/>-->
-<!--			</dict>-->
-<!--			<key>fbcdn.net</key>-->
-<!--			<dict>-->
-<!--				<key>NSIncludesSubdomains</key>-->
-<!--				<true/>-->
-<!--				<key>NSExceptionRequiresForwardSecrecy</key>-->
-<!--				<false/>-->
-<!--			</dict>-->
-<!--			<key>akamaihd.net</key>-->
-<!--			<dict>-->
-<!--				<key>NSIncludesSubdomains</key>-->
-<!--				<true/>-->
-<!--				<key>NSExceptionRequiresForwardSecrecy</key>-->
-<!--				<false/>-->
-<!--			</dict>-->
-<!--		</dict>-->
 	</dict>
 	<key>UIBackgroundModes</key>
 	<array>
@@ -108,6 +66,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIRequiresFullScreen</key>
+	<true/>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

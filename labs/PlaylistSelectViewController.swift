@@ -31,8 +31,7 @@ class PlaylistSelectTableViewCell: UITableViewCell {
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
-class PlaylistSelectViewController: BaseViewController,
-UITableViewDelegate, UITableViewDataSource {
+class PlaylistSelectViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
     private var playlists:[Playlist] = [Playlist]()

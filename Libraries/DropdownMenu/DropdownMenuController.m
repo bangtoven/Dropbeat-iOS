@@ -119,7 +119,7 @@ CAShapeLayer *closedMenuShape;
     
     // Set new origin of menu
     CGRect menuFrame = self.menu.frame;
-    menuFrame.origin.y = CGRectGetMaxY(self.menubar.frame);
+    menuFrame.origin.y = 0;//CGRectGetMaxY(self.menubar.frame);
     
     // Set new alpha of Container View (to get fade effect)
     float containerAlpha = fadeAlpha;

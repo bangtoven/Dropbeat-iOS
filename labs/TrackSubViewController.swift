@@ -9,11 +9,6 @@
 import UIKit
 
 class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSource, DYAlertPickViewDelegate {
-    var channel: Channel? {
-        willSet {
-            self.baseUser = channel
-        }
-    }
     var isSectioned: Bool = false
     
     private var currentSectionIndex: Int = 0
@@ -39,7 +34,8 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
     
     func selectSection (index: Int) {
         self.currentSectionIndex = index
-        let playlist = self.channel!.playlists[index]
+        let channel = self.baseUser as! Channel
+        let playlist = channel.playlists[index]
         nextPageToken = nil
         listEnd = false
         
@@ -48,7 +44,7 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
         }
         
         if (self.trackTableView.tableHeaderView != nil) {
-            self.selectSectionButton.setTitle(self.channel!.playlists[index].name, forState: UIControlState.Normal)
+            self.selectSectionButton.setTitle(channel.playlists[index].name, forState: UIControlState.Normal)
         }
         
         self.loadTracks(playlist.uid, pageToken: nextPageToken)
@@ -66,12 +62,14 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
     }
     
     func numberOfRowsInDYAlertPickerView(pickerView: DYAlertPickView) -> Int {
-        return self.channel!.playlists.count-1
+        let channel = self.baseUser as! Channel
+        return channel.playlists.count-1
     }
     
     func titleForRowInDYAlertPickView(titleForRow: Int) -> NSAttributedString! {
         let attr = [NSFontAttributeName: UIFont.systemFontOfSize(12)]
-        return NSAttributedString(string:self.channel!.playlists[titleForRow+1].name, attributes:attr)
+        let channel = self.baseUser as! Channel
+        return NSAttributedString(string:channel.playlists[titleForRow+1].name, attributes:attr)
     }
     
     func didConfirmWithItemAtRowInDYAlertPickView(row: Int) {

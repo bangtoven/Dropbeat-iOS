@@ -198,13 +198,13 @@ class UserViewController: AXStretchableHeaderTabViewController {
             var subViewArr = [ChannelSubViewController]()
             let recent = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
             recent.title = "Recent"
-            recent.channel = channel
+            recent.baseUser = channel
             subViewArr.append(recent)
             
             if channel.playlists.count > 1 {
                 let sections = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
                 sections.title = "Sections"
-                sections.channel = channel
+                sections.baseUser = channel
                 sections.isSectioned = true
                 subViewArr.append(sections)
             }

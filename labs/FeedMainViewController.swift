@@ -14,6 +14,7 @@ class FeedMainViewController: DropdownMenuController {
         super.viewDidLoad()
         self.menubar = self.navigationController?.navigationBar
         self.dropShapeShouldShowWhenOpen(false)
+        self.hideMenu()
     }
 
     /*

@@ -197,7 +197,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
                 activeViewController = UIStoryboard(name: "Playlist", bundle: nil).instantiateInitialViewController()
             }
         case .TEST:
-            activeViewController = UIStoryboard(name: "Feeds", bundle: nil).instantiateInitialViewController()
+            activeViewController = UIStoryboard(name: "Explore", bundle: nil).instantiateInitialViewController()
         }
         if currentMenu == .PROFILE {
             UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)

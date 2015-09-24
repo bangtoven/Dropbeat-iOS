@@ -34,7 +34,17 @@ class PlaylistListTableViewController: UITableViewController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "PlaylistSegue" {
-            let playlist = playlists[tableView.indexPathForSelectedRow!.row]
+            let indexPath = tableView.indexPathForSelectedRow!
+            var playlist: Playlist
+            if let externalPlaylist = PlayerContext.externalPlaylist {
+                if indexPath.section == 0 {
+                    playlist = externalPlaylist
+                } else {
+                    playlist = playlists[indexPath.row]
+                }
+            } else {
+                playlist = playlists[indexPath.row]
+            }
             let playlistVC = segue.destinationViewController as! PlaylistViewController
             playlistVC.currentPlaylist = playlist
         }

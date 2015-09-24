@@ -920,9 +920,6 @@
                                             </tabBarItem>
                                             <tabBarItem title="" image="ic_audio_wave" id="0Fp-Yv-QTZ">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="image" keyPath="selectedImage" value="ic_home.png"/>
-                                                </userDefinedRuntimeAttributes>
                                             </tabBarItem>
                                         </items>
                                         <color key="barTintColor" red="0.1647058824" green="0.18039215689999999" blue="0.2156862745" alpha="1" colorSpace="calibratedRGB"/>

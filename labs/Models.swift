@@ -221,10 +221,10 @@ class User: BaseUser {
     }
     
     func fetchLikeList(callback:((likes:[Like]?, error:NSError?) -> Void)) {
-        if (likes != nil) {
-            callback(likes: likes!, error: nil)
-            return
-        }
+//        if (likes != nil) {
+//            callback(likes: likes!, error: nil)
+//            return
+//        }
         Requests.getUserLikeList(id, respCb: { (req, resp, result, error) -> Void in
             if (error != nil) {
                 callback(likes: nil, error: error)
@@ -573,7 +573,6 @@ class Playlist {
             } else {
                 id = s["id"].string!
             }
-            
             tracks.append(
                 Track(
                     id: id as! String,
@@ -1523,6 +1522,30 @@ class UserTrack: Track {
     }
 }
 
+class ChannelFeedTrack: ChannelTrack {
+    var channelTitle: String?
+    var channelImage: String?
+    var channelResourceName: String?
+    init (id:String, title:String, publishedAt:NSDate?, channelTitle:String) {
+        super.init(id: id, title: title, publishedAt: publishedAt)
+        self.channelTitle = channelTitle
+    }
+    
+    init (json: JSON) {
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.000Z"
+        let publishedAt = formatter.dateFromString(json["published_at"].stringValue)
+        
+        super.init(id: json["video_id"].stringValue,
+            title: json["title"].stringValue,
+            publishedAt: publishedAt)
+        
+        self.channelTitle = json["channel_title"].stringValue
+        self.channelImage = json["channel_image"].stringValue
+        self.channelResourceName = json["resource_name"].stringValue
+    }
+}
+
 class Track {
     var id: String
     var title: String
@@ -1982,20 +2005,13 @@ class FollowingArtistTrack:Track {
 }
 
 class ChannelTrack : Track {
+    // http://img.youtube.com/vi/IYglIFW8NoM/hqdefault.jpg
     var publishedAt : NSDate?
     init (id:String, title:String, publishedAt:NSDate?) {
         super.init(id: id, title: title, type: "youtube", tag: nil,
             thumbnailUrl: "http://img.youtube.com/vi/\(id)/mqdefault.jpg",
             drop: nil, dref: nil, topMatch: false)
         self.publishedAt = publishedAt
-    }
-}
-
-class ChannelFeedTrack: ChannelTrack {
-    var channelTitle: String?
-    init (id:String, title:String, publishedAt:NSDate?, channelTitle:String) {
-        super.init(id: id, title: title, publishedAt: publishedAt)
-        self.channelTitle = channelTitle
     }
 }
 

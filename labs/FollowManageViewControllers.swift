@@ -140,18 +140,18 @@ class FollowManageViewController: BaseViewController,
                 return
             }
             
-            let info = FollowingInfo.parseFollowing(result!)
-            if !info.success {
-                let message = NSLocalizedString("Failed to load following info.", comment:"")
-                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
-                return
-            }
+//            let info = FollowingInfo.parseFollowing(result!)
+//            if !info.success {
+//                let message = NSLocalizedString("Failed to load following info.", comment:"")
+//                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
+//                return
+//            }
             
             self.artists.removeAll(keepCapacity: false)
             
-            for artist in info.results! {
-                self.artists.append(artist)
-            }
+//            for artist in info.results! {
+//                self.artists.append(artist)
+//            }
             self.tableView.reloadData()
         }
     }

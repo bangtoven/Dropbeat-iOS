@@ -183,7 +183,7 @@ class FBSigninableViewController: BaseViewController {
                 }
                 
                 let token = res["token"].stringValue
-                let user = User.parseUser(result!)
+                let user = User(json: JSON(result!))
                 
                 self.afterSignin(user, token: token)
             })

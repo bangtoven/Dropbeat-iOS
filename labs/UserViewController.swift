@@ -97,11 +97,11 @@ class UserViewController: AXStretchableHeaderTabViewController {
             let type: String = JSON(result!)["data"]["user_type"].stringValue
             switch type {
             case "user":
-                self.baseUser = User.parseUser(result!,key:"data",secondKey:"user")
+                self.baseUser = User(json: JSON(result!)["data"])
             case "artist":
-                self.baseUser = Artist.parseArtist(result!,key:"data",secondKey:"user")
+                self.baseUser = Artist(json: JSON(result!)["data"])
             case "channel":
-                self.baseUser = Channel.parseChannel(result!,key:"data",secondKey: "user")
+                self.baseUser = Channel(json: JSON(result!)["data"])
             default:
                 ViewUtils.showNoticeAlert(self, title: "Error", message: "Unknown user type: \(type)")
                 return

@@ -8,42 +8,20 @@
 
 import UIKit
 
-class SearchResultSections {
-    static var TOP_MATCH = "top_match"
-    static var RELEASED = "released"
-    static var PODCAST = "podcast"
-    static var LIVESET = "liveset"
-    static var RELEVANT = "relevant"
-    static var allValues = [RELEASED, PODCAST, LIVESET, TOP_MATCH, RELEVANT]
-}
-
 class SearchViewController: AddableTrackListViewController,
     UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate,
-    UISearchBarDelegate, ScrollPagerDelegate{
-    
-    private static var sectionTitles = [
-        SearchResultSections.RELEASED: NSLocalizedString("OFFICIAL", comment:""),
-        SearchResultSections.PODCAST: NSLocalizedString("PODCASTS", comment:""),
-        SearchResultSections.LIVESET: NSLocalizedString("LIVE SETS", comment:""),
-        SearchResultSections.TOP_MATCH: NSLocalizedString("TOP MATCH", comment:""),
-        SearchResultSections.RELEVANT: NSLocalizedString("OTHERS", comment:"")
-    ]
+    UISearchBarDelegate {
     
     @IBOutlet weak var noSearchResultView: UILabel!
-    @IBOutlet weak var scrollPagerConstraint: NSLayoutConstraint!
     @IBOutlet weak var searchResultView: UIView!
-    @IBOutlet weak var scrollPager: ScrollPager!
     @IBOutlet weak var autocomTableView: UITableView!
     
-    private var searchResult:Search?
-    private var sectionedTracks = [String:[Track]]()
-    private var currentSections:[String]?
-    private var currentSection:String?
-    private var showAsRowSection = false
+    private var searchBar:UISearchBar!
     private var autocomKeywords:[String] = []
     private var autocomRequester:AutocompleteRequester?
-    private var searchBar:UISearchBar!
     
+    private var users = [BaseUser]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -63,66 +41,12 @@ class SearchViewController: AddableTrackListViewController,
         
         autocomRequester = AutocompleteRequester(handler: onHandleAutocomplete)
         
-        scrollPager.font = UIFont.systemFontOfSize(11)
-        scrollPager.selectedFont = UIFont.systemFontOfSize(11)
-        
         autocomTableView.hidden = true
         searchResultView.hidden = true
         
-        
-        
-        scrollPager.delegate = self
-        for section in SearchResultSections.allValues {
-            sectionedTracks[section] = [Track]()
-        }
-        
-        // Do any additional setup after loading the view.
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+        searchBar.becomeFirstResponder()
+
         self.screenName = "SearchViewScreen"
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    override func getSectionName() -> String {
-       return "search"
-    }
-    
-    override func updatePlay(track:Track?, playlistId:String?) {
-        if track == nil {
-            return
-        }
-        let indexPath = trackTableView.indexPathForSelectedRow
-        if (indexPath != nil) {
-            var preSelectedTrack:Track?
-            preSelectedTrack = tracks[indexPath!.row]
-            if (preSelectedTrack != nil &&
-                (preSelectedTrack!.id != track!.id ||
-                (playlistId != nil && Int(playlistId!) >= 0))) {
-                trackTableView.deselectRowAtIndexPath(indexPath!, animated: false)
-            }
-        }
-        
-        if playlistId != nil {
-            return
-        }
-        
-        for (idx, t) in tracks.enumerate() {
-            if (t.id == track!.id) {
-                trackTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
-                    animated: false, scrollPosition: UITableViewScrollPosition.None)
-                break
-            }
-        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -133,14 +57,194 @@ class SearchViewController: AddableTrackListViewController,
             playlistSelectVC.caller = self
         }
     }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if (tableView == trackTableView) {
+            var index:Int = indexPath.row
+            if (indexPath.section != 0) {
+                index += self.tableView(tableView, numberOfRowsInSection: 0)
+            }
+            onTrackPlayBtnClicked(tracks[index])
+        } else {
+            let keyword = autocomKeywords[indexPath.row]
+            searchBar!.text = keyword
+            searchBar!.endEditing(true)
+            doSearch(keyword)
+        }
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        if tableView == trackTableView {
+            return 2
+        } else {
+            return 1
+        }
+    }
+    
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if tableView == trackTableView {
+            if (section == 0) {
+                return self.users.count > 0 ? "ARTISTS" : nil
+            } else {
+                return self.tracks.count > 0 ? "TRACKS" : nil
+            }
+        } else {
+            return nil
+        }
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (tableView == trackTableView) {
+            if (section == 0) {
+                return self.users.count
+            } else {
+                return self.tracks.count
+            }
+        } else {
+            return autocomKeywords.count
+        }
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if (tableView == trackTableView) {
+            if indexPath.section == 0 {
+                let cell = tableView.dequeueReusableCellWithIdentifier("FollowInfoTableViewCell", forIndexPath: indexPath) as! FollowInfoTableViewCell
+                let u = self.users[indexPath.row]
+                cell.nameLabel.text = u.name
+                if let image = u.image {
+                    cell.profileImageView.sd_setImageWithURL(NSURL(string: image), placeholderImage: UIImage(named: "default_profile"))
+                } else {
+                    cell.profileImageView.image = UIImage(named: "default_profile")
+                }
+                
+                cell.profileImageView.layer.cornerRadius = 10
+                cell.profileImageView.layer.borderWidth = 2
+                cell.profileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
+                
+                return cell
 
+            } else {
+                let cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
+                cell.delegate = self
+                
+                let track = tracks[indexPath.row]
+                cell.nameView.text = track.title
+                if let thumbnailUrl = track.thumbnailUrl {
+                    cell.thumbView.sd_setImageWithURL(NSURL(string: thumbnailUrl),
+                        placeholderImage: UIImage(named: "default_artwork"))
+                } else {
+                    cell.thumbView.image = UIImage(named: "default_artwork")
+                }
+                var dropBtnImageName:String!
+                if dropPlayerContext.sectionName == getSectionName() &&
+                    dropPlayerContext.currentTrack?.id == track.id {
+                        switch(dropPlayerContext.playStatus) {
+                        case .Playing:
+                            dropBtnImageName = "ic_drop_pause_small"
+                            break
+                        case .Loading:
+                            dropBtnImageName = "ic_drop_loading_small"
+                            break
+                        case .Ready:
+                            dropBtnImageName = "ic_drop_small"
+                            break
+                        }
+                } else {
+                    dropBtnImageName = "ic_drop_small"
+                }
+                cell.dropBtn.setImage(UIImage(named: dropBtnImageName), forState: UIControlState.Normal)
+                cell.dropBtn.hidden = track.drop == nil
+                return cell
+            }
+        } else {
+            let cell:AutocomTableViewCell = tableView.dequeueReusableCellWithIdentifier("AutocomItem", forIndexPath: indexPath) as! AutocomTableViewCell
+            let keyword = autocomKeywords[indexPath.row]
+            cell.keywordView?.text = keyword
+            return cell
+        }
+    }
+    
+    func doSearch(keyword:String) {
+        hideAutocomplete()
+        
+        // stop prev drop
+        onDropFinished()
+        
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Searching..", comment:""))
+        searchResultView.hidden = false
+        
+        // Log to Us
+        if (Account.getCachedAccount() != nil) {
+            Requests.logSearch(keyword)
+        }
+        // Log to GA
+        let tracker = GAI.sharedInstance().defaultTracker
+        let event = GAIDictionaryBuilder.createEventWithCategory(
+                "search-sectio",
+                action: "search-with-keyword",
+                label: keyword,
+                value: 0
+            ).build()
+        tracker.send(event as [NSObject: AnyObject]!)
+        
+        Requests.search(keyword, respCb: {
+                (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            progressHud.hide(true)
+            
+            if (error != nil || result == nil) {
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to search", comment:""),
+                        message: NSLocalizedString("Internet is not connected", comment:""))
+                    return
+                }
+                let message = NSLocalizedString("Failed to search.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to search", comment:""), message: message)
+                self.tracks.removeAll(keepCapacity: false)
+                
+                self.trackTableView.hidden = true
+                self.noSearchResultView.hidden = false
+                self.trackTableView.reloadData()
+                self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+                return
+            }
+            
+            self.users = [BaseUser]()
+            
+            let json = JSON(result!)["data"]
+            for (_, a):(String,JSON) in json["artists"] {
+                var user: BaseUser
+                do {
+                    try user = BaseUser(json: a)
+                } catch _ {
+                    continue
+                }
+                self.users.append(user)
+            }
+            self.tracks = Track.parseTracks(json["tracks"])
+            
+            self.searchResultView.hidden = false
+            self.trackTableView.reloadData()
+            
+            let showNoResultView = (self.tracks.count == 0 && self.users.count == 0)
+            self.trackTableView.hidden = showNoResultView
+            self.noSearchResultView.hidden = !showNoResultView
+            
+            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+        })
+    }
+    
+    // MARK: auto complete
+    
+    
     @IBAction func onTabed(sender: AnyObject) {
         searchBar!.endEditing(true)
     }
     
     func onHandleAutocomplete(keywords:Array<String>?, error:NSError?) {
         if (error != nil || keywords == nil) {
-            print("Failed to get autocomplete:\(error?.description)")
+            print("Failed to get autocomplete")
             return
         }
         autocomKeywords.removeAll(keepCapacity: false)
@@ -176,110 +280,6 @@ class SearchViewController: AddableTrackListViewController,
         doSearch(keyword!)
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        if (tableView == trackTableView) {
-            let cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
-            var track:Track!
-            if indexPath.section == 0 {
-                track = tracks[indexPath.row]
-            } else {
-                let firstSectionCount:Int = self.tableView(tableView, numberOfRowsInSection: 0)
-                track = tracks[indexPath.row + firstSectionCount]
-            }
-            cell.delegate = self
-            cell.nameView.text = track.title
-            if track.thumbnailUrl != nil {
-                cell.thumbView.sd_setImageWithURL(NSURL(string: track!.thumbnailUrl!),
-                        placeholderImage: UIImage(named: "default_artwork"), completed: {
-                        (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
-                    if error != nil {
-                        cell.thumbView.image = UIImage(named: "default_artwork")
-                    }
-                })
-            } else {
-                cell.thumbView.image = UIImage(named: "default_artwork")
-            }
-            var dropBtnImageName:String!
-            if dropPlayerContext.sectionName == getSectionName() &&
-                dropPlayerContext.currentTrack?.id == track.id {
-                    switch(dropPlayerContext.playStatus) {
-                    case .Playing:
-                        dropBtnImageName = "ic_drop_pause_small"
-                        break
-                    case .Loading:
-                        dropBtnImageName = "ic_drop_loading_small"
-                        break
-                    case .Ready:
-                        dropBtnImageName = "ic_drop_small"
-                        break
-                    }
-            } else {
-                dropBtnImageName = "ic_drop_small"
-            }
-            cell.dropBtn.setImage(UIImage(named: dropBtnImageName), forState: UIControlState.Normal)
-            cell.dropBtn.hidden = track!.drop == nil
-            return cell
-        } else {
-            let cell:AutocomTableViewCell = tableView.dequeueReusableCellWithIdentifier("AutocomItem", forIndexPath: indexPath) as! AutocomTableViewCell
-            let keyword = autocomKeywords[indexPath.row]
-            cell.keywordView?.text = keyword
-            return cell
-        }
-    }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if (tableView == trackTableView) {
-            var index:Int = indexPath.row
-            if (indexPath.section != 0) {
-                index += self.tableView(tableView, numberOfRowsInSection: 0)
-            }
-            onTrackPlayBtnClicked(tracks[index])
-        } else {
-            let keyword = autocomKeywords[indexPath.row]
-            searchBar!.text = keyword
-            searchBar!.endEditing(true)
-            doSearch(keyword)
-        }
-    }
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        if (tableView == trackTableView && showAsRowSection) {
-            return 2
-        }
-        return 1
-    }
-    
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if (tableView == trackTableView && showAsRowSection) {
-            if (section == 0) {
-                return "TOP MATCH"
-            } else {
-                return "OTHER RESULTS"
-            }
-        }
-        return nil
-    }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (tableView == trackTableView) {
-            if (currentSection == nil) {
-                return 0
-            }
-            if (showAsRowSection) {
-                var count = 0
-                for t in tracks {
-                    if (t.topMatch ?? false) {
-                        count += 1
-                    }
-                }
-                return section == 0 ? count : tracks.count - count
-            }
-            return tracks.count
-        } else {
-            return autocomKeywords.count
-        }
-    }
-    
     func hideAutocomplete() {
         autocomTableView.hidden = true
         autocomRequester?.cancelAll()
@@ -293,205 +293,37 @@ class SearchViewController: AddableTrackListViewController,
         autocomTableView.hidden = false
     }
     
-    func doSearch(keyword:String) {
-        hideAutocomplete()
-        
-        // stop prev drop
-        onDropFinished()
-        
-        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Searching..", comment:""))
-        searchResultView.hidden = false
-        
-        // Log to Us
-        if (Account.getCachedAccount() != nil) {
-            Requests.logSearch(keyword)
-        }
-        // Log to GA
-        let tracker = GAI.sharedInstance().defaultTracker
-        let event = GAIDictionaryBuilder.createEventWithCategory(
-                "search-sectio",
-                action: "search-with-keyword",
-                label: keyword,
-                value: 0
-            ).build()
-        tracker.send(event as [NSObject: AnyObject]!)
-        
-        Requests.search(keyword, respCb: {
-                (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            progressHud.hide(true)
-            if (error != nil || result == nil) {
-                if (error != nil && error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showNoticeAlert(self,
-                        title: NSLocalizedString("Failed to search", comment:""),
-                        message: NSLocalizedString("Internet is not connected", comment:""))
-                    return
-                }
-                let message = NSLocalizedString("Failed to search.", comment:"")
-                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to search", comment:""), message: message)
-                self.searchResult = nil
-                self.sectionedTracks = [String:[Track]]()
-                self.tracks.removeAll(keepCapacity: false)
-                self.currentSections = nil
-                self.currentSection = nil
-                
-                self.trackTableView.hidden = true
-                self.noSearchResultView.hidden = false
-                self.trackTableView.reloadData()
-                self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
-                return
-            }
-            self.searchResult = Search.parseSearch(result!)
-            
-            
-            // clear sectionedTracks
-            self.showAsRowSection = self.searchResult!.showType == SearchShowType.ROW
-            if (self.showAsRowSection) {
-                self.sectionedTracks = [String:[Track]]()
-                self.sectionedTracks[SearchSections.RELEVANT] = self.searchResult!.getConcatedSectionTracks()
-            } else {
-                self.sectionedTracks = self.searchResult!.sectionedTracks
-            }
-            
-            // sectionize
-            var foundSections:[String] = Array(self.sectionedTracks.keys)
-            if (self.searchResult!.hasPodcast) {
-                foundSections.append(SearchSections.PODCAST)
-            }
-            if (self.searchResult!.hasLiveset) {
-                foundSections.append(SearchSections.LIVESET)
-            }
-            if (foundSections.indexOf(SearchSections.RELEVANT) ?? -1 == -1) {
-                foundSections.append(SearchSections.RELEVANT)
-            }
-            
-            foundSections.sortInPlace({ (lhs:String, rhs:String) -> Bool in
-                let lhsIdx:Int = Search.availableSections.indexOf(lhs) ?? -1
-                let rhsIdx:Int = Search.availableSections.indexOf(rhs) ?? -1
-                if lhsIdx > -1 && rhsIdx > -1 {
-                    return lhsIdx < rhsIdx
-                }
-                if lhsIdx > -1 {
-                    return true
-                }
-                if rhsIdx > -1 {
-                    return false
-                }
-                return true
-            })
-            let foundTitles:[String] = foundSections.map {
-                return SearchViewController.sectionTitles[$0]!
-            }
-            if (foundSections.count > 0) {
-                self.currentSection = foundSections[0]
-            } else {
-                self.currentSection = nil
-                
-                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to search", comment:""),
-                    message: NSLocalizedString("Failed to search.", comment:""))
-                self.searchResult = nil
-                self.sectionedTracks = [String:[Track]]()
-                self.tracks.removeAll(keepCapacity: false)
-                self.currentSections = nil
-                self.currentSection = nil
-                
-                self.trackTableView.hidden = true
-                self.noSearchResultView.hidden = false
-                self.trackTableView.reloadData()
-                self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
-                return
-            }
-            self.currentSections = foundSections
-            
-            if (self.searchResult!.showType == SearchShowType.ROW) {
-                self.scrollPagerConstraint.constant = 0
-                self.scrollPager.hidden = true
-            } else {
-                self.scrollPagerConstraint.constant = 50
-                self.scrollPager.addSegmentsWithTitles(foundTitles)
-                self.scrollPager.hidden = false
-            }
-            
-            self.tracks.removeAll(keepCapacity: false)
-            let tracks = self.sectionedTracks[self.currentSection!]
-            if tracks != nil {
-                for track in tracks! {
-                    self.tracks.append(track)
-                }
-            }
-            
-            self.trackTableView.reloadData()
-            self.searchResultView.hidden = false
-            
-            let showNoResultView = self.tracks.count == 0
-            self.trackTableView.hidden = showNoResultView
-            self.noSearchResultView.hidden = !showNoResultView
-            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
-        })
+    // MARK: etc
+    
+    override func getSectionName() -> String {
+        return "search"
     }
     
-    func selectTab(section:String) {
-        // stop prev drop
-        onDropFinished()
-        
-        self.currentSection = section
-        let tracks = self.sectionedTracks[self.currentSection!]
-        if (tracks == nil) {
-            let progress = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-            let callback = { (tracks: [Track]?, error:NSError?) -> Void in
-                progress.hide(true)
-                if (error != nil || tracks == nil) {
-                    if (error != nil && error!.domain == NSURLErrorDomain &&
-                            error!.code == NSURLErrorNotConnectedToInternet) {
-                        ViewUtils.showNoticeAlert(self,
-                            title: NSLocalizedString("Failed to fetch data", comment:""),
-                            message: NSLocalizedString("Internet is not connected", comment:""))
-                        return
-                    }
-                    let message = NSLocalizedString("Failed to fetch data.", comment:"")
-                    ViewUtils.showNoticeAlert(self,
-                        title: NSLocalizedString("Failed to fetch data", comment:""), message: message)
-                    return
-                }
-                self.tracks.removeAll(keepCapacity: false)
-                self.sectionedTracks[self.currentSection!] = tracks
-                if (tracks!.count == 0) {
-                    ViewUtils.showToast(self, message: NSLocalizedString("No search results", comment:""))
-                } else {
-                    for track in tracks! {
-                        self.tracks.append(track)
-                    }
-                }
-                self.trackTableView.reloadData()
-                self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
-            }
-            if (self.currentSection == SearchSections.LIVESET) {
-                self.searchResult!.fetchListset(callback)
-            } else if (self.currentSection == SearchSections.PODCAST) {
-                self.searchResult!.fetchPodcast(callback)
-            } else if (self.currentSection == SearchSections.RELEVANT) {
-                self.searchResult!.fetchRelevant(callback)
-            }
-        } else {
-            self.tracks.removeAll(keepCapacity: false)
-            if (tracks!.count == 0) {
-                ViewUtils.showToast(self, message: NSLocalizedString("No search results", comment:""))
-            } else {
-                for track in tracks! {
-                    self.tracks.append(track)
-                }
-            }
-            self.trackTableView.reloadData()
-            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
-        }
-        trackTableView.setContentOffset(CGPointZero, animated:false)
-    }
-    
-    func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
-        if (self.currentSections == nil || self.searchResult == nil) {
+    override func updatePlay(track:Track?, playlistId:String?) {
+        if track == nil {
             return
         }
-        selectTab(self.currentSections![changedIndex])
+        let indexPath = trackTableView.indexPathForSelectedRow
+        if (indexPath != nil) {
+            var preSelectedTrack:Track?
+            preSelectedTrack = tracks[indexPath!.row]
+            if (preSelectedTrack != nil &&
+                (preSelectedTrack!.id != track!.id ||
+                    (playlistId != nil && Int(playlistId!) >= 0))) {
+                        trackTableView.deselectRowAtIndexPath(indexPath!, animated: false)
+            }
+        }
+        
+        if playlistId != nil {
+            return
+        }
+        
+        for (idx, t) in tracks.enumerate() {
+            if (t.id == track!.id) {
+                trackTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
+                    animated: false, scrollPosition: UITableViewScrollPosition.None)
+                break
+            }
+        }
     }
-    
 }

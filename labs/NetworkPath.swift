@@ -86,10 +86,12 @@ public class ApiPath {
 }
 
 public class CorePath {
-//    static let host = RELEASE ? "http://core.dropbeat.net/api/" : "http://core.coroutine.io/api/"
-    static let host = "http://core.dropbeat.net/api/"
+    static let host = RELEASE ? "http://core.dropbeat.net/api/" : "http://core.coroutine.io/api/"
+//    static let host = "http://core.dropbeat.net/api/"
     
     // core.search
+    static let newSearch = host + "v1/search/"
+    
     static let search = host + "search/"
     static let searchRelated = search + "related/"
     static let searchLiveset = search + "liveset/"

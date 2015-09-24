@@ -116,9 +116,6 @@ class PlaylistListTableViewController: UITableViewController {
         let cell:PlaylistSelectTableViewCell = tableView.dequeueReusableCellWithIdentifier(
             "PlaylistSelectTableViewCell", forIndexPath: indexPath) as! PlaylistSelectTableViewCell
         cell.nameView.text = playlist.name
-        let trackCount = playlist.tracks.count
-        cell.trackCount.text = NSString.localizedStringWithFormat(
-            NSLocalizedString("%d tracks", comment: ""), trackCount) as String
         if playlist.id == PlayerContext.currentPlaylistId {
             cell.setSelected(true, animated: false)
         }
@@ -127,7 +124,7 @@ class PlaylistListTableViewController: UITableViewController {
     
     func loadPlaylist() {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        Requests.fetchAllPlaylists({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.fetchPlaylistList({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(true)
             if error != nil || result == nil {
                 ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to fetch", comment:""),

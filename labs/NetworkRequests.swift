@@ -85,8 +85,8 @@ class Requests {
         return sendPut(ApiPath.playlist, params: ["id": id, "name": name], auth: true, respCb: respCb)
     }
     
-    static func fetchAllPlaylists(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
-        return sendGet(ApiPath.playlistAll, auth: true, respCb: respCb)
+    static func fetchPlaylistList(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+        return sendGet(ApiPath.playlistList, auth: true, respCb: respCb)
     }
     
     static func fetchInitialPlaylist(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {

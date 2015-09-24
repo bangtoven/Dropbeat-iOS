@@ -13,6 +13,7 @@ class Playlist {
     var name: String
     var tracks: [Track]
     var type:PlaylistType = PlaylistType.USER
+    var dummy = false
     
     init(id: String, name: String, tracks: [Track]) {
         self.id = id
@@ -29,6 +30,19 @@ class Playlist {
         return -1
     }
     
+    // Called with `fetchAllPlaylists`.
+    static func parsePlaylists(data: AnyObject) -> [Playlist] {
+        var json = JSON(data)
+        var playlists :[Playlist] = []
+        for (_, s): (String, JSON) in json["data"] {
+            if let playlist = parsePlaylistJson(s) {
+                playlist.dummy = true
+                playlists.append(playlist)
+            }
+        }
+        return playlists
+    }
+    
     static private func parsePlaylistJson(playlistDict: JSON) -> Playlist? {
         let playlistId: Int = playlistDict["id"].intValue
         let playlistName: String = playlistDict["name"].stringValue
@@ -43,26 +57,13 @@ class Playlist {
             tracks.append(
                 Track(
                     id: id as! String,
-                    title: s["title"].string!,
+                    title: s["title"].stringValue,
                     type: s["type"].string!
                 )
             )
         }
         
-        return Playlist(
-            id: String(playlistId), name: playlistName, tracks: tracks)
-    }
-    
-    // Called with `fetchAllPlaylists`.
-    static func parsePlaylists(data: AnyObject) -> [Playlist] {
-        var json = JSON(data)
-        var playlists :[Playlist] = []
-        for (_, s): (String, JSON) in json["playlists"] {
-            if let playlist = parsePlaylistJson(s) {
-                playlists.append(playlist)
-            }
-        }
-        return playlists
+        return Playlist(id: String(playlistId), name: playlistName, tracks: tracks)
     }
     
     static func parsePlaylist(data: AnyObject, key: String = "obj") -> Playlist? {

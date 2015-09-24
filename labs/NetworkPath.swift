@@ -7,7 +7,9 @@ import Foundation
 let RELEASE = false
 
 public class ApiPath {
-    static let host = RELEASE ? "http://dropbeat.net/api/v1/" : "http://spark.coroutine.io/api/v1/"
+    static let host = RELEASE ? "http://dropbeat.net/api/v1/" : "http://coroutine.io:19080/api/v1/"
+    
+//    "http://spark.coroutine.io/api/v1/"
     
     // User
     static let user = host + "user/"
@@ -35,7 +37,7 @@ public class ApiPath {
     
     // Playlist
     static let playlist = host + "playlist/"
-    static let playlistAll = playlist + "all/"
+    static let playlistList = playlist + "list/"
     static let playlistSet = playlist + "set/"
     static let playlistIntial = playlist + "initial/"
     static let playlistShared = playlist + "shared/"

@@ -46,13 +46,6 @@
                                                 <constraint firstAttribute="height" constant="20" id="k8b-O3-Lp1"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="22 tracks" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XSF-ZI-n3i">
-                                            <rect key="frame" x="236" y="17" width="53" height="15"/>
-                                            <animations/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <color key="textColor" red="0.56470588239999997" green="0.56470588239999997" blue="0.56470588239999997" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                     </subviews>
                                     <animations/>
                                     <constraints>
@@ -61,8 +54,6 @@
                                         <constraint firstItem="d5R-E6-Dee" firstAttribute="trailing" secondItem="c51-mM-Kfp" secondAttribute="trailingMargin" id="I8A-Ns-D9u"/>
                                         <constraint firstAttribute="centerY" secondItem="g1o-lI-JLT" secondAttribute="centerY" id="LKm-IA-Os0"/>
                                         <constraint firstItem="g1o-lI-JLT" firstAttribute="leading" secondItem="2Kt-WW-Uqa" secondAttribute="trailing" constant="10" id="WYd-tp-xPB"/>
-                                        <constraint firstItem="d5R-E6-Dee" firstAttribute="leading" secondItem="XSF-ZI-n3i" secondAttribute="trailing" constant="3" id="acL-6h-nDB"/>
-                                        <constraint firstAttribute="centerY" secondItem="XSF-ZI-n3i" secondAttribute="centerY" id="x7B-6F-Kte"/>
                                         <constraint firstItem="2Kt-WW-Uqa" firstAttribute="leading" secondItem="c51-mM-Kfp" secondAttribute="leadingMargin" constant="2" id="yRu-WX-HQ6"/>
                                     </constraints>
                                 </tableViewCellContentView>
@@ -70,7 +61,6 @@
                                 <inset key="separatorInset" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
                                 <connections>
                                     <outlet property="nameView" destination="g1o-lI-JLT" id="PK0-t2-vHp"/>
-                                    <outlet property="trackCount" destination="XSF-ZI-n3i" id="2mW-lK-dLM"/>
                                     <segue destination="xjv-Nu-UuS" kind="show" identifier="PlaylistSegue" id="5GI-ft-6CL"/>
                                 </connections>
                             </tableViewCell>
@@ -193,31 +183,21 @@
                                                                 <constraint firstAttribute="height" constant="20" id="pt8-Cg-Wr5"/>
                                                             </constraints>
                                                         </imageView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="22 tracks" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BSb-u5-j12">
-                                                            <rect key="frame" x="259" y="17" width="53" height="15"/>
-                                                            <animations/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                            <color key="textColor" red="0.56470588239999997" green="0.56470588239999997" blue="0.56470588239999997" alpha="1" colorSpace="calibratedRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
                                                     </subviews>
                                                     <animations/>
                                                     <constraints>
                                                         <constraint firstAttribute="centerY" secondItem="43U-xj-Ihe" secondAttribute="centerY" id="0cG-ng-r0T"/>
                                                         <constraint firstItem="43U-xj-Ihe" firstAttribute="trailing" secondItem="aPK-AX-MyO" secondAttribute="trailingMargin" id="7o4-po-WRm"/>
                                                         <constraint firstAttribute="centerY" secondItem="ef0-3v-M31" secondAttribute="centerY" id="f4k-ZS-kEH"/>
-                                                        <constraint firstItem="43U-xj-Ihe" firstAttribute="leading" secondItem="BSb-u5-j12" secondAttribute="trailing" id="htQ-6B-0wT"/>
                                                         <constraint firstItem="ef0-3v-M31" firstAttribute="leading" secondItem="Chw-pJ-Lek" secondAttribute="trailing" constant="10" id="iup-bX-QO9"/>
                                                         <constraint firstItem="Chw-pJ-Lek" firstAttribute="leading" secondItem="aPK-AX-MyO" secondAttribute="leadingMargin" constant="2" id="rPc-um-9of"/>
                                                         <constraint firstAttribute="centerY" secondItem="Chw-pJ-Lek" secondAttribute="centerY" id="tne-8V-59o"/>
-                                                        <constraint firstAttribute="centerY" secondItem="BSb-u5-j12" secondAttribute="centerY" id="wvr-XI-0Wy"/>
                                                     </constraints>
                                                 </tableViewCellContentView>
                                                 <animations/>
                                                 <inset key="separatorInset" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
                                                 <connections>
                                                     <outlet property="nameView" destination="ef0-3v-M31" id="apG-uP-7wu"/>
-                                                    <outlet property="trackCount" destination="BSb-u5-j12" id="X8e-1K-HPu"/>
                                                 </connections>
                                             </tableViewCell>
                                         </prototypes>

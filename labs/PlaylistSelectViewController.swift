@@ -10,7 +10,6 @@ import UIKit
 
 class PlaylistSelectTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var trackCount: UILabel!
     @IBOutlet weak var nameView: UILabel!
     
     override func awakeFromNib() {
@@ -122,9 +121,6 @@ class PlaylistSelectViewController: BaseViewController, UITableViewDelegate, UIT
             "PlaylistSelectTableViewCell", forIndexPath: indexPath) as! PlaylistSelectTableViewCell
         let playlist = playlists[indexPath.row]
         cell.nameView.text = playlist.name
-        let trackCount = playlist.tracks.count
-        cell.trackCount.text = NSString.localizedStringWithFormat(
-            NSLocalizedString("%d tracks", comment:""), trackCount) as String
         return cell
     }
     
@@ -144,7 +140,7 @@ class PlaylistSelectViewController: BaseViewController, UITableViewDelegate, UIT
     
     func loadPlaylists() {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading playlists..", comment:""))
-        Requests.fetchAllPlaylists({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.fetchPlaylistList({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(true)
             if (error != nil || result == nil) {
                 ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to fetch", comment:""),
@@ -172,38 +168,83 @@ class PlaylistSelectViewController: BaseViewController, UITableViewDelegate, UIT
     }
     
     func addToPlaylist(playlist:Playlist) {
-        var hasAlready = false
-        for track in playlist.tracks {
-            if track.id == targetTrack!.id {
-                hasAlready = true
-                break
-            }
-        }
-        if hasAlready {
-            ViewUtils.showToast(self, message: NSLocalizedString("Already in Playlist", comment:""))
-            if tableView.indexPathForSelectedRow != nil {
-                tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: false)
-            }
-            return
-        }
-        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Saving..", comment:""))
-        targetTrack!.addToPlaylist(playlist, section: fromSection) { (error) -> Void in
-            progressHud.hide(true)
-            if error != nil {
-                var message:String?
-                if (error != nil && error!.domain == NSURLErrorDomain &&
-                    error!.code == NSURLErrorNotConnectedToInternet) {
-                        message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
-                } else {
-                    message = NSLocalizedString("Failed to add track to playlist", comment:"")
+        if playlist.dummy == false {
+            print("this is not dummy playlist. let's start adding")
+            
+            var hasAlready = false
+            for track in playlist.tracks {
+                if track.id == targetTrack!.id {
+                    hasAlready = true
+                    break
                 }
-                ViewUtils.showNoticeAlert(self,
-                    title: NSLocalizedString("Failed to add", comment:""),
-                    message: message!, btnText: NSLocalizedString("Confirm", comment:""), callback: nil)
+            }
+            if hasAlready {
+                ViewUtils.showToast(self, message: NSLocalizedString("Already in Playlist", comment:""))
+                if tableView.indexPathForSelectedRow != nil {
+                    tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: false)
+                }
                 return
             }
-            ViewUtils.showToast(self.caller!, message: NSLocalizedString("Track added", comment:""))
-            self.dismissViewControllerAnimated(true, completion: nil)
+            let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Saving..", comment:""))
+            targetTrack!.addToPlaylist(playlist, section: fromSection) { (error) -> Void in
+                progressHud.hide(true)
+                if error != nil {
+                    var message:String?
+                    if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                            message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
+                    } else {
+                        message = NSLocalizedString("Failed to add track to playlist", comment:"")
+                    }
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to add", comment:""),
+                        message: message!, btnText: NSLocalizedString("Confirm", comment:""), callback: nil)
+                    return
+                }
+                ViewUtils.showToast(self.caller!, message: NSLocalizedString("Track added", comment:""))
+                self.dismissViewControllerAnimated(true, completion: nil)
+            }
+        } else {
+            print("this is a dummy playlist. let's start to load.")
+            
+            Requests.getPlaylist(playlist.id, respCb: {
+                (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                if error != nil {
+                    var message:String?
+                    if (error != nil && error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                            message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
+                    } else {
+                        message = NSLocalizedString("Failed to add track to playlist", comment:"")
+                    }
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to add", comment:""),
+                        message: message!, btnText: NSLocalizedString("Confirm", comment:""), callback: nil)
+                    return
+                }
+                
+                var res = JSON(result!)
+                if !res["success"].boolValue {
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to fetch", comment:""),
+                        message: NSLocalizedString("Failed to fetch playlist", comment:""),
+                        btnText: NSLocalizedString("Confirm", comment:""))
+                    return
+                }
+                
+                let playlist:Playlist? = Playlist.parsePlaylist(res.rawValue, key: "playlist")
+                
+                if (playlist == nil) {
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to fetch", comment:""),
+                        message: NSLocalizedString("Failed to fetch playlist", comment:""),
+                        btnText: NSLocalizedString("Confirm", comment:""))
+                    return
+                }
+                
+                playlist?.dummy = false
+                self.addToPlaylist(playlist!)
+            })
         }
     }
 }

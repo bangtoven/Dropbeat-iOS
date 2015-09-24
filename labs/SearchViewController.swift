@@ -143,7 +143,7 @@ class SearchViewController: AddableTrackListViewController,
                 cell.profileImageView.layer.borderWidth = 2
                 cell.profileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
                 
-                cell.isFollowedImageView.hidden = !u.isFollowed()
+                cell.isFollowedImageView.hidden = (u.isFollowed() == false)
                 
                 return cell
 

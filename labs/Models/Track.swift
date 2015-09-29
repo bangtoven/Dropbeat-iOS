@@ -504,6 +504,9 @@ class UserTrack: Track {
     var playCount: Int = 0
     var repostCount: Int = 0
     var createdAt: NSDate?
+    
+    var userName: String?
+    var userProfileImage: String?
     var userResourceName: String?
     
     // playlist에서는 id에 userTrackId, title은 필요 없음., type "dropbeat"
@@ -521,7 +524,6 @@ class UserTrack: Track {
         
         self.streamUrl = streamUrl
         self.description = json["description"].stringValue
-        self.userResourceName = json["user_resource_name"].stringValue
         self.userTrackType = (json["track_type"].stringValue == "TRACK") ? TrackType.TRACK : TrackType.MIXSET
         self.likeCount = json["like_count"].intValue
         self.playCount = json["play_count"].intValue
@@ -530,9 +532,33 @@ class UserTrack: Track {
         let genreId = json["genre_id"].intValue
         self.genre = GenreList.getGenreName(genreId)
         
+        self.userName = json["user_name"].string
+        self.userProfileImage = json["user_profile_image"].string
+        self.userResourceName = json["user_resource_name"].string
+
         let formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         self.createdAt = formatter.dateFromString(json["created_at"].stringValue)
+    }
+    
+    static func fetchNewUploads(pageIdx: Int, callback:((tracks:[UserTrack]?, error:NSError?) -> Void)) {
+        Requests.sendGet(ApiPath.userTrackNewUploads, params: ["p": pageIdx], auth: false) { (req, res, result, error) -> Void in
+            if (error != nil) {
+                callback(tracks: nil, error: error)
+                return
+            }
+            if (result == nil) {
+                callback(tracks: [], error: nil)
+                return
+            }
+            
+            var tracks = [UserTrack]()
+            for (_, json) in JSON(result!)["data"] {
+               let t = UserTrack(json: json)
+                tracks.append(t)
+            }
+            callback(tracks: tracks, error: nil)
+        }
     }
 }
 

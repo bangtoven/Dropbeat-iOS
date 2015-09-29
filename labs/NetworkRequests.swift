@@ -200,18 +200,6 @@ class Requests {
         return sendPost(CorePath.artistFilter, params: ["q": names], auth:false, respCb: respCb)
     }
     
-    static func follow(ids:[Int], respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
-        return sendPost(ApiPath.artistFollow, params: ["ids": ids], auth:true, respCb: respCb)
-    }
-    
-    static func unfollow(ids:[Int], respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
-        return sendPost(ApiPath.artistUnfollow, params: ["ids": ids], auth:true, respCb: respCb)
-    }
-    
-    static func following(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
-        return sendGet(ApiPath.artistFollowing, params: nil, auth:true, respCb: respCb)
-    }
-    
     static func fetchBeatportChart(genre:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
         return sendGet(CorePath.trendingChart, params:["type": genre], auth:false, respCb: respCb)
     }
@@ -234,11 +222,6 @@ class Requests {
             params["g"] = genre
         }
         return sendGet(CorePath.streamTrending, params:params, auth:false, respCb: respCb)
-    }
-    
-    static func getStreamFollowing(forceRefresh:Bool, pageIdx:Int, order:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
-        let params:[String:AnyObject] = ["p": pageIdx, "order": order, "f": forceRefresh ? 1 : 0]
-        return sendGet(ApiPath.streamFollowing, params:params, auth:true, respCb: respCb)
     }
     
     static func getStreamFriend(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {

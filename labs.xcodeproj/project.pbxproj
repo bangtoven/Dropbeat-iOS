@@ -13,8 +13,6 @@
 		582E7D861B0F9A2D00AB76A2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 582E7D851B0F9A2D00AB76A2 /* QuartzCore.framework */; };
 		582E7D961B109B3100AB76A2 /* AutocomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582E7D951B109B3100AB76A2 /* AutocomTableViewCell.swift */; };
 		5854C7C41B6E94F5003A5A2A /* FollowingFeedHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5854C7C31B6E94F5003A5A2A /* FollowingFeedHeaderView.swift */; };
-		5854C7C81B6EEA8B003A5A2A /* FollowingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5854C7C71B6EEA8B003A5A2A /* FollowingTableViewCell.swift */; };
-		5854C7CA1B6EEB17003A5A2A /* FollowManageViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5854C7C91B6EEB17003A5A2A /* FollowManageViewControllers.swift */; };
 		585BAD0C1B85ED9900FE137A /* DateTools.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 585BACFA1B85ED9900FE137A /* DateTools.bundle */; };
 		585BAD0D1B85ED9900FE137A /* DTConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 585BACFD1B85ED9900FE137A /* DTConstants.m */; };
 		585BAD0E1B85ED9900FE137A /* DTError.m in Sources */ = {isa = PBXBuildFile; fileRef = 585BACFF1B85ED9900FE137A /* DTError.m */; };
@@ -114,7 +112,6 @@
 		734C7D751BB4C1DA0071678C /* DYAlertPickView.m in Sources */ = {isa = PBXBuildFile; fileRef = 732717291BAC86A8003E0B68 /* DYAlertPickView.m */; };
 		734C7D761BB4C1DA0071678C /* SDWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 588693881B13B51300566124 /* SDWebImageManager.m */; };
 		734C7D771BB4C1DA0071678C /* LinkedImageTransitionSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 734C7D581BB457EB0071678C /* LinkedImageTransitionSegue.m */; settings = {ASSET_TAGS = (); }; };
-		734C7D781BB4C1DA0071678C /* FollowingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5854C7C71B6EEA8B003A5A2A /* FollowingTableViewCell.swift */; };
 		734C7D791BB4C1DA0071678C /* SZTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AB34751BB1D34A0031E2CC /* SZTextView.m */; settings = {ASSET_TAGS = (); }; };
 		734C7D7A1BB4C1DA0071678C /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717481BAC8836003E0B68 /* UserViewController.swift */; };
 		734C7D7B1BB4C1DA0071678C /* MultipartFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B61BAE4AFA00284B8A /* MultipartFormData.swift */; settings = {ASSET_TAGS = (); }; };
@@ -137,7 +134,6 @@
 		734C7D8C1BB4C1DA0071678C /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90BD1BAE4AFA00284B8A /* Upload.swift */; settings = {ASSET_TAGS = (); }; };
 		734C7D8D1BB4C1DA0071678C /* AddableTrackTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58D3EBDD1B0BBC00000C6374 /* AddableTrackTableViewCell.swift */; };
 		734C7D8E1BB4C1DA0071678C /* UIButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5886938D1B13B51300566124 /* UIButton+WebCache.m */; };
-		734C7D8F1BB4C1DA0071678C /* FollowManageViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5854C7C91B6EEB17003A5A2A /* FollowManageViewControllers.swift */; };
 		734C7D901BB4C1DA0071678C /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B71BAE4AFA00284B8A /* ParameterEncoding.swift */; settings = {ASSET_TAGS = (); }; };
 		734C7D911BB4C1DA0071678C /* FeedMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F591BB32D2A00BC9EB7 /* FeedMainViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		734C7D921BB4C1DA0071678C /* SDWebImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 588693841B13B51300566124 /* SDWebImageDownloader.m */; };
@@ -307,8 +303,6 @@
 		582E7D851B0F9A2D00AB76A2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		582E7D951B109B3100AB76A2 /* AutocomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocomTableViewCell.swift; sourceTree = "<group>"; };
 		5854C7C31B6E94F5003A5A2A /* FollowingFeedHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingFeedHeaderView.swift; sourceTree = "<group>"; };
-		5854C7C71B6EEA8B003A5A2A /* FollowingTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingTableViewCell.swift; sourceTree = "<group>"; };
-		5854C7C91B6EEB17003A5A2A /* FollowManageViewControllers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowManageViewControllers.swift; sourceTree = "<group>"; };
 		585BACFA1B85ED9900FE137A /* DateTools.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = DateTools.bundle; sourceTree = "<group>"; };
 		585BACFB1B85ED9900FE137A /* DateTools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DateTools.h; sourceTree = "<group>"; };
 		585BACFC1B85ED9900FE137A /* DTConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTConstants.h; sourceTree = "<group>"; };
@@ -813,8 +807,6 @@
 				7361FCEA1B9F683100444179 /* Feed.storyboard */,
 				580621321B08CBAA009012D5 /* FeedViewController.swift */,
 				587B5BD71B6AD2B6009BD05D /* FeedSelectTableViewCell.swift */,
-				5854C7C91B6EEB17003A5A2A /* FollowManageViewControllers.swift */,
-				5854C7C71B6EEA8B003A5A2A /* FollowingTableViewCell.swift */,
 				58B829CE1B888987009F6E51 /* FriendFeedHeader.xib */,
 				58C539791B865AD000D7B8D0 /* FriendFeedHeaderView.swift */,
 				586F49D41B8088220039CC6B /* FollowingFeedHeader.xib */,
@@ -1245,7 +1237,6 @@
 				734C7D751BB4C1DA0071678C /* DYAlertPickView.m in Sources */,
 				734C7D761BB4C1DA0071678C /* SDWebImageManager.m in Sources */,
 				734C7D771BB4C1DA0071678C /* LinkedImageTransitionSegue.m in Sources */,
-				734C7D781BB4C1DA0071678C /* FollowingTableViewCell.swift in Sources */,
 				734C7D791BB4C1DA0071678C /* SZTextView.m in Sources */,
 				734C7D7A1BB4C1DA0071678C /* UserViewController.swift in Sources */,
 				734C7D7B1BB4C1DA0071678C /* MultipartFormData.swift in Sources */,
@@ -1268,7 +1259,6 @@
 				734C7D8C1BB4C1DA0071678C /* Upload.swift in Sources */,
 				734C7D8D1BB4C1DA0071678C /* AddableTrackTableViewCell.swift in Sources */,
 				734C7D8E1BB4C1DA0071678C /* UIButton+WebCache.m in Sources */,
-				734C7D8F1BB4C1DA0071678C /* FollowManageViewControllers.swift in Sources */,
 				734C7D901BB4C1DA0071678C /* ParameterEncoding.swift in Sources */,
 				734C7D911BB4C1DA0071678C /* FeedMainViewController.swift in Sources */,
 				734C7D921BB4C1DA0071678C /* SDWebImageDownloader.m in Sources */,
@@ -1360,7 +1350,6 @@
 				7327172F1BAC86A8003E0B68 /* DYAlertPickView.m in Sources */,
 				588693A01B13B51300566124 /* SDWebImageManager.m in Sources */,
 				734C7D591BB457EB0071678C /* LinkedImageTransitionSegue.m in Sources */,
-				5854C7C81B6EEA8B003A5A2A /* FollowingTableViewCell.swift in Sources */,
 				73AB34771BB1D34A0031E2CC /* SZTextView.m in Sources */,
 				7327174D1BAC8836003E0B68 /* UserViewController.swift in Sources */,
 				73FC90C31BAE4AFA00284B8A /* MultipartFormData.swift in Sources */,
@@ -1383,7 +1372,6 @@
 				73FC90CA1BAE4AFA00284B8A /* Upload.swift in Sources */,
 				58D3EBDE1B0BBC00000C6374 /* AddableTrackTableViewCell.swift in Sources */,
 				588693A21B13B51300566124 /* UIButton+WebCache.m in Sources */,
-				5854C7CA1B6EEB17003A5A2A /* FollowManageViewControllers.swift in Sources */,
 				73FC90C41BAE4AFA00284B8A /* ParameterEncoding.swift in Sources */,
 				739C8F5A1BB32D2A00BC9EB7 /* FeedMainViewController.swift in Sources */,
 				5886939E1B13B51300566124 /* SDWebImageDownloader.m in Sources */,

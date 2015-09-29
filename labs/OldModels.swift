@@ -433,72 +433,6 @@ class StreamFollowing {
     }
 }
 
-class StreamFriend {
-    var success:Bool
-    var results:[FriendTrack]?
-    init(success: Bool, tracks:[FriendTrack]?) {
-        self.success = success
-        results = tracks
-    }
-    
-    static func parseStreamFriend(data: AnyObject) -> StreamFriend {
-        var json = JSON(data)
-        
-        if !(json["success"].bool ?? false) {
-            return StreamFriend(success:false, tracks:nil)
-        }
-        
-        if json["data"] == nil || json["data"]["tracks"] == nil {
-            return StreamFriend(success:false, tracks:nil)
-        }
-        
-        let dataObj = json["data"]
-        
-        var tracks = [FriendTrack]()
-        
-        for(_, s): (String, JSON) in dataObj["tracks"] {
-            if s["id"].string == nil ||
-                s["nickname"].string == nil ||
-                s["release_date"].string == nil ||
-                s["ts"].int == nil ||
-                s["artist_name"].string == nil ||
-                s["track_name"].string == nil ||
-                s["genre"].string == nil ||
-                s["type"].string == nil {
-                    continue
-            }
-            
-            let track = FriendTrack(
-                nickname:s["nickname"].stringValue,
-                id:s["id"].stringValue,
-                trackName: s["track_name"].stringValue,
-                type: s["type"].stringValue,
-                artistName: s["artist_name"].stringValue,
-                ts: s["ts"].intValue,
-                genre:s["genre"].stringValue,
-                thumbnail:s["thumbnail"].string
-            )
-            
-            var drop:Drop?
-            var dropObj = s["drop"]
-            if dropObj != nil && dropObj["dref"].string != nil &&
-                dropObj["dref"].stringValue.characters.count > 0 &&
-                dropObj["type"].string != nil {
-                    
-                    drop = Drop(
-                        dref: dropObj["dref"].stringValue,
-                        type: dropObj["type"].stringValue,
-                        when: dropObj["when"].int)
-            }
-            track.drop = drop
-            
-            tracks.append(track)
-        }
-        return StreamFriend(success:true, tracks:tracks)
-    }
-    
-}
-
 class BeatportTrack:Track {
     var artist:String!
     var mixType:String?
@@ -633,30 +567,6 @@ class SearchArtist {
             followings.append(Following(id:id, name:name, isFollowing:false))
         }
         return SearchArtist(success:true, results:followings)
-    }
-}
-
-
-
-class FriendTrack: Track {
-    var trackName:String!
-    var nickname:String!
-    var ts: Int!
-    var artistName:String!
-    var genre:String!
-    init (nickname:String, id:String, trackName:String, type:String, artistName:String,
-        ts:Int, genre:String, thumbnail:String?) {
-            let title = artistName + " - " + trackName
-            var thumbnailUrl = thumbnail
-            if thumbnailUrl == nil && type == "youtube" {
-                thumbnailUrl = "http://img.youtube.com/vi/\(id)/mqdefault.jpg"
-            }
-            super.init(id:id, title: title, type: type, tag: nil, thumbnailUrl:thumbnailUrl)
-            self.trackName = trackName
-            self.nickname = nickname
-            self.ts = ts
-            self.genre = genre
-            self.artistName = artistName
     }
 }
 

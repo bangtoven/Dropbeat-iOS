@@ -72,15 +72,13 @@ public class ApiPath {
     static let trackLike = track + "like/"
     static let trackDislike = track + "dislike/"
     
+    static let userTrack = host + "usertrack/"
+    static let userTrackNewUploads = userTrack + "newest/"
+    
     // Artist
     static let artist = host + "artist/"
     static let artistFollow = artist + "follow/"
     static let artistUnfollow = artist + "unfollow/"
-    static let artistFollowing = artist + "following/"
-    
-    // Stream
-    static let stream = host + "stream/"
-    static let streamFollowing = stream + "following/"
     
     // Feedback
     static let feedback = host + "async/feedback/"

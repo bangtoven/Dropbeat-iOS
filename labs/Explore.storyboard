@@ -9,7 +9,7 @@
         <!--Explore-->
         <scene sceneID="Ajs-Wp-fZ6">
             <objects>
-                <viewController id="U5L-Wr-xF8" customClass="ExploreViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="U5L-Wr-xF8" customClass="ExploreViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Gcp-XT-WIe"/>
                         <viewControllerLayoutGuide type="bottom" id="OZU-C2-p65"/>
@@ -104,7 +104,7 @@
                                     </constraints>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="8" shouldIndentWhileEditing="NO" reuseIdentifier="ExploreTableViewCell" rowHeight="104" id="brO-iO-Roa" customClass="ExploreTableViewCell" customModule="labs" customModuleProvider="target">
+                                    <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="8" shouldIndentWhileEditing="NO" reuseIdentifier="ExploreTableViewCell" rowHeight="104" id="brO-iO-Roa" customClass="ExploreTableViewCell" customModule="for_test" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="188" width="320" height="104"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="brO-iO-Roa" id="Vx2-6G-15Y">

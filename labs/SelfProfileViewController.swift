@@ -15,24 +15,20 @@ class ProfileHeaderView: UserHeaderView {
     @IBOutlet weak var editAboutMeButton: UIButton!
     @IBOutlet weak var favoriteGenresLabel: UILabel!
     
-    func setButtonSetting(button: UIButton) {
-        button.tintColor = UIColor.dropbeatColor()
-        button.backgroundColor = UIColor.whiteColor()
-        button.layer.cornerRadius = 5
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.dropbeatColor().CGColor
-        button.clipsToBounds = true
-    }
-    
     override func interactiveSubviews() -> [AnyObject]! {
         return [self.editNicknameButton, self.editGenresButton, self.editAboutMeButton]
     }
     
-    override func loadView() {
-        super.loadView()
+    override func awakeFromNib() {
+        super.awakeFromNib()
         
         for button:UIButton in [editNicknameButton,editGenresButton,editAboutMeButton] {
-            self.setButtonSetting(button)
+            button.tintColor = UIColor.dropbeatColor()
+            button.backgroundColor = UIColor.whiteColor()
+            button.layer.cornerRadius = 5
+            button.layer.borderWidth = 1
+            button.layer.borderColor = UIColor.dropbeatColor().CGColor
+            button.clipsToBounds = true
         }
     }
 }

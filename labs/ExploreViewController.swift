@@ -12,6 +12,17 @@ class ExploreTableViewCell: AddableTrackTableViewCell {
     @IBOutlet weak var channelImageView: UIImageView!
     @IBOutlet weak var channelName: UILabel!
     @IBOutlet weak var publishedAt: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        self.channelImageView.layer.cornerRadius = 4
+        self.channelImageView.layer.borderWidth = 1
+        self.channelImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
+        
+        self.layer.borderWidth = 4
+        self.layer.borderColor = UIColor(netHex: 0xE0DFEA).CGColor
+    }
 }
 
 class ExploreViewController: AddableTrackListViewController, UITableViewDelegate, UITableViewDataSource {
@@ -85,20 +96,11 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             } else {
                 cell.thumbView.image = UIImage(named: "default_artwork")
             }
-            if track.publishedAt != nil {
-                let formatter = NSDateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd"
-                cell.publishedAt.text = formatter.stringFromDate(track.publishedAt!)
+            if let publishedAt = track.publishedAt {
+                cell.publishedAt.text = publishedAt.timeAgoSinceNow()
             } else {
                 cell.publishedAt.hidden = true
             }
-            
-            cell.channelImageView.layer.cornerRadius = 4
-            cell.channelImageView.layer.borderWidth = 1
-            cell.channelImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
-            
-            cell.layer.borderWidth = 4
-            cell.layer.borderColor = UIColor(netHex: 0xE0DFEA).CGColor
 
             return cell
     }

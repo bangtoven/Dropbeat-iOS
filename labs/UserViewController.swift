@@ -28,18 +28,9 @@ class UserHeaderView: AXStretchableHeaderView {
         return [self.showMoreButton, self.followButton]
     }
     
-    private var loaded = false
-
-    override func willMoveToSuperview(newSuperview: UIView?) {
-        super.willMoveToSuperview(newSuperview)
-
-        if self.loaded == false {
-            self.loadView()
-            self.loaded = true
-        }
-    }
-    
-    func loadView() {
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
         self.nameLabel.text = ""
         self.aboutMeLabel.text = ""
         

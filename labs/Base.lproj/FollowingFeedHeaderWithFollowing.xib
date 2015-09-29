@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FollowingFeedHeaderWithFollowingView" customModule="labs" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FollowingFeedHeaderWithFollowingView" customModule="for_test" customModuleProvider="target">
             <connections>
                 <outlet property="followingInfoView" destination="yxX-M9-YJZ" id="tK7-TC-dCv"/>
                 <outlet property="manageFollowBtn" destination="Bmx-Z8-wXF" id="S88-7v-JeX"/>

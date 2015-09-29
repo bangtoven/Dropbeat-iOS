@@ -9,10 +9,10 @@
 import UIKit
 
 enum FeedType {
-    case TRENDING
+    case POPULAR_NOW
     case FOLLOWING
     case NEW_RELEASE
-    case BEATPORT_CHART
+    case DAILY_CHART
     case USER_GROUP
 }
 
@@ -63,10 +63,10 @@ class FeedViewController: AddableTrackListViewController,
         if Account.getCachedAccount() != nil {
             types.append(FeedMenu(title: NSLocalizedString("Social Feed", comment:""), type: FeedType.USER_GROUP))
         }
-        types.append(FeedMenu(title: NSLocalizedString("Trending Tracks", comment:""), type: FeedType.TRENDING))
+        types.append(FeedMenu(title: NSLocalizedString("Popular Now", comment:""), type: FeedType.POPULAR_NOW))
         types.append(FeedMenu(title: NSLocalizedString("Followed Artists", comment:""), type: FeedType.FOLLOWING))
         types.append(FeedMenu(title: NSLocalizedString("New Releases", comment:""), type: FeedType.NEW_RELEASE))
-        types.append(FeedMenu(title: NSLocalizedString("Beatport Charts", comment:""), type: FeedType.BEATPORT_CHART))
+        types.append(FeedMenu(title: NSLocalizedString("Daily Chart", comment:""), type: FeedType.DAILY_CHART))
         return types
     }()
     
@@ -153,8 +153,8 @@ class FeedViewController: AddableTrackListViewController,
     override func getPlaylistId() -> String? {
         var prefix:String? = nil
         switch (selectedFeedMenu.type) {
-        case .BEATPORT_CHART:
-            prefix = "beatport_chart"
+        case .DAILY_CHART:
+            prefix = "daily_chart"
             break
         case .FOLLOWING:
             prefix = "followed_artist_feed"
@@ -162,8 +162,8 @@ class FeedViewController: AddableTrackListViewController,
         case .NEW_RELEASE:
             prefix = "new_release"
             break
-        case .TRENDING:
-            prefix = "trending"
+        case .POPULAR_NOW:
+            prefix = "popular_now"
             break
         case .USER_GROUP:
             prefix = "social_feed"
@@ -178,8 +178,8 @@ class FeedViewController: AddableTrackListViewController,
     override func getPlaylistName() -> String? {
         var prefix:String? = nil
         switch (selectedFeedMenu.type) {
-        case .BEATPORT_CHART:
-            prefix = NSLocalizedString("Beatport Charts", comment:"")
+        case .DAILY_CHART:
+            prefix = NSLocalizedString("Daily Chart", comment:"")
             break
         case .FOLLOWING:
             prefix = NSLocalizedString("Followed Artists Feed", comment:"")
@@ -187,8 +187,8 @@ class FeedViewController: AddableTrackListViewController,
         case .NEW_RELEASE:
             prefix = NSLocalizedString("New Releases", comment:"")
             break
-        case .TRENDING:
-            prefix = NSLocalizedString("Trending Tracks", comment:"")
+        case .POPULAR_NOW:
+            prefix = NSLocalizedString("Popular Now", comment:"")
             break
         case .USER_GROUP:
             prefix = NSLocalizedString("Social Feed", comment:"")
@@ -204,8 +204,8 @@ class FeedViewController: AddableTrackListViewController,
         let section = "feed_"
         var postfix:String!
         switch (selectedFeedMenu.type) {
-        case .BEATPORT_CHART:
-            postfix = "beatport_chart"
+        case .DAILY_CHART:
+            postfix = "daily_chart"
             break
         case .FOLLOWING:
             postfix = "followed_artists"
@@ -213,8 +213,8 @@ class FeedViewController: AddableTrackListViewController,
         case .NEW_RELEASE:
             postfix = "new_release_tracks"
             break
-        case .TRENDING:
-            postfix = "trending_tracks"
+        case .POPULAR_NOW:
+            postfix = "popular_now"
             break
         case .USER_GROUP:
             postfix = "social_feed"
@@ -263,9 +263,9 @@ class FeedViewController: AddableTrackListViewController,
         ]
         
         let genreHandler = {(genreMap:[String:[Genre]]) -> Void in
-            self.genres[FeedType.BEATPORT_CHART] = genreMap["default"]
+            self.genres[FeedType.DAILY_CHART] = genreMap["default"]
             self.genres[FeedType.NEW_RELEASE] = genreMap["default"]
-            self.genres[FeedType.TRENDING] = genreMap["trending"]
+            self.genres[FeedType.POPULAR_NOW] = genreMap["trending"]
             
             self.genreInitialized = true
             callback(error: nil)
@@ -345,7 +345,7 @@ class FeedViewController: AddableTrackListViewController,
             trackCell.artistWidthConstraint.constant = self.view.bounds.width - marginWidth
             dropBtn = trackCell.dropBtn
             
-        } else if selectedFeedMenu.type == FeedType.TRENDING {
+        } else if selectedFeedMenu.type == FeedType.POPULAR_NOW {
             if selectedGenre != nil && selectedGenre!.key.characters.count > 0 {
                 let trackCell = cell as! BpTrendingTrackTableViewCell
                 trackCell.titleWidthConstaint.constant = self.view.bounds.width - marginWidth
@@ -364,7 +364,7 @@ class FeedViewController: AddableTrackListViewController,
             trackCell.artistWidthConstraint.constant = self.view.bounds.width - marginWidth
             dropBtn = trackCell.dropBtn
             
-        } else if selectedFeedMenu.type == FeedType.BEATPORT_CHART {
+        } else if selectedFeedMenu.type == FeedType.DAILY_CHART {
             let trackCell = cell as! BpChartTrackTableViewCell
             dropBtn = trackCell.dropBtn
             dropIcReadyName = "ic_drop_small"
@@ -434,13 +434,13 @@ class FeedViewController: AddableTrackListViewController,
         } else {
             var cell:UITableViewCell!
             switch (selectedFeedMenu.type) {
-            case .BEATPORT_CHART:
+            case .DAILY_CHART:
                 cell = getBeatportChartCell(indexPath)
                 break
             case .NEW_RELEASE:
                 cell = getNewReleaseCell(indexPath)
                 break
-            case .TRENDING:
+            case .POPULAR_NOW:
                 cell = selectedGenre != nil && selectedGenre!.key.characters.count > 0 ?
                     getBeatportTrendingCell(indexPath) : getTrendingCell(indexPath)
                 break
@@ -649,11 +649,11 @@ class FeedViewController: AddableTrackListViewController,
             return 60
         }
         switch(selectedFeedMenu.type) {
-        case .TRENDING :
+        case .POPULAR_NOW :
             return (15 * self.view.bounds.width / 30) + 52
         case .NEW_RELEASE:
             return (15 * self.view.bounds.width / 30) + 52
-        case .BEATPORT_CHART:
+        case .DAILY_CHART:
             return 76
         case .FOLLOWING:
             return (15 * self.view.bounds.width / 30) + 52
@@ -692,7 +692,7 @@ class FeedViewController: AddableTrackListViewController,
     func switchFeed(menu:FeedMenu, genre:Genre?=nil, forceRefresh:Bool=false, remoteRefresh:Bool=false) {
         onDropFinished()
         updateFeedTypeSelectBtn(menu.title)
-        nextPage = menu.type == FeedType.BEATPORT_CHART ? -1 : 0
+        nextPage = menu.type == FeedType.DAILY_CHART ? -1 : 0
         tracks.removeAll(keepCapacity: false)
         trackTableView.reloadData()
         genreTableView.reloadData()
@@ -788,14 +788,14 @@ class FeedViewController: AddableTrackListViewController,
         // log ga
         var action:String = "none"
         switch(menu.type) {
-        case .TRENDING:
-            action = "trending"
+        case .POPULAR_NOW:
+            action = "popular_now"
             break
         case .FOLLOWING:
             action = "following"
             break
-        case .BEATPORT_CHART:
-            action = "beatport_chart"
+        case .DAILY_CHART:
+            action = "daily_chart"
             break
         case .NEW_RELEASE:
             action = "new_release"
@@ -822,13 +822,13 @@ class FeedViewController: AddableTrackListViewController,
     
     func loadFeed(type:FeedType, forceRefresh:Bool=false) {
         switch(type) {
-        case .TRENDING:
+        case .POPULAR_NOW:
             loadTrendingFeed(forceRefresh)
             break
         case .FOLLOWING:
             loadFollowingFeed(forceRefresh)
             break
-        case .BEATPORT_CHART:
+        case .DAILY_CHART:
             loadBeatportChartFeed(forceRefresh)
             break
         case .NEW_RELEASE:
@@ -841,7 +841,7 @@ class FeedViewController: AddableTrackListViewController,
     }
     
     func refresh() {
-        nextPage = selectedFeedMenu.type == FeedType.BEATPORT_CHART ? -1 : 0
+        nextPage = selectedFeedMenu.type == FeedType.DAILY_CHART ? -1 : 0
         
         loadMoreSpinnerWrapper.hidden = true
         loadMoreSpinner.stopAnimating()
@@ -851,7 +851,7 @@ class FeedViewController: AddableTrackListViewController,
     
     func loadTrendingFeed(forceRefresh:Bool=false) {
         if selectedGenre == nil {
-            selectedGenre = genres[FeedType.TRENDING]![0]
+            selectedGenre = genres[FeedType.POPULAR_NOW]![0]
         }
         
         if isLoading {
@@ -926,7 +926,7 @@ class FeedViewController: AddableTrackListViewController,
     
     func loadBeatportChartFeed(forceRefresh:Bool=false) {
         if selectedGenre == nil {
-            selectedGenre = genres[FeedType.BEATPORT_CHART]![0]
+            selectedGenre = genres[FeedType.DAILY_CHART]![0]
         }
         
         var progressHud:MBProgressHUD?

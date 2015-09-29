@@ -541,8 +541,12 @@ class UserTrack: Track {
         self.createdAt = formatter.dateFromString(json["created_at"].stringValue)
     }
     
-    static func fetchNewUploads(pageIdx: Int, callback:((tracks:[UserTrack]?, error:NSError?) -> Void)) {
-        Requests.sendGet(ApiPath.userTrackNewUploads, params: ["p": pageIdx], auth: false) { (req, res, result, error) -> Void in
+    static func fetchNewUploads(genre:String?, pageIdx: Int, callback:((tracks:[UserTrack]?, error:NSError?) -> Void)) {
+        var params:[String:AnyObject] = ["p": pageIdx]
+        if genre != nil && (genre!).characters.count > 0 {
+            params["genre_id"] = genre
+        }
+        Requests.sendGet(ApiPath.userTrackNewUploads, params: params, auth: false) { (req, res, result, error) -> Void in
             if (error != nil) {
                 callback(tracks: nil, error: error)
                 return

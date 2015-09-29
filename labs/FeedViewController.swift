@@ -244,6 +244,7 @@ class FeedViewController: AddableTrackListViewController,
             self.genres[FeedType.DAILY_CHART] = genreMap["default"]
             self.genres[FeedType.NEW_RELEASE] = genreMap["default"]
             self.genres[FeedType.POPULAR_NOW] = genreMap["trending"]
+            self.genres[FeedType.NEW_UPLOADS] = genreMap["dropbeat"]
             
             self.genreInitialized = true
             callback(error: nil)
@@ -940,6 +941,9 @@ class FeedViewController: AddableTrackListViewController,
     }
     
     func loadNewUploadsFeed(forceRefresh:Bool=false) {
+        if selectedGenre == nil {
+            selectedGenre = genres[FeedType.NEW_UPLOADS]![0]
+        }
         if isLoading {
             return
         }
@@ -948,7 +952,7 @@ class FeedViewController: AddableTrackListViewController,
         if !refreshControl.refreshing && nextPage == 0 {
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
-        UserTrack.fetchNewUploads(nextPage) { (tracks, error) -> Void in
+        UserTrack.fetchNewUploads(selectedGenre!.key, pageIdx: nextPage) { (tracks, error) -> Void in
             self.isLoading = false
             progressHud?.hide(true)
             if self.refreshControl.refreshing {

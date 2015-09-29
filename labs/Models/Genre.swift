@@ -102,6 +102,7 @@ class GenreList {
             trendingGenres.append(Genre(key:key, name:name))
         }
         
+        dropbeatGenres.append(Genre(key:"", name:"ALL"))
         for (_, s): (String, JSON) in json["dropbeat"] {
             if s["id"].int == nil {
                 continue
@@ -122,6 +123,7 @@ class GenreList {
         genres["dropbeat"] = dropbeatGenres
         
         GenreList.cachedResult = genres
+        
         return GenreList(success: true, results: genres)
     }
 }

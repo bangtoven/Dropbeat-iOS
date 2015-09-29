@@ -371,7 +371,7 @@ class Artist: BaseUser {
     
     var hasEvent = false
     var hasPodcast = false
-    var hasLiveset = false
+    var hasLiveset = true
     var sectionedTracks = [String:[Track]]()
     var events: [ArtistEvent] = []
     

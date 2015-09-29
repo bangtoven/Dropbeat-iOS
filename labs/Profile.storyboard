@@ -10,20 +10,20 @@
         <!--Edit nickname-->
         <scene sceneID="j5X-Z4-MnJ">
             <objects>
-                <tableViewController id="8bU-SJ-acY" customClass="EditNicknameViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="8bU-SJ-acY" customClass="EditNicknameViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="e5G-vq-ehL" customClass="TPKeyboardAvoidingTableView">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <sections>
                             <tableViewSection headerTitle=" " id="EW3-0E-fHe">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="99" id="kzo-IZ-jEh">
-                                        <rect key="frame" x="0.0" y="50" width="320" height="99"/>
+                                        <rect key="frame" x="0.0" y="49.5" width="320" height="99"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kzo-IZ-jEh" id="lGU-PG-0ir">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="98"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="98.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wmt-Lz-tPg">
@@ -108,12 +108,12 @@
         <!--About me-->
         <scene sceneID="vLG-NA-5Qe">
             <objects>
-                <tableViewController id="etP-Ps-FGE" customClass="EditAboutMeViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="etP-Ps-FGE" customClass="EditAboutMeViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="YjR-yB-Nnt">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
-                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <sections/>
                         <connections>
                             <outlet property="dataSource" destination="etP-Ps-FGE" id="6uW-3m-UxV"/>
@@ -159,7 +159,7 @@
         <!--Profile-->
         <scene sceneID="WK1-Fe-VLM">
             <objects>
-                <viewController id="O7I-Zd-rw2" customClass="SelfProfileViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="O7I-Zd-rw2" customClass="SelfProfileViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vJB-4M-bap"/>
                         <viewControllerLayoutGuide type="bottom" id="qwd-cc-Rrk"/>
@@ -168,7 +168,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="auO-9J-wxQ">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="auO-9J-wxQ">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                                 <animations/>
                                 <connections>
@@ -200,7 +200,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oGl-sG-Oui" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="q60-kv-KpD" customClass="ProfileHeaderView" customModule="labs" customModuleProvider="target">
+                <view contentMode="scaleToFill" id="q60-kv-KpD" customClass="ProfileHeaderView" customModule="for_test" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
@@ -478,7 +478,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
         <!--User View Controller-->
         <scene sceneID="10W-2V-DkZ">
             <objects>
-                <viewController storyboardIdentifier="UserViewController" id="ZJ4-xY-4VA" customClass="UserViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="UserViewController" id="ZJ4-xY-4VA" customClass="UserViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rPW-eU-8Lc"/>
                         <viewControllerLayoutGuide type="bottom" id="4Rf-VU-ehf"/>
@@ -487,7 +487,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                         <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FKZ-Gf-yfe">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FKZ-Gf-yfe">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                                 <animations/>
                                 <connections>
@@ -513,7 +513,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aCV-kH-mc3" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="0ib-J0-KQD" customClass="UserHeaderView" customModule="labs" customModuleProvider="target">
+                <view contentMode="scaleToFill" id="0ib-J0-KQD" customClass="UserHeaderView" customModule="for_test" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="288"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
@@ -738,7 +738,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
         <!--Track Sub View Controller-->
         <scene sceneID="uTn-Zq-McQ">
             <objects>
-                <viewController storyboardIdentifier="TrackSubViewController" automaticallyAdjustsScrollViewInsets="NO" id="Gv0-Fx-Mee" customClass="TrackSubViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TrackSubViewController" automaticallyAdjustsScrollViewInsets="NO" id="Gv0-Fx-Mee" customClass="TrackSubViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3J2-d2-bwS"/>
                         <viewControllerLayoutGuide type="bottom" id="U6J-X0-P97"/>
@@ -777,7 +777,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                     </variation>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="AddableTrackTableViewCell" rowHeight="76" id="HYh-cM-QtT" customClass="AddableTrackTableViewCell" customModule="labs" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="AddableTrackTableViewCell" rowHeight="76" id="HYh-cM-QtT" customClass="AddableTrackTableViewCell" customModule="for_test" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="66" width="320" height="76"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HYh-cM-QtT" id="c16-Ty-FQI">
@@ -959,7 +959,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
         <!--Channel Sub View Controller-->
         <scene sceneID="bOq-ky-gkS">
             <objects>
-                <viewController storyboardIdentifier="ChannelSubViewController" automaticallyAdjustsScrollViewInsets="NO" id="R26-45-dyJ" customClass="ChannelSubViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ChannelSubViewController" automaticallyAdjustsScrollViewInsets="NO" id="R26-45-dyJ" customClass="ChannelSubViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="pDy-0f-GYG"/>
                         <viewControllerLayoutGuide type="bottom" id="DAj-ea-AUS"/>
@@ -1045,7 +1045,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                     </constraints>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="AddableTrackTableViewCell" rowHeight="76" id="0P1-FD-QF9" customClass="AddableTrackTableViewCell" customModule="labs" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="AddableTrackTableViewCell" rowHeight="76" id="0P1-FD-QF9" customClass="AddableTrackTableViewCell" customModule="for_test" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="66" width="320" height="76"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0P1-FD-QF9" id="iyA-mV-5wR">
@@ -1195,7 +1195,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
         <!--Follow Info Table View Controller-->
         <scene sceneID="z5Z-qg-Lbv">
             <objects>
-                <tableViewController storyboardIdentifier="FollowInfoTableViewController" id="mrk-gN-oWf" customClass="FollowInfoTableViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="FollowInfoTableViewController" id="mrk-gN-oWf" customClass="FollowInfoTableViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="ueT-tE-veK">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1225,7 +1225,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             </variation>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationLevel="1" indentationWidth="10" reuseIdentifier="FollowInfoTableViewCell" rowHeight="76" id="TUl-CB-Yhn" customClass="FollowInfoTableViewCell" customModule="labs" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationLevel="1" indentationWidth="10" reuseIdentifier="FollowInfoTableViewCell" rowHeight="76" id="TUl-CB-Yhn" customClass="FollowInfoTableViewCell" customModule="for_test" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="66" width="320" height="76"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="TUl-CB-Yhn" id="sMh-sd-CkO">
@@ -1285,7 +1285,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
         <!--Favorite Genres-->
         <scene sceneID="7kG-Tq-P2k">
             <objects>
-                <viewController storyboardIdentifier="EditFavoriteGenre" id="Y4m-6A-6NH" customClass="EditFavoriteGenreViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EditFavoriteGenre" id="Y4m-6A-6NH" customClass="EditFavoriteGenreViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="EUo-Pd-0PJ"/>
                         <viewControllerLayoutGuide type="bottom" id="Tz5-M9-PHc"/>
@@ -1448,11 +1448,11 @@ click below to discover your favorites</string>
                                     </variation>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GenreTableViewCell" rowHeight="46" id="CXO-Rc-ktN" customClass="GenreTableViewCell" customModule="labs" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GenreTableViewCell" rowHeight="46" id="CXO-Rc-ktN" customClass="GenreTableViewCell" customModule="for_test" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="322" width="320" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CXO-Rc-ktN" id="dz0-4v-ZAn">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="45.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Progressive House" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4uB-VB-Hio">
@@ -1526,7 +1526,7 @@ click below to discover your favorites</string>
         <!--Favor Discovery-->
         <scene sceneID="CgO-Bs-Zug">
             <objects>
-                <viewController id="YSf-xB-CDa" customClass="GenreDiscoveryViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="YSf-xB-CDa" customClass="GenreDiscoveryViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="iIa-fB-8ZK"/>
                         <viewControllerLayoutGuide type="bottom" id="XoJ-DK-fpF"/>
@@ -1563,7 +1563,7 @@ and let us know your favorite genre.</string>
                                     </constraints>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="GenreSampleTableViewCell" rowHeight="124" id="Tti-gT-3wA" customClass="GenreSampleTableViewCell" customModule="labs" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="GenreSampleTableViewCell" rowHeight="124" id="Tti-gT-3wA" customClass="GenreSampleTableViewCell" customModule="for_test" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="76" width="320" height="124"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Tti-gT-3wA" id="i80-rb-rn4">

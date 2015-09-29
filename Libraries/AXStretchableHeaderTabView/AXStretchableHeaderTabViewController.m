@@ -361,6 +361,11 @@ static NSString * const AXStretchableHeaderTabViewControllerSelectedIndexKey = @
 
 - (void)didSubViewAppearWithIndex:(NSInteger)index
 {
+    if (index < 0 || index >= self.shownViewController.count) {
+        NSLog(@"%ld sub view controller??", index);
+        return;
+    }
+    
     if ([self.shownViewController[index] boolValue]== NO) {
         self.shownViewController[index] = @(YES);
         id<AXSubViewController> vc = self.viewControllers[index];

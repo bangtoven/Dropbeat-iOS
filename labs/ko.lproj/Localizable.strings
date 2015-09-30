@@ -178,7 +178,7 @@
 "Like list empty" = "좋아요 목록이 비어있습니다.";
 "Pull to refresh" = "당겨서 새로고침";
 "Failed to save genre" = "장르 저장 실패";
-"Failed to load friend feed." = "피드 요청 실패";
+"Failed to load new uploads feed." = "피드 요청 실패";
 "Failed to load genre" = "장르 요청 실패";
 "Failed to load favorite genres" = "저장된 선호 장르 요청 실패";
 " and %d others" = " 외 %d개의 장르";

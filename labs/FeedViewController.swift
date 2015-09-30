@@ -64,7 +64,8 @@ class FeedViewController: AddableTrackListViewController,
     
     private var feedMenus:[FeedMenu] = {
         var types = [FeedMenu]()
-        if Account.getCachedAccount() != nil {
+        if let user = Account.getCachedAccount()?.user where user.num_following > 0 {
+            print("number of followings: \(user.num_following)")
             types.append(FeedMenu(title: NSLocalizedString("Social Feed", comment:""), type: FeedType.USER_GROUP))
         }
         types.append(FeedMenu(title: NSLocalizedString("New Uploads", comment:""), type: FeedType.NEW_UPLOADS))
@@ -966,7 +967,7 @@ class FeedViewController: AddableTrackListViewController,
                         message: NSLocalizedString("Internet is not connected", comment:""))
                     return
                 }
-                let message = NSLocalizedString("Failed to load friend feed.", comment:"")
+                let message = NSLocalizedString("Failed to load new uploads feed.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }

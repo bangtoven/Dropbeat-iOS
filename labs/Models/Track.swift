@@ -31,28 +31,22 @@ class Drop {
 class Like {
     var track:Track
     var id:Int
-    init(id:Int, track:Track) {
-        self.id = id
-        self.track = track
-    }
-    
-    static private func parseLikeJson(data:JSON) -> Like? {
-        if data["id"].int == nil || data["data"] == nil {
+
+    init?(json:JSON) {
+        if json["id"].int == nil || json["data"] == nil {
+            self.id = -1
+            self.track = Track(id: "", title: "", type: "")
             return nil
         }
         
         var track:Track
-        if data["type"].stringValue == "user_track" {
-            track = UserTrack(json: data["data"])
+        if json["type"].stringValue == "user_track" {
+            track = UserTrack(json: json["data"])
         } else {
-            var trackJson:JSON = data["data"]
-            if trackJson["id"].string == nil {
-                return nil
-            }
-            if trackJson["type"].string == nil {
-                return nil
-            }
-            if trackJson["title"].string == nil {
+            var trackJson:JSON = json["data"]
+            if trackJson["id"].string == nil || trackJson["type"].string == nil || trackJson["title"].string == nil {
+                self.id = -1
+                self.track = Track(id: "", title: "", type: "")
                 return nil
             }
             let trackId = trackJson["id"].stringValue
@@ -63,8 +57,8 @@ class Like {
             }
             track = Track(id: trackId, title: trackJson["title"].stringValue, type: type, tag: nil, thumbnailUrl: thumbnailUrl)
         }
-        let like:Like = Like(id: data["id"].intValue, track:track)
-        return like
+        self.id = json["id"].intValue
+        self.track = track
     }
     
     static func parseLikes(data:AnyObject?, key: String = "like") -> [Like]? {
@@ -78,7 +72,7 @@ class Like {
         
         var likes = [Like]()
         for (_, obj): (String, JSON) in json[key] {
-            if let like = Like.parseLikeJson(obj) {
+            if let like = Like(json: obj) {
                 likes.append(like)
             }
         }
@@ -267,23 +261,15 @@ class Track {
                 return
             }
             
-            let obj = json!["obj"]
-            let id = obj["id"].intValue
-            let trackObj = obj["data"]
-            let track = Track(
-                id: trackObj["id"].stringValue,
-                title: trackObj["title"].stringValue,
-                type: trackObj["type"].stringValue)
-            
-            let like = Like(id: id, track: track)
-            
-            let account = Account.getCachedAccount()
-            account!.likes.append(like)
-            account!.likedTrackIds.insert(self.id)
-            callback?(error:nil)
-            
-            NSNotificationCenter.defaultCenter().postNotificationName(
-                NotifyKey.likeUpdated, object: nil)
+            if let like = Like(json: json!["obj"]) {
+                let account = Account.getCachedAccount()
+                account!.likes.append(like)
+                account!.likedTrackIds.insert(self.id)
+                callback?(error:nil)
+                
+                NSNotificationCenter.defaultCenter().postNotificationName(
+                    NotifyKey.likeUpdated, object: nil)
+            }
         })
     }
     
@@ -567,7 +553,7 @@ class UserTrack: Track {
 }
 
 class ChannelTrack : Track {
-    // http://img.youtube.com/vi/IYglIFW8NoM/hqdefault.jpg
+    // for channel user page view
     var publishedAt : NSDate?
     init (id:String, title:String, publishedAt:NSDate?) {
         super.init(id: id, title: title, type: "youtube", tag: nil,
@@ -575,23 +561,18 @@ class ChannelTrack : Track {
             drop: nil, dref: nil, topMatch: false)
         self.publishedAt = publishedAt
     }
-}
 
-class ChannelFeedTrack: ChannelTrack {
+    // for Explore tab
     var channelTitle: String?
     var channelImage: String?
     var channelResourceName: String?
-    init (id:String, title:String, publishedAt:NSDate?, channelTitle:String) {
-        super.init(id: id, title: title, publishedAt: publishedAt)
-        self.channelTitle = channelTitle
-    }
     
-    init (json: JSON) {
+    convenience init (json: JSON) {
         let formatter = NSDateFormatter()
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.000Z"
         let publishedAt = formatter.dateFromString(json["published_at"].stringValue)
         
-        super.init(id: json["video_id"].stringValue,
+        self.init(id: json["video_id"].stringValue,
             title: json["title"].stringValue,
             publishedAt: publishedAt)
         

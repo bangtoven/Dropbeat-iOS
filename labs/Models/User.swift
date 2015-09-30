@@ -56,7 +56,7 @@ class BaseUser {
         self.resourceName = resourceName
     }
     
-    init(json: JSON) throws {
+    init?(json: JSON) {
         self.id = json["id"].stringValue
         self.name = json["name"].stringValue
         self.resourceName = json["resource_name"].stringValue
@@ -71,7 +71,7 @@ class BaseUser {
             self.userType = .CHANNEL
         default:
             self.userType = .USER
-            throw NSError(domain: "BaseUser", code: -1, userInfo: nil)
+            return nil
         }
     }
     
@@ -190,11 +190,8 @@ class User: BaseUser {
             }
             var users = [BaseUser]()
             for (_, json): (String, JSON) in JSON(result!)["data"] {
-                do {
-                    let user = try BaseUser(json: json)
+                if let user = BaseUser(json: json) {
                     users.append(user)
-                } catch {
-                    print("undefined user type")
                 }
             }
             callback(users: users, error: nil)

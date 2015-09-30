@@ -78,7 +78,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
         cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
             let cell = trackTableView.dequeueReusableCellWithIdentifier(
                 "ExploreTableViewCell", forIndexPath: indexPath) as! ExploreTableViewCell
-            let track:ChannelFeedTrack = tracks[indexPath.row] as! ChannelFeedTrack
+            let track = tracks[indexPath.row] as! ChannelTrack
             cell.delegate = self
             
             cell.channelName.text = track.channelTitle
@@ -142,7 +142,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             playlistSelectVC.caller = self
         case "showChannelInfo":
             let indexPath = self.getIndexOfSender(self.trackTableView, sender: sender as! UIButton)
-            let track = self.tracks[indexPath!.row] as! ChannelFeedTrack
+            let track = self.tracks[indexPath!.row] as! ChannelTrack
 
             let mySegue = segue as! JHImageTransitionSegue
             let sourceImageView = (self.trackTableView.cellForRowAtIndexPath(indexPath!) as! ExploreTableViewCell).channelImageView
@@ -207,9 +207,9 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
                 return
             }
             
-            var particals = [ChannelFeedTrack]()
+            var particals = [ChannelTrack]()
             for (_, s): (String, JSON) in respObj["data"] {
-                let track = ChannelFeedTrack(json: s)
+                let track = ChannelTrack(json: s)
                 particals.append(track)
             }
             

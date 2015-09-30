@@ -270,13 +270,10 @@ class Track {
             for (_, json) in JSON(result!)["data"] {
                 var track:Track?
                 if json["unique_key"] != JSON.null {
-                    print("user track")
                     track = UserTrack(json: json)
                 } else if json["dj"] != JSON.null {
-                    print("artist track")
                     track = Track(artistTrack: json)
                 } else if json["channel_title"] != JSON.null {
-                    print("channel track")
                     track = Track(channelTrack: json)
                 } else {
                     print("what the hell is this??")

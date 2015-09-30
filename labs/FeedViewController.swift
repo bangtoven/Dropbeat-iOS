@@ -373,7 +373,7 @@ class FeedViewController: AddableTrackListViewController,
             var cell:UITableViewCell!
             switch (selectedFeedMenu.type) {
             case .FOLLOWING_TRACKS:
-                cell = getFollowingTrackCell(indexPath)
+                cell = getUserTrackCell(indexPath)
             case .NEW_UPLOADS:
                 cell = getUserTrackCell(indexPath)
             case .DAILY_CHART:
@@ -498,37 +498,6 @@ class FeedViewController: AddableTrackListViewController,
         let cell = trackTableView.dequeueReusableCellWithIdentifier(
             "UserTrackTableViewCell", forIndexPath: indexPath) as! UserTrackTableViewCell
         cell.delegate = self
-        let track = tracks[indexPath.row] as! UserTrack
-        cell.nameView.text = track.title
-        if (track.thumbnailUrl != nil) {
-            cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                placeholderImage: UIImage(named: "default_artwork"), completed: {
-                    (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
-                    if (error != nil) {
-                        cell.thumbView.image = UIImage(named: "default_artwork")
-                    }
-            })
-        } else {
-            cell.thumbView.image = UIImage(named: "default_artwork")
-        }
-        cell.releaseDateLabel.text = track.releaseDate?.timeAgoSinceNow()
-        cell.genreView.text = track.genre
-
-        cell.userNameView.text = track.user?.name
-        
-        if let imageUrl = track.user?.image {
-            cell.userProfileImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
-        } else {
-            cell.userProfileImageView.image = UIImage(named: "default_profile")
-        }
-        
-        return cell
-    }
-    
-    func getFollowingTrackCell(indexPath:NSIndexPath) -> UITableViewCell {
-        let cell = trackTableView.dequeueReusableCellWithIdentifier(
-            "UserTrackTableViewCell", forIndexPath: indexPath) as! UserTrackTableViewCell
-        cell.delegate = self
         let track = tracks[indexPath.row]
         cell.nameView.text = track.title
         if (track.thumbnailUrl != nil) {
@@ -542,22 +511,19 @@ class FeedViewController: AddableTrackListViewController,
         } else {
             cell.thumbView.image = UIImage(named: "default_artwork")
         }
+        cell.releaseDateLabel.text = track.releaseDate?.timeAgoSinceNow()
         
-        switch track {
-        case let userTrack as UserTrack:
-            cell.releaseDateLabel.text = userTrack.releaseDate?.timeAgoSinceNow()
-            cell.genreView.text = userTrack.genre
-            cell.userNameView.text = userTrack.user?.name
-            if let imageUrl = userTrack.user?.image {
-                cell.userProfileImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
-            } else {
-                cell.userProfileImageView.image = UIImage(named: "default_profile")
-            }
-        default:
-            cell.releaseDateLabel.text = track.releaseDate?.timeAgoSinceNow()
-            cell.genreView.text = ""
-            cell.userNameView.text = track.user?.name
+        cell.userNameView.text = track.user?.name
+        if let imageUrl = track.user?.image {
+            cell.userProfileImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
+        } else {
             cell.userProfileImageView.image = UIImage(named: "default_profile")
+        }
+        
+        if let userTrack = track as? UserTrack {
+            cell.genreView.text = userTrack.genre
+        } else {
+            cell.genreView.text = ""
         }
         
         return cell
@@ -1031,8 +997,7 @@ class FeedViewController: AddableTrackListViewController,
             mySegue.destinationRect = self.view.convertRect(CGRectMake(10, 157, 80, 80), fromView: nil)
             
             let uvc = segue.destinationViewController as! UserViewController
-//            uvc.resource = track.userResourceName
-            // TODO: resource name in Track
+            uvc.resource = track.user?.resourceName
             uvc.passedImage = sourceImageView.image
             
         default:

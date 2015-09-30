@@ -369,7 +369,8 @@ class UserViewController: AXStretchableHeaderTabViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        if let _ = self.navigationController?.topViewController as? UserViewController {
+        if let topVC = self.navigationController?.topViewController as? UserViewController
+            where topVC != self {
             print("Pushed to another user view controller")
         } else {
             print("Back to none-user view controller")

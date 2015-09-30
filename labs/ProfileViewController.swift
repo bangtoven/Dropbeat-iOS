@@ -9,28 +9,11 @@
 import UIKit
 
 class ProfileHeaderView: UserHeaderView {
-    
     @IBOutlet weak var favoriteGenresLabel: UILabel!
-//    @IBOutlet weak var editNicknameButton: UIButton!
-//    @IBOutlet weak var editGenresButton: UIButton!
-//    @IBOutlet weak var editAboutMeButton: UIButton!
-//    
-//    override func interactiveSubviews() -> [AnyObject]! {
-//        return [self.editNicknameButton, self.editGenresButton, self.editAboutMeButton]
-//    }
-//    
-//    override func awakeFromNib() {
-//        super.awakeFromNib()
-//        
-//        for button:UIButton in [editNicknameButton,editGenresButton,editAboutMeButton] {
-//            button.tintColor = UIColor.dropbeatColor()
-//            button.backgroundColor = UIColor.whiteColor()
-//            button.layer.cornerRadius = 5
-//            button.layer.borderWidth = 1
-//            button.layer.borderColor = UIColor.dropbeatColor().CGColor
-//            button.clipsToBounds = true
-//        }
-//    }
+
+    override func interactiveSubviews() -> [AnyObject]! {
+        return []
+    }
 }
 
 class ProfileViewController: UserViewController {
@@ -40,6 +23,10 @@ class ProfileViewController: UserViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "likeUpdated", name: NotifyKey.likeUpdated, object: nil)
+        
+        if self.isMovingToParentViewController() == false {
+            // back from navigation stack. previous page was popped!!
+        }
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -60,7 +47,7 @@ class ProfileViewController: UserViewController {
         self.setFavoriteGenreLabel()
         self.setAboutMeLabel()
         
-        self.title = "Profile"
+        self.title = ""
     }
     
     func likeUpdated() {
@@ -74,6 +61,16 @@ class ProfileViewController: UserViewController {
     override func didHeightRatioChange(ratio: CGFloat) {
         super.didHeightRatioChange(0.0)
     }
+    
+//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+//        if segue.identifier == "showEditProfile" {
+//            let header = self.headerView as! ProfileHeaderView
+//
+//            let epvc = segue.destinationViewController as! EditProfileViewController
+//            epvc.nickname = header.nameLabel.text ?? ""
+//            epvc.aboutMe = header.aboutMeLabel.text ?? ""
+//        }
+//    }
     
     @IBAction func unwindFromEditProfile(sender: UIStoryboardSegue) {
         print("I am back.")

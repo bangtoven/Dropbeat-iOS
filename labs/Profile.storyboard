@@ -57,7 +57,7 @@
                     <navigationItem key="navigationItem" title="Profile" id="0uf-eu-ueC">
                         <barButtonItem key="leftBarButtonItem" title="Item" systemItem="edit" id="JiH-Ct-BBd">
                             <connections>
-                                <segue destination="moL-Bw-QiW" kind="show" id="AA0-Wo-mUS"/>
+                                <segue destination="moL-Bw-QiW" kind="show" identifier="showEditProfile" id="AA0-Wo-mUS"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="ic_header_dotdotdot_horizontal" id="A4Z-g0-obm">
@@ -1416,6 +1416,11 @@ click below to discover your favorites</string>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Edit Profile" id="Pbo-BS-T0q">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="ZsA-oa-OOZ">
+                            <connections>
+                                <action selector="cancelAction:" destination="moL-Bw-QiW" id="rYF-N1-fNw"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="save" id="VY0-Zf-OJN">
                             <connections>
                                 <action selector="saveAction:" destination="moL-Bw-QiW" id="9sZ-5e-raI"/>

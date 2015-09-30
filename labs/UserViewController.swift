@@ -338,7 +338,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
             navBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
         }
         
-        if self.isMovingToParentViewController() == false{
+        if self.isMovingToParentViewController() == false {
             // back from navigation stack. previous page was popped!!
             self.baseUser.updateFollowInfo()
             let header = self.headerView as! UserHeaderView

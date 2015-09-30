@@ -8,17 +8,36 @@
 
 import UIKit
 
-class EditProfileViewController: UITableViewController, ACEExpandableTableViewDelegate {
+class EditProfileViewController: UITableViewController, ACEExpandableTableViewDelegate, UIActionSheetDelegate {
 
-    var cellHeight: CGFloat = 50
+    var aboutMeCellHeight: CGFloat = 44
 
+    var nickname: String!
+    var aboutMe: String!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
 
+        let account = Account.getCachedAccount()!
+        self.nickname = account.user!.nickname
+        self.aboutMe = account.user!.aboutMe
     }
     
-    @IBAction func saveAction(sender: AnyObject) {
+    @IBAction func cancelAction(sender: UIBarButtonItem) {
+        UIActionSheet(title: "걍 다 취소하려구?", delegate: self, cancelButtonTitle: "기다료봐", destructiveButtonTitle: "걍 다 꺼져").showFromBarButtonItem(sender, animated: true)
+    }
+    
+    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
+        switch buttonIndex {
+        case actionSheet.destructiveButtonIndex:
+            self.navigationController?.popViewControllerAnimated(true)
+        default:
+            break
+        }
+    }
+    
+    @IBAction func saveAction(sender: UIBarButtonItem) {
         self.performSegueWithIdentifier("unwindFromEditProfile", sender: sender)
     }
     
@@ -27,7 +46,18 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
     }
     
     func tableView(tableView: UITableView!, updatedText text: String!, atIndexPath indexPath: NSIndexPath!) {
-        print("\(indexPath.section): \(text)")
+        switch indexPath.section {
+        case 0:
+            if text.length <= 25 {
+                self.nickname = text
+            } else {
+                self.nickname = text.subString(0, length: 25)
+            }
+        case 1:
+            self.aboutMe = text
+        default:
+            break
+        }
     }
 
     // MARK: - Table view data source
@@ -58,10 +88,12 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
         case 0:
             let cell = tableView.expandableTextCellWithId("cellId")
             cell.textView.placeholder = "Nickname"
+            cell.text = self.nickname
             return cell
         case 1:
             let cell = tableView.expandableTextCellWithId("cellId")
             cell.textView.placeholder = "About me"
+            cell.text = self.aboutMe
             return cell
         case 2:
             let cell = tableView.dequeueReusableCellWithIdentifier("normalCell", forIndexPath: indexPath)
@@ -75,11 +107,17 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return max(self.cellHeight, 50)
+        if indexPath.section == 1 {
+            return max(self.aboutMeCellHeight, 44)
+        } else {
+            return 44
+        }
     }
     
     func tableView(tableView: UITableView!, updatedHeight height: CGFloat, atIndexPath indexPath: NSIndexPath!) {
-        self.cellHeight = height
+        if indexPath.section == 1 {
+            self.aboutMeCellHeight = height
+        }
     }
 
     /*

@@ -838,7 +838,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     func doLike(track:Track) {
         likeBtn.hidden = true
         likeProgIndicator.startAnimating()
-        track.doLike({(error:NSError?) -> Void in
+        Like.likeTrack(track) { (error) -> Void in
             self.likeProgIndicator.stopAnimating()
             self.likeBtn.hidden = false
             if error != nil {
@@ -851,7 +851,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 })
                 return
             }
-        })
+        }
     }
     
     func doUnlike(track:Track) {
@@ -861,7 +861,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         
         likeBtn.hidden = true
         likeProgIndicator.startAnimating()
-        track.doUnlike({(error:NSError?) -> Void in
+        Like.unlikeTrack(track) { (error) -> Void in
             self.likeProgIndicator.stopAnimating()
             self.likeBtn.hidden = false
             if error != nil {
@@ -874,7 +874,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 })
                 return
             }
-        })
+        }
     }
     
     @IBAction func onMenuBtnClicked(sender: AnyObject) {

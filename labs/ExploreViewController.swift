@@ -12,6 +12,17 @@ class ExploreTableViewCell: AddableTrackTableViewCell {
     @IBOutlet weak var channelImageView: UIImageView!
     @IBOutlet weak var channelName: UILabel!
     @IBOutlet weak var publishedAt: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        self.channelImageView.layer.cornerRadius = 4
+        self.channelImageView.layer.borderWidth = 1
+        self.channelImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
+        
+        self.layer.borderWidth = 4
+        self.layer.borderColor = UIColor(netHex: 0xE0DFEA).CGColor
+    }
 }
 
 class ExploreViewController: AddableTrackListViewController, UITableViewDelegate, UITableViewDataSource {
@@ -67,11 +78,15 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
         cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
             let cell = trackTableView.dequeueReusableCellWithIdentifier(
                 "ExploreTableViewCell", forIndexPath: indexPath) as! ExploreTableViewCell
-            let track:ChannelFeedTrack = tracks[indexPath.row] as! ChannelFeedTrack
+            let track = tracks[indexPath.row]
             cell.delegate = self
             
-            cell.channelName.text = track.channelTitle
-            cell.channelImageView.sd_setImageWithURL(NSURL(string: track.channelImage!), placeholderImage: UIImage(named: "default_profile"))
+            cell.channelName.text = track.user?.name
+            if let imageUrl = track.user?.image {
+                cell.channelImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
+            } else {
+                cell.channelImageView.image = UIImage(named: "default_profile")
+            }
             
             cell.nameView.text = track.title
             if (track.thumbnailUrl != nil) {
@@ -85,20 +100,11 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             } else {
                 cell.thumbView.image = UIImage(named: "default_artwork")
             }
-            if track.publishedAt != nil {
-                let formatter = NSDateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd"
-                cell.publishedAt.text = formatter.stringFromDate(track.publishedAt!)
+            if let publishedAt = track.releaseDate {
+                cell.publishedAt.text = publishedAt.timeAgoSinceNow()
             } else {
                 cell.publishedAt.hidden = true
             }
-            
-            cell.channelImageView.layer.cornerRadius = 4
-            cell.channelImageView.layer.borderWidth = 1
-            cell.channelImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
-            
-            cell.layer.borderWidth = 4
-            cell.layer.borderColor = UIColor(netHex: 0xE0DFEA).CGColor
 
             return cell
     }
@@ -140,7 +146,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             playlistSelectVC.caller = self
         case "showChannelInfo":
             let indexPath = self.getIndexOfSender(self.trackTableView, sender: sender as! UIButton)
-            let track = self.tracks[indexPath!.row] as! ChannelFeedTrack
+            let track = self.tracks[indexPath!.row]
 
             let mySegue = segue as! JHImageTransitionSegue
             let sourceImageView = (self.trackTableView.cellForRowAtIndexPath(indexPath!) as! ExploreTableViewCell).channelImageView
@@ -150,7 +156,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             mySegue.destinationRect = self.view.convertRect(CGRectMake(10, 157, 80, 80), fromView: nil)
             
             let uvc = segue.destinationViewController as! UserViewController
-            uvc.resource = track.channelResourceName
+            uvc.resource = track.user?.resourceName
             uvc.passedImage = sourceImageView.image
 
         default:
@@ -205,9 +211,9 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
                 return
             }
             
-            var particals = [ChannelFeedTrack]()
+            var particals = [Track]()
             for (_, s): (String, JSON) in respObj["data"] {
-                let track = ChannelFeedTrack(json: s)
+                let track = Track(channelTrack: s)
                 particals.append(track)
             }
             

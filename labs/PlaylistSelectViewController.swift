@@ -186,7 +186,7 @@ class PlaylistSelectViewController: BaseViewController, UITableViewDelegate, UIT
                 return
             }
             let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Saving..", comment:""))
-            targetTrack!.addToPlaylist(playlist, section: fromSection) { (error) -> Void in
+            playlist.addTrack(targetTrack!, section: fromSection) { (error) -> Void in
                 progressHud.hide(true)
                 if error != nil {
                     var message:String?

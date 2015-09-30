@@ -1,5 +1,5 @@
 //
-//  SelfProfileViewController.swift
+//  ProfileViewController.swift
 //  labs
 //
 //  Created by Jungho Bang on 2015. 9. 22..
@@ -10,36 +10,42 @@ import UIKit
 
 class ProfileHeaderView: UserHeaderView {
     
-    @IBOutlet weak var editNicknameButton: UIButton!
-    @IBOutlet weak var editGenresButton: UIButton!
-    @IBOutlet weak var editAboutMeButton: UIButton!
     @IBOutlet weak var favoriteGenresLabel: UILabel!
-    
-    func setButtonSetting(button: UIButton) {
-        button.tintColor = UIColor.dropbeatColor()
-        button.backgroundColor = UIColor.whiteColor()
-        button.layer.cornerRadius = 5
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.dropbeatColor().CGColor
-        button.clipsToBounds = true
-    }
-    
-    override func interactiveSubviews() -> [AnyObject]! {
-        return [self.editNicknameButton, self.editGenresButton, self.editAboutMeButton]
-    }
-    
-    override func loadView() {
-        super.loadView()
-        
-        for button:UIButton in [editNicknameButton,editGenresButton,editAboutMeButton] {
-            self.setButtonSetting(button)
-        }
-    }
+//    @IBOutlet weak var editNicknameButton: UIButton!
+//    @IBOutlet weak var editGenresButton: UIButton!
+//    @IBOutlet weak var editAboutMeButton: UIButton!
+//    
+//    override func interactiveSubviews() -> [AnyObject]! {
+//        return [self.editNicknameButton, self.editGenresButton, self.editAboutMeButton]
+//    }
+//    
+//    override func awakeFromNib() {
+//        super.awakeFromNib()
+//        
+//        for button:UIButton in [editNicknameButton,editGenresButton,editAboutMeButton] {
+//            button.tintColor = UIColor.dropbeatColor()
+//            button.backgroundColor = UIColor.whiteColor()
+//            button.layer.cornerRadius = 5
+//            button.layer.borderWidth = 1
+//            button.layer.borderColor = UIColor.dropbeatColor().CGColor
+//            button.clipsToBounds = true
+//        }
+//    }
 }
 
-class SelfProfileViewController: UserViewController {
+class ProfileViewController: UserViewController {
 
     private var genres:[String:Genre] = [String:Genre]()
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "likeUpdated", name: NotifyKey.likeUpdated, object: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.likeUpdated, object: nil)
+    }
 
     override func fetchUserInfo() {
         let user = Account.getCachedAccount()?.user
@@ -57,6 +63,22 @@ class SelfProfileViewController: UserViewController {
         self.title = "Profile"
     }
     
+    func likeUpdated() {
+        print("like updated")
+        if let likesSubView: TrackSubViewController = self.viewControllers[self.viewControllers.count-3] as? TrackSubViewController {
+            likesSubView.tracks.removeAll()
+            likesSubView.subViewWillAppear()
+        }
+    }
+    
+    override func didHeightRatioChange(ratio: CGFloat) {
+        super.didHeightRatioChange(0.0)
+    }
+    
+    @IBAction func unwindFromEditProfile(sender: UIStoryboardSegue) {
+        print("I am back.")
+    }
+    
     func setAboutMeLabel() {
         let header = self.headerView as! ProfileHeaderView
         if header.aboutMeLabel.text == "" {
@@ -64,19 +86,6 @@ class SelfProfileViewController: UserViewController {
         } else {
             header.aboutMeLabel.text = Account.getCachedAccount()?.user?.aboutMe
         }
-    }
-    
-    @IBAction func unwindFromEditAboutMe(sender: UIStoryboardSegue) {
-        self.setAboutMeLabel()
-    }
-    
-    @IBAction func unwindFromEditNickname(sender: UIStoryboardSegue) {
-        let header = self.headerView as! ProfileHeaderView
-        header.nameLabel.text = baseUser.name
-    }
-    
-    @IBAction func unwindFromEditFavoriteGenres(sender: UIStoryboardSegue) {
-        self.setFavoriteGenreLabel()
     }
     
     func setFavoriteGenreLabel() {
@@ -120,7 +129,7 @@ class SelfProfileViewController: UserViewController {
         }
         
         let genreHandler = { (genreMap:[String:[Genre]]) -> Void in
-            let genres = genreMap["default"]!
+            let genres = genreMap["dropbeat"]!
             self.genres.removeAll(keepCapacity: false)
             for genre:Genre in genres {
                 self.genres[genre.key] = genre

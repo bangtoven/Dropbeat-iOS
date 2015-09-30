@@ -7,6 +7,7 @@
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
+<<<<<<< HEAD
         <!--Edit nickname-->
         <scene sceneID="j5X-Z4-MnJ">
             <objects>
@@ -138,6 +139,8 @@
             </objects>
             <point key="canvasLocation" x="-2287" y="2480"/>
         </scene>
+=======
+>>>>>>> new-feed
         <!--Navigation Controller-->
         <scene sceneID="eaK-tE-QuB">
             <objects>
@@ -159,7 +162,7 @@
         <!--Profile-->
         <scene sceneID="WK1-Fe-VLM">
             <objects>
-                <viewController id="O7I-Zd-rw2" customClass="SelfProfileViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="O7I-Zd-rw2" customClass="ProfileViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vJB-4M-bap"/>
                         <viewControllerLayoutGuide type="bottom" id="qwd-cc-Rrk"/>
@@ -186,7 +189,12 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Profile" id="0uf-eu-ueC">
-                        <barButtonItem key="rightBarButtonItem" image="ic_settings" id="A4Z-g0-obm">
+                        <barButtonItem key="leftBarButtonItem" title="Item" systemItem="edit" id="JiH-Ct-BBd">
+                            <connections>
+                                <segue destination="moL-Bw-QiW" kind="show" id="AA0-Wo-mUS"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="ic_header_dotdotdot_horizontal" id="A4Z-g0-obm">
                             <connections>
                                 <segue destination="BdV-AA-UMZ" kind="custom" customClass="RBStoryboardPushSegue" id="3I1-S8-OZw"/>
                             </connections>
@@ -319,7 +327,7 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HQp-Si-f4V">
+                        <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HQp-Si-f4V">
                             <rect key="frame" x="284" y="86" width="26" height="26"/>
                             <animations/>
                             <color key="backgroundColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -329,9 +337,6 @@
                             </constraints>
                             <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                             <state key="normal" image="ic_edit_small"/>
-                            <connections>
-                                <segue destination="8bU-SJ-acY" kind="show" id="iy6-K8-AFg"/>
-                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NMG-so-3ze">
                             <rect key="frame" x="12" y="284" width="298" height="32"/>
@@ -345,7 +350,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u5n-Ne-nsf">
+                        <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u5n-Ne-nsf">
                             <rect key="frame" x="284" y="254" width="26" height="26"/>
                             <animations/>
                             <color key="backgroundColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -355,9 +360,6 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             </constraints>
                             <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                             <state key="normal" image="ic_edit_small"/>
-                            <connections>
-                                <segue destination="Y4m-6A-6NH" kind="show" id="S3G-JG-Wwr"/>
-                            </connections>
                         </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_profile" translatesAutoresizingMaskIntoConstraints="NO" id="OvH-3x-Zmw">
                             <rect key="frame" x="10" y="76" width="80" height="80"/>
@@ -368,14 +370,14 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <constraint firstAttribute="width" secondItem="OvH-3x-Zmw" secondAttribute="height" multiplier="1:1" id="gs7-bB-abW"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorite Genres" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d25-qj-hfp">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorite genres" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d25-qj-hfp">
                             <rect key="frame" x="12" y="258" width="262" height="18"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AWU-Mb-cAl">
+                        <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AWU-Mb-cAl">
                             <rect key="frame" x="284" y="174" width="26" height="26"/>
                             <animations/>
                             <color key="backgroundColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -385,9 +387,6 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             </constraints>
                             <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                             <state key="normal" image="ic_edit_small"/>
-                            <connections>
-                                <segue destination="etP-Ps-FGE" kind="show" id="GAo-mR-Gu7"/>
-                            </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jGf-w7-U4L">
                             <rect key="frame" x="12" y="178" width="262" height="18"/>
@@ -459,9 +458,6 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <connections>
                         <outlet property="aboutMeLabel" destination="nby-Gg-QD2" id="vs9-nf-fYT"/>
                         <outlet property="coverImageView" destination="28F-a0-7DJ" id="3p8-Rf-nVm"/>
-                        <outlet property="editAboutMeButton" destination="AWU-Mb-cAl" id="FMk-J3-IqV"/>
-                        <outlet property="editGenresButton" destination="u5n-Ne-nsf" id="EnQ-cK-lnX"/>
-                        <outlet property="editNicknameButton" destination="HQp-Si-f4V" id="wXr-gm-ZFS"/>
                         <outlet property="favoriteGenresLabel" destination="NMG-so-3ze" id="H84-tZ-SlY"/>
                         <outlet property="followInfoView" destination="YA6-OZ-OEg" id="be2-ni-kw7"/>
                         <outlet property="followersLabel" destination="h4F-tR-uFu" id="1cd-Xo-z68"/>
@@ -1291,11 +1287,11 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                         <viewControllerLayoutGuide type="bottom" id="Tz5-M9-PHc"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="2as-zm-jfg">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZFP-Tc-gyd">
-                                <rect key="frame" x="0.0" y="568" width="320" height="60"/>
+                                <rect key="frame" x="0.0" y="416" width="320" height="60"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sde-c2-xOA" userLabel="border">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
@@ -1342,8 +1338,8 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                     <constraint firstItem="Sde-c2-xOA" firstAttribute="leading" secondItem="ZFP-Tc-gyd" secondAttribute="leading" id="ro6-7J-bwa"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsMultipleSelection="YES" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="42A-3X-iro">
-                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsMultipleSelection="YES" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="42A-3X-iro">
+                                <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.84094483440000001" green="0.84094483440000001" blue="0.84094483440000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -1506,7 +1502,7 @@ click below to discover your favorites</string>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Favorite Genres" id="SKr-E4-kop"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="discoverBtn" destination="khI-h3-E5k" id="ND1-fY-dja"/>
                         <outlet property="doneBtn" destination="aYC-3j-pl9" id="Vxa-a4-vdm"/>
@@ -1521,7 +1517,54 @@ click below to discover your favorites</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ww1-mV-Trg" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="92y-9e-pvT" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1834" y="1887"/>
+            <point key="canvasLocation" x="-1420" y="2071"/>
+        </scene>
+        <!--Edit Profile-->
+        <scene sceneID="u0Z-Lm-Ou0">
+            <objects>
+                <tableViewController id="moL-Bw-QiW" customClass="EditProfileViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="ynf-Rf-puQ" customClass="TPKeyboardAvoidingTableView">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="normalCell" id="p3P-zr-0sU">
+                                <rect key="frame" x="0.0" y="114" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p3P-zr-0sU" id="lpT-pY-biA">
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <animations/>
+                                </tableViewCellContentView>
+                                <animations/>
+                                <connections>
+                                    <segue destination="Y4m-6A-6NH" kind="show" id="DlU-iT-Yca"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <sections/>
+                        <connections>
+                            <outlet property="dataSource" destination="moL-Bw-QiW" id="PFp-Vp-Nc4"/>
+                            <outlet property="delegate" destination="moL-Bw-QiW" id="Kqp-mm-Jow"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Edit Profile" id="Pbo-BS-T0q">
+                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="VY0-Zf-OJN">
+                            <connections>
+                                <action selector="saveAction:" destination="moL-Bw-QiW" id="9sZ-5e-raI"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <segue destination="Mg1-ir-mZ3" kind="unwind" identifier="unwindFromEditProfile" unwindAction="unwindFromEditProfile:" id="KeA-Pg-95t"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="i1P-4M-LcP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Mg1-ir-mZ3" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="-1838" y="2071"/>
         </scene>
         <!--Favor Discovery-->
         <scene sceneID="CgO-Bs-Zug">
@@ -1532,11 +1575,11 @@ click below to discover your favorites</string>
                         <viewControllerLayoutGuide type="bottom" id="XoJ-DK-fpF"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="d3z-zO-kvc">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="168" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="TcC-s4-hBI">
-                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="168" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="TcC-s4-hBI">
+                                <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="xfe-w6-oC0">
@@ -1696,7 +1739,7 @@ and let us know your favorite genre.</string>
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KK7-Pw-Ttz">
-                                <rect key="frame" x="0.0" y="568" width="320" height="60"/>
+                                <rect key="frame" x="0.0" y="416" width="320" height="60"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G51-Ym-mJa">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
@@ -1754,7 +1797,7 @@ and let us know your favorite genre.</string>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Favor Discovery" id="81U-tk-Hr2"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="doneBtn" destination="gW8-50-dEu" id="cJX-Ue-0Ie"/>
                         <outlet property="footerBottomConstraint" destination="fq2-oF-TtW" id="34j-HM-7XV"/>
@@ -1767,7 +1810,7 @@ and let us know your favorite genre.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JAp-fS-auG" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="cNm-tq-YQC" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1445" y="1887"/>
+            <point key="canvasLocation" x="-1005" y="2071"/>
         </scene>
         <!--Storyboard Link-->
         <scene sceneID="Cpm-cz-Nhv">
@@ -1801,7 +1844,7 @@ and let us know your favorite genre.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lga-ln-Ocf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1917" y="2480"/>
+            <point key="canvasLocation" x="-2287" y="2384"/>
         </scene>
     </scenes>
     <resources>
@@ -1814,10 +1857,10 @@ and let us know your favorite genre.</string>
         <image name="ic_drop_small" width="40" height="40"/>
         <image name="ic_edit_small" width="18" height="18"/>
         <image name="ic_header_dotdotdot" width="22" height="22"/>
+        <image name="ic_header_dotdotdot_horizontal" width="22" height="22"/>
         <image name="ic_pause" width="47" height="47"/>
         <image name="ic_play" width="47" height="47"/>
         <image name="ic_playing_indicator" width="104" height="104"/>
-        <image name="ic_settings" width="24" height="24"/>
         <image name="sample_cover" width="225" height="225"/>
     </resources>
     <inferredMetricsTieBreakers>

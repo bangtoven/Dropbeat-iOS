@@ -19,7 +19,7 @@ enum UserType {
 
 class BaseUser {
     var userType: UserType
-    var id: String
+    var id: String?
     var name: String
     var resourceName: String
     var image: String?
@@ -47,7 +47,7 @@ class BaseUser {
         self._isFollowed = nil
     }
     
-    init(userType: UserType, id: String, name: String, image: String?, coverImage: String?, resourceName: String) {
+    init(userType: UserType, id: String? = nil, name: String, image: String?, coverImage: String? = nil, resourceName: String) {
         self.userType = userType
         self.id = id
         self.name = name
@@ -56,7 +56,7 @@ class BaseUser {
         self.resourceName = resourceName
     }
     
-    init(json: JSON) throws {
+    init?(json: JSON) {
         self.id = json["id"].stringValue
         self.name = json["name"].stringValue
         self.resourceName = json["resource_name"].stringValue
@@ -71,7 +71,7 @@ class BaseUser {
             self.userType = .CHANNEL
         default:
             self.userType = .USER
-            throw NSError(domain: "BaseUser", code: -1, userInfo: nil)
+            return nil
         }
     }
     
@@ -179,7 +179,7 @@ class User: BaseUser {
     }
     
     private func _fetchFollowInfo(path: String, callback:((users: [BaseUser]?, error: NSError?) -> Void)) {
-        Requests.sendGet(path, params: ["user_id": self.id], auth: false) { (req, resp, result, error) -> Void in
+        Requests.sendGet(path, params: ["user_id": self.id!], auth: false) { (req, resp, result, error) -> Void in
             if (error != nil) {
                 callback(users: nil, error: error)
                 return
@@ -190,11 +190,8 @@ class User: BaseUser {
             }
             var users = [BaseUser]()
             for (_, json): (String, JSON) in JSON(result!)["data"] {
-                do {
-                    let user = try BaseUser(json: json)
+                if let user = BaseUser(json: json) {
                     users.append(user)
-                } catch {
-                    print("undefined user type")
                 }
             }
             callback(users: users, error: nil)
@@ -210,11 +207,7 @@ class User: BaseUser {
     }
     
     func fetchLikeList(callback:((likes:[Like]?, error:NSError?) -> Void)) {
-        //        if (likes != nil) {
-        //            callback(likes: likes!, error: nil)
-        //            return
-        //        }
-        Requests.getUserLikeList(id, respCb: { (req, resp, result, error) -> Void in
+        Requests.getUserLikeList(self.id!, respCb: { (req, resp, result, error) -> Void in
             if (error != nil) {
                 callback(likes: nil, error: error)
                 return
@@ -258,7 +251,7 @@ class ChannelPlaylist {
 }
 
 class Channel: BaseUser {
-    var genre: [String] // description ...
+    var genre: [String]
     var playlists: [ChannelPlaylist]
     var isBookmarked:Bool
     var idx:Int?
@@ -333,38 +326,6 @@ class Channel: BaseUser {
     }
 }
 
-class ArtistEvent {
-    var date: NSDate
-    var detail: String
-    var info: String
-    var url: String
-    var venue: String
-    
-    private static var dateFormatter:NSDateFormatter {
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        return formatter
-    }
-    
-    init (json:JSON) {
-        self.date = ArtistEvent.dateFormatter.dateFromString(json["date"].stringValue)!
-        self.detail = json["detail"].stringValue
-        self.info = json["info"].stringValue
-        self.url = json["url"].stringValue
-        self.venue = json["venue"].stringValue
-    }
-    
-    static func parseEvents(data: AnyObject) -> [ArtistEvent] {
-        let eventsJson = JSON(data)["data"]
-        
-        var events = [ArtistEvent]()
-        for (_, e): (String, JSON) in eventsJson {
-            events.append(ArtistEvent(json: e))
-        }
-        return events
-    }
-}
-
 class Artist: BaseUser {
     static let SECTION_PODCAST = "podcast"
     static let SECTION_LIVESET = "liveset"
@@ -402,39 +363,12 @@ class Artist: BaseUser {
         }
     }
     
-    func fetchEvents(callback:((events:[ArtistEvent]?, error:NSError?) -> Void)) {
-        //        if (self.name == nil) {
-        //            callback(events: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
-        //            return
-        //        }
-        if (!hasEvent) {
-            callback(events:[], error: nil)
-            return
-        }
-        Requests.fetchArtistEvent(name, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            if (error != nil) {
-                callback(events: nil, error: error)
-                return
-            }
-            if (result == nil) {
-                callback(events: [], error: nil)
-                return
-            }
-            self.events = ArtistEvent.parseEvents(result!)
-            callback(events:self.events, error:nil)
-        })
-    }
-    
     func fetchLiveset(callback:((tracks:[Track]?, error:NSError?) -> Void)) {
         let sectionTracks = sectionedTracks[Artist.SECTION_LIVESET]
         if (sectionTracks != nil) {
             callback(tracks: sectionTracks!, error: nil)
             return
         }
-        //        if (name == nil) {
-        //            callback(tracks: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
-        //            return
-        //        }
         if (!hasLiveset) {
             callback(tracks: [], error: nil)
             return
@@ -459,10 +393,6 @@ class Artist: BaseUser {
             callback(tracks: sectionTracks!, error: nil)
             return
         }
-        //        if (name == nil) {
-        //            callback(tracks: nil, error: NSError(domain: "artist_fetch", code: 1, userInfo: nil))
-        //            return
-        //        }
         if (!hasPodcast) {
             callback(tracks: [], error: nil)
             return
@@ -514,5 +444,50 @@ class Artist: BaseUser {
             self.sectionedTracks[Artist.SECTION_PODCAST] = tracks
             callback(tracks:self.sectionedTracks[Artist.SECTION_PODCAST], error:nil)
         })
+    }
+    
+    func fetchEvents(callback:((events:[ArtistEvent]?, error:NSError?) -> Void)) {
+        if (!hasEvent) {
+            callback(events:[], error: nil)
+            return
+        }
+        Requests.fetchArtistEvent(name, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if (error != nil) {
+                callback(events: nil, error: error)
+                return
+            }
+            if (result == nil) {
+                callback(events: [], error: nil)
+                return
+            }
+            self.events = ArtistEvent.parseEvents(result!)
+            callback(events:self.events, error:nil)
+        })
+    }
+}
+
+class ArtistEvent {
+    var date: NSDate
+    var detail: String
+    var info: String
+    var url: String
+    var venue: String
+    
+    init (json:JSON) {
+        self.date = NSDate.dateFromString(json["date"].stringValue)!
+        self.detail = json["detail"].stringValue
+        self.info = json["info"].stringValue
+        self.url = json["url"].stringValue
+        self.venue = json["venue"].stringValue
+    }
+    
+    static func parseEvents(data: AnyObject) -> [ArtistEvent] {
+        let eventsJson = JSON(data)["data"]
+        
+        var events = [ArtistEvent]()
+        for (_, e): (String, JSON) in eventsJson {
+            events.append(ArtistEvent(json: e))
+        }
+        return events
     }
 }

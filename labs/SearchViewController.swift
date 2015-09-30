@@ -251,13 +251,9 @@ class SearchViewController: AddableTrackListViewController,
             
             let json = JSON(result!)["data"]
             for (_, a):(String,JSON) in json["artists"] {
-                var user: BaseUser
-                do {
-                    try user = BaseUser(json: a)
-                } catch _ {
-                    continue
+                if let user = BaseUser(json: a) {
+                    self.users.append(user)
                 }
-                self.users.append(user)
             }
             self.tracks = Track.parseTracks(json["tracks"])
             

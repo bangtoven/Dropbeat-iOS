@@ -53,10 +53,9 @@ class AddableTrackTableViewCell: UITableViewCell {
 
 class UserTrackTableViewCell: AddableTrackTableViewCell {
     
-    @IBOutlet weak var contentFrame: UIView!
-    @IBOutlet weak var listenTimeView: UILabel!
+    @IBOutlet weak var releaseDateLabel: UILabel!
+    @IBOutlet weak var userProfileImageView: UIImageView!
     @IBOutlet weak var userNameView: UILabel!
-    @IBOutlet weak var artistName: UILabel!
     @IBOutlet weak var genreView: UILabel!
     
     override func awakeFromNib() {
@@ -66,13 +65,17 @@ class UserTrackTableViewCell: AddableTrackTableViewCell {
         selectedBgView.backgroundColor = UIColor(netHex: 0xEFEFF4)
         self.selectedBackgroundView = selectedBgView
         
-        contentFrame.layer.borderColor = UIColor(netHex: 0xD6D6D6).CGColor
-        contentFrame.layer.borderWidth = 1
+        self.layer.borderWidth = 4
+        self.layer.borderColor = UIColor(netHex: 0xE0DFEA).CGColor
+        
+        userProfileImageView.layer.cornerRadius = 4
+        userProfileImageView.layer.borderWidth = 1
+        userProfileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        contentFrame.backgroundColor = UIColor.whiteColor()
+        self.backgroundColor = UIColor.whiteColor()
     }
 }
 

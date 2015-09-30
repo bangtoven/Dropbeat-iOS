@@ -49,11 +49,7 @@ class FeedViewController: AddableTrackListViewController,
     private var selectedTrack:Track?
     private var feedTypeSelectMode:Int = 0
     private var viewMode:ViewMode = ViewMode.Normal
-    private var nextPage:Int = 0 {
-        didSet {
-            print("next page is \(nextPage)")
-        }
-    }
+    private var nextPage:Int = 0
     private var isLoading:Bool = false
             
     private var genreSelectBtn: UIBarButtonItem!

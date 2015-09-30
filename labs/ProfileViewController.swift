@@ -1,5 +1,5 @@
 //
-//  SelfProfileViewController.swift
+//  ProfileViewController.swift
 //  labs
 //
 //  Created by Jungho Bang on 2015. 9. 22..
@@ -10,30 +10,30 @@ import UIKit
 
 class ProfileHeaderView: UserHeaderView {
     
-    @IBOutlet weak var editNicknameButton: UIButton!
-    @IBOutlet weak var editGenresButton: UIButton!
-    @IBOutlet weak var editAboutMeButton: UIButton!
     @IBOutlet weak var favoriteGenresLabel: UILabel!
-    
-    override func interactiveSubviews() -> [AnyObject]! {
-        return [self.editNicknameButton, self.editGenresButton, self.editAboutMeButton]
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        
-        for button:UIButton in [editNicknameButton,editGenresButton,editAboutMeButton] {
-            button.tintColor = UIColor.dropbeatColor()
-            button.backgroundColor = UIColor.whiteColor()
-            button.layer.cornerRadius = 5
-            button.layer.borderWidth = 1
-            button.layer.borderColor = UIColor.dropbeatColor().CGColor
-            button.clipsToBounds = true
-        }
-    }
+//    @IBOutlet weak var editNicknameButton: UIButton!
+//    @IBOutlet weak var editGenresButton: UIButton!
+//    @IBOutlet weak var editAboutMeButton: UIButton!
+//    
+//    override func interactiveSubviews() -> [AnyObject]! {
+//        return [self.editNicknameButton, self.editGenresButton, self.editAboutMeButton]
+//    }
+//    
+//    override func awakeFromNib() {
+//        super.awakeFromNib()
+//        
+//        for button:UIButton in [editNicknameButton,editGenresButton,editAboutMeButton] {
+//            button.tintColor = UIColor.dropbeatColor()
+//            button.backgroundColor = UIColor.whiteColor()
+//            button.layer.cornerRadius = 5
+//            button.layer.borderWidth = 1
+//            button.layer.borderColor = UIColor.dropbeatColor().CGColor
+//            button.clipsToBounds = true
+//        }
+//    }
 }
 
-class SelfProfileViewController: UserViewController {
+class ProfileViewController: UserViewController {
 
     private var genres:[String:Genre] = [String:Genre]()
     
@@ -71,6 +71,14 @@ class SelfProfileViewController: UserViewController {
         }
     }
     
+    override func didHeightRatioChange(ratio: CGFloat) {
+        super.didHeightRatioChange(0.0)
+    }
+    
+    @IBAction func unwindFromEditProfile(sender: UIStoryboardSegue) {
+        print("I am back.")
+    }
+    
     func setAboutMeLabel() {
         let header = self.headerView as! ProfileHeaderView
         if header.aboutMeLabel.text == "" {
@@ -78,19 +86,6 @@ class SelfProfileViewController: UserViewController {
         } else {
             header.aboutMeLabel.text = Account.getCachedAccount()?.user?.aboutMe
         }
-    }
-    
-    @IBAction func unwindFromEditAboutMe(sender: UIStoryboardSegue) {
-        self.setAboutMeLabel()
-    }
-    
-    @IBAction func unwindFromEditNickname(sender: UIStoryboardSegue) {
-        let header = self.headerView as! ProfileHeaderView
-        header.nameLabel.text = baseUser.name
-    }
-    
-    @IBAction func unwindFromEditFavoriteGenres(sender: UIStoryboardSegue) {
-        self.setFavoriteGenreLabel()
     }
     
     func setFavoriteGenreLabel() {

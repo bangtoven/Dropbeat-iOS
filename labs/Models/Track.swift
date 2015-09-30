@@ -15,7 +15,6 @@ class Track {
     var tag: String?
     var drop: Drop?
     var thumbnailUrl: String?
-    var topMatch: Bool?
     var hasHqThumbnail:Bool {
         get {
             if self.thumbnailUrl == nil {
@@ -27,16 +26,28 @@ class Track {
             return true
         }
     }
+    var user: BaseUser?
+    var releaseDate: NSDate?
     
-    init(id: String, title: String, type: String, tag: String? = nil,
-        thumbnailUrl: String? = nil, drop: Drop? = nil, topMatch: Bool? = false) {
-            self.id = id
-            self.title = title
-            self.drop = drop
-            self.type = type
-            self.tag = tag
-            self.thumbnailUrl = thumbnailUrl
-            self.topMatch = topMatch
+    var isLiked: Bool {
+        get {
+            if let account = Account.getCachedAccount() {
+                return account.likes.contains { like in
+                    like.track.id == self.id
+                }
+            }
+            return false
+        }
+    }
+
+    init(id: String, title: String, type: String, tag: String? = nil, thumbnailUrl: String? = nil, drop: Drop? = nil, releaseDate: NSDate? = nil) {
+        self.id = id
+        self.title = title
+        self.drop = drop
+        self.type = type
+        self.tag = tag
+        self.thumbnailUrl = thumbnailUrl
+        self.releaseDate = releaseDate
     }
     
     func resolveStreamUrl() -> String? {
@@ -79,19 +90,9 @@ class Track {
                         when: dropObj["when"].int)
             }
             
-//            let dref = s["dref"]
-//            if dref.error == nil {
-//                track.dref = s["dref"].stringValue
-//            }
-            
             let tag = s["tag"]
             if tag.error == nil {
                 track.tag = s["tag"].stringValue
-            }
-            
-            let topMatch = s["top_match"]
-            if topMatch.error == nil {
-                track.topMatch = s["top_match"].boolValue ?? false
             }
             
             if (track.type == "youtube") {
@@ -125,15 +126,6 @@ class Track {
         return self.parseTracks(tracksObj)
     }
     
-    var isLiked: Bool {
-        get {
-            if let account = Account.getCachedAccount() {
-                return account.likedTrackIds.contains(self.id)
-            }
-            return false
-        }
-    }
-    
     static func parseSharedTrack(data: AnyObject) -> Track? {
         var json = JSON(data)
         if !(json["success"].bool ?? false) {
@@ -161,82 +153,7 @@ class Track {
             type: s!["type"].stringValue,
             tag: nil,
             thumbnailUrl: nil,
-            drop: nil,
-            topMatch: nil)
-    }
-    
-    func doLike(callback:((error:NSError?) -> Void)?) {
-        if Account.getCachedAccount() == nil {
-            return
-        }
-        Requests.doLike(self, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            if error != nil {
-                callback?(error:error)
-                return
-            }
-            
-            var json:JSON?
-            if result != nil {
-                json = JSON(result!)
-            }
-            
-            if result == nil || !(json!["success"].bool ?? false) {
-                callback?(error:NSError(domain:"doLike", code: 0, userInfo:nil))
-                return
-            }
-            
-            if let like = Like(json: json!["obj"]) {
-                let account = Account.getCachedAccount()
-                account!.likes.append(like)
-                account!.likedTrackIds.insert(self.id)
-                callback?(error:nil)
-                
-                NSNotificationCenter.defaultCenter().postNotificationName(
-                    NotifyKey.likeUpdated, object: nil)
-            }
-        })
-    }
-    
-    func doUnlike(callback:((error:NSError?) -> Void)?) {
-        if Account.getCachedAccount() == nil {
-            return
-        }
-        var likeId:Int?
-        let account = Account.getCachedAccount()!
-        for (_, like): (Int, Like) in account.likes.enumerate() {
-            if like.track.id == self.id {
-                likeId = like.id
-                break
-            }
-        }
-        if likeId == nil {
-            return
-        }
-        
-        Requests.doUnlike(likeId!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            if error != nil {
-                callback?(error:error)
-                return
-            }
-            if result == nil || !(JSON(result!)["success"].bool ?? false) {
-                callback?(error:NSError(domain:"doUnlike", code: 0, userInfo:nil))
-                return
-            }
-            var foundIdx = -1
-            for (idx, like): (Int, Like) in account.likes.enumerate() {
-                if like.track.id == self.id {
-                    foundIdx = idx
-                    break
-                }
-            }
-            
-            account.likes.removeAtIndex(foundIdx)
-            account.likedTrackIds.remove(self.id)
-            callback?(error:nil)
-            
-            NSNotificationCenter.defaultCenter().postNotificationName(
-                NotifyKey.likeUpdated, object: nil)
-        })
+            drop: nil)
     }
     
     func shareTrack(section:String, afterShare: (error:NSError?, uid:String?) -> Void) {
@@ -287,6 +204,57 @@ class Track {
         })
     }
     
+    convenience init(artistTrack json: JSON) {
+        var drop: Drop?
+        let dropObj = json["drop"]
+        if dropObj != JSON.null {
+            drop = Drop(dref: dropObj["dref"].stringValue,
+                type: dropObj["type"].stringValue,
+                when: dropObj["when"].int)
+        } else {
+            print("no drop data")
+        }
+        
+        self.init(
+            id: json["id"].stringValue,
+            title: json["title"].stringValue,
+            type: json["type"].stringValue,
+            drop: drop,
+            releaseDate: NSDate.dateFromString(json["release_date"].stringValue))
+        
+        self.user = BaseUser(
+            userType: .ARTIST,
+            name: json["dj"].stringValue,
+            image: json["artist_image"].string,
+            resourceName: json["resource_name"].stringValue)
+    }
+    
+    convenience init (channelTrack json: JSON) {
+        let id = json["video_id"].string ?? json["id"].stringValue
+        self.init(
+            id: id,
+            title: json["title"].stringValue,
+            type: "youtube",
+            thumbnailUrl: "http://img.youtube.com/vi/\(id)/mqdefault.jpg",
+            releaseDate: NSDate.dateFromString(json["published_at"].stringValue))
+        
+        self.user = BaseUser(
+            userType: .CHANNEL,
+            name: json["channel_title"].stringValue,
+            image: json["channel_image"].string,
+            resourceName: json["resource_name"].stringValue)
+    }
+    
+    convenience init (channelSnippet snippet: JSON) {
+        let id = snippet["resourceId"]["videoId"].stringValue
+        self.init(
+            id: id,
+            title: snippet["title"].stringValue,
+            type: "youtube",
+            thumbnailUrl: "http://img.youtube.com/vi/\(id)/mqdefault.jpg",
+            releaseDate: NSDate.dateFromString(snippet["publishedAt"].stringValue))
+    }
+    
     static func fetchFollowingTracks(pageIdx: Int, callback:((tracks:[Track]?, error:NSError?) -> Void)) {
         Requests.sendGet(ApiPath.streamFollowing, params: ["p": pageIdx], auth: true) { (req, res, result, error) -> Void in
             if (error != nil) {
@@ -306,10 +274,10 @@ class Track {
                     track = UserTrack(json: json)
                 } else if json["dj"] != JSON.null {
                     print("artist track")
-                    track = ArtistTrack(json: json)
+                    track = Track(artistTrack: json)
                 } else if json["channel_title"] != JSON.null {
                     print("channel track")
-                    track = ChannelTrack(json: json)
+                    track = Track(channelTrack: json)
                 } else {
                     print("what the hell is this??")
                 }
@@ -323,29 +291,20 @@ class Track {
     }
 }
 
-enum TrackType {
-    case TRACK
-    case MIXSET
-}
-
 class UserTrack: Track {
-    var streamUrl: String = "" // TODO: change to id
+    enum TrackType {
+        case TRACK
+        case MIXSET
+    }
+    
+    var streamUrl: String
     var userTrackType: TrackType = .TRACK
     var description: String?
     var genre: String?
     var likeCount: Int = 0
     var playCount: Int = 0
     var repostCount: Int = 0
-    var createdAt: NSDate?
-    
-    var userName: String?
-    var userProfileImage: String?
-    var userResourceName: String?
-    
-    // playlist에서는 id에 userTrackId, title은 필요 없음., type "dropbeat"
-    
-    // like는 endpoint 다름.
-    
+ 
     init (json: JSON) {
         let name = json["name"].stringValue
         let id = json["id"].stringValue
@@ -353,9 +312,16 @@ class UserTrack: Track {
         let streamUrl = json["stream_url"].stringValue
         let dropStart = json["drop_start"].int
         let drop = Drop(dref: streamUrl, type: "dropbeat", when: dropStart)
-        super.init(id: id, title: name, type: "dropbeat", thumbnailUrl: coverArt, drop: drop)
-        
+
         self.streamUrl = streamUrl
+        super.init(
+            id: id,
+            title: name,
+            type: "dropbeat",
+            thumbnailUrl: coverArt,
+            drop: drop,
+            releaseDate: NSDate.dateFromString(json["created_at"].stringValue))
+        
         self.description = json["description"].stringValue
         self.userTrackType = (json["track_type"].stringValue == "TRACK") ? TrackType.TRACK : TrackType.MIXSET
         self.likeCount = json["like_count"].intValue
@@ -365,11 +331,11 @@ class UserTrack: Track {
         let genreId = json["genre_id"].intValue
         self.genre = GenreList.getGenreName(genreId)
         
-        self.userName = json["user_name"].string
-        self.userProfileImage = json["user_profile_image"].string
-        self.userResourceName = json["user_resource_name"].string
-
-        self.createdAt = NSDate.dateFromString(json["created_at"].stringValue)
+        self.user = BaseUser(
+            userType: .USER,
+            name: json["user_name"].stringValue,
+            image: json["user_profile_image"].stringValue,
+            resourceName: json["user_resource_name"].stringValue)
     }
     
     static func fetchNewUploads(genre:String?, pageIdx: Int, callback:((tracks:[UserTrack]?, error:NSError?) -> Void)) {
@@ -394,64 +360,6 @@ class UserTrack: Track {
             }
             callback(tracks: tracks, error: nil)
         }
-    }
-}
-
-class ArtistTrack: Track {
-    var releaseDate: NSDate?
-    var artistName: String?
-    var artistResourceName: String?
-    
-    init(json: JSON) {
-        var drop: Drop?
-        let dropObj = json["drop"]
-        if dropObj != JSON.null {
-            drop = Drop(dref: dropObj["dref"].stringValue,
-                type: dropObj["type"].stringValue,
-                when: dropObj["when"].int)
-        } else {
-            print("no drop data")
-        }
-        
-        super.init(
-            id: json["id"].stringValue,
-            title: json["title"].stringValue,
-            type: json["type"].stringValue,
-            drop: drop)
-        
-        self.artistName = json["dj"].string
-        self.artistResourceName = json["resource_name"].string
-        
-        self.releaseDate = NSDate.dateFromString(json["release_date"].stringValue)
-    }
-}
-
-class ChannelTrack : Track {
-    // for channel user page view
-    var publishedAt : NSDate?
-    init (id:String, title:String, publishedAt:NSDate?) {
-        super.init(id: id, title: title, type: "youtube", tag: nil,
-            thumbnailUrl: "http://img.youtube.com/vi/\(id)/mqdefault.jpg",
-            drop: nil, topMatch: false)
-        self.publishedAt = publishedAt
-    }
-
-    // for Explore tab
-    var channelTitle: String?
-    var channelImage: String?
-    var channelResourceName: String?
-    
-    convenience init (json: JSON) {
-        let publishedAt = NSDate.dateFromString(json["published_at"].stringValue)
-        
-        let id = json["video_id"].string ?? json["id"].stringValue
-        self.init(id: id,
-            title: json["title"].stringValue,
-            publishedAt: publishedAt)
-        
-        self.channelTitle = json["channel_title"].stringValue
-        self.channelImage = json["channel_image"].stringValue
-        self.channelResourceName = json["resource_name"].stringValue
     }
 }
 
@@ -525,4 +433,136 @@ class Like {
         }
         return likes
     }
+    
+    static func likeTrack(track:Track, callback: ((error: NSError?) -> Void)?) {
+        if Account.getCachedAccount() == nil {
+            // TODO: 로그인 안했을 때 어쩔꺼니?
+            return
+        }
+        
+        switch track {
+        case is UserTrack:
+            Requests.sendPost(ApiPath.userTrackLike, params: ["track_id":track.id], auth: true) { (req, resp, result, error) -> Void in
+                if error != nil {
+                    callback?(error:error)
+                    return
+                }
+                
+                var json:JSON?
+                if result != nil {
+                    json = JSON(result!)
+                }
+                
+                if result == nil || !(json!["success"].bool ?? false) {
+                    callback?(error:NSError(domain:"doLike", code: 0, userInfo:nil))
+                    return
+                }
+                
+                if let like = Like(json: json!["obj"]) {
+                    let account = Account.getCachedAccount()
+                    account!.likes.append(like)
+                    callback?(error:nil)
+                    
+                    NSNotificationCenter.defaultCenter().postNotificationName(
+                        NotifyKey.likeUpdated, object: nil)
+                }
+            }
+        default:
+            Requests.doLike(track, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                if error != nil {
+                    callback?(error:error)
+                    return
+                }
+                
+                var json:JSON?
+                if result != nil {
+                    json = JSON(result!)
+                }
+                
+                if result == nil || !(json!["success"].bool ?? false) {
+                    callback?(error:NSError(domain:"doLike", code: 0, userInfo:nil))
+                    return
+                }
+                
+                if let like = Like(json: json!["obj"]) {
+                    let account = Account.getCachedAccount()
+                    account!.likes.append(like)
+                    callback?(error:nil)
+                    
+                    NSNotificationCenter.defaultCenter().postNotificationName(
+                        NotifyKey.likeUpdated, object: nil)
+                }
+            })
+        }
+    }
+    
+    static func unlikeTrack(track:Track, callback: ((error: NSError?) -> Void)?) {
+        if Account.getCachedAccount() == nil {
+            return
+        }
+        
+        let account = Account.getCachedAccount()!
+        let filteredLikes = account.likes.filter { like in
+            like.track.id == track.id
+        }
+        guard filteredLikes.count == 1 else {
+            print("filtered likes count is not 1. what the hell?")
+            assertionFailure()
+            return
+        }
+        
+        let likeId = filteredLikes.first?.id
+        switch track {
+        case is UserTrack:
+            Requests.send(.DELETE, url: ApiPath.userTrackLike, params: ["like_id":likeId!], auth: true) { (req, resp, result, error) -> Void in
+                if error != nil {
+                    callback?(error:error)
+                    return
+                }
+                if result == nil || !(JSON(result!)["success"].bool ?? false) {
+                    callback?(error:NSError(domain:"doUnlike", code: 0, userInfo:nil))
+                    return
+                }
+                var foundIdx = -1
+                for (idx, like): (Int, Like) in account.likes.enumerate() {
+                    if like.track.id == track.id {
+                        foundIdx = idx
+                        break
+                    }
+                }
+                
+                account.likes.removeAtIndex(foundIdx)
+                callback?(error:nil)
+                
+                NSNotificationCenter.defaultCenter().postNotificationName(
+                    NotifyKey.likeUpdated, object: nil)
+            }
+            break
+        default:
+            Requests.doUnlike(likeId!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                if error != nil {
+                    callback?(error:error)
+                    return
+                }
+                if result == nil || !(JSON(result!)["success"].bool ?? false) {
+                    callback?(error:NSError(domain:"doUnlike", code: 0, userInfo:nil))
+                    return
+                }
+                var foundIdx = -1
+                for (idx, like): (Int, Like) in account.likes.enumerate() {
+                    if like.track.id == track.id {
+                        foundIdx = idx
+                        break
+                    }
+                }
+                
+                account.likes.removeAtIndex(foundIdx)
+                callback?(error:nil)
+                
+                NSNotificationCenter.defaultCenter().postNotificationName(
+                    NotifyKey.likeUpdated, object: nil)
+            })
+        }
+    }
+    
 }

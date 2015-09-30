@@ -42,19 +42,9 @@ class Feed {
                         when: dropObj["when"].int)
             }
             
-//            let dref = s["dref"]
-//            if dref.error == nil {
-//                track.dref = s["dref"].stringValue
-//            }
-            
             let tag = s["tag"]
             if tag.error == nil {
                 track.tag = s["tag"].stringValue
-            }
-            
-            let topMatch = s["top_match"]
-            if topMatch.error == nil {
-                track.topMatch = s["top_match"].boolValue
             }
             
             if (track.type == "youtube") {
@@ -65,7 +55,6 @@ class Feed {
                     track.thumbnailUrl = s["artwork"].stringValue
                 }
             }
-            
             
             tracks.append(track)
         }
@@ -418,7 +407,7 @@ class BeatportTrack:Track {
     
     init(id: String, trackName:String, artist:String, type:String,
         thumbnailUrl:String, mixType:String?, genre:String?, label:String?, releasedAt:NSDate?) {
-            super.init(id: id, title: "\(artist) - \(trackName)", type: type, tag: nil, thumbnailUrl: thumbnailUrl, drop: nil, topMatch: nil)
+            super.init(id: id, title: "\(artist) - \(trackName)", type: type, tag: nil, thumbnailUrl: thumbnailUrl, drop: nil)
             self.artist = artist
             self.mixType = mixType
             self.genre = genre

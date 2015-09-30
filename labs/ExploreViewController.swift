@@ -78,11 +78,15 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
         cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
             let cell = trackTableView.dequeueReusableCellWithIdentifier(
                 "ExploreTableViewCell", forIndexPath: indexPath) as! ExploreTableViewCell
-            let track = tracks[indexPath.row] as! ChannelTrack
+            let track = tracks[indexPath.row]
             cell.delegate = self
             
-            cell.channelName.text = track.channelTitle
-            cell.channelImageView.sd_setImageWithURL(NSURL(string: track.channelImage!), placeholderImage: UIImage(named: "default_profile"))
+            cell.channelName.text = track.user?.name
+            if let imageUrl = track.user?.image {
+                cell.channelImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
+            } else {
+                cell.channelImageView.image = UIImage(named: "default_profile")
+            }
             
             cell.nameView.text = track.title
             if (track.thumbnailUrl != nil) {
@@ -96,7 +100,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             } else {
                 cell.thumbView.image = UIImage(named: "default_artwork")
             }
-            if let publishedAt = track.publishedAt {
+            if let publishedAt = track.releaseDate {
                 cell.publishedAt.text = publishedAt.timeAgoSinceNow()
             } else {
                 cell.publishedAt.hidden = true
@@ -142,7 +146,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             playlistSelectVC.caller = self
         case "showChannelInfo":
             let indexPath = self.getIndexOfSender(self.trackTableView, sender: sender as! UIButton)
-            let track = self.tracks[indexPath!.row] as! ChannelTrack
+            let track = self.tracks[indexPath!.row]
 
             let mySegue = segue as! JHImageTransitionSegue
             let sourceImageView = (self.trackTableView.cellForRowAtIndexPath(indexPath!) as! ExploreTableViewCell).channelImageView
@@ -152,7 +156,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             mySegue.destinationRect = self.view.convertRect(CGRectMake(10, 157, 80, 80), fromView: nil)
             
             let uvc = segue.destinationViewController as! UserViewController
-            uvc.resource = track.channelResourceName
+            uvc.resource = track.user?.resourceName
             uvc.passedImage = sourceImageView.image
 
         default:
@@ -207,9 +211,9 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
                 return
             }
             
-            var particals = [ChannelTrack]()
+            var particals = [Track]()
             for (_, s): (String, JSON) in respObj["data"] {
-                let track = ChannelTrack(json: s)
+                let track = Track(channelTrack: s)
                 particals.append(track)
             }
             

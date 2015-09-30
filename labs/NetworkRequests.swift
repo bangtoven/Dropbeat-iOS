@@ -4,108 +4,110 @@
 
 import Foundation
 
+typealias RespCallback = ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)
+
 class Requests {
     static var EMPTY_RESPONSE_CALLBACK = {(req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
     }
     
-    static func send(method: Method, url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, background: Bool = false,respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func send(method: Method, url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, background: Bool = false,respCb: RespCallback) -> Request {
         let adapter = WebAdapter(url: url, method: method, params: params, auth: auth, background:background)
         return adapter.send({ (request, response, result) -> Void in
             respCb(request!, response, result.value, result.error as? NSError)
         })
     }
     
-    static func sendGet(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, background: Bool = false, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func sendGet(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, background: Bool = false, respCb: RespCallback) -> Request {
         return send(Method.GET, url: url, params: params, auth: auth, background:background, respCb: respCb)
     }
    
-    static func sendPost(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func sendPost(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, respCb: RespCallback) -> Request {
         return send(Method.POST, url: url, params: params, auth: auth, respCb: respCb)
     }
     
-    static func sendPut(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func sendPut(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, respCb: RespCallback) -> Request {
         return send(Method.PUT, url: url, params: params, auth: auth, respCb: respCb)
     }
     
-    static func sendHead(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func sendHead(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, respCb: RespCallback) -> Request {
         return send(Method.HEAD, url: url, params: params, auth: auth, respCb: respCb)
     }
     
-    static func resolveUser (resource: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func resolveUser (resource: String, respCb: RespCallback) -> Request {
         return sendGet(ApiPath.resolveUser, params:["url":"/r/"+resource], auth: false, respCb: respCb)
     }
     
-    static func fetchArtistEvent(q: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+    static func fetchArtistEvent(q: String, respCb: RespCallback) -> Request{
         return sendGet(CorePath.event, params: ["q": q], auth: false, respCb: respCb)
     }
     
-    static func fetchArtistLiveset(q: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+    static func fetchArtistLiveset(q: String, respCb: RespCallback) -> Request{
         return sendGet(CorePath.searchLiveset, params: ["q": q], auth: false, respCb: respCb)
     }
     
-    static func fetchArtistPodcast(q: String, page: Int, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+    static func fetchArtistPodcast(q: String, page: Int, respCb: RespCallback) -> Request{
         return sendGet(CorePath.podcast, params: ["q": q, "p": page], auth: false, respCb: respCb)
     }
     
     
-    static func userSelf(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func userSelf(respCb: RespCallback) -> Request {
         return sendGet(ApiPath.userSelf, auth: true, respCb: respCb)
     }
     
-    static func userSignin(params: Dictionary<String, String>, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func userSignin(params: Dictionary<String, String>, respCb: RespCallback) -> Request {
         return sendPost(ApiPath.userSignIn, params: params, auth: false, respCb: respCb)
     }
     
-    static func userChangeEmail(email:String, respCb:((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func userChangeEmail(email:String, respCb:RespCallback) -> Request {
         return sendPost(ApiPath.userChangeEmail, params:["email":email], auth:true, respCb:respCb)
     }
     
-    static func getUserLikeList(id: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func getUserLikeList(id: String, respCb: RespCallback) -> Request {
         return sendGet(ApiPath.userLikeList, params: ["user_id": id], auth: true, respCb: respCb)
     }
-    static func getPlaylist(id: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func getPlaylist(id: String, respCb: RespCallback) -> Request {
         return sendGet(ApiPath.playlist, params: ["id": id], auth: true, respCb: respCb)
     }
     
-    static func createPlaylist(name: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+    static func createPlaylist(name: String, respCb: RespCallback) -> Request{
         return sendPost(ApiPath.playlist, params: ["name": name], auth: true, respCb: respCb)
     }
     
     
     // `data` should be JsonArray.
-    static func setPlaylist(id: String, data: AnyObject, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+    static func setPlaylist(id: String, data: AnyObject, respCb: RespCallback) -> Request{
         return sendPost(ApiPath.playlistSet, params: ["playlist_id": id, "data": data], auth: true, respCb: respCb)
     }   
     
-    static func deletePlaylist(id: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+    static func deletePlaylist(id: String, respCb: RespCallback) -> Request{
         return sendPost(ApiPath.playlistDel, params: ["id": id], auth: true, respCb: respCb)
     }
     
-    static func changePlaylistName(id: String, name: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void))  -> Request {
+    static func changePlaylistName(id: String, name: String, respCb: RespCallback)  -> Request {
         return sendPut(ApiPath.playlist, params: ["id": id, "name": name], auth: true, respCb: respCb)
     }
     
-    static func fetchPlaylistList(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+    static func fetchPlaylistList(respCb: RespCallback) -> Request{
         return sendGet(ApiPath.playlistList, auth: true, respCb: respCb)
     }
     
-    static func fetchInitialPlaylist(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func fetchInitialPlaylist(respCb: RespCallback) -> Request {
         return sendGet(ApiPath.playlistIntial, auth: false, respCb: respCb)
     }
     
-    static func getSharedPlaylist(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+    static func getSharedPlaylist(uid: String, respCb: RespCallback) -> Request{
         return sendGet(ApiPath.playlistShared, params: ["uid": uid], auth: false, respCb: respCb)
     }
     
-    static func importPlaylist(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+    static func importPlaylist(uid: String, respCb: RespCallback) -> Request{
         return sendGet(ApiPath.playlistShared, params: ["uid": uid], auth: false, respCb: respCb)
     }
     
-    static func search(q: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+    static func search(q: String, respCb: RespCallback) -> Request{
         return sendGet(CorePath.newSearch, params: ["q": q], auth: false, respCb: respCb)
     }
     
-    static func streamResolve(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+    static func streamResolve(uid: String, respCb: RespCallback) -> Request{
         let systemVersion = UIDevice.currentDevice().systemVersion
         var firstDigit = ""
         if (systemVersion.characters.count > 0) {
@@ -114,7 +116,7 @@ class Requests {
         return sendGet(ResolvePath.resolveStream, params: ["uid": uid, "v": 1, "t": "ios\(firstDigit)"], auth: false, background: false, respCb: respCb)
     }
     
-    static func fetchFeed(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request{
+    static func fetchFeed(respCb: RespCallback) -> Request{
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup: nil)
         let key = keychainItemWrapper.objectForKey("auth_token") as? String
         let authenticated = key != nil
@@ -137,27 +139,27 @@ class Requests {
         return request(Method.GET, ApiPath.logPlay, parameters: ["t": track.title, "device_type": "ios", "uid": track.id], encoding: .URL).validate()
     }
     
-    static func getClientVersion(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func getClientVersion(respCb: RespCallback) -> Request {
         return sendGet(ApiPath.metaVersion, auth: false, respCb: respCb)
     }
     
-    static func getChannelList(genre: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func getChannelList(genre: String, respCb: RespCallback) -> Request {
         return sendGet(CorePath.channelList, params: ["genre": genre], auth: false, respCb: respCb)
     }
     
-    static func getChannelDetail(uid: String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func getChannelDetail(uid: String, respCb: RespCallback) -> Request {
         return sendGet(CorePath.channelDetail, params: ["uid": uid], auth: false, respCb: respCb)
     }
     
-    static func getBookmarkList(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func getBookmarkList(respCb: RespCallback) -> Request {
         return sendGet(ApiPath.bookmark, auth: true, respCb: respCb)
     }
     
-    static func updateBookmarkList(ids: [String], respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func updateBookmarkList(ids: [String], respCb: RespCallback) -> Request {
         return sendPost(ApiPath.bookmark, params: ["data": ids], auth: true, respCb: respCb)
     }
     
-    static func getChannelPlaylist(uid: String, pageToken: String?, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func getChannelPlaylist(uid: String, pageToken: String?, respCb: RespCallback) -> Request {
         var params:[String:AnyObject] = [
             "part": "id,snippet",
             "key" : ApiKey.google,
@@ -170,45 +172,45 @@ class Requests {
         return sendGet(CorePath.channelGproxy, params: params, auth:false, respCb: respCb)
     }
     
-    static func sharePlaylist(playlist:Playlist, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func sharePlaylist(playlist:Playlist, respCb: RespCallback) -> Request {
         let playlistData = playlist.toJson()
         return sendPost(ApiPath.playlistShared, params: playlistData, auth: true, respCb: respCb)
     }
     
-    static func shareTrack(track:Track, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func shareTrack(track:Track, respCb: RespCallback) -> Request {
         return sendPost(ApiPath.trackShare, params: ["track_name": track.title, "ref": track.id], auth: true, respCb: respCb)
     }
     
-    static func getSharedTrack(uid:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func getSharedTrack(uid:String, respCb: RespCallback) -> Request {
         return sendGet(ApiPath.trackShare, params: ["uid": uid], auth:false, respCb: respCb)
     }
     
-    static func sendFeedback(senderEmail:String, content:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func sendFeedback(senderEmail:String, content:String, respCb: RespCallback) -> Request {
         
         return sendPost(ApiPath.feedback, params: ["sender": senderEmail, "content": content], auth: false, respCb: respCb)
     }
     
-    static func fetchChannelFeed(pageIdx:Int, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func fetchChannelFeed(pageIdx:Int, respCb: RespCallback) -> Request {
         return sendGet(ApiPath.feedChannel, params: ["p": pageIdx], auth:true, respCb: respCb)
     }
     
-    static func fetchExploreChannelFeed(pageIdx:Int, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func fetchExploreChannelFeed(pageIdx:Int, respCb: RespCallback) -> Request {
         return sendPost(CorePath.channelFeed, params: ["p": pageIdx], auth:false, respCb: respCb)
     }
     
-    static func artistFilter(names:[String], respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func artistFilter(names:[String], respCb: RespCallback) -> Request {
         return sendPost(CorePath.artistFilter, params: ["q": names], auth:false, respCb: respCb)
     }
     
-    static func fetchBeatportChart(genre:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func fetchBeatportChart(genre:String, respCb: RespCallback) -> Request {
         return sendGet(CorePath.trendingChart, params:["type": genre], auth:false, respCb: respCb)
     }
     
-    static func getFeedGenre(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func getFeedGenre(respCb: RespCallback) -> Request {
         return sendGet(CorePath.genre, params:nil, auth:false, respCb: respCb)
     }
     
-    static func getStreamNew(genre:String?, pageIdx:Int, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func getStreamNew(genre:String?, pageIdx:Int, respCb: RespCallback) -> Request {
         var params:[String:AnyObject] = ["p": pageIdx]
         if genre != nil && (genre!).characters.count > 0 {
             params["g"] = genre
@@ -216,7 +218,7 @@ class Requests {
         return sendGet(CorePath.streamNew, params:params, auth:false, respCb: respCb)
     }
     
-    static func getStreamTrending(genre:String?, pageIdx:Int, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func getStreamTrending(genre:String?, pageIdx:Int, respCb: RespCallback) -> Request {
         var params:[String:AnyObject] = ["p": pageIdx]
         if genre != nil && (genre!).characters.count > 0 {
             params["g"] = genre
@@ -224,7 +226,7 @@ class Requests {
         return sendGet(CorePath.streamTrending, params:params, auth:false, respCb: respCb)
     }
     
-    static func getStreamFriend(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func getStreamFriend(respCb: RespCallback) -> Request {
         var params:[String:AnyObject]?
         let defaultDb:NSUserDefaults = NSUserDefaults.standardUserDefaults()
         if let expireDate:NSDate = defaultDb.objectForKey(UserDataKey.maxFavoriteCacheExpireDate) as? NSDate {
@@ -241,37 +243,33 @@ class Requests {
         })
     }
     
-    static func searchArtist(keyword:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func searchArtist(keyword:String, respCb: RespCallback) -> Request {
         return sendGet(CorePath.searchArtist, params:["q": keyword], auth:false, respCb:respCb)
     }
     
-    static func getLikes(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
-        return sendGet(ApiPath.trackLike, auth: true, respCb:respCb)
-    }
-    
-    static func doLike(track: Track, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func doLike(track: Track, respCb: RespCallback) -> Request {
         var params:[String:AnyObject] = [String:AnyObject]()
         params["data"] = ["id":track.id, "type":track.type, "title": track.title]
         return sendPost(ApiPath.trackLike, params:params, auth: true, respCb:respCb)
     }
     
-    static func doUnlike(likeId:Int, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func doUnlike(likeId:Int, respCb: RespCallback) -> Request {
         return sendPost(ApiPath.trackDislike, params:["id":likeId], auth: true, respCb:respCb)
     }
     
-    static func addFavorite(ids:[String], respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func addFavorite(ids:[String], respCb: RespCallback) -> Request {
         return sendPost(ApiPath.genreAddFavorite, params: ["ids": ids], auth: true, respCb:respCb)
     }
     
-    static func delFavorite(ids:[String], respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func delFavorite(ids:[String], respCb: RespCallback) -> Request {
         return sendPost(ApiPath.genreDelFavorite, params: ["ids": ids], auth: true, respCb:respCb)
     }
     
-    static func getFavorites(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func getFavorites(respCb: RespCallback) -> Request {
         return sendGet(ApiPath.genreFavorite, params: nil, auth: true, respCb:respCb)
     }
     
-    static func emailSignup(email:String, firstName:String, lastName:String, nickname:String, password:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func emailSignup(email:String, firstName:String, lastName:String, nickname:String, password:String, respCb: RespCallback) -> Request {
         
         var params:[String:AnyObject] = [String:AnyObject]()
         params["email"] = email
@@ -282,7 +280,7 @@ class Requests {
         return sendPost(ApiPath.userEmailSignup, params: params, auth:false, respCb:respCb)
     }
     
-    static func emailSignin(email:String, password:String, respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func emailSignin(email:String, password:String, respCb: RespCallback) -> Request {
         
         var params:[String:AnyObject] = [String:AnyObject]()
         params["email"] = email
@@ -290,15 +288,15 @@ class Requests {
         return sendPost(ApiPath.userEmailSignin, params: params, auth:false, respCb:respCb)
     }
     
-    static func changeNickname(nickname:String, respCb:((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func changeNickname(nickname:String, respCb:RespCallback) -> Request {
         return sendPost(ApiPath.userChangeNickname, params: ["nickname": nickname], auth: true, respCb: respCb)
     }
     
-    static func changeAboutMe(desc:String, respCb:((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func changeAboutMe(desc:String, respCb:RespCallback) -> Request {
         return sendPost(ApiPath.userChangeAboutMe, params: ["desc": desc], auth: true, respCb: respCb)
     }
     
-    static func getGenreSamples(respCb: ((NSURLRequest, NSHTTPURLResponse?, AnyObject?, NSError?) -> Void)) -> Request {
+    static func getGenreSamples(respCb: RespCallback) -> Request {
         return sendGet(CorePath.genreSample, params: nil, auth: false, respCb: respCb)
     }
 }

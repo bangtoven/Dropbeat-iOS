@@ -12,7 +12,6 @@ class Account {
     var user:User?
     var token:String
     var likes = [Like]()
-    var likedTrackIds = Set<String>()
     var favoriteGenreIds = Set<String>()
     var following = [BaseUser]()
     
@@ -22,24 +21,17 @@ class Account {
     }
     
     func syncLikeInfo(callback:((error: NSError?) -> Void)?) {
-        Requests.getLikes { (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        self.user?.fetchLikeList({ (likes, error) -> Void in
             if (error != nil) {
                 callback?(error:error)
                 return
             }
-            
-            let likeResult:[Like]? = Like.parseLikes(result)
-            if likeResult == nil {
-                callback?(error: NSError(domain:"getLikes", code: 102, userInfo: nil))
-                return
-            }
             self.likes.removeAll(keepCapacity: false)
-            for like in likeResult! {
+            for like in likes! {
                 self.likes.append(like)
-                self.likedTrackIds.insert(like.track.id)
             }
             callback?(error:nil)
-        }
+        })
     }
     
     func syncFollowingInfo(callback:((error: NSError?) -> Void)?) {
@@ -68,26 +60,15 @@ class Account {
         }
         
         self.account = nil
-        var gotLikeInfo = false
         var gotFavoriteInfo = false
         var didErrorHandlerFire = false
         
-        var likes:[Like] = [Like]()
         var favoriteGenreIds:[String] = [String]()
         
         let responseHandler = {() -> Void in
-            if !gotLikeInfo || !gotFavoriteInfo || self.account == nil {
+            if !gotFavoriteInfo || self.account == nil {
                 return
             }
-            
-            self.account!.likes.removeAll(keepCapacity: false)
-            self.account!.likedTrackIds.removeAll(keepCapacity: false)
-            
-            for like: Like in likes {
-                self.account!.likes.append(like)
-                self.account!.likedTrackIds.insert(like.track.id)
-            }
-            
             
             self.account!.favoriteGenreIds.removeAll(keepCapacity: false)
             
@@ -132,27 +113,16 @@ class Account {
                     return
                 }
             })
+            
+            account.syncLikeInfo({ (error) -> Void in
+                if error != nil {
+                    errorHandler(error!)
+                    return
+                }
+            })
+            
             responseHandler()
         })
-        
-        Requests.getLikes { (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            if error != nil {
-                errorHandler(error!)
-                return
-            }
-            
-            let likeResult:[Like]? = Like.parseLikes(result)
-            if likeResult == nil {
-                errorHandler(NSError(domain:"getLikes", code: 102, userInfo: nil))
-                return
-            }
-            for like in likeResult! {
-                likes.append(like)
-            }
-            
-            gotLikeInfo = true
-            responseHandler()
-        }
         
         Requests.getFavorites { (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if error != nil || result == nil {

@@ -384,7 +384,7 @@ class PlaylistViewController: BaseViewController,
         }
         let progressHud = ViewUtils.showProgress(self, message: nil)
         if track.isLiked {
-            track.doUnlike({ (error) -> Void in
+            Like.unlikeTrack(track) { (error) -> Void in
                 if error != nil {
                     progressHud.hide(true)
                     ViewUtils.showConfirmAlert(self,
@@ -400,9 +400,9 @@ class PlaylistViewController: BaseViewController,
                 progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike"))
                 progressHud.hide(true, afterDelay: 1)
                 
-            })
+            }
         } else {
-            track.doLike({ (error) -> Void in
+            Like.likeTrack(track) { (error) -> Void in
                 if error != nil {
                     progressHud.hide(true)
                     ViewUtils.showConfirmAlert(self,
@@ -417,7 +417,7 @@ class PlaylistViewController: BaseViewController,
                 progressHud.mode = MBProgressHUDMode.CustomView
                 progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like"))
                 progressHud.hide(true, afterDelay: 1)
-            })
+            }
         }
     }
     

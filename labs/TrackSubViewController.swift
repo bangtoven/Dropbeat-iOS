@@ -115,34 +115,10 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
             }
             
             for (_, item): (String, JSON) in json["items"] {
-                if item["snippet"].error != nil {
-                    continue
+                let snippet = item["snippet"]
+                if snippet != JSON.null {
+                    self.tracks.append(Track(channelSnippet: snippet))
                 }
-                var snippet = item["snippet"]
-                if snippet["resourceId"].error != nil {
-                    continue
-                }
-                var resourceId = snippet["resourceId"]
-                if resourceId["videoId"].error != nil {
-                    continue
-                }
-                let id = resourceId["videoId"].stringValue
-                
-                if snippet["title"].error != nil {
-                    continue
-                }
-                let title = snippet["title"].stringValue
-                
-                if snippet["description"].error != nil {
-                    continue
-                }
-                _ = snippet["description"].stringValue
-                
-                if snippet["publishedAt"].error != nil {
-                    continue
-                }
-                let publishedAt = NSDate.dateFromString(snippet["publishedAt"].stringValue)
-                self.tracks.append(ChannelTrack(id: id, title:title, publishedAt: publishedAt))
             }
             self.updatePlaylist(false)
             self.trackTableView.reloadData()

@@ -126,41 +126,45 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     }
     
     func initialize() {
-        Account.getAccountWithCompletionHandler({(account:Account?, error:NSError?) -> Void in
-            if (error != nil) {
-                var message:String?
-                if (error != nil && error!.domain == NSURLErrorDomain &&
+        Requests.getFeedGenre { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            let _ = GenreList.parseGenre(result!)
+         
+            Account.getAccountWithCompletionHandler({(account:Account?, error:NSError?) -> Void in
+                if (error != nil) {
+                    var message:String?
+                    if (error != nil && error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
-                    message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
-                } else {
-                    message = NSLocalizedString("Failed to fetch user info", comment:"")
-                    let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
-                    keychainItemWrapper.setObject(nil, forKey: "auth_token")
-                }
-                ViewUtils.showNoticeAlert(self,
-                    title: NSLocalizedString("Failed to fetch user info", comment:""),
-                    message: message!,
-                    btnText: NSLocalizedString("Retry", comment:""),
-                    callback: { () -> Void in
-                        self.progressHud?.hide(true)
-                        self.initialize()
+                            message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
+                    } else {
+                        message = NSLocalizedString("Failed to fetch user info", comment:"")
+                        let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
+                        keychainItemWrapper.setObject(nil, forKey: "auth_token")
+                    }
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to fetch user info", comment:""),
+                        message: message!,
+                        btnText: NSLocalizedString("Retry", comment:""),
+                        callback: { () -> Void in
+                            self.progressHud?.hide(true)
+                            self.initialize()
                     })
-                return
-            }
-            let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            appDelegate.account = account
-            
-            if (account != nil) {
-                let email:String = account!.user!.email
-                Raygun.sharedReporter().identify(email)
+                    return
+                }
+                let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                appDelegate.account = account
                 
-                // GA
-                let tracker = GAI.sharedInstance().defaultTracker
-                let userId:String = account!.user!.id
-                tracker.set("&uid", value:userId)
-            }
-            self.fetchUserInfo()
-        })
+                if (account != nil) {
+                    let email:String = account!.user!.email
+                    Raygun.sharedReporter().identify(email)
+                    
+                    // GA
+                    let tracker = GAI.sharedInstance().defaultTracker
+                    let userId:String = account!.user!.id!
+                    tracker.set("&uid", value:userId)
+                }
+                self.fetchUserInfo()
+            })
+        }
     }
     
     func fetchUserInfo() {

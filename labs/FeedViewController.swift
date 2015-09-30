@@ -511,12 +511,12 @@ class FeedViewController: AddableTrackListViewController,
         } else {
             cell.thumbView.image = UIImage(named: "default_artwork")
         }
-        cell.releaseDateLabel.text = track.createdAt?.timeAgoSinceNow()
+        cell.releaseDateLabel.text = track.releaseDate?.timeAgoSinceNow()
         cell.genreView.text = track.genre
 
-        cell.userNameView.text = track.userName
+        cell.userNameView.text = track.user?.name
         
-        if let imageUrl = track.userProfileImage {
+        if let imageUrl = track.user?.image {
             cell.userProfileImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
         } else {
             cell.userProfileImageView.image = UIImage(named: "default_profile")
@@ -545,26 +545,19 @@ class FeedViewController: AddableTrackListViewController,
         
         switch track {
         case let userTrack as UserTrack:
-            cell.releaseDateLabel.text = userTrack.createdAt?.timeAgoSinceNow()
+            cell.releaseDateLabel.text = userTrack.releaseDate?.timeAgoSinceNow()
             cell.genreView.text = userTrack.genre
-            cell.userNameView.text = userTrack.userName
-            if let imageUrl = userTrack.userProfileImage {
+            cell.userNameView.text = userTrack.user?.name
+            if let imageUrl = userTrack.user?.image {
                 cell.userProfileImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
             } else {
                 cell.userProfileImageView.image = UIImage(named: "default_profile")
             }
-        case let artistTrack as ArtistTrack:
-            cell.releaseDateLabel.text = artistTrack.releaseDate?.timeAgoSinceNow()
-            cell.genreView.text = ""
-            cell.userNameView.text = artistTrack.artistName ?? ""
-            cell.userProfileImageView.image = UIImage(named: "default_profile")
-        case let channelTrack as ChannelTrack:
-            cell.releaseDateLabel.text = channelTrack.publishedAt?.timeAgoSinceNow()
-            cell.genreView.text = ""
-            cell.userNameView.text = channelTrack.channelTitle ?? ""
-            cell.userProfileImageView.image = UIImage(named: "default_profile")
         default:
-            assertionFailure()
+            cell.releaseDateLabel.text = track.releaseDate?.timeAgoSinceNow()
+            cell.genreView.text = ""
+            cell.userNameView.text = track.user?.name
+            cell.userProfileImageView.image = UIImage(named: "default_profile")
         }
         
         return cell

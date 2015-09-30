@@ -200,7 +200,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             activeViewController = UIStoryboard(name: "Explore", bundle: nil).instantiateInitialViewController()
         }
         
-        if currentMenu == .PROFILE {
+        if currentMenu == .PROFILE { // TODO: 어떤 상황일지 잘 생각해 봐라.
             UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
         }
         

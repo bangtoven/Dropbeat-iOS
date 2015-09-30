@@ -79,6 +79,7 @@ public class ApiPath {
     
     static let userTrack = host + "usertrack/"
     static let userTrackNewUploads = userTrack + "newest/"
+    static let userTrackLike = userTrack + "like/"
     
     // Artist
     static let artist = host + "artist/"

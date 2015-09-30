@@ -36,6 +36,16 @@ class ProfileHeaderView: UserHeaderView {
 class SelfProfileViewController: UserViewController {
 
     private var genres:[String:Genre] = [String:Genre]()
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "likeUpdated", name: NotifyKey.likeUpdated, object: nil)
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.likeUpdated, object: nil)
+    }
 
     override func fetchUserInfo() {
         let user = Account.getCachedAccount()?.user
@@ -51,6 +61,14 @@ class SelfProfileViewController: UserViewController {
         self.setAboutMeLabel()
         
         self.title = "Profile"
+    }
+    
+    func likeUpdated() {
+        print("like updated")
+        if let likesSubView: TrackSubViewController = self.viewControllers[self.viewControllers.count-3] as? TrackSubViewController {
+            likesSubView.tracks.removeAll()
+            likesSubView.subViewWillAppear()
+        }
     }
     
     func setAboutMeLabel() {

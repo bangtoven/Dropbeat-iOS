@@ -19,7 +19,7 @@ enum UserType {
 
 class BaseUser {
     var userType: UserType
-    var id: String
+    var id: String?
     var name: String
     var resourceName: String
     var image: String?
@@ -47,7 +47,7 @@ class BaseUser {
         self._isFollowed = nil
     }
     
-    init(userType: UserType, id: String, name: String, image: String?, coverImage: String?, resourceName: String) {
+    init(userType: UserType, id: String? = nil, name: String, image: String?, coverImage: String? = nil, resourceName: String) {
         self.userType = userType
         self.id = id
         self.name = name
@@ -179,7 +179,7 @@ class User: BaseUser {
     }
     
     private func _fetchFollowInfo(path: String, callback:((users: [BaseUser]?, error: NSError?) -> Void)) {
-        Requests.sendGet(path, params: ["user_id": self.id], auth: false) { (req, resp, result, error) -> Void in
+        Requests.sendGet(path, params: ["user_id": self.id!], auth: false) { (req, resp, result, error) -> Void in
             if (error != nil) {
                 callback(users: nil, error: error)
                 return
@@ -207,7 +207,7 @@ class User: BaseUser {
     }
     
     func fetchLikeList(callback:((likes:[Like]?, error:NSError?) -> Void)) {
-        Requests.getUserLikeList(id, respCb: { (req, resp, result, error) -> Void in
+        Requests.getUserLikeList(self.id!, respCb: { (req, resp, result, error) -> Void in
             if (error != nil) {
                 callback(likes: nil, error: error)
                 return

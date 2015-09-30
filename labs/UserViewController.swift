@@ -108,10 +108,8 @@ class UserViewController: AXStretchableHeaderTabViewController {
     func applyFetchedInfoToView() {
         let header = self.headerView as! UserHeaderView
         var isSelf = false
-        switch self.baseUser.userType {
-        case .USER:
-            let user = self.baseUser as! User
-            
+        switch self.baseUser {
+        case let user as User:
             header.aboutMeLabel.text = user.aboutMe
             header.followInfoView.hidden = false
             header.followersLabel.text = String(user.num_followers)
@@ -146,9 +144,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
             if user.id == Account.getCachedAccount()?.user?.id {
                 isSelf = true
             }
-        case .ARTIST:
-            let artist = self.baseUser as! Artist
-            
+        case let artist as Artist:
             var subViewArr = [TrackSubViewController]()
             for (section, tracks): (String, [Track]) in artist.sectionedTracks {
                 let subView = instantiateSubVC()
@@ -175,9 +171,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
             }
             
             self.viewControllers = subViewArr
-        case .CHANNEL:
-            let channel = self.baseUser as! Channel
-            
+        case let channel as Channel:
             header.aboutMeLabel.text = channel.genre.joinWithSeparator(", ")
             if header.aboutMeLabel.text?.length == 0 {
                 header.aboutMeLabel.text = "\n"
@@ -199,6 +193,8 @@ class UserViewController: AXStretchableHeaderTabViewController {
             
             self.viewControllers = subViewArr
             self.baseUser = channel
+        default:
+            assertionFailure()
         }
         
         if let name = self.baseUser?.name {

@@ -141,10 +141,7 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
                 if snippet["publishedAt"].error != nil {
                     continue
                 }
-                let publishedAtStr = snippet["publishedAt"].stringValue
-                let formatter = NSDateFormatter()
-                formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.000Z"
-                let publishedAt = formatter.dateFromString(publishedAtStr)
+                let publishedAt = NSDate.dateFromString(snippet["publishedAt"].stringValue)
                 self.tracks.append(ChannelTrack(id: id, title:title, publishedAt: publishedAt))
             }
             self.updatePlaylist(false)

@@ -8,12 +8,12 @@
 
 import UIKit
 
-enum FeedType {
-    case NEW_UPLOADS
-    case POPULAR_NOW
-    case NEW_RELEASE
-    case DAILY_CHART
-    case USER_GROUP
+enum FeedType: String {
+    case NEW_UPLOADS = "new_uploads"
+    case POPULAR_NOW = "popular_now"
+    case NEW_RELEASE = "new_release"
+    case DAILY_CHART = "daily_chart"
+    case FOLLOWING_TRACKS = "following_tracks"
 }
 
 enum ViewMode {
@@ -66,7 +66,7 @@ class FeedViewController: AddableTrackListViewController,
         var types = [FeedMenu]()
         if let user = Account.getCachedAccount()?.user where user.num_following > 0 {
             print("number of followings: \(user.num_following)")
-            types.append(FeedMenu(title: NSLocalizedString("Social Feed", comment:""), type: FeedType.USER_GROUP))
+            types.append(FeedMenu(title: NSLocalizedString("Following Tracks", comment:""), type: FeedType.FOLLOWING_TRACKS))
         }
         types.append(FeedMenu(title: NSLocalizedString("New Uploads", comment:""), type: FeedType.NEW_UPLOADS))
         types.append(FeedMenu(title: NSLocalizedString("Popular Now", comment:""), type: FeedType.POPULAR_NOW))
@@ -77,13 +77,6 @@ class FeedViewController: AddableTrackListViewController,
     
     private var userGroupSizingCell:UserTrackTableViewCell! = nil;
     private var onceToken:dispatch_once_t = 0
-    
-    private var dateFormatter:NSDateFormatter {
-        let formatter = NSDateFormatter()
-        formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
-        formatter.dateFormat = "MMMM dd, yyyy"
-        return formatter
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -156,25 +149,9 @@ class FeedViewController: AddableTrackListViewController,
     }
     
     override func getPlaylistId() -> String? {
-        var prefix:String? = nil
-        switch (selectedFeedMenu.type) {
-        case .NEW_UPLOADS:
-            prefix = "new_uploads"
-        case .DAILY_CHART:
-            prefix = "daily_chart"
-            break
-        case .NEW_RELEASE:
-            prefix = "new_release"
-            break
-        case .POPULAR_NOW:
-            prefix = "popular_now"
-            break
-        case .USER_GROUP:
-            prefix = "social_feed"
-            break
-        }
-        if prefix != nil && selectedGenre != nil{
-            prefix! += "_\(selectedGenre!.key)"
+        var prefix = selectedFeedMenu.type.rawValue
+        if selectedGenre != nil{
+            prefix += "_\(selectedGenre!.key)"
         }
         return prefix
     }
@@ -193,8 +170,8 @@ class FeedViewController: AddableTrackListViewController,
         case .POPULAR_NOW:
             prefix = NSLocalizedString("Popular Now", comment:"")
             break
-        case .USER_GROUP:
-            prefix = NSLocalizedString("Social Feed", comment:"")
+        case .FOLLOWING_TRACKS:
+            prefix = NSLocalizedString("Following Tracks", comment:"")
             break
         }
         if prefix != nil && selectedGenre != nil {
@@ -204,41 +181,8 @@ class FeedViewController: AddableTrackListViewController,
     }
     
     override func getSectionName() -> String {
-        let section = "feed_"
-        var postfix:String!
-        switch (selectedFeedMenu.type) {
-        case .NEW_UPLOADS:
-            postfix = "new_uploads"
-        case .DAILY_CHART:
-            postfix = "daily_chart"
-            break
-        case .NEW_RELEASE:
-            postfix = "new_release_tracks"
-            break
-        case .POPULAR_NOW:
-            postfix = "popular_now"
-            break
-        case .USER_GROUP:
-            postfix = "social_feed"
-            break
-        }
-        return section + postfix
+        return "feed_" + selectedFeedMenu.type.rawValue
     }
-    
-//    func getFollowingHeaderView(followings:[Following]) -> UIView {
-//        if followings.count == 0 {
-//            let view:FollowingFeedHeaderView = FollowingFeedHeaderView(frame: CGRectMake(0, 0, self.trackTableView.bounds.width, 200))
-//            view.delegate = self
-//            return view
-//        }
-//        let view:FollowingFeedHeaderWithFollowingView =
-//            FollowingFeedHeaderWithFollowingView(frame: CGRectMake(0, 0, self.trackTableView.bounds.width, 100))
-//        let text = NSString.localizedStringWithFormat(
-//            NSLocalizedString("You are following %d artists", comment:""), followings.count)
-//        view.followingInfoView.text = text as String
-//        view.delegate = self
-//        return view
-//    }
     
     func initGenres(callback:(error:NSError?) -> Void) {
         let genreHandler = {(genreMap:[String:[Genre]]) -> Void in
@@ -319,13 +263,14 @@ class FeedViewController: AddableTrackListViewController,
         var dropIcLoadingName = "ic_drop_loading"
         var dropIcPlayingName = "ic_drop_pause"
         
-        if selectedFeedMenu.type == FeedType.NEW_RELEASE {
+        switch selectedFeedMenu.type {
+        case .NEW_RELEASE:
             let trackCell = cell as! NewReleasedTrackTableViewCell
             trackCell.titleWidthConstaint.constant = self.view.bounds.width - marginWidth
             trackCell.artistWidthConstraint.constant = self.view.bounds.width - marginWidth
             dropBtn = trackCell.dropBtn
             
-        } else if selectedFeedMenu.type == FeedType.POPULAR_NOW {
+        case .POPULAR_NOW:
             if selectedGenre != nil && selectedGenre!.key.characters.count > 0 {
                 let trackCell = cell as! BpTrendingTrackTableViewCell
                 trackCell.titleWidthConstaint.constant = self.view.bounds.width - marginWidth
@@ -337,15 +282,14 @@ class FeedViewController: AddableTrackListViewController,
                 trackCell.artistWidthConstraint.constant = self.view.bounds.width - marginWidth
                 dropBtn = trackCell.dropBtn
             }
-            
-        } else if selectedFeedMenu.type == FeedType.DAILY_CHART {
+        case .DAILY_CHART:
             let trackCell = cell as! BpChartTrackTableViewCell
             dropBtn = trackCell.dropBtn
             dropIcReadyName = "ic_drop_small"
             dropIcLoadingName = "ic_drop_loading_small"
             dropIcPlayingName = "ic_drop_pause_small"
             
-        } else if selectedFeedMenu.type == FeedType.NEW_UPLOADS || selectedFeedMenu.type == FeedType.USER_GROUP {
+        case .NEW_UPLOADS, .FOLLOWING_TRACKS:
             let trackCell = cell as! UserTrackTableViewCell
             dropBtn = trackCell.dropBtn
             dropIcReadyName = "ic_drop_small"
@@ -390,6 +334,25 @@ class FeedViewController: AddableTrackListViewController,
         }
     }
     
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if tableView == feedTypeSelectTableView {
+            return 60
+        }
+        if tableView == genreTableView {
+            return 60
+        }
+        switch(selectedFeedMenu.type) {
+        case .FOLLOWING_TRACKS, .NEW_UPLOADS:
+            return 150
+        case .POPULAR_NOW :
+            return (15 * self.view.bounds.width / 30) + 52
+        case .NEW_RELEASE:
+            return (15 * self.view.bounds.width / 30) + 52
+        case .DAILY_CHART:
+            return 76
+        }
+    }
+    
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         if tableView == feedTypeSelectTableView {
             
@@ -409,21 +372,17 @@ class FeedViewController: AddableTrackListViewController,
         } else {
             var cell:UITableViewCell!
             switch (selectedFeedMenu.type) {
+            case .FOLLOWING_TRACKS:
+                cell = getFollowingTrackCell(indexPath)
             case .NEW_UPLOADS:
                 cell = getUserTrackCell(indexPath)
             case .DAILY_CHART:
                 cell = getBeatportChartCell(indexPath)
-                break
             case .NEW_RELEASE:
                 cell = getNewReleaseCell(indexPath)
-                break
             case .POPULAR_NOW:
                 cell = selectedGenre != nil && selectedGenre!.key.characters.count > 0 ?
                     getBeatportTrendingCell(indexPath) : getTrendingCell(indexPath)
-                break
-           case .USER_GROUP:
-                cell = getUserTrackCell(indexPath)
-                break
             }
             let track = tracks[indexPath.row]
             if (getPlaylistId() == PlayerContext.currentPlaylistId &&
@@ -501,7 +460,8 @@ class FeedViewController: AddableTrackListViewController,
         }
         cell.releasedAt.hidden = track.releasedAt == nil
         if track.releasedAt != nil {
-            cell.releasedAt.text = "Released on \(self.dateFormatter.stringFromDate(track.releasedAt!))"
+            let dateString = track.releasedAt!.formattedDateWithFormat("MMMM dd, yyyy", locale: NSLocale(localeIdentifier: "en_US_POSIX"))
+            cell.releasedAt.text = "Released on \(dateString)"
         }
         cell.artistName.text = track.artist
         cell.rank.text = "\(indexPath.row + 1)"
@@ -527,14 +487,15 @@ class FeedViewController: AddableTrackListViewController,
         }
         cell.releasedAt.hidden = track.releasedAt == nil
         if track.releasedAt != nil {
-            cell.releasedAt.text = "Released on \(self.dateFormatter.stringFromDate(track.releasedAt!))"
+            let dateString = track.releasedAt!.formattedDateWithFormat("MMMM dd, yyyy", locale: NSLocale(localeIdentifier: "en_US_POSIX"))
+            cell.releasedAt.text = "Released on \(dateString)"
         }
         cell.artistName.text = track.artist
         return cell
     }
     
     func getUserTrackCell(indexPath:NSIndexPath) -> UITableViewCell {
-        let cell:UserTrackTableViewCell = trackTableView.dequeueReusableCellWithIdentifier(
+        let cell = trackTableView.dequeueReusableCellWithIdentifier(
             "UserTrackTableViewCell", forIndexPath: indexPath) as! UserTrackTableViewCell
         cell.delegate = self
         let track = tracks[indexPath.row] as! UserTrack
@@ -550,7 +511,7 @@ class FeedViewController: AddableTrackListViewController,
         } else {
             cell.thumbView.image = UIImage(named: "default_artwork")
         }
-        cell.listenTimeView.text = track.createdAt?.timeAgoSinceNow()
+        cell.releaseDateLabel.text = track.createdAt?.timeAgoSinceNow()
         cell.genreView.text = track.genre
 
         cell.userNameView.text = track.userName
@@ -564,6 +525,50 @@ class FeedViewController: AddableTrackListViewController,
         return cell
     }
     
+    func getFollowingTrackCell(indexPath:NSIndexPath) -> UITableViewCell {
+        let cell = trackTableView.dequeueReusableCellWithIdentifier(
+            "UserTrackTableViewCell", forIndexPath: indexPath) as! UserTrackTableViewCell
+        cell.delegate = self
+        let track = tracks[indexPath.row]
+        cell.nameView.text = track.title
+        if (track.thumbnailUrl != nil) {
+            cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
+                placeholderImage: UIImage(named: "default_artwork"), completed: {
+                    (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
+                    if (error != nil) {
+                        cell.thumbView.image = UIImage(named: "default_artwork")
+                    }
+            })
+        } else {
+            cell.thumbView.image = UIImage(named: "default_artwork")
+        }
+        
+        switch track {
+        case let userTrack as UserTrack:
+            cell.releaseDateLabel.text = userTrack.createdAt?.timeAgoSinceNow()
+            cell.genreView.text = userTrack.genre
+            cell.userNameView.text = userTrack.userName
+            if let imageUrl = userTrack.userProfileImage {
+                cell.userProfileImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
+            } else {
+                cell.userProfileImageView.image = UIImage(named: "default_profile")
+            }
+        case let artistTrack as ArtistTrack:
+            cell.releaseDateLabel.text = artistTrack.releaseDate?.timeAgoSinceNow()
+            cell.genreView.text = ""
+            cell.userNameView.text = artistTrack.artistName ?? ""
+            cell.userProfileImageView.image = UIImage(named: "default_profile")
+        case let channelTrack as ChannelTrack:
+            cell.releaseDateLabel.text = channelTrack.publishedAt?.timeAgoSinceNow()
+            cell.genreView.text = ""
+            cell.userNameView.text = channelTrack.channelTitle ?? ""
+            cell.userProfileImageView.image = UIImage(named: "default_profile")
+        default:
+            assertionFailure()
+        }
+        
+        return cell
+    }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if tableView == feedTypeSelectTableView {
@@ -592,27 +597,6 @@ class FeedViewController: AddableTrackListViewController,
         }
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if tableView == feedTypeSelectTableView {
-            return 60
-        }
-        if tableView == genreTableView {
-            return 60
-        }
-        switch(selectedFeedMenu.type) {
-        case .NEW_UPLOADS:
-            return 150
-        case .POPULAR_NOW :
-            return (15 * self.view.bounds.width / 30) + 52
-        case .NEW_RELEASE:
-            return (15 * self.view.bounds.width / 30) + 52
-        case .DAILY_CHART:
-            return 76
-        case .USER_GROUP:
-            return 150
-        }
-    }
-    
     func filterAsGenre(genre:Genre) {
         switchFeed(selectedFeedMenu, genre: genre)
         toFeedView(selectedFeedMenu.title)
@@ -637,11 +621,7 @@ class FeedViewController: AddableTrackListViewController,
         loadMoreSpinnerWrapper.hidden = true
         loadMoreSpinner.stopAnimating()
         
-        if menu.type == FeedType.USER_GROUP {
-            trackTableView.backgroundColor = UIColor(netHex: 0xEFEFF4)
-        } else {
-            trackTableView.backgroundColor = UIColor(netHex: 0xffffff)
-        }
+        trackTableView.backgroundColor = UIColor(netHex: 0xffffff)
         
         genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
         
@@ -694,23 +674,7 @@ class FeedViewController: AddableTrackListViewController,
         
         
         // log ga
-        var action:String = "none"
-        switch(menu.type) {
-        case .NEW_UPLOADS:
-            action = "new_uploads"
-        case .POPULAR_NOW:
-            action = "popular_now"
-            break
-        case .DAILY_CHART:
-            action = "daily_chart"
-            break
-        case .NEW_RELEASE:
-            action = "new_release"
-            break
-        case .USER_GROUP:
-            action = "social_feed"
-            break
-        }
+        var action = menu.type.rawValue
         if selectedGenre != nil {
             action += "_" + selectedGenre!.name.lowercaseString.replace(" ", withString: "_")
         }
@@ -740,7 +704,8 @@ class FeedViewController: AddableTrackListViewController,
         case .NEW_RELEASE:
             loadNewReleaseFeed(forceRefresh)
             break
-        case .USER_GROUP:
+        case .FOLLOWING_TRACKS:
+            loadFollowingTracks(forceRefresh)
             break
         }
     }
@@ -941,6 +906,55 @@ class FeedViewController: AddableTrackListViewController,
         })
     }
     
+    func loadFollowingTracks(forceRefresh:Bool=false) {
+        if isLoading {
+            return
+        }
+        
+        var progressHud:MBProgressHUD?
+        if !refreshControl.refreshing && nextPage == 0 {
+            progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+        }
+        Track.fetchFollowingTracks(nextPage) { (tracks, error) -> Void in
+            self.isLoading = false
+            progressHud?.hide(true)
+            if self.refreshControl.refreshing {
+                self.refreshControl.endRefreshing()
+            }
+            if (error != nil || tracks == nil) {
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                    error!.code == NSURLErrorNotConnectedToInternet) {
+                        ViewUtils.showNoticeAlert(self,
+                            title: NSLocalizedString("Failed to load", comment:""),
+                            message: NSLocalizedString("Internet is not connected", comment:""))
+                        return
+                }
+                let message = NSLocalizedString("Failed to load following tracks feed.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
+                return
+            }
+            
+            if tracks == nil || tracks!.count == 0 {
+                self.nextPage = -1
+                self.loadMoreSpinner.stopAnimating()
+                self.loadMoreSpinnerWrapper.hidden = true
+            } else {
+                self.nextPage += 1
+            }
+            
+            if forceRefresh {
+                self.tracks.removeAll(keepCapacity: true)
+            }
+            for track in tracks! {
+                self.tracks.append(track)
+            }
+            self.updatePlaylist(false)
+            self.trackTableView.reloadData()
+            
+            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+        }
+    }
+    
     func loadNewUploadsFeed(forceRefresh:Bool=false) {
         if selectedGenre == nil {
             selectedGenre = genres[FeedType.NEW_UPLOADS]![0]
@@ -1014,7 +1028,7 @@ class FeedViewController: AddableTrackListViewController,
             playlistSelectVC.caller = self
         case "showUserInfo":
             let indexPath = self.getIndexOfSender(self.trackTableView, sender: sender as! UIButton)
-            let track = self.tracks[indexPath!.row] as! UserTrack
+            let track = self.tracks[indexPath!.row]
             
             let mySegue = segue as! JHImageTransitionSegue
             let sourceImageView = (self.trackTableView.cellForRowAtIndexPath(indexPath!) as! UserTrackTableViewCell).userProfileImageView
@@ -1024,7 +1038,8 @@ class FeedViewController: AddableTrackListViewController,
             mySegue.destinationRect = self.view.convertRect(CGRectMake(10, 157, 80, 80), fromView: nil)
             
             let uvc = segue.destinationViewController as! UserViewController
-            uvc.resource = track.userResourceName
+//            uvc.resource = track.userResourceName
+            // TODO: resource name in Track
             uvc.passedImage = sourceImageView.image
             
         default:

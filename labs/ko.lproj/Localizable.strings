@@ -59,7 +59,7 @@
 "Failed to send" = "발송 실패";
 "Feedback Submitted!" = "피드백이 제출되었습니다!";
 "Thank you for your feedback." = "감사합니다.";
-"Social Feed" = "소셜 피드";
+"Following Tracks" = "팔로잉 피드";
 "New Uploads" = "새로 업로드 된 곡";
 "Popular Now" = "지금 인기있는 곡";
 "Followed Artists" = "팔로잉";
@@ -78,6 +78,7 @@
 "Failed to load chart." = "피드를 요청 실패";
 "Failed to load following feed." = "피드를 요청 실패";
 "Failed to load new release." = "피드 요청 실패";
+"Failed to load following tracks feed." = "피드 요청 실패";
 "Close" = "닫기";
 
 "LOADING.." = "LOADING..";

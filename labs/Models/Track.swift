@@ -8,86 +8,12 @@
 
 import UIKit
 
-class Drop {
-    var type:String
-    var dref:String
-    var when:Int?
-    init (dref:String, type:String, when:Int?) {
-        self.type = type
-        self.dref = dref
-        self.when = when
-    }
-    
-    func resolveStreamUrl() -> String? {
-        if self.type == "soundcloud" {
-            return "https://api.soundcloud.com/tracks/\(self.dref)/stream?client_id=b45b1aa10f1ac2941910a7f0d10f8e28"
-        } else if (self.type != "youtube" && self.dref.characters.startsWith("http".characters)) {
-            return self.dref.stringByRemovingPercentEncoding!
-        }
-        return nil
-    }
-}
-
-class Like {
-    var track:Track
-    var id:Int
-
-    init?(json:JSON) {
-        if json["id"].int == nil || json["data"] == nil {
-            self.id = -1
-            self.track = Track(id: "", title: "", type: "")
-            return nil
-        }
-        
-        var track:Track
-        if json["type"].stringValue == "user_track" {
-            track = UserTrack(json: json["data"])
-        } else {
-            var trackJson:JSON = json["data"]
-            if trackJson["id"].string == nil || trackJson["type"].string == nil || trackJson["title"].string == nil {
-                self.id = -1
-                self.track = Track(id: "", title: "", type: "")
-                return nil
-            }
-            let trackId = trackJson["id"].stringValue
-            let type = trackJson["type"].stringValue
-            var thumbnailUrl:String?
-            if type == "youtube" {
-                thumbnailUrl = "http://img.youtube.com/vi/\(trackId)/mqdefault.jpg"
-            }
-            track = Track(id: trackId, title: trackJson["title"].stringValue, type: type, tag: nil, thumbnailUrl: thumbnailUrl)
-        }
-        self.id = json["id"].intValue
-        self.track = track
-    }
-    
-    static func parseLikes(data:AnyObject?, key: String = "like") -> [Like]? {
-        if data == nil {
-            return nil
-        }
-        let json = JSON(data!)
-        if !(json["success"].bool ?? false) || json[key] == nil {
-            return nil
-        }
-        
-        var likes = [Like]()
-        for (_, obj): (String, JSON) in json[key] {
-            if let like = Like(json: obj) {
-                likes.append(like)
-            }
-        }
-        return likes
-    }
-}
-
-// TODO: Track class structure has to be modified!!
 class Track {
     var id: String
     var title: String
     var type: String
     var tag: String?
     var drop: Drop?
-    var dref: String?
     var thumbnailUrl: String?
     var topMatch: Bool?
     var hasHqThumbnail:Bool {
@@ -103,13 +29,11 @@ class Track {
     }
     
     init(id: String, title: String, type: String, tag: String? = nil,
-        thumbnailUrl: String? = nil, drop: Drop? = nil,
-        dref: String? = nil, topMatch: Bool? = false) {
+        thumbnailUrl: String? = nil, drop: Drop? = nil, topMatch: Bool? = false) {
             self.id = id
             self.title = title
             self.drop = drop
             self.type = type
-            self.dref = dref
             self.tag = tag
             self.thumbnailUrl = thumbnailUrl
             self.topMatch = topMatch
@@ -155,10 +79,10 @@ class Track {
                         when: dropObj["when"].int)
             }
             
-            let dref = s["dref"]
-            if dref.error == nil {
-                track.dref = s["dref"].stringValue
-            }
+//            let dref = s["dref"]
+//            if dref.error == nil {
+//                track.dref = s["dref"].stringValue
+//            }
             
             let tag = s["tag"]
             if tag.error == nil {
@@ -363,115 +287,38 @@ class Track {
         })
     }
     
-    func addToPlaylist(playlist: Playlist, section:String, afterAdd: (error:NSError?) -> Void) {
-        let tracks = playlist.tracks
-        
-        var dummyTracks = [[String:AnyObject]]()
-        for t in tracks {
-            if (self.id == t.id) {
-                afterAdd(error: NSError(domain: "addTrack", code:101, userInfo: nil))
-                return
-            }
-            dummyTracks.append(["title": t.title, "id": t.id, "type": t.type])
-        }
-        dummyTracks.append(["title": self.title, "id": self.id, "type": self.type])
-        
-        if Account.getCachedAccount() != nil {
-            // Log to us
-            Requests.logTrackAdd(self.title)
-        }
-        // Log to GA
-        let tracker = GAI.sharedInstance().defaultTracker
-        let event = GAIDictionaryBuilder.createEventWithCategory(
-            "playlist-add-from-\(section)",
-            action: "add-\(self.type)",
-            label: self.title,
-            value: 0
-            ).build()
-        
-        tracker.send(event as [NSObject: AnyObject]!)
-        
-        Requests.setPlaylist(playlist.id, data: dummyTracks) {
-            (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            
+    static func fetchFollowingTracks(pageIdx: Int, callback:((tracks:[Track]?, error:NSError?) -> Void)) {
+        Requests.sendGet(ApiPath.streamFollowing, params: ["p": pageIdx], auth: true) { (req, res, result, error) -> Void in
             if (error != nil) {
-                afterAdd(error: error)
+                callback(tracks: nil, error: error)
                 return
             }
-            var changedPlaylist:Playlist? = nil
-            for p in PlayerContext.playlists {
-                if (p.id == playlist.id) {
-                    changedPlaylist = p
-                    break
-                }
-            }
-            if (changedPlaylist == nil) {
-                afterAdd(error: nil)
+            if (result == nil) {
+                callback(tracks: [], error: nil)
                 return
             }
-            for t in changedPlaylist!.tracks {
-                if (t.id == self.id) {
-                    afterAdd(error: nil)
-                    return
-                }
-            }
-            changedPlaylist!.tracks.append(self)
-            afterAdd(error: nil)
-        }
-    }
-    
-    func deleteFromPlaylist(selectedPlaylist:Playlist, afterDelete:(error:NSError?) -> Void) {
-        let tracks = selectedPlaylist.tracks
-        
-        var dummyTracks = [[String:AnyObject]]()
-        for t in tracks {
-            if (t.id != self.id) {
-                dummyTracks.append(["title": t.title, "id": t.id, "type": t.type])
-            }
-        }
-        
-        Requests.setPlaylist(selectedPlaylist.id, data: dummyTracks) {
-            (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            if (error != nil) {
-                afterDelete(error: error)
-                return
-            }
-            var playlist:Playlist? = nil
-            for p in PlayerContext.playlists {
-                if (p.id == selectedPlaylist.id) {
-                    playlist = p
-                    break
-                }
-            }
-            if (playlist == nil) {
-                afterDelete(error: nil)
-                return
-            }
-            var foundIdx:Int?
-            for (idx, track) in playlist!.tracks.enumerate() {
-                if (track.id == self.id) {
-                    foundIdx = idx
-                }
-            }
-            if (foundIdx == nil) {
-                afterDelete(error: nil)
-                return
-            }
-            playlist!.tracks.removeAtIndex(foundIdx!)
             
-            // Update current PlayerContext with new index
-            let playingTrack:Track? = PlayerContext.currentTrack
-            if (playingTrack != nil &&
-                PlayerContext.currentPlaylistId != nil &&
-                PlayerContext.currentPlaylistId == selectedPlaylist.id) {
-                    for (idx, track) in playlist!.tracks.enumerate() {
-                        if (track.id == playingTrack!.id) {
-                            PlayerContext.currentTrackIdx = idx
-                            break
-                        }
-                    }
+            var tracks = [Track]()
+            for (_, json) in JSON(result!)["data"] {
+                var track:Track?
+                if json["unique_key"] != JSON.null {
+                    print("user track")
+                    track = UserTrack(json: json)
+                } else if json["dj"] != JSON.null {
+                    print("artist track")
+                    track = ArtistTrack(json: json)
+                } else if json["channel_title"] != JSON.null {
+                    print("channel track")
+                    track = ChannelTrack(json: json)
+                } else {
+                    print("what the hell is this??")
+                }
+                
+                if let t = track {
+                    tracks.append(t)
+                }
             }
-            afterDelete(error: nil)
+            callback(tracks: tracks, error: nil)
         }
     }
 }
@@ -522,9 +369,7 @@ class UserTrack: Track {
         self.userProfileImage = json["user_profile_image"].string
         self.userResourceName = json["user_resource_name"].string
 
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        self.createdAt = formatter.dateFromString(json["created_at"].stringValue)
+        self.createdAt = NSDate.dateFromString(json["created_at"].stringValue)
     }
     
     static func fetchNewUploads(genre:String?, pageIdx: Int, callback:((tracks:[UserTrack]?, error:NSError?) -> Void)) {
@@ -552,13 +397,42 @@ class UserTrack: Track {
     }
 }
 
+class ArtistTrack: Track {
+    var releaseDate: NSDate?
+    var artistName: String?
+    var artistResourceName: String?
+    
+    init(json: JSON) {
+        var drop: Drop?
+        let dropObj = json["drop"]
+        if dropObj != JSON.null {
+            drop = Drop(dref: dropObj["dref"].stringValue,
+                type: dropObj["type"].stringValue,
+                when: dropObj["when"].int)
+        } else {
+            print("no drop data")
+        }
+        
+        super.init(
+            id: json["id"].stringValue,
+            title: json["title"].stringValue,
+            type: json["type"].stringValue,
+            drop: drop)
+        
+        self.artistName = json["dj"].string
+        self.artistResourceName = json["resource_name"].string
+        
+        self.releaseDate = NSDate.dateFromString(json["release_date"].stringValue)
+    }
+}
+
 class ChannelTrack : Track {
     // for channel user page view
     var publishedAt : NSDate?
     init (id:String, title:String, publishedAt:NSDate?) {
         super.init(id: id, title: title, type: "youtube", tag: nil,
             thumbnailUrl: "http://img.youtube.com/vi/\(id)/mqdefault.jpg",
-            drop: nil, dref: nil, topMatch: false)
+            drop: nil, topMatch: false)
         self.publishedAt = publishedAt
     }
 
@@ -568,16 +442,87 @@ class ChannelTrack : Track {
     var channelResourceName: String?
     
     convenience init (json: JSON) {
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.000Z"
-        let publishedAt = formatter.dateFromString(json["published_at"].stringValue)
+        let publishedAt = NSDate.dateFromString(json["published_at"].stringValue)
         
-        self.init(id: json["video_id"].stringValue,
+        let id = json["video_id"].string ?? json["id"].stringValue
+        self.init(id: id,
             title: json["title"].stringValue,
             publishedAt: publishedAt)
         
         self.channelTitle = json["channel_title"].stringValue
         self.channelImage = json["channel_image"].stringValue
         self.channelResourceName = json["resource_name"].stringValue
+    }
+}
+
+class Drop {
+    var type:String
+    var dref:String
+    var when:Int?
+    init (dref:String, type:String, when:Int?) {
+        self.type = type
+        self.dref = dref
+        self.when = when
+    }
+    
+    func resolveStreamUrl() -> String? {
+        if self.type == "soundcloud" {
+            return "https://api.soundcloud.com/tracks/\(self.dref)/stream?client_id=b45b1aa10f1ac2941910a7f0d10f8e28"
+        } else if (self.type != "youtube" && self.dref.characters.startsWith("http".characters)) {
+            return self.dref.stringByRemovingPercentEncoding!
+        }
+        return nil
+    }
+}
+
+class Like {
+    var track:Track
+    var id:Int
+    
+    init?(json:JSON) {
+        if json["id"].int == nil || json["data"] == nil {
+            self.id = -1
+            self.track = Track(id: "", title: "", type: "")
+            return nil
+        }
+        
+        var track:Track
+        if json["type"].stringValue == "user_track" {
+            track = UserTrack(json: json["data"])
+        } else {
+            var trackJson:JSON = json["data"]
+            if trackJson["id"].string == nil || trackJson["type"].string == nil || trackJson["title"].string == nil {
+                self.id = -1
+                self.track = Track(id: "", title: "", type: "")
+                return nil
+            }
+            let trackId = trackJson["id"].stringValue
+            let type = trackJson["type"].stringValue
+            var thumbnailUrl:String?
+            if type == "youtube" {
+                thumbnailUrl = "http://img.youtube.com/vi/\(trackId)/mqdefault.jpg"
+            }
+            track = Track(id: trackId, title: trackJson["title"].stringValue, type: type, tag: nil, thumbnailUrl: thumbnailUrl)
+        }
+        self.id = json["id"].intValue
+        self.track = track
+    }
+    
+    static func parseLikes(data:AnyObject?, key: String = "like") -> [Like]? {
+        if data == nil {
+            return nil
+        }
+        let json = JSON(data!)
+        if !(json["success"].bool ?? false) || json[key] == nil {
+            return nil
+        }
+        
+        var likes = [Like]()
+        for (_, obj): (String, JSON) in json[key] {
+            if let like = Like(json: obj) {
+                likes.append(like)
+            }
+        }
+        return likes
     }
 }

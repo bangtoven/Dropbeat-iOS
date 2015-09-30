@@ -505,7 +505,7 @@ class PlaylistViewController: BaseViewController,
     
     func onDeleteTrackBtnClicked(track:Track) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Deleting..", comment:""))
-        track.deleteFromPlaylist(currentPlaylist!, afterDelete: { (error) -> Void in
+        currentPlaylist!.deleteTrack(track, afterDelete: { (error) -> Void in
             progressHud.hide(true)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&

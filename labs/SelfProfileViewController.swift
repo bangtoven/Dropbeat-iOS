@@ -116,7 +116,7 @@ class SelfProfileViewController: UserViewController {
         }
         
         let genreHandler = { (genreMap:[String:[Genre]]) -> Void in
-            let genres = genreMap["default"]!
+            let genres = genreMap["dropbeat"]!
             self.genres.removeAll(keepCapacity: false)
             for genre:Genre in genres {
                 self.genres[genre.key] = genre

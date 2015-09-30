@@ -42,10 +42,10 @@ class Feed {
                         when: dropObj["when"].int)
             }
             
-            let dref = s["dref"]
-            if dref.error == nil {
-                track.dref = s["dref"].stringValue
-            }
+//            let dref = s["dref"]
+//            if dref.error == nil {
+//                track.dref = s["dref"].stringValue
+//            }
             
             let tag = s["tag"]
             if tag.error == nil {
@@ -89,8 +89,6 @@ class BeatportChart {
             return BeatportChart(success:false, tracks:nil)
         }
         
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
         var tracks:[BeatportTrack] = [BeatportTrack]()
         for (_, s): (String, JSON) in json["data"] {
             if s["artist_name"].string == nil {
@@ -116,11 +114,8 @@ class BeatportChart {
             if s["released"].string == nil {
                 continue
             }
-            let releasedAtStr = s["released"].stringValue
-            var releasedAt:NSDate?
-            if releasedAtStr.length >= 10 {
-                releasedAt = dateFormatter.dateFromString(releasedAtStr.subString(0, length: 10))
-            }
+            
+            let releasedAt = NSDate.dateFromString(s["released"].stringValue)
             
             var drop:Drop?
             var dropObj = s["drop"]
@@ -168,8 +163,6 @@ class StreamNew {
         }
         
         var tracks:[NewReleaseTrack] = []
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
         
         for (_, s): (String, JSON) in json["data"] {
             if s["id"].string == nil ||
@@ -181,12 +174,8 @@ class StreamNew {
                     continue
             }
             
-            let releasedAtStr = s["release_date"].stringValue
-            var releasedAt:NSDate?
-            if releasedAtStr.length >= 10 {
-                releasedAt = formatter.dateFromString(releasedAtStr.subString(0, length: 10))
-            }
-            
+            let releasedAt = NSDate.dateFromString(s["release_date"].stringValue)
+
             let track = NewReleaseTrack(
                 id: s["id"].stringValue,
                 trackName: s["track_name"].stringValue,
@@ -231,8 +220,6 @@ class StreamTrending {
         }
         
         var tracks:[TrendingTrack] = []
-        let formatter = NSDateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
         
         for (_, s): (String, JSON) in json["data"] {
             if s["id"].string == nil ||
@@ -287,8 +274,6 @@ class StreamBeatportTrending {
             return StreamBeatportTrending(success:false, tracks:nil)
         }
         
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
         var tracks:[BeatportTrack] = [BeatportTrack]()
         for (_, s): (String, JSON) in json["data"] {
             if s["artist_name"].string == nil {
@@ -314,11 +299,8 @@ class StreamBeatportTrending {
             if s["released"].string == nil {
                 continue
             }
-            let releasedAtStr = s["released"].stringValue
-            var releasedAt:NSDate?
-            if releasedAtStr.length >= 10 {
-                releasedAt = dateFormatter.dateFromString(releasedAtStr.subString(0, length: 10))
-            }
+            
+            let releasedAt = NSDate.dateFromString(s["released"].stringValue)
             
             
             let track = BeatportTrack(
@@ -366,8 +348,6 @@ class StreamFollowing {
             return StreamFollowing(success:false, tracks:nil)
         }
         
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
         var tracks:[FollowingArtistTrack] = [FollowingArtistTrack]()
         
         for (_, s): (String, JSON) in json["data"] {
@@ -391,12 +371,7 @@ class StreamFollowing {
             }
             let title = s["title"].stringValue
             
-            var releasedAt:NSDate?
-            if let releasedAtStr = s["release_date"].string {
-                if releasedAtStr.length >= 10 {
-                    releasedAt = dateFormatter.dateFromString(releasedAtStr.subString(0, length: 10))
-                }
-            }
+            let releasedAt = NSDate.dateFromString(s["release_date"].stringValue)
             
             var thumbnail:String?
             if let url = s["thumbnail"].string {
@@ -443,7 +418,7 @@ class BeatportTrack:Track {
     
     init(id: String, trackName:String, artist:String, type:String,
         thumbnailUrl:String, mixType:String?, genre:String?, label:String?, releasedAt:NSDate?) {
-            super.init(id: id, title: "\(artist) - \(trackName)", type: type, tag: nil, thumbnailUrl: thumbnailUrl, drop: nil, dref: nil, topMatch: nil)
+            super.init(id: id, title: "\(artist) - \(trackName)", type: type, tag: nil, thumbnailUrl: thumbnailUrl, drop: nil, topMatch: nil)
             self.artist = artist
             self.mixType = mixType
             self.genre = genre

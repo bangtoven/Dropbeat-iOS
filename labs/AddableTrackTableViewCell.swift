@@ -53,7 +53,7 @@ class AddableTrackTableViewCell: UITableViewCell {
 
 class UserTrackTableViewCell: AddableTrackTableViewCell {
     
-    @IBOutlet weak var listenTimeView: UILabel!
+    @IBOutlet weak var releaseDateLabel: UILabel!
     @IBOutlet weak var userProfileImageView: UIImageView!
     @IBOutlet weak var userNameView: UILabel!
     @IBOutlet weak var genreView: UILabel!

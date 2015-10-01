@@ -292,9 +292,6 @@ class FeedViewController: AddableTrackListViewController,
         case .NEW_UPLOADS, .FOLLOWING_TRACKS:
             let trackCell = cell as! UserTrackTableViewCell
             dropBtn = trackCell.dropBtn
-            dropIcReadyName = "ic_drop_small"
-            dropIcLoadingName = "ic_drop_loading_small"
-            dropIcPlayingName = "ic_drop_pause_small"
         }
         
         if dropBtn != nil {
@@ -343,7 +340,7 @@ class FeedViewController: AddableTrackListViewController,
         }
         switch(selectedFeedMenu.type) {
         case .FOLLOWING_TRACKS, .NEW_UPLOADS:
-            return 150
+            return self.view.bounds.width * 0.5 + 60
         case .POPULAR_NOW :
             return (15 * self.view.bounds.width / 30) + 52
         case .NEW_RELEASE:
@@ -501,15 +498,9 @@ class FeedViewController: AddableTrackListViewController,
         let track = tracks[indexPath.row]
         cell.nameView.text = track.title
         if (track.thumbnailUrl != nil) {
-            cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                placeholderImage: UIImage(named: "default_artwork"), completed: {
-                    (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
-                    if (error != nil) {
-                        cell.thumbView.image = UIImage(named: "default_artwork")
-                    }
-            })
+            cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!), placeholderImage: UIImage(named: "default_cover_big"))
         } else {
-            cell.thumbView.image = UIImage(named: "default_artwork")
+            cell.thumbView.image = UIImage(named: "default_cover_big")
         }
         cell.releaseDateLabel.text = track.releaseDate?.timeAgoSinceNow()
         
@@ -521,9 +512,10 @@ class FeedViewController: AddableTrackListViewController,
         }
         
         if let userTrack = track as? UserTrack {
+            cell.genreView.hidden = false
             cell.genreView.text = userTrack.genre
         } else {
-            cell.genreView.text = ""
+            cell.genreView.hidden = true
         }
         
         return cell

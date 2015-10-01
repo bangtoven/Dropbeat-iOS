@@ -34,17 +34,23 @@ class UserTrackTableViewCell: AddableTrackTableViewCell {
     @IBOutlet weak var userProfileImageView: UIImageView!
     @IBOutlet weak var userNameView: UILabel!
     @IBOutlet weak var genreView: UILabel!
+    @IBOutlet weak var trackInfoFrame: UIView!
+    
+    @IBOutlet weak var thumnailCenterConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         let selectedBgView = UIView(frame: self.bounds)
         selectedBgView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
-        selectedBgView.backgroundColor = UIColor(netHex: 0xEFEFF4)
+        selectedBgView.backgroundColor = UIColor.whiteColor()
         self.selectedBackgroundView = selectedBgView
         
         userProfileImageView.layer.cornerRadius = 4
         userProfileImageView.layer.borderWidth = 1
         userProfileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
+        
+        trackInfoFrame.layer.borderColor = UIColor(netHex: 0x909090).CGColor
+        trackInfoFrame.layer.borderWidth = 1
     }
     
     override func setSelected(selected: Bool, animated: Bool) {

@@ -7,13 +7,13 @@ import Foundation
 let RELEASE = false
 
 extension ApiPath {
-    static let hostV2 = RELEASE ? "http://dropbeat.net/api/v2/" : "http://spark.coroutine.io:19080/api/v2/"
+    static let hostV2 = RELEASE ? "http://dropbeat.net/api/v2/" : "http://spark.coroutine.io/api/v2/"
 
     static let streamFollowing = hostV2 + "stream/following/"
 }
 
 public class ApiPath {
-    static let host = RELEASE ? "http://dropbeat.net/api/v1/" : "http://spark.coroutine.io:19080/api/v1/"
+    static let host = RELEASE ? "http://dropbeat.net/api/v1/" : "http://spark.coroutine.io/api/v1/"
 //    "http://coroutine.io:19080/api/v1/"
     
     // User

@@ -32,7 +32,7 @@ class FeedMenu {
 }
 
 class FeedViewController: AddableTrackListViewController,
-        UITableViewDelegate, UITableViewDataSource {
+        UITableViewDelegate, UITableViewDataSource, ScrollPagerDelegate {
     
     @IBOutlet weak var loadMoreSpinner: UIActivityIndicatorView!
     @IBOutlet weak var loadMoreSpinnerWrapper: UIView!
@@ -41,7 +41,8 @@ class FeedViewController: AddableTrackListViewController,
     @IBOutlet weak var feedTypeSelectTableView: UITableView!
     @IBOutlet weak var genreTableView: UITableView!
     
-    @IBOutlet var newUploadsHeaderView: UIView!
+    @IBOutlet var newUploadsSegment: ScrollPager!
+    private var newUploadsSelectedIndex = 0
     
     private var refreshControl: UIRefreshControl!
     
@@ -76,6 +77,10 @@ class FeedViewController: AddableTrackListViewController,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.newUploadsSegment.addSegmentsWithTitles(["Popular","Recent"])
+        self.newUploadsSegment.delegate = self
+        
         genreSelectBtn = UIBarButtonItem(title: "Genre", style: .Plain, target: self, action: "onGenreBtnClicked:")
         genreSelectBtn.tintColor = UIColor(netHex: 0x8F2CEF)
         
@@ -185,7 +190,6 @@ class FeedViewController: AddableTrackListViewController,
             self.genres[FeedType.DAILY_CHART] = genreMap["default"]
             self.genres[FeedType.NEW_RELEASE] = genreMap["default"]
             self.genres[FeedType.POPULAR_NOW] = genreMap["trending"]
-            self.genres[FeedType.NEW_UPLOADS] = genreMap["dropbeat"]
             
             self.genreInitialized = true
             callback(error: nil)
@@ -568,7 +572,14 @@ class FeedViewController: AddableTrackListViewController,
     func switchFeed(menu:FeedMenu, genre:Genre?=nil, forceRefresh:Bool=false, remoteRefresh:Bool=false) {
         onDropFinished()
         updateFeedTypeSelectBtn(menu.title)
-        nextPage = menu.type == FeedType.DAILY_CHART ? -1 : 0
+        switch menu.type {
+        case .DAILY_CHART:
+            nextPage = -1
+        case .NEW_UPLOADS where self.newUploadsSelectedIndex == 0:
+            nextPage = -1
+        default:
+            nextPage = 0
+        }
         tracks.removeAll(keepCapacity: false)
         trackTableView.reloadData()
         genreTableView.reloadData()
@@ -622,7 +633,7 @@ class FeedViewController: AddableTrackListViewController,
         
         switch menu.type {
         case .NEW_UPLOADS:
-            trackTableView.tableHeaderView = self.newUploadsHeaderView
+            trackTableView.tableHeaderView = self.newUploadsSegment
         default:
             trackTableView.tableHeaderView = nil
         }
@@ -665,13 +676,61 @@ class FeedViewController: AddableTrackListViewController,
         }
     }
     
-    func refresh() {
-        nextPage = selectedFeedMenu.type == FeedType.DAILY_CHART ? -1 : 0
+    func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
+        self.newUploadsSelectedIndex = changedIndex
+        nextPage = 0
+        loadNewUploadsFeed(true)
+    }
+    
+    func loadNewUploadsFeed(forceRefresh:Bool=false) {
+        if isLoading {
+            return
+        }
         
-        loadMoreSpinnerWrapper.hidden = true
-        loadMoreSpinner.stopAnimating()
+        let order = UserTrack.NewUploadsOrder(rawValue: newUploadsSelectedIndex)
         
-        loadFeed(selectedFeedMenu.type, forceRefresh: true)
+        var progressHud:MBProgressHUD?
+        if !refreshControl.refreshing && nextPage <= 0 {
+            progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+        }
+        UserTrack.fetchNewUploads(order!, pageIdx: nextPage) { (tracks, error) -> Void in
+            self.isLoading = false
+            progressHud?.hide(true)
+            if self.refreshControl.refreshing {
+                self.refreshControl.endRefreshing()
+            }
+            if (error != nil || tracks == nil) {
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                    error!.code == NSURLErrorNotConnectedToInternet) {
+                        ViewUtils.showNoticeAlert(self,
+                            title: NSLocalizedString("Failed to load", comment:""),
+                            message: NSLocalizedString("Internet is not connected", comment:""))
+                        return
+                }
+                let message = NSLocalizedString("Failed to load new uploads feed.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
+                return
+            }
+            
+            if tracks == nil || tracks!.count == 0 {
+                self.nextPage = -1
+                self.loadMoreSpinner.stopAnimating()
+                self.loadMoreSpinnerWrapper.hidden = true
+            } else if order == .RECENT {
+                self.nextPage += 1
+            }
+            
+            if forceRefresh {
+                self.tracks.removeAll(keepCapacity: true)
+            }
+            for track in tracks! {
+                self.tracks.append(track)
+            }
+            self.updatePlaylist(false)
+            self.trackTableView.reloadData()
+            
+            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+        }
     }
     
     func loadTrendingFeed(forceRefresh:Bool=false) {
@@ -885,58 +944,6 @@ class FeedViewController: AddableTrackListViewController,
                         return
                 }
                 let message = NSLocalizedString("Failed to load following tracks feed.", comment:"")
-                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
-                return
-            }
-            
-            if tracks == nil || tracks!.count == 0 {
-                self.nextPage = -1
-                self.loadMoreSpinner.stopAnimating()
-                self.loadMoreSpinnerWrapper.hidden = true
-            } else {
-                self.nextPage += 1
-            }
-            
-            if forceRefresh {
-                self.tracks.removeAll(keepCapacity: true)
-            }
-            for track in tracks! {
-                self.tracks.append(track)
-            }
-            self.updatePlaylist(false)
-            self.trackTableView.reloadData()
-            
-            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
-        }
-    }
-    
-    func loadNewUploadsFeed(forceRefresh:Bool=false) {
-        if selectedGenre == nil {
-            selectedGenre = genres[FeedType.NEW_UPLOADS]![0]
-        }
-        if isLoading {
-            return
-        }
-        
-        var progressHud:MBProgressHUD?
-        if !refreshControl.refreshing && nextPage == 0 {
-            progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        }
-        UserTrack.fetchNewUploads(selectedGenre!.key, pageIdx: nextPage) { (tracks, error) -> Void in
-            self.isLoading = false
-            progressHud?.hide(true)
-            if self.refreshControl.refreshing {
-                self.refreshControl.endRefreshing()
-            }
-            if (error != nil || tracks == nil) {
-                if (error != nil && error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showNoticeAlert(self,
-                        title: NSLocalizedString("Failed to load", comment:""),
-                        message: NSLocalizedString("Internet is not connected", comment:""))
-                    return
-                }
-                let message = NSLocalizedString("Failed to load new uploads feed.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }

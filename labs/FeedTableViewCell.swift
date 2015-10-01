@@ -42,9 +42,6 @@ class UserTrackTableViewCell: AddableTrackTableViewCell {
         selectedBgView.backgroundColor = UIColor(netHex: 0xEFEFF4)
         self.selectedBackgroundView = selectedBgView
         
-        self.layer.borderWidth = 4
-        self.layer.borderColor = UIColor(netHex: 0xE0DFEA).CGColor
-        
         userProfileImageView.layer.cornerRadius = 4
         userProfileImageView.layer.borderWidth = 1
         userProfileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor

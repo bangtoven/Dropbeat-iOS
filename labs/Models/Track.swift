@@ -335,10 +335,16 @@ class UserTrack: Track {
             resourceName: json["user_resource_name"].stringValue)
     }
     
-    static func fetchNewUploads(genre:String?, pageIdx: Int, callback:((tracks:[UserTrack]?, error:NSError?) -> Void)) {
+    enum NewUploadsOrder: Int {
+        case POPULAR = 0
+        case RECENT = 1
+    }
+    
+    static func fetchNewUploads(order:NewUploadsOrder, pageIdx: Int, callback:((tracks:[UserTrack]?, error:NSError?) -> Void)) {
         var params:[String:AnyObject] = ["p": pageIdx]
-        if genre != nil && (genre!).characters.count > 0 {
-            params["genre_id"] = genre
+        switch order {
+        case .POPULAR: params["order"] = "popular"
+        case .RECENT: params["order"] = "recent"
         }
         Requests.sendGet(ApiPath.userTrackNewUploads, params: params, auth: false) { (req, res, result, error) -> Void in
             if (error != nil) {

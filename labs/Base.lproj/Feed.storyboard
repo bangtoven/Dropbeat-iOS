@@ -1182,60 +1182,35 @@
                         <outlet property="genreTableView" destination="Jbs-qc-aEI" id="Lkq-Px-cbA"/>
                         <outlet property="loadMoreSpinner" destination="ZFj-bB-Gda" id="yVP-8a-Cjd"/>
                         <outlet property="loadMoreSpinnerWrapper" destination="Dpa-ZY-5Qc" id="ZS9-KN-YSU"/>
-                        <outlet property="newUploadsHeaderView" destination="qjK-kK-GUO" id="8iV-vh-6fM"/>
+                        <outlet property="newUploadsSegment" destination="7bO-4v-T9I" id="f4w-fk-3rd"/>
                         <outlet property="trackTableView" destination="SeY-V5-10D" id="XPB-iB-ZcH"/>
                         <segue destination="GeP-Ar-2BD" kind="custom" identifier="PlaylistSelectSegue" customClass="RBStoryboardModalSegue" id="69Y-qY-QJG"/>
                     </connections>
                 </viewController>
-                <view contentMode="scaleToFill" id="qjK-kK-GUO">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="152"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Uploaded to Dropbeat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W6t-F5-150">
-                            <rect key="frame" x="66" y="65" width="189" height="23"/>
-                            <animations/>
-                            <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                            <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Tus-3c-not" userLabel="Border">
-                            <rect key="frame" x="140" y="118" width="40" height="3"/>
-                            <animations/>
-                            <color key="backgroundColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="3" id="4UC-pu-9Se"/>
-                                <constraint firstAttribute="width" constant="40" id="HQ6-n9-ZPO"/>
-                            </constraints>
-                        </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tbw-MJ-d6c">
-                            <rect key="frame" x="0.0" y="151" width="320" height="1"/>
-                            <animations/>
-                            <color key="backgroundColor" red="0.84094483440000001" green="0.84094483440000001" blue="0.84094483440000001" alpha="1" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="1" id="x8H-b9-Z45"/>
-                            </constraints>
-                        </view>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Tracks" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vb8-jq-lfp">
-                            <rect key="frame" x="110" y="22" width="100" height="23"/>
-                            <animations/>
-                            <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                            <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7bO-4v-T9I" customClass="ScrollPager" customModule="for_test" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstItem="Tus-3c-not" firstAttribute="centerX" secondItem="W6t-F5-150" secondAttribute="centerX" id="5v5-LN-Q5l"/>
-                        <constraint firstItem="W6t-F5-150" firstAttribute="centerY" secondItem="qjK-kK-GUO" secondAttribute="centerY" id="Eb3-my-RVN"/>
-                        <constraint firstItem="tbw-MJ-d6c" firstAttribute="leading" secondItem="qjK-kK-GUO" secondAttribute="leading" id="FnV-Bs-EXu"/>
-                        <constraint firstAttribute="bottom" secondItem="tbw-MJ-d6c" secondAttribute="bottom" id="LqL-jk-5Y9"/>
-                        <constraint firstItem="W6t-F5-150" firstAttribute="centerX" secondItem="qjK-kK-GUO" secondAttribute="centerX" id="Q8M-wo-dLL"/>
-                        <constraint firstItem="Vb8-jq-lfp" firstAttribute="centerX" secondItem="W6t-F5-150" secondAttribute="centerX" id="WVT-xf-rBu"/>
-                        <constraint firstItem="W6t-F5-150" firstAttribute="top" secondItem="Vb8-jq-lfp" secondAttribute="bottom" constant="20" id="XjT-J8-1uQ"/>
-                        <constraint firstItem="Tus-3c-not" firstAttribute="top" secondItem="W6t-F5-150" secondAttribute="bottom" constant="30" id="k3q-z0-NLF"/>
-                        <constraint firstAttribute="trailing" secondItem="tbw-MJ-d6c" secondAttribute="trailing" id="qUi-zD-Khm"/>
+                        <constraint firstAttribute="height" constant="50" id="gVL-mr-dd8"/>
                     </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="textColor">
+                            <color key="value" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="indicatorColor">
+                            <color key="value" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="indicatorSizeMatchesTitle" value="NO"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="indicatorHeight">
+                            <real key="value" value="2"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="gVL-mr-dd8"/>
+                        </mask>
+                    </variation>
                 </view>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Kb-93-m97" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

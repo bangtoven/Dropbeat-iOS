@@ -243,11 +243,11 @@
                                                     <rect key="frame" x="10" y="60" width="300" height="150"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_cover_big" translatesAutoresizingMaskIntoConstraints="NO" id="3uf-he-6SJ">
-                                                            <rect key="frame" x="0.0" y="-25" width="300" height="200"/>
+                                                            <rect key="frame" x="0.0" y="-75" width="300" height="300"/>
                                                             <animations/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" secondItem="3uf-he-6SJ" secondAttribute="width" multiplier="1:2" id="sjx-id-54G"/>
-                                                                <constraint firstAttribute="width" secondItem="3uf-he-6SJ" secondAttribute="height" multiplier="3:2" id="swr-bs-BTt"/>
+                                                                <constraint firstAttribute="width" secondItem="3uf-he-6SJ" secondAttribute="height" multiplier="1:1" id="swr-bs-BTt"/>
                                                             </constraints>
                                                             <variation key="default">
                                                                 <mask key="constraints">

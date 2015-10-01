@@ -521,6 +521,20 @@ class FeedViewController: AddableTrackListViewController,
         return cell
     }
     
+    var lastContentOffset: CGPoint = CGPointZero
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        switch (selectedFeedMenu.type) {
+        case .NEW_UPLOADS, .FOLLOWING_TRACKS:
+            let offset = scrollView.contentOffset.y - self.lastContentOffset.y
+            NSNotificationCenter.defaultCenter().postNotificationName(UserTrackTableViewCell.ScrollNotification, object: offset)
+            
+            self.lastContentOffset = scrollView.contentOffset
+            break
+        default:
+            break
+        }
+    }
+    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if tableView == feedTypeSelectTableView {
             let feedMenu = feedMenus[indexPath.row]
@@ -649,7 +663,25 @@ class FeedViewController: AddableTrackListViewController,
         loadFeed(menu.type, forceRefresh: forceRefresh)
     }
     
+    func refresh() {
+        switch selectedFeedMenu.type {
+        case .DAILY_CHART:
+            nextPage = -1
+        case .NEW_UPLOADS where self.newUploadsSelectedIndex == 0:
+            nextPage = -1
+        default:
+            nextPage = 0
+        }
+        
+        loadMoreSpinnerWrapper.hidden = true
+        loadMoreSpinner.stopAnimating()
+        
+        loadFeed(selectedFeedMenu.type, forceRefresh: true)
+    }
+    
     func loadFeed(type:FeedType, forceRefresh:Bool=false) {
+        self.lastContentOffset = CGPointZero
+        
         switch(type) {
         case .NEW_UPLOADS:
             loadNewUploadsFeed(forceRefresh)
@@ -671,6 +703,7 @@ class FeedViewController: AddableTrackListViewController,
     func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
         self.newUploadsSelectedIndex = changedIndex
         nextPage = 0
+        self.lastContentOffset = CGPointZero
         loadNewUploadsFeed(true)
     }
     

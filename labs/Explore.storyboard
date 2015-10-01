@@ -168,8 +168,8 @@
                                                     <color key="textColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                     <color key="highlightedColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="sdsdfsdf sadfa sdfasd fasdf asdf sadf asd sasd fsad sad asd fasd fasd fasd fasd " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uET-dO-Qsj" userLabel="sdsdfsdf sfasd fsd fasdf asdf asdadfa sdfasd fasdf asdf sadf asd sasd fsad sad asd fasd fasd fasd fasd">
-                                                    <rect key="frame" x="100" y="44" width="180" height="50"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="sdsdfsdf sadfa sdfasd fasdf asdf sadf asd sasd fsad sad asd fasd fasd fasd fasd " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uET-dO-Qsj" userLabel="sdsdfsdf sfasd fsd fasdf asdf asdadfa sdfasd fasdf asdf sadf asd sasd fsad sad asd fasd fasd fasd fasd">
+                                                    <rect key="frame" x="100" y="46" width="180" height="48"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>

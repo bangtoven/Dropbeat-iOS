@@ -10,6 +10,17 @@ import UIKit
 import AVKit
 import AVFoundation
 
+class GenreTableViewCell: UITableViewCell {
+    @IBOutlet weak var genreView: UILabel!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        let selectedBgView = UIView(frame: self.bounds)
+        selectedBgView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
+        selectedBgView.backgroundColor = UIColor(netHex: 0xdddddd)
+        self.selectedBackgroundView = selectedBgView
+    }
+}
+
 class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!

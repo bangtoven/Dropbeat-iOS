@@ -11,6 +11,49 @@ import AVKit
 import AVFoundation
 import Foundation
 
+protocol AddableTrackCellDelegate {
+    func onTrackMenuBtnClicked(sender:AddableTrackTableViewCell)
+    func onTrackDropBtnClicked(sender:AddableTrackTableViewCell)
+}
+
+class AddableTrackTableViewCell: UITableViewCell {
+    
+    var delegate:AddableTrackCellDelegate?
+    
+    @IBOutlet weak var filterView: UIView!
+    @IBOutlet weak var nameView: UILabel!
+    @IBOutlet weak var thumbView: UIImageView!
+    @IBOutlet weak var dropBtn: UIButton!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        //        // Initialization code
+        let selectedBgView = UIView(frame: self.bounds)
+        selectedBgView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
+        selectedBgView.backgroundColor = UIColor(netHex: 0xffffff)
+        self.selectedBackgroundView = selectedBgView
+    }
+    
+    override func setSelected(selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        // Configure the view for the selected state
+        if(selected) {
+            filterView.hidden = false
+            filterView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.4)
+        } else {
+            filterView.hidden = true
+        }
+    }
+    
+    @IBAction func onMenuBtnClicked(sender: UIButton) {
+        delegate?.onTrackMenuBtnClicked(self)
+    }
+    
+    @IBAction func onDropBtnClicked(sender: AnyObject) {
+        delegate?.onTrackDropBtnClicked(self)
+    }
+}
+
 enum DropPlayStatus {
     case Ready
     case Playing

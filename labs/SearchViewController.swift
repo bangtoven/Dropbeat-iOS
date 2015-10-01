@@ -398,3 +398,23 @@ class SearchViewController: AddableTrackListViewController,
         return
     }
 }
+
+class AutocomTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var keywordView: UILabel!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+        let selectedBgView = UIView(frame: self.bounds)
+        selectedBgView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
+        selectedBgView.backgroundColor = UIColor(netHex: 0xdddddd)
+        self.selectedBackgroundView = selectedBgView
+    }
+    
+    override func setSelected(selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        // Configure the view for the selected state
+    }
+    
+}

@@ -2,13 +2,14 @@ import Foundation
 
 extension NSDate
 {
-    static func dateFromString(string: String) -> NSDate? {
+    static func dateFromString(var string: String) -> NSDate? {
         let formatter = NSDateFormatter()
         if string.contains("000Z") {
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.000Z"
         } else if string.length <= 10 {
             formatter.dateFormat = "yyyy-MM-dd"
         } else {
+            string = string.subString(0, length: 19)
             formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         }
         return formatter.dateFromString(string)

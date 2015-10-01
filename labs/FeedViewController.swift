@@ -31,8 +31,183 @@ class FeedMenu {
     }
 }
 
-class FeedViewController: AddableTrackListViewController,
-        UITableViewDelegate, UITableViewDataSource, ScrollPagerDelegate {
+extension FeedViewController: ScrollPagerDelegate {
+    @IBAction func likeAction(sender: UIButton) {
+        let indexPath = self.trackTableView.indexPathOfCellContains(sender)
+        let track = self.tracks[indexPath!.row]
+        
+        self.onTrackLikeBtnClicked(track) {
+            let likeImage = track.isLiked ? UIImage(named:"ic_like") : UIImage(named:"ic_dislike")
+            sender.setImage(likeImage, forState: UIControlState.Normal)
+        }
+    }
+    
+    @IBAction func addToPlaylistAction(sender: UIButton) {
+        let indexPath = self.trackTableView.indexPathOfCellContains(sender)
+        let track = self.tracks[indexPath!.row]
+        
+        self.onTrackAddBtnClicked(track)
+    }
+    
+    @IBAction func shareAction(sender: UIButton) {
+        let indexPath = self.trackTableView.indexPathOfCellContains(sender)
+        let track = self.tracks[indexPath!.row]
+        
+        self.onTrackShareBtnClicked(track)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        switch segue.identifier! {
+        case "PlaylistSelectSegue":
+            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
+            playlistSelectVC.targetTrack = sender as? Track
+            playlistSelectVC.fromSection = "feed_" + selectedFeedMenu.type.rawValue
+            playlistSelectVC.caller = self
+        case "showUserInfo":
+            let indexPath = self.trackTableView.indexPathOfCellContains(sender as! UIButton)
+            let track = self.tracks[indexPath!.row]
+            
+            let mySegue = segue as! JHImageTransitionSegue
+            let sourceImageView = (self.trackTableView.cellForRowAtIndexPath(indexPath!) as! UserTrackTableViewCell).userProfileImageView
+            
+            mySegue.setSourceImageView(sourceImageView)
+            mySegue.sourceRect = sourceImageView.convertRect(sourceImageView.bounds, toView: self.view)
+            mySegue.destinationRect = self.view.convertRect(UserHeaderView.profileImageRect(self), fromView: nil)
+            
+            let uvc = segue.destinationViewController as! UserViewController
+            uvc.resource = track.user?.resourceName
+            uvc.passedImage = sourceImageView.image
+            
+        default:
+            break
+        }
+    }
+    
+    func getUserTrackCell(indexPath:NSIndexPath) -> UITableViewCell {
+        let cell = trackTableView.dequeueReusableCellWithIdentifier(
+            "UserTrackTableViewCell", forIndexPath: indexPath) as! UserTrackTableViewCell
+        cell.delegate = self
+        let track = tracks[indexPath.row]
+        cell.nameView.text = track.title
+        if (track.thumbnailUrl != nil) {
+            cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!), placeholderImage: UIImage(named: "default_cover_big"))
+        } else {
+            cell.thumbView.image = UIImage(named: "default_cover_big")
+        }
+        cell.releaseDateLabel.text = track.releaseDate?.timeAgoSinceNow()
+        
+        cell.userNameView.text = track.user?.name
+        if let imageUrl = track.user?.image {
+            cell.userProfileImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
+        } else {
+            cell.userProfileImageView.image = UIImage(named: "default_profile")
+        }
+        
+        let likeImage = track.isLiked ? UIImage(named:"ic_like") : UIImage(named:"ic_dislike")
+        cell.likeButton.setImage(likeImage, forState: UIControlState.Normal)
+    
+        if let userTrack = track as? UserTrack {
+            cell.genreView.hidden = false
+            cell.genreView.text = userTrack.genre
+        } else {
+            cell.genreView.hidden = true
+        }
+        
+        return cell
+    }
+    
+    func loadNewUploadsFeed(forceRefresh:Bool=false) {
+        if isLoading {
+            return
+        }
+        
+        let order = UserTrack.NewUploadsOrder(rawValue: newUploadsSelectedIndex)
+        
+        var progressHud:MBProgressHUD?
+        if !refreshControl.refreshing && nextPage <= 0 {
+            progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+        }
+        UserTrack.fetchNewUploads(order!, pageIdx: nextPage) { (tracks, error) -> Void in
+            self.isLoading = false
+            progressHud?.hide(true)
+            if self.refreshControl.refreshing {
+                self.refreshControl.endRefreshing()
+            }
+            if (error != nil || tracks == nil) {
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                    error!.code == NSURLErrorNotConnectedToInternet) {
+                        ViewUtils.showNoticeAlert(self,
+                            title: NSLocalizedString("Failed to load", comment:""),
+                            message: NSLocalizedString("Internet is not connected", comment:""))
+                        return
+                }
+                let message = NSLocalizedString("Failed to load new uploads feed.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
+                return
+            }
+            
+            if tracks == nil || tracks!.count == 0 {
+                self.nextPage = -1
+                self.loadMoreSpinner.stopAnimating()
+                self.loadMoreSpinnerWrapper.hidden = true
+            } else if order == .RECENT {
+                self.nextPage += 1
+            }
+            
+            if forceRefresh {
+                self.tracks.removeAll(keepCapacity: true)
+            }
+            for track in tracks! {
+                self.tracks.append(track)
+            }
+            self.updatePlaylist(false)
+            self.trackTableView.reloadData()
+            
+            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+        }
+    }
+    
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        switch (selectedFeedMenu.type) {
+        case .NEW_UPLOADS, .FOLLOWING_TRACKS:
+            let offset = scrollView.contentOffset.y - self.lastContentOffset.y
+            NSNotificationCenter.defaultCenter().postNotificationName(UserTrackTableViewCell.ScrollNotification, object: offset)
+            
+            self.lastContentOffset = scrollView.contentOffset
+            break
+        default:
+            break
+        }
+    }
+    
+    func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
+        self.newUploadsSelectedIndex = changedIndex
+        nextPage = 0
+        self.lastContentOffset = CGPointZero
+        loadNewUploadsFeed(true)
+    }
+    
+    func setNavigationBarBorderHidden(hidden: Bool) {
+        guard let navBar = self.navigationController?.navigationBar else {
+            return
+        }
+        
+        if hidden {
+            navBar.shadowImage = UIImage()
+            navBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+        } else {
+            navBar.shadowImage = nil
+            navBar.setBackgroundImage(nil, forBarMetrics: UIBarMetrics.Default)
+        }
+    }
+}
+
+
+class FeedViewController: AddableTrackListViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    @IBOutlet var newUploadsSegment: ScrollPager!
+    private var newUploadsSelectedIndex = 0
+    var lastContentOffset: CGPoint = CGPointZero
     
     @IBOutlet weak var loadMoreSpinner: UIActivityIndicatorView!
     @IBOutlet weak var loadMoreSpinnerWrapper: UIView!
@@ -40,9 +215,6 @@ class FeedViewController: AddableTrackListViewController,
     @IBOutlet weak var feedTypeSelectBtnWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var feedTypeSelectTableView: UITableView!
     @IBOutlet weak var genreTableView: UITableView!
-    
-    @IBOutlet var newUploadsSegment: ScrollPager!
-    private var newUploadsSelectedIndex = 0
     
     private var refreshControl: UIRefreshControl!
     
@@ -59,7 +231,7 @@ class FeedViewController: AddableTrackListViewController,
     private var selectedFeedMenu:FeedMenu!
     private var genreInitialized:Bool = false
     
-    private var feedMenus:[FeedMenu] = {
+    private let feedMenus:[FeedMenu] = {
         var types = [FeedMenu]()
         if let user = Account.getCachedAccount()?.user where user.num_following > 0 {
             print("number of followings: \(user.num_following)")
@@ -131,6 +303,10 @@ class FeedViewController: AddableTrackListViewController,
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "FeedViewScreen"
+
+        if selectedFeedMenu.type == .NEW_UPLOADS{
+            self.setNavigationBarBorderHidden(true)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -140,6 +316,8 @@ class FeedViewController: AddableTrackListViewController,
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        self.setNavigationBarBorderHidden(false)
     }
     
     override func appWillEnterForeground() {
@@ -491,50 +669,6 @@ class FeedViewController: AddableTrackListViewController,
         return cell
     }
     
-    func getUserTrackCell(indexPath:NSIndexPath) -> UITableViewCell {
-        let cell = trackTableView.dequeueReusableCellWithIdentifier(
-            "UserTrackTableViewCell", forIndexPath: indexPath) as! UserTrackTableViewCell
-        cell.delegate = self
-        let track = tracks[indexPath.row]
-        cell.nameView.text = track.title
-        if (track.thumbnailUrl != nil) {
-            cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!), placeholderImage: UIImage(named: "default_cover_big"))
-        } else {
-            cell.thumbView.image = UIImage(named: "default_cover_big")
-        }
-        cell.releaseDateLabel.text = track.releaseDate?.timeAgoSinceNow()
-        
-        cell.userNameView.text = track.user?.name
-        if let imageUrl = track.user?.image {
-            cell.userProfileImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
-        } else {
-            cell.userProfileImageView.image = UIImage(named: "default_profile")
-        }
-        
-        if let userTrack = track as? UserTrack {
-            cell.genreView.hidden = false
-            cell.genreView.text = userTrack.genre
-        } else {
-            cell.genreView.hidden = true
-        }
-        
-        return cell
-    }
-    
-    var lastContentOffset: CGPoint = CGPointZero
-    func scrollViewDidScroll(scrollView: UIScrollView) {
-        switch (selectedFeedMenu.type) {
-        case .NEW_UPLOADS, .FOLLOWING_TRACKS:
-            let offset = scrollView.contentOffset.y - self.lastContentOffset.y
-            NSNotificationCenter.defaultCenter().postNotificationName(UserTrackTableViewCell.ScrollNotification, object: offset)
-            
-            self.lastContentOffset = scrollView.contentOffset
-            break
-        default:
-            break
-        }
-    }
-    
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if tableView == feedTypeSelectTableView {
             let feedMenu = feedMenus[indexPath.row]
@@ -576,6 +710,9 @@ class FeedViewController: AddableTrackListViewController,
     }
     
     func switchFeed(menu:FeedMenu, genre:Genre?=nil, forceRefresh:Bool=false, remoteRefresh:Bool=false) {
+
+        self.setNavigationBarBorderHidden(menu.type == .NEW_UPLOADS)
+        
         onDropFinished()
         updateFeedTypeSelectBtn(menu.title)
         switch menu.type {
@@ -697,64 +834,6 @@ class FeedViewController: AddableTrackListViewController,
         case .FOLLOWING_TRACKS:
             loadFollowingTracks(forceRefresh)
             break
-        }
-    }
-    
-    func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
-        self.newUploadsSelectedIndex = changedIndex
-        nextPage = 0
-        self.lastContentOffset = CGPointZero
-        loadNewUploadsFeed(true)
-    }
-    
-    func loadNewUploadsFeed(forceRefresh:Bool=false) {
-        if isLoading {
-            return
-        }
-        
-        let order = UserTrack.NewUploadsOrder(rawValue: newUploadsSelectedIndex)
-        
-        var progressHud:MBProgressHUD?
-        if !refreshControl.refreshing && nextPage <= 0 {
-            progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        }
-        UserTrack.fetchNewUploads(order!, pageIdx: nextPage) { (tracks, error) -> Void in
-            self.isLoading = false
-            progressHud?.hide(true)
-            if self.refreshControl.refreshing {
-                self.refreshControl.endRefreshing()
-            }
-            if (error != nil || tracks == nil) {
-                if (error != nil && error!.domain == NSURLErrorDomain &&
-                    error!.code == NSURLErrorNotConnectedToInternet) {
-                        ViewUtils.showNoticeAlert(self,
-                            title: NSLocalizedString("Failed to load", comment:""),
-                            message: NSLocalizedString("Internet is not connected", comment:""))
-                        return
-                }
-                let message = NSLocalizedString("Failed to load new uploads feed.", comment:"")
-                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
-                return
-            }
-            
-            if tracks == nil || tracks!.count == 0 {
-                self.nextPage = -1
-                self.loadMoreSpinner.stopAnimating()
-                self.loadMoreSpinnerWrapper.hidden = true
-            } else if order == .RECENT {
-                self.nextPage += 1
-            }
-            
-            if forceRefresh {
-                self.tracks.removeAll(keepCapacity: true)
-            }
-            for track in tracks! {
-                self.tracks.append(track)
-            }
-            self.updatePlaylist(false)
-            self.trackTableView.reloadData()
-            
-            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
         }
     }
     
@@ -991,45 +1070,6 @@ class FeedViewController: AddableTrackListViewController,
             self.trackTableView.reloadData()
             
             self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
-        }
-    }
-    
-    func getIndexOfSender(tableView:UITableView, sender: UIView) -> NSIndexPath? {
-        var view:UIView? = sender
-        repeat {
-            if let cell = view as? UITableViewCell {
-                return tableView.indexPathForCell(cell)
-            }
-            view = view!.superview
-        } while view != nil
-        
-        return nil
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        switch segue.identifier! {
-        case "PlaylistSelectSegue":
-            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
-            playlistSelectVC.targetTrack = sender as? Track
-            playlistSelectVC.fromSection = "feed"
-            playlistSelectVC.caller = self
-        case "showUserInfo":
-            let indexPath = self.getIndexOfSender(self.trackTableView, sender: sender as! UIButton)
-            let track = self.tracks[indexPath!.row]
-            
-            let mySegue = segue as! JHImageTransitionSegue
-            let sourceImageView = (self.trackTableView.cellForRowAtIndexPath(indexPath!) as! UserTrackTableViewCell).userProfileImageView
-            
-            mySegue.setSourceImageView(sourceImageView)
-            mySegue.sourceRect = sourceImageView.convertRect(sourceImageView.bounds, toView: self.view)
-            mySegue.destinationRect = self.view.convertRect(UserHeaderView.profileImageRect(self), fromView: nil)
-            
-            let uvc = segue.destinationViewController as! UserViewController
-            uvc.resource = track.user?.resourceName
-            uvc.passedImage = sourceImageView.image
-            
-        default:
-            break
         }
     }
     

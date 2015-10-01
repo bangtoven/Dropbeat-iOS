@@ -9,6 +9,20 @@
 import Foundation
 import UIKit
 
+extension UITableView {
+    func indexPathOfCellContains(sender: UIView) -> NSIndexPath? {
+        var view:UIView? = sender
+        repeat {
+            if let cell = view as? UITableViewCell {
+                return self.indexPathForCell(cell)
+            }
+            view = view!.superview
+        } while view != nil
+        
+        return nil
+    }
+}
+
 extension UIView {
     func rotate360Degrees(duration: CFTimeInterval = 1.0, completionDelegate: AnyObject? = nil) {
         let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")

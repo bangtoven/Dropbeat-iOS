@@ -390,7 +390,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
         } else {
             print("Back to none-user view controller")
             if let navBar = self.navigationController?.navigationBar {
-                navBar.barTintColor = nil
+                navBar.barTintColor = UIColor.whiteColor()
                 navBar.tintColor = nil
                 navBar.shadowImage = nil
                 navBar.setBackgroundImage(nil, forBarMetrics: UIBarMetrics.Default)

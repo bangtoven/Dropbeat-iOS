@@ -32,6 +32,8 @@ class UserTrackTableViewCell: AddableTrackTableViewCell {
     
     static let ScrollNotification = "UserTrackCellScroll"
 
+    @IBOutlet weak var likeButton: UIButton!
+    
     @IBOutlet weak var releaseDateLabel: UILabel!
     @IBOutlet weak var userProfileImageView: UIImageView!
     @IBOutlet weak var userNameView: UILabel!

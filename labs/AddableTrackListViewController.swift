@@ -234,7 +234,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         })
     }
     
-    func onTrackLikeBtnClicked(track:Track) {
+    func onTrackLikeBtnClicked(track:Track, onSuccess:(Void->Void)? = nil) {
         if (Account.getCachedAccount() == nil) {
             NeedAuthViewController.showNeedAuthViewController(self)
             return
@@ -253,10 +253,12 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
                     })
                     return
                 }
+                
+                onSuccess?()
+                
                 progressHud.mode = MBProgressHUDMode.CustomView
                 progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike"))
                 progressHud.hide(true, afterDelay: 1)
-                
             }
         } else {
             Like.likeTrack(track) { (error) -> Void in
@@ -271,6 +273,9 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
                     })
                     return
                 }
+                
+                onSuccess?()
+                
                 progressHud.mode = MBProgressHUDMode.CustomView
                 progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like"))
                 progressHud.hide(true, afterDelay: 1)

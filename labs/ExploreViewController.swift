@@ -125,18 +125,6 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
         }
     }
     
-    func getIndexOfSender(tableView:UITableView, sender: UIView) -> NSIndexPath? {
-        var view:UIView? = sender
-        repeat {
-            if let cell = view as? UITableViewCell {
-                return tableView.indexPathForCell(cell)
-            }
-            view = view!.superview
-        } while view != nil
-        
-        return nil
-    }
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         switch segue.identifier! {
         case "PlaylistSelectSegue":
@@ -145,7 +133,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             playlistSelectVC.fromSection = "explore"
             playlistSelectVC.caller = self
         case "showChannelInfo":
-            let indexPath = self.getIndexOfSender(self.trackTableView, sender: sender as! UIButton)
+            let indexPath = self.trackTableView.indexPathOfCellContains(sender as! UIButton)
             let track = self.tracks[indexPath!.row]
 
             let mySegue = segue as! JHImageTransitionSegue

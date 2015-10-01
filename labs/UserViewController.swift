@@ -250,6 +250,11 @@ class UserViewController: AXStretchableHeaderTabViewController {
     }
     
     @IBAction func followAction(sender: UIButton) {
+        if (Account.getCachedAccount() == nil) {
+            NeedAuthViewController.showNeedAuthViewController(self)
+            return
+        }
+        
         let progressHud = ViewUtils.showProgress(self, message: nil)
         let handler = { (error: NSError?) -> Void in
             progressHud.hide(true)

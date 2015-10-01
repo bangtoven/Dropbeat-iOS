@@ -103,6 +103,14 @@ import UIKit
         #if TARGET_INTERFACE_BUILDER
             addSegmentsWithTitles(["One", "Two", "Three", "Four"])
         #endif
+        
+        let width = self.frame.width
+        let height = self.frame.height
+        
+        let bottomSeparator = CALayer()
+        bottomSeparator.backgroundColor = UIColor(white: 0.0, alpha: 0.1).CGColor
+        bottomSeparator.frame = CGRect(x: 0, y: height-1, width: width, height: 1)
+        self.layer.addSublayer(bottomSeparator)
     }
     
     // MARK: - UIView Methods -

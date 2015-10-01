@@ -192,3 +192,6 @@
 "Failed to play" = "재생 실패";
 "Failed to search." = "검색 실패";
 "Failed to fetch user info" = "사용자 정보 요청 실패";
+
+"Your changes will be lost if you don’t save them." = "저장하지 않으면 변경한 내용들이 유실됩니다.";
+"Don't save" = "저장하지 않음.";

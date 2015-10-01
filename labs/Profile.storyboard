@@ -99,7 +99,7 @@
                             </constraints>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
-                                    <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.39532305740000001" colorSpace="calibratedRGB"/>
+                                    <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
                                 </userDefinedRuntimeAttribute>
                                 <userDefinedRuntimeAttribute type="number" keyPath="fillRatio">
                                     <real key="value" value="0.0"/>
@@ -107,10 +107,10 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FLS-j9-oHE" customClass="GradientView">
-                            <rect key="frame" x="0.0" y="66" width="320" height="50"/>
+                            <rect key="frame" x="0.0" y="86" width="320" height="30"/>
                             <animations/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="50" id="vLj-9o-JbV"/>
+                                <constraint firstAttribute="height" constant="30" id="vLj-9o-JbV"/>
                             </constraints>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="color" keyPath="fillColor">
@@ -1421,7 +1421,7 @@ click below to discover your favorites</string>
                                 <action selector="cancelAction:" destination="moL-Bw-QiW" id="rYF-N1-fNw"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="save" id="VY0-Zf-OJN">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" systemItem="save" id="VY0-Zf-OJN">
                             <connections>
                                 <action selector="saveAction:" destination="moL-Bw-QiW" id="9sZ-5e-raI"/>
                             </connections>
@@ -1429,6 +1429,7 @@ click below to discover your favorites</string>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="saveBarButton" destination="VY0-Zf-OJN" id="o5b-B7-RxQ"/>
                         <segue destination="Mg1-ir-mZ3" kind="unwind" identifier="unwindFromEditProfile" unwindAction="unwindFromEditProfile:" id="KeA-Pg-95t"/>
                     </connections>
                 </tableViewController>

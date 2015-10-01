@@ -192,3 +192,6 @@
 "Failed to play" = "Failed to play";
 "Failed to search." = "Failed to search.";
 "Failed to fetch user info" = "Failed to fetch user info";
+
+"Your changes will be lost if you don’t save them." = "Your changes will be lost if you don’t save them.";
+"Don't save" = "Don't save";

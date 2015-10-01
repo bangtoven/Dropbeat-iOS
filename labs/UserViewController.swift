@@ -115,84 +115,89 @@ class UserViewController: AXStretchableHeaderTabViewController {
             header.followersLabel.text = String(user.num_followers)
             header.followingLabel.text = String(user.num_following)
             
-            let uploads = instantiateSubVC()
-            uploads.title = "Uploads"
-            uploads.tracks = user.tracks
-            uploads.baseUser = user
-            
-            let likes = instantiateSubVC()
-            likes.title = "Likes"
-            likes.baseUser = user
-            likes.fetchFunc = user.fetchTracksFromLikeList
-            
-            let f1 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
-            f1.title = "Followers"
-            f1.user = user
-            f1.fetchFunc = user.fetchFollowers
-            
-            let f2 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
-            f2.title = "Following"
-            f2.user = user
-            f2.fetchFunc = user.fetchFollowing
-            
-            if user.tracks.count == 0 {
-                self.viewControllers = [likes, f1, f2]
-            } else {
-                self.viewControllers = [uploads, likes, f1, f2]
+            if self.viewControllers == nil {
+                let likes = instantiateSubVC()
+                likes.title = "Likes"
+                likes.baseUser = user
+                likes.fetchFunc = user.fetchTracksFromLikeList
+                
+                let f1 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
+                f1.title = "Followers"
+                f1.user = user
+                f1.fetchFunc = user.fetchFollowers
+                
+                let f2 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
+                f2.title = "Following"
+                f2.user = user
+                f2.fetchFunc = user.fetchFollowing
+                
+                if user.tracks.count == 0 {
+                    self.viewControllers = [likes, f1, f2]
+                } else {
+                    let uploads = instantiateSubVC()
+                    uploads.title = "Uploads"
+                    uploads.tracks = user.tracks
+                    uploads.baseUser = user
+
+                    self.viewControllers = [uploads, likes, f1, f2]
+                }
             }
             
             if user.id == Account.getCachedAccount()?.user?.id {
                 isSelf = true
             }
         case let artist as Artist:
-            var subViewArr = [TrackSubViewController]()
-            for (section, tracks): (String, [Track]) in artist.sectionedTracks {
-                let subView = instantiateSubVC()
-                subView.title = section.capitalizedString
-                subView.tracks = tracks
-                subView.baseUser = artist
-                subViewArr.append(subView)
+            if self.viewControllers == nil {
+                var subViewArr = [TrackSubViewController]()
+                for (section, tracks): (String, [Track]) in artist.sectionedTracks {
+                    let subView = instantiateSubVC()
+                    subView.title = section.capitalizedString
+                    subView.tracks = tracks
+                    subView.baseUser = artist
+                    subViewArr.append(subView)
+                }
+                
+                if artist.hasLiveset {
+                    let subView = instantiateSubVC()
+                    subView.title = "Liveset"
+                    subView.baseUser = artist
+                    subView.fetchFunc = artist.fetchLiveset
+                    subViewArr.append(subView)
+                }
+                
+                if artist.hasPodcast {
+                    let subView = instantiateSubVC()
+                    subView.title = "Podcast"
+                    subView.baseUser = artist
+                    subView.fetchFunc = artist.fetchPodcast
+                    subViewArr.append(subView)
+                }
+                
+                self.viewControllers = subViewArr
             }
-            
-            if artist.hasLiveset {
-                let subView = instantiateSubVC()
-                subView.title = "Liveset"
-                subView.baseUser = artist
-                subView.fetchFunc = artist.fetchLiveset
-                subViewArr.append(subView)
-            }
-            
-            if artist.hasPodcast {
-                let subView = instantiateSubVC()
-                subView.title = "Podcast"
-                subView.baseUser = artist
-                subView.fetchFunc = artist.fetchPodcast
-                subViewArr.append(subView)
-            }
-            
-            self.viewControllers = subViewArr
         case let channel as Channel:
             header.aboutMeLabel.text = channel.genre.joinWithSeparator(", ")
             if header.aboutMeLabel.text?.length == 0 {
                 header.aboutMeLabel.text = "\n"
             }
             
-            var subViewArr = [ChannelSubViewController]()
-            let recent = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
-            recent.title = "Recent"
-            recent.baseUser = channel
-            subViewArr.append(recent)
-            
-            if channel.playlists.count > 1 {
-                let sections = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
-                sections.title = "Sections"
-                sections.baseUser = channel
-                sections.isSectioned = true
-                subViewArr.append(sections)
+            if self.viewControllers == nil {
+                var subViewArr = [ChannelSubViewController]()
+                let recent = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
+                recent.title = "Recent"
+                recent.baseUser = channel
+                subViewArr.append(recent)
+                
+                if channel.playlists.count > 1 {
+                    let sections = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
+                    sections.title = "Sections"
+                    sections.baseUser = channel
+                    sections.isSectioned = true
+                    subViewArr.append(sections)
+                }
+                
+                self.viewControllers = subViewArr
             }
-            
-            self.viewControllers = subViewArr
-            self.baseUser = channel
         default:
             assertionFailure()
         }
@@ -248,6 +253,9 @@ class UserViewController: AXStretchableHeaderTabViewController {
                     user.num_followers += user.isFollowed() ? 1 : -1
                     let header = self.headerView as! UserHeaderView
                     header.followersLabel.text = String(user.num_followers)
+                    
+                    let selfUser = Account.getCachedAccount()?.user
+                    selfUser?.num_following += user.isFollowed() ? 1 : -1
                     
                     if let followerView = self.viewControllers[self.viewControllers.count-2] as? FollowInfoTableViewController {
                         followerView.userArray = []
@@ -340,7 +348,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
         
         if self.isMovingToParentViewController() == false {
             // back from navigation stack. previous page was popped!!
-            self.baseUser.updateFollowInfo()
+            self.baseUser?.updateFollowInfo()
             let header = self.headerView as! UserHeaderView
             if let followed = self.baseUser?.isFollowed() {
                 header.followButton?.selected = followed

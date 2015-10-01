@@ -18,15 +18,19 @@ class ProfileHeaderView: UserHeaderView {
 
 class ProfileViewController: UserViewController {
 
-    private var genres:[String:Genre] = [String:Genre]()
+    // hope there's a better way but....
+    var presented = false
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "likeUpdated", name: NotifyKey.likeUpdated, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateLikeView", name: NotifyKey.likeUpdated, object: nil)
         
-        if self.isMovingToParentViewController() == false {
-            // back from navigation stack. previous page was popped!!
+        if self.isMovingToParentViewController() == false && presented == true {
+            self.fetchUserInfo()
+            self.updateFollowingView()
         }
+        
+        presented = true
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -47,33 +51,26 @@ class ProfileViewController: UserViewController {
         self.setFavoriteGenreLabel()
         self.setAboutMeLabel()
         
-        self.title = ""
+        self.title = "Profile"
     }
     
-    func likeUpdated() {
+    func updateLikeView() {
         print("like updated")
-        if let likesSubView: TrackSubViewController = self.viewControllers[self.viewControllers.count-3] as? TrackSubViewController {
-            likesSubView.tracks.removeAll()
+        if let likesSubView = self.viewControllers[self.viewControllers.count-3] as? TrackSubViewController {
+            likesSubView.tracks = []
             likesSubView.subViewWillAppear()
         }
     }
     
-    override func didHeightRatioChange(ratio: CGFloat) {
-        super.didHeightRatioChange(0.0)
+    func updateFollowingView() {
+        if let followingView = self.viewControllers[self.viewControllers.count-1] as? FollowInfoTableViewController {
+            followingView.userArray = []
+            followingView.subViewWillAppear()
+        }
     }
     
-//    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        if segue.identifier == "showEditProfile" {
-//            let header = self.headerView as! ProfileHeaderView
-//
-//            let epvc = segue.destinationViewController as! EditProfileViewController
-//            epvc.nickname = header.nameLabel.text ?? ""
-//            epvc.aboutMe = header.aboutMeLabel.text ?? ""
-//        }
-//    }
-    
     @IBAction func unwindFromEditProfile(sender: UIStoryboardSegue) {
-        print("I am back.")
+        print("unwindFromEditProfile")
     }
     
     func setAboutMeLabel() {
@@ -84,6 +81,8 @@ class ProfileViewController: UserViewController {
             header.aboutMeLabel.text = Account.getCachedAccount()?.user?.aboutMe
         }
     }
+    
+    private var genres:[String:Genre] = [String:Genre]()
     
     func setFavoriteGenreLabel() {
         let header = self.headerView as! ProfileHeaderView

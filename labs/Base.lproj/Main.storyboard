@@ -264,13 +264,12 @@
                                                             </constraints>
                                                         </view>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aRS-V1-n1M" userLabel="menu">
-                                                            <rect key="frame" x="270" y="0.0" width="50" height="76"/>
+                                                            <rect key="frame" x="276" y="0.0" width="44" height="76"/>
                                                             <animations/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="50" id="BgT-ai-CjI"/>
+                                                                <constraint firstAttribute="width" constant="44" id="BgT-ai-CjI"/>
                                                                 <constraint firstAttribute="height" constant="76" id="dDE-nu-AvF"/>
                                                             </constraints>
-                                                            <inset key="contentEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                             <state key="normal" image="ic_header_dotdotdot">
                                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
@@ -279,13 +278,12 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yqv-Qg-Krk" userLabel="dropBtn">
-                                                            <rect key="frame" x="226" y="0.0" width="50" height="76"/>
+                                                            <rect key="frame" x="236" y="0.0" width="40" height="76"/>
                                                             <animations/>
                                                             <constraints>
-                                                                <constraint firstAttribute="width" constant="50" id="5ze-O5-Ku2"/>
+                                                                <constraint firstAttribute="width" constant="40" id="5ze-O5-Ku2"/>
                                                                 <constraint firstAttribute="height" constant="76" id="KbG-kU-udN"/>
                                                             </constraints>
-                                                            <inset key="contentEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                             <state key="normal" image="ic_drop_small">
                                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
@@ -1394,7 +1392,7 @@
         <image name="player_bg" width="817" height="1079"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="1xR-MJ-eI3"/>
+        <segue reference="Qeg-fn-nRN"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
 </document>

@@ -75,11 +75,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oGl-sG-Oui" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <view contentMode="scaleToFill" id="q60-kv-KpD" customClass="ProfileHeaderView" customModule="for_test" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="324"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="default_cover_big" translatesAutoresizingMaskIntoConstraints="NO" id="28F-a0-7DJ">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="116"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="120"/>
                             <animations/>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -107,7 +107,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FLS-j9-oHE" customClass="GradientView">
-                            <rect key="frame" x="0.0" y="86" width="320" height="30"/>
+                            <rect key="frame" x="0.0" y="90" width="320" height="30"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="vLj-9o-JbV"/>
@@ -123,7 +123,7 @@
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YA6-OZ-OEg" userLabel="follow info">
-                            <rect key="frame" x="100" y="121" width="109" height="33"/>
+                            <rect key="frame" x="100" y="125" width="109" height="33"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Followers" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yyi-1V-y34">
                                     <rect key="frame" x="0.0" y="0.0" width="57" height="16"/>
@@ -184,7 +184,7 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jungho jungho" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FkO-V7-6TM">
-                            <rect key="frame" x="100" y="88" width="121" height="22"/>
+                            <rect key="frame" x="100" y="92" width="121" height="22"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="22" id="YtU-Dg-dM7"/>
@@ -194,7 +194,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HQp-Si-f4V">
-                            <rect key="frame" x="284" y="86" width="26" height="26"/>
+                            <rect key="frame" x="284" y="90" width="26" height="26"/>
                             <animations/>
                             <color key="backgroundColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
@@ -205,7 +205,7 @@
                             <state key="normal" image="ic_edit_small"/>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NMG-so-3ze">
-                            <rect key="frame" x="12" y="284" width="298" height="32"/>
+                            <rect key="frame" x="12" y="288" width="298" height="32"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="MzU-D0-Ho4"/>
@@ -217,7 +217,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <nil key="highlightedColor"/>
                         </label>
                         <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u5n-Ne-nsf">
-                            <rect key="frame" x="284" y="254" width="26" height="26"/>
+                            <rect key="frame" x="284" y="258" width="26" height="26"/>
                             <animations/>
                             <color key="backgroundColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
@@ -228,7 +228,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <state key="normal" image="ic_edit_small"/>
                         </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_profile" translatesAutoresizingMaskIntoConstraints="NO" id="OvH-3x-Zmw">
-                            <rect key="frame" x="10" y="76" width="80" height="80"/>
+                            <rect key="frame" x="10" y="80" width="80" height="80"/>
                             <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -237,14 +237,14 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorite genres" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d25-qj-hfp">
-                            <rect key="frame" x="12" y="258" width="262" height="18"/>
+                            <rect key="frame" x="12" y="262" width="262" height="18"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AWU-Mb-cAl">
-                            <rect key="frame" x="284" y="174" width="26" height="26"/>
+                            <rect key="frame" x="284" y="178" width="26" height="26"/>
                             <animations/>
                             <color key="backgroundColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
@@ -255,14 +255,14 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <state key="normal" image="ic_edit_small"/>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jGf-w7-U4L">
-                            <rect key="frame" x="12" y="178" width="262" height="18"/>
+                            <rect key="frame" x="12" y="182" width="262" height="18"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nby-Gg-QD2">
-                            <rect key="frame" x="12" y="204" width="298" height="32"/>
+                            <rect key="frame" x="12" y="208" width="298" height="32"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="UZe-Cm-Cl6"/>
@@ -376,11 +376,11 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aCV-kH-mc3" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <view contentMode="scaleToFill" id="0ib-J0-KQD" customClass="UserHeaderView" customModule="for_test" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="288"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="291"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <subviews>
                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="default_cover_big" translatesAutoresizingMaskIntoConstraints="NO" id="aWi-Py-fBl">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="197"/>
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                             <animations/>
                             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -408,7 +408,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I6b-08-WnE" customClass="GradientView">
-                            <rect key="frame" x="0.0" y="147" width="320" height="50"/>
+                            <rect key="frame" x="0.0" y="150" width="320" height="50"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="50" id="KHy-4l-JpH"/>
@@ -424,7 +424,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             </userDefinedRuntimeAttributes>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gax-rl-ueX" userLabel="follow info">
-                            <rect key="frame" x="100" y="202" width="109" height="33"/>
+                            <rect key="frame" x="100" y="205" width="109" height="33"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Followers" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c89-bz-4j0">
                                     <rect key="frame" x="0.0" y="0.0" width="57" height="16"/>
@@ -485,7 +485,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             </constraints>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="clip" translatesAutoresizingMaskIntoConstraints="NO" id="vXx-yx-Jsd" customClass="GBFlatButton">
-                            <rect key="frame" x="220" y="203" width="90" height="30"/>
+                            <rect key="frame" x="220" y="206" width="90" height="30"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="CnW-g8-Zuo"/>
@@ -506,7 +506,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jungho jungho" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T3m-jL-CaC">
-                            <rect key="frame" x="100" y="169" width="210" height="22"/>
+                            <rect key="frame" x="100" y="172" width="210" height="22"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="22" id="SNI-H0-4xU"/>
@@ -516,7 +516,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="caU-41-nTd">
-                            <rect key="frame" x="12" y="252" width="298" height="32"/>
+                            <rect key="frame" x="12" y="255" width="298" height="32"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="1ZR-qt-rgi"/>
@@ -528,7 +528,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dvv-yY-0jh">
-                            <rect key="frame" x="246" y="252" width="64" height="32"/>
+                            <rect key="frame" x="246" y="255" width="64" height="32"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="W60-QC-Ysp"/>
@@ -543,7 +543,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             </connections>
                         </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_profile" translatesAutoresizingMaskIntoConstraints="NO" id="C5t-SU-t0j">
-                            <rect key="frame" x="10" y="157" width="80" height="80"/>
+                            <rect key="frame" x="10" y="160" width="80" height="80"/>
                             <animations/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -1104,7 +1104,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My name is Jungho" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DY2-cy-Otd">
-                                            <rect key="frame" x="90" y="27" width="222" height="22"/>
+                                            <rect key="frame" x="90" y="27" width="157" height="22"/>
                                             <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="22" id="x2w-3T-DPU"/>
@@ -1113,19 +1113,32 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_following" translatesAutoresizingMaskIntoConstraints="NO" id="xg1-aA-UkP">
+                                            <rect key="frame" x="287" y="25" width="25" height="25"/>
+                                            <animations/>
+                                        </imageView>
                                     </subviews>
                                     <animations/>
                                     <constraints>
+                                        <constraint firstItem="xg1-aA-UkP" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="DY2-cy-Otd" secondAttribute="trailing" id="6sq-QO-rhs"/>
                                         <constraint firstItem="DY2-cy-Otd" firstAttribute="leading" secondItem="kml-Sp-ooX" secondAttribute="trailing" constant="10" id="9Pl-R2-qid"/>
                                         <constraint firstItem="kml-Sp-ooX" firstAttribute="centerY" secondItem="sMh-sd-CkO" secondAttribute="centerY" id="H19-Nc-jmO"/>
                                         <constraint firstItem="DY2-cy-Otd" firstAttribute="centerY" secondItem="sMh-sd-CkO" secondAttribute="centerY" id="KjZ-5g-Spo"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="xg1-aA-UkP" secondAttribute="trailing" id="ZkD-NA-FMo"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="DY2-cy-Otd" secondAttribute="trailing" id="iQv-eo-E3p"/>
+                                        <constraint firstItem="xg1-aA-UkP" firstAttribute="centerY" secondItem="sMh-sd-CkO" secondAttribute="centerY" id="x9T-nc-ji1"/>
                                         <constraint firstItem="kml-Sp-ooX" firstAttribute="leading" secondItem="sMh-sd-CkO" secondAttribute="leadingMargin" constant="8" id="zwC-pS-BTD"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="iQv-eo-E3p"/>
+                                        </mask>
+                                    </variation>
                                 </tableViewCellContentView>
                                 <animations/>
                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
+                                    <outlet property="isFollowedImageView" destination="xg1-aA-UkP" id="Ncx-JK-Nef"/>
                                     <outlet property="nameLabel" destination="DY2-cy-Otd" id="GWd-AC-U9Z"/>
                                     <outlet property="profileImageView" destination="kml-Sp-ooX" id="PFi-PB-qgf"/>
                                     <segue destination="ZJ4-xY-4VA" kind="custom" identifier="ShowUserSegue" customClass="JHImageTransitionSegue" id="nWZ-tF-3vK"/>
@@ -1728,6 +1741,7 @@ and let us know your favorite genre.</string>
         <image name="ic_dislike" width="25" height="25"/>
         <image name="ic_drop_small" width="40" height="40"/>
         <image name="ic_edit_small" width="18" height="18"/>
+        <image name="ic_following" width="25" height="25"/>
         <image name="ic_header_dotdotdot" width="22" height="22"/>
         <image name="ic_header_dotdotdot_horizontal" width="22" height="22"/>
         <image name="ic_pause" width="47" height="47"/>

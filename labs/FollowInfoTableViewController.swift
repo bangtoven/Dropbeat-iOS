@@ -12,7 +12,15 @@ class FollowInfoTableViewCell: UITableViewCell {
     
     @IBOutlet var profileImageView: UIImageView!
     @IBOutlet var nameLabel: UILabel!
+    @IBOutlet weak var isFollowedImageView: UIImageView!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        profileImageView.layer.cornerRadius = 10
+        profileImageView.layer.borderWidth = 2
+        profileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
+    }
 }
 
 class FollowInfoTableViewController: UITableViewController, AXSubViewController {
@@ -87,10 +95,8 @@ class FollowInfoTableViewController: UITableViewController, AXSubViewController 
             cell.profileImageView.image = UIImage(named: "default_profile")
         }
         
-        cell.profileImageView.layer.cornerRadius = 10
-        cell.profileImageView.layer.borderWidth = 2
-        cell.profileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
-
+        cell.isFollowedImageView.hidden = (u.isFollowed() == false)
+        
         return cell
     }
 
@@ -104,11 +110,12 @@ class FollowInfoTableViewController: UITableViewController, AXSubViewController 
             let sourceImageView = cell.profileImageView
             mySegue.setSourceImageView(sourceImageView)
             mySegue.sourceRect = sourceImageView.convertRect(sourceImageView.bounds, toView: self.view)
-            mySegue.destinationRect = self.view.convertRect(CGRectMake(10, 157, 80, 80), fromView: nil)
+            mySegue.destinationRect = self.view.convertRect(UserHeaderView.profileImageRect(self), fromView: nil)
             
             mySegue.setSourceLable(cell.nameLabel)
             mySegue.labelSourceRect = cell.nameLabel.convertRect(cell.nameLabel.bounds, toView: self.view)
-            mySegue.labelDestinationRect = self.view.convertRect(CGRectMake(100, 169, 210, 22), fromView: nil)
+            let coverHeight = self.view.bounds.width * 5/8
+            mySegue.labelDestinationRect = self.view.convertRect(CGRectMake(100, coverHeight-28, 210, 22), fromView: nil)
 
             let uvc = segue.destinationViewController as! UserViewController
             uvc.resource = u.resourceName

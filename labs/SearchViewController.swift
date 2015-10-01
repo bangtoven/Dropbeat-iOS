@@ -9,7 +9,7 @@
 import UIKit
 
 class SearchResultUserCell: FollowInfoTableViewCell {
-    @IBOutlet weak var isFollowedImageView: UIImageView!
+//    @IBOutlet weak var isFollowedImageView: UIImageView!
 }
 
 class SearchViewController: AddableTrackListViewController,
@@ -82,7 +82,7 @@ class SearchViewController: AddableTrackListViewController,
             let sourceImageView = cell.profileImageView
             mySegue.setSourceImageView(sourceImageView)
             mySegue.sourceRect = sourceImageView.convertRect(sourceImageView.bounds, toView: self.view)
-            mySegue.destinationRect = self.view.convertRect(CGRectMake(10, 157, 80, 80), fromView: nil)
+            mySegue.destinationRect = self.view.convertRect(UserHeaderView.profileImageRect(self), fromView: nil)
             
             let uvc = segue.destinationViewController as! UserViewController
             uvc.resource = u.resourceName
@@ -151,10 +151,6 @@ class SearchViewController: AddableTrackListViewController,
                 } else {
                     cell.profileImageView.image = UIImage(named: "default_profile")
                 }
-                
-                cell.profileImageView.layer.cornerRadius = 10
-                cell.profileImageView.layer.borderWidth = 2
-                cell.profileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
                 
                 cell.isFollowedImageView.hidden = (u.isFollowed() == false)
                 

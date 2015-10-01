@@ -989,7 +989,7 @@ class FeedViewController: AddableTrackListViewController,
             
             mySegue.setSourceImageView(sourceImageView)
             mySegue.sourceRect = sourceImageView.convertRect(sourceImageView.bounds, toView: self.view)
-            mySegue.destinationRect = self.view.convertRect(CGRectMake(10, 157, 80, 80), fromView: nil)
+            mySegue.destinationRect = self.view.convertRect(UserHeaderView.profileImageRect(self), fromView: nil)
             
             let uvc = segue.destinationViewController as! UserViewController
             uvc.resource = track.user?.resourceName

@@ -9,6 +9,12 @@
 import UIKit
 
 class UserHeaderView: AXStretchableHeaderView {
+    
+    static func profileImageRect(vc: UIViewController) -> CGRect {
+        let coverHeight = vc.view.bounds.width * 5/8
+        return CGRectMake(10, coverHeight-40, 80, 80)
+    }
+    
     @IBOutlet weak var coverImageView: UIImageView!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var profileImageHeight: NSLayoutConstraint!
@@ -52,6 +58,7 @@ class UserHeaderView: AXStretchableHeaderView {
 }
 
 class UserViewController: AXStretchableHeaderTabViewController {
+    
     var baseUser: BaseUser!
     var resource: String!
 
@@ -71,7 +78,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
     
     func fetchUserInfo() {
         let header = self.headerView as! UserHeaderView
-        header.maximumOfHeight = 224
+        header.maximumOfHeight = self.view.bounds.width * 5/8 + 27
         
         header.nameLabel.hidden = (self.passedName != nil)
         header.profileImageView.hidden = (self.passedImage != nil)

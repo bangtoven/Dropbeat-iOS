@@ -43,7 +43,8 @@ class ProfileViewController: UserViewController {
         self.baseUser = user
 
         let header = self.headerView as! ProfileHeaderView
-        header.maximumOfHeight = (320-64)
+        header.maximumOfHeight = self.view.bounds.width * 3/8 + 140
+        
         header.nameLabel.hidden = false
         header.profileImageView.hidden = false
         

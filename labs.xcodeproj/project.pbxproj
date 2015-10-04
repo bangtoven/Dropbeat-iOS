@@ -123,11 +123,9 @@
 		734C7D881BB4C1DA0071678C /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738646161BA7631D00C21650 /* GradientView.m */; };
 		734C7D891BB4C1DA0071678C /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58BB0B151B12308000B07279 /* BaseViewController.swift */; };
 		734C7D8A1BB4C1DA0071678C /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5894135D1B83C3F700395AFA /* UIScrollView+TPKeyboardAvoidingAdditions.m */; };
-		734C7D8B1BB4C1DA0071678C /* DropdownMenuSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F561BB32CB300BC9EB7 /* DropdownMenuSegue.m */; settings = {ASSET_TAGS = (); }; };
 		734C7D8C1BB4C1DA0071678C /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90BD1BAE4AFA00284B8A /* Upload.swift */; settings = {ASSET_TAGS = (); }; };
 		734C7D8E1BB4C1DA0071678C /* UIButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5886938D1B13B51300566124 /* UIButton+WebCache.m */; };
 		734C7D901BB4C1DA0071678C /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B71BAE4AFA00284B8A /* ParameterEncoding.swift */; settings = {ASSET_TAGS = (); }; };
-		734C7D911BB4C1DA0071678C /* FeedMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F591BB32D2A00BC9EB7 /* FeedMainViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		734C7D921BB4C1DA0071678C /* SDWebImageDownloader.m in Sources */ = {isa = PBXBuildFile; fileRef = 588693841B13B51300566124 /* SDWebImageDownloader.m */; };
 		734C7D931BB4C1DA0071678C /* RBStoryboardPushSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 7327170B1BAC8649003E0B68 /* RBStoryboardPushSegue.m */; };
 		734C7D941BB4C1DA0071678C /* UIImageView+HighlightedWebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 588693931B13B51300566124 /* UIImageView+HighlightedWebCache.m */; };
@@ -147,7 +145,6 @@
 		734C7DA31BB4C1DA0071678C /* PlaylistListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AB34831BB2D9C60031E2CC /* PlaylistListTableViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		734C7DA41BB4C1DA0071678C /* NetworkRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC766BF41B051AA4006FD4FB /* NetworkRequests.swift */; };
 		734C7DA51BB4C1DA0071678C /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734C7D641BB47D750071678C /* Genre.swift */; settings = {ASSET_TAGS = (); }; };
-		734C7DA61BB4C1DA0071678C /* DropdownMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F541BB32CB300BC9EB7 /* DropdownMenuController.m */; settings = {ASSET_TAGS = (); }; };
 		734C7DA71BB4C1DA0071678C /* OldModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734C7D5A1BB47ACD0071678C /* OldModels.swift */; settings = {ASSET_TAGS = (); }; };
 		734C7DA81BB4C1DA0071678C /* ScrollPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717421BAC8721003E0B68 /* ScrollPager.swift */; };
 		734C7DA91BB4C1DA0071678C /* UIViewController+RBStoryboardLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 7327170F1BAC8649003E0B68 /* UIViewController+RBStoryboardLink.m */; };
@@ -223,15 +220,10 @@
 		734C7DF71BB4C1DA0071678C /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 739C8F5C1BB340E200BC9EB7 /* Explore.storyboard */; settings = {ASSET_TAGS = (); }; };
 		734C7DF91BB4C1DA0071678C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCD1DA8E1B04CCB200F9EA70 /* Images.xcassets */; };
 		734C7DFA1BB4C1DA0071678C /* DateTools.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 585BACFA1B85ED9900FE137A /* DateTools.bundle */; };
-		734C7DFB1BB4C1DA0071678C /* Feeds.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 739C8F501BB32A9A00BC9EB7 /* Feeds.storyboard */; settings = {ASSET_TAGS = (); }; };
 		7361FCE41B9F5E7F00444179 /* EmailSubmitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7361FCE31B9F5E7F00444179 /* EmailSubmitViewController.swift */; };
 		7361FCF71B9F687E00444179 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCF91B9F687E00444179 /* Settings.storyboard */; };
 		738646121BA758BA00C21650 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738646111BA758BA00C21650 /* PlayerViewController.swift */; };
 		738646171BA7631D00C21650 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738646161BA7631D00C21650 /* GradientView.m */; };
-		739C8F511BB32A9A00BC9EB7 /* Feeds.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 739C8F501BB32A9A00BC9EB7 /* Feeds.storyboard */; settings = {ASSET_TAGS = (); }; };
-		739C8F571BB32CB300BC9EB7 /* DropdownMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F541BB32CB300BC9EB7 /* DropdownMenuController.m */; settings = {ASSET_TAGS = (); }; };
-		739C8F581BB32CB300BC9EB7 /* DropdownMenuSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F561BB32CB300BC9EB7 /* DropdownMenuSegue.m */; settings = {ASSET_TAGS = (); }; };
-		739C8F5A1BB32D2A00BC9EB7 /* FeedMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F591BB32D2A00BC9EB7 /* FeedMainViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		739C8F5D1BB340E200BC9EB7 /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 739C8F5C1BB340E200BC9EB7 /* Explore.storyboard */; settings = {ASSET_TAGS = (); }; };
 		739C8F5F1BB340FE00BC9EB7 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		73A6864A1BA9A33600DA29DC /* Feed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCEA1B9F683100444179 /* Feed.storyboard */; };
@@ -438,12 +430,6 @@
 		738646111BA758BA00C21650 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		738646151BA7631D00C21650 /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
 		738646161BA7631D00C21650 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
-		739C8F501BB32A9A00BC9EB7 /* Feeds.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Feeds.storyboard; sourceTree = "<group>"; };
-		739C8F531BB32CB300BC9EB7 /* DropdownMenuController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropdownMenuController.h; sourceTree = "<group>"; };
-		739C8F541BB32CB300BC9EB7 /* DropdownMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropdownMenuController.m; sourceTree = "<group>"; };
-		739C8F551BB32CB300BC9EB7 /* DropdownMenuSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DropdownMenuSegue.h; sourceTree = "<group>"; };
-		739C8F561BB32CB300BC9EB7 /* DropdownMenuSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DropdownMenuSegue.m; sourceTree = "<group>"; };
-		739C8F591BB32D2A00BC9EB7 /* FeedMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedMainViewController.swift; sourceTree = "<group>"; };
 		739C8F5C1BB340E200BC9EB7 /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Explore.storyboard; sourceTree = "<group>"; };
 		739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		73AB34691BB15AAE0031E2CC /* JHImageTransitionSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHImageTransitionSegue.h; sourceTree = "<group>"; };
@@ -754,7 +740,6 @@
 				73AB34781BB1D3580031E2CC /* ACEExpandableTextCell */,
 				7361FD111BA060F400444179 /* RBStoryboardLink */,
 				585BACF91B85ED9900FE137A /* DateTool */,
-				739C8F521BB32CB300BC9EB7 /* DropdownMenu */,
 				589413531B83C3F700395AFA /* TPKeyboardAvoiding */,
 				589F0F0A1B6A0DE6000851CC /* MarqueeLabel */,
 				587837A11B440225008DF480 /* Reachability */,
@@ -864,27 +849,6 @@
 			path = ../playground;
 			sourceTree = "<group>";
 		};
-		739C8F4F1BB32A8000BC9EB7 /* NEW_FEED */ = {
-			isa = PBXGroup;
-			children = (
-				739C8F501BB32A9A00BC9EB7 /* Feeds.storyboard */,
-				739C8F591BB32D2A00BC9EB7 /* FeedMainViewController.swift */,
-			);
-			name = NEW_FEED;
-			sourceTree = "<group>";
-		};
-		739C8F521BB32CB300BC9EB7 /* DropdownMenu */ = {
-			isa = PBXGroup;
-			children = (
-				739C8F531BB32CB300BC9EB7 /* DropdownMenuController.h */,
-				739C8F541BB32CB300BC9EB7 /* DropdownMenuController.m */,
-				739C8F551BB32CB300BC9EB7 /* DropdownMenuSegue.h */,
-				739C8F561BB32CB300BC9EB7 /* DropdownMenuSegue.m */,
-			);
-			name = DropdownMenu;
-			path = Libraries/DropdownMenu;
-			sourceTree = SOURCE_ROOT;
-		};
 		739C8F5B1BB340D400BC9EB7 /* Explore */ = {
 			isa = PBXGroup;
 			children = (
@@ -973,7 +937,6 @@
 				739C8F5B1BB340D400BC9EB7 /* Explore */,
 				732717441BAC8814003E0B68 /* Profile */,
 				73AB34801BB2C72C0031E2CC /* Playlist */,
-				739C8F4F1BB32A8000BC9EB7 /* NEW_FEED */,
 			);
 			name = Dropbeat;
 			path = labs;
@@ -1134,7 +1097,6 @@
 				734C7DF71BB4C1DA0071678C /* Explore.storyboard in Resources */,
 				734C7DF91BB4C1DA0071678C /* Images.xcassets in Resources */,
 				734C7DFA1BB4C1DA0071678C /* DateTools.bundle in Resources */,
-				734C7DFB1BB4C1DA0071678C /* Feeds.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1154,7 +1116,6 @@
 				739C8F5D1BB340E200BC9EB7 /* Explore.storyboard in Resources */,
 				FCD1DA8F1B04CCB200F9EA70 /* Images.xcassets in Resources */,
 				585BAD0C1B85ED9900FE137A /* DateTools.bundle in Resources */,
-				739C8F511BB32A9A00BC9EB7 /* Feeds.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1199,11 +1160,9 @@
 				734C7D881BB4C1DA0071678C /* GradientView.m in Sources */,
 				734C7D891BB4C1DA0071678C /* BaseViewController.swift in Sources */,
 				734C7D8A1BB4C1DA0071678C /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
-				734C7D8B1BB4C1DA0071678C /* DropdownMenuSegue.m in Sources */,
 				734C7D8C1BB4C1DA0071678C /* Upload.swift in Sources */,
 				734C7D8E1BB4C1DA0071678C /* UIButton+WebCache.m in Sources */,
 				734C7D901BB4C1DA0071678C /* ParameterEncoding.swift in Sources */,
-				734C7D911BB4C1DA0071678C /* FeedMainViewController.swift in Sources */,
 				734C7D921BB4C1DA0071678C /* SDWebImageDownloader.m in Sources */,
 				734C7D931BB4C1DA0071678C /* RBStoryboardPushSegue.m in Sources */,
 				734C7D941BB4C1DA0071678C /* UIImageView+HighlightedWebCache.m in Sources */,
@@ -1223,7 +1182,6 @@
 				734C7DA31BB4C1DA0071678C /* PlaylistListTableViewController.swift in Sources */,
 				734C7DA41BB4C1DA0071678C /* NetworkRequests.swift in Sources */,
 				734C7DA51BB4C1DA0071678C /* Genre.swift in Sources */,
-				734C7DA61BB4C1DA0071678C /* DropdownMenuController.m in Sources */,
 				734C7DA71BB4C1DA0071678C /* OldModels.swift in Sources */,
 				734C7DA81BB4C1DA0071678C /* ScrollPager.swift in Sources */,
 				734C7DA91BB4C1DA0071678C /* UIViewController+RBStoryboardLink.m in Sources */,
@@ -1306,11 +1264,9 @@
 				738646171BA7631D00C21650 /* GradientView.m in Sources */,
 				58BB0B161B12308000B07279 /* BaseViewController.swift in Sources */,
 				589413631B83C3F700395AFA /* UIScrollView+TPKeyboardAvoidingAdditions.m in Sources */,
-				739C8F581BB32CB300BC9EB7 /* DropdownMenuSegue.m in Sources */,
 				73FC90CA1BAE4AFA00284B8A /* Upload.swift in Sources */,
 				588693A21B13B51300566124 /* UIButton+WebCache.m in Sources */,
 				73FC90C41BAE4AFA00284B8A /* ParameterEncoding.swift in Sources */,
-				739C8F5A1BB32D2A00BC9EB7 /* FeedMainViewController.swift in Sources */,
 				5886939E1B13B51300566124 /* SDWebImageDownloader.m in Sources */,
 				732717131BAC8649003E0B68 /* RBStoryboardPushSegue.m in Sources */,
 				588693A51B13B51300566124 /* UIImageView+HighlightedWebCache.m in Sources */,
@@ -1330,7 +1286,6 @@
 				73AB34841BB2D9C60031E2CC /* PlaylistListTableViewController.swift in Sources */,
 				FC766BF51B051AA4006FD4FB /* NetworkRequests.swift in Sources */,
 				734C7D651BB47D750071678C /* Genre.swift in Sources */,
-				739C8F571BB32CB300BC9EB7 /* DropdownMenuController.m in Sources */,
 				734C7D5B1BB47ACD0071678C /* OldModels.swift in Sources */,
 				732717431BAC8721003E0B68 /* ScrollPager.swift in Sources */,
 				732717151BAC8649003E0B68 /* UIViewController+RBStoryboardLink.m in Sources */,

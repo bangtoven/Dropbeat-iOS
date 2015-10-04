@@ -8,6 +8,12 @@
 
 import UIKit
 
+enum PlaylistType {
+    case EXTERNAL
+    case SHARED
+    case USER
+}
+
 class Playlist {
     var id: String
     var name: String

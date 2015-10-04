@@ -12,7 +12,6 @@ enum MenuType : Int {
     case SEARCH
     case PLAYLIST
     case PROFILE
-    case TEST
 }
 
 class CenterViewController: PlayerViewController, UITabBarDelegate{
@@ -62,6 +61,12 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         loadSharedPlaylistIfExist()
         
         UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
+        
+        if Account.getCachedAccount() == nil {
+            var newItems = self.tabBar.items
+            newItems?.removeAtIndex(MenuType.PLAYLIST.rawValue)
+            self.tabBar.setItems(newItems, animated: true)
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -166,8 +171,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     }
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
-        let index = tabBar.items?.indexOf(item)
-        if let menuType = MenuType(rawValue: index!) {
+        if let menuType = MenuType(rawValue: item.tag) {
             onMenuSelected(menuType)
         }
     }
@@ -191,17 +195,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
                 activeViewController = UIStoryboard(name: "Profile", bundle: nil).instantiateInitialViewController()
             }
         case .PLAYLIST:
-            if Account.getCachedAccount() == nil {
-                activeViewController = UIStoryboard(name: "Settings", bundle: nil).instantiateInitialViewController()
-            } else {
-                activeViewController = UIStoryboard(name: "Playlist", bundle: nil).instantiateInitialViewController()
-            }
-        case .TEST:
-            activeViewController = UIStoryboard(name: "Explore", bundle: nil).instantiateInitialViewController()
-        }
-        
-        if currentMenu == .PROFILE { // TODO: 어떤 상황일지 잘 생각해 봐라.
-            UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
+            activeViewController = UIStoryboard(name: "Playlist", bundle: nil).instantiateInitialViewController()
         }
         
         currentMenu = type

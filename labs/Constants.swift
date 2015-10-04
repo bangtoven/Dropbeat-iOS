@@ -36,13 +36,6 @@ class ApiKey {
     static var google = "AIzaSyCoieDdwxgy01P7MBIdR48tFxAtyEYHPmA"
 }
 
-
-enum PlaylistType {
-    case EXTERNAL
-    case SHARED
-    case USER
-}
-
 class UserDataKey {
     static var didAutoFollow = "did_auto_follow"
     static var maxFavoriteCacheExpireDate = "max_favorite_cache_expire"

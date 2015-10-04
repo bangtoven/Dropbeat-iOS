@@ -918,19 +918,19 @@
                                         <animations/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <items>
-                                            <tabBarItem tag="1" title="" image="ic_audio_wave" id="LhY-EL-Kgy">
+                                            <tabBarItem title="" image="ic_audio_wave" id="LhY-EL-Kgy">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                                             </tabBarItem>
-                                            <tabBarItem tag="2" title="" image="ic_compass" id="nZU-gk-3lR">
+                                            <tabBarItem tag="1" title="" image="ic_compass" id="nZU-gk-3lR">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                                             </tabBarItem>
-                                            <tabBarItem tag="3" title="" image="ic_header_search" id="qT1-zU-yo5">
+                                            <tabBarItem tag="2" title="" image="ic_header_search" id="qT1-zU-yo5">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                                             </tabBarItem>
-                                            <tabBarItem title="" image="ic_list_gray_small" id="O6n-Jm-nJ7">
+                                            <tabBarItem tag="3" title="" image="ic_list_gray_small" id="O6n-Jm-nJ7">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                                             </tabBarItem>
-                                            <tabBarItem title="" image="ic_profile_gray" id="aXO-Xq-Gkh">
+                                            <tabBarItem tag="4" title="" image="ic_profile_gray" id="aXO-Xq-Gkh">
                                                 <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                                             </tabBarItem>
                                         </items>

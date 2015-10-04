@@ -40,6 +40,7 @@ class Account {
                 callback!(error: error)
             } else {
                 self.following = users!
+                self.user?.num_following = self.following.count
                 callback!(error: nil)
             }
         })

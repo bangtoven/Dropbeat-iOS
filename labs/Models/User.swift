@@ -178,7 +178,14 @@ class User: BaseUser {
         }
     }
     
-    private func _fetchFollowInfo(path: String, callback:((users: [BaseUser]?, error: NSError?) -> Void)) {
+    enum FollowInfoType {
+        case FOLLOWING
+        case FOLLOWERS
+    }
+    
+    private func _fetchFollowInfo(type: FollowInfoType, callback:((users: [BaseUser]?, error: NSError?) -> Void)) {
+        let path = type == .FOLLOWING ? ApiPath.userFollowing : ApiPath.userFollowers
+        
         Requests.sendGet(path, params: ["user_id": self.id!], auth: false) { (req, resp, result, error) -> Void in
             if (error != nil) {
                 callback(users: nil, error: error)
@@ -199,11 +206,11 @@ class User: BaseUser {
     }
     
     func fetchFollowers(callback:((users: [BaseUser]?, error: NSError?) -> Void)) {
-        self._fetchFollowInfo(ApiPath.userFollowers, callback: callback)
+        self._fetchFollowInfo(.FOLLOWERS, callback: callback)
     }
     
     func fetchFollowing(callback:((users: [BaseUser]?, error: NSError?) -> Void)) {
-        self._fetchFollowInfo(ApiPath.userFollowing, callback: callback)
+        self._fetchFollowInfo(.FOLLOWING, callback: callback)
     }
     
     func fetchLikeList(callback:((likes:[Like]?, error:NSError?) -> Void)) {

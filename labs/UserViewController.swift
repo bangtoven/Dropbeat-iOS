@@ -266,9 +266,6 @@ class UserViewController: AXStretchableHeaderTabViewController {
                     let header = self.headerView as! UserHeaderView
                     header.followersLabel.text = String(user.num_followers)
                     
-                    let selfUser = Account.getCachedAccount()?.user
-                    selfUser?.num_following += user.isFollowed() ? 1 : -1
-                    
                     if let followerView = self.viewControllers[self.viewControllers.count-2] as? FollowInfoTableViewController {
                         followerView.userArray = []
                         followerView.subViewWillAppear()

@@ -16,6 +16,8 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
     private var listEnd:Bool = false
     
     @IBOutlet weak var indicatorView: UIView!
+    @IBOutlet weak var loadMoreSpinner: UIActivityIndicatorView!
+    @IBOutlet weak var loadMoreSpinnerWrapper: UIView!
     
     override func subViewWillAppear() {
         if self.tracks.count == 0 {
@@ -30,6 +32,9 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
         
         self.trackTableView.reloadData()
         self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+        
+        loadMoreSpinnerWrapper.hidden = true
+        loadMoreSpinner.stopAnimating()
     }
     
     @IBOutlet weak var sectionLabel: MarqueeLabel!
@@ -76,10 +81,24 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
         self.selectSection(row+1)
     }
     
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if tableView != self.trackTableView || tracks.count == 0 {
+            return
+        }
+        if indexPath.row == tracks.count - 1 {
+            if listEnd || nextPageToken == nil {
+                return
+            }
+            loadMoreSpinnerWrapper.hidden = false
+            loadMoreSpinner.startAnimating()
+            
+            let channel = self.baseUser as! Channel
+            let playlist = channel.playlists[self.currentSectionIndex]
+            loadTracks(playlist.uid, pageToken: nextPageToken)
+        }
+    }
+    
     func loadTracks(playlistUid:String, pageToken:String?) {
-        self.tracks.removeAll(keepCapacity: false)
-        self.trackTableView.reloadData()
-        
         Requests.getChannelPlaylist(playlistUid, pageToken: pageToken) { (req: NSURLRequest, resp: NSHTTPURLResponse?, result: AnyObject?, error :NSError?) -> Void in
             if self.isSectioned != true {
                 self.trackTableView.tableHeaderView = nil
@@ -112,6 +131,8 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
             }
             if self.nextPageToken == nil {
                 self.listEnd = true
+                self.loadMoreSpinnerWrapper.hidden = true
+                self.loadMoreSpinner.stopAnimating()
             }
             
             for (_, item): (String, JSON) in json["items"] {
@@ -120,6 +141,7 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
                     self.tracks.append(Track(channelSnippet: snippet))
                 }
             }
+            
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
             self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)

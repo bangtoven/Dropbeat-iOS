@@ -928,6 +928,22 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         </mask>
                                     </variation>
                                 </view>
+                                <view key="tableFooterView" hidden="YES" contentMode="scaleToFill" id="iNe-oj-B0d">
+                                    <rect key="frame" x="0.0" y="142" width="320" height="40"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="vVH-DT-KrP">
+                                            <rect key="frame" x="150" y="10" width="20" height="20"/>
+                                            <animations/>
+                                        </activityIndicatorView>
+                                    </subviews>
+                                    <animations/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <constraints>
+                                        <constraint firstAttribute="centerX" secondItem="vVH-DT-KrP" secondAttribute="centerX" id="I4J-Zh-c4N"/>
+                                        <constraint firstAttribute="centerY" secondItem="vVH-DT-KrP" secondAttribute="centerY" id="ZV7-h7-UPt"/>
+                                    </constraints>
+                                </view>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="AddableTrackTableViewCell" rowHeight="76" id="0P1-FD-QF9" customClass="AddableTrackTableViewCell" customModule="for_test" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="66" width="320" height="76"/>
@@ -1067,6 +1083,8 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <size key="freeformSize" width="320" height="200"/>
                     <connections>
                         <outlet property="indicatorView" destination="HRe-7P-qeb" id="VV5-ks-2Ei"/>
+                        <outlet property="loadMoreSpinner" destination="vVH-DT-KrP" id="Ima-bJ-odd"/>
+                        <outlet property="loadMoreSpinnerWrapper" destination="iNe-oj-B0d" id="yWC-dP-z81"/>
                         <outlet property="sectionLabel" destination="kfP-4T-QRP" id="dqe-fh-eWS"/>
                         <outlet property="trackTableView" destination="sU8-KC-zct" id="2MN-qF-Y8w"/>
                         <segue destination="daU-Ft-fj3" kind="custom" identifier="PlaylistSelectSegue" customClass="RBStoryboardModalSegue" id="oVv-0f-qoK"/>

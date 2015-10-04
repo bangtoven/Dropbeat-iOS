@@ -415,9 +415,11 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                                                 <animations/>
                                                 <color key="tintColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
+                                                <gestureRecognizers/>
                                             </view>
                                         </subviews>
                                         <animations/>
+                                        <gestureRecognizers/>
                                         <constraints>
                                             <constraint firstItem="s5H-kF-Xly" firstAttribute="leading" secondItem="PcA-I9-X1d" secondAttribute="leading" id="4Ue-eE-vGf"/>
                                             <constraint firstAttribute="height" secondItem="5ah-Rp-12s" secondAttribute="height" multiplier="1.4" priority="800" id="5Bv-eM-bCX"/>
@@ -911,6 +913,10 @@
                                             <action selector="playPauseBtnClicked:" destination="784-QY-VPr" eventType="touchUpInside" id="EPm-cV-GkH"/>
                                         </connections>
                                     </button>
+                                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Arm-Z1-l9N">
+                                        <rect key="frame" x="11" y="10" width="20" height="20"/>
+                                        <animations/>
+                                    </activityIndicatorView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nQC-tb-SEg" userLabel="Show Player Button">
                                         <rect key="frame" x="41" y="0.0" width="238" height="41"/>
                                         <animations/>
@@ -989,6 +995,8 @@
                                     <constraint firstItem="55h-Jb-Q2z" firstAttribute="top" secondItem="jNu-sh-Ld7" secondAttribute="top" constant="41" id="dPI-YK-t3z"/>
                                     <constraint firstItem="GaI-Pr-uCL" firstAttribute="top" secondItem="jNu-sh-Ld7" secondAttribute="top" constant="39" id="eDq-tO-Ss0"/>
                                     <constraint firstItem="M6l-LP-dZg" firstAttribute="top" secondItem="nQC-tb-SEg" secondAttribute="top" id="jBJ-xH-nsY"/>
+                                    <constraint firstItem="Arm-Z1-l9N" firstAttribute="centerX" secondItem="M6l-LP-dZg" secondAttribute="centerX" id="o71-8w-RZU"/>
+                                    <constraint firstItem="Arm-Z1-l9N" firstAttribute="centerY" secondItem="M6l-LP-dZg" secondAttribute="centerY" id="pYm-Fq-RF4"/>
                                     <constraint firstItem="nQC-tb-SEg" firstAttribute="leading" secondItem="M6l-LP-dZg" secondAttribute="trailing" id="prc-EG-YIk"/>
                                     <constraint firstItem="8PF-Vd-wiS" firstAttribute="top" secondItem="jNu-sh-Ld7" secondAttribute="top" id="qR8-Hd-l62"/>
                                     <constraint firstItem="puK-dK-YI7" firstAttribute="leading" secondItem="jNu-sh-Ld7" secondAttribute="leading" id="rhn-pj-Odh"/>
@@ -1029,6 +1037,7 @@
                         <outlet property="hidePlayerButton" destination="WTz-0d-QRM" id="sAC-cw-KdH"/>
                         <outlet property="likeBtn" destination="onS-Vf-WhV" id="q4H-OV-arc"/>
                         <outlet property="likeProgIndicator" destination="LCD-yE-5nX" id="dAi-Kj-nWb"/>
+                        <outlet property="loadingIndicator" destination="Arm-Z1-l9N" id="Xv8-dw-KEh"/>
                         <outlet property="loadingView" destination="89A-55-w3l" id="XHo-jH-WUs"/>
                         <outlet property="nextBtn" destination="B1U-Rq-rY4" id="i7V-GA-lwd"/>
                         <outlet property="pauseBtn" destination="WgC-we-gu9" id="jF3-ww-5fj"/>

@@ -209,6 +209,8 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     @IBOutlet weak var playPauseButton: UIButton!
     @IBOutlet weak var trackInfoLabel: UILabel!
     
+    @IBOutlet weak var loadingIndicator: UIActivityIndicatorView!
+    
     func initConstaints() {
         self.tabBarTopInsetConstraint.constant = 0
         self.view.layoutIfNeeded()
@@ -273,22 +275,24 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             PlayerContext.playState == PlayState.SWITCHING ||
             PlayerContext.playState == PlayState.BUFFERING) {
                 showTabBarPlayer(true)
-                self.playPauseButton.enabled = false
-                self.playPauseButton.setImage(UIImage(named: "ic_play_purple"), forState: UIControlState.Normal)
+                self.loadingIndicator.hidden = false
+                self.playPauseButton.hidden = true
                 self.trackInfoLabel.textColor = UIColor.lightGrayColor()
         } else if (PlayerContext.playState == PlayState.PAUSED) {
             showTabBarPlayer(true)
-            self.playPauseButton.enabled = true
+            self.loadingIndicator.hidden = true
+            self.playPauseButton.hidden = false
             self.playPauseButton.setImage(UIImage(named: "ic_play_purple"), forState: UIControlState.Normal)
             self.trackInfoLabel.textColor = UIColor.darkGrayColor()
         } else if (PlayerContext.playState == PlayState.PLAYING) {
             showTabBarPlayer(true)
-            self.playPauseButton.enabled = true
+            self.loadingIndicator.hidden = true
+            self.playPauseButton.hidden = false
             self.playPauseButton.setImage(UIImage(named: "ic_pause_purple"), forState: UIControlState.Normal)
             self.trackInfoLabel.textColor = UIColor.darkGrayColor()
         } else if (PlayerContext.playState == PlayState.STOPPED) {
             showTabBarPlayer(false)
-            self.playPauseButton.enabled = false
+            self.loadingIndicator.hidden = true
             self.trackInfoLabel.textColor = UIColor.lightGrayColor()
         }
     }
@@ -340,10 +344,9 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         
         self.playerView.hidden = false
         self.playerView.alpha = 0.0
-        self.playerView.layer.transform =
-            CATransform3DConcat(CATransform3DMakeScale(1.0, 1.0, 1.0), CATransform3DMakeTranslation(0, 0, 0))
+//        self.playerView.layer.transform = CATransform3DConcat(CATransform3DMakeScale(1.0, 1.0, 1.0), CATransform3DMakeTranslation(0, 0, 0))
         
-        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
 
             let height = self.containerView.frame.size.height
             self.containerTopConstraint.constant -= height
@@ -371,8 +374,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             self.tabBarContainerView.alpha = 1.0
             self.view.layoutIfNeeded()
             
-            self.playerView.layer.transform =
-                CATransform3DConcat(CATransform3DMakeScale(0.5, 0.5, 1.0), CATransform3DMakeTranslation(0, self.containerView.frame.size.height, 0))
+//            self.playerView.layer.transform = CATransform3DConcat(CATransform3DMakeScale(0.5, 0.5, 1.0), CATransform3DMakeTranslation(0, self.containerView.frame.size.height, 0))
             self.playerView.alpha = 0.0
         }) { (Bool) -> Void in
             self.playerView.hidden = true

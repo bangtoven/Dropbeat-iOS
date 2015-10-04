@@ -46,6 +46,11 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         tabBar.selectedItem = firstTab
         onMenuSelected(currentMenu, forceUpdate:true)
         
+        if Account.getCachedAccount() == nil {
+            var newItems = self.tabBar.items
+            newItems?.removeAtIndex(MenuType.PLAYLIST.rawValue)
+            self.tabBar.setItems(newItems, animated: true)
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -55,12 +60,6 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         loadSharedPlaylistIfExist()
         
         UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
-        
-        if Account.getCachedAccount() == nil {
-            var newItems = self.tabBar.items
-            newItems?.removeAtIndex(MenuType.PLAYLIST.rawValue)
-            self.tabBar.setItems(newItems, animated: true)
-        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -239,7 +238,9 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             }
             self.view.layoutIfNeeded()
             
-            self.containerBottomConstraint.constant = self.tabBarContainerView.frame.height
+            if self.isPlayerVisible == false {
+                self.containerBottomConstraint.constant = self.tabBarContainerView.frame.height
+            }
             self.view.layoutIfNeeded()
             
             }) { (Bool) -> Void in
@@ -337,7 +338,12 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         isPlayerVisible = true
 //        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
         
-        UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        self.playerView.hidden = false
+        self.playerView.alpha = 0.0
+        self.playerView.layer.transform =
+            CATransform3DConcat(CATransform3DMakeScale(1.0, 1.0, 1.0), CATransform3DMakeTranslation(0, 0, 0))
+        
+        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
 
             let height = self.containerView.frame.size.height
             self.containerTopConstraint.constant -= height
@@ -356,7 +362,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         isPlayerVisible = false
 //        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
 
-        UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
 
             self.containerBottomConstraint.constant = self.tabBarContainerView.frame.height
             self.containerTopConstraint.constant = 0
@@ -365,8 +371,11 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             self.tabBarContainerView.alpha = 1.0
             self.view.layoutIfNeeded()
             
+            self.playerView.layer.transform =
+                CATransform3DConcat(CATransform3DMakeScale(0.5, 0.5, 1.0), CATransform3DMakeTranslation(0, self.containerView.frame.size.height, 0))
             self.playerView.alpha = 0.0
         }) { (Bool) -> Void in
+            self.playerView.hidden = true
         }
     }
     

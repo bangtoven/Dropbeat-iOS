@@ -349,7 +349,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         isPlayerVisible = true
 //        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
         
-        UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
 
             let height = self.containerView.frame.size.height
             self.containerTopConstraint.constant -= height
@@ -368,7 +368,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         isPlayerVisible = false
 //        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
 
-        UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
+        UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
 
             self.containerBottomConstraint.constant = self.tabBarContainerView.frame.height
             self.containerTopConstraint.constant = 0

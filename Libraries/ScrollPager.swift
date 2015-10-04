@@ -33,6 +33,7 @@ import UIKit
 }
 
 @IBDesignable public class ScrollPager: UIView, UIScrollViewDelegate{
+    private var bottomSeparator = CALayer()
     
     private var selectedIndex = 0
     private let indicatorView = UIView()
@@ -104,12 +105,8 @@ import UIKit
             addSegmentsWithTitles(["One", "Two", "Three", "Four"])
         #endif
         
-        let width = self.frame.width
-        let height = self.frame.height
         
-        let bottomSeparator = CALayer()
         bottomSeparator.backgroundColor = UIColor(white: 0.0, alpha: 0.1).CGColor
-        bottomSeparator.frame = CGRect(x: 0, y: height-1, width: width, height: 1)
         self.layer.addSublayer(bottomSeparator)
     }
     
@@ -120,6 +117,12 @@ import UIKit
         
         redrawComponents()
         //moveToIndex(selectedIndex, animated: false, moveScrollView: true)
+        
+        if bottomSeparator.frame.origin.y == 0 {
+            let width = self.frame.width
+            let height = self.frame.height
+            bottomSeparator.frame = CGRect(x: 0, y: height-1, width: width, height: 1)
+        }
     }
     
     // MARK: - Public Methods -

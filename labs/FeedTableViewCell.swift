@@ -30,8 +30,6 @@ class FeedSelectTableViewCell: UITableViewCell {
 
 class UserTrackTableViewCell: AddableTrackTableViewCell {
     
-    static let ScrollNotification = "UserTrackCellScroll"
-
     @IBOutlet weak var likeButton: UIButton!
     
     @IBOutlet weak var releaseDateLabel: UILabel!
@@ -55,28 +53,6 @@ class UserTrackTableViewCell: AddableTrackTableViewCell {
         
         trackInfoFrame.layer.borderColor = UIColor(netHex: 0x909090).CGColor
         trackInfoFrame.layer.borderWidth = 1
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "parentDidScroll:", name: UserTrackTableViewCell.ScrollNotification, object: nil)
-    }
-    
-    deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-    
-    func parentDidScroll(notification: NSNotification) {
-        if let offset = notification.object as? CGFloat {
-            var constant = self.thumnailCenterConstraint.constant
-            constant += offset * 0.1 //> 0 ? +0.25 : -0.25
-            
-            let threshold:CGFloat = 70.0
-            if constant > threshold {
-                constant = threshold
-            } else if constant < -threshold {
-                constant = -threshold
-            }
-            
-            self.thumnailCenterConstraint.constant = constant
-        }
     }
     
 }

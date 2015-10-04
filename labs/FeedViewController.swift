@@ -83,10 +83,21 @@ extension FeedViewController: ScrollPagerDelegate {
         }
     }
     
+    func updateTrackCellImageOffset(cell: UserTrackTableViewCell) {
+        let imageOverflowHeight = cell.thumbView.frame.size.height / 3
+        let cellOffset = CGRectGetMaxY(cell.frame) - self.trackTableView.contentOffset.y
+        let maxOffset = self.trackTableView.frame.height + cell.frame.height
+        let verticalOffset = imageOverflowHeight * (0.5 - cellOffset/maxOffset)
+        
+        cell.thumnailCenterConstraint.constant = verticalOffset
+    }
+    
     func getUserTrackCell(indexPath:NSIndexPath) -> UITableViewCell {
         let cell = trackTableView.dequeueReusableCellWithIdentifier(
             "UserTrackTableViewCell", forIndexPath: indexPath) as! UserTrackTableViewCell
+        
         cell.delegate = self
+        
         let track = tracks[indexPath.row]
         cell.nameView.text = track.title
         if (track.thumbnailUrl != nil) {
@@ -147,6 +158,12 @@ extension FeedViewController: ScrollPagerDelegate {
             }
             
             if tracks == nil || tracks!.count == 0 {
+                if order == .POPULAR {
+                    print("popular feed is empty. try to load recent uploads.")
+                    self.newUploadsSegment.setSelectedIndex(1, animated: true)
+                    self.scrollPager(self.newUploadsSegment, changedIndex: 1)
+                    return
+                }
                 self.nextPage = -1
                 self.loadMoreSpinner.stopAnimating()
                 self.loadMoreSpinnerWrapper.hidden = true
@@ -170,10 +187,9 @@ extension FeedViewController: ScrollPagerDelegate {
     func scrollViewDidScroll(scrollView: UIScrollView) {
         switch (selectedFeedMenu.type) {
         case .NEW_UPLOADS, .FOLLOWING_TRACKS:
-            let offset = scrollView.contentOffset.y - self.lastContentOffset.y
-            NSNotificationCenter.defaultCenter().postNotificationName(UserTrackTableViewCell.ScrollNotification, object: offset)
-            
-            self.lastContentOffset = scrollView.contentOffset
+            for cell in self.trackTableView.visibleCells {
+                self.updateTrackCellImageOffset(cell as! UserTrackTableViewCell)
+            }
             break
         default:
             break
@@ -204,7 +220,7 @@ extension FeedViewController: ScrollPagerDelegate {
 
 
 class FeedViewController: AddableTrackListViewController, UITableViewDelegate, UITableViewDataSource {
-    
+ 
     @IBOutlet var newUploadsSegment: ScrollPager!
     private var newUploadsSelectedIndex = 0
     var lastContentOffset: CGPoint = CGPointZero
@@ -470,6 +486,9 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         case .NEW_UPLOADS, .FOLLOWING_TRACKS:
             let trackCell = cell as! UserTrackTableViewCell
             dropBtn = trackCell.dropBtn
+            
+            // for parallax effect
+            self.updateTrackCellImageOffset(trackCell)
         }
         
         if dropBtn != nil {

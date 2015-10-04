@@ -195,7 +195,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     func onTrackShareBtnClicked(track:Track) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         let section = getSectionName()
-        track.shareTrack(section, afterShare: { (error, uid) -> Void in
+        track.shareTrack(section) { (error, sharedURL) -> Void in
             progressHud.hide(true)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
@@ -214,10 +214,8 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
                     }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                 return
             }
-            let shareUrl = "http://dropbeat.net/?track=" + uid!
-            let shareTitle = track.title
             
-            let items:[AnyObject] = [shareTitle, shareUrl]
+            let items = [track.title, sharedURL!]
             
             let activityController = UIActivityViewController(
                     activityItems: items, applicationActivities: nil)
@@ -231,7 +229,9 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
                 activityController.popoverPresentationController?.sourceView = self.view
             }
             self.presentViewController(activityController, animated:true, completion: nil)
-        })
+            
+            
+        }
     }
     
     func onTrackLikeBtnClicked(track:Track, onSuccess:(Void->Void)? = nil) {
@@ -315,13 +315,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
             return
         }
         
-        var url:NSURL!
-        if let userTrack = track as? UserTrack {
-            print("playing user-uploaded drop")
-            url = NSURL(string:userTrack.streamUrl)
-        } else if let urlString = track.drop!.resolveStreamUrl() {
-            url = NSURL(string:urlString)
-        } else {
+        guard let url = NSURL(string:track.streamUrl!) else {
             return
         }
         

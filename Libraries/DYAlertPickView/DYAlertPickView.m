@@ -9,10 +9,10 @@
 #import "DYAlertPickView.h"
 
 #define DY_BACKGROUND_ALPHA 0.4
-#define DY_HEADER_HEIGHT 36.0
+#define DY_HEADER_HEIGHT 56.0
 #define DY_SWITCH_HEIGHT 35.0
 #define DY_FOOTER_HEIGHT 40.0
-#define DY_TABLEVIEW_CELL_HEIGHT 36.0
+#define DY_TABLEVIEW_CELL_HEIGHT 56.0
 
 
 @interface DYAlertPickView ()

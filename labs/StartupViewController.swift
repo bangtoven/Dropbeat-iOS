@@ -24,6 +24,9 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         if (self.progressHud == nil || self.progressHud?.alpha == 0) {
             self.progressHud = ViewUtils.showProgress(self, message: nil)
             checkVersion() {
+                Track.loadSoundCloudKey({ (error: NSError) -> Void in
+                    print("loadSoundCloudKey: "+error.description)
+                })
                 self.initialize()
             }
         }
@@ -127,6 +130,17 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     
     func initialize() {
         Requests.getFeedGenre { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if (error != nil) {
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to load", comment:""),
+                        message: error!.localizedDescription,
+                        positiveBtnText: NSLocalizedString("Retry", comment: ""),
+                        positiveBtnCallback: { () -> Void in
+                            self.initialize()
+                    })
+                    return
+            }
+            
             let _ = GenreList.parseGenre(result!)
          
             Account.getAccountWithCompletionHandler({(account:Account?, error:NSError?) -> Void in

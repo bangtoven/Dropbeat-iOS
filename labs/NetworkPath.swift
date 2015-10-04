@@ -4,7 +4,7 @@
 
 import Foundation
 
-let RELEASE = false
+let RELEASE = true
 
 extension ApiPath {
     static let hostV2 = RELEASE ? "http://dropbeat.net/api/v2/" : "http://spark.coroutine.io/api/v2/"
@@ -61,6 +61,7 @@ public class ApiPath {
     // Meta
     static let meta = host + "meta/"
     static let metaVersion = meta + "version/"
+    static let metaKey = meta + "key/"
     
     // Bookmark
     static let bookmark = host + "channelbookmark/"
@@ -92,7 +93,7 @@ public class ApiPath {
 }
 
 public class CorePath {
-    static let host = RELEASE ? "http://core.dropbeat.net/api/" : "http://core.coroutine.io/api/"
+    static let host = RELEASE ? "http://core.dropbeat.net/api/" : "http://coroutine.io:19070/api/"
 //    static let host = "http://core.dropbeat.net/api/"
     
     // core.search
@@ -146,11 +147,6 @@ public class CorePath {
     static let streamNew = stream + "new/"
     static let streamTrending = stream + "trending/"
     
-}
-
-public class ResolvePath {
-    static let host = "http://resolve.dropbeat.net/"
-    static let resolveStream = host + "resolve/"
 }
 
 public class YoutubeApiPath {

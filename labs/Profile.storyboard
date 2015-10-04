@@ -843,23 +843,36 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SECTION:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vNB-L7-5Pz">
                                             <rect key="frame" x="16" y="15" width="56" height="15"/>
                                             <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="56" id="aok-q9-HiA"/>
+                                            </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_arrow_down" translatesAutoresizingMaskIntoConstraints="NO" id="huG-LS-llG">
-                                            <rect key="frame" x="75" y="19" width="9" height="7"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RECENT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kfP-4T-QRP" customClass="MarqueeLabel">
+                                            <rect key="frame" x="75" y="15" width="237" height="15"/>
                                             <animations/>
-                                        </imageView>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="21" id="77c-dT-tOG"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                            <color key="textColor" red="0.5490196078431373" green="0.0" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                            <variation key="default">
+                                                <mask key="constraints">
+                                                    <exclude reference="77c-dT-tOG"/>
+                                                </mask>
+                                            </variation>
+                                        </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nNB-RL-Mjl">
-                                            <rect key="frame" x="86" y="0.0" width="214" height="44"/>
+                                            <rect key="frame" x="75" y="0.0" width="237" height="44"/>
                                             <animations/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="44" id="ZgS-7Z-ode"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                            <state key="normal" title="RECENT">
+                                            <state key="normal">
                                                 <color key="titleColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="titleShadowColor" white="0.5" alpha="0.0" colorSpace="calibratedWhite"/>
                                             </state>
@@ -895,16 +908,25 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="HRe-7P-qeb" secondAttribute="trailing" id="2vA-J1-UZo"/>
                                         <constraint firstAttribute="trailing" secondItem="nNB-RL-Mjl" secondAttribute="trailing" constant="20" id="3DA-Ad-0kz"/>
-                                        <constraint firstItem="nNB-RL-Mjl" firstAttribute="leading" secondItem="huG-LS-llG" secondAttribute="trailing" constant="2" id="Cvb-Eh-NkL"/>
+                                        <constraint firstAttribute="trailing" secondItem="kfP-4T-QRP" secondAttribute="trailing" constant="8" id="9Em-12-AbD"/>
+                                        <constraint firstAttribute="trailing" secondItem="nNB-RL-Mjl" secondAttribute="trailing" constant="8" id="CLf-Iq-ILY"/>
                                         <constraint firstAttribute="centerY" secondItem="vNB-L7-5Pz" secondAttribute="centerY" id="Hrr-ud-hyB"/>
-                                        <constraint firstItem="huG-LS-llG" firstAttribute="leading" secondItem="vNB-L7-5Pz" secondAttribute="trailing" constant="3" id="IRb-e1-NPk"/>
+                                        <constraint firstItem="kfP-4T-QRP" firstAttribute="leading" secondItem="vNB-L7-5Pz" secondAttribute="trailing" constant="3" id="KAX-oe-hff"/>
                                         <constraint firstAttribute="bottom" secondItem="HRe-7P-qeb" secondAttribute="bottom" id="U7W-Zd-GPK"/>
+                                        <constraint firstItem="nNB-RL-Mjl" firstAttribute="leading" secondItem="kfP-4T-QRP" secondAttribute="leading" id="YFa-cW-ySU"/>
                                         <constraint firstItem="HRe-7P-qeb" firstAttribute="top" secondItem="Evx-Ya-Ymo" secondAttribute="top" id="dVb-br-4U8"/>
+                                        <constraint firstItem="kfP-4T-QRP" firstAttribute="centerY" secondItem="Evx-Ya-Ymo" secondAttribute="centerY" id="g2h-iu-e5L"/>
                                         <constraint firstItem="HRe-7P-qeb" firstAttribute="leading" secondItem="Evx-Ya-Ymo" secondAttribute="leading" id="k5G-0z-TYt"/>
                                         <constraint firstItem="vNB-L7-5Pz" firstAttribute="leading" secondItem="Evx-Ya-Ymo" secondAttribute="leading" constant="16" id="l0G-aK-Cim"/>
-                                        <constraint firstAttribute="centerY" secondItem="huG-LS-llG" secondAttribute="centerY" id="yHX-8I-Yzj"/>
+                                        <constraint firstItem="kfP-4T-QRP" firstAttribute="leading" secondItem="vNB-L7-5Pz" secondAttribute="trailing" constant="190" id="wVZ-oG-lMF"/>
                                         <constraint firstAttribute="centerY" secondItem="nNB-RL-Mjl" secondAttribute="centerY" id="yKm-MA-xEr"/>
                                     </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="3DA-Ad-0kz"/>
+                                            <exclude reference="wVZ-oG-lMF"/>
+                                        </mask>
+                                    </variation>
                                 </view>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="AddableTrackTableViewCell" rowHeight="76" id="0P1-FD-QF9" customClass="AddableTrackTableViewCell" customModule="for_test" customModuleProvider="target">
@@ -1045,7 +1067,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <size key="freeformSize" width="320" height="200"/>
                     <connections>
                         <outlet property="indicatorView" destination="HRe-7P-qeb" id="VV5-ks-2Ei"/>
-                        <outlet property="selectSectionButton" destination="nNB-RL-Mjl" id="Gal-rs-d5y"/>
+                        <outlet property="sectionLabel" destination="kfP-4T-QRP" id="dqe-fh-eWS"/>
                         <outlet property="trackTableView" destination="sU8-KC-zct" id="2MN-qF-Y8w"/>
                         <segue destination="daU-Ft-fj3" kind="custom" identifier="PlaylistSelectSegue" customClass="RBStoryboardModalSegue" id="oVv-0f-qoK"/>
                     </connections>
@@ -1736,7 +1758,6 @@ and let us know your favorite genre.</string>
         <image name="default_artwork" width="60" height="60"/>
         <image name="default_cover_big" width="320" height="320"/>
         <image name="default_profile" width="80" height="80"/>
-        <image name="ic_arrow_down" width="9" height="7"/>
         <image name="ic_check" width="47" height="47"/>
         <image name="ic_dislike" width="25" height="25"/>
         <image name="ic_drop_small" width="40" height="40"/>

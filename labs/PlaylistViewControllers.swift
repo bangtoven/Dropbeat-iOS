@@ -453,7 +453,7 @@ class PlaylistViewController: BaseViewController,
     
     func onShareTrackBtnClicked(track: Track) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        track.shareTrack("playlist", afterShare: { (error, uid) -> Void in
+        track.shareTrack("playlist") { (error, sharedURL) -> Void in
             progressHud.hide(true)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
@@ -475,10 +475,8 @@ class PlaylistViewController: BaseViewController,
                     }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                 return
             }
-            let shareUrl = "http://dropbeat.net/?track=" + uid!
-            let shareTitle = track.title
             
-            let items:[AnyObject] = [shareTitle, shareUrl]
+            let items:[AnyObject] = [track.title, sharedURL!]
             
             let activityController = UIActivityViewController(
                     activityItems: items, applicationActivities: nil)
@@ -492,7 +490,7 @@ class PlaylistViewController: BaseViewController,
                 activityController.popoverPresentationController?.sourceView = self.view
             }
             self.presentViewController(activityController, animated:true, completion: nil)
-        })
+        }
     }
     
     func onTrackAddToOtherPlaylistBtnClicked(track: Track) {

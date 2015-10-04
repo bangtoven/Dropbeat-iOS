@@ -107,15 +107,6 @@ class Requests {
         return sendGet(CorePath.newSearch, params: ["q": q], auth: false, respCb: respCb)
     }
     
-    static func streamResolve(uid: String, respCb: RespCallback) -> Request{
-        let systemVersion = UIDevice.currentDevice().systemVersion
-        var firstDigit = ""
-        if (systemVersion.characters.count > 0) {
-            firstDigit = systemVersion.substringToIndex(systemVersion.startIndex.advancedBy(1))
-        }
-        return sendGet(ResolvePath.resolveStream, params: ["uid": uid, "v": 1, "t": "ios\(firstDigit)"], auth: false, background: false, respCb: respCb)
-    }
-    
     static func fetchFeed(respCb: RespCallback) -> Request{
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup: nil)
         let key = keychainItemWrapper.objectForKey("auth_token") as? String

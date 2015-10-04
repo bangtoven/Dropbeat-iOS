@@ -9,10 +9,31 @@
 import UIKit
 
 class Track {
+    static var soundCloudKey: String = "02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea"
+    static func loadSoundCloudKey (callback:(NSError)->Void) {
+        Requests.sendGet(ApiPath.metaKey, auth: false) { (req, resp, result, error) -> Void in
+            if let key = JSON(result!)["soundcloud_key"].string {
+                soundCloudKey = key
+            }
+        }
+    }
+    
     var id: String
     var title: String
     var type: String
     var tag: String?
+    var streamUrl: String? {
+        get {
+            if self.type == "soundcloud" {
+                let key = Track.soundCloudKey
+                return "https://api.soundcloud.com/tracks/\(self.id)/stream?client_id=\(key)"
+            } else if (self.type != "youtube" && self.id.characters.startsWith("http".characters)) {
+                return self.id.stringByRemovingPercentEncoding!
+            }
+            return nil
+        }
+    }
+    
     var drop: Drop?
     var thumbnailUrl: String?
     var hasHqThumbnail:Bool {
@@ -46,17 +67,14 @@ class Track {
         self.drop = drop
         self.type = type
         self.tag = tag
-        self.thumbnailUrl = thumbnailUrl
-        self.releaseDate = releaseDate
-    }
-    
-    func resolveStreamUrl() -> String? {
-        if self.type == "soundcloud" {
-            return "https://api.soundcloud.com/tracks/\(self.id)/stream?client_id=b45b1aa10f1ac2941910a7f0d10f8e28"
-        } else if (self.type != "youtube" && self.id.characters.startsWith("http".characters)) {
-            return self.id.stringByRemovingPercentEncoding!
+        
+        if let url = thumbnailUrl {
+            self.thumbnailUrl = url
+        } else if type == "youtube" {
+            self.thumbnailUrl = "http://img.youtube.com/vi/\(id)/mqdefault.jpg"
         }
-        return nil
+        
+        self.releaseDate = releaseDate
     }
     
     static func parseTracks(json: JSON) -> [Track] {
@@ -95,13 +113,9 @@ class Track {
                 track.tag = s["tag"].stringValue
             }
             
-            if (track.type == "youtube") {
-                track.thumbnailUrl = "http://img.youtube.com/vi/\(track.id)/mqdefault.jpg"
-            } else {
-                let artwork = s["artwork"]
-                if artwork.error == nil {
-                    track.thumbnailUrl = s["artwork"].stringValue
-                }
+            let artwork = s["artwork"]
+            if artwork.error == nil {
+                track.thumbnailUrl = s["artwork"].stringValue
             }
             
             if (track.tag == nil) {
@@ -156,22 +170,22 @@ class Track {
             drop: nil)
     }
     
-    func shareTrack(section:String, afterShare: (error:NSError?, uid:String?) -> Void) {
+    func shareTrack(section:String, afterShare: (error:NSError?, sharedURL:NSString?) -> Void) {
         Requests.shareTrack(self, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, data:AnyObject?, error:NSError?) -> Void in
             if error != nil {
-                afterShare(error: error, uid: nil)
+                afterShare(error: error, sharedURL: nil)
                 return
             }
             
             if data == nil {
-                afterShare(error: NSError(domain: "shareTrack", code: 0, userInfo: nil), uid: nil)
+                afterShare(error: NSError(domain: "shareTrack", code: 0, userInfo: nil), sharedURL: nil)
                 return
             }
             
             var json = JSON(data!)
             if !(json["success"].bool ?? false) ||
                 (json["obj"].dictionary == nil && json["data"].dictionary == nil) {
-                    afterShare(error: NSError(domain: "shareTrack", code: 1, userInfo: nil), uid: nil)
+                    afterShare(error: NSError(domain: "shareTrack", code: 1, userInfo: nil), sharedURL: nil)
                     return
             }
             
@@ -186,7 +200,7 @@ class Track {
             }
             
             if uid == nil {
-                afterShare(error: NSError(domain: "shareTrack", code: 1, userInfo: nil), uid: nil)
+                afterShare(error: NSError(domain: "shareTrack", code: 1, userInfo: nil), sharedURL: nil)
                 return
             }
             
@@ -200,7 +214,8 @@ class Track {
                 ).build()
             tracker.send(event as [NSObject: AnyObject]!)
             
-            afterShare(error: nil, uid: uid)
+            let URL = "http://dropbeat.net/?track=" + uid!
+            afterShare(error: nil, sharedURL:URL)
         })
     }
     
@@ -235,7 +250,6 @@ class Track {
             id: id,
             title: json["title"].stringValue,
             type: "youtube",
-            thumbnailUrl: "http://img.youtube.com/vi/\(id)/mqdefault.jpg",
             releaseDate: NSDate.dateFromString(json["published_at"].stringValue))
         
         self.user = BaseUser(
@@ -251,7 +265,6 @@ class Track {
             id: id,
             title: snippet["title"].stringValue,
             type: "youtube",
-            thumbnailUrl: "http://img.youtube.com/vi/\(id)/mqdefault.jpg",
             releaseDate: NSDate.dateFromString(snippet["publishedAt"].stringValue))
     }
     
@@ -294,13 +307,19 @@ class UserTrack: Track {
         case MIXSET
     }
     
-    var streamUrl: String
+    private var _streamUrl: String
+    override var streamUrl: String? {
+        get {
+            return _streamUrl
+        }
+    }
     var userTrackType: TrackType = .TRACK
     var description: String?
     var genre: String?
     var likeCount: Int = 0
     var playCount: Int = 0
     var repostCount: Int = 0
+    var resourcePath: String!
  
     init (json: JSON) {
         let name = json["name"].stringValue
@@ -310,7 +329,7 @@ class UserTrack: Track {
         let dropStart = json["drop_start"].int
         let drop = Drop(dref: streamUrl, type: "dropbeat", when: dropStart)
 
-        self.streamUrl = streamUrl
+        self._streamUrl = streamUrl
         super.init(
             id: id,
             title: name,
@@ -325,6 +344,8 @@ class UserTrack: Track {
         self.playCount = json["play_count"].intValue
         self.repostCount = json["repost_count"].intValue
         
+        self.resourcePath = json["resource_path"].stringValue
+        
         let genreId = json["genre_id"].intValue
         self.genre = GenreList.getGenreName(genreId)
         
@@ -333,6 +354,26 @@ class UserTrack: Track {
             name: json["user_name"].stringValue,
             image: json["user_profile_image"].stringValue,
             resourceName: json["user_resource_name"].stringValue)
+    }
+    
+    override func shareTrack(section:String, afterShare: (error:NSError?, sharedURL:NSString?) -> Void) {
+        guard let userResourceName = self.user?.resourceName else {
+            super.shareTrack(section, afterShare: afterShare)
+            return
+        }
+        
+        // Log to GA
+        let tracker = GAI.sharedInstance().defaultTracker
+        let event = GAIDictionaryBuilder.createEventWithCategory(
+            "user-track-share",
+            action: "from-\(section)",
+            label: self.title,
+            value: 0
+            ).build()
+        tracker.send(event as [NSObject: AnyObject]!)
+        
+        let URL = "http://dropbeat.net/r/\(userResourceName)/\(self.resourcePath)"
+        afterShare(error: nil, sharedURL: URL)
     }
     
     enum NewUploadsOrder: Int {
@@ -376,13 +417,16 @@ class Drop {
         self.when = when
     }
     
-    func resolveStreamUrl() -> String? {
-        if self.type == "soundcloud" {
-            return "https://api.soundcloud.com/tracks/\(self.dref)/stream?client_id=b45b1aa10f1ac2941910a7f0d10f8e28"
-        } else if (self.type != "youtube" && self.dref.characters.startsWith("http".characters)) {
-            return self.dref.stringByRemovingPercentEncoding!
+    var streamUrl:String? {
+        get {
+            if self.type == "soundcloud" {
+                let key = Track.soundCloudKey
+                return "https://api.soundcloud.com/tracks/\(self.dref)/stream?client_id=\(key)"
+            } else if (self.type != "youtube" && self.dref.characters.startsWith("http".characters)) {
+                return self.dref.stringByRemovingPercentEncoding!
+            }
+            return nil
         }
-        return nil
     }
 }
 
@@ -409,11 +453,7 @@ class Like {
             }
             let trackId = trackJson["id"].stringValue
             let type = trackJson["type"].stringValue
-            var thumbnailUrl:String?
-            if type == "youtube" {
-                thumbnailUrl = "http://img.youtube.com/vi/\(trackId)/mqdefault.jpg"
-            }
-            track = Track(id: trackId, title: trackJson["title"].stringValue, type: type, tag: nil, thumbnailUrl: thumbnailUrl)
+            track = Track(id: trackId, title: trackJson["title"].stringValue, type: type, tag: nil, thumbnailUrl: nil)
         }
         self.id = json["id"].intValue
         self.track = track

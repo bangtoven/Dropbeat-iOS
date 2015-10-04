@@ -32,6 +32,7 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
         self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
     }
     
+    @IBOutlet weak var sectionLabel: MarqueeLabel!
     func selectSection (index: Int) {
         self.currentSectionIndex = index
         let channel = self.baseUser as! Channel
@@ -44,13 +45,12 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
         }
         
         if (self.trackTableView.tableHeaderView != nil) {
-            self.selectSectionButton.setTitle(channel.playlists[index].name, forState: UIControlState.Normal)
+            self.sectionLabel.text = channel.playlists[index].name
         }
         
         self.loadTracks(playlist.uid, pageToken: nextPageToken)
     }
     
-    @IBOutlet weak var selectSectionButton: UIButton!
     @IBAction func showSelectSection(sender: AnyObject) {
         let picker: DYAlertPickView = DYAlertPickView(headerTitle: "Choose Section", cancelButtonTitle: nil, confirmButtonTitle: nil, switchButtonTitle: nil)
         picker.dataSource = self
@@ -67,7 +67,7 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
     }
     
     func titleForRowInDYAlertPickView(titleForRow: Int) -> NSAttributedString! {
-        let attr = [NSFontAttributeName: UIFont.systemFontOfSize(12)]
+        let attr = [NSFontAttributeName: UIFont.systemFontOfSize(16)]
         let channel = self.baseUser as! Channel
         return NSAttributedString(string:channel.playlists[titleForRow+1].name, attributes:attr)
     }

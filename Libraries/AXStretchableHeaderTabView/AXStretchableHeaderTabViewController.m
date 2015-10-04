@@ -32,7 +32,7 @@ static NSString * const AXStretchableHeaderTabViewControllerSelectedIndexKey = @
     
     [_tabBar sizeToFit];
     [self.view addSubview:_tabBar];
-    self.headerViewHeightRatio = 0.0;
+    self.headerViewHeightRatio = 1.0;
 }
 
 - (void)dealloc

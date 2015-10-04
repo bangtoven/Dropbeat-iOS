@@ -957,7 +957,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     
     func onTrackShareBtnClicked(track:Track) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        track.shareTrack("player", afterShare: { (error, uid) -> Void in
+        track.shareTrack("player") { (error, sharedURL) -> Void in
             progressHud.hide(true)
             if error != nil {
                 if (error!.domain == NSURLErrorDomain &&
@@ -976,10 +976,8 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                     }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                 return
             }
-            let shareUrl = "http://dropbeat.net/?track=" + uid!
-            let shareTitle = track.title
             
-            let items:[AnyObject] = [shareTitle, shareUrl]
+            let items:[AnyObject] = [track.title, sharedURL!]
             
             let activityController = UIActivityViewController(
                 activityItems: items, applicationActivities: nil)
@@ -993,7 +991,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 activityController.popoverPresentationController?.sourceView = self.shareBtn
             }
             self.presentViewController(activityController, animated:true, completion: nil)
-        })
+        }
     }
     
     func onAddToPlaylistBtnClicked(track:Track) {
@@ -1257,23 +1255,16 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         if (track.type == "youtube") {
             audioPlayerControl.videoIdentifier = track.id
         } else {
-            var url: String?
-            if let userTrack = track as? UserTrack {
-                print("playing user-uploaded track")
-                url = userTrack.streamUrl
+            if let url = track.streamUrl {
+                audioPlayerControl.moviePlayer.contentURL = NSURL(string:url)
+                audioPlayerControl.videoIdentifier = nil
             } else {
-                url = track.resolveStreamUrl()
-            }
-            
-            if (url == nil) {
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to play", comment:""),
                     message: NSLocalizedString("Unsupported track type", comment:""))
                 // XXX: Cannot play.
                 handleStop()
                 return
             }
-            audioPlayerControl.moviePlayer.contentURL = NSURL(string:url!)
-            audioPlayerControl.videoIdentifier = nil
         }
         
         if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {

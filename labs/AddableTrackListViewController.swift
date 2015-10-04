@@ -407,7 +407,9 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     }
     
     func onDropFinished() {
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.resumePlay, object: nil)
+        if self.dropPlayerContext.playStatus != .Ready {
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.resumePlay, object: nil)
+        }
 
         updateDropPlayStatus(DropPlayStatus.Ready)
     }

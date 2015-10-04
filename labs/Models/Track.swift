@@ -8,6 +8,46 @@
 
 import UIKit
 
+class PlayLog {
+    private var track_id: Int
+    init(track: UserTrack) {
+        self.track_id = Int(track.id)!
+    }
+    
+    private var seekLog = [(Int,Int)]()
+    func seek(from from:Int, to:Int) {
+        self.seekLog.append((from,to))
+    }
+    
+    var log: [String:AnyObject]?
+    func finished(end: Int? = nil) {
+        var log = [String:AnyObject]()
+        log["track_id"] = self.track_id
+        
+        var data = [AnyObject]()
+        data.append(["type":"start"])
+        for (from,to) in seekLog {
+            data.append(["type":"seek_from","ts":from])
+            data.append(["type":"seek_to","ts":to])
+        }
+        if let exit = end {
+            data.append(["type":"exit","ts":exit])
+        } else {
+            data.append(["type":"end"])
+        }
+        log["data"] = data
+        
+        log["location"] = Location.location
+
+        self.log = log
+        
+        request(.POST, ApiPath.logPlaybackDetail, parameters: self.log, encoding: .JSON)
+        .responseJSON { (req, resp, result) -> Void in
+            print("playback log post " + result.description)
+        }
+    }
+}
+
 class Track {
     static var soundCloudKey: String = "02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea"
     static func loadSoundCloudKey (callback:(NSError)->Void) {
@@ -320,6 +360,7 @@ class UserTrack: Track {
     var playCount: Int = 0
     var repostCount: Int = 0
     var resourcePath: String!
+    var uniqueKey: String!
  
     init (json: JSON) {
         let name = json["name"].stringValue
@@ -345,6 +386,7 @@ class UserTrack: Track {
         self.repostCount = json["repost_count"].intValue
         
         self.resourcePath = json["resource_path"].stringValue
+        self.uniqueKey = json["unique_key"].stringValue
         
         let genreId = json["genre_id"].intValue
         self.genre = GenreList.getGenreName(genreId)

@@ -123,11 +123,25 @@ class Requests {
     }
     
     static func logPlayDrop(track:Track) -> Request{
-        return request(Method.GET, ApiPath.logPlayDrop, parameters: ["t": track.title, "device_type": "ios", "uid": track.id], encoding: .URL).validate()
+        var id: String
+        if let userTrack = track as? UserTrack {
+            id = userTrack.uniqueKey
+        } else {
+            id = track.id
+        }
+        
+        return request(Method.GET, ApiPath.logPlayDrop, parameters: ["t": track.title, "device_type": "ios", "uid": id], encoding: .URL).validate()
     }
     
     static func logPlay(track:Track) -> Request{
-        return request(Method.GET, ApiPath.logPlay, parameters: ["t": track.title, "device_type": "ios", "uid": track.id], encoding: .URL).validate()
+        var id: String
+        if let userTrack = track as? UserTrack {
+            id = userTrack.uniqueKey
+        } else {
+            id = track.id
+        }
+        
+        return request(Method.GET, ApiPath.logPlay, parameters: ["t": track.title, "device_type": "ios", "uid": id], encoding: .URL).validate()
     }
     
     static func getClientVersion(respCb: RespCallback) -> Request {

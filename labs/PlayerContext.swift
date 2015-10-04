@@ -23,6 +23,8 @@ class PlayerContext {
     static var qualityState = QualityState.LQ
     static var playingSection:String?
     
+    static var playLog: PlayLog?
+    
     static func resetPlaylist(playlists: [Playlist]) {
         PlayerContext.playlists = playlists
     }

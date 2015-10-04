@@ -16,10 +16,10 @@ enum MenuType : Int {
 
 class CenterViewController: PlayerViewController, UITabBarDelegate{
     
+    @IBOutlet weak var hidePlayerButton: UIButton!
+    
     @IBOutlet weak var containerFrame: UIView!
     
-    @IBOutlet weak var menuBtn: UIButton!
-    @IBOutlet weak var hideBtn: UIButton!
     @IBOutlet weak var playerView: UIView!
     @IBOutlet weak var containerView: UIView!
     @IBOutlet weak var tabBar: UITabBar!
@@ -37,13 +37,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        hideBtn.layer.cornerRadius = 3.0
-        hideBtn.layer.borderWidth = 1
-        hideBtn.layer.borderColor = UIColor(netHex: 0x4f525a).CGColor
-        
-        menuBtn.layer.cornerRadius = 3.0
-        menuBtn.layer.borderWidth = 1
-        menuBtn.layer.borderColor = UIColor(netHex: 0x4f525a).CGColor
+        hidePlayerButton.layer.cornerRadius = 10.0
     
         initConstaints()
         
@@ -262,7 +256,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     override func resumePlay() {
         super.resumePlay()
         if (PlayerContext.currentTrack != nil) {
-            print("resume with current track. show tab bar player")
+//            print("resume with current track. show tab bar player")
             showTabBarPlayer(true)
 //            super.playBtnClicked(nil)
         }

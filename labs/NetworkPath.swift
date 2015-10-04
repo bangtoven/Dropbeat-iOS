@@ -4,7 +4,7 @@
 
 import Foundation
 
-let RELEASE = true
+let RELEASE = false
 
 extension ApiPath {
     static let hostV2 = RELEASE ? "http://dropbeat.net/api/v2/" : "http://spark.coroutine.io/api/v2/"
@@ -56,6 +56,7 @@ public class ApiPath {
     static let logTrackAdd = log + "trackadd/"
     static let logPlay = log + "play/"
     static let logPlayDrop = log + "playdrop/"
+    static let logPlaybackDetail = log + "playback_detail/"
     static let logDebug = log + "debug/"
     
     // Meta
@@ -93,7 +94,7 @@ public class ApiPath {
 }
 
 public class CorePath {
-    static let host = RELEASE ? "http://core.dropbeat.net/api/" : "http://coroutine.io:19070/api/"
+    static let host = RELEASE ? "http://core.dropbeat.net/api/" : "http://core.coroutine.io/api/"
 //    static let host = "http://core.dropbeat.net/api/"
     
     // core.search

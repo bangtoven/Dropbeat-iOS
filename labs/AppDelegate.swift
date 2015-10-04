@@ -41,6 +41,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+        Location.load { (dict) -> Void in
+//            print(Location.location)
+        }
+        
         // Override point for customization after application launch.
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "sender", name: NotifyKey.playerPlay, object: nil)

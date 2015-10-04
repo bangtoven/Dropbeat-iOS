@@ -10,7 +10,7 @@ import UIKit
 import MediaPlayer
 import AVFoundation
 
-class PlayerViewController: BaseViewController, UIActionSheetDelegate {
+class PlayerViewController: BaseViewController {
     
     @IBOutlet weak var playerTitleHeightConstaint: NSLayoutConstraint!
     
@@ -60,8 +60,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     private var playingInfoDisplayDuration = false
     private var hookingBackground: Bool = false
     
-    private var actionSheetTargetTrack:Track?
-    private var actionSheetIncludePlaylist = false
     private var lastPlaybackBeforeSwitch:Double?
     private var prevQualityState:Int?
     
@@ -185,6 +183,9 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerTimedMetadataUpdated:",
             name: MPMoviePlayerTimedMetadataUpdatedNotification, object: nil)
         
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "AVPlayerItemDidPlayToEndTime:", name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
+        
         // For video background playback
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "backgroundHook",
             name: UIApplicationDidEnterBackgroundNotification, object: nil)
@@ -216,44 +217,12 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: MPMoviePlayerPlaybackStateDidChangeNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: MPMoviePlayerPlaybackDidFinishNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: MPMoviePlayerTimedMetadataUpdatedNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
+
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidEnterBackgroundNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
         
         handleStop()
-    }
-    
-    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
-        if buttonIndex < 2 && actionSheetTargetTrack == nil {
-            ViewUtils.showToast(self, message: NSLocalizedString("No track selected", comment:""))
-            return
-        }
-        var idx = buttonIndex
-        if !actionSheetIncludePlaylist {
-            idx += 1
-        }
-        switch(idx) {
-        case 0:
-            var playlist:Playlist?
-            if PlayerContext.currentPlaylistId != nil {
-                playlist = PlayerContext.getPlaylist(PlayerContext.currentPlaylistId)
-            }
-            if playlist == nil {
-                ViewUtils.showToast(self,
-                    message: NSLocalizedString("Failed to find playlist", comment:""))
-                return
-            }
-            performSegueWithIdentifier("PlaylistSegue", sender: playlist)
-            break
-        case 1:
-            onAddToPlaylistBtnClicked(actionSheetTargetTrack!)
-            break
-        case 2:
-            onTrackShareBtnClicked(actionSheetTargetTrack!)
-            break
-        default:
-            break
-        }
-        actionSheetTargetTrack = nil
     }
     
     func backgroundHook () {
@@ -797,6 +766,9 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
         
         print("fin!!!!")
+        if let _ = PlayerContext.playLog {
+            self.resetPlayLog(nil)
+        }
         let success :Bool = handleNext(shouldPlayMusic)
         if (!success) {
             handleStop()
@@ -825,7 +797,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
         if (Account.getCachedAccount() == nil) {
             NeedAuthViewController.showNeedAuthViewController(self)
-            //            NeedAuthViewController.showNeedAuthViewController(self)
             return
         }
         if PlayerContext.currentTrack!.isLiked {
@@ -875,23 +846,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
                 return
             }
         }
-    }
-    
-    @IBAction func onMenuBtnClicked(sender: AnyObject) {
-        actionSheetTargetTrack = PlayerContext.currentTrack
-        actionSheetIncludePlaylist = PlayerContext.currentPlaylistId != nil
-        let actionSheet = UIActionSheet()
-        if actionSheetIncludePlaylist {
-            actionSheet.addButtonWithTitle(NSLocalizedString("Open current playlist", comment:""))
-            actionSheet.cancelButtonIndex = 3
-        } else {
-            actionSheet.cancelButtonIndex = 2
-        }
-        actionSheet.addButtonWithTitle(NSLocalizedString("Add to playlist", comment:""))
-        actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
-        actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
-        actionSheet.showInView(self.view)
-        actionSheet.delegate = self
     }
     
     @IBAction func playBtnClicked(sender: UIButton?) {
@@ -994,11 +948,12 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
     }
     
-    func onAddToPlaylistBtnClicked(track:Track) {
+    @IBAction func onAddToPlaylistBtnClicked(sender: UIButton) {
         if (Account.getCachedAccount() == nil) {
             NeedAuthViewController.showNeedAuthViewController(self)
             return
         }
+        let track = PlayerContext.currentTrack
         performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
     }
     
@@ -1053,10 +1008,7 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     // MARK: Notification Handling
     
     func resumePlay () {
-        //        if (self.manuallyPaused == false) {
-        //            self.playBtnClicked(nil)
-        //        }
-        //        println("try to resume")
+        print("try to resume")
     }
     
     func remotePause() {
@@ -1128,13 +1080,44 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         }
     }
     
+    // MARK: playback log
+    
+    func startPlaylog(track: Track) {
+        if let userTrack = track as? UserTrack{
+            PlayerContext.playLog = PlayLog(track: userTrack)
+        } else {
+            PlayerContext.playLog = nil
+        }
+        
+        // Log to us
+        Requests.logPlay(track)
+    }
+    
+    func resetPlayLog(currentTime: Int?) {
+        PlayerContext.playLog!.finished(currentTime)
+        PlayerContext.playLog = nil
+    }
+    
+    func AVPlayerItemDidPlayToEndTime(noti: NSNotification) {
+        if PlayerContext.repeatState == RepeatState.REPEAT_ONE {
+            print("looping. play again.")
+            if let _ = PlayerContext.playLog {
+                self.resetPlayLog(nil)
+            }
+            self.startPlaylog(PlayerContext.currentTrack!)
+        }
+    }
+    
     func handlePlay(track: Track?, playlistId: String?, section:String?, force:Bool) {
         print("handle play")
+        
         // Fetch stream urls.
         if track == nil {
             return
         }
-        
+
+        self.startPlaylog(track!)
+
         if (track != nil) {
             var params: Dictionary<String, AnyObject> = [
                 "track": track!
@@ -1201,9 +1184,6 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         updatePlayState(PlayState.LOADING)
         updateNextPrevBtn()
         updateLikeBtn()
-        
-        // Log to us
-        Requests.logPlay(track!)
         
         let playSection = section ?? "uknown"
         
@@ -1299,6 +1279,10 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     
     func handleNext(force:Bool) -> Bool{
         print("handleNext")
+        if let _ = PlayerContext.playLog {
+            self.resetPlayLog(Int(PlayerContext.currentPlaybackTime!))
+        }
+        
         if remoteProgressTimer != nil {
             remoteProgressTimer?.invalidate()
             remoteProgressTimer = nil
@@ -1317,6 +1301,10 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     
     func handlePrev(force:Bool) -> Bool {
         print("handlePrev")
+        if let _ = PlayerContext.playLog {
+            self.resetPlayLog(Int(PlayerContext.currentPlaybackTime!))
+        }
+        
         if remoteProgressTimer != nil {
             remoteProgressTimer?.invalidate()
             remoteProgressTimer = nil
@@ -1333,6 +1321,10 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
     }
     
     func handleStop() {
+        if let _ = PlayerContext.playLog {
+            self.resetPlayLog(Int(PlayerContext.currentPlaybackTime!))
+        }
+        
         shouldPlayMusic = false
         PlayerContext.currentPlaylistId = nil
         PlayerContext.currentTrack = nil
@@ -1353,8 +1345,15 @@ class PlayerViewController: BaseViewController, UIActionSheetDelegate {
         if (PlayerContext.playState != PlayState.PLAYING) {
             return
         }
+        
         let duration = PlayerContext.correctDuration ?? 0
         var newPlaybackTime:Double = (duration * Double(value)) / 100
+
+        if let playLog = PlayerContext.playLog {
+            playLog.seek(
+                from: Int(PlayerContext.currentPlaybackTime!),
+                to: Int(newPlaybackTime))
+        }
         
         // - 1 is hacky way to prevent player exceed correct duration
         // player gain repeatedly pasuse / play event after correntDuration

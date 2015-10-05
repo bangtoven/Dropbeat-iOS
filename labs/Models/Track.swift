@@ -52,7 +52,13 @@ class Track {
     static var soundCloudKey: String = "02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea"
     static func loadSoundCloudKey (callback:(NSError)->Void) {
         Requests.sendGet(ApiPath.metaKey, auth: false) { (req, resp, result, error) -> Void in
-            if let key = JSON(result!)["soundcloud_key"].string {
+            if error != nil {
+                print("can't fetch sound cloud key")
+                // TODO: send log to server
+                return
+            }
+            
+            if let r = result, key = JSON(r)["soundcloud_key"].string {
                 soundCloudKey = key
             }
         }

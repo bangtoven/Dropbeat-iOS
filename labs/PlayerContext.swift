@@ -8,6 +8,48 @@
 
 import Foundation
 
+enum RepeatState: Int {
+    case NOT_REPEAT = 0
+    case REPEAT_PLAYLIST = 1
+    case REPEAT_ONE = 2
+    
+    func next() -> RepeatState {
+        return RepeatState(rawValue: (self.rawValue + 1) % 3)!
+    }
+}
+
+enum ShuffleState: Int  {
+    case NOT_SHUFFLE = 0
+    case SHUFFLE = 1
+    
+    func toggle() -> ShuffleState {
+        switch self {
+        case .NOT_SHUFFLE: return .SHUFFLE
+        case .SHUFFLE: return .NOT_SHUFFLE
+        }
+    }
+}
+
+enum QualityState: Int  {
+    case LQ = 0
+    case HQ = 1
+
+    func toggle() -> QualityState {
+        switch self {
+        case .LQ: return .HQ
+        case .HQ: return .LQ
+        }
+    }
+}
+
+enum PlayState: Int {
+    case STOPPED = 0
+    case LOADING
+    case PLAYING
+    case PAUSED
+    case SWITCHING
+    case BUFFERING
+}
 
 class PlayerContext {
     static var currentTrackIdx: Int = -1
@@ -30,15 +72,15 @@ class PlayerContext {
     }
     
     static func changeRepeatState() {
-        PlayerContext.repeatState = (PlayerContext.repeatState + 1) % 3
+        repeatState = repeatState.next()
     }
     
     static func changeShuffleState() {
-        PlayerContext.shuffleState = (PlayerContext.shuffleState + 1) % 2
+        shuffleState = shuffleState.toggle()
     }
     
     static func changeQualityState() {
-        PlayerContext.qualityState = (PlayerContext.qualityState + 1) % 2
+        qualityState = qualityState.toggle()
     }
     
     static func pickNextTrack() -> Track? {
@@ -135,32 +177,4 @@ class PlayerContext {
         }
         return nil
     }
-}
-
-
-class RepeatState {
-    static var NOT_REPEAT = 0
-    static var REPEAT_PLAYLIST = 1
-    static var REPEAT_ONE = 2
-}
-
-
-class ShuffleState {
-    static var NOT_SHUFFLE = 0
-    static var SHUFFLE = 1
-}
-
-
-class PlayState {
-    static var STOPPED = 0
-    static var LOADING = 1
-    static var PLAYING = 2
-    static var PAUSED = 3
-    static var SWITCHING = 4
-    static var BUFFERING = 5
-}
-
-class QualityState {
-    static var LQ = 0
-    static var HQ = 1
 }

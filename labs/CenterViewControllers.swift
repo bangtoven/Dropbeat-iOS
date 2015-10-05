@@ -251,46 +251,28 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         self.isTabBarPlayerVisible = visible
     }
     
-    override func remotePause() {
-        super.remotePause()
-        showTabBarPlayer(false)
-    }
-    
-    override func resumePlay() {
-        super.resumePlay()
-        if (PlayerContext.currentTrack != nil) {
-//            print("resume with current track. show tab bar player")
-            showTabBarPlayer(true)
-//            super.playBtnClicked(nil)
-        }
-//        else {
-//            println("resume without current track")
-//        }
-    }
-    
     override func updatePlayView() {
         super.updatePlayView()
         
-        if (PlayerContext.playState == PlayState.LOADING ||
-            PlayerContext.playState == PlayState.SWITCHING ||
-            PlayerContext.playState == PlayState.BUFFERING) {
-                showTabBarPlayer(true)
-                self.loadingIndicator.hidden = false
-                self.playPauseButton.hidden = true
-                self.trackInfoLabel.textColor = UIColor.lightGrayColor()
-        } else if (PlayerContext.playState == PlayState.PAUSED) {
+        switch PlayerContext.playState {
+        case .LOADING, .SWITCHING, .BUFFERING:
+            showTabBarPlayer(true)
+            self.loadingIndicator.hidden = false
+            self.playPauseButton.hidden = true
+            self.trackInfoLabel.textColor = UIColor.lightGrayColor()
+        case .PAUSED:
             showTabBarPlayer(true)
             self.loadingIndicator.hidden = true
             self.playPauseButton.hidden = false
             self.playPauseButton.setImage(UIImage(named: "ic_play_purple"), forState: UIControlState.Normal)
             self.trackInfoLabel.textColor = UIColor.darkGrayColor()
-        } else if (PlayerContext.playState == PlayState.PLAYING) {
+        case .PLAYING:
             showTabBarPlayer(true)
             self.loadingIndicator.hidden = true
             self.playPauseButton.hidden = false
             self.playPauseButton.setImage(UIImage(named: "ic_pause_purple"), forState: UIControlState.Normal)
             self.trackInfoLabel.textColor = UIColor.darkGrayColor()
-        } else if (PlayerContext.playState == PlayState.STOPPED) {
+        case .STOPPED:
             showTabBarPlayer(false)
             self.loadingIndicator.hidden = true
             self.trackInfoLabel.textColor = UIColor.lightGrayColor()
@@ -309,8 +291,11 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     }
     
     override func updateProgressView() {
-        super.updateProgressView()
-        self.tabBarProgressBar.progress = super.progressSliderBar.value / 100.0
+        if isPlayerVisible {
+            super.updateProgressView()
+        } else {
+            self.tabBarProgressBar.progress = super.progressSliderBar.value / 100.0
+        }
     }
     
     @IBAction func playPauseBtnClicked(sender: UIButton) {
@@ -340,11 +325,9 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     
     func showPlayerView() {
         isPlayerVisible = true
-//        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
         
         self.playerView.hidden = false
         self.playerView.alpha = 0.0
-//        self.playerView.layer.transform = CATransform3DConcat(CATransform3DMakeScale(1.0, 1.0, 1.0), CATransform3DMakeTranslation(0, 0, 0))
         
         UIView.animateWithDuration(0.2, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
 
@@ -363,7 +346,6 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     
     func hidePlayerView() {
         isPlayerVisible = false
-//        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
 
         UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in
 
@@ -374,7 +356,6 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             self.tabBarContainerView.alpha = 1.0
             self.view.layoutIfNeeded()
             
-//            self.playerView.layer.transform = CATransform3DConcat(CATransform3DMakeScale(0.5, 0.5, 1.0), CATransform3DMakeTranslation(0, self.containerView.frame.size.height, 0))
             self.playerView.alpha = 0.0
         }) { (Bool) -> Void in
             self.playerView.hidden = true

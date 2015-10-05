@@ -26,7 +26,7 @@ class AddableTrackTableViewCell: UITableViewCell {
     @IBOutlet weak var dropBtn: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
-        //        // Initialization code
+
         let selectedBgView = UIView(frame: self.bounds)
         selectedBgView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
         selectedBgView.backgroundColor = UIColor(netHex: 0xffffff)
@@ -79,17 +79,6 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     var dropPlayerContext:DropPlayerContext = DropPlayerContext()
     var dropPlayTimer:NSTimer?
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "PlayableViewScreen"
@@ -109,7 +98,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "receivePlaybackStarted:", name:"PlaybackStartedNotification", object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "onDropFinished:", name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
+            self, selector: "onDropFinished", name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
         
         updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
     }
@@ -309,9 +298,6 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
                 return
             }
             self.updateDropPlayStatus(DropPlayStatus.Ready)
-                
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.resumePlay, object: nil)
-
             return
         }
         
@@ -402,15 +388,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         }
     }
     
-    func onDropFinished(noti:NSNotification) {
-        onDropFinished()
-    }
-    
     func onDropFinished() {
-        if self.dropPlayerContext.playStatus != .Ready {
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.resumePlay, object: nil)
-        }
-
         updateDropPlayStatus(DropPlayStatus.Ready)
     }
     

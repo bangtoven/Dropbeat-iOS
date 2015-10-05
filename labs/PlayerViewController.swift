@@ -47,8 +47,8 @@ class PlayerViewController: BaseViewController {
     private var bufferingTimer: NSTimer?
     
     private var isProgressUpdatable = true
-    private var prevShuffleBtnState:Int?
-    private var prevRepeatBtnState:Int?
+    private var prevShuffleBtnState:ShuffleState?
+    private var prevRepeatBtnState:RepeatState?
     
     private var bgTaskId:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     private var removedId:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
@@ -61,7 +61,7 @@ class PlayerViewController: BaseViewController {
     private var hookingBackground: Bool = false
     
     private var lastPlaybackBeforeSwitch:Double?
-    private var prevQualityState:Int?
+    private var prevQualityState:QualityState?
     
     // MARK: Methods
     
@@ -144,8 +144,6 @@ class PlayerViewController: BaseViewController {
         
         // Observe remote input.
         NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "resumePlay", name: NotifyKey.resumePlay, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "handleUpdatePlay:", name: NotifyKey.updatePlay, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(
@@ -197,7 +195,6 @@ class PlayerViewController: BaseViewController {
         PlayerViewController.observerAttached = false
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.resumePlay, object: nil)
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerStop, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
@@ -364,35 +361,20 @@ class PlayerViewController: BaseViewController {
         }
     }
     
-    //    func updatePlayerPlaylistBtn () {
-    //        if PlayerContext.currentPlaylistId == nil {
-    //            playlistBtn.setImage(UIImage(named:"ic_list_gray"), forState: UIControlState.Normal)
-    //            playlistBtn.enabled = false
-    //        } else {
-    //            playlistBtn.setImage(UIImage(named:"ic_list"), forState: UIControlState.Normal)
-    //            playlistBtn.enabled = true
-    //        }
-    //    }
-    
     func updatePlayView() {
-        if (PlayerContext.playState == PlayState.LOADING ||
-            PlayerContext.playState == PlayState.SWITCHING ||
-            PlayerContext.playState == PlayState.BUFFERING) {
-                playBtn.hidden = true
-                pauseBtn.hidden = true
-                loadingView.hidden = false
-                loadingView.rotate360Degrees(0.7, completionDelegate: self)
-        } else if (PlayerContext.playState == PlayState.PAUSED) {
+        switch PlayerContext.playState {
+        case .LOADING, .SWITCHING, .BUFFERING:
+            playBtn.hidden = true
+            pauseBtn.hidden = true
+            loadingView.hidden = false
+            loadingView.rotate360Degrees(0.7, completionDelegate: self)
+        case .PAUSED, .STOPPED:
             playBtn.hidden = false
             pauseBtn.hidden = true
             loadingView.hidden = true
-        } else if (PlayerContext.playState == PlayState.PLAYING) {
+        case .PLAYING:
             playBtn.hidden = true
             pauseBtn.hidden = false
-            loadingView.hidden = true
-        } else if (PlayerContext.playState == PlayState.STOPPED) {
-            playBtn.hidden = false
-            pauseBtn.hidden = true
             loadingView.hidden = true
         }
     }
@@ -425,8 +407,6 @@ class PlayerViewController: BaseViewController {
             break
         case RepeatState.REPEAT_PLAYLIST:
             repeatBtn.setImage(UIImage(named: "ic_repeat"), forState: UIControlState.Normal)
-            break
-        default:
             break
         }
     }
@@ -461,8 +441,6 @@ class PlayerViewController: BaseViewController {
         case QualityState.HQ:
             let image:UIImage = UIImage(named: "ic_hq_on")!
             qualityBtn.setImage(image, forState: UIControlState.Normal)
-            break
-        default:
             break
         }
     }
@@ -1007,10 +985,6 @@ class PlayerViewController: BaseViewController {
     
     // MARK: Notification Handling
     
-    func resumePlay () {
-        print("try to resume")
-    }
-    
     func remotePause() {
         handlePause(true)
     }
@@ -1201,7 +1175,7 @@ class PlayerViewController: BaseViewController {
         switchPlayerWithQuality(track!, qualityState: PlayerContext.qualityState, isInitial: true)
     }
     
-    func switchPlayerWithQuality(track:Track, qualityState: Int, isInitial: Bool = false) {
+    func switchPlayerWithQuality(track:Track, qualityState: QualityState, isInitial: Bool = false) {
         
         if !isInitial {
             lastPlaybackBeforeSwitch = audioPlayerControl.moviePlayer.currentPlaybackTime
@@ -1378,7 +1352,7 @@ class PlayerViewController: BaseViewController {
         audioPlayerControl.moviePlayer.pause()
     }
     
-    func updatePlayState(playingState: Int) {
+    func updatePlayState(playingState: PlayState) {
         print("playstate updated:\(playingState)")
         PlayerContext.playState = playingState
         updatePlayStateView(playingState)
@@ -1386,7 +1360,7 @@ class PlayerViewController: BaseViewController {
     
     var playingStateImageOperation:SDWebImageOperation?
     
-    func updatePlayStateView(playingState:Int) {
+    func updatePlayStateView(playingState:PlayState) {
         let track: Track? = PlayerContext.currentTrack
         let playingInfoCenter:AnyClass! = NSClassFromString("MPNowPlayingInfoCenter")
         if (playingInfoCenter != nil && track != nil) {
@@ -1422,7 +1396,7 @@ class PlayerViewController: BaseViewController {
         updateLikeBtn()
     }
     
-    func updatePlayingInfoCenter(playingState:Int, image:UIImage) {
+    func updatePlayingInfoCenter(playingState:PlayState, image:UIImage) {
         let track: Track? = PlayerContext.currentTrack
         if track == nil {
             return
@@ -1459,9 +1433,6 @@ class PlayerViewController: BaseViewController {
             stateText = NSLocalizedString("BUFFERING", comment:"")
             rate = 1.0
             break
-        default:
-            stateText = ""
-            rate = 0.0
         }
         trackInfo[MPMediaItemPropertyArtist] = stateText
         trackInfo[MPMediaItemPropertyArtwork] = albumArt

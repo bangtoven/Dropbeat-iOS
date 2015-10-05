@@ -11,8 +11,6 @@ import Foundation
 class NotifyKey {
     static var statusBarTapped = "statusBarTapped"
     
-    static var resumePlay = "resumePlayer"
-    
     static var playerPlay = "playPlayer"
     static var playerPrev = "prevPlayer"
     static var playerPause = "pausePlayer"

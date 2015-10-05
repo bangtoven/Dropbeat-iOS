@@ -157,6 +157,14 @@ import UIKit
         setSelectedIndex(index, animated: animated, moveScrollView: true)
     }
     
+    public func setEnableAtIndex(index: Int, enable: Bool) {
+        guard (0...buttons.count).contains(index) else {
+            return
+        }
+        let button = buttons[index]
+        button.enabled = enable
+    }
+    
     // MARK: - Private -
     
     private func setSelectedIndex(index: Int, animated: Bool, moveScrollView: Bool) {
@@ -196,6 +204,7 @@ import UIKit
             else if let image = titleOrImages[i] as? UIImage {
                 button.setImage(image, forState: .Normal)
             }
+            button.setTitleColor(textColor.colorWithAlphaComponent(0.5), forState: .Disabled)
             
             addSubview(button)
             addSubview(indicatorView)

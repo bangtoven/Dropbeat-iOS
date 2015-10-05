@@ -24,7 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // 0 is NotReachable
     var networkStatus: Int = NetworkStatus.NOT_REACHABLE
     var shouldInitializeQualityState = true
-    var futureQuality:Int? = nil
+    var futureQuality:QualityState? = nil
     var reachability: Reachability?
     var sharedTrackUid: String?
     var sharedPlaylistUid: String?

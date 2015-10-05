@@ -257,18 +257,7 @@
 		FCD1DA8D1B04CCB200F9EA70 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FCD1DA8B1B04CCB200F9EA70 /* Main.storyboard */; };
 		FCD1DA8F1B04CCB200F9EA70 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCD1DA8E1B04CCB200F9EA70 /* Images.xcassets */; };
 		FCD1DA921B04CCB200F9EA70 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCD1DA901B04CCB200F9EA70 /* LaunchScreen.xib */; };
-		FCD1DA9E1B04CCB200F9EA70 /* labsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCD1DA9D1B04CCB200F9EA70 /* labsTests.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		FCD1DA981B04CCB200F9EA70 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FCD1DA7A1B04CCB200F9EA70 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FCD1DA811B04CCB200F9EA70;
-			remoteInfo = labs;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		580621321B08CBAA009012D5 /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
@@ -421,7 +410,6 @@
 		734C7D621BB47D470071678C /* Playlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Playlist.swift; path = Models/Playlist.swift; sourceTree = "<group>"; };
 		734C7D641BB47D750071678C /* Genre.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Genre.swift; path = Models/Genre.swift; sourceTree = "<group>"; };
 		734C7DFF1BB4C1DA0071678C /* for test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "for test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		734C7E001BB4C1DA0071678C /* labs copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "labs copy-Info.plist"; path = "/Users/bangtoven/labs-workspace/labs/labs copy-Info.plist"; sourceTree = "<absolute>"; };
 		7361FCE31B9F5E7F00444179 /* EmailSubmitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailSubmitViewController.swift; sourceTree = "<group>"; };
 		7361FCE91B9F683100444179 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Feed.storyboard; sourceTree = "<group>"; };
 		7361FCEC1B9F683500444179 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Feed.strings; sourceTree = "<group>"; };
@@ -467,9 +455,6 @@
 		FCD1DA8C1B04CCB200F9EA70 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FCD1DA8E1B04CCB200F9EA70 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		FCD1DA911B04CCB200F9EA70 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		FCD1DA971B04CCB200F9EA70 /* labsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = labsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FCD1DA9C1B04CCB200F9EA70 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FCD1DA9D1B04CCB200F9EA70 /* labsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = labsTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -516,13 +501,6 @@
 				582E7D861B0F9A2D00AB76A2 /* QuartzCore.framework in Frameworks */,
 				5890D62A1B081C1100AAEAE5 /* MediaPlayer.framework in Frameworks */,
 				5890D6281B081C0800AAEAE5 /* AVFoundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FCD1DA941B04CCB200F9EA70 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -911,7 +889,6 @@
 				7361FCE61B9F631100444179 /* Resources */,
 				FCD1DA851B04CCB200F9EA70 /* Supporting Files */,
 				FCD1DA831B04CCB200F9EA70 /* Products */,
-				734C7E001BB4C1DA0071678C /* labs copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -919,7 +896,6 @@
 			isa = PBXGroup;
 			children = (
 				FCD1DA821B04CCB200F9EA70 /* labs.app */,
-				FCD1DA971B04CCB200F9EA70 /* labsTests.xctest */,
 				734C7DFF1BB4C1DA0071678C /* for test.app */,
 			);
 			name = Products;
@@ -957,27 +933,9 @@
 				F98F65D2D15412F7828AF298 /* Frameworks */,
 				58BB0B121B122DCB00B07279 /* labs-Bridging-Header.h */,
 				FCD1DA861B04CCB200F9EA70 /* Info.plist */,
-				FCD1DA9A1B04CCB200F9EA70 /* labsTests */,
 			);
 			name = "Supporting Files";
 			path = labs;
-			sourceTree = "<group>";
-		};
-		FCD1DA9A1B04CCB200F9EA70 /* labsTests */ = {
-			isa = PBXGroup;
-			children = (
-				FCD1DA9D1B04CCB200F9EA70 /* labsTests.swift */,
-				FCD1DA9B1B04CCB200F9EA70 /* Supporting Files */,
-			);
-			path = labsTests;
-			sourceTree = SOURCE_ROOT;
-		};
-		FCD1DA9B1B04CCB200F9EA70 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				FCD1DA9C1B04CCB200F9EA70 /* Info.plist */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1017,24 +975,6 @@
 			productReference = FCD1DA821B04CCB200F9EA70 /* labs.app */;
 			productType = "com.apple.product-type.application";
 		};
-		FCD1DA961B04CCB200F9EA70 /* labsTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = FCD1DAA41B04CCB200F9EA70 /* Build configuration list for PBXNativeTarget "labsTests" */;
-			buildPhases = (
-				FCD1DA931B04CCB200F9EA70 /* Sources */,
-				FCD1DA941B04CCB200F9EA70 /* Frameworks */,
-				FCD1DA951B04CCB200F9EA70 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				FCD1DA991B04CCB200F9EA70 /* PBXTargetDependency */,
-			);
-			name = labsTests;
-			productName = labsTests;
-			productReference = FCD1DA971B04CCB200F9EA70 /* labsTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1052,10 +992,6 @@
 					FCD1DA811B04CCB200F9EA70 = {
 						CreatedOnToolsVersion = 6.0.1;
 						DevelopmentTeam = XGLQXMFR26;
-					};
-					FCD1DA961B04CCB200F9EA70 = {
-						CreatedOnToolsVersion = 6.0.1;
-						TestTargetID = FCD1DA811B04CCB200F9EA70;
 					};
 				};
 			};
@@ -1075,7 +1011,6 @@
 			targets = (
 				FCD1DA811B04CCB200F9EA70 /* labs */,
 				734C7D6C1BB4C1DA0071678C /* for test */,
-				FCD1DA961B04CCB200F9EA70 /* labsTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1116,13 +1051,6 @@
 				739C8F5D1BB340E200BC9EB7 /* Explore.storyboard in Resources */,
 				FCD1DA8F1B04CCB200F9EA70 /* Images.xcassets in Resources */,
 				585BAD0C1B85ED9900FE137A /* DateTools.bundle in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FCD1DA951B04CCB200F9EA70 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1337,23 +1265,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FCD1DA931B04CCB200F9EA70 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				FCD1DA9E1B04CCB200F9EA70 /* labsTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		FCD1DA991B04CCB200F9EA70 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FCD1DA811B04CCB200F9EA70 /* labs */;
-			targetProxy = FCD1DA981B04CCB200F9EA70 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		586F49B91B7FE5010039CC6B /* Localizable.strings */ = {
@@ -1621,42 +1533,6 @@
 			};
 			name = Release;
 		};
-		FCD1DAA51B04CCB200F9EA70 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = labsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "net.dropbeat.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/labs.app/labs";
-			};
-			name = Debug;
-		};
-		FCD1DAA61B04CCB200F9EA70 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = labsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "net.dropbeat.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/labs.app/labs";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1683,15 +1559,6 @@
 			buildConfigurations = (
 				FCD1DAA21B04CCB200F9EA70 /* Debug */,
 				FCD1DAA31B04CCB200F9EA70 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		FCD1DAA41B04CCB200F9EA70 /* Build configuration list for PBXNativeTarget "labsTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				FCD1DAA51B04CCB200F9EA70 /* Debug */,
-				FCD1DAA61B04CCB200F9EA70 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

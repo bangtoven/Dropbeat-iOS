@@ -162,6 +162,8 @@ extension FeedViewController: ScrollPagerDelegate {
                     print("popular feed is empty. try to load recent uploads.")
                     self.newUploadsSegment.setSelectedIndex(1, animated: true)
                     self.scrollPager(self.newUploadsSegment, changedIndex: 1)
+                    self.newUploadsSegment.setEnableAtIndex(0, enable: false)
+                    ViewUtils.showToast(self, message: "preparing")
                     return
                 }
                 self.nextPage = -1

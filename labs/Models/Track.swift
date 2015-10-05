@@ -8,43 +8,6 @@
 
 import UIKit
 
-class PlayLog {
-    private var track_id: Int
-    private var seekLog = [(Int,Int)]()
-
-    init(track: DropbeatTrack) {
-        self.track_id = Int(track.id)!
-    }
-    
-    func seek(from from:Int, to:Int) {
-        self.seekLog.append((from,to))
-    }
-    
-    func finished(end: Int? = nil) {
-        var log = [String:AnyObject]()
-        log["track_id"] = self.track_id
-        log["location"] = Account.location
-        
-        var data = [AnyObject]()
-        data.append(["type":"start"])
-        for (from,to) in seekLog {
-            data.append(["type":"seek_from","ts":from])
-            data.append(["type":"seek_to","ts":to])
-        }
-        if let exit = end {
-            data.append(["type":"exit","ts":exit])
-        } else {
-            data.append(["type":"end"])
-        }
-        log["data"] = data
-        
-        request(.POST, ApiPath.logPlaybackDetail, parameters: log, encoding: .JSON)
-        .responseJSON { (req, resp, result) -> Void in
-            print("playback log post " + result.description)
-        }
-    }
-}
-
 class Track {
     static var soundCloudKey: String = "02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea"
     static func loadSoundCloudKey (callback:(NSError)->Void) {
@@ -419,12 +382,12 @@ extension DropbeatTrack {
         }
     }
     
-    enum NewUploadsOrder: Int {
+    enum Order: Int {
         case POPULAR = 0
         case RECENT = 1
     }
     
-    static func fetchNewUploads(order:NewUploadsOrder, pageIdx: Int, callback:((tracks:[DropbeatTrack]?, error:NSError?) -> Void)) {
+    static func fetchNewUploads(order:Order, pageIdx: Int, callback:((tracks:[DropbeatTrack]?, error:NSError?) -> Void)) {
         var params:[String:AnyObject] = ["p": pageIdx]
         switch order {
         case .POPULAR: params["order"] = "popular"
@@ -446,6 +409,76 @@ extension DropbeatTrack {
                 tracks.append(t)
             }
             callback(tracks: tracks, error: nil)
+        }
+    }
+}
+
+class PlayLog {
+    private var track_id: Int
+    private var seekLog = [(Int,Int)]()
+    
+    init(track: DropbeatTrack) {
+        self.track_id = Int(track.id)!
+    }
+    
+    func seek(from from:Int, to:Int) {
+        self.seekLog.append((from,to))
+    }
+    
+    func finished(end: Int? = nil) {
+        var log = [String:AnyObject]()
+        log["track_id"] = self.track_id
+        log["location"] = Account.location
+        
+        var data = [AnyObject]()
+        data.append(["type":"start"])
+        for (from,to) in seekLog {
+            data.append(["type":"seek_from","ts":from])
+            data.append(["type":"seek_to","ts":to])
+        }
+        if let exit = end {
+            data.append(["type":"exit","ts":exit])
+        } else {
+            data.append(["type":"end"])
+        }
+        log["data"] = data
+        
+        request(.POST, ApiPath.logPlaybackDetail, parameters: log, encoding: .JSON)
+            .responseJSON { (req, resp, result) -> Void in
+                print("playback log posted: " + result.description)
+        }
+    }
+}
+
+extension Track { // for Play Failure Log
+    func postFailureLog() {
+        var log = [String:AnyObject]()
+        
+        log["title"] = self.title
+        log["stream_urls"] = [self.streamUrl!]
+        
+        if let user = Account.getCachedAccount()?.user {
+            log["email"] = user.email
+        } else {
+            log["email"] = ""
+        }
+        
+        if let dropbeatTrack = self as? DropbeatTrack {
+            log["uid"] = dropbeatTrack.uniqueKey
+        } else {
+            log["uid"] = self.id
+        }
+        
+        var device = [String:String]()
+        let d = UIDevice.currentDevice()
+        device["system"] = d.systemName
+        device["model"] = d.model
+        device["version"] = d.systemVersion
+        log["device"] = device
+        
+        request(.POST, ApiPath.logPlayFailure, parameters: log, encoding: .JSON)
+            .responseJSON{ (req, resp, result) -> Void in
+                print("play failure log posted: " + result.description)
         }
     }
 }

@@ -708,17 +708,27 @@ class PlayerViewController: BaseViewController {
         }
     }
     
+    func handlePlayFailure() {
+        print("handle play failure")
+        
+        if let track = PlayerContext.currentTrack {
+            let errMsg = track.title + "\n" + NSLocalizedString("This track is not streamable", comment:"")
+            ViewUtils.showToast(self, message: errMsg)
+            track.postFailureLog()
+        }
+        
+        let success :Bool = handleNext(shouldPlayMusic)
+        if (!success) {
+            handleStop()
+        }
+    }
+    
     func MPMoviePlayerContentPreloadDidFinish (noti:NSNotification) {
         var userInfo = noti.userInfo as? [String:AnyObject]
         if (userInfo != nil) {
             let reason:NSError? = userInfo!["error"] as? NSError
             if (reason != nil) {
-                let errMsg = NSLocalizedString("This track is not streamable", comment:"")
-                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to play", comment:""),
-                    message: errMsg)
-                handleStop()
-                
-                // TODO: 노래 안틀어짐.
+                self.handlePlayFailure()
             }
         }
         print("preload finished")
@@ -726,21 +736,15 @@ class PlayerViewController: BaseViewController {
     
     
     func MPMoviePlayerPlaybackDidFinish (noti: NSNotification) {
-        var userInfo = noti.userInfo as? [String:AnyObject]
-        if (userInfo != nil) {
-            let resultValue:NSNumber? = userInfo![MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] as? NSNumber
-            if (resultValue != nil) {
-                let reason = Int(resultValue!)
-                if (reason == MPMovieFinishReason.PlaybackError.rawValue) {
-                    // Finished with error
-                    let errMsg = NSLocalizedString("This track is not streamable", comment:"")
-                    ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to play", comment:""),
-                        message: errMsg)
-                    handleStop()
-                    return
-                }
-            }
+        if let userInfo = noti.userInfo,
+            finishReason = userInfo[MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] as? MPMovieFinishReason
+            where finishReason == MPMovieFinishReason.PlaybackError
+        {
+            print(finishReason)
+            self.handlePlayFailure()
+            return
         }
+        
         if (self.audioPlayerControl.moviePlayer.contentURL == nil) {
             return
         }

@@ -57,6 +57,7 @@ public class ApiPath {
     static let logPlay = log + "play/"
     static let logPlayDrop = log + "playdrop/"
     static let logPlaybackDetail = log + "playback_detail/"
+    static let logPlayFailure = log + "playfailure/"
     static let logDebug = log + "debug/"
     
     // Meta

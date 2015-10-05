@@ -117,9 +117,9 @@ extension FeedViewController: ScrollPagerDelegate {
         let likeImage = track.isLiked ? UIImage(named:"ic_like") : UIImage(named:"ic_dislike")
         cell.likeButton.setImage(likeImage, forState: UIControlState.Normal)
     
-        if let userTrack = track as? DropbeatTrack {
+        if let dropbeatTrack = track as? DropbeatTrack {
             cell.genreView.hidden = false
-            cell.genreView.text = userTrack.genre
+            cell.genreView.text = dropbeatTrack.genre
         } else {
             cell.genreView.hidden = true
         }
@@ -132,7 +132,7 @@ extension FeedViewController: ScrollPagerDelegate {
             return
         }
         
-        let order = DropbeatTrack.NewUploadsOrder(rawValue: newUploadsSelectedIndex)
+        let order = DropbeatTrack.Order(rawValue: newUploadsSelectedIndex)
         
         var progressHud:MBProgressHUD?
         if !refreshControl.refreshing && nextPage <= 0 {

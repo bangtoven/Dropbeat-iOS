@@ -41,9 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        Account.loadLocation { (dict) -> Void in
-//            print(Location.location)
-        }
+        Account.loadLocation { (dict) -> Void in }
         
         // Override point for customization after application launch.
         NSNotificationCenter.defaultCenter().addObserver(
@@ -228,6 +226,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     redirectSharedPlaylist(sharedPlaylistUid!)
                     return
                 }
+            } else if let components = url.pathComponents {
+                
             }
         }
     }

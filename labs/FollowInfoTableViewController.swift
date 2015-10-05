@@ -62,14 +62,13 @@ class FollowInfoTableViewController: UITableViewController, AXSubViewController 
         var cellHeight: CGFloat = 0
         if (indexPath.row < userArray.count) {
             cellHeight = 76
-        } else if let parentVc = self.parentViewController as? UserViewController {
-            if let navigationBar = parentVc.navigationController?.navigationBar {
+        } else if let parentVc = self.parentViewController as? UserViewController,
+            navigationBar = parentVc.navigationController?.navigationBar {
                 let minHeight = parentVc.view.frame.size.height - (CGRectGetMaxY(navigationBar.frame)+CGRectGetHeight(parentVc.tabBar.bounds))
                 let diff = minHeight - (CELL_HIGHT * CGFloat(userArray.count))
                 if diff > 0 {
                     cellHeight = diff
                 }
-            }
         }
         return cellHeight
     }

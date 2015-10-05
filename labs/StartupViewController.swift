@@ -203,11 +203,10 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) {
             self.progressHud?.hide(true)
-            if let account = Account.getCachedAccount() {
-                if account.favoriteGenreIds.count == 0 {
+            if let account = Account.getCachedAccount()
+                where account.favoriteGenreIds.count == 0 {
                     self.performSegueWithIdentifier("genre_tutorial", sender: self)
                     return
-                }
             }
             self.performSegueWithIdentifier("main", sender: self)
         }

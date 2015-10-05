@@ -234,10 +234,10 @@ class Requests {
     static func getStreamFriend(respCb: RespCallback) -> Request {
         var params:[String:AnyObject]?
         let defaultDb:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        if let expireDate:NSDate = defaultDb.objectForKey(UserDataKey.maxFavoriteCacheExpireDate) as? NSDate {
-            if expireDate.compare(NSDate()) == NSComparisonResult.OrderedDescending {
-                params = ["f": "1"]
-            }
+        if let expireDate:NSDate = defaultDb.objectForKey(UserDataKey.maxFavoriteCacheExpireDate) as? NSDate
+            where expireDate.compare(NSDate()) == NSComparisonResult.OrderedDescending {
+            params = ["f": "1"]
+
         }
         return sendGet(ApiPath.feedFriend, params:params, auth:true,
             respCb:{ (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in

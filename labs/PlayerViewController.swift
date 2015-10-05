@@ -228,7 +228,7 @@ class PlayerViewController: BaseViewController {
             if (hookingBackground) {
                 return
             }
-            if (PlayerContext.currentTrack!.type == "youtube" &&
+            if (PlayerContext.currentTrack!.type == .YOUTUBE &&
                 PlayerContext.playState == PlayState.PAUSED && shouldPlayMusic) {
                     hookingBackground = true
                     
@@ -323,7 +323,7 @@ class PlayerViewController: BaseViewController {
             coverImageView.hidden = false
             coverBgImageView.image = UIImage(named: "player_bg")
             coverImageView.image = UIImage(named: "default_cover_big")
-        } else if track!.type == "youtube" {
+        } else if track!.type == .YOUTUBE {
             videoView.hidden = false
             audioPlayerControl.view.hidden = false
             audioPlayerControl.view.frame = CGRectMake(0, 0, videoView.frame.width, videoView.frame.height)
@@ -498,7 +498,7 @@ class PlayerViewController: BaseViewController {
         }
         
         // Youtube duration hack.
-        if (currentTrack?.type == "youtube") {
+        if (currentTrack?.type == .YOUTUBE) {
             if (PlayerContext.correctDuration == nil) {
                 PlayerContext.correctDuration = audioPlayerControl.moviePlayer.duration
             }
@@ -590,7 +590,7 @@ class PlayerViewController: BaseViewController {
             // If youtube which has double duration length will be get here
             // when it play over original duration (:1/2) length
             if (PlayerContext.currentTrack != nil &&
-                PlayerContext.currentTrack!.type == "youtube" &&
+                PlayerContext.currentTrack!.type == .YOUTUBE &&
                 PlayerContext.correctDuration != nil){
                     if (audioPlayerControl.moviePlayer.currentPlaybackTime >= PlayerContext.correctDuration! - 1) {
                         if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
@@ -712,7 +712,7 @@ class PlayerViewController: BaseViewController {
         print("handle play failure")
         
         if let track = PlayerContext.currentTrack {
-            let errMsg = track.title + "\n" + NSLocalizedString("This track is not streamable", comment:"")
+            let errMsg = NSLocalizedString("This track is not streamable", comment:"")
             ViewUtils.showToast(self, message: errMsg)
             track.postFailureLog()
         }
@@ -737,7 +737,8 @@ class PlayerViewController: BaseViewController {
     
     func MPMoviePlayerPlaybackDidFinish (noti: NSNotification) {
         if let userInfo = noti.userInfo,
-            finishReason = userInfo[MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] as? MPMovieFinishReason
+            rawValue = userInfo[MPMoviePlayerPlaybackDidFinishReasonUserInfoKey] as? NSNumber,
+            finishReason = MPMovieFinishReason(rawValue: Int(rawValue))
             where finishReason == MPMovieFinishReason.PlaybackError
         {
             print(finishReason)
@@ -1212,11 +1213,11 @@ class PlayerViewController: BaseViewController {
         }
         audioPlayerControl.preferredVideoQualities = qualities
         
-        if (track.type == "youtube") {
+        if (track.type == .YOUTUBE) {
             audioPlayerControl.videoIdentifier = track.id
         } else {
-            if let url = track.streamUrl {
-                audioPlayerControl.moviePlayer.contentURL = NSURL(string:url)
+            if track.type != .UNKNOWN {
+                audioPlayerControl.moviePlayer.contentURL = NSURL(string:track.streamUrl)
                 audioPlayerControl.videoIdentifier = nil
             } else {
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to play", comment:""),

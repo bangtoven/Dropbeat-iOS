@@ -301,7 +301,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
             return
         }
         
-        guard let url = NSURL(string:track.streamUrl!) else {
+        guard let url = NSURL(string:track.streamUrl) else {
             return
         }
         

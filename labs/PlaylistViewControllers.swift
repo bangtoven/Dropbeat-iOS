@@ -800,7 +800,7 @@ class PlaylistViewController: BaseViewController,
             
             var data = [[String:AnyObject]]()
             for t in self.currentPlaylist.tracks {
-                data.append(["title": t.title, "id": t.id, "type": t.type])
+                data.append(["title": t.title, "id": t.id, "type": t.type.rawValue])
             }
             
             Requests.setPlaylist(importedPlaylist!.id, data: data, respCb: {

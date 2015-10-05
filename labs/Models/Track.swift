@@ -8,6 +8,23 @@
 
 import UIKit
 
+enum SourceType: String {
+    case YOUTUBE = "youtube"
+    case SOUNDCLOUD = "soundcloud"
+    case PODCAST = "podcast"
+    case DROPBEAT = "dropbeat"
+    case UNKNOWN
+    
+    static func fromString(string: String) -> SourceType {
+        if let type = SourceType(rawValue: string) {
+            return type
+        } else {
+            print("what the fuck is this? \(string)")
+            return .UNKNOWN
+        }
+    }
+}
+
 class Track {
     static var soundCloudKey: String = "02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea"
     static func loadSoundCloudKey (callback:(NSError)->Void) {
@@ -25,17 +42,20 @@ class Track {
     
     var id: String
     var title: String
-    var type: String
+    var type: SourceType
     var tag: String?
-    var streamUrl: String? {
+    var streamUrl: String {
         get {
-            if self.type == "soundcloud" {
+            switch self.type {
+            case .YOUTUBE:
+                print("this is very unusal that youtube track asks for stream URL.")
+                return self.id
+            case .SOUNDCLOUD:
                 let key = Track.soundCloudKey
                 return "https://api.soundcloud.com/tracks/\(self.id)/stream?client_id=\(key)"
-            } else if (self.type != "youtube" && self.id.characters.startsWith("http".characters)) {
+            default:
                 return self.id.stringByRemovingPercentEncoding!
             }
-            return nil
         }
     }
     
@@ -66,7 +86,7 @@ class Track {
         }
     }
 
-    init(id: String, title: String, type: String, tag: String? = nil, thumbnailUrl: String? = nil, drop: Drop? = nil, releaseDate: NSDate? = nil) {
+    init(id: String, title: String, type: SourceType, tag: String? = nil, thumbnailUrl: String? = nil, drop: Drop? = nil, releaseDate: NSDate? = nil) {
         self.id = id
         self.title = title
         self.drop = drop
@@ -75,7 +95,7 @@ class Track {
         
         if let url = thumbnailUrl {
             self.thumbnailUrl = url
-        } else if type == "youtube" {
+        } else if type == .YOUTUBE {
             self.thumbnailUrl = "http://img.youtube.com/vi/\(id)/mqdefault.jpg"
         }
         
@@ -96,7 +116,7 @@ class Track {
         self.init(
             id: json["id"].stringValue,
             title: json["title"].stringValue,
-            type: json["type"].stringValue,
+            type: SourceType.fromString(json["type"].stringValue),
             drop: drop,
             releaseDate: NSDate.dateFromString(json["release_date"].stringValue))
         
@@ -112,7 +132,7 @@ class Track {
         self.init(
             id: id,
             title: json["title"].stringValue,
-            type: "youtube",
+            type: .YOUTUBE,
             releaseDate: NSDate.dateFromString(json["published_at"].stringValue))
         
         self.user = BaseUser(
@@ -127,8 +147,41 @@ class Track {
         self.init(
             id: id,
             title: snippet["title"].stringValue,
-            type: "youtube",
+            type: .YOUTUBE,
             releaseDate: NSDate.dateFromString(snippet["publishedAt"].stringValue))
+    }
+    
+    static func parsePodcastTracks(json: JSON) -> [Track] {
+        var tracks = [Track]()
+        for (_, s): (String, JSON) in json {
+            let id = s["stream_url"].string
+            let title = s["title"].string
+            if (id == nil || title == nil) {
+                continue
+            }
+            let track = Track(
+                id: id!,
+                title: title!,
+                type: .PODCAST,
+                tag:nil
+            )
+            
+            var drop:Drop?
+            var dropObj = s["drop"]
+            if dropObj != nil && dropObj["dref"].string != nil &&
+                dropObj["dref"].stringValue.characters.count > 0 &&
+                dropObj["type"].string != nil {
+                    
+                    drop = Drop(
+                        dref: dropObj["dref"].stringValue,
+                        type: dropObj["type"].stringValue,
+                        when: dropObj["when"].int)
+            }
+            track.drop = drop
+            
+            tracks.append(track)
+        }
+        return tracks
     }
     
     static func parseTracks(json: JSON) -> [Track] {
@@ -148,7 +201,7 @@ class Track {
             let track = Track(
                 id: id as! String,
                 title: s["title"].stringValue,
-                type: s["type"].stringValue,
+                type: SourceType.fromString(s["type"].stringValue),
                 tag: s["tag"].stringValue
             )
             
@@ -218,7 +271,7 @@ class Track {
         return Track(
             id: s!["ref"].stringValue,
             title: s!["track_name"].stringValue,
-            type: s!["type"].stringValue,
+            type: SourceType.fromString(s!["type"].stringValue),
             tag: nil,
             thumbnailUrl: nil,
             drop: nil)
@@ -281,7 +334,7 @@ class DropbeatTrack: Track {
     }
     
     private var _streamUrl: String
-    override var streamUrl: String? { get {return _streamUrl } }
+    override var streamUrl: String { get {return _streamUrl } }
     
     var trackType: TrackType = .TRACK
     var description: String?
@@ -304,7 +357,7 @@ class DropbeatTrack: Track {
         super.init(
             id: id,
             title: name,
-            type: "dropbeat",
+            type: .DROPBEAT,
             thumbnailUrl: coverArt,
             drop: drop,
             releaseDate: NSDate.dateFromString(json["created_at"].stringValue))
@@ -455,7 +508,7 @@ extension Track { // for Play Failure Log
         var log = [String:AnyObject]()
         
         log["title"] = self.title
-        log["stream_urls"] = [self.streamUrl!]
+        log["stream_urls"] = [self.streamUrl]
         
         if let user = Account.getCachedAccount()?.user {
             log["email"] = user.email
@@ -513,7 +566,7 @@ class Like {
     init?(json:JSON) {
         if json["id"].int == nil || json["data"] == nil {
             self.id = -1
-            self.track = Track(id: "", title: "", type: "")
+            self.track = Track(id: "", title: "", type: .UNKNOWN)
             return nil
         }
         
@@ -524,11 +577,11 @@ class Like {
             var trackJson:JSON = json["data"]
             if trackJson["id"].string == nil || trackJson["type"].string == nil || trackJson["title"].string == nil {
                 self.id = -1
-                self.track = Track(id: "", title: "", type: "")
+                self.track = Track(id: "", title: "", type: .UNKNOWN)
                 return nil
             }
             let trackId = trackJson["id"].stringValue
-            let type = trackJson["type"].stringValue
+            let type = SourceType.fromString(trackJson["type"].stringValue)
             track = Track(id: trackId, title: trackJson["title"].stringValue, type: type, tag: nil, thumbnailUrl: nil)
         }
         self.id = json["id"].intValue

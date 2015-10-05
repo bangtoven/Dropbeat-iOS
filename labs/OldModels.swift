@@ -277,7 +277,7 @@ class BeatportTrack:Track {
     
     init(id: String, trackName:String, artist:String, type:String,
         thumbnailUrl:String, mixType:String?, genre:String?, label:String?, releasedAt:NSDate?) {
-            super.init(id: id, title: "\(artist) - \(trackName)", type: type, tag: nil, thumbnailUrl: thumbnailUrl, drop: nil)
+            super.init(id: id, title: "\(artist) - \(trackName)", type: SourceType.fromString(type), tag: nil, thumbnailUrl: thumbnailUrl, drop: nil)
             self.artist = artist
             self.mixType = mixType
             self.genre = genre
@@ -292,11 +292,11 @@ class TrendingTrack:Track {
     var snippet:String!
     var trackName: String!
     init(id:String, trackName:String, artist:String, type:String, snippet:String) {
-        super.init(id: id, title: "\(artist) - \(trackName)", type: type)
+        super.init(id: id, title: "\(artist) - \(trackName)", type: SourceType.fromString(type))
         self.artist = artist
         self.snippet = snippet
         self.trackName = trackName
-        if (self.type == "youtube") {
+        if (self.type == .YOUTUBE) {
             self.thumbnailUrl = "http://img.youtube.com/vi/\(self.id)/mqdefault.jpg"
         }
     }
@@ -307,7 +307,7 @@ class NewReleaseTrack:Track {
     var trackName: String!
     var releasedAt: NSDate?
     init(id:String, trackName:String, artist:String, type:String, thumbnail: String?, releasedAt:NSDate?) {
-        super.init(id: id, title: "\(artist) - \(trackName)", type: type, tag: nil, thumbnailUrl:thumbnail)
+        super.init(id: id, title: "\(artist) - \(trackName)", type: SourceType.fromString(type), tag: nil, thumbnailUrl:thumbnail)
         self.artist = artist
         self.trackName = trackName
         self.releasedAt = releasedAt

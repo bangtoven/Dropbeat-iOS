@@ -64,7 +64,7 @@ class Playlist {
                 Track(
                     id: id as! String,
                     title: s["title"].stringValue,
-                    type: s["type"].string!
+                    type: SourceType.fromString(s["type"].stringValue)
                 )
             )
         }
@@ -97,7 +97,7 @@ class Playlist {
             data.append([
                 "id": t.id,
                 "title": t.title,
-                "type": t.type
+                "type": t.type.rawValue
                 ])
         }
         playlist["data"] = data
@@ -113,9 +113,9 @@ class Playlist {
                 afterAdd(error: NSError(domain: "addTrack", code:101, userInfo: nil))
                 return
             }
-            dummyTracks.append(["title": t.title, "id": t.id, "type": t.type])
+            dummyTracks.append(["title": t.title, "id": t.id, "type": t.type.rawValue])
         }
-        dummyTracks.append(["title": track.title, "id": track.id, "type": track.type])
+        dummyTracks.append(["title": track.title, "id": track.id, "type": track.type.rawValue])
         
         if Account.getCachedAccount() != nil {
             // Log to us
@@ -167,7 +167,7 @@ class Playlist {
         var dummyTracks = [[String:AnyObject]]()
         for t in tracks {
             if (t.id != track.id) {
-                dummyTracks.append(["title": t.title, "id": t.id, "type": t.type])
+                dummyTracks.append(["title": t.title, "id": t.id, "type": t.type.rawValue])
             }
         }
         

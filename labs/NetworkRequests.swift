@@ -254,7 +254,7 @@ class Requests {
     
     static func doLike(track: Track, respCb: RespCallback) -> Request {
         var params:[String:AnyObject] = [String:AnyObject]()
-        params["data"] = ["id":track.id, "type":track.type, "title": track.title]
+        params["data"] = ["id":track.id, "type":track.type.rawValue, "title": track.title]
         return sendPost(ApiPath.trackLike, params:params, auth: true, respCb:respCb)
     }
     

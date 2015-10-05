@@ -419,36 +419,7 @@ class Artist: BaseUser {
                 return
             }
             
-            var tracks = [Track]()
-            for (_, s): (String, JSON) in t["data"] {
-                let id = s["stream_url"].string
-                let title = s["title"].string
-                if (id == nil || title == nil) {
-                    continue
-                }
-                let track = Track(
-                    id: id!,
-                    title: title!,
-                    type: "podcast",
-                    tag:nil
-                )
-                
-                var drop:Drop?
-                var dropObj = s["drop"]
-                if dropObj != nil && dropObj["dref"].string != nil &&
-                    dropObj["dref"].stringValue.characters.count > 0 &&
-                    dropObj["type"].string != nil {
-                        
-                        drop = Drop(
-                            dref: dropObj["dref"].stringValue,
-                            type: dropObj["type"].stringValue,
-                            when: dropObj["when"].int)
-                }
-                track.drop = drop
-                
-                tracks.append(track)
-            }
-            self.sectionedTracks[Artist.SECTION_PODCAST] = tracks
+            self.sectionedTracks[Artist.SECTION_PODCAST] = Track.parsePodcastTracks(t["data"])
             callback(tracks:self.sectionedTracks[Artist.SECTION_PODCAST], error:nil)
         })
     }

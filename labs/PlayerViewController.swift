@@ -54,7 +54,7 @@ class PlayerViewController: BaseViewController {
     private var removedId:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     
     // Used only for video playback recovery.
-    private var shouldPlayMusic: Bool = false
+    private var shouldPlayMusic: Bool = false 
     private var prevResolveReq:Request? = nil
     private var forceStopPlayer = false
     private var playingInfoDisplayDuration = false
@@ -717,6 +717,8 @@ class PlayerViewController: BaseViewController {
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to play", comment:""),
                     message: errMsg)
                 handleStop()
+                
+                // TODO: 노래 안틀어짐.
             }
         }
         print("preload finished")
@@ -1057,8 +1059,8 @@ class PlayerViewController: BaseViewController {
     // MARK: playback log
     
     func startPlaylog(track: Track) {
-        if let userTrack = track as? UserTrack{
-            PlayerContext.playLog = PlayLog(track: userTrack)
+        if let dropbeatTrack = track as? DropbeatTrack{
+            PlayerContext.playLog = PlayLog(track: dropbeatTrack)
         } else {
             PlayerContext.playLog = nil
         }
@@ -1113,7 +1115,7 @@ class PlayerViewController: BaseViewController {
             if audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Paused ||
                 audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Interrupted {
                     // Resume
-                    shouldPlayMusic = force
+//                    shouldPlayMusic = force
                     if prevQualityState != PlayerContext.qualityState {
                         startBackgroundTask()
                         switchPlayerWithQuality(PlayerContext.currentTrack!, qualityState: PlayerContext.qualityState)
@@ -1197,14 +1199,14 @@ class PlayerViewController: BaseViewController {
         }
         
         prevQualityState = PlayerContext.qualityState
+        var qualities = [AnyObject]()
         if (PlayerContext.qualityState == QualityState.LQ) {
-            var qualities = [AnyObject]()
             qualities.append(XCDYouTubeVideoQuality.Small240.rawValue)
             qualities.append(XCDYouTubeVideoQuality.Medium360.rawValue)
-            audioPlayerControl.preferredVideoQualities = qualities
         } else {
-            audioPlayerControl.preferredVideoQualities = nil
+            qualities.append(XCDYouTubeVideoQuality.HD720.rawValue)
         }
+        audioPlayerControl.preferredVideoQualities = qualities
         
         if (track.type == "youtube") {
             audioPlayerControl.videoIdentifier = track.id

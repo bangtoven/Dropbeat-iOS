@@ -68,7 +68,7 @@ extension FeedViewController: ScrollPagerDelegate {
             let track = self.tracks[indexPath!.row]
             
             let mySegue = segue as! JHImageTransitionSegue
-            let sourceImageView = (self.trackTableView.cellForRowAtIndexPath(indexPath!) as! UserTrackTableViewCell).userProfileImageView
+            let sourceImageView = (self.trackTableView.cellForRowAtIndexPath(indexPath!) as! DropbeatTrackTableViewCell).userProfileImageView
             
             mySegue.setSourceImageView(sourceImageView)
             mySegue.sourceRect = sourceImageView.convertRect(sourceImageView.bounds, toView: self.view)
@@ -83,7 +83,7 @@ extension FeedViewController: ScrollPagerDelegate {
         }
     }
     
-    func updateTrackCellImageOffset(cell: UserTrackTableViewCell) {
+    func updateTrackCellImageOffset(cell: DropbeatTrackTableViewCell) {
         let imageOverflowHeight = cell.thumbView.frame.size.height / 3
         let cellOffset = CGRectGetMaxY(cell.frame) - self.trackTableView.contentOffset.y
         let maxOffset = self.trackTableView.frame.height + cell.frame.height
@@ -92,9 +92,9 @@ extension FeedViewController: ScrollPagerDelegate {
         cell.thumnailCenterConstraint.constant = verticalOffset
     }
     
-    func getUserTrackCell(indexPath:NSIndexPath) -> UITableViewCell {
+    func getDropbeatTrackCell(indexPath:NSIndexPath) -> UITableViewCell {
         let cell = trackTableView.dequeueReusableCellWithIdentifier(
-            "UserTrackTableViewCell", forIndexPath: indexPath) as! UserTrackTableViewCell
+            "DropbeatTrackTableViewCell", forIndexPath: indexPath) as! DropbeatTrackTableViewCell
         
         cell.delegate = self
         
@@ -117,7 +117,7 @@ extension FeedViewController: ScrollPagerDelegate {
         let likeImage = track.isLiked ? UIImage(named:"ic_like") : UIImage(named:"ic_dislike")
         cell.likeButton.setImage(likeImage, forState: UIControlState.Normal)
     
-        if let userTrack = track as? UserTrack {
+        if let userTrack = track as? DropbeatTrack {
             cell.genreView.hidden = false
             cell.genreView.text = userTrack.genre
         } else {
@@ -132,13 +132,13 @@ extension FeedViewController: ScrollPagerDelegate {
             return
         }
         
-        let order = UserTrack.NewUploadsOrder(rawValue: newUploadsSelectedIndex)
+        let order = DropbeatTrack.NewUploadsOrder(rawValue: newUploadsSelectedIndex)
         
         var progressHud:MBProgressHUD?
         if !refreshControl.refreshing && nextPage <= 0 {
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
-        UserTrack.fetchNewUploads(order!, pageIdx: nextPage) { (tracks, error) -> Void in
+        DropbeatTrack.fetchNewUploads(order!, pageIdx: nextPage) { (tracks, error) -> Void in
             self.isLoading = false
             progressHud?.hide(true)
             if self.refreshControl.refreshing {
@@ -190,7 +190,7 @@ extension FeedViewController: ScrollPagerDelegate {
         switch (selectedFeedMenu.type) {
         case .NEW_UPLOADS, .FOLLOWING_TRACKS:
             for cell in self.trackTableView.visibleCells {
-                self.updateTrackCellImageOffset(cell as! UserTrackTableViewCell)
+                self.updateTrackCellImageOffset(cell as! DropbeatTrackTableViewCell)
             }
             break
         default:
@@ -262,7 +262,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         return types
     }()
     
-    private var userGroupSizingCell:UserTrackTableViewCell! = nil;
+    private var userGroupSizingCell:DropbeatTrackTableViewCell! = nil;
     private var onceToken:dispatch_once_t = 0
     
     override func viewDidLoad() {
@@ -486,7 +486,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             dropIcPlayingName = "ic_drop_pause_small"
             
         case .NEW_UPLOADS, .FOLLOWING_TRACKS:
-            let trackCell = cell as! UserTrackTableViewCell
+            let trackCell = cell as! DropbeatTrackTableViewCell
             dropBtn = trackCell.dropBtn
             
             // for parallax effect
@@ -569,9 +569,9 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             var cell:UITableViewCell!
             switch (selectedFeedMenu.type) {
             case .FOLLOWING_TRACKS:
-                cell = getUserTrackCell(indexPath)
+                cell = getDropbeatTrackCell(indexPath)
             case .NEW_UPLOADS:
-                cell = getUserTrackCell(indexPath)
+                cell = getDropbeatTrackCell(indexPath)
             case .DAILY_CHART:
                 cell = getBeatportChartCell(indexPath)
             case .NEW_RELEASE:
@@ -1054,7 +1054,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         if !refreshControl.refreshing && nextPage == 0 {
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
-        Track.fetchFollowingTracks(nextPage) { (tracks, error) -> Void in
+        DropbeatTrack.fetchFollowingTracks(nextPage) { (tracks, error) -> Void in
             self.isLoading = false
             progressHud?.hide(true)
             if self.refreshControl.refreshing {

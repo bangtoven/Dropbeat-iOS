@@ -124,8 +124,8 @@ class Requests {
     
     static func logPlayDrop(track:Track) -> Request{
         var id: String
-        if let userTrack = track as? UserTrack {
-            id = userTrack.uniqueKey
+        if let dropbeatTrack = track as? DropbeatTrack {
+            id = dropbeatTrack.uniqueKey
         } else {
             id = track.id
         }
@@ -135,8 +135,8 @@ class Requests {
     
     static func logPlay(track:Track) -> Request{
         var id: String
-        if let userTrack = track as? UserTrack {
-            id = userTrack.uniqueKey
+        if let dropbeatTrack = track as? DropbeatTrack {
+            id = dropbeatTrack.uniqueKey
         } else {
             id = track.id
         }

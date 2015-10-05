@@ -8,35 +8,6 @@
 
 import UIKit
 
-class Location {
-    static var location:[String:String]?
-    
-    static func load(callback:((dict:[String:String]) -> Void)) {
-        Requests.sendGet("http://geo.ironbricks.com/json/", auth: false) { (req, resp, result, error) -> Void in
-            let json = JSON(result!)
-            
-            var location = [String:String]()
-            let lat = json["latitude"].stringValue
-            let lng = json["longitude"].stringValue
-            
-            let url = "http://maps.google.com/maps/api/geocode/json?latlng=\(lat),\(lng)&sensor=false&language=en"
-            Requests.sendGet(url, auth: false) { (req, resp, result, error) -> Void in
-                let json = JSON(result!)["results"]
-
-                location["country_name"] = json[json.count-1]["address_components"][0]["long_name"].stringValue
-                location["country_code"] = json[json.count-1]["address_components"][0]["short_name"].stringValue
-                
-                location["city_name"] = json[json.count-2]["address_components"][0]["long_name"].stringValue
-                location["lat"] = json[json.count-2]["geometry"]["location"]["lat"].stringValue
-                location["lng"] = json[json.count-2]["geometry"]["location"]["lng"].stringValue
-                
-                Location.location = location
-                callback(dict: location)
-            }
-        }
-    }
-}
-
 class Account {
     var user:User?
     var token:String
@@ -173,6 +144,41 @@ class Account {
             
             gotFavoriteInfo = true
             responseHandler()
+        }
+    }
+    
+    static var location:[String:String]?
+    
+    static func loadLocation(callback:((dict:[String:String]) -> Void)) {
+        Requests.sendGet("http://geo.ironbricks.com/json/", auth: false) { (req, resp, result, error) -> Void in
+            if error != nil {
+                Account.location = [:]
+                return
+            }
+            let json = JSON(result!)
+            
+            var location = [String:String]()
+            let lat = json["latitude"].stringValue
+            let lng = json["longitude"].stringValue
+            
+            let url = "http://maps.google.com/maps/api/geocode/json?latlng=\(lat),\(lng)&sensor=false&language=en"
+            Requests.sendGet(url, auth: false) { (req, resp, result, error) -> Void in
+                if error != nil {
+                    Account.location = [:]
+                    return
+                }
+                let json = JSON(result!)["results"]
+                
+                location["country_name"] = json[json.count-1]["address_components"][0]["long_name"].stringValue
+                location["country_code"] = json[json.count-1]["address_components"][0]["short_name"].stringValue
+                
+                location["city_name"] = json[json.count-2]["address_components"][0]["long_name"].stringValue
+                location["lat"] = json[json.count-2]["geometry"]["location"]["lat"].stringValue
+                location["lng"] = json[json.count-2]["geometry"]["location"]["lng"].stringValue
+                
+                Account.location = location
+                callback(dict: location)
+            }
         }
     }
 }

@@ -10,19 +10,20 @@ import UIKit
 
 class PlayLog {
     private var track_id: Int
-    init(track: UserTrack) {
+    private var seekLog = [(Int,Int)]()
+
+    init(track: DropbeatTrack) {
         self.track_id = Int(track.id)!
     }
     
-    private var seekLog = [(Int,Int)]()
     func seek(from from:Int, to:Int) {
         self.seekLog.append((from,to))
     }
     
-    var log: [String:AnyObject]?
     func finished(end: Int? = nil) {
         var log = [String:AnyObject]()
         log["track_id"] = self.track_id
+        log["location"] = Account.location
         
         var data = [AnyObject]()
         data.append(["type":"start"])
@@ -37,11 +38,7 @@ class PlayLog {
         }
         log["data"] = data
         
-        log["location"] = Location.location
-
-        self.log = log
-        
-        request(.POST, ApiPath.logPlaybackDetail, parameters: self.log, encoding: .JSON)
+        request(.POST, ApiPath.logPlaybackDetail, parameters: log, encoding: .JSON)
         .responseJSON { (req, resp, result) -> Void in
             print("playback log post " + result.description)
         }
@@ -54,7 +51,6 @@ class Track {
         Requests.sendGet(ApiPath.metaKey, auth: false) { (req, resp, result, error) -> Void in
             if error != nil {
                 print("can't fetch sound cloud key")
-                // TODO: send log to server
                 return
             }
             
@@ -121,6 +117,55 @@ class Track {
         }
         
         self.releaseDate = releaseDate
+    }
+    
+    convenience init(artistTrack json: JSON) {
+        var drop: Drop?
+        let dropObj = json["drop"]
+        if dropObj != JSON.null {
+            drop = Drop(dref: dropObj["dref"].stringValue,
+                type: dropObj["type"].stringValue,
+                when: dropObj["when"].int)
+        } else {
+            print("no drop data")
+        }
+        
+        self.init(
+            id: json["id"].stringValue,
+            title: json["title"].stringValue,
+            type: json["type"].stringValue,
+            drop: drop,
+            releaseDate: NSDate.dateFromString(json["release_date"].stringValue))
+        
+        self.user = BaseUser(
+            userType: .ARTIST,
+            name: json["dj"].stringValue,
+            image: json["artist_image"].string,
+            resourceName: json["resource_name"].stringValue)
+    }
+    
+    convenience init (channelTrack json: JSON) {
+        let id = json["video_id"].string ?? json["id"].stringValue
+        self.init(
+            id: id,
+            title: json["title"].stringValue,
+            type: "youtube",
+            releaseDate: NSDate.dateFromString(json["published_at"].stringValue))
+        
+        self.user = BaseUser(
+            userType: .CHANNEL,
+            name: json["channel_title"].stringValue,
+            image: json["channel_image"].string,
+            resourceName: json["resource_name"].stringValue)
+    }
+    
+    convenience init (channelSnippet snippet: JSON) {
+        let id = snippet["resourceId"]["videoId"].stringValue
+        self.init(
+            id: id,
+            title: snippet["title"].stringValue,
+            type: "youtube",
+            releaseDate: NSDate.dateFromString(snippet["publishedAt"].stringValue))
     }
     
     static func parseTracks(json: JSON) -> [Track] {
@@ -264,102 +309,18 @@ class Track {
             afterShare(error: nil, sharedURL:URL)
         })
     }
-    
-    convenience init(artistTrack json: JSON) {
-        var drop: Drop?
-        let dropObj = json["drop"]
-        if dropObj != JSON.null {
-            drop = Drop(dref: dropObj["dref"].stringValue,
-                type: dropObj["type"].stringValue,
-                when: dropObj["when"].int)
-        } else {
-            print("no drop data")
-        }
-        
-        self.init(
-            id: json["id"].stringValue,
-            title: json["title"].stringValue,
-            type: json["type"].stringValue,
-            drop: drop,
-            releaseDate: NSDate.dateFromString(json["release_date"].stringValue))
-        
-        self.user = BaseUser(
-            userType: .ARTIST,
-            name: json["dj"].stringValue,
-            image: json["artist_image"].string,
-            resourceName: json["resource_name"].stringValue)
-    }
-    
-    convenience init (channelTrack json: JSON) {
-        let id = json["video_id"].string ?? json["id"].stringValue
-        self.init(
-            id: id,
-            title: json["title"].stringValue,
-            type: "youtube",
-            releaseDate: NSDate.dateFromString(json["published_at"].stringValue))
-        
-        self.user = BaseUser(
-            userType: .CHANNEL,
-            name: json["channel_title"].stringValue,
-            image: json["channel_image"].string,
-            resourceName: json["resource_name"].stringValue)
-    }
-    
-    convenience init (channelSnippet snippet: JSON) {
-        let id = snippet["resourceId"]["videoId"].stringValue
-        self.init(
-            id: id,
-            title: snippet["title"].stringValue,
-            type: "youtube",
-            releaseDate: NSDate.dateFromString(snippet["publishedAt"].stringValue))
-    }
-    
-    static func fetchFollowingTracks(pageIdx: Int, callback:((tracks:[Track]?, error:NSError?) -> Void)) {
-        Requests.sendGet(ApiPath.streamFollowing, params: ["p": pageIdx], auth: true) { (req, res, result, error) -> Void in
-            if (error != nil) {
-                callback(tracks: nil, error: error)
-                return
-            }
-            if (result == nil) {
-                callback(tracks: [], error: nil)
-                return
-            }
-            
-            var tracks = [Track]()
-            for (_, json) in JSON(result!)["data"] {
-                var track:Track?
-                if json["unique_key"] != JSON.null {
-                    track = UserTrack(json: json)
-                } else if json["dj"] != JSON.null {
-                    track = Track(artistTrack: json)
-                } else if json["channel_title"] != JSON.null {
-                    track = Track(channelTrack: json)
-                } else {
-                    print("what the hell is this??")
-                }
-                
-                if let t = track {
-                    tracks.append(t)
-                }
-            }
-            callback(tracks: tracks, error: nil)
-        }
-    }
 }
 
-class UserTrack: Track {
+class DropbeatTrack: Track {
     enum TrackType {
         case TRACK
         case MIXSET
     }
     
     private var _streamUrl: String
-    override var streamUrl: String? {
-        get {
-            return _streamUrl
-        }
-    }
-    var userTrackType: TrackType = .TRACK
+    override var streamUrl: String? { get {return _streamUrl } }
+    
+    var trackType: TrackType = .TRACK
     var description: String?
     var genre: String?
     var likeCount: Int = 0
@@ -386,7 +347,7 @@ class UserTrack: Track {
             releaseDate: NSDate.dateFromString(json["created_at"].stringValue))
         
         self.description = json["description"].stringValue
-        self.userTrackType = (json["track_type"].stringValue == "TRACK") ? TrackType.TRACK : TrackType.MIXSET
+        self.trackType = (json["track_type"].stringValue == "TRACK") ? TrackType.TRACK : TrackType.MIXSET
         self.likeCount = json["like_count"].intValue
         self.playCount = json["play_count"].intValue
         self.repostCount = json["repost_count"].intValue
@@ -423,13 +384,47 @@ class UserTrack: Track {
         let URL = "http://dropbeat.net/r/\(userResourceName)/\(self.resourcePath)"
         afterShare(error: nil, sharedURL: URL)
     }
+}
+
+extension DropbeatTrack {
+    static func fetchFollowingTracks(pageIdx: Int, callback:((tracks:[Track]?, error:NSError?) -> Void)) {
+        Requests.sendGet(ApiPath.streamFollowing, params: ["p": pageIdx], auth: true) { (req, res, result, error) -> Void in
+            if (error != nil) {
+                callback(tracks: nil, error: error)
+                return
+            }
+            if (result == nil) {
+                callback(tracks: [], error: nil)
+                return
+            }
+            
+            var tracks = [Track]()
+            for (_, json) in JSON(result!)["data"] {
+                var track:Track?
+                if json["unique_key"] != JSON.null {
+                    track = DropbeatTrack(json: json)
+                } else if json["dj"] != JSON.null {
+                    track = Track(artistTrack: json)
+                } else if json["channel_title"] != JSON.null {
+                    track = Track(channelTrack: json)
+                } else {
+                    print("what the hell is this??")
+                }
+                
+                if let t = track {
+                    tracks.append(t)
+                }
+            }
+            callback(tracks: tracks, error: nil)
+        }
+    }
     
     enum NewUploadsOrder: Int {
         case POPULAR = 0
         case RECENT = 1
     }
     
-    static func fetchNewUploads(order:NewUploadsOrder, pageIdx: Int, callback:((tracks:[UserTrack]?, error:NSError?) -> Void)) {
+    static func fetchNewUploads(order:NewUploadsOrder, pageIdx: Int, callback:((tracks:[DropbeatTrack]?, error:NSError?) -> Void)) {
         var params:[String:AnyObject] = ["p": pageIdx]
         switch order {
         case .POPULAR: params["order"] = "popular"
@@ -445,9 +440,9 @@ class UserTrack: Track {
                 return
             }
             
-            var tracks = [UserTrack]()
+            var tracks = [DropbeatTrack]()
             for (_, json) in JSON(result!)["data"] {
-               let t = UserTrack(json: json)
+                let t = DropbeatTrack(json: json)
                 tracks.append(t)
             }
             callback(tracks: tracks, error: nil)
@@ -491,7 +486,7 @@ class Like {
         
         var track:Track
         if json["type"].stringValue == "user_track" {
-            track = UserTrack(json: json["data"])
+            track = DropbeatTrack(json: json["data"])
         } else {
             var trackJson:JSON = json["data"]
             if trackJson["id"].string == nil || trackJson["type"].string == nil || trackJson["title"].string == nil {
@@ -532,7 +527,7 @@ class Like {
         }
         
         switch track {
-        case is UserTrack:
+        case is DropbeatTrack:
             Requests.sendPost(ApiPath.userTrackLike, params: ["track_id":track.id], auth: true) { (req, resp, result, error) -> Void in
                 if error != nil {
                     callback?(error:error)
@@ -604,7 +599,7 @@ class Like {
         
         let likeId = filteredLikes.first?.id
         switch track {
-        case is UserTrack:
+        case is DropbeatTrack:
             Requests.send(.DELETE, url: ApiPath.userTrackLike, params: ["like_id":likeId!], auth: true) { (req, resp, result, error) -> Void in
                 if error != nil {
                     callback?(error:error)

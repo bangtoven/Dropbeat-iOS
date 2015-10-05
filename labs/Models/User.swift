@@ -134,7 +134,7 @@ class User: BaseUser {
     var num_following: Int
     var num_followers: Int
     var aboutMe: String
-    var tracks: [UserTrack] = []
+    var tracks: [DropbeatTrack] = []
     var likes: [Like]?
     
     override init(json: JSON) {
@@ -170,9 +170,9 @@ class User: BaseUser {
         
         let tracksJson = json["tracks"]
         if tracksJson != nil {
-            var tracks = [UserTrack]()
+            var tracks = [DropbeatTrack]()
             for (_, t): (String, JSON) in tracksJson {
-                tracks.append(UserTrack(json: t))
+                tracks.append(DropbeatTrack(json: t))
             }
             self.tracks = tracks
         }

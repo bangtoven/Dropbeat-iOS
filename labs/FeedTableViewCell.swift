@@ -28,7 +28,7 @@ class FeedSelectTableViewCell: UITableViewCell {
 
 }
 
-class UserTrackTableViewCell: AddableTrackTableViewCell {
+class DropbeatTrackTableViewCell: AddableTrackTableViewCell {
     
     @IBOutlet weak var likeButton: UIButton!
     

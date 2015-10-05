@@ -404,6 +404,10 @@ class PlaylistViewController: BaseViewController,
         } else {
             Like.likeTrack(track) { (error) -> Void in
                 if error != nil {
+                    if error!.domain == NeedAuthViewController.NeedAuthErrorDomain {
+                        NeedAuthViewController.showNeedAuthViewController(self)
+                    }
+                    
                     progressHud.hide(true)
                     ViewUtils.showConfirmAlert(self,
                         title: NSLocalizedString("Failed to save", comment: ""),

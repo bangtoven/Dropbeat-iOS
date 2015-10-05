@@ -798,6 +798,10 @@ class PlayerViewController: BaseViewController {
             self.likeProgIndicator.stopAnimating()
             self.likeBtn.hidden = false
             if error != nil {
+                if error!.domain == NeedAuthViewController.NeedAuthErrorDomain {
+                    NeedAuthViewController.showNeedAuthViewController(self)
+                }
+                
                 ViewUtils.showConfirmAlert(self,
                     title: NSLocalizedString("Failed to save", comment: ""),
                     message: NSLocalizedString("Failed to save like info.", comment: ""),

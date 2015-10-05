@@ -608,7 +608,7 @@ class Like {
     
     static func likeTrack(track:Track, callback: ((error: NSError?) -> Void)?) {
         if Account.getCachedAccount() == nil {
-            // TODO: 로그인 안했을 때 어쩔꺼니?
+            callback?(error: NSError(domain: NeedAuthViewController.NeedAuthErrorDomain, code: -1, userInfo: nil))
             return
         }
         

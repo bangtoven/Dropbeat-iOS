@@ -9,6 +9,7 @@ import UIKit
 //
 
 class NeedAuthViewController: BaseViewController {
+    static let NeedAuthErrorDomain = "NeedAuthErrorDomain"
     
     class func showNeedAuthViewController(from: UIViewController!) {
         let storyboard: UIStoryboard = UIStoryboard(name: "Settings", bundle: nil)

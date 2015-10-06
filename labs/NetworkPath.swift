@@ -15,6 +15,8 @@ extension ApiPath {
 public class ApiPath {
     static let host = RELEASE ? "http://dropbeat.net/api/v1/" : "http://spark.coroutine.io/api/v1/"
     
+    static let resolveResource = host + "resolve/"
+
     // User
     static let user = host + "user/"
     static let userSignIn = user + "signin_fb_android/"
@@ -30,14 +32,12 @@ public class ApiPath {
     static let userFollowers = user + "followers/"
     static let userFollowing = user + "following/"
     
-    static let resolveUser = host + "resolve/"
     static let followUser = user + "follow/"
     static let unfollowUser = user + "unfollow/"
     
     // Feed
     static let feed = host + "feed/"
     static let feedChannel = feed + "channel/"
-    static let feedFriend = feed + "friend/"
     
     // Playlist
     static let playlist = host + "playlist/"
@@ -100,16 +100,7 @@ public class CorePath {
     static let newSearch = host + "v1/search/"
     
     static let search = host + "search/"
-    static let searchRelated = search + "related/"
     static let searchLiveset = search + "liveset/"
-    static let searchOther = search + "other/"
-    static let searchArtist = search + "artist/"
-    
-    // core.resolve
-    static let resolve = host + "resolve/"
-    
-    // core.related
-    static let related = host + "related/"
     
     // core.live
     static let live = host + "live/"
@@ -128,12 +119,9 @@ public class CorePath {
     
     // core.channel
     static let channel = host + "channel/"
-    static let channelList = channel + "list/"
-    static let channelDetail = channel + "detail/"
-    static let channelDescExtractUrl = channel + "extract/"
     // core.channel playlist
-    static let channelGproxy = channel + "gproxy/"
     static let channelFeed = channel + "feed/"
+    static let channelGproxy = channel + "gproxy/"
 
     // core.artistFilter
     static let artistFilter = host + "artist/filter/"

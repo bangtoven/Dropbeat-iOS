@@ -563,7 +563,7 @@ class PlaylistViewController: BaseViewController,
     func onSharePlaylistBtnClicked() {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         Requests.sharePlaylist(currentPlaylist!, respCb: {
-                (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                (req, resp, result, error) -> Void in
             progressHud.hide(true)
             var message:String = NSLocalizedString("Failed to share playlist.", comment:"")
             var success = true
@@ -775,7 +775,7 @@ class PlaylistViewController: BaseViewController,
     
     func importPlaylist(callback: (playlist:Playlist?, error:NSError?) -> Void) {
         Requests.createPlaylist(currentPlaylist.name) {
-            (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            (req, resp, result, error) -> Void in
             if (error != nil || result == nil) {
                 callback(playlist:nil, error: error != nil ? error :
                     NSError(domain: "importPlaylist", code: 0, userInfo: nil))
@@ -797,7 +797,7 @@ class PlaylistViewController: BaseViewController,
             }
             
             Requests.setPlaylist(importedPlaylist!.id, data: data, respCb: {
-                    (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                    (req, resp, result, error) -> Void in
                 if (result == nil || error != nil || !(JSON(result!)["success"].bool ?? false)) {
                     Requests.deletePlaylist(importedPlaylist!.id, respCb: Requests.EMPTY_RESPONSE_CALLBACK)
                     callback(playlist:nil, error: NSError(domain: "importPlaylist", code: 0, userInfo: ["message":"Failed to save playlist"]))

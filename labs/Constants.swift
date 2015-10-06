@@ -24,7 +24,6 @@ class NotifyKey {
     static var updateShuffleState = "updateShuffleState"
     static var updateQualityState = "updateQualityState"
     static var networkStatusChanged = "networkStatusChanged"
-    static var appSignout = "appSignout"
     static var likeUpdated = "likeUpdated"
 }
 

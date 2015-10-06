@@ -314,7 +314,7 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         let progressHud = ViewUtils.showProgress(self, message: "")
         isSubmitting = true
         
-        Requests.emailSignin(email!, password: password!) { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.emailSignin(email!, password: password!) { (req, resp, result, error) -> Void in
             if error != nil || result == nil {
                 self.isSubmitting = false
                 progressHud.hide(true)
@@ -575,7 +575,7 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         let progressHud = ViewUtils.showProgress(self, message: "")
         Requests.emailSignup(email!, firstName: firstname!, lastName: lastname!,
             nickname: nickname!, password: password!,
-            respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            respCb: { (req, resp, result, error) -> Void in
                 
                 if error != nil || result == nil {
                     self.isSubmitting = false

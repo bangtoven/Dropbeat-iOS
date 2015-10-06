@@ -84,27 +84,18 @@ class UserViewController: AXStretchableHeaderTabViewController {
         header.profileImageView.hidden = (self.passedImage != nil)
 
         let progressHud = ViewUtils.showProgress(self, message: nil)
-        Requests.resolveUser(self.resource) {(req, resp, result, error) -> Void in
+        BaseUser.resolve(self.resource) { (user, error) -> Void in
             progressHud.hide(true)
             
-            if (error != nil || JSON(result!)["success"] == false) {
-                ViewUtils.showNoticeAlert(self, title: "Error", message: (error?.description)!)
+            if (error != nil) {
+                ViewUtils.showNoticeAlert(self, title: "Error", message: (error?.localizedDescription)!)
                 return
             }
             
-            let type: String = JSON(result!)["data"]["user_type"].stringValue
-            switch type {
-            case "user":
-                self.baseUser = User(json: JSON(result!)["data"])
-            case "artist":
-                self.baseUser = Artist(json: JSON(result!)["data"])
-            case "channel":
-                self.baseUser = Channel(json: JSON(result!)["data"])
-            default:
-                ViewUtils.showNoticeAlert(self, title: "Error", message: "Unknown user type: \(type)")
-                return
+            if let u = user {
+                self.baseUser = u
+                self.applyFetchedInfoToView()
             }
-            self.applyFetchedInfoToView()
         }
     }
     

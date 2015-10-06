@@ -161,7 +161,7 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
             for key:String in idsToRemove {
                 genreIds.append(key)
             }
-            Requests.delFavorite(genreIds, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            Requests.delFavoriteGenre(genreIds, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                 if error != nil || result == nil ||
                     !(JSON(result!)["success"].bool ?? false) {
                         handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
@@ -181,7 +181,7 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
             for key:String in idsToAdd {
                 genreIds.append(key)
             }
-            Requests.addFavorite(genreIds, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            Requests.addFavoriteGenre(genreIds, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                 if error != nil || result == nil ||
                     !(JSON(result!)["success"].bool ?? false) {
                         handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
@@ -260,7 +260,7 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
             progressHud = ViewUtils.showProgress(self, message: "")
         }
         isLoading = true
-        Requests.getFavorites { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.getFavoriteGenres { (req, resp, result, error) -> Void in
             
             if error != nil || result == nil {
                 self.progressHud?.hide(true)
@@ -331,7 +331,7 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
             progressHud = ViewUtils.showProgress(self, message: "")
         }
         isLoading = true
-        Requests.getFeedGenre { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.getFeedGenre { (req, resp, result, error) -> Void in
             self.progressHud?.hide(true)
             self.isLoading = false
             
@@ -539,7 +539,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
             for key:String in idsToRemove {
                 genreIds.append(key)
             }
-            Requests.delFavorite(genreIds, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            Requests.delFavoriteGenre(genreIds, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                 if error != nil || result == nil ||
                     !(JSON(result!)["success"].bool ?? false) {
                         handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
@@ -559,7 +559,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
             for key:String in idsToAdd {
                 genreIds.append(key)
             }
-            Requests.addFavorite(genreIds, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            Requests.addFavoriteGenre(genreIds, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
                 if error != nil || result == nil ||
                     !(JSON(result!)["success"].bool ?? false) {
                         handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
@@ -725,7 +725,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
     
     func loadSamples() {
         let progressHud = ViewUtils.showProgress(self, message: "")
-        Requests.getGenreSamples { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.getGenreSamples { (req, resp, result, error) -> Void in
             progressHud.hide(true)
             if error != nil || result == nil {
                 ViewUtils.showConfirmAlert(self,

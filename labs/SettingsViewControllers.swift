@@ -46,18 +46,16 @@ class SettingsViewController: UITableViewController {
         ViewUtils.showConfirmAlert(self,
             title: NSLocalizedString("Are you sure?", comment:""),
             message: NSLocalizedString("Are you sure you want to sign out?", comment:""),
-                positiveBtnText: NSLocalizedString("Sign out", comment:""), positiveBtnCallback: { () -> Void in
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.appSignout, object: nil)
-                    
-//            Account.signout()
-                    let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
-                    keychainItemWrapper.resetKeychainItem()
-                    Account.account = nil
-                    let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-                    appDelegate.account = nil
-                    PlayerViewController.sharedInstance!.resignObservers()
-                    let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
-                    navController.popToRootViewControllerAnimated(false)
+            positiveBtnText: NSLocalizedString("Sign out", comment:""), positiveBtnCallback: { () -> Void in
+                
+                let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
+                keychainItemWrapper.resetKeychainItem()
+                Account.account = nil
+                let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                appDelegate.account = nil
+                PlayerViewController.sharedInstance!.resignObservers()
+                let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
+                navController.popToRootViewControllerAnimated(false)
         })
     }
     
@@ -212,7 +210,7 @@ class FeedbackViewController: BaseViewController,
         }
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Sending..", comment:""))
         Requests.sendFeedback(senderEmail!, content: text) {
-                (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                (req, resp, result, error) -> Void in
             var message:String = NSLocalizedString("Failed to send feedback.", comment:"")
             var success = true
             if success && error != nil {

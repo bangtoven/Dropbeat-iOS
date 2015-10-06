@@ -71,17 +71,51 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     
     func loadAppLinkRequest() {
         guard let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate,
-            appLinkParameter = appDelegate.appLinkParameter else {
-                return
+                        param = appDelegate.appLink else {
+            print("no app link param.")
+            return
         }
         
-        switch appLinkParameter {
-        case .SHARED_TRACK(let uid):
-            let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-            Requests.getSharedTrack(uid, respCb: {
-                (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        switch param {
+        case .USER(let userResource):
+            let uvc = UIStoryboard(name: "Profile", bundle: nil).instantiateViewControllerWithIdentifier("UserViewController") as! UserViewController
+            uvc.resource = userResource
+            if let navController = self.activeViewController as? UINavigationController {
+                self.hidePlayerView()
+                navController.pushViewController(uvc, animated: true)
+            }
+        case .USER_TRACK(user: let userResource, track: let trackResource):
+            let uvc = UIStoryboard(name: "Profile", bundle: nil).instantiateViewControllerWithIdentifier("UserViewController") as! UserViewController
+            uvc.resource = userResource
+            if let navController = self.activeViewController as? UINavigationController {
+                navController.pushViewController(uvc, animated: true)
+            }
+            
+            DropbeatTrack.resolve(userResource, track: trackResource) {
+                (track, error) -> Void in
                 
-                progressHud.hide(true)
+                if error != nil {
+                    ViewUtils.showNoticeAlert(
+                        self,
+                        title: NSLocalizedString("Failed to load", comment:""),
+                        message: NSLocalizedString("Failed to load shared track", comment:""),
+                        btnText: NSLocalizedString("Confirm", comment:""),
+                        callback: nil)
+                    return
+                }
+                
+                let params: [String: AnyObject] = [
+                    "track": track!,
+                    "section": "app-link"
+                ]
+                self.showPlayerView()
+                NSNotificationCenter.defaultCenter().postNotificationName(
+                    NotifyKey.playerPlay, object: params)
+            }
+        case .SHARED_TRACK(let uid):
+            Requests.getSharedTrack(uid, respCb: {
+                (req, resp, result, error) -> Void in
+                
                 var success:Bool = true
                 var track:Track?
                 
@@ -109,14 +143,13 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
                     "track": track!,
                     "section": "shared_track"
                 ]
+                self.showPlayerView()
                 NSNotificationCenter.defaultCenter().postNotificationName(
                     NotifyKey.playerPlay, object: params)
             })
-            break
         case .SHARED_PLAYLIST(let uid):
-            let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
             Requests.getSharedPlaylist(uid, respCb: {
-                (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                (req, resp, result, error) -> Void in
                 
                 var success:Bool = true
                 var playlist:Playlist?
@@ -137,22 +170,16 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
                         message: NSLocalizedString("Failed to load shared playlist", comment:""),
                         btnText: NSLocalizedString("Confirm", comment:""),
                         callback: nil)
-                    progressHud.hide(true)
                     return
                 }
                 
                 playlist!.type = PlaylistType.SHARED
-                progressHud.hide(true)
                 self.performSegueWithIdentifier("PlaylistSegue", sender: playlist)
             })
-
-            break
-        default:
-            break
         }
         
         
-        appDelegate.appLinkParameter = nil
+        appDelegate.appLink = nil
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -322,6 +349,10 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     }
     
     func showPlayerView() {
+        if self.isPlayerVisible == true {
+            return
+        }
+        
         isPlayerVisible = true
         
         self.playerView.hidden = false
@@ -343,6 +374,10 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     }
     
     func hidePlayerView() {
+        if self.isPlayerVisible == false {
+            return
+        }
+        
         isPlayerVisible = false
 
         UIView.animateWithDuration(0.3, delay: 0.0, options: UIViewAnimationOptions.CurveEaseIn, animations: { () -> Void in

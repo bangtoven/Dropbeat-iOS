@@ -86,7 +86,7 @@ class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate, UISc
         isSubmitting = true
         let progressHud = ViewUtils.showProgress(self, message: "")
         Requests.userChangeEmail(email!, respCb: {
-            (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            (req, resp, result, error) -> Void in
             self.isSubmitting = false
             if error != nil || result == nil {
                 progressHud.hide(true)

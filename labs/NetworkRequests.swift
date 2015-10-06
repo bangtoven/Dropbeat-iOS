@@ -33,23 +33,6 @@ class Requests {
         return send(Method.HEAD, url: url, params: params, auth: auth, respCb: respCb)
     }
     
-    static func resolveUser (resource: String, respCb: RespCallback) -> Request {
-        return sendGet(ApiPath.resolveUser, params:["url":"/r/"+resource], auth: false, respCb: respCb)
-    }
-    
-    static func fetchArtistEvent(q: String, respCb: RespCallback) -> Request{
-        return sendGet(CorePath.event, params: ["q": q], auth: false, respCb: respCb)
-    }
-    
-    static func fetchArtistLiveset(q: String, respCb: RespCallback) -> Request{
-        return sendGet(CorePath.searchLiveset, params: ["q": q], auth: false, respCb: respCb)
-    }
-    
-    static func fetchArtistPodcast(q: String, page: Int, respCb: RespCallback) -> Request{
-        return sendGet(CorePath.podcast, params: ["q": q, "p": page], auth: false, respCb: respCb)
-    }
-    
-    
     static func userSelf(respCb: RespCallback) -> Request {
         return sendGet(ApiPath.userSelf, auth: true, respCb: respCb)
     }
@@ -62,9 +45,6 @@ class Requests {
         return sendPost(ApiPath.userChangeEmail, params:["email":email], auth:true, respCb:respCb)
     }
     
-    static func getUserLikeList(id: String, respCb: RespCallback) -> Request {
-        return sendGet(ApiPath.userLikeList, params: ["user_id": id], auth: true, respCb: respCb)
-    }
     static func getPlaylist(id: String, respCb: RespCallback) -> Request {
         return sendGet(ApiPath.playlist, params: ["id": id], auth: true, respCb: respCb)
     }
@@ -72,7 +52,6 @@ class Requests {
     static func createPlaylist(name: String, respCb: RespCallback) -> Request{
         return sendPost(ApiPath.playlist, params: ["name": name], auth: true, respCb: respCb)
     }
-    
     
     // `data` should be JsonArray.
     static func setPlaylist(id: String, data: AnyObject, respCb: RespCallback) -> Request{
@@ -105,13 +84,6 @@ class Requests {
     
     static func search(q: String, respCb: RespCallback) -> Request{
         return sendGet(CorePath.newSearch, params: ["q": q], auth: false, respCb: respCb)
-    }
-    
-    static func fetchFeed(respCb: RespCallback) -> Request{
-        let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup: nil)
-        let key = keychainItemWrapper.objectForKey("auth_token") as? String
-        let authenticated = key != nil
-        return sendGet(ApiPath.feed, auth: authenticated, respCb: respCb)
     }
     
     static func logSearch(keyword: String) -> Request{
@@ -148,22 +120,6 @@ class Requests {
         return sendGet(ApiPath.metaVersion, auth: false, respCb: respCb)
     }
     
-    static func getChannelList(genre: String, respCb: RespCallback) -> Request {
-        return sendGet(CorePath.channelList, params: ["genre": genre], auth: false, respCb: respCb)
-    }
-    
-    static func getChannelDetail(uid: String, respCb: RespCallback) -> Request {
-        return sendGet(CorePath.channelDetail, params: ["uid": uid], auth: false, respCb: respCb)
-    }
-    
-    static func getBookmarkList(respCb: RespCallback) -> Request {
-        return sendGet(ApiPath.bookmark, auth: true, respCb: respCb)
-    }
-    
-    static func updateBookmarkList(ids: [String], respCb: RespCallback) -> Request {
-        return sendPost(ApiPath.bookmark, params: ["data": ids], auth: true, respCb: respCb)
-    }
-    
     static func getChannelPlaylist(uid: String, pageToken: String?, respCb: RespCallback) -> Request {
         var params:[String:AnyObject] = [
             "part": "id,snippet",
@@ -195,16 +151,8 @@ class Requests {
         return sendPost(ApiPath.feedback, params: ["sender": senderEmail, "content": content], auth: false, respCb: respCb)
     }
     
-    static func fetchChannelFeed(pageIdx:Int, respCb: RespCallback) -> Request {
-        return sendGet(ApiPath.feedChannel, params: ["p": pageIdx], auth:true, respCb: respCb)
-    }
-    
     static func fetchExploreChannelFeed(pageIdx:Int, respCb: RespCallback) -> Request {
         return sendPost(CorePath.channelFeed, params: ["p": pageIdx], auth:false, respCb: respCb)
-    }
-    
-    static func artistFilter(names:[String], respCb: RespCallback) -> Request {
-        return sendPost(CorePath.artistFilter, params: ["q": names], auth:false, respCb: respCb)
     }
     
     static func fetchBeatportChart(genre:String, respCb: RespCallback) -> Request {
@@ -231,27 +179,6 @@ class Requests {
         return sendGet(CorePath.streamTrending, params:params, auth:false, respCb: respCb)
     }
     
-    static func getStreamFriend(respCb: RespCallback) -> Request {
-        var params:[String:AnyObject]?
-        let defaultDb:NSUserDefaults = NSUserDefaults.standardUserDefaults()
-        if let expireDate:NSDate = defaultDb.objectForKey(UserDataKey.maxFavoriteCacheExpireDate) as? NSDate
-            where expireDate.compare(NSDate()) == NSComparisonResult.OrderedDescending {
-            params = ["f": "1"]
-
-        }
-        return sendGet(ApiPath.feedFriend, params:params, auth:true,
-            respCb:{ (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-                if error == nil && result != nil && JSON(result!)["success"].bool ?? false {
-                    defaultDb.removeObjectForKey(UserDataKey.maxFavoriteCacheExpireDate)
-                }
-                respCb(req, resp, result, error)
-        })
-    }
-    
-    static func searchArtist(keyword:String, respCb: RespCallback) -> Request {
-        return sendGet(CorePath.searchArtist, params:["q": keyword], auth:false, respCb:respCb)
-    }
-    
     static func doLike(track: Track, respCb: RespCallback) -> Request {
         var params:[String:AnyObject] = [String:AnyObject]()
         params["data"] = ["id":track.id, "type":track.type.rawValue, "title": track.title]
@@ -262,15 +189,15 @@ class Requests {
         return sendPost(ApiPath.trackDislike, params:["id":likeId], auth: true, respCb:respCb)
     }
     
-    static func addFavorite(ids:[String], respCb: RespCallback) -> Request {
+    static func addFavoriteGenre(ids:[String], respCb: RespCallback) -> Request {
         return sendPost(ApiPath.genreAddFavorite, params: ["ids": ids], auth: true, respCb:respCb)
     }
     
-    static func delFavorite(ids:[String], respCb: RespCallback) -> Request {
+    static func delFavoriteGenre(ids:[String], respCb: RespCallback) -> Request {
         return sendPost(ApiPath.genreDelFavorite, params: ["ids": ids], auth: true, respCb:respCb)
     }
     
-    static func getFavorites(respCb: RespCallback) -> Request {
+    static func getFavoriteGenres(respCb: RespCallback) -> Request {
         return sendGet(ApiPath.genreFavorite, params: nil, auth: true, respCb:respCb)
     }
     

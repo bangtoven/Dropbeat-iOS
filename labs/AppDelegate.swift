@@ -28,7 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var futureQuality: QualityState?
     var reachability: Reachability?
     
-    var appLinkParameter: AppLinkParam?
+    var appLink: AppLinkParam?
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         super.touchesBegan(touches, withEvent: event)
@@ -77,56 +77,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             guard let currentTrack = PlayerContext.currentTrack else {
                 return
             }
-            var params: [String: AnyObject] = [String: AnyObject]()
+            var params = [String: AnyObject]()
             params["track"] = currentTrack
             if let playlistId = PlayerContext.currentPlaylistId {
                 params["playlistId"] =  playlistId
             }
             NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.playerPlay, object: params)
-            break;
-        
         case .RemoteControlPause:
             print("pause clicked")
-            NSNotificationCenter.defaultCenter().postNotificationName(
-                NotifyKey.playerPause, object: nil)
-            break;
-        
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.playerPause, object: nil)
         case .RemoteControlPreviousTrack:
             print("prev clicked")
-            NSNotificationCenter.defaultCenter().postNotificationName(
-                NotifyKey.playerPrev, object: nil)
-            break;
-        
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.playerPrev, object: nil)
         case .RemoteControlNextTrack:
             print("next clicked")
-            NSNotificationCenter.defaultCenter().postNotificationName(
-                NotifyKey.playerNext, object: nil)
-            break;
-            
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.playerNext, object: nil)
         case .RemoteControlStop:
             print("stop clicked")
-            break;
-        case .RemoteControlTogglePlayPause:
-            // XXX: For IOS 6 compat.
-            if (PlayerContext.playState == PlayState.PLAYING) {
-                NSNotificationCenter.defaultCenter().postNotificationName(
-                    NotifyKey.playerPause, object: nil)
-            } else {
-                if PlayerContext.currentTrack == nil {
-                    return
-                }
-                var params: [String: AnyObject] = [String:AnyObject]()
-                params["track"] = PlayerContext.currentTrack!
-                if PlayerContext.currentPlaylistId != nil {
-                    params["playlistId"] =  PlayerContext.currentPlaylistId!
-                }
-                params["section"] = PlayerContext.playingSection
-                NSNotificationCenter.defaultCenter().postNotificationName(
-                    NotifyKey.playerPlay, object: params)               
-            }
-            break;
         default:
-            break;
+            break
         }
     }
     
@@ -166,8 +135,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
                     return
                 }
-                NSNotificationCenter.defaultCenter().postNotificationName(
-                    NotifyKey.likeUpdated, object: nil)
+                else {
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.likeUpdated, object: nil)
+                }
             }
             
             account.syncFollowingInfo { (error) -> Void in
@@ -199,20 +169,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func handleCustomURL(url:NSURL) {
         if url.scheme == ExternalUrlKey.scheme && url.host == ExternalUrlKey.defaultIdentifier {
-            if let query = url.getKeyVals() where query.count > 0 {
+            var param: AppLinkParam?
+
+            if let query = url.getKeyVals() where query.count == 1 {
                 if let sharedTrackUid = query["track"] {
-                    self.appLinkParameter = .SHARED_TRACK(sharedTrackUid)
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.fromAppLink, object: nil)
-                    return
+                    param = .SHARED_TRACK(sharedTrackUid)
+                } else if let sharedPlaylistUid = query["playlist"] {
+                    param = .SHARED_PLAYLIST(sharedPlaylistUid)
                 }
-                
-                if let sharedPlaylistUid = query["playlist"] {
-                    self.appLinkParameter = .SHARED_PLAYLIST(sharedPlaylistUid)
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.fromAppLink, object: nil)
-                    return
+            } else {
+                var components = url.pathComponents!
+                switch components.count {
+                case 3:
+                    if let user = components.popLast() {
+                        param = .USER(user)
+                    }
+                case 4:
+                    if let track = components.popLast(), user = components.popLast() {
+                        param = AppLinkParam.USER_TRACK(user: user, track: track)
+                    }
+                default:
+                    break
                 }
-            } else if let components = url.pathComponents {
-                print(components.count)
+            }
+            
+            if param != nil {
+                self.appLink = param
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.fromAppLink, object: nil)
+            } else {
+                print("invalid custom url: \(url)")
             }
         }
     }

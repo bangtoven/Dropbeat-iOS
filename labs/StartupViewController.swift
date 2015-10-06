@@ -129,7 +129,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     }
     
     func initialize() {
-        Requests.getFeedGenre { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.getFeedGenre { (req, resp, result, error) -> Void in
             if (error != nil) {
                     ViewUtils.showConfirmAlert(self,
                         title: NSLocalizedString("Failed to load", comment:""),
@@ -245,7 +245,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     
     func requestNextLikeInfos(pages:[FBPage], pageUrl:String, callback:(data:[FBPage]?, error:NSError?) -> Void) {
         Requests.sendGet(pageUrl, params: nil, auth:false, respCb: {
-                (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                (req, resp, result, error) -> Void in
             if (error != nil) {
                 callback(data:nil, error:error)
                 return

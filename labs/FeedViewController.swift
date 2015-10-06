@@ -397,7 +397,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         }
         
         Requests.getFeedGenre {
-                (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                (req, resp, result, error) -> Void in
             if error != nil || result == nil {
                 callback(error:error != nil ? error : NSError(domain: "initGenre", code:0, userInfo:nil))
                 return
@@ -872,7 +872,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
         Requests.getStreamTrending(selectedGenre!.key, pageIdx: nextPage, respCb: {
-            (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            (req, resp, result, error) -> Void in
             self.isLoading = false
             progressHud?.hide(true)
             if self.refreshControl.refreshing {
@@ -998,7 +998,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
         Requests.getStreamNew(selectedGenre!.key, pageIdx: nextPage, respCb: {
-            (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            (req, resp, result, error) -> Void in
             self.isLoading = false
             progressHud?.hide(true)
             if self.refreshControl.refreshing {

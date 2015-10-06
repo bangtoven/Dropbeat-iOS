@@ -9,10 +9,11 @@
 import UIKit
 
 enum SourceType: String {
+    case DROPBEAT = "dropbeat"
     case YOUTUBE = "youtube"
     case SOUNDCLOUD = "soundcloud"
     case PODCAST = "podcast"
-    case DROPBEAT = "dropbeat"
+    case SPOTIFY = "spotify"
     case UNKNOWN
     
     static func fromString(string: String) -> SourceType {
@@ -381,6 +382,19 @@ class DropbeatTrack: Track {
             resourceName: json["user_resource_name"].stringValue)
     }
     
+    static func resolve(user: String, track: String, callback:((track: Track?, error: NSError?) -> Void)) {
+        Requests.sendGet(ApiPath.resolveResource, params:["url":"/r/\(user)/\(track)"], auth: false) {
+            (req, resp, result, error) -> Void in
+            if (error != nil || JSON(result!)["success"] == false) {
+                callback(track: nil, error: error)
+                return
+            }
+            
+            let t = DropbeatTrack(json: JSON(result!)["data"])
+            callback(track: t, error: nil)
+        }
+    }
+    
     override func shareTrack(section:String, afterShare: (error:NSError?, sharedURL:NSString?) -> Void) {
         guard let userResourceName = self.user?.resourceName else {
             super.shareTrack(section, afterShare: afterShare)
@@ -640,7 +654,7 @@ class Like {
                 }
             }
         default:
-            Requests.doLike(track, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            Requests.doLike(track, respCb: { (req, resp, result, error) -> Void in
                 if error != nil {
                     callback?(error:error)
                     return
@@ -711,7 +725,7 @@ class Like {
             }
             break
         default:
-            Requests.doUnlike(likeId!, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            Requests.doUnlike(likeId!, respCb: { (req, resp, result, error) -> Void in
                 if error != nil {
                     callback?(error:error)
                     return

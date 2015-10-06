@@ -125,7 +125,7 @@ class Account {
             responseHandler()
         })
         
-        Requests.getFavorites { (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.getFavoriteGenres { (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if error != nil || result == nil {
                 errorHandler(error != nil ? error! :
                     NSError(domain: "getFavorites", code: 103, userInfo: nil))

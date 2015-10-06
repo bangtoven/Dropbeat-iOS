@@ -75,6 +75,32 @@ class BaseUser {
         }
     }
     
+    static func resolve(resource: String, callback:((user: BaseUser?, error: NSError?) -> Void)) {
+        Requests.sendGet(ApiPath.resolveResource, params:["url":"/r/"+resource], auth: false) {
+            (req, resp, result, error) -> Void in
+            if (error != nil || JSON(result!)["success"] == false) {
+                callback(user: nil, error: error)
+                return
+            }
+            
+            var user: BaseUser?
+            let type: String = JSON(result!)["data"]["user_type"].stringValue
+            switch type {
+            case "user":
+                user = User(json: JSON(result!)["data"])
+            case "artist":
+                user = Artist(json: JSON(result!)["data"])
+            case "channel":
+                user = Channel(json: JSON(result!)["data"])
+            default:
+                callback(user: nil, error: NSError(domain: "ResolveUser", code: -1, userInfo: [NSLocalizedDescriptionKey:"Unknown user type: \(type)"]))
+                return
+            }
+            
+            callback(user: user, error: nil)
+        }
+    }
+    
     private func _follow(follow: Bool, callback:((error: NSError?) -> Void)) {
         let path = follow ? ApiPath.followUser : ApiPath.unfollowUser
         
@@ -214,7 +240,8 @@ class User: BaseUser {
     }
     
     func fetchLikeList(callback:((likes:[Like]?, error:NSError?) -> Void)) {
-        Requests.getUserLikeList(self.id!, respCb: { (req, resp, result, error) -> Void in
+        Requests.sendGet(ApiPath.userLikeList, params: ["user_id": self.id!], auth: true) {
+            (req, resp, result, error) -> Void in
             if (error != nil) {
                 callback(likes: nil, error: error)
                 return
@@ -225,7 +252,7 @@ class User: BaseUser {
             }
             self.likes = Like.parseLikes(result!, key: "data")
             callback(likes:self.likes, error:nil)
-        })
+        }
     }
     
     func fetchTracksFromLikeList(callback:((tracks:[Track]?, error:NSError?) -> Void)) {
@@ -380,7 +407,8 @@ class Artist: BaseUser {
             callback(tracks: [], error: nil)
             return
         }
-        Requests.fetchArtistLiveset(name, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.sendGet(CorePath.searchLiveset, params: ["q": name], auth: false) {
+            (req, resp, result, error) -> Void in
             if (error != nil) {
                 callback(tracks: nil, error: error)
                 return
@@ -391,7 +419,7 @@ class Artist: BaseUser {
             }
             self.sectionedTracks[Artist.SECTION_LIVESET] = Track.parseTracks(result!, key: "data")
             callback(tracks:self.sectionedTracks[Artist.SECTION_LIVESET], error:nil)
-        })
+        }
     }
     
     func fetchPodcast(callback:((tracks:[Track]?, error:NSError?) -> Void)) {
@@ -404,7 +432,8 @@ class Artist: BaseUser {
             callback(tracks: [], error: nil)
             return
         }
-        Requests.fetchArtistPodcast(name, page: -1, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.sendGet(CorePath.podcast, params: ["q": name, "p": -1], auth: false) {
+            (req, resp, result, error) -> Void in
             if (error != nil) {
                 callback(tracks: nil, error: error)
                 return
@@ -421,7 +450,7 @@ class Artist: BaseUser {
             
             self.sectionedTracks[Artist.SECTION_PODCAST] = Track.parsePodcastTracks(t["data"])
             callback(tracks:self.sectionedTracks[Artist.SECTION_PODCAST], error:nil)
-        })
+        }
     }
     
     func fetchEvents(callback:((events:[ArtistEvent]?, error:NSError?) -> Void)) {
@@ -429,7 +458,8 @@ class Artist: BaseUser {
             callback(events:[], error: nil)
             return
         }
-        Requests.fetchArtistEvent(name, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.sendGet(CorePath.event, params: ["q": name], auth: false) {
+            (req, resp, result, error) -> Void in
             if (error != nil) {
                 callback(events: nil, error: error)
                 return
@@ -440,7 +470,7 @@ class Artist: BaseUser {
             }
             self.events = ArtistEvent.parseEvents(result!)
             callback(events:self.events, error:nil)
-        })
+        }
     }
 }
 

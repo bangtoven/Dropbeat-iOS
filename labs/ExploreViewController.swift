@@ -51,7 +51,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
     
     func refresh() {
         nextPage = 0
-        loadChannelFeed(nextPage, forceRefresh: true)
+        loadExploreFeed(nextPage, forceRefresh: true)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -63,7 +63,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
         }
         
         self.nextPage = 0
-        self.loadChannelFeed(self.nextPage)
+        self.loadExploreFeed(self.nextPage)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -121,7 +121,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             }
             loadMoreSpinnerWrapper.hidden = false
             loadMoreSpinner.startAnimating()
-            loadChannelFeed(nextPage)
+            loadExploreFeed(nextPage)
         }
     }
     
@@ -152,7 +152,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
         }
     }
     
-    func loadChannelFeed(pageIdx: Int, forceRefresh:Bool = false) {
+    func loadExploreFeed(pageIdx: Int, forceRefresh:Bool = false) {
         if isLoading {
             return
         }
@@ -173,7 +173,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             trackTableView.scrollsToTop = true
         }
         Requests.fetchExploreChannelFeed(pageIdx, respCb: {
-            (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            (req, resp, result, error) -> Void in
             
             progressHud?.hide(true)
             self.refreshControl.endRefreshing()

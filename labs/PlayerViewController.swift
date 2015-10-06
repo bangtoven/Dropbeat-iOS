@@ -18,7 +18,7 @@ class PlayerViewController: BaseViewController {
     @IBOutlet weak var loadingView: UIImageView!
     @IBOutlet weak var progressSliderBar: UISlider!
     
-    @IBOutlet weak var playerTitle: UILabel!
+    @IBOutlet weak var playerTitle: MarqueeLabel!
     @IBOutlet weak var playerStatus: UILabel!
     
     @IBOutlet weak var likeProgIndicator: UIActivityIndicatorView!

@@ -167,17 +167,12 @@ class PlayerViewController: BaseViewController {
         
         
         // Observe internal player.
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerContentPreloadDidFinish:",
-            name: "MPMoviePlayerContentPreloadDidFinishNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerLoadStateDidChange:",
             name: MPMoviePlayerLoadStateDidChangeNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackStateDidChange:",
             name: MPMoviePlayerPlaybackStateDidChangeNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackDidFinish:",
             name: MPMoviePlayerPlaybackDidFinishNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerTimedMetadataUpdated:",
-            name: MPMoviePlayerTimedMetadataUpdatedNotification, object: nil)
-        
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "AVPlayerItemDidPlayToEndTime:", name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
         
@@ -204,13 +199,9 @@ class PlayerViewController: BaseViewController {
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updateQualityState, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.networkStatusChanged, object: nil)
         
-        
-        
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: "MPMoviePlayerContentPreloadDidFinishNotification", object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: MPMoviePlayerLoadStateDidChangeNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: MPMoviePlayerPlaybackStateDidChangeNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: MPMoviePlayerPlaybackDidFinishNotification, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: MPMoviePlayerTimedMetadataUpdatedNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
 
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidEnterBackgroundNotification, object: nil)
@@ -720,17 +711,6 @@ class PlayerViewController: BaseViewController {
         }
     }
     
-    func MPMoviePlayerContentPreloadDidFinish (noti:NSNotification) {
-        var userInfo = noti.userInfo as? [String:AnyObject]
-        if (userInfo != nil) {
-            let reason:NSError? = userInfo!["error"] as? NSError
-            if (reason != nil) {
-                self.handlePlayFailure()
-            }
-        }
-        print("preload finished")
-    }
-    
     
     func MPMoviePlayerPlaybackDidFinish (noti: NSNotification) {
         if let userInfo = noti.userInfo,
@@ -755,10 +735,6 @@ class PlayerViewController: BaseViewController {
         if (!success) {
             handleStop()
         }
-    }
-    
-    func MPMoviePlayerTimedMetadataUpdated(noti: NSNotification) {
-        print("time meta updated")
     }
     
     func playParam(track: Track, playlistId: String) -> Dictionary<String, AnyObject> {
@@ -1219,6 +1195,7 @@ class PlayerViewController: BaseViewController {
         } else {
             if track.type != .UNKNOWN {
                 audioPlayerControl.moviePlayer.contentURL = NSURL(string:track.streamUrl)
+                audioPlayerControl.moviePlayer
                 audioPlayerControl.videoIdentifier = nil
             } else {
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to play", comment:""),

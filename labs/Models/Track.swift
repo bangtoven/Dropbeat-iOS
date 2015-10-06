@@ -414,9 +414,7 @@ class DropbeatTrack: Track {
         let URL = "http://dropbeat.net/r/\(userResourceName)/\(self.resourcePath)"
         afterShare(error: nil, sharedURL: URL)
     }
-}
 
-extension DropbeatTrack {
     static func fetchFollowingTracks(pageIdx: Int, callback:((tracks:[Track]?, error:NSError?) -> Void)) {
         Requests.sendGet(ApiPath.streamFollowing, params: ["p": pageIdx], auth: true) { (req, res, result, error) -> Void in
             if (error != nil) {

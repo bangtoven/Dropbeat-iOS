@@ -53,16 +53,19 @@ enum PlayState: Int {
 
 class PlayerContext {
     static var currentTrackIdx: Int = -1
-    static var currentPlaylistId: String?
     static var currentTrack: Track?
+    
+    static var currentPlaylistId: String?
+    static var playlists: [Playlist] = []
+    static var externalPlaylist: Playlist?
+    
     static var repeatState = RepeatState.NOT_REPEAT
     static var shuffleState = ShuffleState.NOT_SHUFFLE
     static var playState = PlayState.STOPPED
-    static var playlists: [Playlist] = []
-    static var externalPlaylist: Playlist?
+    static var qualityState = QualityState.LQ
+    
     static var correctDuration: Double?
     static var currentPlaybackTime: Double?
-    static var qualityState = QualityState.LQ
     static var playingSection:String?
     
     static var playLog: PlayLog?

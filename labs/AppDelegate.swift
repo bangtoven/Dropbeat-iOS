@@ -9,10 +9,11 @@
 import UIKit
 import Raygun4iOS
 
-class NetworkStatus {
-    static var NOT_REACHABLE = 0
-    static var WIFI = 1
-    static var OTHER = 2
+enum AppLinkParam {
+    case SHARED_TRACK(String)
+    case SHARED_PLAYLIST(String)
+    case USER(String)
+    case USER_TRACK(user: String, track: String)
 }
 
 @UIApplicationMain
@@ -21,13 +22,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var centerContainer: CenterViewController?
     var account: Account?
-    // 0 is NotReachable
-    var networkStatus: Int = NetworkStatus.NOT_REACHABLE
+    
+    var networkStatus = NetworkStatus.NotReachable
     var shouldInitializeQualityState = true
-    var futureQuality:QualityState? = nil
+    var futureQuality: QualityState?
     var reachability: Reachability?
-    var sharedTrackUid: String?
-    var sharedPlaylistUid: String?
+    
+    var appLinkParameter: AppLinkParam?
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         super.touchesBegan(touches, withEvent: event)
@@ -42,20 +43,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
         Account.loadLocation { (dict) -> Void in }
-        
-        // Override point for customization after application launch.
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.playerPrev, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.playerPause, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.playerNext, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.playerSeek, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.networkStatusChanged, object: nil)
         
         if let fromUrl = launchOptions?[UIApplicationLaunchOptionsURLKey] as? NSURL {
             handleCustomURL(fromUrl)
@@ -79,50 +66,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
-    func sender () {}
-    
     override func canBecomeFirstResponder() -> Bool {
         return true
     }
     
     override func remoteControlReceivedWithEvent(event: UIEvent?) {
         switch(event!.subtype) {
-        case UIEventSubtype.RemoteControlPlay:
+        case .RemoteControlPlay:
             print("play clicked")
-            if PlayerContext.currentTrack == nil {
+            guard let currentTrack = PlayerContext.currentTrack else {
                 return
             }
             var params: [String: AnyObject] = [String: AnyObject]()
-            params["track"] = PlayerContext.currentTrack!
-            if PlayerContext.currentPlaylistId != nil {
-                params["playlistId"] =  PlayerContext.currentPlaylistId!
+            params["track"] = currentTrack
+            if let playlistId = PlayerContext.currentPlaylistId {
+                params["playlistId"] =  playlistId
             }
-            NSNotificationCenter.defaultCenter().postNotificationName(
-                NotifyKey.playerPlay, object: params)
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.playerPlay, object: params)
             break;
         
-        case UIEventSubtype.RemoteControlPause:
+        case .RemoteControlPause:
             print("pause clicked")
             NSNotificationCenter.defaultCenter().postNotificationName(
                 NotifyKey.playerPause, object: nil)
             break;
         
-        case UIEventSubtype.RemoteControlPreviousTrack:
+        case .RemoteControlPreviousTrack:
             print("prev clicked")
             NSNotificationCenter.defaultCenter().postNotificationName(
                 NotifyKey.playerPrev, object: nil)
             break;
         
-        case UIEventSubtype.RemoteControlNextTrack:
+        case .RemoteControlNextTrack:
             print("next clicked")
             NSNotificationCenter.defaultCenter().postNotificationName(
                 NotifyKey.playerNext, object: nil)
             break;
             
-        case UIEventSubtype.RemoteControlStop:
+        case .RemoteControlStop:
             print("stop clicked")
             break;
-        case UIEventSubtype.RemoteControlTogglePlayPause:
+        case .RemoteControlTogglePlayPause:
             // XXX: For IOS 6 compat.
             if (PlayerContext.playState == PlayState.PLAYING) {
                 NSNotificationCenter.defaultCenter().postNotificationName(
@@ -215,19 +199,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func handleCustomURL(url:NSURL) {
         if url.scheme == ExternalUrlKey.scheme && url.host == ExternalUrlKey.defaultIdentifier {
-            if let query = url.getKeyVals() {
-                let sharedTrackUid:String? = query["track"]
-                if sharedTrackUid != nil {
-                    redirectSharedTrack(sharedTrackUid!)
+            if let query = url.getKeyVals() where query.count > 0 {
+                if let sharedTrackUid = query["track"] {
+                    self.appLinkParameter = .SHARED_TRACK(sharedTrackUid)
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.fromAppLink, object: nil)
                     return
                 }
-                let sharedPlaylistUid:String? = query["playlist"]
-                if sharedPlaylistUid != nil {
-                    redirectSharedPlaylist(sharedPlaylistUid!)
+                
+                if let sharedPlaylistUid = query["playlist"] {
+                    self.appLinkParameter = .SHARED_PLAYLIST(sharedPlaylistUid)
+                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.fromAppLink, object: nil)
                     return
                 }
             } else if let components = url.pathComponents {
-                
+                print(components.count)
             }
         }
     }
@@ -239,11 +224,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func networkReachabilityChanged (noti: NSNotification) {
-        let status = reachability!.currentReachabilityStatus()
-        networkStatus = status.rawValue
-        if (networkStatus != NetworkStatus.NOT_REACHABLE) {
-            let quality = networkStatus == NetworkStatus.WIFI ?
-                    QualityState.HQ : QualityState.LQ
+        networkStatus = reachability!.currentReachabilityStatus()
+        
+        if (networkStatus != .NotReachable) {
+            let quality: QualityState = (networkStatus == .ReachableViaWiFi) ? .HQ : .LQ
             if (shouldInitializeQualityState || PlayerContext.playState == PlayState.STOPPED) {
                 shouldInitializeQualityState = false
                 PlayerContext.qualityState = quality
@@ -251,32 +235,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 futureQuality = quality
             }
         }
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            NotifyKey.networkStatusChanged, object: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.networkStatusChanged, object: nil)
         
         switch (networkStatus) {
-        case 0:
+        case .NotReachable:
             print("networkReachability: NotReachable")
-            break
-        case 1:
+        case .ReachableViaWiFi:
             print("networkReachability: ReachableViaWiFi")
-            break
-        case 2:
+        case .ReachableViaWWAN:
             print("networkReachability: ReachableViaWWAN")
-            break
-        default:
-            break
         }
     }
     
-    func redirectSharedTrack(uid:String) {
-        sharedTrackUid = uid
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.trackShare, object: nil)
-    }
-    
-    func redirectSharedPlaylist(uid:String) {
-        sharedPlaylistUid = uid
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.playlistShare, object: nil)
-    }
 }
 

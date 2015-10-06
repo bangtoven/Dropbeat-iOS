@@ -159,11 +159,11 @@ extension FeedViewController: ScrollPagerDelegate {
             
             if tracks == nil || tracks!.count == 0 {
                 if order == .POPULAR {
-                    print("popular feed is empty. try to load recent uploads.")
+                    print("popular feed is empty.")
                     self.newUploadsSegment.setSelectedIndex(1, animated: true)
                     self.scrollPager(self.newUploadsSegment, changedIndex: 1)
                     self.newUploadsSegment.setEnableAtIndex(0, enable: false)
-                    ViewUtils.showToast(self, message: "preparing")
+                    ViewUtils.showToast(self, message: "on preparing")
                     return
                 }
                 self.nextPage = -1

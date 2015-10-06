@@ -56,8 +56,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
-        loadSharedTrackIfExist()
-        loadSharedPlaylistIfExist()
+        loadAppLinkRequest()
         
         UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
     }
@@ -67,100 +66,99 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
         self.screenName = "CenterViewScreen"
         
         NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "loadSharedTrackIfExist", name: NotifyKey.trackShare, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "loadSharedPlaylistIfExist", name: NotifyKey.playlistShare, object: nil)
+            self, selector: "loadAppLinkRequest", name: NotifyKey.fromAppLink, object: nil)
     }
     
-    func loadSharedTrackIfExist() {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        if appDelegate.sharedTrackUid == nil {
-            return
-        }
-        
-        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        Requests.getSharedTrack(appDelegate.sharedTrackUid!, respCb: {
-                (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            
-            progressHud.hide(true)
-            var success:Bool = true
-            var track:Track?
-            
-            if error != nil || result == nil {
-                success = false
-            } else {
-
-                track = Track.parseSharedTrack(result!)
-                if track == nil {
-                    success = false
-                }
-            }
-            
-            if !success {
-                ViewUtils.showNoticeAlert(
-                    self,
-                    title: NSLocalizedString("Failed to load", comment:""),
-                    message: NSLocalizedString("Failed to load shared track", comment:""),
-                    btnText: NSLocalizedString("Confirm", comment:""),
-                    callback: nil)
+    func loadAppLinkRequest() {
+        guard let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate,
+            appLinkParameter = appDelegate.appLinkParameter else {
                 return
-            }
-            
-            let params: [String: AnyObject] = [
-                "track": track!,
-                "section": "shared_track"
-            ]
-            NSNotificationCenter.defaultCenter().postNotificationName(
-                NotifyKey.playerPlay, object: params)
-        })
-        appDelegate.sharedTrackUid = nil
-    }
-    
-    func loadSharedPlaylistIfExist() {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        if appDelegate.sharedPlaylistUid == nil {
-            return
         }
         
-        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        Requests.getSharedPlaylist(appDelegate.sharedPlaylistUid!, respCb: {
+        switch appLinkParameter {
+        case .SHARED_TRACK(let uid):
+            let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+            Requests.getSharedTrack(uid, respCb: {
                 (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            
-            var success:Bool = true
-            var playlist:Playlist?
-            
-            if error != nil || result == nil {
-                success = false
-            } else {
-                playlist = Playlist.parseSharedPlaylist(result!)
-                if playlist == nil {
-                    success = false
-                }
-            }
-            
-            if !success {
-                ViewUtils.showNoticeAlert(
-                    self,
-                    title: NSLocalizedString("Failed to load", comment:""),
-                    message: NSLocalizedString("Failed to load shared playlist", comment:""),
-                    btnText: NSLocalizedString("Confirm", comment:""),
-                    callback: nil)
+                
                 progressHud.hide(true)
-                return
-            }
-            
-            playlist!.type = PlaylistType.SHARED
-            progressHud.hide(true)
-            self.performSegueWithIdentifier("PlaylistSegue", sender: playlist)
-        })
-        appDelegate.sharedPlaylistUid = nil
+                var success:Bool = true
+                var track:Track?
+                
+                if error != nil || result == nil {
+                    success = false
+                } else {
+                    
+                    track = Track.parseSharedTrack(result!)
+                    if track == nil {
+                        success = false
+                    }
+                }
+                
+                if !success {
+                    ViewUtils.showNoticeAlert(
+                        self,
+                        title: NSLocalizedString("Failed to load", comment:""),
+                        message: NSLocalizedString("Failed to load shared track", comment:""),
+                        btnText: NSLocalizedString("Confirm", comment:""),
+                        callback: nil)
+                    return
+                }
+                
+                let params: [String: AnyObject] = [
+                    "track": track!,
+                    "section": "shared_track"
+                ]
+                NSNotificationCenter.defaultCenter().postNotificationName(
+                    NotifyKey.playerPlay, object: params)
+            })
+            break
+        case .SHARED_PLAYLIST(let uid):
+            let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+            Requests.getSharedPlaylist(uid, respCb: {
+                (req:NSURLRequest, resp:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                
+                var success:Bool = true
+                var playlist:Playlist?
+                
+                if error != nil || result == nil {
+                    success = false
+                } else {
+                    playlist = Playlist.parseSharedPlaylist(result!)
+                    if playlist == nil {
+                        success = false
+                    }
+                }
+                
+                if !success {
+                    ViewUtils.showNoticeAlert(
+                        self,
+                        title: NSLocalizedString("Failed to load", comment:""),
+                        message: NSLocalizedString("Failed to load shared playlist", comment:""),
+                        btnText: NSLocalizedString("Confirm", comment:""),
+                        callback: nil)
+                    progressHud.hide(true)
+                    return
+                }
+                
+                playlist!.type = PlaylistType.SHARED
+                progressHud.hide(true)
+                self.performSegueWithIdentifier("PlaylistSegue", sender: playlist)
+            })
+
+            break
+        default:
+            break
+        }
+        
+        
+        appDelegate.appLinkParameter = nil
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
 
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.trackShare, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playlistShare, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.fromAppLink, object: nil)
     }
     
     func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {

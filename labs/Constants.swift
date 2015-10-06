@@ -10,6 +10,7 @@ import Foundation
 
 class NotifyKey {
     static var statusBarTapped = "statusBarTapped"
+    static var fromAppLink = "fromAppLink"
     
     static var playerPlay = "playPlayer"
     static var playerPrev = "prevPlayer"
@@ -24,9 +25,6 @@ class NotifyKey {
     static var updateQualityState = "updateQualityState"
     static var networkStatusChanged = "networkStatusChanged"
     static var appSignout = "appSignout"
-    static var appSignin = "appSignin"
-    static var trackShare = "trackShare"
-    static var playlistShare = "playlistShare"
     static var likeUpdated = "likeUpdated"
 }
 

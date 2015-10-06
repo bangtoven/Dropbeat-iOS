@@ -422,8 +422,6 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "GenreDiscoveryViewScreen"
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sender", name:NotifyKey.playerPause , object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "receivePlaybackStarted:", name:"PlaybackStartedNotification", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "appDidEnterBackground",
             name: UIApplicationDidEnterBackgroundNotification, object: nil)
@@ -434,8 +432,6 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name:NotifyKey.playerPause , object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name:"PlaybackStartedNotification", object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidEnterBackgroundNotification, object: nil)
         stopPlayer()
     }
@@ -454,8 +450,6 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
             currPlayer = nil
         }
     }
-    
-    func sender() {}
     
     @IBAction func onBackBtnClicked(sender: AnyObject) {
         self.navigationController?.popViewControllerAnimated(true)
@@ -603,8 +597,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
             [NSValue(CMTime: CMTimeMake(1, 3))],
             queue: nil,
             usingBlock: { () -> Void in
-                NSNotificationCenter.defaultCenter()
-                    .postNotificationName("PlaybackStartedNotification", object: url)
+                self.receivePlaybackStarted()
                 if self.playerPreloadObserver != nil {
                     player.removeTimeObserver(self.playerPreloadObserver!)
                     self.playerPreloadObserver = nil
@@ -675,7 +668,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
         tableView.reloadData()
     }
     
-    func receivePlaybackStarted(noti:NSNotification) {
+    func receivePlaybackStarted() {
         isPlaying = true
         tableView.reloadData()
     }

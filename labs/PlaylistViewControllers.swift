@@ -93,12 +93,6 @@ class PlaylistViewController: BaseViewController,
         }
         
         NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.playerStop, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.updateShuffleState, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "updatePlayTrack:", name: NotifyKey.updatePlay, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "appWillEnterForeground",
@@ -110,9 +104,6 @@ class PlaylistViewController: BaseViewController,
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerStop, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updateShuffleState, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
     }
@@ -136,8 +127,6 @@ class PlaylistViewController: BaseViewController,
     func appWillEnterForeground () {
         loadPlaylist()
     }
-    
-    func sender() {}
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

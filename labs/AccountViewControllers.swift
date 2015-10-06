@@ -83,23 +83,6 @@ class FBSigninableViewController: BaseViewController {
         // Do any additional setup after loading the view.
     }
     
-    override func viewWillAppear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sender", name: NotifyKey.appSignin, object: nil)
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.appSignin, object: nil)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    func sender() {
-        
-    }
-    
     @IBAction func onSigninWithFacebookBtnClicked(sender: UIButton) {
         let fbManager:FBSDKLoginManager = FBSDKLoginManager()
         progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Signining in..", comment:""))
@@ -200,7 +183,6 @@ class FBSigninableViewController: BaseViewController {
         self.dismissViewControllerAnimated(false, completion: nil)
         self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
         
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.appSignin, object: nil)
         PlayerViewController.sharedInstance!.resignObservers()
         let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
@@ -424,8 +406,6 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         
         self.dismissViewControllerAnimated(false, completion: nil)
         self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
-        
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.appSignin, object: nil)
         
         PlayerViewController.sharedInstance!.resignObservers()
         let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -654,9 +634,7 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         
         self.dismissViewControllerAnimated(false, completion: nil)
         self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
-        
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.appSignin, object: nil)
-        
+                
         PlayerViewController.sharedInstance!.resignObservers()
         let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController

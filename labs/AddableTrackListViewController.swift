@@ -86,16 +86,11 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "updatePlay:", name: NotifyKey.updatePlay, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "sender", name: NotifyKey.playerPlay, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "appWillEnterForeground",
             name: UIApplicationWillEnterForegroundNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "appDidEnterBackground",
             name: UIApplicationDidEnterBackgroundNotification, object: nil)
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "sender", name:NotifyKey.playerPause , object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "receivePlaybackStarted:", name:"PlaybackStartedNotification", object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "onDropFinished", name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
@@ -103,14 +98,9 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
     }
     
-    func sender () {}
-    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name:NotifyKey.playerPause , object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name:"PlaybackStartedNotification", object: nil)
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidEnterBackgroundNotification, object: nil)

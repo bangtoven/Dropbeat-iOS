@@ -14,7 +14,6 @@ extension ApiPath {
 
 public class ApiPath {
     static let host = RELEASE ? "http://dropbeat.net/api/v1/" : "http://spark.coroutine.io/api/v1/"
-//    "http://coroutine.io:19080/api/v1/"
     
     // User
     static let user = host + "user/"
@@ -96,7 +95,6 @@ public class ApiPath {
 
 public class CorePath {
     static let host = RELEASE ? "http://core.dropbeat.net/api/" : "http://core.coroutine.io/api/"
-//    static let host = "http://core.dropbeat.net/api/"
     
     // core.search
     static let newSearch = host + "v1/search/"

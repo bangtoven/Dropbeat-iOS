@@ -135,9 +135,6 @@ class PlayerViewController: BaseViewController {
         }
     }
     
-    //    func sender() {}
-    
-    
     func asignObservers () {
         PlayerViewController.observerAttached = true
         //        // Used for track list play / nonplay ui update
@@ -880,9 +877,9 @@ class PlayerViewController: BaseViewController {
             return
         }
         //  we should confirm here for data usage
-        if (!forceChange &&
-            networkStatus == NetworkStatus.OTHER &&
-            PlayerContext.qualityState == QualityState.LQ) {
+        if (forceChange == false &&
+            networkStatus == .ReachableViaWWAN &&
+            PlayerContext.qualityState == .LQ) {
                 ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Data usage warning", comment:""),
                     message: NSLocalizedString("Streaming music in High Quality can use significant network data", comment:""),
                     positiveBtnText: NSLocalizedString("Proceed", comment:""), positiveBtnCallback: { () -> Void in

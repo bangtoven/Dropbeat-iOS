@@ -351,6 +351,8 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		[self done];
 	}
 	self.showStarted = nil;
+    
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 }
 
 - (void)animationFinished:(NSString *)animationID finished:(BOOL)finished context:(void*)context {

@@ -77,7 +77,24 @@ class PlayerViewController: BaseViewController {
         if UIScreen.mainScreen().bounds.height == 480 {
             resizeViewUnder4in()
         }
+        
+        
+        
+//        let newTimer = createDispatchTimer(1 * NSEC_PER_SEC, leeway: (1 * NSEC_PER_SEC) / 10, queue: dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+//            print("called!")
+//        }
+//        dispatch_resume(newTimer)
     }
+    
+//    func createDispatchTimer(interval: UInt64, leeway: UInt64, queue: dispatch_queue_t, block: dispatch_block_t) -> dispatch_source_t {
+//        let timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+//        if (timer != nil) {
+//            dispatch_source_set_timer(timer, dispatch_walltime(nil, 0), interval, leeway);
+//            dispatch_source_set_event_handler(timer, block);
+//            dispatch_resume(timer);
+//        }
+//        return timer
+//    }
     
     func resizeViewUnder4in() {
         playerTitleHeightConstaint.constant = 28
@@ -475,6 +492,13 @@ class PlayerViewController: BaseViewController {
         return text
     }
     
+    func stopProgressTimer() {
+        if remoteProgressTimer != nil {
+            remoteProgressTimer?.invalidate()
+            remoteProgressTimer = nil
+        }
+    }
+    
     func updateProgress () {
         let currentTrack :Track? = PlayerContext.currentTrack
         if (currentTrack == nil) {
@@ -499,10 +523,7 @@ class PlayerViewController: BaseViewController {
                     if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
                         handleSeek(0)
                     } else {
-                        if remoteProgressTimer != nil {
-                            remoteProgressTimer?.invalidate()
-                            remoteProgressTimer = nil
-                        }
+                        self.stopProgressTimer()
                         if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
                             self.forceStopPlayer = true
                             audioPlayerControl.moviePlayer.stop()
@@ -584,10 +605,8 @@ class PlayerViewController: BaseViewController {
                         if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
                             handleSeek(0)
                         } else if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
-                            if remoteProgressTimer != nil {
-                                remoteProgressTimer?.invalidate()
-                                remoteProgressTimer = nil
-                            }
+                            self.stopProgressTimer()
+
                             if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
                                 self.forceStopPlayer = true
                                 audioPlayerControl.moviePlayer.stop()
@@ -655,10 +674,8 @@ class PlayerViewController: BaseViewController {
                     0.5, target: self, selector: Selector("updateProgress"), userInfo: nil, repeats: true)
             }
         } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Stopped) {
-            if remoteProgressTimer != nil {
-                remoteProgressTimer?.invalidate()
-                remoteProgressTimer = nil
-            }
+            self.stopProgressTimer()
+
         } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Paused) {
             if ((audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0 &&
                 audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Stalled.rawValue != 0) ||
@@ -668,29 +685,21 @@ class PlayerViewController: BaseViewController {
                     return
             }
             updatePlayState(PlayState.PAUSED)
-            if remoteProgressTimer != nil {
-                remoteProgressTimer?.invalidate()
-                remoteProgressTimer = nil
-            }
+            self.stopProgressTimer()
+
         } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Interrupted) {
             shouldPlayMusic = false
             updatePlayState(PlayState.PAUSED)
-            if remoteProgressTimer != nil {
-                remoteProgressTimer?.invalidate()
-                remoteProgressTimer = nil
-            }
+            self.stopProgressTimer()
+
         } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.SeekingForward) {
-            if remoteProgressTimer != nil {
-                remoteProgressTimer?.invalidate()
-                remoteProgressTimer = nil
-            }
+            self.stopProgressTimer()
+
             updatePlayState(PlayState.BUFFERING)
             print("update state to buffering")
         } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.SeekingBackward) {
-            if remoteProgressTimer != nil {
-                remoteProgressTimer?.invalidate()
-                remoteProgressTimer = nil
-            }
+            self.stopProgressTimer()
+
             updatePlayState(PlayState.BUFFERING)
             print("update state to buffering")
         }
@@ -718,6 +727,10 @@ class PlayerViewController: BaseViewController {
             finishReason = MPMovieFinishReason(rawValue: Int(rawValue))
             where finishReason == MPMovieFinishReason.PlaybackError
         {
+            if let error = userInfo[XCDMoviePlayerPlaybackDidFinishErrorUserInfoKey] as? NSError {
+                print(error)
+            }
+            
             print(finishReason)
             self.handlePlayFailure()
             return
@@ -1242,10 +1255,8 @@ class PlayerViewController: BaseViewController {
             self.resetPlayLog(Int(PlayerContext.currentPlaybackTime!))
         }
         
-        if remoteProgressTimer != nil {
-            remoteProgressTimer?.invalidate()
-            remoteProgressTimer = nil
-        }
+        self.stopProgressTimer()
+
         
         let track: Track? = PlayerContext.pickNextTrack()
         if (track == nil) {
@@ -1264,10 +1275,8 @@ class PlayerViewController: BaseViewController {
             self.resetPlayLog(Int(PlayerContext.currentPlaybackTime!))
         }
         
-        if remoteProgressTimer != nil {
-            remoteProgressTimer?.invalidate()
-            remoteProgressTimer = nil
-        }
+        self.stopProgressTimer()
+
         
         let track: Track? = PlayerContext.pickPrevTrack()
         if (track == nil) {

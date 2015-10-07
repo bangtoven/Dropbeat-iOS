@@ -9,6 +9,16 @@
 #ifndef labs_labs_Bridging_Header_h
 #define labs_labs_Bridging_Header_h
 
+#import "NSMutableArray+STKAudioPlayer.h"
+#import "STKAudioPlayer.h"
+#import "STKAutoRecoveringHTTPDataSource.h"
+#import "STKCoreFoundationDataSource.h"
+#import "STKDataSource.h"
+#import "STKDataSourceWrapper.h"
+#import "STKHTTPDataSource.h"
+#import "STKLocalFileDataSource.h"
+#import "STKQueueEntry.h"
+
 #import "RBStoryboardLink.h"
 #import "RBStoryboardLinkSource.h"
 #import "RBStoryboardSegue.h"

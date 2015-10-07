@@ -234,6 +234,27 @@
 		73AB347C1BB1E8FE0031E2CC /* EditFavoriteGenreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AB347B1BB1E8FE0031E2CC /* EditFavoriteGenreViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		73AB34821BB2C7480031E2CC /* Playlist.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73AB34811BB2C7480031E2CC /* Playlist.storyboard */; settings = {ASSET_TAGS = (); }; };
 		73AB34841BB2D9C60031E2CC /* PlaylistListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AB34831BB2D9C60031E2CC /* PlaylistListTableViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		73AECB951BC5CE2F0040F0AF /* NSMutableArray+STKAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB841BC5CE2E0040F0AF /* NSMutableArray+STKAudioPlayer.m */; settings = {ASSET_TAGS = (); }; };
+		73AECB961BC5CE2F0040F0AF /* NSMutableArray+STKAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB841BC5CE2E0040F0AF /* NSMutableArray+STKAudioPlayer.m */; settings = {ASSET_TAGS = (); }; };
+		73AECB971BC5CE2F0040F0AF /* STKAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB861BC5CE2E0040F0AF /* STKAudioPlayer.m */; settings = {ASSET_TAGS = (); }; };
+		73AECB981BC5CE2F0040F0AF /* STKAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB861BC5CE2E0040F0AF /* STKAudioPlayer.m */; settings = {ASSET_TAGS = (); }; };
+		73AECB991BC5CE2F0040F0AF /* STKAutoRecoveringHTTPDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB881BC5CE2E0040F0AF /* STKAutoRecoveringHTTPDataSource.m */; settings = {ASSET_TAGS = (); }; };
+		73AECB9A1BC5CE2F0040F0AF /* STKAutoRecoveringHTTPDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB881BC5CE2E0040F0AF /* STKAutoRecoveringHTTPDataSource.m */; settings = {ASSET_TAGS = (); }; };
+		73AECB9B1BC5CE2F0040F0AF /* STKCoreFoundationDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB8A1BC5CE2E0040F0AF /* STKCoreFoundationDataSource.m */; settings = {ASSET_TAGS = (); }; };
+		73AECB9C1BC5CE2F0040F0AF /* STKCoreFoundationDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB8A1BC5CE2E0040F0AF /* STKCoreFoundationDataSource.m */; settings = {ASSET_TAGS = (); }; };
+		73AECB9D1BC5CE2F0040F0AF /* STKDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB8C1BC5CE2F0040F0AF /* STKDataSource.m */; settings = {ASSET_TAGS = (); }; };
+		73AECB9E1BC5CE2F0040F0AF /* STKDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB8C1BC5CE2F0040F0AF /* STKDataSource.m */; settings = {ASSET_TAGS = (); }; };
+		73AECB9F1BC5CE2F0040F0AF /* STKDataSourceWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB8E1BC5CE2F0040F0AF /* STKDataSourceWrapper.m */; settings = {ASSET_TAGS = (); }; };
+		73AECBA01BC5CE2F0040F0AF /* STKDataSourceWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB8E1BC5CE2F0040F0AF /* STKDataSourceWrapper.m */; settings = {ASSET_TAGS = (); }; };
+		73AECBA11BC5CE2F0040F0AF /* STKHTTPDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB901BC5CE2F0040F0AF /* STKHTTPDataSource.m */; settings = {ASSET_TAGS = (); }; };
+		73AECBA21BC5CE2F0040F0AF /* STKHTTPDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB901BC5CE2F0040F0AF /* STKHTTPDataSource.m */; settings = {ASSET_TAGS = (); }; };
+		73AECBA31BC5CE2F0040F0AF /* STKLocalFileDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB921BC5CE2F0040F0AF /* STKLocalFileDataSource.m */; settings = {ASSET_TAGS = (); }; };
+		73AECBA41BC5CE2F0040F0AF /* STKLocalFileDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB921BC5CE2F0040F0AF /* STKLocalFileDataSource.m */; settings = {ASSET_TAGS = (); }; };
+		73AECBA51BC5CE2F0040F0AF /* STKQueueEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB941BC5CE2F0040F0AF /* STKQueueEntry.m */; settings = {ASSET_TAGS = (); }; };
+		73AECBA61BC5CE2F0040F0AF /* STKQueueEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AECB941BC5CE2F0040F0AF /* STKQueueEntry.m */; settings = {ASSET_TAGS = (); }; };
+		73AECBA91BC5CE500040F0AF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73AECBA81BC5CE500040F0AF /* AudioToolbox.framework */; };
+		73AECBAB1BC5CF280040F0AF /* DropbeatPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AECBAA1BC5CF280040F0AF /* DropbeatPlayer.swift */; settings = {ASSET_TAGS = (); }; };
+		73AECBAC1BC5CF280040F0AF /* DropbeatPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AECBAA1BC5CF280040F0AF /* DropbeatPlayer.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90BF1BAE4AFA00284B8A /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B21BAE4AFA00284B8A /* Alamofire.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90C01BAE4AFA00284B8A /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B31BAE4AFA00284B8A /* Download.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90C11BAE4AFA00284B8A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B41BAE4AFA00284B8A /* Error.swift */; settings = {ASSET_TAGS = (); }; };
@@ -430,6 +451,26 @@
 		73AB347B1BB1E8FE0031E2CC /* EditFavoriteGenreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditFavoriteGenreViewController.swift; sourceTree = "<group>"; };
 		73AB34811BB2C7480031E2CC /* Playlist.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Playlist.storyboard; sourceTree = "<group>"; };
 		73AB34831BB2D9C60031E2CC /* PlaylistListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistListTableViewController.swift; sourceTree = "<group>"; };
+		73AECB831BC5CE2E0040F0AF /* NSMutableArray+STKAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSMutableArray+STKAudioPlayer.h"; path = "Libraries/StreamingKit/NSMutableArray+STKAudioPlayer.h"; sourceTree = SOURCE_ROOT; };
+		73AECB841BC5CE2E0040F0AF /* NSMutableArray+STKAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSMutableArray+STKAudioPlayer.m"; path = "Libraries/StreamingKit/NSMutableArray+STKAudioPlayer.m"; sourceTree = SOURCE_ROOT; };
+		73AECB851BC5CE2E0040F0AF /* STKAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STKAudioPlayer.h; path = Libraries/StreamingKit/STKAudioPlayer.h; sourceTree = SOURCE_ROOT; };
+		73AECB861BC5CE2E0040F0AF /* STKAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = STKAudioPlayer.m; path = Libraries/StreamingKit/STKAudioPlayer.m; sourceTree = SOURCE_ROOT; };
+		73AECB871BC5CE2E0040F0AF /* STKAutoRecoveringHTTPDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STKAutoRecoveringHTTPDataSource.h; path = Libraries/StreamingKit/STKAutoRecoveringHTTPDataSource.h; sourceTree = SOURCE_ROOT; };
+		73AECB881BC5CE2E0040F0AF /* STKAutoRecoveringHTTPDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = STKAutoRecoveringHTTPDataSource.m; path = Libraries/StreamingKit/STKAutoRecoveringHTTPDataSource.m; sourceTree = SOURCE_ROOT; };
+		73AECB891BC5CE2E0040F0AF /* STKCoreFoundationDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STKCoreFoundationDataSource.h; path = Libraries/StreamingKit/STKCoreFoundationDataSource.h; sourceTree = SOURCE_ROOT; };
+		73AECB8A1BC5CE2E0040F0AF /* STKCoreFoundationDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = STKCoreFoundationDataSource.m; path = Libraries/StreamingKit/STKCoreFoundationDataSource.m; sourceTree = SOURCE_ROOT; };
+		73AECB8B1BC5CE2E0040F0AF /* STKDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STKDataSource.h; path = Libraries/StreamingKit/STKDataSource.h; sourceTree = SOURCE_ROOT; };
+		73AECB8C1BC5CE2F0040F0AF /* STKDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = STKDataSource.m; path = Libraries/StreamingKit/STKDataSource.m; sourceTree = SOURCE_ROOT; };
+		73AECB8D1BC5CE2F0040F0AF /* STKDataSourceWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STKDataSourceWrapper.h; path = Libraries/StreamingKit/STKDataSourceWrapper.h; sourceTree = SOURCE_ROOT; };
+		73AECB8E1BC5CE2F0040F0AF /* STKDataSourceWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = STKDataSourceWrapper.m; path = Libraries/StreamingKit/STKDataSourceWrapper.m; sourceTree = SOURCE_ROOT; };
+		73AECB8F1BC5CE2F0040F0AF /* STKHTTPDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STKHTTPDataSource.h; path = Libraries/StreamingKit/STKHTTPDataSource.h; sourceTree = SOURCE_ROOT; };
+		73AECB901BC5CE2F0040F0AF /* STKHTTPDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = STKHTTPDataSource.m; path = Libraries/StreamingKit/STKHTTPDataSource.m; sourceTree = SOURCE_ROOT; };
+		73AECB911BC5CE2F0040F0AF /* STKLocalFileDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STKLocalFileDataSource.h; path = Libraries/StreamingKit/STKLocalFileDataSource.h; sourceTree = SOURCE_ROOT; };
+		73AECB921BC5CE2F0040F0AF /* STKLocalFileDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = STKLocalFileDataSource.m; path = Libraries/StreamingKit/STKLocalFileDataSource.m; sourceTree = SOURCE_ROOT; };
+		73AECB931BC5CE2F0040F0AF /* STKQueueEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = STKQueueEntry.h; path = Libraries/StreamingKit/STKQueueEntry.h; sourceTree = SOURCE_ROOT; };
+		73AECB941BC5CE2F0040F0AF /* STKQueueEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = STKQueueEntry.m; path = Libraries/StreamingKit/STKQueueEntry.m; sourceTree = SOURCE_ROOT; };
+		73AECBA81BC5CE500040F0AF /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		73AECBAA1BC5CF280040F0AF /* DropbeatPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropbeatPlayer.swift; sourceTree = "<group>"; };
 		73FC90B21BAE4AFA00284B8A /* Alamofire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Alamofire.swift; path = Libraries/Alamofire/Alamofire.swift; sourceTree = SOURCE_ROOT; };
 		73FC90B31BAE4AFA00284B8A /* Download.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Download.swift; path = Libraries/Alamofire/Download.swift; sourceTree = SOURCE_ROOT; };
 		73FC90B41BAE4AFA00284B8A /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Error.swift; path = Libraries/Alamofire/Error.swift; sourceTree = SOURCE_ROOT; };
@@ -462,6 +503,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73AECBA91BC5CE500040F0AF /* AudioToolbox.framework in Frameworks */,
 				734C7DDB1BB4C1DA0071678C /* FBSDKShareKit.framework in Frameworks */,
 				734C7DDC1BB4C1DA0071678C /* CoreMedia.framework in Frameworks */,
 				734C7DDD1BB4C1DA0071678C /* libXCDYouTubeKit.a in Frameworks */,
@@ -715,6 +757,7 @@
 				732717011BAC8632003E0B68 /* SwiftyJSON.swift */,
 				732717421BAC8721003E0B68 /* ScrollPager.swift */,
 				73FC90CC1BAE5C9000284B8A /* KeychainItemWrapper.swift */,
+				73AECBA71BC5CE350040F0AF /* StreamingKit */,
 				73AB34781BB1D3580031E2CC /* ACEExpandableTextCell */,
 				7361FD111BA060F400444179 /* RBStoryboardLink */,
 				585BACF91B85ED9900FE137A /* DateTool */,
@@ -770,6 +813,7 @@
 			isa = PBXGroup;
 			children = (
 				734C7D6B1BB47F410071678C /* Models */,
+				73AECBAA1BC5CF280040F0AF /* DropbeatPlayer.swift */,
 				FC0D9D581B0CC4DE00E048CC /* Constants.swift */,
 				FC766BEE1B050D51006FD4FB /* NetworkPath.swift */,
 				FC766BF41B051AA4006FD4FB /* NetworkRequests.swift */,
@@ -858,9 +902,35 @@
 			name = Playlist;
 			sourceTree = "<group>";
 		};
+		73AECBA71BC5CE350040F0AF /* StreamingKit */ = {
+			isa = PBXGroup;
+			children = (
+				73AECB831BC5CE2E0040F0AF /* NSMutableArray+STKAudioPlayer.h */,
+				73AECB841BC5CE2E0040F0AF /* NSMutableArray+STKAudioPlayer.m */,
+				73AECB851BC5CE2E0040F0AF /* STKAudioPlayer.h */,
+				73AECB861BC5CE2E0040F0AF /* STKAudioPlayer.m */,
+				73AECB871BC5CE2E0040F0AF /* STKAutoRecoveringHTTPDataSource.h */,
+				73AECB881BC5CE2E0040F0AF /* STKAutoRecoveringHTTPDataSource.m */,
+				73AECB891BC5CE2E0040F0AF /* STKCoreFoundationDataSource.h */,
+				73AECB8A1BC5CE2E0040F0AF /* STKCoreFoundationDataSource.m */,
+				73AECB8B1BC5CE2E0040F0AF /* STKDataSource.h */,
+				73AECB8C1BC5CE2F0040F0AF /* STKDataSource.m */,
+				73AECB8D1BC5CE2F0040F0AF /* STKDataSourceWrapper.h */,
+				73AECB8E1BC5CE2F0040F0AF /* STKDataSourceWrapper.m */,
+				73AECB8F1BC5CE2F0040F0AF /* STKHTTPDataSource.h */,
+				73AECB901BC5CE2F0040F0AF /* STKHTTPDataSource.m */,
+				73AECB911BC5CE2F0040F0AF /* STKLocalFileDataSource.h */,
+				73AECB921BC5CE2F0040F0AF /* STKLocalFileDataSource.m */,
+				73AECB931BC5CE2F0040F0AF /* STKQueueEntry.h */,
+				73AECB941BC5CE2F0040F0AF /* STKQueueEntry.m */,
+			);
+			name = StreamingKit;
+			sourceTree = "<group>";
+		};
 		F98F65D2D15412F7828AF298 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				73AECBA81BC5CE500040F0AF /* AudioToolbox.framework */,
 				588693751B13B4ED00566124 /* libGoogleAnalyticsServices.a */,
 				587837E71B45C66E008DF480 /* libXCDYouTubeKit.a */,
 				58BB0AF71B122A8600B07279 /* libsqlite3.dylib */,
@@ -1065,6 +1135,7 @@
 				734C7D6F1BB4C1DA0071678C /* Track.swift in Sources */,
 				734C7D701BB4C1DA0071678C /* Playlist.swift in Sources */,
 				734C7D711BB4C1DA0071678C /* MBProgressHUD.m in Sources */,
+				73AECBAC1BC5CF280040F0AF /* DropbeatPlayer.swift in Sources */,
 				734C7D721BB4C1DA0071678C /* Request.swift in Sources */,
 				734C7D731BB4C1DA0071678C /* Result.swift in Sources */,
 				734C7D741BB4C1DA0071678C /* DTError.m in Sources */,
@@ -1084,6 +1155,7 @@
 				734C7D841BB4C1DA0071678C /* SDImageCache.m in Sources */,
 				734C7D851BB4C1DA0071678C /* SDWebImageDownloaderOperation.m in Sources */,
 				734C7D861BB4C1DA0071678C /* CenterViewControllers.swift in Sources */,
+				73AECB9C1BC5CE2F0040F0AF /* STKCoreFoundationDataSource.m in Sources */,
 				734C7D871BB4C1DA0071678C /* Utils.swift in Sources */,
 				734C7D881BB4C1DA0071678C /* GradientView.m in Sources */,
 				734C7D891BB4C1DA0071678C /* BaseViewController.swift in Sources */,
@@ -1091,7 +1163,9 @@
 				734C7D8C1BB4C1DA0071678C /* Upload.swift in Sources */,
 				734C7D8E1BB4C1DA0071678C /* UIButton+WebCache.m in Sources */,
 				734C7D901BB4C1DA0071678C /* ParameterEncoding.swift in Sources */,
+				73AECB9E1BC5CE2F0040F0AF /* STKDataSource.m in Sources */,
 				734C7D921BB4C1DA0071678C /* SDWebImageDownloader.m in Sources */,
+				73AECBA01BC5CE2F0040F0AF /* STKDataSourceWrapper.m in Sources */,
 				734C7D931BB4C1DA0071678C /* RBStoryboardPushSegue.m in Sources */,
 				734C7D941BB4C1DA0071678C /* UIImageView+HighlightedWebCache.m in Sources */,
 				734C7D951BB4C1DA0071678C /* TrackSubViewController.swift in Sources */,
@@ -1101,6 +1175,7 @@
 				734C7D9A1BB4C1DA0071678C /* DTConstants.m in Sources */,
 				734C7D9B1BB4C1DA0071678C /* FollowInfoTableViewController.swift in Sources */,
 				734C7D9C1BB4C1DA0071678C /* PlayerContext.swift in Sources */,
+				73AECBA21BC5CE2F0040F0AF /* STKHTTPDataSource.m in Sources */,
 				734C7D9D1BB4C1DA0071678C /* GBFlatSelectableButton.m in Sources */,
 				734C7D9E1BB4C1DA0071678C /* EditFavoriteGenreViewController.swift in Sources */,
 				734C7D9F1BB4C1DA0071678C /* SDWebImageDecoder.m in Sources */,
@@ -1113,6 +1188,7 @@
 				734C7DA71BB4C1DA0071678C /* OldModels.swift in Sources */,
 				734C7DA81BB4C1DA0071678C /* ScrollPager.swift in Sources */,
 				734C7DA91BB4C1DA0071678C /* UIViewController+RBStoryboardLink.m in Sources */,
+				73AECB981BC5CE2F0040F0AF /* STKAudioPlayer.m in Sources */,
 				734C7DAA1BB4C1DA0071678C /* Constants.swift in Sources */,
 				734C7DAB1BB4C1DA0071678C /* Manager.swift in Sources */,
 				734C7DAC1BB4C1DA0071678C /* TPKeyboardAvoidingScrollView.m in Sources */,
@@ -1126,6 +1202,8 @@
 				734C7DB31BB4C1DA0071678C /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				734C7DB41BB4C1DA0071678C /* User.swift in Sources */,
 				734C7DB51BB4C1DA0071678C /* ProfileViewController.swift in Sources */,
+				73AECB9A1BC5CE2F0040F0AF /* STKAutoRecoveringHTTPDataSource.m in Sources */,
+				73AECBA61BC5CE2F0040F0AF /* STKQueueEntry.m in Sources */,
 				734C7DB61BB4C1DA0071678C /* AXTabBarItemButton.m in Sources */,
 				734C7DB81BB4C1DA0071678C /* Extension.swift in Sources */,
 				734C7DB91BB4C1DA0071678C /* AccountViewControllers.swift in Sources */,
@@ -1135,6 +1213,7 @@
 				734C7DBD1BB4C1DA0071678C /* Account.swift in Sources */,
 				734C7DBE1BB4C1DA0071678C /* UIImage+GIF.m in Sources */,
 				734C7DBF1BB4C1DA0071678C /* ServerTrustPolicy.swift in Sources */,
+				73AECB961BC5CE2F0040F0AF /* NSMutableArray+STKAudioPlayer.m in Sources */,
 				734C7DC01BB4C1DA0071678C /* TPKeyboardAvoidingTableView.m in Sources */,
 				734C7DC11BB4C1DA0071678C /* Reachability.m in Sources */,
 				734C7DC21BB4C1DA0071678C /* NSData+ImageContentType.m in Sources */,
@@ -1143,6 +1222,7 @@
 				734C7DC51BB4C1DA0071678C /* UIImage+MultiFormat.m in Sources */,
 				734C7DC61BB4C1DA0071678C /* SDWebImageCompat.m in Sources */,
 				734C7DC71BB4C1DA0071678C /* RBStoryboardModalSegue.m in Sources */,
+				73AECBA41BC5CE2F0040F0AF /* STKLocalFileDataSource.m in Sources */,
 				734C7DC81BB4C1DA0071678C /* AXTabBar.m in Sources */,
 				734C7DC91BB4C1DA0071678C /* DTTimePeriod.m in Sources */,
 				734C7DCA1BB4C1DA0071678C /* Alamofire.swift in Sources */,
@@ -1169,6 +1249,7 @@
 				734C7D611BB47D260071678C /* Track.swift in Sources */,
 				734C7D631BB47D470071678C /* Playlist.swift in Sources */,
 				588693C51B13B7A800566124 /* MBProgressHUD.m in Sources */,
+				73AECBAB1BC5CF280040F0AF /* DropbeatPlayer.swift in Sources */,
 				73FC90C51BAE4AFA00284B8A /* Request.swift in Sources */,
 				73FC90C71BAE4AFA00284B8A /* Result.swift in Sources */,
 				585BAD0E1B85ED9900FE137A /* DTError.m in Sources */,
@@ -1188,6 +1269,7 @@
 				5886939B1B13B51300566124 /* SDImageCache.m in Sources */,
 				5886939F1B13B51300566124 /* SDWebImageDownloaderOperation.m in Sources */,
 				5890D61A1B05484A00AAEAE5 /* CenterViewControllers.swift in Sources */,
+				73AECB9B1BC5CE2F0040F0AF /* STKCoreFoundationDataSource.m in Sources */,
 				58EAB3DF1B0D11110075304E /* Utils.swift in Sources */,
 				738646171BA7631D00C21650 /* GradientView.m in Sources */,
 				58BB0B161B12308000B07279 /* BaseViewController.swift in Sources */,
@@ -1195,7 +1277,9 @@
 				73FC90CA1BAE4AFA00284B8A /* Upload.swift in Sources */,
 				588693A21B13B51300566124 /* UIButton+WebCache.m in Sources */,
 				73FC90C41BAE4AFA00284B8A /* ParameterEncoding.swift in Sources */,
+				73AECB9D1BC5CE2F0040F0AF /* STKDataSource.m in Sources */,
 				5886939E1B13B51300566124 /* SDWebImageDownloader.m in Sources */,
+				73AECB9F1BC5CE2F0040F0AF /* STKDataSourceWrapper.m in Sources */,
 				732717131BAC8649003E0B68 /* RBStoryboardPushSegue.m in Sources */,
 				588693A51B13B51300566124 /* UIImageView+HighlightedWebCache.m in Sources */,
 				7327174C1BAC8836003E0B68 /* TrackSubViewController.swift in Sources */,
@@ -1205,6 +1289,7 @@
 				585BAD0D1B85ED9900FE137A /* DTConstants.m in Sources */,
 				731D92721BAEE4FB0068742A /* FollowInfoTableViewController.swift in Sources */,
 				FC0D9D551B09A70300E048CC /* PlayerContext.swift in Sources */,
+				73AECBA11BC5CE2F0040F0AF /* STKHTTPDataSource.m in Sources */,
 				732717311BAC86A8003E0B68 /* GBFlatSelectableButton.m in Sources */,
 				73AB347C1BB1E8FE0031E2CC /* EditFavoriteGenreViewController.swift in Sources */,
 				5886939D1B13B51300566124 /* SDWebImageDecoder.m in Sources */,
@@ -1217,6 +1302,7 @@
 				734C7D5B1BB47ACD0071678C /* OldModels.swift in Sources */,
 				732717431BAC8721003E0B68 /* ScrollPager.swift in Sources */,
 				732717151BAC8649003E0B68 /* UIViewController+RBStoryboardLink.m in Sources */,
+				73AECB971BC5CE2F0040F0AF /* STKAudioPlayer.m in Sources */,
 				FC0D9D591B0CC4DE00E048CC /* Constants.swift in Sources */,
 				73FC90C21BAE4AFA00284B8A /* Manager.swift in Sources */,
 				589413611B83C3F700395AFA /* TPKeyboardAvoidingScrollView.m in Sources */,
@@ -1230,6 +1316,8 @@
 				589413601B83C3F700395AFA /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				734C7D5F1BB47CEF0071678C /* User.swift in Sources */,
 				73AB346D1BB186B90031E2CC /* ProfileViewController.swift in Sources */,
+				73AECB991BC5CE2F0040F0AF /* STKAutoRecoveringHTTPDataSource.m in Sources */,
+				73AECBA51BC5CE2F0040F0AF /* STKQueueEntry.m in Sources */,
 				7327173F1BAC86BB003E0B68 /* AXTabBarItemButton.m in Sources */,
 				587DCD131B6D91F900AF792D /* Extension.swift in Sources */,
 				582AFA1E1B09200B001ADEED /* AccountViewControllers.swift in Sources */,
@@ -1239,6 +1327,7 @@
 				734C7D5D1BB47CBE0071678C /* Account.swift in Sources */,
 				588693A31B13B51300566124 /* UIImage+GIF.m in Sources */,
 				73FC90C81BAE4AFA00284B8A /* ServerTrustPolicy.swift in Sources */,
+				73AECB951BC5CE2F0040F0AF /* NSMutableArray+STKAudioPlayer.m in Sources */,
 				589413621B83C3F700395AFA /* TPKeyboardAvoidingTableView.m in Sources */,
 				587837A41B4402D0008DF480 /* Reachability.m in Sources */,
 				5886939A1B13B51300566124 /* NSData+ImageContentType.m in Sources */,
@@ -1247,6 +1336,7 @@
 				588693A41B13B51300566124 /* UIImage+MultiFormat.m in Sources */,
 				5886939C1B13B51300566124 /* SDWebImageCompat.m in Sources */,
 				732717111BAC8649003E0B68 /* RBStoryboardModalSegue.m in Sources */,
+				73AECBA31BC5CE2F0040F0AF /* STKLocalFileDataSource.m in Sources */,
 				7327173E1BAC86BB003E0B68 /* AXTabBar.m in Sources */,
 				585BAD0F1B85ED9900FE137A /* DTTimePeriod.m in Sources */,
 				73FC90BF1BAE4AFA00284B8A /* Alamofire.swift in Sources */,

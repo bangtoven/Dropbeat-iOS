@@ -8,6 +8,31 @@
 
 import UIKit
 
+extension Track {
+    func getYoutubeStreamURL(quality:XCDYouTubeVideoQuality, callback:(streamURL:String?, error:NSError?)->Void) {
+        guard self.type == .YOUTUBE else {
+            let error = NSError(domain: "TrackYoutubeStreamURL", code: -1, userInfo: nil)
+            callback(streamURL: self.streamUrl, error: error)
+            return
+        }
+        
+        XCDYouTubeClient.defaultClient().getVideoWithIdentifier(self.id, completionHandler: {
+            (video: XCDYouTubeVideo?, error: NSError?) -> Void in
+            if error != nil {
+                callback(streamURL: nil, error: error)
+                return
+            }
+            
+            if let streamURL = video?.streamURLs[quality.rawValue] as? NSURL {
+                callback(streamURL: streamURL.absoluteString, error: nil)
+            } else {
+                let e = NSError(domain: "TrackYoutubeStreamURL", code: -2, userInfo: nil)
+                callback(streamURL: nil, error: e)
+            }
+        })
+    }
+}
+
 class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
 
     private static var _singleton: DropbeatPlayer?
@@ -27,9 +52,21 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
     var lastError: STKAudioPlayerErrorCode?
     
-    func play(urlString: String) {
-        player.play(urlString)
+    func play(track: Track) {
         self.lastError = nil
+        
+        if track.type == .YOUTUBE {
+            let quality = XCDYouTubeVideoQuality.Medium360
+            track.getYoutubeStreamURL(quality, callback: { (streamURL, error) -> Void in
+                if let streamUrl = streamURL {
+                    self.player.play(streamUrl)
+                } else {
+                    print(error)
+                }
+            })
+        } else {
+            player.play(track.streamUrl)
+        }
     }
 
     func audioPlayer(audioPlayer: STKAudioPlayer!, didStartPlayingQueueItemId queueItemId: NSObject!)
@@ -81,6 +118,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     func audioPlayer(audioPlayer: STKAudioPlayer!, unexpectedError errorCode: STKAudioPlayerErrorCode)
     {
         if let last = self.lastError where last == errorCode {
+            
         } else {
             let err = ErrorCode(rawValue: errorCode.rawValue)
             print("Error!: \(err!)")

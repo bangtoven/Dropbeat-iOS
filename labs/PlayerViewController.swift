@@ -1203,21 +1203,23 @@ class PlayerViewController: BaseViewController {
         }
         audioPlayerControl.preferredVideoQualities = qualities
         
-        if (track.type == .YOUTUBE) {
-            audioPlayerControl.videoIdentifier = track.id
-        } else {
-            if track.type != .UNKNOWN {
-                audioPlayerControl.moviePlayer.contentURL = NSURL(string:track.streamUrl)
-                audioPlayerControl.moviePlayer
-                audioPlayerControl.videoIdentifier = nil
-            } else {
-                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to play", comment:""),
-                    message: NSLocalizedString("Unsupported track type", comment:""))
-                // XXX: Cannot play.
-                handleStop()
-                return
-            }
-        }
+//        if (track.type == .YOUTUBE) {
+//            audioPlayerControl.videoIdentifier = track.id
+//        } else {
+//            if track.type != .UNKNOWN {
+//                audioPlayerControl.moviePlayer.contentURL = NSURL(string:track.streamUrl)
+//                audioPlayerControl.moviePlayer
+//                audioPlayerControl.videoIdentifier = nil
+//            } else {
+//                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to play", comment:""),
+//                    message: NSLocalizedString("Unsupported track type", comment:""))
+//                // XXX: Cannot play.
+//                handleStop()
+//                return
+//            }
+//        }
+        
+        DropbeatPlayer.sharedPlayer().play(track)
         
         if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
             audioPlayerControl.moviePlayer.repeatMode = MPMovieRepeatMode.One

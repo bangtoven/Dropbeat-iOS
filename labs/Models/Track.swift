@@ -539,7 +539,9 @@ extension Track { // for Play Failure Log
         device["system"] = d.systemName
         device["model"] = d.model
         device["version"] = d.systemVersion
-        log["device"] = device
+        log["device_info"] = device
+        
+        log["location"] = Account.location
         
         request(.POST, ApiPath.logPlayFailure, parameters: log, encoding: .JSON)
             .responseJSON{ (req, resp, result) -> Void in

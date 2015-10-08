@@ -10,6 +10,12 @@ import UIKit
 import MediaPlayer
 import AVFoundation
 
+class XCDYouTubeVideoPlayerViewController: MPMoviePlayerViewController {
+    var videoIdentifier:String!
+    var preferredVideoQualities:[AnyObject]!
+    func presentInView(v:UIView){}
+}
+
 class PlayerViewController: BaseViewController {
     
     @IBOutlet weak var playerTitleHeightConstaint: NSLayoutConstraint!
@@ -727,9 +733,9 @@ class PlayerViewController: BaseViewController {
             finishReason = MPMovieFinishReason(rawValue: Int(rawValue))
             where finishReason == MPMovieFinishReason.PlaybackError
         {
-            if let error = userInfo[XCDMoviePlayerPlaybackDidFinishErrorUserInfoKey] as? NSError {
-                print(error)
-            }
+//            if let error = userInfo[XCDMoviePlayerPlaybackDidFinishErrorUserInfoKey] as? NSError {
+//                print(error)
+//            }
             
             print(finishReason)
             self.handlePlayFailure()
@@ -1235,8 +1241,8 @@ class PlayerViewController: BaseViewController {
         
         print("prepare to play")
         audioPlayerControl.moviePlayer.prepareToPlay()
-        audioPlayerControl.moviePlayer.scalingMode = .AspectFill
-        audioPlayerControl.moviePlayer.controlStyle = .Fullscreen
+//        audioPlayerControl.moviePlayer.scalingMode = .AspectFill
+//        audioPlayerControl.moviePlayer.controlStyle = .Fullscreen
         audioPlayerControl.moviePlayer.view.userInteractionEnabled = false
         updateCoverView()
     }

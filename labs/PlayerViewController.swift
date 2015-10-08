@@ -1225,7 +1225,7 @@ class PlayerViewController: BaseViewController {
 //            }
 //        }
         
-        DropbeatPlayer.sharedPlayer().play(track)
+        DropbeatPlayer.defaultPlayer.play(track)
         
         if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
             audioPlayerControl.moviePlayer.repeatMode = MPMovieRepeatMode.One

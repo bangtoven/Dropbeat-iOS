@@ -262,6 +262,8 @@
 		73AECC111BC6B7B20040F0AF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5890D6271B081C0800AAEAE5 /* AVFoundation.framework */; };
 		73AECC121BC6B7EA0040F0AF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58BB0AF11B122A6300B07279 /* CoreData.framework */; };
 		73AECC131BC6B7F10040F0AF /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58BB0AF11B122A6300B07279 /* CoreData.framework */; };
+		73B050D11BC6D90B001028C3 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5890D6291B081C1100AAEAE5 /* MediaPlayer.framework */; };
+		73B050D21BC6D912001028C3 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5890D6291B081C1100AAEAE5 /* MediaPlayer.framework */; };
 		73FC90BF1BAE4AFA00284B8A /* Alamofire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B21BAE4AFA00284B8A /* Alamofire.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90C01BAE4AFA00284B8A /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B31BAE4AFA00284B8A /* Download.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90C11BAE4AFA00284B8A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B41BAE4AFA00284B8A /* Error.swift */; settings = {ASSET_TAGS = (); }; };
@@ -314,7 +316,6 @@
 		587837A21B4402D0008DF480 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = Libraries/Reachability/Reachability.h; sourceTree = SOURCE_ROOT; };
 		587837A31B4402D0008DF480 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = Libraries/Reachability/Reachability.m; sourceTree = SOURCE_ROOT; };
 		587837E31B451DE7008DF480 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		587837E71B45C66E008DF480 /* libXCDYouTubeKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libXCDYouTubeKit.a; path = "../../../../Library/Developer/Xcode/DerivedData/labsWorkspace-enlawibbbrwbfxaarobsinbrlhgb/Build/Products/Debug-iphoneos/libXCDYouTubeKit.a"; sourceTree = "<group>"; };
 		587B5BD71B6AD2B6009BD05D /* FeedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FeedTableViewCell.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		587CDD231B0E4FA900D23CCC /* copyright.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = copyright.html; sourceTree = "<group>"; };
 		587DCD121B6D91F900AF792D /* Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
@@ -526,6 +527,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73B050D21BC6D912001028C3 /* MediaPlayer.framework in Frameworks */,
 				73AECBA91BC5CE500040F0AF /* AudioToolbox.framework in Frameworks */,
 				734C7DE81BB4C1DA0071678C /* QuartzCore.framework in Frameworks */,
 				734C7DEA1BB4C1DA0071678C /* AVFoundation.framework in Frameworks */,
@@ -547,6 +549,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73B050D11BC6D90B001028C3 /* MediaPlayer.framework in Frameworks */,
 				73AECC101BC6B7A70040F0AF /* AudioToolbox.framework in Frameworks */,
 				582E7D861B0F9A2D00AB76A2 /* QuartzCore.framework in Frameworks */,
 				73AECC111BC6B7B20040F0AF /* AVFoundation.framework in Frameworks */,
@@ -975,7 +978,6 @@
 			children = (
 				73AECBA81BC5CE500040F0AF /* AudioToolbox.framework */,
 				588693751B13B4ED00566124 /* libGoogleAnalyticsServices.a */,
-				587837E71B45C66E008DF480 /* libXCDYouTubeKit.a */,
 				58BB0AF71B122A8600B07279 /* libsqlite3.dylib */,
 				58BB0AF51B122A7900B07279 /* libz.dylib */,
 				5890D6271B081C0800AAEAE5 /* AVFoundation.framework */,

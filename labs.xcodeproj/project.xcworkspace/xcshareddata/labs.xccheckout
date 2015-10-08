@@ -10,8 +10,6 @@
 	<string>labs</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>082891D0F1CEFDDF2C66AF1DF7B72340AFC683E1</key>
-		<string>github.com:0xced/XCDYouTubeKit.git</string>
 		<key>564053DFAFC6546FAB97563771DAFC60BF1220BB</key>
 		<string>https://bitbucket.org/syncport/labs.git</string>
 	</dict>
@@ -19,8 +17,6 @@
 	<string>labs.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>082891D0F1CEFDDF2C66AF1DF7B72340AFC683E1</key>
-		<string>../../../XCDYouTubeKit</string>
 		<key>564053DFAFC6546FAB97563771DAFC60BF1220BB</key>
 		<string>../..</string>
 	</dict>
@@ -39,14 +35,6 @@
 			<string>564053DFAFC6546FAB97563771DAFC60BF1220BB</string>
 			<key>IDESourceControlWCCName</key>
 			<string>labs</string>
-		</dict>
-		<dict>
-			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
-			<string>public.vcs.git</string>
-			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>082891D0F1CEFDDF2C66AF1DF7B72340AFC683E1</string>
-			<key>IDESourceControlWCCName</key>
-			<string>XCDYouTubeKit</string>
 		</dict>
 	</array>
 </dict>

@@ -167,8 +167,10 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
             params["playlistId"] = playlistId
         }
         params["section"] = getSectionName()
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            NotifyKey.playerPlay, object: params)
+        
+        // TODO: playlist
+        DropbeatPlayer.play(track)
+        
     }
     
     func onTrackShareBtnClicked(track:Track) {
@@ -303,8 +305,9 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         dropPlayer?.removeObserver(self, forKeyPath: "status")
         dropPlayTimer?.invalidate()
         
-        let noti = NSNotification(name: NotifyKey.playerPause, object: nil)
-        NSNotificationCenter.defaultCenter().postNotification(noti)
+//        let noti = NSNotification(name: NotifyKey.playerPause, object: nil)
+//        NSNotificationCenter.defaultCenter().postNotification(noti)
+        DropbeatPlayer.pause()
         
         let sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
         do {

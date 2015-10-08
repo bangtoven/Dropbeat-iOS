@@ -1,5 +1,5 @@
 //
-//  PlayerViewController.swift
+//  _PlayerViewController.swift
 //  labs
 //
 //  Created by vulpes on 2015. 7. 29..
@@ -16,7 +16,7 @@ class XCDYouTubeVideoPlayerViewController: MPMoviePlayerViewController {
     func presentInView(v:UIView){}
 }
 
-class PlayerViewController: BaseViewController {
+class _PlayerViewController: BaseViewController {
     
     @IBOutlet weak var playerTitleHeightConstaint: NSLayoutConstraint!
     
@@ -45,7 +45,7 @@ class PlayerViewController: BaseViewController {
     //    @IBOutlet weak var playlistBtn: UIButton!
     
     static var observerAttached: Bool = false
-    static var sharedInstance:PlayerViewController?
+    static var sharedInstance:_PlayerViewController?
     
     private var audioPlayerControl: XCDYouTubeVideoPlayerViewController = XCDYouTubeVideoPlayerViewController()
     
@@ -74,8 +74,8 @@ class PlayerViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if (PlayerViewController.observerAttached == false) {
-            PlayerViewController.sharedInstance = self
+        if (_PlayerViewController.observerAttached == false) {
+            _PlayerViewController.sharedInstance = self
             asignObservers()
         }
         
@@ -159,31 +159,31 @@ class PlayerViewController: BaseViewController {
     }
     
     func asignObservers () {
-        PlayerViewController.observerAttached = true
+        _PlayerViewController.observerAttached = true
         //        // Used for track list play / nonplay ui update
         
         // Observe remote input.
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "handleUpdatePlay:", name: NotifyKey.updatePlay, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "remotePlay:", name: NotifyKey.playerPlay, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "handleStop", name: NotifyKey.playerStop, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "remotePrev", name: NotifyKey.playerPrev, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "remotePause", name: NotifyKey.playerPause, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "remoteNext", name: NotifyKey.playerNext, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "remoteSeek:", name: NotifyKey.playerSeek, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "repeatStateUpdated", name: NotifyKey.updateRepeatState, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "shuffleStateUpdated", name: NotifyKey.updateShuffleState, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "qualityStateUpdated", name: NotifyKey.updateQualityState, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(
+//            self, selector: "remotePlay:", name: NotifyKey.playerPlay, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(
+//            self, selector: "handleStop", name: NotifyKey.playerStop, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(
+//            self, selector: "remotePrev", name: NotifyKey.playerPrev, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(
+//            self, selector: "remotePause", name: NotifyKey.playerPause, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(
+//            self, selector: "remoteNext", name: NotifyKey.playerNext, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(
+//            self, selector: "remoteSeek:", name: NotifyKey.playerSeek, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(
+//            self, selector: "repeatStateUpdated", name: NotifyKey.updateRepeatState, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(
+//            self, selector: "shuffleStateUpdated", name: NotifyKey.updateShuffleState, object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(
+//            self, selector: "qualityStateUpdated", name: NotifyKey.updateQualityState, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "networkStatusUpdated", name: NotifyKey.networkStatusChanged, object: nil)
         
@@ -207,19 +207,19 @@ class PlayerViewController: BaseViewController {
     }
     
     func resignObservers() {
-        PlayerViewController.observerAttached = false
+        _PlayerViewController.observerAttached = false
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
         
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerStop, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPrev, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPause, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerNext, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerSeek, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updateRepeatState, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updateShuffleState, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updateQualityState, object: nil)
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerStop, object: nil)
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPlay, object: nil)
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPrev, object: nil)
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerPause, object: nil)
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerNext, object: nil)
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.playerSeek, object: nil)
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updateRepeatState, object: nil)
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updateShuffleState, object: nil)
+//        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updateQualityState, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.networkStatusChanged, object: nil)
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name: MPMoviePlayerLoadStateDidChangeNotification, object: nil)
@@ -886,8 +886,8 @@ class PlayerViewController: BaseViewController {
         }
         appDelegate.futureQuality = nil
         PlayerContext.changeQualityState()
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            NotifyKey.updateQualityState, object: nil)
+//        NSNotificationCenter.defaultCenter().postNotificationName(
+//            NotifyKey.updateQualityState, object: nil)
     }
     
     func onTrackShareBtnClicked(track:Track) {
@@ -1225,7 +1225,7 @@ class PlayerViewController: BaseViewController {
 //            }
 //        }
         
-        DropbeatPlayer.defaultPlayer.play(track)
+        DropbeatPlayer.play(track)
         
         if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
             audioPlayerControl.moviePlayer.repeatMode = MPMovieRepeatMode.One

@@ -426,8 +426,9 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
             self, selector: "appDidEnterBackground",
             name: UIApplicationDidEnterBackgroundNotification, object: nil)
         
-        let noti = NSNotification(name: NotifyKey.playerPause, object: nil)
-        NSNotificationCenter.defaultCenter().postNotification(noti)
+//        let noti = NSNotification(name: NotifyKey.playerPause, object: nil)
+//        NSNotificationCenter.defaultCenter().postNotification(noti)
+        DropbeatPlayer.pause()
     }
     
     override func viewWillDisappear(animated: Bool) {

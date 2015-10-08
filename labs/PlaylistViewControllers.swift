@@ -276,10 +276,12 @@ class PlaylistViewController: BaseViewController,
             "section": section
         ]
         
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            NotifyKey.playerPlay, object: params)
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            NotifyKey.updateShuffleState, object: nil)
+        DropbeatPlayer.play(selectedTrack)
+//        
+//        NSNotificationCenter.defaultCenter().postNotificationName(
+//            NotifyKey.playerPlay, object: params)
+//        NSNotificationCenter.defaultCenter().postNotificationName(
+//            NotifyKey.updateShuffleState, object: nil)
     }
     
     @IBAction func onPlaylistMenuBtnClicked(sender: AnyObject) {
@@ -436,8 +438,10 @@ class PlaylistViewController: BaseViewController,
             "section": section
         ]
         
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            NotifyKey.playerPlay, object: params)
+        DropbeatPlayer.play(track)
+
+//        NSNotificationCenter.defaultCenter().postNotificationName(
+//            NotifyKey.playerPlay, object: params)
         
         if fromPlayer {
             dismissViewControllerAnimated(true, completion: nil)
@@ -554,10 +558,12 @@ class PlaylistViewController: BaseViewController,
             "section": section
         ]
         
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            NotifyKey.playerPlay, object: params)
-        NSNotificationCenter.defaultCenter().postNotificationName(
-            NotifyKey.updateShuffleState, object: nil)
+        DropbeatPlayer.play(selectedTrack)
+//
+//        NSNotificationCenter.defaultCenter().postNotificationName(
+//            NotifyKey.playerPlay, object: params)
+//        NSNotificationCenter.defaultCenter().postNotificationName(
+//            NotifyKey.updateShuffleState, object: nil)
     }
     
     func onSharePlaylistBtnClicked() {
@@ -658,11 +664,13 @@ class PlaylistViewController: BaseViewController,
                         return
                     }
                     if PlayerContext.currentPlaylistId == removePlaylist.id {
-                        NSNotificationCenter.defaultCenter().postNotificationName(
-                            NotifyKey.playerStop, object: nil)
                         PlayerContext.shuffleState = ShuffleState.NOT_SHUFFLE
-                        NSNotificationCenter.defaultCenter().postNotificationName(
-                            NotifyKey.updateShuffleState, object: nil)
+                        DropbeatPlayer.stop()
+                        
+//                        NSNotificationCenter.defaultCenter().postNotificationName(
+//                            NotifyKey.playerStop, object: nil)
+//                        NSNotificationCenter.defaultCenter().postNotificationName(
+//                            NotifyKey.updateShuffleState, object: nil)
                     }
                     
                     self.navigationController!.popViewControllerAnimated(true)

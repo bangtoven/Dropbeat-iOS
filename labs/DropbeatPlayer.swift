@@ -11,8 +11,6 @@ import MediaPlayer
 
 class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
 
-    static let defaultPlayer = DropbeatPlayer()
-    
     private var player: STKAudioPlayer = STKAudioPlayer()
     override init() {
         super.init()
@@ -31,18 +29,18 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             if let playlistId = PlayerContext.currentPlaylistId {
                 params["playlistId"] =  playlistId
             }
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.playerPlay, object: params)
+            self.play(currentTrack)
         case .RemoteControlPause:
             print("pause clicked")
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.playerPause, object: nil)
+            self.pause()
         case .RemoteControlStop:
             print("stop clicked")
         case .RemoteControlPreviousTrack:
             print("prev clicked")
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.playerPrev, object: nil)
+            self.prev()
         case .RemoteControlNextTrack:
             print("next clicked")
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.playerNext, object: nil)
+            self.next()
 //        case .RemoteControlTogglePlayPause:
 //        case .RemoteControlBeginSeekingBackward:
 //        case .RemoteControlEndSeekingBackward:
@@ -121,6 +119,12 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo
     }
     
+    func pause() {
+        self.player.pause()
+    }
+    func prev() {}
+    func next() {}
+    
     func stop() {
         player.stop()
     }
@@ -191,6 +195,33 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
 
 }
 
+extension DropbeatPlayer {
+    private static let singleton = DropbeatPlayer()
+    
+    static func play(track: Track) {
+        singleton.play(track)
+    }
+    
+    static func pause() {
+        singleton.pause()
+    }
+    
+    static func prev() {
+        singleton.prev()
+    }
+    
+    static func next() {
+        singleton.next()
+    }
+    
+    static func stop() {
+        singleton.stop()
+    }
+    
+    static func remoteControlReceivedWithEvent(event: UIEvent?) {
+        singleton.remoteControlReceivedWithEvent(event)
+    }
+}
 
 extension Track {
     func getYoutubeStreamURL(quality:XCDYouTubeVideoQuality, callback:(streamURL:String?, error:NSError?)->Void) {

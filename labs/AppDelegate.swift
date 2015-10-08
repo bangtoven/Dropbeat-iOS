@@ -70,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     override func remoteControlReceivedWithEvent(event: UIEvent?) {
-        DropbeatPlayer.defaultPlayer.remoteControlReceivedWithEvent(event)
+        DropbeatPlayer.remoteControlReceivedWithEvent(event)
     }
     
     func applicationWillEnterForeground(application: UIApplication) {

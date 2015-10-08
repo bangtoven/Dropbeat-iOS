@@ -11,18 +11,9 @@ import Foundation
 class NotifyKey {
     static var statusBarTapped = "statusBarTapped"
     static var fromAppLink = "fromAppLink"
-    
-    static var playerPlay = "playPlayer"
-    static var playerPrev = "prevPlayer"
-    static var playerPause = "pausePlayer"
-    static var playerNext = "nextPlayer"
-    static var playerSeek = "seekPlayer"
-    static var playerStop = "stopPlayer"
-    static var updatePlaylistView = "updatePlaylistView"
+
     static var updatePlay = "updatePlay"
-    static var updateRepeatState = "updateRepeatState"
-    static var updateShuffleState = "updateShuffleState"
-    static var updateQualityState = "updateQualityState"
+    
     static var networkStatusChanged = "networkStatusChanged"
     static var likeUpdated = "likeUpdated"
 }

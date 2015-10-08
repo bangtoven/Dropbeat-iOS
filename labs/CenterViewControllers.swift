@@ -12,9 +12,10 @@ enum MenuType : Int {
     case SEARCH
     case PLAYLIST
     case PROFILE
+    case TEST
 }
 
-class CenterViewController: PlayerViewController, UITabBarDelegate{
+class CenterViewController: _PlayerViewController, UITabBarDelegate{
     
     @IBOutlet weak var hidePlayerButton: UIButton!
     
@@ -109,8 +110,9 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
                     "section": "app-link"
                 ]
                 self.showPlayerView()
-                NSNotificationCenter.defaultCenter().postNotificationName(
-                    NotifyKey.playerPlay, object: params)
+//                NSNotificationCenter.defaultCenter().postNotificationName(
+//                    NotifyKey.playerPlay, object: params)
+                DropbeatPlayer.play(track!)
             }
         case .SHARED_TRACK(let uid):
             Requests.getSharedTrack(uid, respCb: {
@@ -144,8 +146,9 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
                     "section": "shared_track"
                 ]
                 self.showPlayerView()
-                NSNotificationCenter.defaultCenter().postNotificationName(
-                    NotifyKey.playerPlay, object: params)
+//                NSNotificationCenter.defaultCenter().postNotificationName(
+//                    NotifyKey.playerPlay, object: params)
+                DropbeatPlayer.play(track!)
             })
         case .SHARED_PLAYLIST(let uid):
             Requests.getSharedPlaylist(uid, respCb: {
@@ -214,6 +217,10 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
             }
         case .PLAYLIST:
             activeViewController = UIStoryboard(name: "Playlist", bundle: nil).instantiateInitialViewController()
+        case .TEST:
+            let pvc = UIStoryboard(name: "Main", bundle: nil)
+                .instantiateViewControllerWithIdentifier("PlayerViewController")
+            self.presentViewController(pvc, animated: true, completion: nil)
         }
         
         currentMenu = type
@@ -332,7 +339,7 @@ class CenterViewController: PlayerViewController, UITabBarDelegate{
     }
     
     @IBAction func showPlayerBtnClicked(sender: UIButton) {
-        DropbeatPlayer.defaultPlayer.stop()
+        DropbeatPlayer.stop()
 //        showPlayerView()
     }
     

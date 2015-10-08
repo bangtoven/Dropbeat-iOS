@@ -130,7 +130,6 @@
 		734C7D991BB4C1DA0071678C /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90BE1BAE4AFA00284B8A /* Validation.swift */; settings = {ASSET_TAGS = (); }; };
 		734C7D9A1BB4C1DA0071678C /* DTConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 585BACFD1B85ED9900FE137A /* DTConstants.m */; };
 		734C7D9B1BB4C1DA0071678C /* FollowInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731D92711BAEE4FB0068742A /* FollowInfoTableViewController.swift */; };
-		734C7D9C1BB4C1DA0071678C /* PlayerContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0D9D541B09A70300E048CC /* PlayerContext.swift */; };
 		734C7D9D1BB4C1DA0071678C /* GBFlatSelectableButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 7327172E1BAC86A8003E0B68 /* GBFlatSelectableButton.m */; };
 		734C7D9E1BB4C1DA0071678C /* EditFavoriteGenreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AB347B1BB1E8FE0031E2CC /* EditFavoriteGenreViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		734C7D9F1BB4C1DA0071678C /* SDWebImageDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 588693821B13B51300566124 /* SDWebImageDecoder.m */; };
@@ -281,7 +280,6 @@
 		73FC90CB1BAE4AFA00284B8A /* Validation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90BE1BAE4AFA00284B8A /* Validation.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90CE1BAE5DCC00284B8A /* KeychainItemWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90CC1BAE5C9000284B8A /* KeychainItemWrapper.swift */; settings = {ASSET_TAGS = (); }; };
 		73FC90D01BAE79CD00284B8A /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73FC90CF1BAE79CD00284B8A /* FBSDKShareKit.framework */; };
-		FC0D9D551B09A70300E048CC /* PlayerContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0D9D541B09A70300E048CC /* PlayerContext.swift */; };
 		FC0D9D591B0CC4DE00E048CC /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC0D9D581B0CC4DE00E048CC /* Constants.swift */; };
 		FC766BEF1B050D51006FD4FB /* NetworkPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC766BEE1B050D51006FD4FB /* NetworkPath.swift */; };
 		FC766BF51B051AA4006FD4FB /* NetworkRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC766BF41B051AA4006FD4FB /* NetworkRequests.swift */; };
@@ -513,7 +511,6 @@
 		73FC90BE1BAE4AFA00284B8A /* Validation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Validation.swift; path = Libraries/Alamofire/Validation.swift; sourceTree = SOURCE_ROOT; };
 		73FC90CC1BAE5C9000284B8A /* KeychainItemWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainItemWrapper.swift; sourceTree = "<group>"; };
 		73FC90CF1BAE79CD00284B8A /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Libraries/FBSDKShareKit.framework; sourceTree = "<group>"; };
-		FC0D9D541B09A70300E048CC /* PlayerContext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerContext.swift; sourceTree = "<group>"; };
 		FC0D9D581B0CC4DE00E048CC /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		FC766BEE1B050D51006FD4FB /* NetworkPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkPath.swift; sourceTree = "<group>"; };
 		FC766BF41B051AA4006FD4FB /* NetworkRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NetworkRequests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -838,12 +835,11 @@
 		7361FCE51B9F628100444179 /* Model & etc */ = {
 			isa = PBXGroup;
 			children = (
-				734C7D6B1BB47F410071678C /* Models */,
-				73AECBAA1BC5CF280040F0AF /* DropbeatPlayer.swift */,
 				FC0D9D581B0CC4DE00E048CC /* Constants.swift */,
 				FC766BEE1B050D51006FD4FB /* NetworkPath.swift */,
 				FC766BF41B051AA4006FD4FB /* NetworkRequests.swift */,
-				FC0D9D541B09A70300E048CC /* PlayerContext.swift */,
+				734C7D6B1BB47F410071678C /* Models */,
+				73AECBAA1BC5CF280040F0AF /* DropbeatPlayer.swift */,
 			);
 			name = "Model & etc";
 			sourceTree = "<group>";
@@ -1226,7 +1222,6 @@
 				734C7D991BB4C1DA0071678C /* Validation.swift in Sources */,
 				734C7D9A1BB4C1DA0071678C /* DTConstants.m in Sources */,
 				734C7D9B1BB4C1DA0071678C /* FollowInfoTableViewController.swift in Sources */,
-				734C7D9C1BB4C1DA0071678C /* PlayerContext.swift in Sources */,
 				73AECBA21BC5CE2F0040F0AF /* STKHTTPDataSource.m in Sources */,
 				734C7D9D1BB4C1DA0071678C /* GBFlatSelectableButton.m in Sources */,
 				734C7D9E1BB4C1DA0071678C /* EditFavoriteGenreViewController.swift in Sources */,
@@ -1347,7 +1342,6 @@
 				73FC90CB1BAE4AFA00284B8A /* Validation.swift in Sources */,
 				585BAD0D1B85ED9900FE137A /* DTConstants.m in Sources */,
 				731D92721BAEE4FB0068742A /* FollowInfoTableViewController.swift in Sources */,
-				FC0D9D551B09A70300E048CC /* PlayerContext.swift in Sources */,
 				73AECBA11BC5CE2F0040F0AF /* STKHTTPDataSource.m in Sources */,
 				732717311BAC86A8003E0B68 /* GBFlatSelectableButton.m in Sources */,
 				73AB347C1BB1E8FE0031E2CC /* EditFavoriteGenreViewController.swift in Sources */,

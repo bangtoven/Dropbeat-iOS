@@ -140,7 +140,7 @@ class Playlist {
                 return
             }
             var changedPlaylist:Playlist? = nil
-            for p in PlayerContext.playlists {
+            for p in DropbeatPlayer.defaultPlayer.playlists {
                 if (p.id == self.id) {
                     changedPlaylist = p
                     break
@@ -178,7 +178,7 @@ class Playlist {
                 return
             }
             var playlist:Playlist? = nil
-            for p in PlayerContext.playlists {
+            for p in DropbeatPlayer.defaultPlayer.playlists {
                 if (p.id == self.id) {
                     playlist = p
                     break
@@ -201,13 +201,13 @@ class Playlist {
             playlist!.tracks.removeAtIndex(foundIdx!)
             
             // Update current PlayerContext with new index
-            let playingTrack:Track? = PlayerContext.currentTrack
+            let playingTrack:Track? = DropbeatPlayer.defaultPlayer.currentTrack
             if (playingTrack != nil &&
-                PlayerContext.currentPlaylistId != nil &&
-                PlayerContext.currentPlaylistId == self.id) {
+                DropbeatPlayer.defaultPlayer.currentPlaylistId != nil &&
+                DropbeatPlayer.defaultPlayer.currentPlaylistId == self.id) {
                     for (idx, track) in playlist!.tracks.enumerate() {
                         if (track.id == playingTrack!.id) {
-                            PlayerContext.currentTrackIdx = idx
+                            DropbeatPlayer.defaultPlayer.currentTrackIdx = idx
                             break
                         }
                     }

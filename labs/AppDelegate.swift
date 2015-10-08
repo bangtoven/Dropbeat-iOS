@@ -70,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     override func remoteControlReceivedWithEvent(event: UIEvent?) {
-        DropbeatPlayer.remoteControlReceivedWithEvent(event)
+        DropbeatPlayer.defaultPlayer.remoteControlReceivedWithEvent(event)
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
@@ -179,9 +179,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if (networkStatus != .NotReachable) {
             let quality: QualityState = (networkStatus == .ReachableViaWiFi) ? .HQ : .LQ
-            if (shouldInitializeQualityState || PlayerContext.playState == PlayState.STOPPED) {
+            if (shouldInitializeQualityState || DropbeatPlayer.defaultPlayer.playState == PlayState.STOPPED) {
                 shouldInitializeQualityState = false
-                PlayerContext.qualityState = quality
+                DropbeatPlayer.defaultPlayer.qualityState = quality
             } else {
                 futureQuality = quality
             }

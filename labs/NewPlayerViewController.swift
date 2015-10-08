@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PlayerViewController: UIViewController {
+class PlayerViewController: GAITrackedViewController {
 
     @IBOutlet weak var hidePlayerButton: UIButton!
     
@@ -43,11 +43,11 @@ class PlayerViewController: UIViewController {
         hidePlayerButton.layer.cornerRadius = 10.0
         
         if UIScreen.mainScreen().bounds.height == 480 {
-            resizeViewUnder4in()
+            resizeViewUnder4inch()
         }
     }
     
-    func resizeViewUnder4in() {
+    func resizeViewUnder4inch() {
         playerTitleHeightConstaint.constant = 28
         let heightConstraint = NSLayoutConstraint(item: coverView,
             attribute: NSLayoutAttribute.Height,

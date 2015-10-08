@@ -9,7 +9,52 @@
 import UIKit
 import MediaPlayer
 
+enum RepeatState: Int {
+    case NOT_REPEAT = 0
+    case REPEAT_PLAYLIST = 1
+    case REPEAT_ONE = 2
+    
+    func next() -> RepeatState {
+        return RepeatState(rawValue: (self.rawValue + 1) % 3)!
+    }
+}
+
+enum ShuffleState: Int  {
+    case NOT_SHUFFLE = 0
+    case SHUFFLE = 1
+    
+    func toggle() -> ShuffleState {
+        switch self {
+        case .NOT_SHUFFLE: return .SHUFFLE
+        case .SHUFFLE: return .NOT_SHUFFLE
+        }
+    }
+}
+
+enum QualityState: Int  {
+    case LQ = 0
+    case HQ = 1
+    
+    func toggle() -> QualityState {
+        switch self {
+        case .LQ: return .HQ
+        case .HQ: return .LQ
+        }
+    }
+}
+
+enum PlayState: Int {
+    case STOPPED = 0
+    case LOADING
+    case PLAYING
+    case PAUSED
+    case SWITCHING
+    case BUFFERING
+}
+
 class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
+    
+    static let defaultPlayer = DropbeatPlayer()
 
     private var player: STKAudioPlayer = STKAudioPlayer()
     override init() {
@@ -21,12 +66,12 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         switch(event!.subtype) {
         case .RemoteControlPlay:
             print("play clicked")
-            guard let currentTrack = PlayerContext.currentTrack else {
+            guard let currentTrack = self.currentTrack else {
                 return
             }
             var params = [String: AnyObject]()
             params["track"] = currentTrack
-            if let playlistId = PlayerContext.currentPlaylistId {
+            if let playlistId = self.currentPlaylistId {
                 params["playlistId"] =  playlistId
             }
             self.play(currentTrack)
@@ -104,7 +149,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
 //        }
 //        trackInfo[MPMediaItemPropertyArtist] = stateText
         
-//        let duration = PlayerContext.correctDuration ?? 0
+//        let duration = DropbeatPlayer.defaultPlayer.correctDuration ?? 0
 //        var currentPlayback:NSTimeInterval?
 //        if audioPlayerControl.moviePlayer.currentPlaybackTime.isNaN {
 //            currentPlayback = 0
@@ -192,35 +237,137 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             self.player.delegate = self
         }
     }
+    
+    
+    var currentTrackIdx: Int = -1
+    var currentTrack: Track?
+    
+    var currentPlaylistId: String?
+    var playlists: [Playlist] = []
+    var externalPlaylist: Playlist?
+    
+    var repeatState = RepeatState.NOT_REPEAT
+    var shuffleState = ShuffleState.NOT_SHUFFLE
+    var playState = PlayState.STOPPED
+    var qualityState = QualityState.LQ
+    
+    var correctDuration: Double?
+    var currentPlaybackTime: Double?
+    var playingSection:String?
+    
+    var playLog: PlayLog?
+    
+    func resetPlaylist(playlists: [Playlist]) {
+        self.playlists = playlists
+    }
+    
+    func changeRepeatState() {
+        repeatState = repeatState.next()
+    }
+    
+    func changeShuffleState() {
+        shuffleState = shuffleState.toggle()
+    }
+    
+    func changeQualityState() {
+        qualityState = qualityState.toggle()
+    }
+    
+    func pickNextTrack() -> Track? {
+        var track :Track? = nil
+        let playlist :Playlist? = getPlaylist(currentPlaylistId)
+        let size = playlist?.tracks.count ?? 0
+        
+        if currentPlaylistId == nil || playlist == nil || size == 0{
+            return nil;
+        }
+        
+        if self.shuffleState == .SHUFFLE {
+            track = randomPick()
+        } else {
+            var nextIdx :Int
+            
+            if self.repeatState == .REPEAT_PLAYLIST {
+                if currentTrackIdx < 0 {
+                    nextIdx = 0
+                } else {
+                    nextIdx = (currentTrackIdx + 1) % size
+                }
+                track = playlist!.tracks[nextIdx] as Track
+            } else {
+                if currentTrackIdx < 0 {
+                    nextIdx = 0
+                } else {
+                    nextIdx = currentTrackIdx + 1
+                }
+                if (nextIdx < size) {
+                    track = playlist!.tracks[nextIdx] as Track
+                }
+            }
+        }
+        return track
+    }
+    
+    func pickPrevTrack() -> Track? {
+        var track :Track? = nil
+        let playlist :Playlist? = getPlaylist(currentPlaylistId)
+        let size = playlist?.tracks.count ?? 0
+        
+        if currentPlaylistId == nil || playlist == nil || size == 0{
+            return nil;
+        }
+        
+        if self.shuffleState == .SHUFFLE {
+            track = randomPick()
+        } else {
+            var prevIdx :Int
+            
+            if self.repeatState == .REPEAT_PLAYLIST {
+                prevIdx = currentTrackIdx - 1
+                if prevIdx <= 0 {
+                    prevIdx = size - 1
+                }
+                track = playlist!.tracks[prevIdx] as Track
+            } else {
+                prevIdx = currentTrackIdx - 1
+                if prevIdx >= 0 {
+                    track = playlist!.tracks[prevIdx] as Track
+                }
+            }
+        }
+        return track
+    }
+    
+    func randomPick() -> Track? {
+        // Randomly pick next track in shuffle mode.
+        // NOTE that this method should exclude current track in next candidates.
+        let playlist :Playlist? = getPlaylist(currentPlaylistId)
+        let size = playlist?.tracks.count
+        if size <= 1 {
+            return nil
+        }
+        
+        while (true) {
+            let idx = Int(arc4random_uniform(UInt32(size!)))
+            if idx != currentTrackIdx {
+                return playlist!.tracks[idx] as Track
+            }
+        }
+    }
+    
+    func getPlaylist(playlistId: String?) -> Playlist? {
+        for playlist: Playlist in self.playlists {
+            if playlist.id == playlistId {
+                return playlist
+            }
+        }
+        if self.externalPlaylist != nil &&
+            self.externalPlaylist!.id == playlistId {
+                return self.externalPlaylist
+        }
+        return nil
+    }
 
-}
-
-extension DropbeatPlayer {
-    private static let singleton = DropbeatPlayer()
-    
-    static func play(track: Track) {
-        singleton.play(track)
-    }
-    
-    static func pause() {
-        singleton.pause()
-    }
-    
-    static func prev() {
-        singleton.prev()
-    }
-    
-    static func next() {
-        singleton.next()
-    }
-    
-    static func stop() {
-        singleton.stop()
-    }
-    
-    static func remoteControlReceivedWithEvent(event: UIEvent?) {
-        singleton.remoteControlReceivedWithEvent(event)
-    }
 }
 
 extension Track {

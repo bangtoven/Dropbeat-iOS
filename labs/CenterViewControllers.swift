@@ -112,7 +112,7 @@ class CenterViewController: _PlayerViewController, UITabBarDelegate{
                 self.showPlayerView()
 //                NSNotificationCenter.defaultCenter().postNotificationName(
 //                    NotifyKey.playerPlay, object: params)
-                DropbeatPlayer.play(track!)
+                DropbeatPlayer.defaultPlayer.play(track!)
             }
         case .SHARED_TRACK(let uid):
             Requests.getSharedTrack(uid, respCb: {
@@ -148,7 +148,7 @@ class CenterViewController: _PlayerViewController, UITabBarDelegate{
                 self.showPlayerView()
 //                NSNotificationCenter.defaultCenter().postNotificationName(
 //                    NotifyKey.playerPlay, object: params)
-                DropbeatPlayer.play(track!)
+                DropbeatPlayer.defaultPlayer.play(track!)
             })
         case .SHARED_PLAYLIST(let uid):
             Requests.getSharedPlaylist(uid, respCb: {
@@ -286,7 +286,7 @@ class CenterViewController: _PlayerViewController, UITabBarDelegate{
     override func updatePlayView() {
         super.updatePlayView()
         
-        switch PlayerContext.playState {
+        switch DropbeatPlayer.defaultPlayer.playState {
         case .LOADING, .SWITCHING, .BUFFERING:
             showTabBarPlayer(true)
             self.loadingIndicator.hidden = false
@@ -315,10 +315,10 @@ class CenterViewController: _PlayerViewController, UITabBarDelegate{
         super.updateStatusView()
         
         let defaultText = NSLocalizedString("CHOOSE TRACK", comment:"")
-        if (PlayerContext.playState == PlayState.STOPPED) {
+        if (DropbeatPlayer.defaultPlayer.playState == PlayState.STOPPED) {
             self.trackInfoLabel.text = defaultText
         } else {
-            self.trackInfoLabel.text = PlayerContext.currentTrack?.title ?? defaultText
+            self.trackInfoLabel.text = DropbeatPlayer.defaultPlayer.currentTrack?.title ?? defaultText
         }
     }
     
@@ -331,22 +331,22 @@ class CenterViewController: _PlayerViewController, UITabBarDelegate{
     }
     
     @IBAction func playPauseBtnClicked(sender: UIButton) {
-        if (PlayerContext.playState == PlayState.PAUSED) {
+        if (DropbeatPlayer.defaultPlayer.playState == PlayState.PAUSED) {
             super.playBtnClicked(sender)
-        } else if (PlayerContext.playState == PlayState.PLAYING) {
+        } else if (DropbeatPlayer.defaultPlayer.playState == PlayState.PLAYING) {
             super.pauseBtnClicked(sender)
         }
     }
     
     @IBAction func showPlayerBtnClicked(sender: UIButton) {
-        DropbeatPlayer.stop()
+        DropbeatPlayer.defaultPlayer.stop()
 //        showPlayerView()
     }
     
     @IBAction func showListBtnClicked(sender: UIButton) {
         var playlist:Playlist?
-        if PlayerContext.currentPlaylistId != nil {
-            playlist = PlayerContext.getPlaylist(PlayerContext.currentPlaylistId)
+        if DropbeatPlayer.defaultPlayer.currentPlaylistId != nil {
+            playlist = DropbeatPlayer.defaultPlayer.getPlaylist(DropbeatPlayer.defaultPlayer.currentPlaylistId)
         }
         if playlist == nil {
             ViewUtils.showToast(self,

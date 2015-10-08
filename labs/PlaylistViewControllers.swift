@@ -141,9 +141,9 @@ class PlaylistViewController: BaseViewController,
         let track:Track = tracks[indexPath.row]
         let cell:PlaylistTableViewCell = tableView.dequeueReusableCellWithIdentifier(
                 "PlaylistTableViewCell", forIndexPath: indexPath) as! PlaylistTableViewCell
-        if (currentPlaylist!.id == PlayerContext.currentPlaylistId &&
-                PlayerContext.currentTrack != nil &&
-                PlayerContext.currentTrack!.id == track.id) {
+        if (currentPlaylist!.id == DropbeatPlayer.defaultPlayer.currentPlaylistId &&
+                DropbeatPlayer.defaultPlayer.currentTrack != nil &&
+                DropbeatPlayer.defaultPlayer.currentTrack!.id == track.id) {
             cell.setSelected(true, animated: false)
         }
         cell.trackTitle.text = track.title
@@ -181,7 +181,7 @@ class PlaylistViewController: BaseViewController,
             self.playlistTableView.reloadData()
             
             self.updatePlaylistInfo()
-            self.updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+            self.updatePlayTrack(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
             return
         }
         
@@ -239,7 +239,7 @@ class PlaylistViewController: BaseViewController,
             
             self.updatePlaylistInfo()
             self.playlistTableView.reloadData()
-            self.updatePlayTrack(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+            self.updatePlayTrack(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
         })
     }
     
@@ -251,10 +251,10 @@ class PlaylistViewController: BaseViewController,
         
         let selectedTrack: Track = tracks[0] as Track
         
-        PlayerContext.shuffleState = ShuffleState.NOT_SHUFFLE
+        DropbeatPlayer.defaultPlayer.shuffleState = ShuffleState.NOT_SHUFFLE
         
         if currentPlaylist.type != PlaylistType.USER {
-            PlayerContext.externalPlaylist = currentPlaylist
+            DropbeatPlayer.defaultPlayer.externalPlaylist = currentPlaylist
         }
         
         var section:String!
@@ -276,7 +276,7 @@ class PlaylistViewController: BaseViewController,
             "section": section
         ]
         
-        DropbeatPlayer.play(selectedTrack)
+        DropbeatPlayer.defaultPlayer.play(selectedTrack)
 //        
 //        NSNotificationCenter.defaultCenter().postNotificationName(
 //            NotifyKey.playerPlay, object: params)
@@ -418,7 +418,7 @@ class PlaylistViewController: BaseViewController,
     
     func onPlayTrackBtnClicked(track: Track) {
         if currentPlaylist.type != PlaylistType.USER {
-            PlayerContext.externalPlaylist = currentPlaylist
+            DropbeatPlayer.defaultPlayer.externalPlaylist = currentPlaylist
         }
         var section:String!
         switch (currentPlaylist.type) {
@@ -438,7 +438,7 @@ class PlaylistViewController: BaseViewController,
             "section": section
         ]
         
-        DropbeatPlayer.play(track)
+        DropbeatPlayer.defaultPlayer.play(track)
 
 //        NSNotificationCenter.defaultCenter().postNotificationName(
 //            NotifyKey.playerPlay, object: params)
@@ -534,10 +534,10 @@ class PlaylistViewController: BaseViewController,
         let randomIndex = Int(arc4random_uniform(UInt32(tracks.count)))
         let selectedTrack: Track = tracks[randomIndex] as Track
         
-        PlayerContext.shuffleState = ShuffleState.SHUFFLE
+        DropbeatPlayer.defaultPlayer.shuffleState = ShuffleState.SHUFFLE
         
         if currentPlaylist.type != PlaylistType.USER {
-            PlayerContext.externalPlaylist = currentPlaylist
+            DropbeatPlayer.defaultPlayer.externalPlaylist = currentPlaylist
         }
         var section:String!
         switch (currentPlaylist.type) {
@@ -558,7 +558,7 @@ class PlaylistViewController: BaseViewController,
             "section": section
         ]
         
-        DropbeatPlayer.play(selectedTrack)
+        DropbeatPlayer.defaultPlayer.play(selectedTrack)
 //
 //        NSNotificationCenter.defaultCenter().postNotificationName(
 //            NotifyKey.playerPlay, object: params)
@@ -619,7 +619,7 @@ class PlaylistViewController: BaseViewController,
     }
     
     func onDeletePlaylistBtnClicked() {
-        let playlists = PlayerContext.playlists
+        let playlists = DropbeatPlayer.defaultPlayer.playlists
         if (playlists.count == 1) {
             ViewUtils.showNoticeAlert(self,
                 title: NSLocalizedString("Failed to delete", comment:""),
@@ -663,9 +663,9 @@ class PlaylistViewController: BaseViewController,
                             title: NSLocalizedString("Failed to delete", comment:""), message: message)
                         return
                     }
-                    if PlayerContext.currentPlaylistId == removePlaylist.id {
-                        PlayerContext.shuffleState = ShuffleState.NOT_SHUFFLE
-                        DropbeatPlayer.stop()
+                    if DropbeatPlayer.defaultPlayer.currentPlaylistId == removePlaylist.id {
+                        DropbeatPlayer.defaultPlayer.shuffleState = ShuffleState.NOT_SHUFFLE
+                        DropbeatPlayer.defaultPlayer.stop()
                         
 //                        NSNotificationCenter.defaultCenter().postNotificationName(
 //                            NotifyKey.playerStop, object: nil)

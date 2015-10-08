@@ -42,7 +42,7 @@ class PlaylistSelectViewController: BaseViewController, UITableViewDelegate, UIT
         super.viewDidLoad()
         
         playlists.removeAll(keepCapacity: false)
-        for playlist in PlayerContext.playlists {
+        for playlist in DropbeatPlayer.defaultPlayer.playlists {
             playlists.append(playlist)
         }
         tableView.reloadData()
@@ -157,10 +157,10 @@ class PlaylistSelectViewController: BaseViewController, UITableViewDelegate, UIT
                     message: error!.description)
                 return
             }
-            PlayerContext.playlists.removeAll(keepCapacity: false)
+            DropbeatPlayer.defaultPlayer.playlists.removeAll(keepCapacity: false)
             self.playlists.removeAll(keepCapacity: false)
             for playlist in playlists {
-                PlayerContext.playlists.append(playlist)
+                DropbeatPlayer.defaultPlayer.playlists.append(playlist)
                 self.playlists.append(playlist)
             }
             self.tableView.reloadData()

@@ -31,7 +31,7 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
         }
         
         self.trackTableView.reloadData()
-        self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+        self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
         
         loadMoreSpinnerWrapper.hidden = true
         loadMoreSpinner.stopAnimating()
@@ -144,7 +144,7 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
             
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
-            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+            self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
         }
     }
 }
@@ -171,7 +171,7 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
         }
         
         self.trackTableView.reloadData()
-        self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+        self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
     }
     
     func subViewWillDisappear() {

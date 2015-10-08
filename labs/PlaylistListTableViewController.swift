@@ -21,7 +21,7 @@ class PlaylistListTableViewController: UITableViewController {
         super.viewWillAppear(animated)
 
         playlists.removeAll(keepCapacity: false)
-        for playlist in PlayerContext.playlists {
+        for playlist in DropbeatPlayer.defaultPlayer.playlists {
             playlists.append(playlist)
         }
         tableView.reloadData()
@@ -36,7 +36,7 @@ class PlaylistListTableViewController: UITableViewController {
         if segue.identifier == "PlaylistSegue" {
             let indexPath = tableView.indexPathForSelectedRow!
             var playlist: Playlist
-            if let externalPlaylist = PlayerContext.externalPlaylist {
+            if let externalPlaylist = DropbeatPlayer.defaultPlayer.externalPlaylist {
                 if indexPath.section == 0 {
                     playlist = externalPlaylist
                 } else {
@@ -85,11 +85,11 @@ class PlaylistListTableViewController: UITableViewController {
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return PlayerContext.externalPlaylist != nil ? 2 : 1
+        return DropbeatPlayer.defaultPlayer.externalPlaylist != nil ? 2 : 1
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let _ = PlayerContext.externalPlaylist {
+        if let _ = DropbeatPlayer.defaultPlayer.externalPlaylist {
             if section == 0 {
                 return 1
             } else {
@@ -103,7 +103,7 @@ class PlaylistListTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var playlist: Playlist
         
-        if let externalPlaylist = PlayerContext.externalPlaylist {
+        if let externalPlaylist = DropbeatPlayer.defaultPlayer.externalPlaylist {
             if indexPath.section == 0 {
                 playlist = externalPlaylist
             } else {
@@ -116,7 +116,7 @@ class PlaylistListTableViewController: UITableViewController {
         let cell:PlaylistSelectTableViewCell = tableView.dequeueReusableCellWithIdentifier(
             "PlaylistSelectTableViewCell", forIndexPath: indexPath) as! PlaylistSelectTableViewCell
         cell.nameView.text = playlist.name
-        if playlist.id == PlayerContext.currentPlaylistId {
+        if playlist.id == DropbeatPlayer.defaultPlayer.currentPlaylistId {
             cell.setSelected(true, animated: false)
         }
         return cell
@@ -139,10 +139,10 @@ class PlaylistListTableViewController: UITableViewController {
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch playlists", comment:""), message: error!.description)
                 return
             }
-            PlayerContext.playlists.removeAll(keepCapacity: false)
+            DropbeatPlayer.defaultPlayer.playlists.removeAll(keepCapacity: false)
             self.playlists.removeAll(keepCapacity: false)
             for playlist in playlists {
-                PlayerContext.playlists.append(playlist)
+                DropbeatPlayer.defaultPlayer.playlists.append(playlist)
                 self.playlists.append(playlist)
             }
             self.tableView.reloadData()

@@ -428,7 +428,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
         
 //        let noti = NSNotification(name: NotifyKey.playerPause, object: nil)
 //        NSNotificationCenter.defaultCenter().postNotification(noti)
-        DropbeatPlayer.pause()
+        DropbeatPlayer.defaultPlayer.pause()
     }
     
     override func viewWillDisappear(animated: Bool) {

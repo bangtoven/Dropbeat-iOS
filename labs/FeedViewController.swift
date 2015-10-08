@@ -182,7 +182,7 @@ extension FeedViewController: ScrollPagerDelegate {
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
             
-            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+            self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
         }
     }
     
@@ -581,9 +581,9 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
                     getBeatportTrendingCell(indexPath) : getTrendingCell(indexPath)
             }
             let track = tracks[indexPath.row]
-            if (getPlaylistId() == PlayerContext.currentPlaylistId &&
-                    PlayerContext.currentTrack != nil &&
-                    PlayerContext.currentTrack!.id == track.id) {
+            if (getPlaylistId() == DropbeatPlayer.defaultPlayer.currentPlaylistId &&
+                    DropbeatPlayer.defaultPlayer.currentTrack != nil &&
+                    DropbeatPlayer.defaultPlayer.currentTrack!.id == track.id) {
                 cell.setSelected(true, animated: false)
             }
             return cell
@@ -929,7 +929,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
             
-            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+            self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
         })
     }
     
@@ -980,7 +980,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
-            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+            self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
         })
     }
     
@@ -1041,7 +1041,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             }
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
-            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+            self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
         })
     }
     
@@ -1090,7 +1090,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
             
-            self.updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+            self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
         }
     }
     

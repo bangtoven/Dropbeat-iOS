@@ -151,9 +151,9 @@ class _PlayerViewController: BaseViewController {
     }
     
     override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
-        if (flag && (PlayerContext.playState == PlayState.LOADING ||
-            PlayerContext.playState == PlayState.SWITCHING ||
-            PlayerContext.playState == PlayState.BUFFERING)) {
+        if (flag && (DropbeatPlayer.defaultPlayer.playState == PlayState.LOADING ||
+            DropbeatPlayer.defaultPlayer.playState == PlayState.SWITCHING ||
+            DropbeatPlayer.defaultPlayer.playState == PlayState.BUFFERING)) {
                 loadingView.rotate360Degrees(0.7, completionDelegate: self)
         }
     }
@@ -234,13 +234,13 @@ class _PlayerViewController: BaseViewController {
     }
     
     func backgroundHook () {
-        if (PlayerContext.currentTrack != nil) {
+        if (DropbeatPlayer.defaultPlayer.currentTrack != nil) {
             // Check whether it is video and stopped when it entered into background.
             if (hookingBackground) {
                 return
             }
-            if (PlayerContext.currentTrack!.type == .YOUTUBE &&
-                PlayerContext.playState == PlayState.PAUSED && shouldPlayMusic) {
+            if (DropbeatPlayer.defaultPlayer.currentTrack!.type == .YOUTUBE &&
+                DropbeatPlayer.defaultPlayer.playState == PlayState.PAUSED && shouldPlayMusic) {
                     hookingBackground = true
                     
                     startBackgroundTask()
@@ -261,15 +261,15 @@ class _PlayerViewController: BaseViewController {
         let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.1 * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) {
             print("poll background play")
-            if (!self.shouldPlayMusic || PlayerContext.playState != PlayState.PAUSED) {
+            if (!self.shouldPlayMusic || DropbeatPlayer.defaultPlayer.playState != PlayState.PAUSED) {
                 print("stop polling")
                 self.hookingBackground = false
                 return
             }
-            if (PlayerContext.playState == PlayState.PAUSED) {
+            if (DropbeatPlayer.defaultPlayer.playState == PlayState.PAUSED) {
                 print("play state is paused, try play")
-                self.handlePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId,
-                    section: PlayerContext.playingSection, force:false)
+                self.handlePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId,
+                    section: DropbeatPlayer.defaultPlayer.playingSection, force:false)
                 self.triggerBackgroundPlay(retry - 1)
             } else {
                 print("play state is not paused. stop polling")
@@ -288,7 +288,7 @@ class _PlayerViewController: BaseViewController {
     }
     
     func updateNextPrevBtn() {
-        if PlayerContext.pickNextTrack() != nil {
+        if DropbeatPlayer.defaultPlayer.pickNextTrack() != nil {
             nextBtn.enabled = true
             nextBtn.setImage(UIImage(named:"ic_forward"), forState: UIControlState.Normal)
         } else {
@@ -296,7 +296,7 @@ class _PlayerViewController: BaseViewController {
             nextBtn.setImage(UIImage(named:"ic_forward_gray"), forState: UIControlState.Normal)
         }
         
-        if PlayerContext.pickPrevTrack() != nil {
+        if DropbeatPlayer.defaultPlayer.pickPrevTrack() != nil {
             prevBtn.enabled = true
             prevBtn.setImage(UIImage(named:"ic_rewind"), forState: UIControlState.Normal)
         } else {
@@ -328,8 +328,8 @@ class _PlayerViewController: BaseViewController {
     }
     
     func updateCoverView() {
-        let track = PlayerContext.currentTrack
-        if track == nil || PlayerContext.playState == PlayState.STOPPED {
+        let track = DropbeatPlayer.defaultPlayer.currentTrack
+        if track == nil || DropbeatPlayer.defaultPlayer.playState == PlayState.STOPPED {
             videoView.hidden = true
             coverImageView.hidden = false
             coverBgImageView.image = UIImage(named: "player_bg")
@@ -373,7 +373,7 @@ class _PlayerViewController: BaseViewController {
     }
     
     func updatePlayView() {
-        switch PlayerContext.playState {
+        switch DropbeatPlayer.defaultPlayer.playState {
         case .LOADING, .SWITCHING, .BUFFERING:
             playBtn.hidden = true
             pauseBtn.hidden = true
@@ -391,11 +391,11 @@ class _PlayerViewController: BaseViewController {
     }
     
     func updateShuffleView() {
-        if (prevShuffleBtnState == PlayerContext.shuffleState) {
+        if (prevShuffleBtnState == DropbeatPlayer.defaultPlayer.shuffleState) {
             return
         }
-        prevShuffleBtnState = PlayerContext.shuffleState
-        if (PlayerContext.shuffleState == ShuffleState.NOT_SHUFFLE) {
+        prevShuffleBtnState = DropbeatPlayer.defaultPlayer.shuffleState
+        if (DropbeatPlayer.defaultPlayer.shuffleState == ShuffleState.NOT_SHUFFLE) {
             shuffleBtn.setImage(UIImage(named: "ic_shuffle_gray"), forState: UIControlState.Normal)
         } else {
             shuffleBtn.setImage(UIImage(named: "ic_shuffle"), forState: UIControlState.Normal)
@@ -404,11 +404,11 @@ class _PlayerViewController: BaseViewController {
     
     func updateRepeatView() {
         if (prevRepeatBtnState != nil &&
-            prevRepeatBtnState == PlayerContext.repeatState) {
+            prevRepeatBtnState == DropbeatPlayer.defaultPlayer.repeatState) {
                 return
         }
-        prevRepeatBtnState = PlayerContext.repeatState
-        switch(PlayerContext.repeatState) {
+        prevRepeatBtnState = DropbeatPlayer.defaultPlayer.repeatState
+        switch(DropbeatPlayer.defaultPlayer.repeatState) {
         case RepeatState.NOT_REPEAT:
             let image:UIImage = UIImage(named: "ic_repeat_gray")!
             repeatBtn.setImage(image, forState: UIControlState.Normal)
@@ -424,27 +424,27 @@ class _PlayerViewController: BaseViewController {
     
     func updateStatusView() {
         let defaultText = NSLocalizedString("CHOOSE TRACK", comment:"")
-        if (PlayerContext.playState == PlayState.LOADING ||
-            PlayerContext.playState == PlayState.SWITCHING) {
+        if (DropbeatPlayer.defaultPlayer.playState == PlayState.LOADING ||
+            DropbeatPlayer.defaultPlayer.playState == PlayState.SWITCHING) {
                 playerStatus.text = NSLocalizedString("LOADING", comment:"")
-                playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
-        } else if (PlayerContext.playState == PlayState.PAUSED) {
+                playerTitle.text = DropbeatPlayer.defaultPlayer.currentTrack?.title ?? defaultText
+        } else if (DropbeatPlayer.defaultPlayer.playState == PlayState.PAUSED) {
             playerStatus.text = NSLocalizedString("PAUSED", comment:"")
-            playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
-        } else if (PlayerContext.playState == PlayState.PLAYING) {
+            playerTitle.text = DropbeatPlayer.defaultPlayer.currentTrack?.title ?? defaultText
+        } else if (DropbeatPlayer.defaultPlayer.playState == PlayState.PLAYING) {
             playerStatus.text = NSLocalizedString("PLAYING", comment:"")
-            playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
-        } else if (PlayerContext.playState == PlayState.STOPPED) {
+            playerTitle.text = DropbeatPlayer.defaultPlayer.currentTrack?.title ?? defaultText
+        } else if (DropbeatPlayer.defaultPlayer.playState == PlayState.STOPPED) {
             playerStatus.text = NSLocalizedString("READY", comment:"")
             playerTitle.text = defaultText
-        } else if (PlayerContext.playState == PlayState.BUFFERING) {
+        } else if (DropbeatPlayer.defaultPlayer.playState == PlayState.BUFFERING) {
             playerStatus.text = NSLocalizedString("BUFFERING", comment:"")
-            playerTitle.text = PlayerContext.currentTrack?.title ?? defaultText
+            playerTitle.text = DropbeatPlayer.defaultPlayer.currentTrack?.title ?? defaultText
         }
     }
     
     func updateQualityView() {
-        switch(PlayerContext.qualityState) {
+        switch(DropbeatPlayer.defaultPlayer.qualityState) {
         case QualityState.LQ:
             let image:UIImage = UIImage(named: "ic_hq_off")!
             qualityBtn.setImage(image, forState: UIControlState.Normal)
@@ -457,11 +457,11 @@ class _PlayerViewController: BaseViewController {
     }
     
     func updateProgressView() {
-        if (PlayerContext.playState == PlayState.PLAYING && !isProgressUpdatable) {
+        if (DropbeatPlayer.defaultPlayer.playState == PlayState.PLAYING && !isProgressUpdatable) {
             return
         }
-        let total:Float = Float(PlayerContext.correctDuration ?? 0)
-        let curr:Float = Float(PlayerContext.currentPlaybackTime ?? 0)
+        let total:Float = Float(DropbeatPlayer.defaultPlayer.correctDuration ?? 0)
+        let curr:Float = Float(DropbeatPlayer.defaultPlayer.currentPlaybackTime ?? 0)
         if (total == 0) {
             progressSliderBar.enabled = false
         } else {
@@ -469,18 +469,18 @@ class _PlayerViewController: BaseViewController {
                 progressSliderBar.value = (curr * 100) / total
             }
             
-            if (PlayerContext.playState == PlayState.PLAYING) {
+            if (DropbeatPlayer.defaultPlayer.playState == PlayState.PLAYING) {
                 progressSliderBar.enabled = true
             } else {
                 progressSliderBar.enabled = false
             }
-            progressTextView.text = getTimeFormatText(PlayerContext.currentPlaybackTime ?? 0)
-            totalTextView.text = getTimeFormatText(PlayerContext.correctDuration ?? 0)
+            progressTextView.text = getTimeFormatText(DropbeatPlayer.defaultPlayer.currentPlaybackTime ?? 0)
+            totalTextView.text = getTimeFormatText(DropbeatPlayer.defaultPlayer.correctDuration ?? 0)
         }
     }
     
     func updateLikeBtn() {
-        if PlayerContext.currentTrack?.isLiked ?? false {
+        if DropbeatPlayer.defaultPlayer.currentTrack?.isLiked ?? false {
             likeBtn.setImage(UIImage(named:"ic_player_heart_fill_btn"),
                 forState: UIControlState.Normal)
         } else {
@@ -506,7 +506,7 @@ class _PlayerViewController: BaseViewController {
     }
     
     func updateProgress () {
-        let currentTrack :Track? = PlayerContext.currentTrack
+        let currentTrack :Track? = DropbeatPlayer.defaultPlayer.currentTrack
         if (currentTrack == nil) {
             return
         }
@@ -517,16 +517,16 @@ class _PlayerViewController: BaseViewController {
         
         // Youtube duration hack.
         if (currentTrack?.type == .YOUTUBE) {
-            if (PlayerContext.correctDuration == nil) {
-                PlayerContext.correctDuration = audioPlayerControl.moviePlayer.duration
+            if (DropbeatPlayer.defaultPlayer.correctDuration == nil) {
+                DropbeatPlayer.defaultPlayer.correctDuration = audioPlayerControl.moviePlayer.duration
             }
             
-            if (audioPlayerControl.moviePlayer.duration != PlayerContext.correctDuration) {
+            if (audioPlayerControl.moviePlayer.duration != DropbeatPlayer.defaultPlayer.correctDuration) {
                 // To find a end of the track that has corrected duration.
                 // - This is hacky way to prevent repeatedly gain pause / play event from player
                 // player gain repeatedly pasuse / play event after correntDuration
-                if (audioPlayerControl.moviePlayer.currentPlaybackTime >= PlayerContext.correctDuration!) {
-                    if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
+                if (audioPlayerControl.moviePlayer.currentPlaybackTime >= DropbeatPlayer.defaultPlayer.correctDuration!) {
+                    if (DropbeatPlayer.defaultPlayer.repeatState == RepeatState.REPEAT_ONE) {
                         handleSeek(0)
                     } else {
                         self.stopProgressTimer()
@@ -539,24 +539,24 @@ class _PlayerViewController: BaseViewController {
                 }
             }
             
-            if (PlayerContext.correctDuration == -1.0) {
+            if (DropbeatPlayer.defaultPlayer.correctDuration == -1.0) {
                 // URL has no duration info.
-                PlayerContext.correctDuration = audioPlayerControl.moviePlayer.duration / 2.0
+                DropbeatPlayer.defaultPlayer.correctDuration = audioPlayerControl.moviePlayer.duration / 2.0
             } else {
                 let buffer :Double = audioPlayerControl.moviePlayer.duration * 0.75
-                if (buffer <= PlayerContext.correctDuration) {
+                if (buffer <= DropbeatPlayer.defaultPlayer.correctDuration) {
                     // Cannot sure if it's wrong. So, let's return back original value.
-                    PlayerContext.correctDuration = audioPlayerControl.moviePlayer.duration
+                    DropbeatPlayer.defaultPlayer.correctDuration = audioPlayerControl.moviePlayer.duration
                 }
             }
         } else {
-            PlayerContext.correctDuration = audioPlayerControl.moviePlayer.duration
+            DropbeatPlayer.defaultPlayer.correctDuration = audioPlayerControl.moviePlayer.duration
         }
-        PlayerContext.currentPlaybackTime = audioPlayerControl.moviePlayer.currentPlaybackTime
+        DropbeatPlayer.defaultPlayer.currentPlaybackTime = audioPlayerControl.moviePlayer.currentPlaybackTime
         
         // update playinginfo duration
         if (!self.playingInfoDisplayDuration) {
-            self.updatePlayStateView(PlayerContext.playState)
+            self.updatePlayStateView(DropbeatPlayer.defaultPlayer.playState)
         }
         // Update custom progress
         updateProgressView()
@@ -587,8 +587,8 @@ class _PlayerViewController: BaseViewController {
                 return
         }
         if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0) {
-            if ((PlayerContext.playState == PlayState.SWITCHING ||
-                PlayerContext.playState == PlayState.PLAYING) &&
+            if ((DropbeatPlayer.defaultPlayer.playState == PlayState.SWITCHING ||
+                DropbeatPlayer.defaultPlayer.playState == PlayState.PLAYING) &&
                 lastPlaybackBeforeSwitch != nil &&
                 lastPlaybackBeforeSwitch > 0) {
                     audioPlayerControl.moviePlayer.currentPlaybackTime = lastPlaybackBeforeSwitch!
@@ -604,11 +604,11 @@ class _PlayerViewController: BaseViewController {
         if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState().rawValue != 0) {
             // If youtube which has double duration length will be get here
             // when it play over original duration (:1/2) length
-            if (PlayerContext.currentTrack != nil &&
-                PlayerContext.currentTrack!.type == .YOUTUBE &&
-                PlayerContext.correctDuration != nil){
-                    if (audioPlayerControl.moviePlayer.currentPlaybackTime >= PlayerContext.correctDuration! - 1) {
-                        if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
+            if (DropbeatPlayer.defaultPlayer.currentTrack != nil &&
+                DropbeatPlayer.defaultPlayer.currentTrack!.type == .YOUTUBE &&
+                DropbeatPlayer.defaultPlayer.correctDuration != nil){
+                    if (audioPlayerControl.moviePlayer.currentPlaybackTime >= DropbeatPlayer.defaultPlayer.correctDuration! - 1) {
+                        if (DropbeatPlayer.defaultPlayer.repeatState == RepeatState.REPEAT_ONE) {
                             handleSeek(0)
                         } else if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
                             self.stopProgressTimer()
@@ -624,9 +624,9 @@ class _PlayerViewController: BaseViewController {
     }
     
     func checkBufferState() {
-        if PlayerContext.playState != PlayState.BUFFERING &&
-            PlayerContext.playState != PlayState.LOADING &&
-            PlayerContext.playState != PlayState.SWITCHING {
+        if DropbeatPlayer.defaultPlayer.playState != PlayState.BUFFERING &&
+            DropbeatPlayer.defaultPlayer.playState != PlayState.LOADING &&
+            DropbeatPlayer.defaultPlayer.playState != PlayState.SWITCHING {
                 print("invalidate buffering timer")
                 bufferingTimer?.invalidate()
                 bufferingTimer = nil
@@ -685,8 +685,8 @@ class _PlayerViewController: BaseViewController {
         } else if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Paused) {
             if ((audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0 &&
                 audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Stalled.rawValue != 0) ||
-                PlayerContext.playState == PlayState.SWITCHING ||
-                PlayerContext.playState == PlayState.BUFFERING) {
+                DropbeatPlayer.defaultPlayer.playState == PlayState.SWITCHING ||
+                DropbeatPlayer.defaultPlayer.playState == PlayState.BUFFERING) {
                     // buffering
                     return
             }
@@ -714,7 +714,7 @@ class _PlayerViewController: BaseViewController {
     func handlePlayFailure() {
         print("handle play failure")
         
-        if let track = PlayerContext.currentTrack {
+        if let track = DropbeatPlayer.defaultPlayer.currentTrack {
             let errMsg = NSLocalizedString("This track is not streamable", comment:"")
             ViewUtils.showToast(self, message: errMsg)
             track.postFailureLog()
@@ -747,7 +747,7 @@ class _PlayerViewController: BaseViewController {
         }
         
         print("fin!!!!")
-        if let _ = PlayerContext.playLog {
+        if let _ = DropbeatPlayer.defaultPlayer.playLog {
             self.resetPlayLog(nil)
         }
         let success :Bool = handleNext(shouldPlayMusic)
@@ -768,7 +768,7 @@ class _PlayerViewController: BaseViewController {
         if !likeProgIndicator.hidden {
             return
         }
-        if PlayerContext.currentTrack == nil {
+        if DropbeatPlayer.defaultPlayer.currentTrack == nil {
             ViewUtils.showToast(self, message: NSLocalizedString("No track selected", comment:""))
             return
         }
@@ -776,10 +776,10 @@ class _PlayerViewController: BaseViewController {
             NeedAuthViewController.showNeedAuthViewController(self)
             return
         }
-        if PlayerContext.currentTrack!.isLiked {
-            doUnlike(PlayerContext.currentTrack!)
+        if DropbeatPlayer.defaultPlayer.currentTrack!.isLiked {
+            doUnlike(DropbeatPlayer.defaultPlayer.currentTrack!)
         } else {
-            doLike(PlayerContext.currentTrack!)
+            doLike(DropbeatPlayer.defaultPlayer.currentTrack!)
         }
     }
     
@@ -830,10 +830,10 @@ class _PlayerViewController: BaseViewController {
     }
     
     @IBAction func playBtnClicked(sender: UIButton?) {
-        if (PlayerContext.currentTrack != nil) {
+        if (DropbeatPlayer.defaultPlayer.currentTrack != nil) {
             print("play!")
-            let playlistId :String? = PlayerContext.currentPlaylistId
-            handlePlay(PlayerContext.currentTrack!, playlistId: playlistId, section: "player", force:true)
+            let playlistId :String? = DropbeatPlayer.defaultPlayer.currentPlaylistId
+            handlePlay(DropbeatPlayer.defaultPlayer.currentTrack!, playlistId: playlistId, section: "player", force:true)
         }
     }
     
@@ -850,13 +850,13 @@ class _PlayerViewController: BaseViewController {
     }
     
     @IBAction func onRepeatBtnClicked(sender: UIButton) {
-        PlayerContext.changeRepeatState()
+        DropbeatPlayer.defaultPlayer.changeRepeatState()
         updateNextPrevBtn()
         repeatStateUpdated()
     }
     
     @IBAction func onShuffleBtnClicked(sender: UIButton) {
-        PlayerContext.changeShuffleState()
+        DropbeatPlayer.defaultPlayer.changeShuffleState()
         updateNextPrevBtn()
         shuffleStateUpdated()
     }
@@ -868,13 +868,13 @@ class _PlayerViewController: BaseViewController {
     func onQualityBtnClicked(sender: UIButton, forceChange:Bool) {
         let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let networkStatus = appDelegate.networkStatus
-        if (PlayerContext.playState == PlayState.SWITCHING) {
+        if (DropbeatPlayer.defaultPlayer.playState == PlayState.SWITCHING) {
             return
         }
         //  we should confirm here for data usage
         if (forceChange == false &&
             networkStatus == .ReachableViaWWAN &&
-            PlayerContext.qualityState == .LQ) {
+            DropbeatPlayer.defaultPlayer.qualityState == .LQ) {
                 ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Data usage warning", comment:""),
                     message: NSLocalizedString("Streaming music in High Quality can use significant network data", comment:""),
                     positiveBtnText: NSLocalizedString("Proceed", comment:""), positiveBtnCallback: { () -> Void in
@@ -885,7 +885,7 @@ class _PlayerViewController: BaseViewController {
                 return
         }
         appDelegate.futureQuality = nil
-        PlayerContext.changeQualityState()
+        DropbeatPlayer.defaultPlayer.changeQualityState()
 //        NSNotificationCenter.defaultCenter().postNotificationName(
 //            NotifyKey.updateQualityState, object: nil)
     }
@@ -934,25 +934,25 @@ class _PlayerViewController: BaseViewController {
             NeedAuthViewController.showNeedAuthViewController(self)
             return
         }
-        let track = PlayerContext.currentTrack
+        let track = DropbeatPlayer.defaultPlayer.currentTrack
         performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
     }
     
     @IBAction func onTrackShareBtnClicked(sender: UIButton) {
-        if PlayerContext.currentTrack == nil {
+        if DropbeatPlayer.defaultPlayer.currentTrack == nil {
             ViewUtils.showToast(self, message: NSLocalizedString("No track selected", comment:""))
             return
         }
-        onTrackShareBtnClicked(PlayerContext.currentTrack!)
+        onTrackShareBtnClicked(DropbeatPlayer.defaultPlayer.currentTrack!)
     }
     
     @IBAction func onPlaylistBtnClicked(sender: UIButton) {
         // this will be handle on CenterViewController
-        if PlayerContext.currentPlaylistId == nil {
+        if DropbeatPlayer.defaultPlayer.currentPlaylistId == nil {
             return
         }
         
-        let playlist = PlayerContext.getPlaylist(PlayerContext.currentPlaylistId)
+        let playlist = DropbeatPlayer.defaultPlayer.getPlaylist(DropbeatPlayer.defaultPlayer.currentPlaylistId)
         if playlist != nil {
             performSegueWithIdentifier("PlaylistSegue", sender: playlist)
         }
@@ -1027,7 +1027,7 @@ class _PlayerViewController: BaseViewController {
     }
     
     func repeatStateUpdated() {
-        if PlayerContext.repeatState == RepeatState.REPEAT_ONE {
+        if DropbeatPlayer.defaultPlayer.repeatState == RepeatState.REPEAT_ONE {
             audioPlayerControl.moviePlayer.repeatMode = MPMovieRepeatMode.One
         } else {
             audioPlayerControl.moviePlayer.repeatMode = MPMovieRepeatMode.None
@@ -1040,19 +1040,19 @@ class _PlayerViewController: BaseViewController {
     }
     
     func qualityStateUpdated() {
-        if (PlayerContext.playState == PlayState.PAUSED ||
-            PlayerContext.playState == PlayState.SWITCHING ||
-            PlayerContext.playState == PlayState.STOPPED ||
-            PlayerContext.currentTrack == nil) {
+        if (DropbeatPlayer.defaultPlayer.playState == PlayState.PAUSED ||
+            DropbeatPlayer.defaultPlayer.playState == PlayState.SWITCHING ||
+            DropbeatPlayer.defaultPlayer.playState == PlayState.STOPPED ||
+            DropbeatPlayer.defaultPlayer.currentTrack == nil) {
                 updateQualityView()
                 return
         }
         startBackgroundTask()
-        switchPlayerWithQuality(PlayerContext.currentTrack!, qualityState: PlayerContext.qualityState)
+        switchPlayerWithQuality(DropbeatPlayer.defaultPlayer.currentTrack!, qualityState: DropbeatPlayer.defaultPlayer.qualityState)
     }
     
     func networkStatusUpdated() {
-        if (PlayerContext.playState == PlayState.STOPPED) {
+        if (DropbeatPlayer.defaultPlayer.playState == PlayState.STOPPED) {
             updateQualityView()
         }
     }
@@ -1061,9 +1061,9 @@ class _PlayerViewController: BaseViewController {
     
     func startPlaylog(track: Track) {
         if let dropbeatTrack = track as? DropbeatTrack{
-            PlayerContext.playLog = PlayLog(track: dropbeatTrack)
+            DropbeatPlayer.defaultPlayer.playLog = PlayLog(track: dropbeatTrack)
         } else {
-            PlayerContext.playLog = nil
+            DropbeatPlayer.defaultPlayer.playLog = nil
         }
         
         // Log to us
@@ -1071,17 +1071,17 @@ class _PlayerViewController: BaseViewController {
     }
     
     func resetPlayLog(currentTime: Int?) {
-        PlayerContext.playLog!.finished(currentTime)
-        PlayerContext.playLog = nil
+        DropbeatPlayer.defaultPlayer.playLog!.finished(currentTime)
+        DropbeatPlayer.defaultPlayer.playLog = nil
     }
     
     func AVPlayerItemDidPlayToEndTime(noti: NSNotification) {
-        if PlayerContext.repeatState == RepeatState.REPEAT_ONE {
+        if DropbeatPlayer.defaultPlayer.repeatState == RepeatState.REPEAT_ONE {
             print("looping. play again.")
-            if let _ = PlayerContext.playLog {
+            if let _ = DropbeatPlayer.defaultPlayer.playLog {
                 self.resetPlayLog(nil)
             }
-            self.startPlaylog(PlayerContext.currentTrack!)
+            self.startPlaylog(DropbeatPlayer.defaultPlayer.currentTrack!)
         }
     }
     
@@ -1107,19 +1107,19 @@ class _PlayerViewController: BaseViewController {
                 NotifyKey.updatePlay, object: params)
         }
         
-        if PlayerContext.currentTrack != nil && PlayerContext.currentTrack!.id == track!.id {
-            if PlayerContext.playState == PlayState.LOADING ||
-                PlayerContext.playState == PlayState.BUFFERING ||
-                PlayerContext.playState == PlayState.SWITCHING {
+        if DropbeatPlayer.defaultPlayer.currentTrack != nil && DropbeatPlayer.defaultPlayer.currentTrack!.id == track!.id {
+            if DropbeatPlayer.defaultPlayer.playState == PlayState.LOADING ||
+                DropbeatPlayer.defaultPlayer.playState == PlayState.BUFFERING ||
+                DropbeatPlayer.defaultPlayer.playState == PlayState.SWITCHING {
                     return
             }
             if audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Paused ||
                 audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Interrupted {
                     // Resume
 //                    shouldPlayMusic = force
-                    if prevQualityState != PlayerContext.qualityState {
+                    if prevQualityState != DropbeatPlayer.defaultPlayer.qualityState {
                         startBackgroundTask()
-                        switchPlayerWithQuality(PlayerContext.currentTrack!, qualityState: PlayerContext.qualityState)
+                        switchPlayerWithQuality(DropbeatPlayer.defaultPlayer.currentTrack!, qualityState: DropbeatPlayer.defaultPlayer.qualityState)
                     } else {
                         updatePlayStateView(PlayState.PLAYING)
                         playAudioPlayer()
@@ -1132,30 +1132,30 @@ class _PlayerViewController: BaseViewController {
             // In case of repeating one track.
         }
         
-        PlayerContext.currentTrack = track
+        DropbeatPlayer.defaultPlayer.currentTrack = track
         
         if playlistId != nil {
-            let playlist :Playlist? = PlayerContext.getPlaylist(playlistId)
+            let playlist :Playlist? = DropbeatPlayer.defaultPlayer.getPlaylist(playlistId)
             if playlist == nil {
-                PlayerContext.currentPlaylistId = nil
-                PlayerContext.currentTrackIdx = -1
+                DropbeatPlayer.defaultPlayer.currentPlaylistId = nil
+                DropbeatPlayer.defaultPlayer.currentTrackIdx = -1
             } else {
-                PlayerContext.currentPlaylistId = playlistId
-                PlayerContext.currentTrackIdx = -1
+                DropbeatPlayer.defaultPlayer.currentPlaylistId = playlistId
+                DropbeatPlayer.defaultPlayer.currentTrackIdx = -1
                 for (idx, t): (Int, Track) in playlist!.tracks.enumerate() {
                     if t.id == track!.id {
-                        PlayerContext.currentTrackIdx = idx
+                        DropbeatPlayer.defaultPlayer.currentTrackIdx = idx
                         break
                     }
                 }
             }
         } else {
-            PlayerContext.currentPlaylistId = nil
-            PlayerContext.currentTrackIdx = -1
+            DropbeatPlayer.defaultPlayer.currentPlaylistId = nil
+            DropbeatPlayer.defaultPlayer.currentTrackIdx = -1
         }
         
         // Init correct duration.
-        PlayerContext.correctDuration = nil
+        DropbeatPlayer.defaultPlayer.correctDuration = nil
         
         // Indicate loading status.
         updatePlayState(PlayState.LOADING)
@@ -1175,7 +1175,7 @@ class _PlayerViewController: BaseViewController {
         tracker.send(event as [NSObject: AnyObject]!)
         
         self.activateAudioSession()
-        switchPlayerWithQuality(track!, qualityState: PlayerContext.qualityState, isInitial: true)
+        switchPlayerWithQuality(track!, qualityState: DropbeatPlayer.defaultPlayer.qualityState, isInitial: true)
     }
     
     func switchPlayerWithQuality(track:Track, qualityState: QualityState, isInitial: Bool = false) {
@@ -1185,7 +1185,7 @@ class _PlayerViewController: BaseViewController {
         } else {
             lastPlaybackBeforeSwitch = nil
         }
-        PlayerContext.correctDuration = nil
+        DropbeatPlayer.defaultPlayer.correctDuration = nil
         
         audioPlayerControl.moviePlayer.contentURL = nil
         audioPlayerControl.videoIdentifier = nil
@@ -1193,15 +1193,15 @@ class _PlayerViewController: BaseViewController {
         audioPlayerControl.moviePlayer.stop()
         
         if (isInitial) {
-            PlayerContext.currentPlaybackTime = 0
-            PlayerContext.correctDuration = nil
+            DropbeatPlayer.defaultPlayer.currentPlaybackTime = 0
+            DropbeatPlayer.defaultPlayer.correctDuration = nil
         } else {
             updatePlayState(PlayState.SWITCHING)
         }
         
-        prevQualityState = PlayerContext.qualityState
+        prevQualityState = DropbeatPlayer.defaultPlayer.qualityState
         var qualities = [AnyObject]()
-        if (PlayerContext.qualityState == QualityState.LQ) {
+        if (DropbeatPlayer.defaultPlayer.qualityState == QualityState.LQ) {
             qualities.append(XCDYouTubeVideoQuality.Small240.rawValue)
             qualities.append(XCDYouTubeVideoQuality.Medium360.rawValue)
         } else {
@@ -1225,9 +1225,9 @@ class _PlayerViewController: BaseViewController {
 //            }
 //        }
         
-        DropbeatPlayer.play(track)
+        DropbeatPlayer.defaultPlayer.play(track)
         
-        if (PlayerContext.repeatState == RepeatState.REPEAT_ONE) {
+        if (DropbeatPlayer.defaultPlayer.repeatState == RepeatState.REPEAT_ONE) {
             audioPlayerControl.moviePlayer.repeatMode = MPMovieRepeatMode.One
         } else {
             audioPlayerControl.moviePlayer.repeatMode = MPMovieRepeatMode.None
@@ -1259,53 +1259,53 @@ class _PlayerViewController: BaseViewController {
     
     func handleNext(force:Bool) -> Bool{
         print("handleNext")
-        if let _ = PlayerContext.playLog {
-            self.resetPlayLog(Int(PlayerContext.currentPlaybackTime!))
+        if let _ = DropbeatPlayer.defaultPlayer.playLog {
+            self.resetPlayLog(Int(DropbeatPlayer.defaultPlayer.currentPlaybackTime!))
         }
         
         self.stopProgressTimer()
 
         
-        let track: Track? = PlayerContext.pickNextTrack()
+        let track: Track? = DropbeatPlayer.defaultPlayer.pickNextTrack()
         if (track == nil) {
             print("track null")
             return false;
         }
         
-        handlePlay(track, playlistId: PlayerContext.currentPlaylistId,
-            section: PlayerContext.playingSection, force: force)
+        handlePlay(track, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId,
+            section: DropbeatPlayer.defaultPlayer.playingSection, force: force)
         return true;
     }
     
     func handlePrev(force:Bool) -> Bool {
         print("handlePrev")
-        if let _ = PlayerContext.playLog {
-            self.resetPlayLog(Int(PlayerContext.currentPlaybackTime!))
+        if let _ = DropbeatPlayer.defaultPlayer.playLog {
+            self.resetPlayLog(Int(DropbeatPlayer.defaultPlayer.currentPlaybackTime!))
         }
         
         self.stopProgressTimer()
 
         
-        let track: Track? = PlayerContext.pickPrevTrack()
+        let track: Track? = DropbeatPlayer.defaultPlayer.pickPrevTrack()
         if (track == nil) {
             return false;
         }
         
-        handlePlay(track, playlistId: PlayerContext.currentPlaylistId,
-            section: PlayerContext.playingSection, force: force)
+        handlePlay(track, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId,
+            section: DropbeatPlayer.defaultPlayer.playingSection, force: force)
         return true;
     }
     
     func handleStop() {
-        if let _ = PlayerContext.playLog {
-            self.resetPlayLog(Int(PlayerContext.currentPlaybackTime!))
+        if let _ = DropbeatPlayer.defaultPlayer.playLog {
+            self.resetPlayLog(Int(DropbeatPlayer.defaultPlayer.currentPlaybackTime!))
         }
         
         shouldPlayMusic = false
-        PlayerContext.currentPlaylistId = nil
-        PlayerContext.currentTrack = nil
-        PlayerContext.currentTrackIdx = -1
-        PlayerContext.correctDuration = nil
+        DropbeatPlayer.defaultPlayer.currentPlaylistId = nil
+        DropbeatPlayer.defaultPlayer.currentTrack = nil
+        DropbeatPlayer.defaultPlayer.currentTrackIdx = -1
+        DropbeatPlayer.defaultPlayer.correctDuration = nil
         videoView.hidden = true
         audioPlayerControl.videoIdentifier = nil
         audioPlayerControl.moviePlayer.contentURL = nil
@@ -1318,16 +1318,16 @@ class _PlayerViewController: BaseViewController {
     }
     
     func handleSeek(value:Float) {
-        if (PlayerContext.playState != PlayState.PLAYING) {
+        if (DropbeatPlayer.defaultPlayer.playState != PlayState.PLAYING) {
             return
         }
         
-        let duration = PlayerContext.correctDuration ?? 0
+        let duration = DropbeatPlayer.defaultPlayer.correctDuration ?? 0
         var newPlaybackTime:Double = (duration * Double(value)) / 100
 
-        if let playLog = PlayerContext.playLog {
+        if let playLog = DropbeatPlayer.defaultPlayer.playLog {
             playLog.seek(
-                from: Int(PlayerContext.currentPlaybackTime!),
+                from: Int(DropbeatPlayer.defaultPlayer.currentPlaybackTime!),
                 to: Int(newPlaybackTime))
         }
         
@@ -1356,14 +1356,14 @@ class _PlayerViewController: BaseViewController {
     
     func updatePlayState(playingState: PlayState) {
         print("playstate updated:\(playingState)")
-        PlayerContext.playState = playingState
+        DropbeatPlayer.defaultPlayer.playState = playingState
         updatePlayStateView(playingState)
     }
     
     var playingStateImageOperation:SDWebImageOperation?
     
     func updatePlayStateView(playingState:PlayState) {
-        let track: Track? = PlayerContext.currentTrack
+        let track: Track? = DropbeatPlayer.defaultPlayer.currentTrack
         let playingInfoCenter:AnyClass! = NSClassFromString("MPNowPlayingInfoCenter")
         if (playingInfoCenter != nil && track != nil) {
             playingStateImageOperation?.cancel()
@@ -1399,7 +1399,7 @@ class _PlayerViewController: BaseViewController {
     }
     
     func updatePlayingInfoCenter(playingState:PlayState, image:UIImage) {
-        let track: Track? = PlayerContext.currentTrack
+        let track: Track? = DropbeatPlayer.defaultPlayer.currentTrack
         if track == nil {
             return
         }
@@ -1439,7 +1439,7 @@ class _PlayerViewController: BaseViewController {
         trackInfo[MPMediaItemPropertyArtist] = stateText
         trackInfo[MPMediaItemPropertyArtwork] = albumArt
         
-        let duration = PlayerContext.correctDuration ?? 0
+        let duration = DropbeatPlayer.defaultPlayer.correctDuration ?? 0
         var currentPlayback:NSTimeInterval?
         if audioPlayerControl.moviePlayer.currentPlaybackTime.isNaN {
             currentPlayback = 0

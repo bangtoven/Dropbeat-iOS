@@ -95,7 +95,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "onDropFinished", name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
         
-        updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+        updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -111,7 +111,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     }
     
     func appWillEnterForeground() {
-        updatePlay(PlayerContext.currentTrack, playlistId: PlayerContext.currentPlaylistId)
+        updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
     }
     
     func appDidEnterBackground() {
@@ -121,14 +121,14 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     func updatePlaylist(forceUpdate:Bool) {
         if !forceUpdate &&
                 (getPlaylistId() == nil || getPlaylistName() == nil ||
-                    PlayerContext.currentPlaylistId != getPlaylistId()) {
+                    DropbeatPlayer.defaultPlayer.currentPlaylistId != getPlaylistId()) {
             return
         }
         
         var playlist:Playlist!
-        if PlayerContext.externalPlaylist != nil &&
-                PlayerContext.externalPlaylist!.id == getPlaylistId() {
-            playlist = PlayerContext.externalPlaylist!
+        if DropbeatPlayer.defaultPlayer.externalPlaylist != nil &&
+                DropbeatPlayer.defaultPlayer.externalPlaylist!.id == getPlaylistId() {
+            playlist = DropbeatPlayer.defaultPlayer.externalPlaylist!
             playlist.tracks.removeAll(keepCapacity: false)
             for track in tracks {
                 playlist.tracks.append(track)
@@ -139,14 +139,14 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
                     name: getPlaylistName()!,
                     tracks: tracks)
             playlist.type = PlaylistType.EXTERNAL
-            PlayerContext.externalPlaylist = playlist
+            DropbeatPlayer.defaultPlayer.externalPlaylist = playlist
         }
         
-        if PlayerContext.currentPlaylistId == playlist.id {
-            if PlayerContext.currentTrack == nil {
-                PlayerContext.currentTrackIdx = -1
+        if DropbeatPlayer.defaultPlayer.currentPlaylistId == playlist.id {
+            if DropbeatPlayer.defaultPlayer.currentTrack == nil {
+                DropbeatPlayer.defaultPlayer.currentTrackIdx = -1
             } else {
-                PlayerContext.currentTrackIdx = playlist.getTrackIdx(PlayerContext.currentTrack!)
+                DropbeatPlayer.defaultPlayer.currentTrackIdx = playlist.getTrackIdx(DropbeatPlayer.defaultPlayer.currentTrack!)
             }
         }
         return
@@ -158,7 +158,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
             playlistId = nil
         } else {
             updatePlaylist(true)
-            playlistId = PlayerContext.externalPlaylist!.id
+            playlistId = DropbeatPlayer.defaultPlayer.externalPlaylist!.id
         }
         var params: [String: AnyObject] = [
             "track": track,
@@ -169,7 +169,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         params["section"] = getSectionName()
         
         // TODO: playlist
-        DropbeatPlayer.play(track)
+        DropbeatPlayer.defaultPlayer.play(track)
         
     }
     
@@ -307,7 +307,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         
 //        let noti = NSNotification(name: NotifyKey.playerPause, object: nil)
 //        NSNotificationCenter.defaultCenter().postNotification(noti)
-        DropbeatPlayer.pause()
+        DropbeatPlayer.defaultPlayer.pause()
         
         let sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
         do {

@@ -84,7 +84,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         self.screenName = "PlayableViewScreen"
         
         NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "updatePlay:", name: NotifyKey.updatePlay, object: nil)
+            self, selector: "updatePlay", name: NotifyKey.updatePlay, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "appWillEnterForeground",
             name: UIApplicationWillEnterForegroundNotification, object: nil)
@@ -95,7 +95,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "onDropFinished", name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
         
-        updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
+        updatePlay()
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -111,7 +111,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     }
     
     func appWillEnterForeground() {
-        updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
+        updatePlay()
     }
     
     func appDidEnterBackground() {
@@ -437,36 +437,23 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         actionSheetTargetTrack = nil
     }
     
-    func updatePlay(noti: NSNotification) {
+    func updatePlay() {
         updateDropPlayStatus(DropPlayStatus.Ready)
         
-        var params = noti.object as! Dictionary<String, AnyObject>
-        let track = params["track"] as! Track
-        let playlistId:String? = params["playlistId"] as? String
-        
-        updatePlay(track, playlistId: playlistId)
-    }
-    
-    func updatePlay(track:Track?, playlistId: String?) {
-        if track == nil {
+        guard let track = DropbeatPlayer.defaultPlayer.currentTrack else {
             return
         }
+
         let indexPath = trackTableView.indexPathForSelectedRow
         if indexPath != nil {
             let preSelectedTrack = tracks[indexPath!.row]
-            if preSelectedTrack.id != track!.id ||
-                (playlistId != nil && Int(playlistId!) >= 0) {
+            if preSelectedTrack.id != track.id {
                 trackTableView.deselectRowAtIndexPath(indexPath!, animated: false)
             }
         }
         
-        
-        if playlistId == nil || playlistId != getPlaylistId() {
-            return
-        }
-        
         for (idx, t) in tracks.enumerate() {
-            if (t.id == track!.id) {
+            if (t.id == track.id) {
                 trackTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
                     animated: false, scrollPosition: UITableViewScrollPosition.None)
                 break

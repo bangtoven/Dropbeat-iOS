@@ -224,7 +224,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             self.updatePlaylist(false)
             
             self.trackTableView.reloadData()
-            self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
+            self.updatePlay()
         })
         
     }
@@ -233,41 +233,11 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
         return "Explore"
     }
     
-    override func getSectionName() -> String {
-        return "explore"
+    override func getPlaylistName() -> String? {
+        return "Explore"
     }
     
-    override func updatePlaylist(forceUpdate:Bool) {
-        if !forceUpdate &&
-            (getPlaylistId() == nil ||
-                DropbeatPlayer.defaultPlayer.currentPlaylist?.id != getPlaylistId()) {
-                    return
-        }
-        
-        var playlist:Playlist!
-        if DropbeatPlayer.defaultPlayer.currentPlaylist != nil &&
-            DropbeatPlayer.defaultPlayer.currentPlaylist!.id == getPlaylistId() {
-                playlist = DropbeatPlayer.defaultPlayer.currentPlaylist!
-                playlist.tracks.removeAll(keepCapacity: false)
-                for track in tracks {
-                    playlist.tracks.append(track)
-                }
-        } else {
-            playlist = Playlist(
-                id: getPlaylistId()!,
-                name: "Explore",
-                tracks: tracks)
-            playlist.type = PlaylistType.EXTERNAL
-            DropbeatPlayer.defaultPlayer.currentPlaylist = playlist
-        }
-        
-        if DropbeatPlayer.defaultPlayer.currentPlaylist?.id == playlist.id {
-            if DropbeatPlayer.defaultPlayer.currentTrack == nil {
-                DropbeatPlayer.defaultPlayer.currentTrackIdx = -1
-            } else {
-                DropbeatPlayer.defaultPlayer.currentTrackIdx = playlist.getTrackIdx(DropbeatPlayer.defaultPlayer.currentTrack!)
-            }
-        }
-        return
+    override func getSectionName() -> String {
+        return "explore"
     }
 }

@@ -664,13 +664,10 @@ class PlaylistViewController: BaseViewController,
                         return
                     }
                     if DropbeatPlayer.defaultPlayer.currentPlaylist?.id == removePlaylist.id {
+                        
                         DropbeatPlayer.defaultPlayer.shuffleState = ShuffleState.NOT_SHUFFLE
                         DropbeatPlayer.defaultPlayer.stop()
                         
-//                        NSNotificationCenter.defaultCenter().postNotificationName(
-//                            NotifyKey.playerStop, object: nil)
-//                        NSNotificationCenter.defaultCenter().postNotificationName(
-//                            NotifyKey.updateShuffleState, object: nil)
                     }
                     
                     self.navigationController!.popViewControllerAnimated(true)

@@ -31,7 +31,7 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
         }
         
         self.trackTableView.reloadData()
-        self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
+        self.updatePlay()
         
         loadMoreSpinnerWrapper.hidden = true
         loadMoreSpinner.stopAnimating()
@@ -144,7 +144,7 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
             
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
-            self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
+            self.updatePlay()
         }
     }
 }
@@ -171,7 +171,7 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
         }
         
         self.trackTableView.reloadData()
-        self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
+        self.updatePlay()
     }
     
     func subViewWillDisappear() {
@@ -271,35 +271,6 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
     
     override func getSectionName() -> String {
         return "user_\(self.baseUser?.name)_\(self.title)"
-    }
-    
-    override func updatePlay(track:Track?, playlistId:String?) {
-        super.updatePlay(track, playlistId: playlistId)
-        if track == nil {
-            return
-        }
-        let indexPath = trackTableView.indexPathForSelectedRow
-        if (indexPath != nil) {
-            var preSelectedTrack:Track?
-            preSelectedTrack = tracks[indexPath!.row]
-            if (preSelectedTrack != nil &&
-                (preSelectedTrack!.id != track!.id ||
-                    (playlistId != nil && Int(playlistId!) >= 0))) {
-                        trackTableView.deselectRowAtIndexPath(indexPath!, animated: false)
-            }
-        }
-        
-        if playlistId != nil {
-            return
-        }
-        
-        for (idx, t) in tracks.enumerate() {
-            if (t.id == track!.id) {
-                trackTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
-                    animated: false, scrollPosition: UITableViewScrollPosition.None)
-                break
-            }
-        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

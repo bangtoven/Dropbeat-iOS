@@ -343,16 +343,16 @@ class CenterViewController: BaseViewController, UITabBarDelegate{
     }
     
     @IBAction func showListBtnClicked(sender: UIButton) {
-        var playlist:Playlist?
-        if DropbeatPlayer.defaultPlayer.currentPlaylist?.id != nil {
-            playlist = DropbeatPlayer.defaultPlayer.currentPlaylist
-        }
-        if playlist == nil {
-            ViewUtils.showToast(self,
-                message: NSLocalizedString("Failed to find playlist", comment:""))
-            return
-        }
-        performSegueWithIdentifier("PlaylistSegue", sender: playlist)
+//        var playlist:Playlist?
+//        if DropbeatPlayer.defaultPlaaayer.currentPlaylist?.id != nil {
+//            playlist = DropbeatPlayer.defaaaaultPlayer.currentPlaylist
+//        }
+//        if playlist == nil {
+//            ViewUtils.showToast(self,
+//                message: NSLocalizedString("Failed to find playlist", comment:""))
+//            return
+//        }
+//        performSegueWithIdentifier("PlaylistSegue", sender: playlist)
     }
     
     func showPlayerView() {

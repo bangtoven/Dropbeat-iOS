@@ -182,7 +182,7 @@ extension FeedViewController: ScrollPagerDelegate {
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
             
-            self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
+            self.updatePlay()
         }
     }
     
@@ -929,7 +929,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
             
-            self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
+            self.updatePlay()
         })
     }
     
@@ -980,7 +980,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
-            self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
+            self.updatePlay()
         })
     }
     
@@ -1041,7 +1041,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             }
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
-            self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
+            self.updatePlay()
         })
     }
     
@@ -1090,7 +1090,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
             
-            self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
+            self.updatePlay()
         }
     }
     

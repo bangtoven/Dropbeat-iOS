@@ -239,7 +239,7 @@ class SearchViewController: AddableTrackListViewController,
                 self.trackTableView.hidden = true
                 self.noSearchResultView.hidden = false
                 self.trackTableView.reloadData()
-                self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
+                self.updatePlay()
                 return
             }
             
@@ -260,7 +260,7 @@ class SearchViewController: AddableTrackListViewController,
             self.trackTableView.hidden = showNoResultView
             self.noSearchResultView.hidden = !showNoResultView
             
-            self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
+            self.updatePlay()
         })
     }
     
@@ -325,73 +325,19 @@ class SearchViewController: AddableTrackListViewController,
     // MARK: etc
     
     override func getPlaylistId() -> String? {
-        return "Explore"
+        return self.getPlaylistName()
+    }
+    
+    override func getPlaylistName() -> String? {
+        if let query = searchBar.text {
+            return "Search: \"\(query)\""
+        } else {
+            return "Search"
+        }
     }
     
     override func getSectionName() -> String {
         return "search"
-    }
-    
-    override func updatePlay(track:Track?, playlistId:String?) {
-        if track == nil {
-            return
-        }
-        let indexPath = trackTableView.indexPathForSelectedRow
-        if (indexPath != nil) {
-            var preSelectedTrack:Track?
-            preSelectedTrack = tracks[indexPath!.row]
-            if (preSelectedTrack != nil &&
-                (preSelectedTrack!.id != track!.id ||
-                    (playlistId != nil && Int(playlistId!) >= 0))) {
-                        trackTableView.deselectRowAtIndexPath(indexPath!, animated: false)
-            }
-        }
-        
-        if playlistId != nil {
-            return
-        }
-        
-        for (idx, t) in tracks.enumerate() {
-            if (t.id == track!.id) {
-                trackTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
-                    animated: false, scrollPosition: UITableViewScrollPosition.None)
-                break
-            }
-        }
-    }
-    
-    override func updatePlaylist(forceUpdate:Bool) {
-        if !forceUpdate &&
-            (getPlaylistId() == nil ||
-                DropbeatPlayer.defaultPlayer.currentPlaylist?.id != getPlaylistId()) {
-                    return
-        }
-        
-        var playlist:Playlist!
-        if DropbeatPlayer.defaultPlayer.currentPlaylist != nil &&
-            DropbeatPlayer.defaultPlayer.currentPlaylist?.id == getPlaylistId() {
-                playlist = DropbeatPlayer.defaultPlayer.currentPlaylist!
-                playlist.tracks.removeAll(keepCapacity: false)
-                for track in tracks {
-                    playlist.tracks.append(track)
-                }
-        } else {
-            playlist = Playlist(
-                id: getPlaylistId()!,
-                name: "Search",
-                tracks: tracks)
-            playlist.type = PlaylistType.EXTERNAL
-            DropbeatPlayer.defaultPlayer.currentPlaylist = playlist
-        }
-        
-        if DropbeatPlayer.defaultPlayer.currentPlaylist?.id == playlist.id {
-            if DropbeatPlayer.defaultPlayer.currentTrack == nil {
-                DropbeatPlayer.defaultPlayer.currentTrackIdx = -1
-            } else {
-                DropbeatPlayer.defaultPlayer.currentTrackIdx = playlist.getTrackIdx(DropbeatPlayer.defaultPlayer.currentTrack!)
-            }
-        }
-        return
     }
 }
 

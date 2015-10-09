@@ -156,15 +156,13 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
     var currentTrackIdx: Int = -1
     var currentTrack: Track?
-    
     var currentPlaylist: Playlist?
     
     var repeatState = RepeatState.NOT_REPEAT
     var shuffleState = ShuffleState.NOT_SHUFFLE
     var qualityState = QualityState.LQ
     
-    var playingSection:String?
-    
+    // TODO: 이 코드 가져와야 됨.
     var playLog: PlayLog?
     
     func changeRepeatState() {

@@ -214,12 +214,11 @@ class Playlist {
             playlist!.tracks.removeAtIndex(foundIdx!)
             
             // Update current PlayerContext with new index
-            let playingTrack:Track? = DropbeatPlayer.defaultPlayer.currentTrack
-            if (playingTrack != nil &&
-                DropbeatPlayer.defaultPlayer.currentPlaylist?.id != nil &&
-                DropbeatPlayer.defaultPlayer.currentPlaylist?.id == self.id) {
+            if let playingTrack = DropbeatPlayer.defaultPlayer.currentTrack,
+                currentPlaylist = DropbeatPlayer.defaultPlayer.currentPlaylist
+                where currentPlaylist.id == self.id {
                     for (idx, track) in playlist!.tracks.enumerate() {
-                        if (track.id == playingTrack!.id) {
+                        if (track.id == playingTrack.id) {
                             DropbeatPlayer.defaultPlayer.currentTrackIdx = idx
                             break
                         }

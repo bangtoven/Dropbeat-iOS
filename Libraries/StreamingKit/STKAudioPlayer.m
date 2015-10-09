@@ -672,10 +672,10 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
 
 -(void) play:(NSString*)urlString
 {
-	[self play:urlString withQueueItemID:urlString];
+	[self play:urlString withQueueItemId:urlString];
 }
 
--(void) play:(NSString*)urlString withQueueItemID:(NSObject*)queueItemId
+-(void) play:(NSString*)urlString withQueueItemId:(NSObject*)queueItemId
 {
     NSURL* url = [NSURL URLWithString:urlString];
     
@@ -683,7 +683,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
 }
 
 // Added by Jungho Bang
--(void) play:(NSString *)urlString duration:(double)duration withQueueItemId:(NSObject *)queueItemId
+-(void) play:(NSString *)urlString withQueueItemId:(NSObject *)queueItemId duration:(double)duration
 {
     NSURL* url = [NSURL URLWithString:urlString];
     
@@ -768,7 +768,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
 }
 
 // Added
--(void) queue:(NSString*)urlString duration:(double)duration withQueueItemId:(NSObject*)queueItemId
+-(void) queue:(NSString*)urlString withQueueItemId:(NSObject*)queueItemId duration:(double)duration
 {
     NSURL* url = [NSURL URLWithString:urlString];
     [self queueDataSource:[STKAudioPlayer dataSourceFromURL:url] duration:duration withQueueItemId:queueItemId];

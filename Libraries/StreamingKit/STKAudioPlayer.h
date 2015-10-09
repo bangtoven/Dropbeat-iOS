@@ -174,11 +174,11 @@ typedef void(^STKFrameFilter)(UInt32 channelsPerFrame, UInt32 bytesPerFrame, UIn
 -(void) play:(NSString*)urlString;
 
 /// Plays an item from the given URL (all pending queued items are removed)
--(void) play:(NSString*)urlString withQueueItemID:(NSObject*)queueItemId;
+-(void) play:(NSString*)urlString withQueueItemId:(NSObject*)queueItemId;
 
 /// Added by Jungho Bang to solve duration issue
--(void) play:(NSString*)urlString duration:(double)duration withQueueItemId:(NSObject*)queueItemId;
--(void) queue:(NSString*)urlString duration:(double)duration withQueueItemId:(NSObject*)queueItemId;
+-(void) play:(NSString*)urlString withQueueItemId:(NSObject*)queueItemId duration:(double)duration;
+-(void) queue:(NSString*)urlString withQueueItemId:(NSObject*)queueItemId duration:(double)duration;
 
 /// Plays an item from the given URL (all pending queued items are removed)
 /// The NSURL is used as the queue item ID

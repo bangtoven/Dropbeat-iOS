@@ -53,9 +53,10 @@ class SettingsViewController: UITableViewController {
                 Account.account = nil
                 let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
                 appDelegate.account = nil
-//                _PlayerViewController.sharedInstance!.resignObservers()
+
                 let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
                 navController.popToRootViewControllerAnimated(false)
+                DropbeatPlayer.defaultPlayer.stop()
         })
     }
     

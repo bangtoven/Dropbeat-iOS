@@ -138,7 +138,9 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
             for (_, item): (String, JSON) in json["items"] {
                 let snippet = item["snippet"]
                 if snippet != JSON.null {
-                    self.tracks.append(Track(channelSnippet: snippet))
+                    let track = Track(channelSnippet: snippet)
+                    track.user = self.baseUser
+                    self.tracks.append(track)
                 }
             }
             

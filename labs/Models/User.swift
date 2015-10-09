@@ -388,6 +388,7 @@ class Artist: BaseUser {
         if json["tracks"] != nil  {
             let tracks = Track.parseTracks(json["tracks"])
             for t: Track in tracks {
+                t.user = self
                 let sectionName = t.tag!
                 if self.sectionedTracks[sectionName] == nil {
                     self.sectionedTracks[sectionName] = []
@@ -417,7 +418,11 @@ class Artist: BaseUser {
                 callback(tracks: [], error: nil)
                 return
             }
-            self.sectionedTracks[Artist.SECTION_LIVESET] = Track.parseTracks(result!, key: "data")
+            let tracks = Track.parseTracks(result!, key: "data")
+            for t in tracks {
+                t.user = self
+            }
+            self.sectionedTracks[Artist.SECTION_LIVESET] = tracks
             callback(tracks:self.sectionedTracks[Artist.SECTION_LIVESET], error:nil)
         }
     }
@@ -448,7 +453,11 @@ class Artist: BaseUser {
                 return
             }
             
-            self.sectionedTracks[Artist.SECTION_PODCAST] = Track.parsePodcastTracks(t["data"])
+            let tracks = Track.parsePodcastTracks(t["data"])
+            for t in tracks {
+                t.user = self
+            }
+            self.sectionedTracks[Artist.SECTION_PODCAST] = tracks
             callback(tracks:self.sectionedTracks[Artist.SECTION_PODCAST], error:nil)
         }
     }

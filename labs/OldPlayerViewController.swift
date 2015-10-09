@@ -433,12 +433,7 @@ class _PlayerViewController: BaseViewController {
     
     func deactivateAudioSession() {
         // Init audioSession
-        let sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
-        do {
-            try sharedInstance.setActive(false)
-        } catch _ {
-        }
-        UIApplication.sharedApplication().endReceivingRemoteControlEvents()
+        
         stopBackgroundTask()
     }
     

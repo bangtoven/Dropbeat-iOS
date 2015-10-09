@@ -142,13 +142,6 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
             DropbeatPlayer.defaultPlayer.currentPlaylist = playlist
         }
         
-        if DropbeatPlayer.defaultPlayer.currentPlaylist?.id == playlist.id {
-            if DropbeatPlayer.defaultPlayer.currentTrack == nil {
-                DropbeatPlayer.defaultPlayer.currentTrackIdx = -1
-            } else {
-                DropbeatPlayer.defaultPlayer.currentTrackIdx = playlist.getTrackIdx(DropbeatPlayer.defaultPlayer.currentTrack!)
-            }
-        }
         return
     }
     

@@ -33,8 +33,8 @@ class PlayerViewController: GAITrackedViewController {
     @IBOutlet weak var playBtn: UIButton!
     @IBOutlet weak var pauseBtn: UIButton!
     @IBOutlet weak var loadingView: UIImageView!
-    @IBOutlet weak var nextBtn: UIButton!
-    @IBOutlet weak var prevBtn: UIButton!
+    @IBOutlet weak var prevButton: UIButton!
+    @IBOutlet weak var nextButton: UIButton!
     
     @IBOutlet weak var likeProgIndicator: UIActivityIndicatorView!
     @IBOutlet weak var likeBtn: UIButton!
@@ -63,7 +63,6 @@ class PlayerViewController: GAITrackedViewController {
         updatePlayView(self.player.state)
         updateCoverView()
         updateProgressView()
-        updateNextPrevBtn()
         updateLikeBtn()
         updateRepeatView()
         updateShuffleView()
@@ -80,6 +79,10 @@ class PlayerViewController: GAITrackedViewController {
     
     func playerStateChanged(noti: NSNotification) {
         if let state = STKAudioPlayerState(rawValue: noti.object as! UInt) {
+            if state == .Error {
+                let errMsg = NSLocalizedString("This track is not streamable", comment:"")
+                ViewUtils.showToast(self, message: errMsg)
+            }
             updatePlayView(state)
         }
     }
@@ -120,10 +123,10 @@ class PlayerViewController: GAITrackedViewController {
             playerStatus.text = NSLocalizedString("READY", comment:"")
             break
         case .Error:
-            playerStatus.text = "???Error"
+            playerStatus.text = NSLocalizedString("LOADING", comment:"")
             break
         case .Disposed:
-            playerStatus.text = "???Disposed"
+            playerStatus.text = NSLocalizedString("CHOOSE TRACK", comment:"")
             break
         }
         
@@ -132,20 +135,28 @@ class PlayerViewController: GAITrackedViewController {
             playBtn.hidden = true
             pauseBtn.hidden = true
             loadingView.hidden = false
+            prevButton.enabled = false
+            nextButton.enabled = false
             loadingView.setSpinEnabled(true, duration: 0.7)
         case .Paused, .Stopped:
             playBtn.hidden = false
             pauseBtn.hidden = true
+            prevButton.enabled = true
+            nextButton.enabled = true
             loadingView.hidden = true
         case .Playing:
             playBtn.hidden = true
             pauseBtn.hidden = false
+            prevButton.enabled = true
+            nextButton.enabled = true
             loadingView.hidden = true
         default:
             playerTitle.text = ""
             playBtn.hidden = false
             playBtn.enabled = false
             pauseBtn.hidden = true
+            prevButton.enabled = false
+            nextButton.enabled = false
             loadingView.hidden = true
         }
     }
@@ -185,24 +196,7 @@ class PlayerViewController: GAITrackedViewController {
         return text
     }
     
-    func updateNextPrevBtn() {
-        if self.player.pickNextTrack() != nil {
-            nextBtn.enabled = true
-            nextBtn.setImage(UIImage(named:"ic_forward"), forState: UIControlState.Normal)
-        } else {
-            nextBtn.enabled = false
-            nextBtn.setImage(UIImage(named:"ic_forward_gray"), forState: UIControlState.Normal)
-        }
-        
-        if self.player.pickPrevTrack() != nil {
-            prevBtn.enabled = true
-            prevBtn.setImage(UIImage(named:"ic_rewind"), forState: UIControlState.Normal)
-        } else {
-            prevBtn.enabled = false
-            prevBtn.setImage(UIImage(named:"ic_rewind_gray"), forState: UIControlState.Normal)
-        }
-    }
-    
+    // TODO: 언제 바꿔야 되는지 잘 생각해봐.
     func updateCoverView() {
         let track = self.player.currentTrack
         if track == nil || self.player.state == .Stopped {
@@ -219,6 +213,8 @@ class PlayerViewController: GAITrackedViewController {
                         if (error != nil) {
                             self.coverImageView.image = UIImage(named: "default_cover_big")
                         }
+                        
+                        DropbeatPlayer.defaultPlayer.currentTrackArtwork = image
                 })
             } else {
                 coverImageView.image = UIImage(named: "default_cover_big")!
@@ -237,8 +233,10 @@ class PlayerViewController: GAITrackedViewController {
     func updateShuffleView() {
         if (self.player.shuffleState == .NOT_SHUFFLE) {
             shuffleBtn.setImage(UIImage(named: "ic_shuffle_gray"), forState: UIControlState.Normal)
+            prevButton.enabled = true
         } else {
             shuffleBtn.setImage(UIImage(named: "ic_shuffle"), forState: UIControlState.Normal)
+            prevButton.enabled = false
         }
     }
     
@@ -268,11 +266,17 @@ class PlayerViewController: GAITrackedViewController {
     }
     
     @IBAction func onNextBtnClicked(sender: UIButton) {
-        self.player.next()
+        if self.player.next() == false {
+            let errMsg = NSLocalizedString("Last track of playlist.", comment:"")
+            ViewUtils.showToast(self, message: errMsg)
+        }
     }
     
     @IBAction func onPrevBtnClicked(sender: UIButton) {
-        self.player.prev()
+        if self.player.prev() == false {
+            let errMsg = NSLocalizedString("First track of playlist.", comment:"")
+            ViewUtils.showToast(self, message: errMsg)
+        }
     }
     
     @IBAction func onProgressValueChanged(sender: UISlider) {
@@ -286,13 +290,11 @@ class PlayerViewController: GAITrackedViewController {
     
     @IBAction func onRepeatBtnClicked(sender: UIButton) {
         self.player.changeRepeatState()
-        updateNextPrevBtn()
         updateRepeatView()
     }
     
     @IBAction func onShuffleBtnClicked(sender: UIButton) {
         self.player.changeShuffleState()
-        updateNextPrevBtn()
         updateShuffleView()
     }
     

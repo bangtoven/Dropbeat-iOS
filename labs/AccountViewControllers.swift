@@ -189,6 +189,7 @@ class FBSigninableViewController: BaseViewController {
         let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
         navController.popToRootViewControllerAnimated(false)
         
+        DropbeatPlayer.defaultPlayer.stop()
     }
 }
 
@@ -413,6 +414,7 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
         navController.popToRootViewControllerAnimated(false)
         
+        DropbeatPlayer.defaultPlayer.stop()
     }
 }
 
@@ -641,6 +643,7 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
         navController.popToRootViewControllerAnimated(false)
         
+        DropbeatPlayer.defaultPlayer.stop()
     }
     
     func handleRemoteError(errorCode:Int) -> Bool {

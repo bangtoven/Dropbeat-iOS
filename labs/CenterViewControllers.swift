@@ -338,7 +338,6 @@ class CenterViewController: BaseViewController, UITabBarDelegate{
     }
     
     @IBAction func showPlayerBtnClicked(sender: UIButton) {
-        DropbeatPlayer.defaultPlayer.stop()
 //        showPlayerView()
     }
     

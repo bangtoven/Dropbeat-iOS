@@ -1373,13 +1373,13 @@
                         <outlet property="likeBtn" destination="VaR-wa-2ue" id="lzb-7M-iCC"/>
                         <outlet property="likeProgIndicator" destination="887-jD-ZvK" id="YDN-Cl-qif"/>
                         <outlet property="loadingView" destination="h6J-IM-X6t" id="peI-F3-W3z"/>
-                        <outlet property="nextBtn" destination="Blk-GK-Na3" id="jPf-Sq-Hez"/>
+                        <outlet property="nextButton" destination="Blk-GK-Na3" id="r15-Dm-LNJ"/>
                         <outlet property="pauseBtn" destination="MvR-Or-IbC" id="cVS-rc-v0k"/>
                         <outlet property="playBtn" destination="gPh-0g-OtE" id="oPt-bo-PKf"/>
                         <outlet property="playerStatus" destination="A8J-cg-9jV" id="rAS-fn-0Z4"/>
                         <outlet property="playerTitle" destination="uBH-Ka-Zb4" id="dKJ-UB-BRF"/>
                         <outlet property="playerTitleHeightConstaint" destination="23f-Wo-3B6" id="Enm-vM-51p"/>
-                        <outlet property="prevBtn" destination="auD-Cp-jFq" id="aEL-E2-cph"/>
+                        <outlet property="prevButton" destination="auD-Cp-jFq" id="SjM-tB-Qvn"/>
                         <outlet property="progressSliderBar" destination="Yu1-hw-KYT" id="IoW-tm-Xtj"/>
                         <outlet property="progressTextView" destination="7fs-yM-N0K" id="slu-Ub-sPU"/>
                         <outlet property="repeatBtn" destination="nhO-H8-bHF" id="3R4-QG-PMl"/>

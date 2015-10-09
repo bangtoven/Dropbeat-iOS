@@ -12,7 +12,9 @@
 #define STK_BIT_RATE_ESTIMATION_MIN_PACKETS_MIN (2)
 #define STK_BIT_RATE_ESTIMATION_MIN_PACKETS_PREFERRED (64)
 
-@implementation STKQueueEntry
+@implementation STKQueueEntry {
+    double _duration;
+}
 
 -(id) initWithDataSource:(STKDataSource*)dataSourceIn andQueueItemId:(NSObject*)queueItemIdIn
 {
@@ -23,6 +25,8 @@
         self.dataSource = dataSourceIn;
         self.queueItemId = queueItemIdIn;
         self->lastFrameQueued = -1;
+        
+        _duration = 0;
     }
     
     return self;
@@ -58,23 +62,32 @@
     return retval;
 }
 
+-(void) setDuration:(double)duration
+{
+    _duration = duration;
+}
+
 -(double) duration
 {
-    if (self->sampleRate <= 0)
-    {
-        return 0;
+    if (_duration == 0) {
+        if (self->sampleRate <= 0)
+        {
+            return 0;
+        }
+        
+        UInt64 audioDataLengthInBytes = [self audioDataLengthInBytes];
+        
+        double calculatedBitRate = [self calculatedBitRate];
+        
+        if (calculatedBitRate < 1.0 || self.dataSource.length == 0)
+        {
+            return 0;
+        }
+        
+        return audioDataLengthInBytes / (calculatedBitRate / 8);
+    } else {
+        return _duration;
     }
-    
-    UInt64 audioDataLengthInBytes = [self audioDataLengthInBytes];
-    
-    double calculatedBitRate = [self calculatedBitRate];
-    
-    if (calculatedBitRate < 1.0 || self.dataSource.length == 0)
-    {
-        return 0;
-    }
-    
-    return audioDataLengthInBytes / (calculatedBitRate / 8);
 }
 
 -(UInt64) audioDataLengthInBytes

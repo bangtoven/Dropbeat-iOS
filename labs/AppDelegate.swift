@@ -179,7 +179,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if (networkStatus != .NotReachable) {
             let quality: QualityState = (networkStatus == .ReachableViaWiFi) ? .HQ : .LQ
-            if (shouldInitializeQualityState || DropbeatPlayer.defaultPlayer.playState == PlayState.STOPPED) {
+            if (shouldInitializeQualityState || DropbeatPlayer.defaultPlayer.state == .Stopped) {
                 shouldInitializeQualityState = false
                 DropbeatPlayer.defaultPlayer.qualityState = quality
             } else {

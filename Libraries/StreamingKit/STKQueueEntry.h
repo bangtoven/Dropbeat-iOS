@@ -33,11 +33,11 @@
 @property (readonly) UInt64 audioDataLengthInBytes;
 @property (readwrite, retain) NSObject* queueItemId;
 @property (readwrite, retain) STKDataSource* dataSource;
+@property (readwrite) double duration;
 
 -(id) initWithDataSource:(STKDataSource*)dataSource andQueueItemId:(NSObject*)queueItemId;
 
 -(void) reset;
--(double) duration;
 -(Float64) progressInFrames;
 -(double) calculatedBitRate;
 -(BOOL) isDefinitelyCompatible:(AudioStreamBasicDescription*)basicDescription;

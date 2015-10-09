@@ -682,6 +682,14 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
 	[self setDataSource:[STKAudioPlayer dataSourceFromURL:url] withQueueItemId:queueItemId];
 }
 
+// Added by Jungho Bang
+-(void) play:(NSString *)urlString duration:(double)duration withQueueItemID:(NSObject *)queueItemId
+{
+    NSURL* url = [NSURL URLWithString:urlString];
+    
+    [self setDataSource:[STKAudioPlayer dataSourceFromURL:url] duration:duration withQueueItemId:queueItemId];
+}
+
 -(void) playURL:(NSURL*)url
 {
 	[self playURL:url withQueueItemID:url];
@@ -724,6 +732,31 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
     [self wakeupPlaybackThread];
 }
 
+// Added by Jungho Bang
+-(void) setDataSource:(STKDataSource*)dataSourceIn duration:(double)duration withQueueItemId:(NSObject*)queueItemId
+{
+    pthread_mutex_lock(&playerMutex);
+    {
+        LOGINFO(([NSString stringWithFormat:@"Playing: %@", [queueItemId description]]));
+        
+        if (![self audioGraphIsRunning])
+        {
+            [self startSystemBackgroundTask];
+        }
+        
+        [self clearQueue];
+        
+        STKQueueEntry *entry = [[STKQueueEntry alloc] initWithDataSource:dataSourceIn andQueueItemId:queueItemId];
+        entry.duration = duration;
+        [upcomingQueue enqueue:entry];
+        
+        self.internalState = STKAudioPlayerInternalStatePendingNext;
+    }
+    pthread_mutex_unlock(&playerMutex);
+    
+    [self wakeupPlaybackThread];
+}
+
 -(void) queue:(NSString*)urlString
 {
 	return [self queueURL:[NSURL URLWithString:urlString] withQueueItemId:urlString];
@@ -733,6 +766,14 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
 {
 	[self queueURL:[NSURL URLWithString:urlString] withQueueItemId:queueItemId];
 }
+
+// Added
+-(void) queue:(NSString*)urlString duration:(double)duration withQueueItemId:(NSObject*)queueItemId
+{
+    NSURL* url = [NSURL URLWithString:urlString];
+    [self queueDataSource:[STKAudioPlayer dataSourceFromURL:url] duration:duration withQueueItemId:queueItemId];
+}
+
 
 -(void) queueURL:(NSURL*)url
 {
@@ -754,6 +795,25 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
 		}
         
         [upcomingQueue enqueue:[[STKQueueEntry alloc] initWithDataSource:dataSourceIn andQueueItemId:queueItemId]];
+    }
+    pthread_mutex_unlock(&playerMutex);
+    
+    [self wakeupPlaybackThread];
+}
+
+// Added
+-(void) queueDataSource:(STKDataSource*)dataSourceIn duration:(double)duration withQueueItemId:(NSObject*)queueItemId
+{
+    pthread_mutex_lock(&playerMutex);
+    {
+        if (![self audioGraphIsRunning])
+        {
+            [self startSystemBackgroundTask];
+        }
+        
+        STKQueueEntry *entry = [[STKQueueEntry alloc] initWithDataSource:dataSourceIn andQueueItemId:queueItemId];
+        entry.duration = duration;
+        [upcomingQueue enqueue:entry];
     }
     pthread_mutex_unlock(&playerMutex);
     
@@ -856,7 +916,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
         }
 		case kAudioFileStreamProperty_ReadyToProducePackets:
         {
-			if (!audioConverterAudioStreamBasicDescription.mFormatID == kAudioFormatLinearPCM)
+			if (audioConverterAudioStreamBasicDescription.mFormatID != kAudioFormatLinearPCM)
 			{
 				discontinuous = YES;
 			}
@@ -1445,6 +1505,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
         if (!error && !(ioFlags & kAudioFileStreamSeekFlag_OffsetIsEstimated))
         {
             double delta = ((seekByteOffset - (SInt64)currentEntry->audioDataOffset) - packetAlignedByteOffset) / calculatedBitRate * 8;
+            NSLog(@"delta: %lf", delta);
             
             OSSpinLockLock(&currentEntry->spinLock);
             currentEntry->seekTime -= delta;

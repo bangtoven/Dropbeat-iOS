@@ -8,49 +8,10 @@
 
 import UIKit
 import MediaPlayer
+import AVFoundation
 
-enum RepeatState: Int {
-    case NOT_REPEAT = 0
-    case REPEAT_PLAYLIST = 1
-    case REPEAT_ONE = 2
-    
-    func next() -> RepeatState {
-        return RepeatState(rawValue: (self.rawValue + 1) % 3)!
-    }
-}
+public let DropbeatPlayerStateChangedNotification = "DropbeatPlayerStateChangedNotification"
 
-enum ShuffleState: Int  {
-    case NOT_SHUFFLE = 0
-    case SHUFFLE = 1
-    
-    func toggle() -> ShuffleState {
-        switch self {
-        case .NOT_SHUFFLE: return .SHUFFLE
-        case .SHUFFLE: return .NOT_SHUFFLE
-        }
-    }
-}
-
-enum QualityState: Int  {
-    case LQ = 0
-    case HQ = 1
-    
-    func toggle() -> QualityState {
-        switch self {
-        case .LQ: return .HQ
-        case .HQ: return .LQ
-        }
-    }
-}
-
-enum PlayState: Int {
-    case STOPPED = 0
-    case LOADING
-    case PLAYING
-    case PAUSED
-    case SWITCHING
-    case BUFFERING
-}
 
 class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
@@ -62,48 +23,32 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         self.player.delegate = self
     }
     
-    func remoteControlReceivedWithEvent(event: UIEvent?) {
-        switch(event!.subtype) {
-        case .RemoteControlPlay:
-            print("play clicked")
-            guard let currentTrack = self.currentTrack else {
-                return
-            }
-            var params = [String: AnyObject]()
-            params["track"] = currentTrack
-            if let playlistId = self.currentPlaylistId {
-                params["playlistId"] =  playlistId
-            }
-            self.play(currentTrack)
-        case .RemoteControlPause:
-            print("pause clicked")
-            self.pause()
-        case .RemoteControlStop:
-            print("stop clicked")
-        case .RemoteControlPreviousTrack:
-            print("prev clicked")
-            self.prev()
-        case .RemoteControlNextTrack:
-            print("next clicked")
-            self.next()
-//        case .RemoteControlTogglePlayPause:
-//        case .RemoteControlBeginSeekingBackward:
-//        case .RemoteControlEndSeekingBackward:
-//        case .RemoteControlBeginSeekingForward:
-//        case .RemoteControlEndSeekingForward:
-        default:
-            break
-        }
+    var state = STKAudioPlayerState.Ready
+    var duration: Double {
+        get { return self.player.duration }
+    }
+    var progress: Double {
+        get { return self.player.progress }
     }
     
     func play(track: Track) {
         self.lastError = nil
         
+        self.currentTrack = track
+        
         if track.type == .YOUTUBE {
+            
             let quality = XCDYouTubeVideoQuality.Medium360
-            track.getYoutubeStreamURL(quality, callback: { (streamURL, error) -> Void in
+            track.getYoutubeStreamURL(quality, callback: { (streamURL, duration, error) -> Void in
                 if let streamUrl = streamURL {
-                    self.player.play(streamUrl)
+                    self.player.play(streamUrl, duration: duration!, withQueueItemID: streamUrl)
+                    
+//                    let asset = AVAsset(URL: NSURL(string: streamUrl)!)
+//                    asset.loadValuesAsynchronouslyForKeys(["duration"]) {
+//                        let time = CMTimeGetSeconds(asset.duration)
+//                        print(time)
+//                    }
+
                 } else {
                     print(error)
                 }
@@ -112,66 +57,45 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             player.play(track.streamUrl)
         }
         
+        
         updatePlayingInfoCenter(track)
     }
     
-    func updatePlayingInfoCenter(track: Track) {
-        var trackInfo = [String:AnyObject]()
-        trackInfo[MPMediaItemPropertyTitle] = track.title
-        
-//        var stateText:String?
-        let rate:Float = 0.0
-//        switch(playingState) {
-//        case PlayState.LOADING:
-//            stateText = NSLocalizedString("LOADING..", comment:"")
-//            rate = 0.0
-//            break
-//        case PlayState.SWITCHING:
-//            stateText = NSLocalizedString("LOADING..", comment:"")
-//            rate = 1.0
-//            break
-//        case PlayState.PAUSED:
-//            stateText = NSLocalizedString("PAUSED", comment:"")
-//            rate = 0.0
-//            break
-//        case PlayState.STOPPED:
-//            stateText = NSLocalizedString("READY", comment:"")
-//            rate = 0.0
-//            break
-//        case PlayState.PLAYING:
-//            stateText = NSLocalizedString("PLAYING", comment:"")
-//            rate = 1.0
-//            break
-//        case PlayState.BUFFERING:
-//            stateText = NSLocalizedString("BUFFERING", comment:"")
-//            rate = 1.0
-//            break
-//        }
-//        trackInfo[MPMediaItemPropertyArtist] = stateText
-        
-//        let duration = DropbeatPlayer.defaultPlayer.correctDuration ?? 0
-//        var currentPlayback:NSTimeInterval?
-//        if audioPlayerControl.moviePlayer.currentPlaybackTime.isNaN {
-//            currentPlayback = 0
-//        } else {
-//            currentPlayback = audioPlayerControl.moviePlayer.currentPlaybackTime ?? 0
-//        }
-//        playingInfoDisplayDuration = duration > 0 && currentPlayback >= 0
-        
-//        trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentPlayback
-//        trackInfo[MPMediaItemPropertyPlaybackDuration] = duration
-        trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = rate
-        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo
+    func resume() {
+        self.player.resume()
     }
     
     func pause() {
         self.player.pause()
     }
+    
+    func seekTo(percent: Float) {
+        let time = Double(percent) / 100.0 * self.duration
+        print(time)
+        self.player.seekToTime(time)
+    }
+    
     func prev() {}
     func next() {}
     
     func stop() {
         player.stop()
+        /*
+        shouldPlayMusic = false
+        DropbeatPlayer.defaultPlayer.currentPlaylistId = nil
+        DropbeatPlayer.defaultPlayer.currentTrack = nil
+        DropbeatPlayer.defaultPlayer.currentTrackIdx = -1
+        DropbeatPlayer.defaultPlayer.correctDuration = nil
+        videoView.hidden = true
+        audioPlayerControl.videoIdentifier = nil
+        audioPlayerControl.moviePlayer.contentURL = nil
+        if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
+        audioPlayerControl.moviePlayer.stop()
+        }
+        updatePlayState(PlayState.STOPPED)
+        updateCoverView()
+        deactivateAudioSession()
+*/
     }
 
     func audioPlayer(audioPlayer: STKAudioPlayer!, didStartPlayingQueueItemId queueItemId: NSObject!)
@@ -184,43 +108,21 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         print("buffering finished")
     }
     
-    enum State: UInt32 {
-        case Ready = 0
-        case Running = 1
-        case Playing = 3
-        case Buffering = 5
-        case Paused = 9
-        case Stopped = 16
-        case Error = 32
-        case Disposed = 64
-    }
-    
     func audioPlayer(audioPlayer: STKAudioPlayer!, stateChanged state: STKAudioPlayerState, previousState: STKAudioPlayerState)
     {
-        if let prev = State(rawValue: previousState.rawValue),
-            curr = State(rawValue: state.rawValue) {
-                print("state changed: \(prev) -> \(curr)")
-        } else {
-            print("CAN'T CONVERT!! state changed: \(previousState) -> \(state)")
-        }
+        print("state changed: \(previousState.rawValue) -> \(state.rawValue)")
+        self.state = state
+        
+        let noti = NSNotification(name: DropbeatPlayerStateChangedNotification, object: state.rawValue, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotification(noti)
     }
     
     func audioPlayer(audioPlayer: STKAudioPlayer!, didFinishPlayingQueueItemId queueItemId: NSObject!, withReason stopReason: STKAudioPlayerStopReason, andProgress progress: Double, andDuration duration: Double)
     {
-        
+        print("stopped: \(stopReason)")
     }
     
     // TODO: Error handling
-    
-    enum ErrorCode:UInt32 {
-        case None = 0
-        case DataSource
-        case StreamParseBytesFailed
-        case AudioSystemError
-        case CodecError
-        case DataNotFound
-        case Other = 0xffff
-    }
     
     var lastError: STKAudioPlayerErrorCode?
     
@@ -229,8 +131,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         if let last = self.lastError where last == errorCode {
             
         } else {
-            let err = ErrorCode(rawValue: errorCode.rawValue)
-            print("Error!: \(err!)")
+            print("Error!: \(errorCode.rawValue)")
             self.lastError = errorCode
             self.player.dispose()
             self.player = STKAudioPlayer()
@@ -238,6 +139,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         }
     }
     
+    // Player Context
     
     var currentTrackIdx: Int = -1
     var currentTrack: Track?
@@ -248,11 +150,9 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
     var repeatState = RepeatState.NOT_REPEAT
     var shuffleState = ShuffleState.NOT_SHUFFLE
-    var playState = PlayState.STOPPED
+//    var playState = PlayState.STOPPED
     var qualityState = QualityState.LQ
     
-    var correctDuration: Double?
-    var currentPlaybackTime: Double?
     var playingSection:String?
     
     var playLog: PlayLog?
@@ -368,29 +268,130 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         return nil
     }
 
-}
-
-extension Track {
-    func getYoutubeStreamURL(quality:XCDYouTubeVideoQuality, callback:(streamURL:String?, error:NSError?)->Void) {
-        guard self.type == .YOUTUBE else {
-            let error = NSError(domain: "TrackYouTubeStreamURL", code: -1, userInfo: nil)
-            callback(streamURL: self.streamUrl, error: error)
-            return
-        }
-        
-        XCDYouTubeClient.defaultClient().getVideoWithIdentifier(self.id, completionHandler: {
-            (video: XCDYouTubeVideo?, error: NSError?) -> Void in
-            if error != nil {
-                callback(streamURL: nil, error: error)
+    func remoteControlReceivedWithEvent(event: UIEvent?) {
+        switch(event!.subtype) {
+        case .RemoteControlPlay:
+            print("play clicked")
+            guard let currentTrack = self.currentTrack else {
                 return
             }
-            
-            if let streamURL = video?.streamURLs[quality.rawValue] as? NSURL {
-                callback(streamURL: streamURL.absoluteString, error: nil)
-            } else {
-                let e = NSError(domain: "TrackYouTubeStreamURL", code: -2, userInfo: nil)
-                callback(streamURL: nil, error: e)
+            var params = [String: AnyObject]()
+            params["track"] = currentTrack
+            if let playlistId = self.currentPlaylistId {
+                params["playlistId"] =  playlistId
             }
-        })
+            self.play(currentTrack)
+        case .RemoteControlPause:
+            print("pause clicked")
+            self.pause()
+        case .RemoteControlStop:
+            print("stop clicked")
+        case .RemoteControlPreviousTrack:
+            print("prev clicked")
+            self.prev()
+        case .RemoteControlNextTrack:
+            print("next clicked")
+            self.next()
+            //        case .RemoteControlTogglePlayPause:
+            //        case .RemoteControlBeginSeekingBackward:
+            //        case .RemoteControlEndSeekingBackward:
+            //        case .RemoteControlBeginSeekingForward:
+            //        case .RemoteControlEndSeekingForward:
+        default:
+            break
+        }
+    }
+    
+    func updatePlayingInfoCenter(track: Track) {
+        var trackInfo = [String:AnyObject]()
+        trackInfo[MPMediaItemPropertyTitle] = track.title
+        
+        //        var stateText:String?
+        let rate:Float = 0.0
+        //        switch(playingState) {
+        //        case PlayState.LOADING:
+        //            stateText = NSLocalizedString("LOADING..", comment:"")
+        //            rate = 0.0
+        //            break
+        //        case PlayState.SWITCHING:
+        //            stateText = NSLocalizedString("LOADING..", comment:"")
+        //            rate = 1.0
+        //            break
+        //        case PlayState.PAUSED:
+        //            stateText = NSLocalizedString("PAUSED", comment:"")
+        //            rate = 0.0
+        //            break
+        //        case PlayState.STOPPED:
+        //            stateText = NSLocalizedString("READY", comment:"")
+        //            rate = 0.0
+        //            break
+        //        case PlayState.PLAYING:
+        //            stateText = NSLocalizedString("PLAYING", comment:"")
+        //            rate = 1.0
+        //            break
+        //        case PlayState.BUFFERING:
+        //            stateText = NSLocalizedString("BUFFERING", comment:"")
+        //            rate = 1.0
+        //            break
+        //        }
+        //        trackInfo[MPMediaItemPropertyArtist] = stateText
+        
+        //        let duration = DropbeatPlayer.defaultPlayer.correctDuration ?? 0
+        //        var currentPlayback:NSTimeInterval?
+        //        if audioPlayerControl.moviePlayer.currentPlaybackTime.isNaN {
+        //            currentPlayback = 0
+        //        } else {
+        //            currentPlayback = audioPlayerControl.moviePlayer.currentPlaybackTime ?? 0
+        //        }
+        //        playingInfoDisplayDuration = duration > 0 && currentPlayback >= 0
+        
+        //        trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = currentPlayback
+        //        trackInfo[MPMediaItemPropertyPlaybackDuration] = duration
+        trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = rate
+        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo
     }
 }
+
+
+enum RepeatState: Int {
+    case NOT_REPEAT = 0
+    case REPEAT_PLAYLIST = 1
+    case REPEAT_ONE = 2
+    
+    func next() -> RepeatState {
+        return RepeatState(rawValue: (self.rawValue + 1) % 3)!
+    }
+}
+
+enum ShuffleState: Int  {
+    case NOT_SHUFFLE = 0
+    case SHUFFLE = 1
+    
+    func toggle() -> ShuffleState {
+        switch self {
+        case .NOT_SHUFFLE: return .SHUFFLE
+        case .SHUFFLE: return .NOT_SHUFFLE
+        }
+    }
+}
+
+enum QualityState: Int  {
+    case LQ = 0
+    case HQ = 1
+    
+    func toggle() -> QualityState {
+        switch self {
+        case .LQ: return .HQ
+        case .HQ: return .LQ
+        }
+    }
+}
+
+//enum PlayState: Int {
+//    case STOPPED = 0
+//    case LOADING
+//    case PLAYING
+//    case PAUSED
+//    case SWITCHING
+//    case BUFFERING
+//}

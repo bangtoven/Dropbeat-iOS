@@ -15,9 +15,7 @@ enum MenuType : Int {
     case TEST
 }
 
-class CenterViewController: _PlayerViewController, UITabBarDelegate{
-    
-    @IBOutlet weak var hidePlayerButton: UIButton!
+class CenterViewController: BaseViewController, UITabBarDelegate{
     
     @IBOutlet weak var containerFrame: UIView!
     
@@ -38,7 +36,6 @@ class CenterViewController: _PlayerViewController, UITabBarDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        hidePlayerButton.layer.cornerRadius = 10.0
     
         initConstaints()
         
@@ -223,7 +220,9 @@ class CenterViewController: _PlayerViewController, UITabBarDelegate{
             self.presentViewController(pvc, animated: true, completion: nil)
         }
         
-        currentMenu = type
+        if type != .TEST {
+            currentMenu = type
+        }
     }
     
 // MARK: PlayerView Show/Hide Layout
@@ -283,59 +282,59 @@ class CenterViewController: _PlayerViewController, UITabBarDelegate{
         self.isTabBarPlayerVisible = visible
     }
     
-    override func updatePlayView() {
-        super.updatePlayView()
-        
-        switch DropbeatPlayer.defaultPlayer.playState {
-        case .LOADING, .SWITCHING, .BUFFERING:
-            showTabBarPlayer(true)
-            self.loadingIndicator.hidden = false
-            self.playPauseButton.hidden = true
-            self.trackInfoLabel.textColor = UIColor.lightGrayColor()
-        case .PAUSED:
-            showTabBarPlayer(true)
-            self.loadingIndicator.hidden = true
-            self.playPauseButton.hidden = false
-            self.playPauseButton.setImage(UIImage(named: "ic_play_purple"), forState: UIControlState.Normal)
-            self.trackInfoLabel.textColor = UIColor.darkGrayColor()
-        case .PLAYING:
-            showTabBarPlayer(true)
-            self.loadingIndicator.hidden = true
-            self.playPauseButton.hidden = false
-            self.playPauseButton.setImage(UIImage(named: "ic_pause_purple"), forState: UIControlState.Normal)
-            self.trackInfoLabel.textColor = UIColor.darkGrayColor()
-        case .STOPPED:
-            showTabBarPlayer(false)
-            self.loadingIndicator.hidden = true
-            self.trackInfoLabel.textColor = UIColor.lightGrayColor()
-        }
-    }
-    
-    override func updateStatusView() {
-        super.updateStatusView()
-        
-        let defaultText = NSLocalizedString("CHOOSE TRACK", comment:"")
-        if (DropbeatPlayer.defaultPlayer.playState == PlayState.STOPPED) {
-            self.trackInfoLabel.text = defaultText
-        } else {
-            self.trackInfoLabel.text = DropbeatPlayer.defaultPlayer.currentTrack?.title ?? defaultText
-        }
-    }
-    
-    override func updateProgressView() {
-        if isPlayerVisible {
-            super.updateProgressView()
-        } else {
-            self.tabBarProgressBar.progress = super.progressSliderBar.value / 100.0
-        }
-    }
+//    override func updatePlayView() {
+//        super.updatePlayView()
+//        
+//        switch DropbeatPlayer.defaultPlayer.playState {
+//        case .LOADING, .SWITCHING, .BUFFERING:
+//            showTabBarPlayer(true)
+//            self.loadingIndicator.hidden = false
+//            self.playPauseButton.hidden = true
+//            self.trackInfoLabel.textColor = UIColor.lightGrayColor()
+//        case .PAUSED:
+//            showTabBarPlayer(true)
+//            self.loadingIndicator.hidden = true
+//            self.playPauseButton.hidden = false
+//            self.playPauseButton.setImage(UIImage(named: "ic_play_purple"), forState: UIControlState.Normal)
+//            self.trackInfoLabel.textColor = UIColor.darkGrayColor()
+//        case .PLAYING:
+//            showTabBarPlayer(true)
+//            self.loadingIndicator.hidden = true
+//            self.playPauseButton.hidden = false
+//            self.playPauseButton.setImage(UIImage(named: "ic_pause_purple"), forState: UIControlState.Normal)
+//            self.trackInfoLabel.textColor = UIColor.darkGrayColor()
+//        case .STOPPED:
+//            showTabBarPlayer(false)
+//            self.loadingIndicator.hidden = true
+//            self.trackInfoLabel.textColor = UIColor.lightGrayColor()
+//        }
+//    }
+//    
+//    override func updateStatusView() {
+//        super.updateStatusView()
+//        
+//        let defaultText = NSLocalizedString("CHOOSE TRACK", comment:"")
+//        if (DropbeatPlayer.defaultPlayer.playState == PlayState.STOPPED) {
+//            self.trackInfoLabel.text = defaultText
+//        } else {
+//            self.trackInfoLabel.text = DropbeatPlayer.defaultPlayer.currentTrack?.title ?? defaultText
+//        }
+//    }
+//    
+//    override func updateProgressView() {
+//        if isPlayerVisible {
+//            super.updateProgressView()
+//        } else {
+//            self.tabBarProgressBar.progress = super.progressSliderBar.value / 100.0
+//        }
+//    }
     
     @IBAction func playPauseBtnClicked(sender: UIButton) {
-        if (DropbeatPlayer.defaultPlayer.playState == PlayState.PAUSED) {
-            super.playBtnClicked(sender)
-        } else if (DropbeatPlayer.defaultPlayer.playState == PlayState.PLAYING) {
-            super.pauseBtnClicked(sender)
-        }
+//        if (DropbeatPlayer.defaultPlayer.playState == PlayState.PAUSED) {
+//            super.playBtnClicked(sender)
+//        } else if (DropbeatPlayer.defaultPlayer.playState == PlayState.PLAYING) {
+//            super.pauseBtnClicked(sender)
+//        }
     }
     
     @IBAction func showPlayerBtnClicked(sender: UIButton) {

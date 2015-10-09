@@ -183,7 +183,7 @@ class FBSigninableViewController: BaseViewController {
         self.dismissViewControllerAnimated(false, completion: nil)
         self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
         
-        _PlayerViewController.sharedInstance!.resignObservers()
+//        _PlayerViewController.sharedInstance!.resignObservers()
         let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
         navController.popToRootViewControllerAnimated(false)
@@ -407,7 +407,7 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         self.dismissViewControllerAnimated(false, completion: nil)
         self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
         
-        _PlayerViewController.sharedInstance!.resignObservers()
+//        _PlayerViewController.sharedInstance!.resignObservers()
         let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
         navController.popToRootViewControllerAnimated(false)
@@ -635,7 +635,7 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         self.dismissViewControllerAnimated(false, completion: nil)
         self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
                 
-        _PlayerViewController.sharedInstance!.resignObservers()
+//        _PlayerViewController.sharedInstance!.resignObservers()
         let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
         navController.popToRootViewControllerAnimated(false)

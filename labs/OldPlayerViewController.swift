@@ -53,8 +53,8 @@ class _PlayerViewController: BaseViewController {
     private var bufferingTimer: NSTimer?
     
     private var isProgressUpdatable = true
-    private var prevShuffleBtnState:ShuffleState?
-    private var prevRepeatBtnState:RepeatState?
+//    private var prevShuffleBtnState:ShuffleState?
+//    private var prevRepeatBtnState:RepeatState?
     
     private var bgTaskId:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
     private var removedId:UIBackgroundTaskIdentifier = UIBackgroundTaskInvalid
@@ -192,10 +192,13 @@ class _PlayerViewController: BaseViewController {
         // Observe internal player.
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerLoadStateDidChange:",
             name: MPMoviePlayerLoadStateDidChangeNotification, object: nil)
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackStateDidChange:",
             name: MPMoviePlayerPlaybackStateDidChangeNotification, object: nil)
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "MPMoviePlayerPlaybackDidFinish:",
             name: MPMoviePlayerPlaybackDidFinishNotification, object: nil)
+        
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "AVPlayerItemDidPlayToEndTime:", name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
         
@@ -279,7 +282,7 @@ class _PlayerViewController: BaseViewController {
     }
     
     func updateExtraViews() {
-        updateStatusView()
+//        updateStatusView()
         updateProgressView()
         updateRepeatView()
         updateShuffleView()
@@ -287,90 +290,90 @@ class _PlayerViewController: BaseViewController {
         //        updatePlayerPlaylistBtn()
     }
     
-    func updateNextPrevBtn() {
-        if DropbeatPlayer.defaultPlayer.pickNextTrack() != nil {
-            nextBtn.enabled = true
-            nextBtn.setImage(UIImage(named:"ic_forward"), forState: UIControlState.Normal)
-        } else {
-            nextBtn.enabled = false
-            nextBtn.setImage(UIImage(named:"ic_forward_gray"), forState: UIControlState.Normal)
-        }
-        
-        if DropbeatPlayer.defaultPlayer.pickPrevTrack() != nil {
-            prevBtn.enabled = true
-            prevBtn.setImage(UIImage(named:"ic_rewind"), forState: UIControlState.Normal)
-        } else {
-            prevBtn.enabled = false
-            prevBtn.setImage(UIImage(named:"ic_rewind_gray"), forState: UIControlState.Normal)
-        }
-    }
-    
-    // XXX : hacky solution for hide video controls
-    // This code should be well tested before release
-    func showMPMoviePlayerControls(show:Bool) {
-        let player = audioPlayerControl.moviePlayer
-        player.controlStyle = show ? MPMovieControlStyle.Embedded : MPMovieControlStyle.None
-        if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO("8") {
-            let subViewObjs = player.backgroundView.superview?.superview?.subviews
-            if subViewObjs == nil {
-                return
-            }
-            if let subViews = subViewObjs {
-                for subView:UIView in subViews {
-                    if subView.isKindOfClass(NSClassFromString("MPVideoPlaybackOverlayView")!) {
-                        subView.backgroundColor = UIColor.clearColor()
-                        subView.alpha = show ? 1.0 : 0.0
-                        subView.hidden = show ? false : true
-                    }
-                }
-            }
-        }
-    }
-    
-    func updateCoverView() {
-        let track = DropbeatPlayer.defaultPlayer.currentTrack
-        if track == nil || DropbeatPlayer.defaultPlayer.playState == PlayState.STOPPED {
-            videoView.hidden = true
-            coverImageView.hidden = false
-            coverBgImageView.image = UIImage(named: "player_bg")
-            coverImageView.image = UIImage(named: "default_cover_big")
-        } else if track!.type == .YOUTUBE {
-            videoView.hidden = false
-            audioPlayerControl.view.hidden = false
-            audioPlayerControl.view.frame = CGRectMake(0, 0, videoView.frame.width, videoView.frame.height)
-            audioPlayerControl.presentInView(videoView)
-            showMPMoviePlayerControls(false)
-            coverImageView.hidden = true
-            
-            
-            if track!.hasHqThumbnail {
-                coverBgImageView.sd_setImageWithURL(NSURL(string: track!.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "player_bg"), completed: {
-                        (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
-                        if (error != nil) {
-                            self.coverBgImageView.image = UIImage(named: "player_bg")
-                        }
-                })
-            } else {
-                coverBgImageView.image = UIImage(named: "player_bg")!
-            }
-        } else {
-            videoView.hidden = true
-            coverImageView.hidden = false
-            coverBgImageView.image = UIImage(named: "player_bg")
-            if track!.hasHqThumbnail {
-                coverImageView.sd_setImageWithURL(NSURL(string: track!.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_cover_big"), completed: {
-                        (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
-                        if (error != nil) {
-                            self.coverImageView.image = UIImage(named: "default_cover_big")
-                        }
-                })
-            } else {
-                coverImageView.image = UIImage(named: "default_cover_big")!
-            }
-        }
-    }
+//    func updateNextPrevBtn() {
+//        if DropbeatPlayer.defaultPlayer.pickNextTrack() != nil {
+//            nextBtn.enabled = true
+//            nextBtn.setImage(UIImage(named:"ic_forward"), forState: UIControlState.Normal)
+//        } else {
+//            nextBtn.enabled = false
+//            nextBtn.setImage(UIImage(named:"ic_forward_gray"), forState: UIControlState.Normal)
+//        }
+//        
+//        if DropbeatPlayer.defaultPlayer.pickPrevTrack() != nil {
+//            prevBtn.enabled = true
+//            prevBtn.setImage(UIImage(named:"ic_rewind"), forState: UIControlState.Normal)
+//        } else {
+//            prevBtn.enabled = false
+//            prevBtn.setImage(UIImage(named:"ic_rewind_gray"), forState: UIControlState.Normal)
+//        }
+//    }
+//    
+//    // XXX : hacky solution for hide video controls
+//    // This code should be well tested before release
+//    func showMPMoviePlayerControls(show:Bool) {
+//        let player = audioPlayerControl.moviePlayer
+//        player.controlStyle = show ? MPMovieControlStyle.Embedded : MPMovieControlStyle.None
+//        if SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO("8") {
+//            let subViewObjs = player.backgroundView.superview?.superview?.subviews
+//            if subViewObjs == nil {
+//                return
+//            }
+//            if let subViews = subViewObjs {
+//                for subView:UIView in subViews {
+//                    if subView.isKindOfClass(NSClassFromString("MPVideoPlaybackOverlayView")!) {
+//                        subView.backgroundColor = UIColor.clearColor()
+//                        subView.alpha = show ? 1.0 : 0.0
+//                        subView.hidden = show ? false : true
+//                    }
+//                }
+//            }
+//        }
+//    }
+//    
+//    func updateCoverView() {
+//        let track = DropbeatPlayer.defaultPlayer.currentTrack
+//        if track == nil || DropbeatPlayer.defaultPlayer.playState == PlayState.STOPPED {
+//            videoView.hidden = true
+//            coverImageView.hidden = false
+//            coverBgImageView.image = UIImage(named: "player_bg")
+//            coverImageView.image = UIImage(named: "default_cover_big")
+//        } else if track!.type == .YOUTUBE {
+//            videoView.hidden = false
+//            audioPlayerControl.view.hidden = false
+//            audioPlayerControl.view.frame = CGRectMake(0, 0, videoView.frame.width, videoView.frame.height)
+//            audioPlayerControl.presentInView(videoView)
+//            showMPMoviePlayerControls(false)
+//            coverImageView.hidden = true
+//            
+//            
+//            if track!.hasHqThumbnail {
+//                coverBgImageView.sd_setImageWithURL(NSURL(string: track!.thumbnailUrl!),
+//                    placeholderImage: UIImage(named: "player_bg"), completed: {
+//                        (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
+//                        if (error != nil) {
+//                            self.coverBgImageView.image = UIImage(named: "player_bg")
+//                        }
+//                })
+//            } else {
+//                coverBgImageView.image = UIImage(named: "player_bg")!
+//            }
+//        } else {
+//            videoView.hidden = true
+//            coverImageView.hidden = false
+//            coverBgImageView.image = UIImage(named: "player_bg")
+//            if track!.hasHqThumbnail {
+//                coverImageView.sd_setImageWithURL(NSURL(string: track!.thumbnailUrl!),
+//                    placeholderImage: UIImage(named: "default_cover_big"), completed: {
+//                        (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
+//                        if (error != nil) {
+//                            self.coverImageView.image = UIImage(named: "default_cover_big")
+//                        }
+//                })
+//            } else {
+//                coverImageView.image = UIImage(named: "default_cover_big")!
+//            }
+//        }
+//    }
     
     func updatePlayView() {
         switch DropbeatPlayer.defaultPlayer.playState {
@@ -390,58 +393,58 @@ class _PlayerViewController: BaseViewController {
         }
     }
     
-    func updateShuffleView() {
-        if (prevShuffleBtnState == DropbeatPlayer.defaultPlayer.shuffleState) {
-            return
-        }
-        prevShuffleBtnState = DropbeatPlayer.defaultPlayer.shuffleState
-        if (DropbeatPlayer.defaultPlayer.shuffleState == ShuffleState.NOT_SHUFFLE) {
-            shuffleBtn.setImage(UIImage(named: "ic_shuffle_gray"), forState: UIControlState.Normal)
-        } else {
-            shuffleBtn.setImage(UIImage(named: "ic_shuffle"), forState: UIControlState.Normal)
-        }
-    }
+//    func updateShuffleView() {
+//        if (prevShuffleBtnState == DropbeatPlayer.defaultPlayer.shuffleState) {
+//            return
+//        }
+//        prevShuffleBtnState = DropbeatPlayer.defaultPlayer.shuffleState
+//        if (DropbeatPlayer.defaultPlayer.shuffleState == ShuffleState.NOT_SHUFFLE) {
+//            shuffleBtn.setImage(UIImage(named: "ic_shuffle_gray"), forState: UIControlState.Normal)
+//        } else {
+//            shuffleBtn.setImage(UIImage(named: "ic_shuffle"), forState: UIControlState.Normal)
+//        }
+//    }
+//    
+//    func updateRepeatView() {
+//        if (prevRepeatBtnState != nil &&
+//            prevRepeatBtnState == DropbeatPlayer.defaultPlayer.repeatState) {
+//                return
+//        }
+//        prevRepeatBtnState = DropbeatPlayer.defaultPlayer.repeatState
+//        switch(DropbeatPlayer.defaultPlayer.repeatState) {
+//        case RepeatState.NOT_REPEAT:
+//            let image:UIImage = UIImage(named: "ic_repeat_gray")!
+//            repeatBtn.setImage(image, forState: UIControlState.Normal)
+//            break
+//        case RepeatState.REPEAT_ONE:
+//            repeatBtn.setImage(UIImage(named: "ic_repeat_one"), forState: UIControlState.Normal)
+//            break
+//        case RepeatState.REPEAT_PLAYLIST:
+//            repeatBtn.setImage(UIImage(named: "ic_repeat"), forState: UIControlState.Normal)
+//            break
+//        }
+//    }
     
-    func updateRepeatView() {
-        if (prevRepeatBtnState != nil &&
-            prevRepeatBtnState == DropbeatPlayer.defaultPlayer.repeatState) {
-                return
-        }
-        prevRepeatBtnState = DropbeatPlayer.defaultPlayer.repeatState
-        switch(DropbeatPlayer.defaultPlayer.repeatState) {
-        case RepeatState.NOT_REPEAT:
-            let image:UIImage = UIImage(named: "ic_repeat_gray")!
-            repeatBtn.setImage(image, forState: UIControlState.Normal)
-            break
-        case RepeatState.REPEAT_ONE:
-            repeatBtn.setImage(UIImage(named: "ic_repeat_one"), forState: UIControlState.Normal)
-            break
-        case RepeatState.REPEAT_PLAYLIST:
-            repeatBtn.setImage(UIImage(named: "ic_repeat"), forState: UIControlState.Normal)
-            break
-        }
-    }
-    
-    func updateStatusView() {
-        let defaultText = NSLocalizedString("CHOOSE TRACK", comment:"")
-        if (DropbeatPlayer.defaultPlayer.playState == PlayState.LOADING ||
-            DropbeatPlayer.defaultPlayer.playState == PlayState.SWITCHING) {
-                playerStatus.text = NSLocalizedString("LOADING", comment:"")
-                playerTitle.text = DropbeatPlayer.defaultPlayer.currentTrack?.title ?? defaultText
-        } else if (DropbeatPlayer.defaultPlayer.playState == PlayState.PAUSED) {
-            playerStatus.text = NSLocalizedString("PAUSED", comment:"")
-            playerTitle.text = DropbeatPlayer.defaultPlayer.currentTrack?.title ?? defaultText
-        } else if (DropbeatPlayer.defaultPlayer.playState == PlayState.PLAYING) {
-            playerStatus.text = NSLocalizedString("PLAYING", comment:"")
-            playerTitle.text = DropbeatPlayer.defaultPlayer.currentTrack?.title ?? defaultText
-        } else if (DropbeatPlayer.defaultPlayer.playState == PlayState.STOPPED) {
-            playerStatus.text = NSLocalizedString("READY", comment:"")
-            playerTitle.text = defaultText
-        } else if (DropbeatPlayer.defaultPlayer.playState == PlayState.BUFFERING) {
-            playerStatus.text = NSLocalizedString("BUFFERING", comment:"")
-            playerTitle.text = DropbeatPlayer.defaultPlayer.currentTrack?.title ?? defaultText
-        }
-    }
+//    func updateStatusView() {
+//        let defaultText = NSLocalizedString("CHOOSE TRACK", comment:"")
+//        if (DropbeatPlayer.defaultPlayer.playState == PlayState.LOADING ||
+//            DropbeatPlayer.defaultPlayer.playState == PlayState.SWITCHING) {
+//                playerStatus.text = NSLocalizedString("LOADING", comment:"")
+//                playerTitle.text = DropbeatPlayer.defaultPlayer.currentTrack?.title ?? defaultText
+//        } else if (DropbeatPlayer.defaultPlayer.playState == PlayState.PAUSED) {
+//            playerStatus.text = NSLocalizedString("PAUSED", comment:"")
+//            playerTitle.text = DropbeatPlayer.defaultPlayer.currentTrack?.title ?? defaultText
+//        } else if (DropbeatPlayer.defaultPlayer.playState == PlayState.PLAYING) {
+//            playerStatus.text = NSLocalizedString("PLAYING", comment:"")
+//            playerTitle.text = DropbeatPlayer.defaultPlayer.currentTrack?.title ?? defaultText
+//        } else if (DropbeatPlayer.defaultPlayer.playState == PlayState.STOPPED) {
+//            playerStatus.text = NSLocalizedString("READY", comment:"")
+//            playerTitle.text = defaultText
+//        } else if (DropbeatPlayer.defaultPlayer.playState == PlayState.BUFFERING) {
+//            playerStatus.text = NSLocalizedString("BUFFERING", comment:"")
+//            playerTitle.text = DropbeatPlayer.defaultPlayer.currentTrack?.title ?? defaultText
+//        }
+//    }
     
     func updateQualityView() {
         switch(DropbeatPlayer.defaultPlayer.qualityState) {
@@ -562,66 +565,66 @@ class _PlayerViewController: BaseViewController {
         updateProgressView()
     }
     
-    func MPMoviePlayerLoadStateDidChange (noti: NSNotification) {
-        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue) != 0 {
-            print("load state = playable")
-        }
-        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.PlaythroughOK.rawValue != 0) {
-            print("load state = playthroughOk")
-        }
-        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState().rawValue != 0) {
-            print("load state = allzeros")
-        }
-        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Stalled.rawValue != 0) {
-            print("load state = Stalled")
-        }
-        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0 &&
-            audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Stalled.rawValue != 0) {
-                startBackgroundTask()
-                updatePlayState(PlayState.BUFFERING)
-                print("update state to buffering")
-                if bufferingTimer == nil {
-                    bufferingTimer = NSTimer.scheduledTimerWithTimeInterval(
-                        0.5, target: self, selector: Selector("checkBufferState"), userInfo: nil, repeats: true)
-                }
-                return
-        }
-        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0) {
-            if ((DropbeatPlayer.defaultPlayer.playState == PlayState.SWITCHING ||
-                DropbeatPlayer.defaultPlayer.playState == PlayState.PLAYING) &&
-                lastPlaybackBeforeSwitch != nil &&
-                lastPlaybackBeforeSwitch > 0) {
-                    audioPlayerControl.moviePlayer.currentPlaybackTime = lastPlaybackBeforeSwitch!
-                    lastPlaybackBeforeSwitch = nil
-            }
-            if bufferingTimer == nil {
-                bufferingTimer = NSTimer.scheduledTimerWithTimeInterval(
-                    0.5, target: self, selector: Selector("checkBufferState"), userInfo: nil, repeats: true)
-            }
-            return
-        }
-        
-        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState().rawValue != 0) {
-            // If youtube which has double duration length will be get here
-            // when it play over original duration (:1/2) length
-            if (DropbeatPlayer.defaultPlayer.currentTrack != nil &&
-                DropbeatPlayer.defaultPlayer.currentTrack!.type == .YOUTUBE &&
-                DropbeatPlayer.defaultPlayer.correctDuration != nil){
-                    if (audioPlayerControl.moviePlayer.currentPlaybackTime >= DropbeatPlayer.defaultPlayer.correctDuration! - 1) {
-                        if (DropbeatPlayer.defaultPlayer.repeatState == RepeatState.REPEAT_ONE) {
-                            handleSeek(0)
-                        } else if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
-                            self.stopProgressTimer()
-
-                            if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
-                                self.forceStopPlayer = true
-                                audioPlayerControl.moviePlayer.stop()
-                            }
-                        }
-                    }
-            }
-        }
-    }
+//    func MPMoviePlayerLoadStateDidChange (noti: NSNotification) {
+//        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue) != 0 {
+//            print("load state = playable")
+//        }
+//        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.PlaythroughOK.rawValue != 0) {
+//            print("load state = playthroughOk")
+//        }
+//        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState().rawValue != 0) {
+//            print("load state = allzeros")
+//        }
+//        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Stalled.rawValue != 0) {
+//            print("load state = Stalled")
+//        }
+//        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0 &&
+//            audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Stalled.rawValue != 0) {
+//                startBackgroundTask()
+//                updatePlayState(PlayState.BUFFERING)
+//                print("update state to buffering")
+//                if bufferingTimer == nil {
+//                    bufferingTimer = NSTimer.scheduledTimerWithTimeInterval(
+//                        0.5, target: self, selector: Selector("checkBufferState"), userInfo: nil, repeats: true)
+//                }
+//                return
+//        }
+//        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState.Playable.rawValue != 0) {
+//            if ((DropbeatPlayer.defaultPlayer.playState == PlayState.SWITCHING ||
+//                DropbeatPlayer.defaultPlayer.playState == PlayState.PLAYING) &&
+//                lastPlaybackBeforeSwitch != nil &&
+//                lastPlaybackBeforeSwitch > 0) {
+//                    audioPlayerControl.moviePlayer.currentPlaybackTime = lastPlaybackBeforeSwitch!
+//                    lastPlaybackBeforeSwitch = nil
+//            }
+//            if bufferingTimer == nil {
+//                bufferingTimer = NSTimer.scheduledTimerWithTimeInterval(
+//                    0.5, target: self, selector: Selector("checkBufferState"), userInfo: nil, repeats: true)
+//            }
+//            return
+//        }
+//        
+//        if (audioPlayerControl.moviePlayer.loadState.rawValue & MPMovieLoadState().rawValue != 0) {
+//            // If youtube which has double duration length will be get here
+//            // when it play over original duration (:1/2) length
+//            if (DropbeatPlayer.defaultPlayer.currentTrack != nil &&
+//                DropbeatPlayer.defaultPlayer.currentTrack!.type == .YOUTUBE &&
+//                DropbeatPlayer.defaultPlayer.correctDuration != nil){
+//                    if (audioPlayerControl.moviePlayer.currentPlaybackTime >= DropbeatPlayer.defaultPlayer.correctDuration! - 1) {
+//                        if (DropbeatPlayer.defaultPlayer.repeatState == RepeatState.REPEAT_ONE) {
+//                            handleSeek(0)
+//                        } else if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
+//                            self.stopProgressTimer()
+//
+//                            if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
+//                                self.forceStopPlayer = true
+//                                audioPlayerControl.moviePlayer.stop()
+//                            }
+//                        }
+//                    }
+//            }
+//        }
+//    }
     
     func checkBufferState() {
         if DropbeatPlayer.defaultPlayer.playState != PlayState.BUFFERING &&
@@ -764,227 +767,10 @@ class _PlayerViewController: BaseViewController {
         return params
     }
     
-    @IBAction func onLikeBtnClicked(sender: AnyObject) {
-        if !likeProgIndicator.hidden {
-            return
-        }
-        if DropbeatPlayer.defaultPlayer.currentTrack == nil {
-            ViewUtils.showToast(self, message: NSLocalizedString("No track selected", comment:""))
-            return
-        }
-        if (Account.getCachedAccount() == nil) {
-            NeedAuthViewController.showNeedAuthViewController(self)
-            return
-        }
-        if DropbeatPlayer.defaultPlayer.currentTrack!.isLiked {
-            doUnlike(DropbeatPlayer.defaultPlayer.currentTrack!)
-        } else {
-            doLike(DropbeatPlayer.defaultPlayer.currentTrack!)
-        }
-    }
-    
-    func doLike(track:Track) {
-        likeBtn.hidden = true
-        likeProgIndicator.startAnimating()
-        Like.likeTrack(track) { (error) -> Void in
-            self.likeProgIndicator.stopAnimating()
-            self.likeBtn.hidden = false
-            if error != nil {
-                if error!.domain == NeedAuthViewController.NeedAuthErrorDomain {
-                    NeedAuthViewController.showNeedAuthViewController(self)
-                }
-                
-                ViewUtils.showConfirmAlert(self,
-                    title: NSLocalizedString("Failed to save", comment: ""),
-                    message: NSLocalizedString("Failed to save like info.", comment: ""),
-                    positiveBtnText: NSLocalizedString("Retry", comment:""),
-                    positiveBtnCallback: { () -> Void in
-                        self.doLike(track)
-                })
-                return
-            }
-        }
-    }
-    
-    func doUnlike(track:Track) {
-        if !likeProgIndicator.hidden {
-            return
-        }
-        
-        likeBtn.hidden = true
-        likeProgIndicator.startAnimating()
-        Like.unlikeTrack(track) { (error) -> Void in
-            self.likeProgIndicator.stopAnimating()
-            self.likeBtn.hidden = false
-            if error != nil {
-                ViewUtils.showConfirmAlert(self,
-                    title: NSLocalizedString("Failed to save", comment: ""),
-                    message: NSLocalizedString("Failed to save unlike info.", comment: ""),
-                    positiveBtnText: NSLocalizedString("Retry", comment:""),
-                    positiveBtnCallback: { () -> Void in
-                        self.doLike(track)
-                })
-                return
-            }
-        }
-    }
-    
-    @IBAction func playBtnClicked(sender: UIButton?) {
-        if (DropbeatPlayer.defaultPlayer.currentTrack != nil) {
-            print("play!")
-            let playlistId :String? = DropbeatPlayer.defaultPlayer.currentPlaylistId
-            handlePlay(DropbeatPlayer.defaultPlayer.currentTrack!, playlistId: playlistId, section: "player", force:true)
-        }
-    }
-    
-    @IBAction func pauseBtnClicked(sender: UIButton?) {
-        handlePause(true)
-    }
-    
-    @IBAction func onNextBtnClicked(sender: UIButton) {
-        handleNext(true)
-    }
-    
-    @IBAction func onPrevBtnClicked(sender: UIButton) {
-        handlePrev(true)
-    }
-    
-    @IBAction func onRepeatBtnClicked(sender: UIButton) {
-        DropbeatPlayer.defaultPlayer.changeRepeatState()
-        updateNextPrevBtn()
-        repeatStateUpdated()
-    }
-    
-    @IBAction func onShuffleBtnClicked(sender: UIButton) {
-        DropbeatPlayer.defaultPlayer.changeShuffleState()
-        updateNextPrevBtn()
-        shuffleStateUpdated()
-    }
-    
-    @IBAction func onQualityBtnClicked(sender: UIButton) {
-        onQualityBtnClicked(sender, forceChange: false)
-    }
-    
-    func onQualityBtnClicked(sender: UIButton, forceChange:Bool) {
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let networkStatus = appDelegate.networkStatus
-        if (DropbeatPlayer.defaultPlayer.playState == PlayState.SWITCHING) {
-            return
-        }
-        //  we should confirm here for data usage
-        if (forceChange == false &&
-            networkStatus == .ReachableViaWWAN &&
-            DropbeatPlayer.defaultPlayer.qualityState == .LQ) {
-                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Data usage warning", comment:""),
-                    message: NSLocalizedString("Streaming music in High Quality can use significant network data", comment:""),
-                    positiveBtnText: NSLocalizedString("Proceed", comment:""), positiveBtnCallback: { () -> Void in
-                        self.onQualityBtnClicked(sender, forceChange:true)
-                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: { () -> Void in
-                        return
-                })
-                return
-        }
-        appDelegate.futureQuality = nil
-        DropbeatPlayer.defaultPlayer.changeQualityState()
-//        NSNotificationCenter.defaultCenter().postNotificationName(
-//            NotifyKey.updateQualityState, object: nil)
-    }
-    
-    func onTrackShareBtnClicked(track:Track) {
-        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        track.shareTrack("player") { (error, sharedURL) -> Void in
-            progressHud.hide(true)
-            if error != nil {
-                if (error!.domain == NSURLErrorDomain &&
-                    error!.code == NSURLErrorNotConnectedToInternet) {
-                        ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
-                            message: NSLocalizedString("Internet is not connected", comment:""),
-                            positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                                self.onTrackShareBtnClicked(track)
-                            }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
-                        return
-                }
-                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
-                    message: NSLocalizedString("Failed to share track", comment:""),
-                    positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                        self.onTrackShareBtnClicked(track)
-                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
-                return
-            }
-            
-            let items:[AnyObject] = [track.title, sharedURL!]
-            
-            let activityController = UIActivityViewController(
-                activityItems: items, applicationActivities: nil)
-            activityController.excludedActivityTypes = [
-                UIActivityTypePrint,
-                UIActivityTypeSaveToCameraRoll,
-                UIActivityTypeAirDrop,
-                UIActivityTypeAssignToContact
-            ]
-            if #available(iOS 8.0, *) {
-                activityController.popoverPresentationController?.sourceView = self.shareBtn
-            }
-            self.presentViewController(activityController, animated:true, completion: nil)
-        }
-    }
-    
-    @IBAction func onAddToPlaylistBtnClicked(sender: UIButton) {
-        if (Account.getCachedAccount() == nil) {
-            NeedAuthViewController.showNeedAuthViewController(self)
-            return
-        }
-        let track = DropbeatPlayer.defaultPlayer.currentTrack
-        performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
-    }
-    
-    @IBAction func onTrackShareBtnClicked(sender: UIButton) {
-        if DropbeatPlayer.defaultPlayer.currentTrack == nil {
-            ViewUtils.showToast(self, message: NSLocalizedString("No track selected", comment:""))
-            return
-        }
-        onTrackShareBtnClicked(DropbeatPlayer.defaultPlayer.currentTrack!)
-    }
-    
-    @IBAction func onPlaylistBtnClicked(sender: UIButton) {
-        // this will be handle on CenterViewController
-        if DropbeatPlayer.defaultPlayer.currentPlaylistId == nil {
-            return
-        }
-        
-        let playlist = DropbeatPlayer.defaultPlayer.getPlaylist(DropbeatPlayer.defaultPlayer.currentPlaylistId)
-        if playlist != nil {
-            performSegueWithIdentifier("PlaylistSegue", sender: playlist)
-        }
-    }
-    
-    @IBAction func onProgressValueChanged(sender: UISlider) {
-        handleSeek(sender.value)
-    }
-    
-    @IBAction func onProgressDown(sender: UISlider) {
-        isProgressUpdatable = false
-    }
-    
-    @IBAction func onProgressUpInside(sender: UISlider) {
-        onProgressUp(sender)
-    }
-    
-    @IBAction func onProgressUpOutside(sender: UISlider) {
-        onProgressUp(sender)
-    }
-    
     func onLikeUpdated() {
         updateLikeBtn()
     }
     
-    func onProgressUp(sender:UISlider) {
-        // update progress after 1 sec
-        //        let time = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))
-        //        dispatch_after(time, dispatch_get_main_queue()) {
-        self.isProgressUpdatable = true
-        //        }
-    }
     
     // MARK: Notification Handling
     
@@ -1024,19 +810,6 @@ class _PlayerViewController: BaseViewController {
     
     func remotePrev() {
         handlePrev(true)
-    }
-    
-    func repeatStateUpdated() {
-        if DropbeatPlayer.defaultPlayer.repeatState == RepeatState.REPEAT_ONE {
-            audioPlayerControl.moviePlayer.repeatMode = MPMovieRepeatMode.One
-        } else {
-            audioPlayerControl.moviePlayer.repeatMode = MPMovieRepeatMode.None
-        }
-        updateRepeatView()
-    }
-    
-    func shuffleStateUpdated() {
-        updateShuffleView()
     }
     
     func qualityStateUpdated() {
@@ -1245,119 +1018,6 @@ class _PlayerViewController: BaseViewController {
 //        audioPlayerControl.moviePlayer.controlStyle = .Fullscreen
         audioPlayerControl.moviePlayer.view.userInteractionEnabled = false
         updateCoverView()
-    }
-    
-    func handlePause(force:Bool) {
-        if force {
-            shouldPlayMusic = false
-        }
-        if (audioPlayerControl.moviePlayer.playbackState == MPMoviePlaybackState.Playing) {
-            pauseAudioPlayer()
-            updatePlayStateView(PlayState.PAUSED)
-        }
-    }
-    
-    func handleNext(force:Bool) -> Bool{
-        print("handleNext")
-        if let _ = DropbeatPlayer.defaultPlayer.playLog {
-            self.resetPlayLog(Int(DropbeatPlayer.defaultPlayer.currentPlaybackTime!))
-        }
-        
-        self.stopProgressTimer()
-
-        
-        let track: Track? = DropbeatPlayer.defaultPlayer.pickNextTrack()
-        if (track == nil) {
-            print("track null")
-            return false;
-        }
-        
-        handlePlay(track, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId,
-            section: DropbeatPlayer.defaultPlayer.playingSection, force: force)
-        return true;
-    }
-    
-    func handlePrev(force:Bool) -> Bool {
-        print("handlePrev")
-        if let _ = DropbeatPlayer.defaultPlayer.playLog {
-            self.resetPlayLog(Int(DropbeatPlayer.defaultPlayer.currentPlaybackTime!))
-        }
-        
-        self.stopProgressTimer()
-
-        
-        let track: Track? = DropbeatPlayer.defaultPlayer.pickPrevTrack()
-        if (track == nil) {
-            return false;
-        }
-        
-        handlePlay(track, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId,
-            section: DropbeatPlayer.defaultPlayer.playingSection, force: force)
-        return true;
-    }
-    
-    func handleStop() {
-        if let _ = DropbeatPlayer.defaultPlayer.playLog {
-            self.resetPlayLog(Int(DropbeatPlayer.defaultPlayer.currentPlaybackTime!))
-        }
-        
-        shouldPlayMusic = false
-        DropbeatPlayer.defaultPlayer.currentPlaylistId = nil
-        DropbeatPlayer.defaultPlayer.currentTrack = nil
-        DropbeatPlayer.defaultPlayer.currentTrackIdx = -1
-        DropbeatPlayer.defaultPlayer.correctDuration = nil
-        videoView.hidden = true
-        audioPlayerControl.videoIdentifier = nil
-        audioPlayerControl.moviePlayer.contentURL = nil
-        if (audioPlayerControl.moviePlayer.playbackState != MPMoviePlaybackState.Stopped) {
-            audioPlayerControl.moviePlayer.stop()
-        }
-        updatePlayState(PlayState.STOPPED)
-        updateCoverView()
-        deactivateAudioSession()
-    }
-    
-    func handleSeek(value:Float) {
-        if (DropbeatPlayer.defaultPlayer.playState != PlayState.PLAYING) {
-            return
-        }
-        
-        let duration = DropbeatPlayer.defaultPlayer.correctDuration ?? 0
-        var newPlaybackTime:Double = (duration * Double(value)) / 100
-
-        if let playLog = DropbeatPlayer.defaultPlayer.playLog {
-            playLog.seek(
-                from: Int(DropbeatPlayer.defaultPlayer.currentPlaybackTime!),
-                to: Int(newPlaybackTime))
-        }
-        
-        // - 1 is hacky way to prevent player exceed correct duration
-        // player gain repeatedly pasuse / play event after correntDuration
-        if (newPlaybackTime >= duration && duration > 0) {
-            newPlaybackTime = duration - 1
-        }
-        
-        // To prevent slider to go back where it was
-        progressSliderBar.enabled = false
-        
-        audioPlayerControl.moviePlayer.currentPlaybackTime = newPlaybackTime
-        
-        // Manually enable the slider before the timer does for us
-        updateProgressView()
-    }
-    
-    func playAudioPlayer() {
-        audioPlayerControl.moviePlayer.play()
-    }
-    
-    func pauseAudioPlayer() {
-        audioPlayerControl.moviePlayer.pause()
-    }
-    
-    func updatePlayState(playingState: PlayState) {
-        print("playstate updated:\(playingState)")
-        DropbeatPlayer.defaultPlayer.playState = playingState
-        updatePlayStateView(playingState)
     }
     
     var playingStateImageOperation:SDWebImageOperation?

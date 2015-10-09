@@ -26,6 +26,31 @@ enum SourceType: String {
     }
 }
 
+extension Track {
+    func getYoutubeStreamURL(quality:XCDYouTubeVideoQuality, callback:(streamURL:String?, duration:Double?, error:NSError?)->Void) {
+        guard self.type == .YOUTUBE else {
+            let error = NSError(domain: "TrackYouTubeStreamURL", code: -1, userInfo: nil)
+            callback(streamURL: nil, duration: nil, error: error)
+            return
+        }
+        
+        XCDYouTubeClient.defaultClient().getVideoWithIdentifier(self.id, completionHandler: {
+            (video: XCDYouTubeVideo?, error: NSError?) -> Void in
+            if error != nil {
+                callback(streamURL: nil, duration:nil, error: error)
+                return
+            }
+            
+            if let streamURL = video?.streamURLs[quality.rawValue] as? NSURL {
+                callback(streamURL: streamURL.absoluteString, duration:video?.duration, error: nil)
+            } else {
+                let e = NSError(domain: "TrackYouTubeStreamURL", code: -2, userInfo: nil)
+                callback(streamURL: nil, duration:nil, error: e)
+            }
+        })
+    }
+}
+
 class Track {
     static var soundCloudKey: String = "02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea"
     static func loadSoundCloudKey (callback:(NSError)->Void) {

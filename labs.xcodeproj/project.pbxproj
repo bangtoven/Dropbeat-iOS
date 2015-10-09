@@ -147,7 +147,6 @@
 		734C7DAC1BB4C1DA0071678C /* TPKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 589413591B83C3F700395AFA /* TPKeyboardAvoidingScrollView.m */; };
 		734C7DAD1BB4C1DA0071678C /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580621321B08CBAA009012D5 /* FeedViewController.swift */; };
 		734C7DAE1BB4C1DA0071678C /* RBStoryboardSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 7327170D1BAC8649003E0B68 /* RBStoryboardSegue.m */; };
-		734C7DAF1BB4C1DA0071678C /* OldPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738646111BA758BA00C21650 /* OldPlayerViewController.swift */; };
 		734C7DB01BB4C1DA0071678C /* UINavigationBar+Awesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 732717251BAC8691003E0B68 /* UINavigationBar+Awesome.m */; };
 		734C7DB11BB4C1DA0071678C /* Download.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FC90B31BAE4AFA00284B8A /* Download.swift */; settings = {ASSET_TAGS = (); }; };
 		734C7DB21BB4C1DA0071678C /* UIImageView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 588693951B13B51300566124 /* UIImageView+WebCache.m */; };
@@ -212,7 +211,6 @@
 		734C7DFA1BB4C1DA0071678C /* DateTools.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 585BACFA1B85ED9900FE137A /* DateTools.bundle */; };
 		7361FCE41B9F5E7F00444179 /* EmailSubmitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7361FCE31B9F5E7F00444179 /* EmailSubmitViewController.swift */; };
 		7361FCF71B9F687E00444179 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCF91B9F687E00444179 /* Settings.storyboard */; };
-		738646121BA758BA00C21650 /* OldPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 738646111BA758BA00C21650 /* OldPlayerViewController.swift */; };
 		738646171BA7631D00C21650 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738646161BA7631D00C21650 /* GradientView.m */; };
 		739C8F5D1BB340E200BC9EB7 /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 739C8F5C1BB340E200BC9EB7 /* Explore.storyboard */; settings = {ASSET_TAGS = (); }; };
 		739C8F5F1BB340FE00BC9EB7 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -1241,7 +1239,6 @@
 				734C7DAC1BB4C1DA0071678C /* TPKeyboardAvoidingScrollView.m in Sources */,
 				734C7DAD1BB4C1DA0071678C /* FeedViewController.swift in Sources */,
 				734C7DAE1BB4C1DA0071678C /* RBStoryboardSegue.m in Sources */,
-				734C7DAF1BB4C1DA0071678C /* OldPlayerViewController.swift in Sources */,
 				734C7DB01BB4C1DA0071678C /* UINavigationBar+Awesome.m in Sources */,
 				734C7DB11BB4C1DA0071678C /* Download.swift in Sources */,
 				733EDD9F1BBC474A00925F50 /* EditProfileViewController.swift in Sources */,
@@ -1361,7 +1358,6 @@
 				589413611B83C3F700395AFA /* TPKeyboardAvoidingScrollView.m in Sources */,
 				580621331B08CBAA009012D5 /* FeedViewController.swift in Sources */,
 				732717141BAC8649003E0B68 /* RBStoryboardSegue.m in Sources */,
-				738646121BA758BA00C21650 /* OldPlayerViewController.swift in Sources */,
 				732717261BAC8691003E0B68 /* UINavigationBar+Awesome.m in Sources */,
 				73FC90C01BAE4AFA00284B8A /* Download.swift in Sources */,
 				733EDD9E1BBC45A500925F50 /* EditProfileViewController.swift in Sources */,

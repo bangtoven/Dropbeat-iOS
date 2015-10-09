@@ -44,8 +44,7 @@
 #include "UIKit/UIApplication.h"
 #endif
 
-typedef enum
-{
+typedef NS_ENUM(NSUInteger, STKAudioPlayerState) {
     STKAudioPlayerStateReady,
     STKAudioPlayerStateRunning = 1,
     STKAudioPlayerStatePlaying = (1 << 1) | STKAudioPlayerStateRunning,
@@ -54,31 +53,26 @@ typedef enum
     STKAudioPlayerStateStopped = (1 << 4),
     STKAudioPlayerStateError = (1 << 5),
     STKAudioPlayerStateDisposed = (1 << 6)
-}
-STKAudioPlayerState;
+};
 
-typedef enum
-{
+typedef NS_ENUM(NSUInteger, STKAudioPlayerStopReason) {
 	STKAudioPlayerStopReasonNone = 0,
 	STKAudioPlayerStopReasonEof,
 	STKAudioPlayerStopReasonUserAction,
 	STKAudioPlayerStopReasonPendingNext,
 	STKAudioPlayerStopReasonDisposed,
 	STKAudioPlayerStopReasonError = 0xffff
-}
-STKAudioPlayerStopReason;
+};
 
-typedef enum
-{
-	STKAudioPlayerErrorNone = 0,
+typedef NS_ENUM(NSUInteger, STKAudioPlayerErrorCode) {
+    STKAudioPlayerErrorNone = 0,
 	STKAudioPlayerErrorDataSource,
     STKAudioPlayerErrorStreamParseBytesFailed,
     STKAudioPlayerErrorAudioSystemError,
     STKAudioPlayerErrorCodecError,
     STKAudioPlayerErrorDataNotFound,
     STKAudioPlayerErrorOther = 0xffff
-}
-STKAudioPlayerErrorCode;
+};
 
 typedef struct
 {
@@ -181,6 +175,10 @@ typedef void(^STKFrameFilter)(UInt32 channelsPerFrame, UInt32 bytesPerFrame, UIn
 
 /// Plays an item from the given URL (all pending queued items are removed)
 -(void) play:(NSString*)urlString withQueueItemID:(NSObject*)queueItemId;
+
+/// Added by Jungho Bang to solve duration issue
+-(void) play:(NSString*)urlString duration:(double)duration withQueueItemID:(NSObject*)queueItemId;
+-(void) queue:(NSString*)urlString duration:(double)duration withQueueItemId:(NSObject*)queueItemId;
 
 /// Plays an item from the given URL (all pending queued items are removed)
 /// The NSURL is used as the queue item ID

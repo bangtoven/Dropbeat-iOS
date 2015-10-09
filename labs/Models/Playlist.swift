@@ -15,6 +15,8 @@ enum PlaylistType {
 }
 
 class Playlist {
+    static var allPlaylists = [Playlist]()
+    
     var id: String
     var name: String
     var tracks: [Track]
@@ -36,17 +38,28 @@ class Playlist {
         return -1
     }
     
-    // Called with `fetchAllPlaylists`.
-    static func parsePlaylists(data: AnyObject) -> [Playlist] {
-        var json = JSON(data)
-        var playlists :[Playlist] = []
-        for (_, s): (String, JSON) in json["data"] {
-            if let playlist = parsePlaylist(s) {
-                playlist.dummy = true
-                playlists.append(playlist)
+    static func fetchAllPlaylists(callback:(playlists:[Playlist]?, error:NSError?)->Void) {
+        Requests.fetchPlaylistList({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            if error != nil || result == nil {
+                callback(playlists:nil, error: error)
+                return
             }
-        }
-        return playlists
+            
+            var json = JSON(result!)
+            var playlists :[Playlist] = []
+            for (_, s): (String, JSON) in json["data"] {
+                if let playlist = parsePlaylist(s) {
+                    playlist.dummy = true
+                    playlists.append(playlist)
+                }
+            }
+//            if playlists.count == 0 {
+//                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch playlists", comment:""), message: error!.description)
+//                return
+//            }
+            Playlist.allPlaylists = playlists.reverse()
+            callback(playlists: Playlist.allPlaylists, error: nil)            
+        })
     }
     
     static private func parsePlaylist(json: JSON) -> Playlist? {
@@ -140,7 +153,7 @@ class Playlist {
                 return
             }
             var changedPlaylist:Playlist? = nil
-            for p in DropbeatPlayer.defaultPlayer.playlists {
+            for p in Playlist.allPlaylists {
                 if (p.id == self.id) {
                     changedPlaylist = p
                     break
@@ -178,7 +191,7 @@ class Playlist {
                 return
             }
             var playlist:Playlist? = nil
-            for p in DropbeatPlayer.defaultPlayer.playlists {
+            for p in Playlist.allPlaylists {
                 if (p.id == self.id) {
                     playlist = p
                     break
@@ -203,8 +216,8 @@ class Playlist {
             // Update current PlayerContext with new index
             let playingTrack:Track? = DropbeatPlayer.defaultPlayer.currentTrack
             if (playingTrack != nil &&
-                DropbeatPlayer.defaultPlayer.currentPlaylistId != nil &&
-                DropbeatPlayer.defaultPlayer.currentPlaylistId == self.id) {
+                DropbeatPlayer.defaultPlayer.currentPlaylist?.id != nil &&
+                DropbeatPlayer.defaultPlayer.currentPlaylist?.id == self.id) {
                     for (idx, track) in playlist!.tracks.enumerate() {
                         if (track.id == playingTrack!.id) {
                             DropbeatPlayer.defaultPlayer.currentTrackIdx = idx

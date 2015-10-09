@@ -6,7 +6,6 @@
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Storyboard Link-->
@@ -940,13 +939,6 @@
                                                 <animations/>
                                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.59999999999999998" colorSpace="calibratedRGB"/>
                                             </view>
-                                            <view hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aJV-VC-2ol" userLabel="VideoView">
-                                                <rect key="frame" x="32" y="88" width="256" height="144"/>
-                                                <animations/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" secondItem="aJV-VC-2ol" secondAttribute="height" multiplier="16:9" priority="950" id="Nn4-Ec-dVF"/>
-                                                </constraints>
-                                            </view>
                                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_cover_big" translatesAutoresizingMaskIntoConstraints="NO" id="VKD-4B-yI5">
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
                                                 <animations/>
@@ -963,25 +955,20 @@
                                         <constraints>
                                             <constraint firstItem="VKD-4B-yI5" firstAttribute="leading" secondItem="v15-V3-VyD" secondAttribute="leading" id="1LD-RG-agd"/>
                                             <constraint firstItem="Dl3-5U-yMO" firstAttribute="leading" secondItem="v15-V3-VyD" secondAttribute="leading" id="3kX-Ak-lmZ"/>
-                                            <constraint firstItem="aJV-VC-2ol" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="v15-V3-VyD" secondAttribute="leading" priority="900" constant="32" id="4rx-BS-aWw"/>
                                             <constraint firstItem="VKD-4B-yI5" firstAttribute="top" secondItem="v15-V3-VyD" secondAttribute="top" id="52w-tP-3K5"/>
                                             <constraint firstAttribute="trailing" secondItem="VKD-4B-yI5" secondAttribute="trailing" id="CSE-Mj-AxZ"/>
                                             <constraint firstItem="Dl3-5U-yMO" firstAttribute="top" secondItem="v15-V3-VyD" secondAttribute="top" id="EdE-lu-yhd"/>
-                                            <constraint firstAttribute="height" secondItem="aJV-VC-2ol" secondAttribute="height" multiplier="1.4" priority="800" id="I8F-Ob-8yO"/>
-                                            <constraint firstAttribute="centerX" secondItem="aJV-VC-2ol" secondAttribute="centerX" id="InI-ug-yNS"/>
                                             <constraint firstItem="E8w-cr-GLN" firstAttribute="top" secondItem="v15-V3-VyD" secondAttribute="top" id="RXA-Ce-7oe"/>
                                             <constraint firstItem="M1i-Vx-iCf" firstAttribute="leading" secondItem="v15-V3-VyD" secondAttribute="leading" id="RgH-Hh-YRl"/>
                                             <constraint firstAttribute="trailing" secondItem="M1i-Vx-iCf" secondAttribute="trailing" id="Ub0-ue-fFt"/>
                                             <constraint firstAttribute="bottom" secondItem="E8w-cr-GLN" secondAttribute="bottom" priority="900" id="Xej-Jo-8kF"/>
                                             <constraint firstAttribute="bottom" secondItem="VKD-4B-yI5" secondAttribute="bottom" id="b6g-4L-U7K"/>
-                                            <constraint firstAttribute="width" relation="lessThanOrEqual" secondItem="v15-V3-VyD" secondAttribute="height" multiplier="1:1" id="fdu-y3-Wtw"/>
-                                            <constraint firstAttribute="centerY" secondItem="aJV-VC-2ol" secondAttribute="centerY" id="fkh-Tb-e4W"/>
+                                            <constraint firstAttribute="width" secondItem="v15-V3-VyD" secondAttribute="height" multiplier="1:1" id="fdu-y3-Wtw"/>
                                             <constraint firstAttribute="trailing" secondItem="E8w-cr-GLN" secondAttribute="trailing" id="h3o-SS-Sei"/>
                                             <constraint firstAttribute="trailing" secondItem="Dl3-5U-yMO" secondAttribute="trailing" id="ocU-pJ-9ao"/>
                                             <constraint firstItem="M1i-Vx-iCf" firstAttribute="top" secondItem="v15-V3-VyD" secondAttribute="top" id="qpR-UD-Hmp"/>
                                             <constraint firstItem="E8w-cr-GLN" firstAttribute="leading" secondItem="v15-V3-VyD" secondAttribute="leading" id="r6R-ej-dOD"/>
                                             <constraint firstAttribute="bottom" secondItem="M1i-Vx-iCf" secondAttribute="bottom" priority="900" id="sjO-SA-d20"/>
-                                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="aJV-VC-2ol" secondAttribute="trailing" priority="900" constant="32" id="tQ2-JM-e3C"/>
                                             <constraint firstAttribute="bottom" secondItem="Dl3-5U-yMO" secondAttribute="bottom" id="xfg-mB-Hmr"/>
                                         </constraints>
                                     </view>
@@ -1062,10 +1049,8 @@
                                                     <slider contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yu1-hw-KYT">
                                                         <rect key="frame" x="38" y="2" width="212" height="31"/>
                                                         <animations/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
-                                                            <action selector="onProgressDown:" destination="Wtx-gN-1kw" eventType="touchDown" id="2Wg-j4-L57"/>
-                                                            <action selector="onProgressUpInside:" destination="Wtx-gN-1kw" eventType="touchUpInside" id="JGN-I3-NDs"/>
-                                                            <action selector="onProgressUpOutside:" destination="Wtx-gN-1kw" eventType="touchUpOutside" id="3BK-mQ-aXo"/>
                                                             <action selector="onProgressValueChanged:" destination="Wtx-gN-1kw" eventType="valueChanged" id="glu-cz-4Mw"/>
                                                         </connections>
                                                     </slider>
@@ -1400,7 +1385,8 @@
                         <outlet property="shareBtn" destination="DYy-VZ-xtd" id="Pp0-Ik-E4g"/>
                         <outlet property="shuffleBtn" destination="vEf-jC-XT4" id="PZa-tI-V8f"/>
                         <outlet property="totalTextView" destination="cac-pA-EAb" id="6tb-Lt-EAG"/>
-                        <outlet property="videoView" destination="aJV-VC-2ol" id="GLi-Ye-Mu4"/>
+                        <segue destination="ATs-9y-TgU" kind="custom" identifier="PlaylistSegue" customClass="RBStoryboardModalSegue" id="WMg-3w-EpM"/>
+                        <segue destination="e5t-t0-rLq" kind="custom" identifier="PlaylistSelectSegue" customClass="RBStoryboardModalSegue" id="V3J-9Z-qxl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tnw-t1-G2s" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1439,7 +1425,8 @@
         <image name="player_bg" width="817" height="1079"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="1xR-MJ-eI3"/>
+        <segue reference="V3J-9Z-qxl"/>
+        <segue reference="WMg-3w-EpM"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
 </document>

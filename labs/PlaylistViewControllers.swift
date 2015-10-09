@@ -9,10 +9,10 @@
 import UIKit
 
 protocol PlaylistTableViewDelegate {
-    func onMenuBtnClicked(sender:PlaylistTableViewCell)
+    func onMenuBtnClicked(sender:PlaylistTrackTableViewCell)
 }
 
-class PlaylistTableViewCell: UITableViewCell {
+class PlaylistTrackTableViewCell: UITableViewCell {
     
     var delegate:PlaylistTableViewDelegate?
     
@@ -139,9 +139,9 @@ class PlaylistViewController: BaseViewController,
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let track:Track = tracks[indexPath.row]
-        let cell:PlaylistTableViewCell = tableView.dequeueReusableCellWithIdentifier(
-                "PlaylistTableViewCell", forIndexPath: indexPath) as! PlaylistTableViewCell
-        if (currentPlaylist!.id == DropbeatPlayer.defaultPlayer.currentPlaylistId &&
+        let cell:PlaylistTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier(
+                "PlaylistTrackTableViewCell", forIndexPath: indexPath) as! PlaylistTrackTableViewCell
+        if (currentPlaylist!.id == DropbeatPlayer.defaultPlayer.currentPlaylist?.id &&
                 DropbeatPlayer.defaultPlayer.currentTrack != nil &&
                 DropbeatPlayer.defaultPlayer.currentTrack!.id == track.id) {
             cell.setSelected(true, animated: false)
@@ -181,7 +181,7 @@ class PlaylistViewController: BaseViewController,
             self.playlistTableView.reloadData()
             
             self.updatePlaylistInfo()
-            self.updatePlayTrack(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
+            self.updatePlayTrack(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
             return
         }
         
@@ -239,7 +239,7 @@ class PlaylistViewController: BaseViewController,
             
             self.updatePlaylistInfo()
             self.playlistTableView.reloadData()
-            self.updatePlayTrack(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
+            self.updatePlayTrack(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
         })
     }
     
@@ -254,7 +254,7 @@ class PlaylistViewController: BaseViewController,
         DropbeatPlayer.defaultPlayer.shuffleState = ShuffleState.NOT_SHUFFLE
         
         if currentPlaylist.type != PlaylistType.USER {
-            DropbeatPlayer.defaultPlayer.externalPlaylist = currentPlaylist
+            DropbeatPlayer.defaultPlayer.currentPlaylist = currentPlaylist
         }
         
         var section:String!
@@ -418,7 +418,7 @@ class PlaylistViewController: BaseViewController,
     
     func onPlayTrackBtnClicked(track: Track) {
         if currentPlaylist.type != PlaylistType.USER {
-            DropbeatPlayer.defaultPlayer.externalPlaylist = currentPlaylist
+            DropbeatPlayer.defaultPlayer.currentPlaylist = currentPlaylist
         }
         var section:String!
         switch (currentPlaylist.type) {
@@ -537,7 +537,7 @@ class PlaylistViewController: BaseViewController,
         DropbeatPlayer.defaultPlayer.shuffleState = ShuffleState.SHUFFLE
         
         if currentPlaylist.type != PlaylistType.USER {
-            DropbeatPlayer.defaultPlayer.externalPlaylist = currentPlaylist
+            DropbeatPlayer.defaultPlayer.currentPlaylist = currentPlaylist
         }
         var section:String!
         switch (currentPlaylist.type) {
@@ -619,7 +619,7 @@ class PlaylistViewController: BaseViewController,
     }
     
     func onDeletePlaylistBtnClicked() {
-        let playlists = DropbeatPlayer.defaultPlayer.playlists
+        let playlists = Playlist.allPlaylists
         if (playlists.count == 1) {
             ViewUtils.showNoticeAlert(self,
                 title: NSLocalizedString("Failed to delete", comment:""),
@@ -663,7 +663,7 @@ class PlaylistViewController: BaseViewController,
                             title: NSLocalizedString("Failed to delete", comment:""), message: message)
                         return
                     }
-                    if DropbeatPlayer.defaultPlayer.currentPlaylistId == removePlaylist.id {
+                    if DropbeatPlayer.defaultPlayer.currentPlaylist?.id == removePlaylist.id {
                         DropbeatPlayer.defaultPlayer.shuffleState = ShuffleState.NOT_SHUFFLE
                         DropbeatPlayer.defaultPlayer.stop()
                         
@@ -715,7 +715,7 @@ class PlaylistViewController: BaseViewController,
             })
     }
     
-    func onMenuBtnClicked(sender: PlaylistTableViewCell) {
+    func onMenuBtnClicked(sender: PlaylistTrackTableViewCell) {
         let indexPath:NSIndexPath = playlistTableView.indexPathForCell(sender)!
         menuSelectedTrack = tracks[indexPath.row]
         

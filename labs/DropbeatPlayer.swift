@@ -82,7 +82,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         player.stop()
         /*
         shouldPlayMusic = false
-        DropbeatPlayer.defaultPlayer.currentPlaylistId = nil
+        DropbeatPlayer.defaultPlayer.currentPlaylist?.id = nil
         DropbeatPlayer.defaultPlayer.currentTrack = nil
         DropbeatPlayer.defaultPlayer.currentTrackIdx = -1
         DropbeatPlayer.defaultPlayer.correctDuration = nil
@@ -120,6 +120,18 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     func audioPlayer(audioPlayer: STKAudioPlayer!, didFinishPlayingQueueItemId queueItemId: NSObject!, withReason stopReason: STKAudioPlayerStopReason, andProgress progress: Double, andDuration duration: Double)
     {
         print("stopped: \(stopReason)")
+        
+        print("handle play failure")
+        
+        if stopReason == STKAudioPlayerStopReason.Error {
+            // TODO: error handling
+//                let errMsg = NSLocalizedString("This track is not streamable", comment:"")
+//                ViewUtils.showToast(self, message: errMsg)
+            let track = DropbeatPlayer.defaultPlayer.currentTrack
+            track?.postFailureLog()
+            
+            self.next()
+        }
     }
     
     // TODO: Error handling
@@ -139,27 +151,21 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         }
     }
     
+    
     // Player Context
     
     var currentTrackIdx: Int = -1
     var currentTrack: Track?
     
-    var currentPlaylistId: String?
-    var playlists: [Playlist] = []
-    var externalPlaylist: Playlist?
+    var currentPlaylist: Playlist?
     
     var repeatState = RepeatState.NOT_REPEAT
     var shuffleState = ShuffleState.NOT_SHUFFLE
-//    var playState = PlayState.STOPPED
     var qualityState = QualityState.LQ
     
     var playingSection:String?
     
     var playLog: PlayLog?
-    
-    func resetPlaylist(playlists: [Playlist]) {
-        self.playlists = playlists
-    }
     
     func changeRepeatState() {
         repeatState = repeatState.next()
@@ -175,10 +181,10 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
     func pickNextTrack() -> Track? {
         var track :Track? = nil
-        let playlist :Playlist? = getPlaylist(currentPlaylistId)
+        let playlist :Playlist? = currentPlaylist
         let size = playlist?.tracks.count ?? 0
         
-        if currentPlaylistId == nil || playlist == nil || size == 0{
+        if playlist == nil || size == 0{
             return nil;
         }
         
@@ -210,10 +216,10 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
     func pickPrevTrack() -> Track? {
         var track :Track? = nil
-        let playlist :Playlist? = getPlaylist(currentPlaylistId)
+        let playlist :Playlist? = currentPlaylist
         let size = playlist?.tracks.count ?? 0
         
-        if currentPlaylistId == nil || playlist == nil || size == 0{
+        if  playlist == nil || size == 0{
             return nil;
         }
         
@@ -241,7 +247,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     func randomPick() -> Track? {
         // Randomly pick next track in shuffle mode.
         // NOTE that this method should exclude current track in next candidates.
-        let playlist :Playlist? = getPlaylist(currentPlaylistId)
+        let playlist :Playlist? = currentPlaylist
         let size = playlist?.tracks.count
         if size <= 1 {
             return nil
@@ -254,19 +260,6 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             }
         }
     }
-    
-    func getPlaylist(playlistId: String?) -> Playlist? {
-        for playlist: Playlist in self.playlists {
-            if playlist.id == playlistId {
-                return playlist
-            }
-        }
-        if self.externalPlaylist != nil &&
-            self.externalPlaylist!.id == playlistId {
-                return self.externalPlaylist
-        }
-        return nil
-    }
 
     func remoteControlReceivedWithEvent(event: UIEvent?) {
         switch(event!.subtype) {
@@ -274,11 +267,6 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             print("play clicked")
             guard let currentTrack = self.currentTrack else {
                 return
-            }
-            var params = [String: AnyObject]()
-            params["track"] = currentTrack
-            if let playlistId = self.currentPlaylistId {
-                params["playlistId"] =  playlistId
             }
             self.play(currentTrack)
         case .RemoteControlPause:

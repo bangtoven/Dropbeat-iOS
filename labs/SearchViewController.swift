@@ -239,7 +239,7 @@ class SearchViewController: AddableTrackListViewController,
                 self.trackTableView.hidden = true
                 self.noSearchResultView.hidden = false
                 self.trackTableView.reloadData()
-                self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
+                self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
                 return
             }
             
@@ -260,7 +260,7 @@ class SearchViewController: AddableTrackListViewController,
             self.trackTableView.hidden = showNoResultView
             self.noSearchResultView.hidden = !showNoResultView
             
-            self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
+            self.updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
         })
     }
     
@@ -363,14 +363,14 @@ class SearchViewController: AddableTrackListViewController,
     override func updatePlaylist(forceUpdate:Bool) {
         if !forceUpdate &&
             (getPlaylistId() == nil ||
-                DropbeatPlayer.defaultPlayer.currentPlaylistId != getPlaylistId()) {
+                DropbeatPlayer.defaultPlayer.currentPlaylist?.id != getPlaylistId()) {
                     return
         }
         
         var playlist:Playlist!
-        if DropbeatPlayer.defaultPlayer.externalPlaylist != nil &&
-            DropbeatPlayer.defaultPlayer.externalPlaylist!.id == getPlaylistId() {
-                playlist = DropbeatPlayer.defaultPlayer.externalPlaylist!
+        if DropbeatPlayer.defaultPlayer.currentPlaylist != nil &&
+            DropbeatPlayer.defaultPlayer.currentPlaylist?.id == getPlaylistId() {
+                playlist = DropbeatPlayer.defaultPlayer.currentPlaylist!
                 playlist.tracks.removeAll(keepCapacity: false)
                 for track in tracks {
                     playlist.tracks.append(track)
@@ -381,10 +381,10 @@ class SearchViewController: AddableTrackListViewController,
                 name: "Search",
                 tracks: tracks)
             playlist.type = PlaylistType.EXTERNAL
-            DropbeatPlayer.defaultPlayer.externalPlaylist = playlist
+            DropbeatPlayer.defaultPlayer.currentPlaylist = playlist
         }
         
-        if DropbeatPlayer.defaultPlayer.currentPlaylistId == playlist.id {
+        if DropbeatPlayer.defaultPlayer.currentPlaylist?.id == playlist.id {
             if DropbeatPlayer.defaultPlayer.currentTrack == nil {
                 DropbeatPlayer.defaultPlayer.currentTrackIdx = -1
             } else {

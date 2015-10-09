@@ -8,9 +8,28 @@
 
 import UIKit
 
+class PlaylistTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var nameView: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+        let selectedBgView = UIView(frame: self.bounds)
+        selectedBgView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
+        selectedBgView.backgroundColor = UIColor(netHex: 0xdddddd)
+        self.selectedBackgroundView = selectedBgView
+    }
+}
+
 class PlaylistListTableViewController: UITableViewController {
 
-    private var playlists:[Playlist] = [Playlist]()
+    var playlists:[Playlist] = [Playlist]()
+    var showCurrentPlaylist: Bool {
+        get {
+            return (DropbeatPlayer.defaultPlayer.currentPlaylist != nil)
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,25 +39,20 @@ class PlaylistListTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
-        playlists.removeAll(keepCapacity: false)
-        for playlist in DropbeatPlayer.defaultPlayer.playlists {
-            playlists.append(playlist)
-        }
-        tableView.reloadData()
+        self.loadPlaylists()
         
         if tableView.indexPathForSelectedRow != nil {
             tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: false)
         }
-        loadPlaylist()
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "PlaylistSegue" {
             let indexPath = tableView.indexPathForSelectedRow!
             var playlist: Playlist
-            if let externalPlaylist = DropbeatPlayer.defaultPlayer.externalPlaylist {
+            if self.showCurrentPlaylist {
                 if indexPath.section == 0 {
-                    playlist = externalPlaylist
+                    playlist = DropbeatPlayer.defaultPlayer.currentPlaylist!
                 } else {
                     playlist = playlists[indexPath.row]
                 }
@@ -79,17 +93,17 @@ class PlaylistListTableViewController: UITableViewController {
                             message: message!)
                         return
                     }
-                    self.loadPlaylist()
+                    self.loadPlaylists()
                 })
         })
     }
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return DropbeatPlayer.defaultPlayer.externalPlaylist != nil ? 2 : 1
+        return self.showCurrentPlaylist ? 2 : 1
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let _ = DropbeatPlayer.defaultPlayer.externalPlaylist {
+        if self.showCurrentPlaylist {
             if section == 0 {
                 return 1
             } else {
@@ -103,9 +117,9 @@ class PlaylistListTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var playlist: Playlist
         
-        if let externalPlaylist = DropbeatPlayer.defaultPlayer.externalPlaylist {
+        if self.showCurrentPlaylist {
             if indexPath.section == 0 {
-                playlist = externalPlaylist
+                playlist = DropbeatPlayer.defaultPlayer.currentPlaylist!
             } else {
                 playlist = playlists[indexPath.row]
             }
@@ -113,39 +127,30 @@ class PlaylistListTableViewController: UITableViewController {
             playlist = playlists[indexPath.row]
         }
         
-        let cell:PlaylistSelectTableViewCell = tableView.dequeueReusableCellWithIdentifier(
-            "PlaylistSelectTableViewCell", forIndexPath: indexPath) as! PlaylistSelectTableViewCell
+        let cell:PlaylistTableViewCell = tableView.dequeueReusableCellWithIdentifier(
+            "PlaylistTableViewCell", forIndexPath: indexPath) as! PlaylistTableViewCell
         cell.nameView.text = playlist.name
-        if playlist.id == DropbeatPlayer.defaultPlayer.currentPlaylistId {
+        if playlist.id == DropbeatPlayer.defaultPlayer.currentPlaylist?.id {
             cell.setSelected(true, animated: false)
         }
         return cell
     }
     
-    func loadPlaylist() {
+    func loadPlaylists() {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        Requests.fetchPlaylistList({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Playlist.fetchAllPlaylists { (playlists, error) -> Void in
             progressHud.hide(true)
-            if error != nil || result == nil {
+            if error != nil || playlists == nil {
                 ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to fetch", comment:""),
                     message: NSLocalizedString("Failed to fetch playlists.", comment:""),
                     positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                        self.loadPlaylist()
+                        self.loadPlaylists()
                     }, negativeBtnText: NSLocalizedString("Cancel", comment:""))
                 return
             }
-            let playlists = Array(Playlist.parsePlaylists(result!).reverse())
-            if playlists.count == 0 {
-                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch playlists", comment:""), message: error!.description)
-                return
-            }
-            DropbeatPlayer.defaultPlayer.playlists.removeAll(keepCapacity: false)
-            self.playlists.removeAll(keepCapacity: false)
-            for playlist in playlists {
-                DropbeatPlayer.defaultPlayer.playlists.append(playlist)
-                self.playlists.append(playlist)
-            }
+            
+            self.playlists = playlists!
             self.tableView.reloadData()
-        })
+        }
     }
 }

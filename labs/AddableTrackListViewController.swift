@@ -95,7 +95,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "onDropFinished", name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
         
-        updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
+        updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -111,7 +111,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     }
     
     func appWillEnterForeground() {
-        updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylistId)
+        updatePlay(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
     }
     
     func appDidEnterBackground() {
@@ -121,14 +121,14 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     func updatePlaylist(forceUpdate:Bool) {
         if !forceUpdate &&
                 (getPlaylistId() == nil || getPlaylistName() == nil ||
-                    DropbeatPlayer.defaultPlayer.currentPlaylistId != getPlaylistId()) {
+                    DropbeatPlayer.defaultPlayer.currentPlaylist?.id != getPlaylistId()) {
             return
         }
         
         var playlist:Playlist!
-        if DropbeatPlayer.defaultPlayer.externalPlaylist != nil &&
-                DropbeatPlayer.defaultPlayer.externalPlaylist!.id == getPlaylistId() {
-            playlist = DropbeatPlayer.defaultPlayer.externalPlaylist!
+        if DropbeatPlayer.defaultPlayer.currentPlaylist != nil &&
+                DropbeatPlayer.defaultPlayer.currentPlaylist?.id == getPlaylistId() {
+            playlist = DropbeatPlayer.defaultPlayer.currentPlaylist!
             playlist.tracks.removeAll(keepCapacity: false)
             for track in tracks {
                 playlist.tracks.append(track)
@@ -139,10 +139,10 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
                     name: getPlaylistName()!,
                     tracks: tracks)
             playlist.type = PlaylistType.EXTERNAL
-            DropbeatPlayer.defaultPlayer.externalPlaylist = playlist
+            DropbeatPlayer.defaultPlayer.currentPlaylist = playlist
         }
         
-        if DropbeatPlayer.defaultPlayer.currentPlaylistId == playlist.id {
+        if DropbeatPlayer.defaultPlayer.currentPlaylist?.id == playlist.id {
             if DropbeatPlayer.defaultPlayer.currentTrack == nil {
                 DropbeatPlayer.defaultPlayer.currentTrackIdx = -1
             } else {
@@ -158,7 +158,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
             playlistId = nil
         } else {
             updatePlaylist(true)
-            playlistId = DropbeatPlayer.defaultPlayer.externalPlaylist!.id
+            playlistId = DropbeatPlayer.defaultPlayer.currentPlaylist?.id
         }
         var params: [String: AnyObject] = [
             "track": track,

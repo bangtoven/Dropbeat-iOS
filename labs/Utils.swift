@@ -24,19 +24,23 @@ extension UITableView {
 }
 
 extension UIView {
-    func rotate360Degrees(duration: CFTimeInterval = 1.0, completionDelegate: AnyObject? = nil) {
-        let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
-        rotateAnimation.fromValue = 0.0
-        rotateAnimation.toValue = CGFloat(M_PI * 2.0)
-        rotateAnimation.duration = duration
-        rotateAnimation.cumulative = true
-        
+    func setSpinEnabled(enable:Bool = true, duration: CFTimeInterval = 1.0) {
         self.layer.removeAllAnimations()
         
-        if let delegate: AnyObject = completionDelegate {
-            rotateAnimation.delegate = delegate
+        if enable {
+            CATransaction.begin()
+            
+            let rotateAnimation = CABasicAnimation(keyPath: "transform.rotation")
+            rotateAnimation.fromValue = 0.0
+            rotateAnimation.toValue = CGFloat(M_PI * 2.0)
+            rotateAnimation.duration = duration
+            rotateAnimation.cumulative = true
+            rotateAnimation.repeatCount = .infinity
+            
+            self.layer.addAnimation(rotateAnimation, forKey: "rotate360Degrees")
+            
+            CATransaction.commit()
         }
-        self.layer.addAnimation(rotateAnimation, forKey: nil)
     }
 }
 

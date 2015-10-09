@@ -344,8 +344,8 @@ class CenterViewController: BaseViewController, UITabBarDelegate{
     
     @IBAction func showListBtnClicked(sender: UIButton) {
         var playlist:Playlist?
-        if DropbeatPlayer.defaultPlayer.currentPlaylistId != nil {
-            playlist = DropbeatPlayer.defaultPlayer.getPlaylist(DropbeatPlayer.defaultPlayer.currentPlaylistId)
+        if DropbeatPlayer.defaultPlayer.currentPlaylist?.id != nil {
+            playlist = DropbeatPlayer.defaultPlayer.currentPlaylist
         }
         if playlist == nil {
             ViewUtils.showToast(self,

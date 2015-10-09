@@ -114,7 +114,8 @@ class FBSigninableViewController: BaseViewController {
     
     func requestProfileInfos() {
         let fbManager:FBSDKLoginManager = FBSDKLoginManager()
-        let request:FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: nil)
+        let params = ["fields":"id,email,last_name,first_name"]
+        let request:FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me", parameters: params)
         request.startWithCompletionHandler({ (connection:FBSDKGraphRequestConnection!, result:AnyObject!, error:NSError!) -> Void in
             if (error != nil) {
                 ViewUtils.showNoticeAlert(self,
@@ -125,10 +126,10 @@ class FBSigninableViewController: BaseViewController {
                 return
             }
             let userData = result as! NSDictionary
-            let fbId:String = userData.objectForKey("id") as! String
-            let firstName:String = userData.objectForKey("first_name") as! String
-            let lastName:String = userData.objectForKey("last_name") as! String
-            var email:String? = userData.objectForKey("email") as! String?
+            let fbId = userData.objectForKey("id") as! String
+            let firstName = userData.objectForKey("first_name") as! String
+            let lastName = userData.objectForKey("last_name") as! String
+            var email = userData.objectForKey("email") as? String
             if (email == nil) {
                 let randId = Int(arc4random_uniform(89999999)) + 10000000
                 email = "user\(randId)@dropbeat.net"
@@ -391,7 +392,7 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
             emailErrorView.hidden = false
             return true
         case 2:
-            passwordErrorView.text = NSLocalizedString("Invalied password", comment:"")
+            passwordErrorView.text = NSLocalizedString("Invalid password", comment:"")
             passwordErrorView.hidden = false
             return true
         default:

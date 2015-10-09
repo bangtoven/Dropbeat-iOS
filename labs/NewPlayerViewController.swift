@@ -276,6 +276,11 @@ class PlayerViewController: GAITrackedViewController {
     }
     
     @IBAction func onProgressValueChanged(sender: UISlider) {
+        let curr = duration! * Double(sender.value / 100.0)
+        progressTextView.text = getTimeFormatText(curr)
+    }
+    
+    @IBAction func onProgressActionFinished(sender: UISlider) {
         self.player.seekTo(sender.value)
     }
     

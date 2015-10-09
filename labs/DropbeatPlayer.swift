@@ -41,8 +41,8 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             let quality = XCDYouTubeVideoQuality.Medium360
             track.getYoutubeStreamURL(quality, callback: { (streamURL, duration, error) -> Void in
                 if let streamUrl = streamURL {
-                    self.player.play(streamUrl, duration: duration!, withQueueItemID: streamUrl)
-                    
+                    self.player.play(streamUrl, duration: duration!, withQueueItemId: streamUrl)
+                    self.player.queue(streamUrl, duration: duration!, withQueueItemId: streamUrl)
 //                    let asset = AVAsset(URL: NSURL(string: streamUrl)!)
 //                    asset.loadValuesAsynchronouslyForKeys(["duration"]) {
 //                        let time = CMTimeGetSeconds(asset.duration)
@@ -55,6 +55,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             })
         } else {
             player.play(track.streamUrl)
+            self.player.queue(track.streamUrl)
         }
         
         
@@ -128,7 +129,9 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
 //                let errMsg = NSLocalizedString("This track is not streamable", comment:"")
 //                ViewUtils.showToast(self, message: errMsg)
             let track = DropbeatPlayer.defaultPlayer.currentTrack
-            track?.postFailureLog()
+            if RELEASE == false {
+                track?.postFailureLog()
+            }
             
             self.next()
         }

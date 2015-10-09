@@ -683,7 +683,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
 }
 
 // Added by Jungho Bang
--(void) play:(NSString *)urlString duration:(double)duration withQueueItemID:(NSObject *)queueItemId
+-(void) play:(NSString *)urlString duration:(double)duration withQueueItemId:(NSObject *)queueItemId
 {
     NSURL* url = [NSURL URLWithString:urlString];
     
@@ -1506,6 +1506,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
         {
             double delta = ((seekByteOffset - (SInt64)currentEntry->audioDataOffset) - packetAlignedByteOffset) / calculatedBitRate * 8;
             NSLog(@"delta: %lf", delta);
+            delta = 0;
             
             OSSpinLockLock(&currentEntry->spinLock);
             currentEntry->seekTime -= delta;

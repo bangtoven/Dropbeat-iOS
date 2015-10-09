@@ -1046,11 +1046,12 @@
                                                         <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                         <color key="highlightedColor" red="0.5082662563" green="0.5082662563" blue="0.5082662563" alpha="1" colorSpace="calibratedRGB"/>
                                                     </label>
-                                                    <slider contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yu1-hw-KYT">
+                                                    <slider contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="Yu1-hw-KYT">
                                                         <rect key="frame" x="38" y="2" width="212" height="31"/>
                                                         <animations/>
                                                         <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                         <connections>
+                                                            <action selector="onProgressActionFinished:" destination="Wtx-gN-1kw" eventType="touchUpInside" id="76E-zI-z1y"/>
                                                             <action selector="onProgressValueChanged:" destination="Wtx-gN-1kw" eventType="valueChanged" id="glu-cz-4Mw"/>
                                                         </connections>
                                                     </slider>

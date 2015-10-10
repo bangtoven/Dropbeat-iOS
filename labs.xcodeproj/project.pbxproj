@@ -214,8 +214,8 @@
 		738646171BA7631D00C21650 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738646161BA7631D00C21650 /* GradientView.m */; };
 		739C8F5D1BB340E200BC9EB7 /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 739C8F5C1BB340E200BC9EB7 /* Explore.storyboard */; settings = {ASSET_TAGS = (); }; };
 		739C8F5F1BB340FE00BC9EB7 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		73A661961BC6EC5F00DD1179 /* NewPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A661951BC6EC5F00DD1179 /* NewPlayerViewController.swift */; settings = {ASSET_TAGS = (); }; };
-		73A661971BC6EC5F00DD1179 /* NewPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A661951BC6EC5F00DD1179 /* NewPlayerViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		73A661961BC6EC5F00DD1179 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A661951BC6EC5F00DD1179 /* PlayerViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		73A661971BC6EC5F00DD1179 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A661951BC6EC5F00DD1179 /* PlayerViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		73A6864A1BA9A33600DA29DC /* Feed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCEA1B9F683100444179 /* Feed.storyboard */; };
 		73AB346B1BB15AAE0031E2CC /* JHImageTransitionSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AB346A1BB15AAE0031E2CC /* JHImageTransitionSegue.m */; settings = {ASSET_TAGS = (); }; };
 		73AB346D1BB186B90031E2CC /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AB346C1BB186B90031E2CC /* ProfileViewController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -447,7 +447,7 @@
 		738646161BA7631D00C21650 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
 		739C8F5C1BB340E200BC9EB7 /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Explore.storyboard; sourceTree = "<group>"; };
 		739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
-		73A661951BC6EC5F00DD1179 /* NewPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewPlayerViewController.swift; sourceTree = "<group>"; };
+		73A661951BC6EC5F00DD1179 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		73AB34691BB15AAE0031E2CC /* JHImageTransitionSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHImageTransitionSegue.h; sourceTree = "<group>"; };
 		73AB346A1BB15AAE0031E2CC /* JHImageTransitionSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHImageTransitionSegue.m; sourceTree = "<group>"; };
 		73AB346C1BB186B90031E2CC /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -825,7 +825,7 @@
 				5890D6191B05484A00AAEAE5 /* CenterViewControllers.swift */,
 				5890D6151B0538CD00AAEAE5 /* SearchViewController.swift */,
 				7361FCE31B9F5E7F00444179 /* EmailSubmitViewController.swift */,
-				73A661951BC6EC5F00DD1179 /* NewPlayerViewController.swift */,
+				73A661951BC6EC5F00DD1179 /* PlayerViewController.swift */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -1255,7 +1255,7 @@
 				734C7DBB1BB4C1DA0071678C /* FeedTableViewCell.swift in Sources */,
 				734C7DBC1BB4C1DA0071678C /* PlaylistViewControllers.swift in Sources */,
 				734C7DBD1BB4C1DA0071678C /* Account.swift in Sources */,
-				73A661971BC6EC5F00DD1179 /* NewPlayerViewController.swift in Sources */,
+				73A661971BC6EC5F00DD1179 /* PlayerViewController.swift in Sources */,
 				734C7DBE1BB4C1DA0071678C /* UIImage+GIF.m in Sources */,
 				73AECC081BC6B47D0040F0AF /* XCDYouTubeVideo.m in Sources */,
 				734C7DBF1BB4C1DA0071678C /* ServerTrustPolicy.swift in Sources */,
@@ -1374,7 +1374,7 @@
 				587B5BD81B6AD2B6009BD05D /* FeedTableViewCell.swift in Sources */,
 				581D4C9E1B09FA120036BEBF /* PlaylistViewControllers.swift in Sources */,
 				734C7D5D1BB47CBE0071678C /* Account.swift in Sources */,
-				73A661961BC6EC5F00DD1179 /* NewPlayerViewController.swift in Sources */,
+				73A661961BC6EC5F00DD1179 /* PlayerViewController.swift in Sources */,
 				588693A31B13B51300566124 /* UIImage+GIF.m in Sources */,
 				73AECC071BC6B47D0040F0AF /* XCDYouTubeVideo.m in Sources */,
 				73FC90C81BAE4AFA00284B8A /* ServerTrustPolicy.swift in Sources */,

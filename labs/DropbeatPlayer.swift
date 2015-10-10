@@ -11,7 +11,7 @@ import MediaPlayer
 import AVFoundation
 
 public let DropbeatPlayerStateChangedNotification = "DropbeatPlayerStateChangedNotification"
-
+public let DropbeatPlayerErrorNotification = "DropbeatPlayerErrorNotification"
 
 class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
@@ -103,6 +103,11 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             return
         }
         
+        SDWebImageManager.sharedManager().downloadImageWithURL(NSURL(string: track.thumbnailUrl!), options: SDWebImageOptions.ContinueInBackground, progress: nil) {
+            (image, error, cacheType, finished, imageURL) -> Void in
+            self.currentThumbnail = image
+        }
+        
         Requests.logPlay(track)
         
         self.resetPlaybackLog(nil)
@@ -114,14 +119,9 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         
         self.enqueueNextTrack()
         
-        SDWebImageManager.sharedManager().downloadImageWithURL(NSURL(string: track.thumbnailUrl!), options: SDWebImageOptions.ContinueInBackground, progress: nil) {
-             (image, error, cacheType, finished, imageURL) -> Void in
-            self.currentThumbnail = image
-        }
-        
         if self.timer == nil {
             self.timer = NSTimer(
-                timeInterval: 0.5,
+                timeInterval: 1.0,
                 target: self,
                 selector: "updatePlayingInfoCenter",
                 userInfo: nil,
@@ -161,8 +161,8 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     func next() -> Bool {
         self.resetPlaybackLog(Int(self.progress))
         
-        if let (nextTrack, _) = self.pickTrack(.NEXT) {
-            self.currentIndex += 1
+        if let (nextTrack, index) = self.pickTrack(.NEXT) {
+            self.currentIndex = index
             self.play(nextTrack)
             return true
         } else {
@@ -173,8 +173,8 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     func prev() -> Bool {
         self.resetPlaybackLog(Int(self.progress))
 
-        if let (prevTrack, _) = self.pickTrack(.PREV) {
-            self.currentIndex -= 1
+        if let (prevTrack, index) = self.pickTrack(.PREV) {
+            self.currentIndex = index
             self.play(prevTrack)
             return true
         } else {
@@ -315,58 +315,51 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
 
         switch state {
         case .Ready:
-//            playerStatus.text = NSLocalizedString("CHOOSE TRACK", comment:"")
             break
         case .Running:
-//            playerStatus.text = NSLocalizedString("LOADING", comment:"")
             break
         case .Playing:
-//            playerStatus.text = NSLocalizedString("PLAYING", comment:"")
             break
         case .Buffering:
-//            playerStatus.text = NSLocalizedString("BUFFERING", comment:"")
             break
         case .Paused:
-//            playerStatus.text = NSLocalizedString("PAUSED", comment:"")
             break
         case .Stopped:
-//            playerStatus.text = NSLocalizedString("READY", comment:"")
             break
         case .Error:
-//            playerStatus.text = "???Error"
             break
         case .Disposed:
-//            playerStatus.text = "???Disposed"
             break
         }
-        
     }
     
     // MARK: - Error handling
-    
+
+    var lastError: STKAudioPlayerErrorCode?
+ 
     private func handleError() {
-        print("handle play failure")
-        // TODO
+        print("Error!")
+        
+        let noti = NSNotification(name: DropbeatPlayerErrorNotification, object: (lastError ?? .Other).rawValue, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotification(noti)
+        
+        self.next()
+
+        let track = DropbeatPlayer.defaultPlayer.currentTrack
+        track?.postFailureLog()
     }
     
     func audioPlayer(audioPlayer: STKAudioPlayer!, didFinishPlayingQueueItemId queueItemId: NSObject!, withReason stopReason: STKAudioPlayerStopReason, andProgress progress: Double, andDuration duration: Double)
     {
-        print("stopped: \(stopReason)")
+        print("Stopped: \(stopReason.rawValue)")
         
         self.timer?.invalidate()
         self.timer = nil
         
         if stopReason == STKAudioPlayerStopReason.Error {
-            let track = DropbeatPlayer.defaultPlayer.currentTrack
-            track?.postFailureLog()
-            
             self.handleError()
-            
-            self.next()
         }
     }
-    
-    var lastError: STKAudioPlayerErrorCode?
     
     func audioPlayer(audioPlayer: STKAudioPlayer!, unexpectedError errorCode: STKAudioPlayerErrorCode)
     {
@@ -380,7 +373,6 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             self.player.delegate = self
         }
     }
-    
 
     // MARK: - Remote control action
     
@@ -423,17 +415,6 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.progress
         trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = self.state == .Playing ? 1.0 : 0.0
         MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo
-        
-//        let track: Track? = DropbeatPlayer.defaultPlayer.currentTrack
-//        if track == nil {
-//            return
-//        }
-//        
-//        var trackInfo = [String:AnyObject]()
-//        let albumArt = MPMediaItemArtwork(image: image)
-//        trackInfo[MPMediaItemPropertyArtwork] = albumArt
-//        
-//        MPNowPlayingInfoCenter.defaultCenter().nowPlayingInfo = trackInfo
     }
     
     // MARK: - Player Context

@@ -89,6 +89,14 @@ class PlayerViewController: GAITrackedViewController {
     
     // MARK: - Update UI
     
+    func updateCoverView() {
+        if let track = self.player.currentTrack {
+            coverImageView.setImageForTrack(track, size: .LARGE)
+        } else {
+            coverImageView.image = UIImage(named: "default_cover_big")
+        }
+    }
+    
     func updatePlayView(state: STKAudioPlayerState) {
         
         if state != .Playing {
@@ -194,16 +202,6 @@ class PlayerViewController: GAITrackedViewController {
         var text = minutes < 10 ? "0\(minutes):" : "\(String(minutes)):"
         text += seconds < 10 ? "0\(seconds)" : String(seconds)
         return text
-    }
-    
-    // TODO: 언제 바꿔야 되는지 잘 생각해봐.
-    func updateCoverView() {
-        let track = self.player.currentTrack
-        if track == nil || self.player.state == .Stopped {
-            coverImageView.image = UIImage(named: "default_cover_big")
-        } else {
-            coverImageView.setImageForTrack(track!, size: .LARGE)
-        }
     }
     
     func updateLikeBtn() {

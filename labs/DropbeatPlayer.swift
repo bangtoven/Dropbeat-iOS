@@ -43,20 +43,24 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     var currentTrack: Track?
-    private var currentTrackIdx = -1
+    private var currentIndex = -1
+    private var currentThumbnail = UIImage(named: "default_cover_big")
     var currentPlaylist: Playlist? {
         didSet {
-            currentTrackIdx = -1
+            currentIndex = -1
         }
     }
-    var currentTrackArtwork: UIImage?
+    
+    // MARK: - Play
     
     func play(track: Track) {
         self.lastError = nil
-        self.currentTrack = track
+        if track.id == self.currentTrack?.id {
+            return
+        }
         
         if track.type == .YOUTUBE {
-            track.getYoutubeStreamURL(qualityState == .HQ ? .Medium360 : .Small240) {
+            track.getYouTubeStreamURL(qualityState == .HQ ? .Medium360 : .Small240) {
                 (streamURL, duration, error) -> Void in
                 if error != nil {
                     self.handleError()
@@ -80,7 +84,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         
         for (i,track) in currentPlaylist.tracks.enumerate() {
             if track.id == queueItemId {
-                self.currentTrackIdx = i
+                self.currentIndex = i
                 
                 if self.currentTrack == nil || track.id != self.currentTrack!.id {
                     self.currentTrack = track
@@ -110,6 +114,11 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         
         self.enqueueNextTrack()
         
+        SDWebImageManager.sharedManager().downloadImageWithURL(NSURL(string: track.thumbnailUrl!), options: SDWebImageOptions.ContinueInBackground, progress: nil) {
+             (image, error, cacheType, finished, imageURL) -> Void in
+            self.currentThumbnail = image
+        }
+        
         if self.timer == nil {
             self.timer = NSTimer(
                 timeInterval: 0.5,
@@ -128,7 +137,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         }
         
         if next.type == .YOUTUBE {
-            next.getYoutubeStreamURL(qualityState == .HQ ? .Medium360 : .Small240) {
+            next.getYouTubeStreamURL(qualityState == .HQ ? .Medium360 : .Small240) {
                 (streamURL, duration, error) -> Void in
                 if error != nil {
                     next.postFailureLog()
@@ -153,7 +162,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         self.resetPlaybackLog(Int(self.progress))
         
         if let (nextTrack, _) = self.pickTrack(.NEXT) {
-            self.currentTrackIdx += 1
+            self.currentIndex += 1
             self.play(nextTrack)
             return true
         } else {
@@ -165,7 +174,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         self.resetPlaybackLog(Int(self.progress))
 
         if let (prevTrack, _) = self.pickTrack(.PREV) {
-            self.currentTrackIdx -= 1
+            self.currentIndex -= 1
             self.play(prevTrack)
             return true
         } else {
@@ -189,11 +198,18 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             
             while (true) {
                 let idx = Int(arc4random_uniform(UInt32(size)))
-                if idx != currentTrackIdx {
+                if idx != currentIndex {
                     return (playlist.tracks[idx], idx)
                 }
             }
-        } else {
+        } else if self.repeatState == .REPEAT_ONE {
+            if let track = self.currentTrack {
+                return (track, self.currentIndex)
+            } else {
+                return nil
+            }
+        }
+        else {
             var track: Track?
             var index: Int?
             
@@ -202,17 +218,17 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
                 var nextIdx :Int
                 
                 if self.repeatState == .REPEAT_PLAYLIST {
-                    if currentTrackIdx < 0 {
+                    if currentIndex < 0 {
                         nextIdx = 0
                     } else {
-                        nextIdx = (currentTrackIdx + 1) % size
+                        nextIdx = (currentIndex + 1) % size
                     }
                     track = playlist.tracks[nextIdx] as Track
                 } else {
-                    if currentTrackIdx < 0 {
+                    if currentIndex < 0 {
                         nextIdx = 0
                     } else {
-                        nextIdx = currentTrackIdx + 1
+                        nextIdx = currentIndex + 1
                     }
                     if (nextIdx < size) {
                         track = playlist.tracks[nextIdx] as Track
@@ -225,13 +241,13 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
                 var prevIdx :Int
                 
                 if self.repeatState == .REPEAT_PLAYLIST {
-                    prevIdx = currentTrackIdx - 1
+                    prevIdx = currentIndex - 1
                     if prevIdx <= 0 {
                         prevIdx = size - 1
                     }
                     track = playlist.tracks[prevIdx] as Track
                 } else {
-                    prevIdx = currentTrackIdx - 1
+                    prevIdx = currentIndex - 1
                     if prevIdx >= 0 {
                         track = playlist.tracks[prevIdx] as Track
                     }
@@ -397,7 +413,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         }
 
         var trackInfo = [String:AnyObject]()
-        if let image = self.currentTrackArtwork {
+        if let image = self.currentThumbnail {
             let albumArt = MPMediaItemArtwork(image: image)
             trackInfo[MPMediaItemPropertyArtwork] = albumArt
         }
@@ -428,10 +444,14 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
     func changeRepeatState() {
         repeatState = repeatState.next()
+        self.player.clearQueue()
+        self.enqueueNextTrack()
     }
     
     func changeShuffleState() {
         shuffleState = shuffleState.toggle()
+        self.player.clearQueue()
+        self.enqueueNextTrack()
     }
     
     func changeQualityState() {
@@ -439,6 +459,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     }
 }
 
+// MARK: - Enums
 
 enum RepeatState: Int {
     case NOT_REPEAT = 0

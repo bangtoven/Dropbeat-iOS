@@ -162,12 +162,9 @@ class SearchViewController: AddableTrackListViewController,
                 
                 let track = tracks[indexPath.row]
                 cell.nameView.text = track.title
-                if let thumbnailUrl = track.thumbnailUrl {
-                    cell.thumbView.sd_setImageWithURL(NSURL(string: thumbnailUrl),
-                        placeholderImage: UIImage(named: "default_artwork"))
-                } else {
-                    cell.thumbView.image = UIImage(named: "default_artwork")
-                }
+                
+                cell.thumbView.setImageForTrack(track, size: .SMALL)
+
                 var dropBtnImageName:String!
                 if dropPlayerContext.sectionName == getSectionName() &&
                     dropPlayerContext.currentTrack?.id == track.id {

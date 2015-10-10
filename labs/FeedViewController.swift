@@ -100,12 +100,9 @@ extension FeedViewController: ScrollPagerDelegate {
         
         let track = tracks[indexPath.row]
         cell.nameView.text = track.title
-        if (track.thumbnailUrl != nil) {
-            cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!), placeholderImage: UIImage(named: "default_cover_big"))
-        } else {
-            cell.thumbView.image = UIImage(named: "default_cover_big")
-        }
         cell.releaseDateLabel.text = track.releaseDate?.timeAgoSinceNow()
+        
+        cell.thumbView.setImageForTrack(track, size: .LARGE, needsHighDef: false)
         
         cell.userNameView.text = track.user?.name
         if let imageUrl = track.user?.image {
@@ -596,21 +593,13 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         let track:BeatportTrack = tracks[indexPath.row] as! BeatportTrack
         cell.delegate = self
         cell.nameView.text = track.trackName
-        if (track.thumbnailUrl != nil) {
-            cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_artwork"), completed: {
-                    (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
-                if (error != nil) {
-                    cell.thumbView.image = UIImage(named: "default_artwork")
-                }
-            })
-        } else {
-            cell.thumbView.image = UIImage(named: "default_artwork")
-        }
         cell.genreName.text = track.genre
         cell.genreName.hidden = track.genre == nil
         cell.artistName.text = track.artist
         cell.rank.text = "\(indexPath.row + 1)"
+        
+        cell.thumbView.setImageForTrack(track, size: .SMALL)
+
         return cell
     }
     
@@ -620,20 +609,12 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         let track:TrendingTrack = tracks[indexPath.row] as! TrendingTrack
         cell.delegate = self
         cell.nameView.text = track.trackName
-        if (track.thumbnailUrl != nil) {
-            cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_cover_big"), completed: {
-                    (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
-                if (error != nil) {
-                    cell.thumbView.image = UIImage(named: "default_cover_big")
-                }
-            })
-        } else {
-            cell.thumbView.image = UIImage(named: "default_cover_big")
-        }
         cell.snippet.text = track.snippet
         cell.artistName.text = track.artist
         cell.rank.text = "\(indexPath.row + 1)"
+        
+        cell.thumbView.setImageForTrack(track, size: .LARGE, needsHighDef: false)
+        
         return cell
     }
     
@@ -643,24 +624,17 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         let track:BeatportTrack = tracks[indexPath.row] as! BeatportTrack
         cell.delegate = self
         cell.nameView.text = track.trackName
-        if (track.thumbnailUrl != nil) {
-            cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_cover_big"), completed: {
-                    (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
-                if (error != nil) {
-                    cell.thumbView.image = UIImage(named: "default_cover_big")
-                }
-            })
-        } else {
-            cell.thumbView.image = UIImage(named: "default_cover_big")
-        }
+        cell.artistName.text = track.artist
+        cell.rank.text = "\(indexPath.row + 1)"
+        
         cell.releasedAt.hidden = track.releasedAt == nil
         if track.releasedAt != nil {
             let dateString = track.releasedAt!.formattedDateWithFormat("MMMM dd, yyyy", locale: NSLocale(localeIdentifier: "en_US_POSIX"))
             cell.releasedAt.text = "Released on \(dateString)"
         }
-        cell.artistName.text = track.artist
-        cell.rank.text = "\(indexPath.row + 1)"
+        
+        cell.thumbView.setImageForTrack(track, size: .LARGE, needsHighDef: false)
+        
         return cell
     }
     
@@ -670,23 +644,16 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         let track:NewReleaseTrack = tracks[indexPath.row] as! NewReleaseTrack
         cell.delegate = self
         cell.nameView.text = track.trackName
-        if (track.thumbnailUrl != nil) {
-            cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_cover_big"), completed: {
-                    (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
-                if (error != nil) {
-                    cell.thumbView.image = UIImage(named: "default_cover_big")
-                }
-            })
-        } else {
-            cell.thumbView.image = UIImage(named: "default_cover_big")
-        }
+        cell.artistName.text = track.artist
+
         cell.releasedAt.hidden = track.releasedAt == nil
         if track.releasedAt != nil {
             let dateString = track.releasedAt!.formattedDateWithFormat("MMMM dd, yyyy", locale: NSLocale(localeIdentifier: "en_US_POSIX"))
             cell.releasedAt.text = "Released on \(dateString)"
         }
-        cell.artistName.text = track.artist
+        
+        cell.thumbView.setImageForTrack(track, size: .LARGE, needsHighDef: false)
+        
         return cell
     }
     

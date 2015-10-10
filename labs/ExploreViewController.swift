@@ -89,17 +89,9 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             }
             
             cell.nameView.text = track.title
-            if (track.thumbnailUrl != nil) {
-                cell.thumbView.sd_setImageWithURL(NSURL(string: track.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_artwork"), completed: {
-                        (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
-                        if (error != nil) {
-                            cell.thumbView.image = UIImage(named: "default_artwork")
-                        }
-                })
-            } else {
-                cell.thumbView.image = UIImage(named: "default_artwork")
-            }
+            
+            cell.thumbView.setImageForTrack(track, size: .SMALL)
+            
             if let publishedAt = track.releaseDate {
                 cell.publishedAt.text = publishedAt.timeAgoSinceNow()
             } else {

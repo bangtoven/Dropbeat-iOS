@@ -21,7 +21,6 @@ class PlayerViewController: GAITrackedViewController {
     
     @IBOutlet weak var coverView: UIView!
     @IBOutlet weak var coverImageView: UIImageView!
-    @IBOutlet weak var coverBgImageView: UIImageView!
 
     @IBOutlet weak var playerTitle: MarqueeLabel!
     @IBOutlet weak var playerStatus: UILabel!
@@ -84,6 +83,7 @@ class PlayerViewController: GAITrackedViewController {
                 ViewUtils.showToast(self, message: errMsg)
             }
             updatePlayView(state)
+            updateCoverView()
         }
     }
     
@@ -200,25 +200,9 @@ class PlayerViewController: GAITrackedViewController {
     func updateCoverView() {
         let track = self.player.currentTrack
         if track == nil || self.player.state == .Stopped {
-            coverImageView.hidden = false
-            coverBgImageView.image = UIImage(named: "player_bg")
             coverImageView.image = UIImage(named: "default_cover_big")
         } else {
-            coverImageView.hidden = false
-            coverBgImageView.image = UIImage(named: "player_bg")
-            if track!.hasHqThumbnail {
-                coverImageView.sd_setImageWithURL(NSURL(string: track!.thumbnailUrl!),
-                    placeholderImage: UIImage(named: "default_cover_big"), completed: {
-                        (image: UIImage!, error: NSError!, cacheType:SDImageCacheType, imageURL: NSURL!) -> Void in
-                        if (error != nil) {
-                            self.coverImageView.image = UIImage(named: "default_cover_big")
-                        }
-                        
-                        DropbeatPlayer.defaultPlayer.currentTrackArtwork = image
-                })
-            } else {
-                coverImageView.image = UIImage(named: "default_cover_big")!
-            }
+            coverImageView.setImageForTrack(track!, size: .LARGE)
         }
     }
     

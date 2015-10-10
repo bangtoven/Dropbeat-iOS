@@ -4,7 +4,7 @@
 
 import Foundation
 
-let RELEASE = false
+let RELEASE = true
 
 extension ApiPath {
     static let hostV2 = RELEASE ? "http://dropbeat.net/api/v2/" : "http://spark.coroutine.io/api/v2/"
@@ -137,7 +137,3 @@ public class CorePath {
     
 }
 
-public class YoutubeApiPath {
-    static let host = "https://www.googleapis.com/youtube/v3/"
-    static let playlistItems = host + "playlistItems/"
-}

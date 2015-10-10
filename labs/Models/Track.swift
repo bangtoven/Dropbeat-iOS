@@ -26,28 +26,64 @@ enum SourceType: String {
     }
 }
 
-extension Track {
-    func getYoutubeStreamURL(quality:XCDYouTubeVideoQuality, callback:(streamURL:String?, duration:Double?, error:NSError?)->Void) {
-        guard self.type == .YOUTUBE else {
-            let error = NSError(domain: "TrackYouTubeStreamURL", code: -1, userInfo: nil)
-            callback(streamURL: nil, duration: nil, error: error)
-            return
+extension UIImageView {
+    enum ThumnailSize { case LARGE; case SMALL }
+    func setImageForTrack(track: Track, size: ThumnailSize, var needsHighDef: Bool = true) {
+        if size == .SMALL {
+            needsHighDef = false
         }
         
-        XCDYouTubeClient.defaultClient().getVideoWithIdentifier(self.id, completionHandler: {
-            (video: XCDYouTubeVideo?, error: NSError?) -> Void in
-            if error != nil {
-                callback(streamURL: nil, duration:nil, error: error)
-                return
+        let placeHolder = size == .LARGE ?
+            UIImage(named: "default_cover_big") :
+            UIImage(named: "default_artwork")
+        
+        switch track.type {
+        case .YOUTUBE:
+            let lowUrlString = "http://img.youtube.com/vi/\(track.id)/mqdefault.jpg"
+            let highUrlString = "http://img.youtube.com/vi/\(track.id)/sddefault.jpg"
+            
+            func cropImage16_9(image: UIImage) -> UIImage {
+                let newHeight = image.size.width * 9/16
+                let rect = CGRectMake(
+                    0, 0.5 * (image.size.height - newHeight),
+                    image.size.width, newHeight)
+                let imageRef = CGImageCreateWithImageInRect(image.CGImage, rect)
+                let croppedImage = UIImage(CGImage: imageRef!)
+                return croppedImage
             }
             
-            if let streamURL = video?.streamURLs[quality.rawValue] as? NSURL {
-                callback(streamURL: streamURL.absoluteString, duration:video?.duration, error: nil)
-            } else {
-                let e = NSError(domain: "TrackYouTubeStreamURL", code: -2, userInfo: nil)
-                callback(streamURL: nil, duration:nil, error: e)
+            if needsHighDef == false {
+                self.sd_setImageWithURL(NSURL(string: lowUrlString), placeholderImage: placeHolder)
             }
-        })
+            else if let notNilHasHigh = track.hasHighDefThumbnail {
+                let urlString = notNilHasHigh ? highUrlString : lowUrlString
+                self.sd_setImageWithURL(NSURL(string: urlString), placeholderImage: placeHolder) {
+                    (image, error, cacheType, imageURL) -> Void in
+                    
+                    self.image = cropImage16_9(image)
+                }
+            }
+            else {
+                self.sd_setImageWithURL(NSURL(string: highUrlString), placeholderImage: placeHolder) {
+                    (image, error, cacheType, imageURL) -> Void in
+                    
+                    if let _ = error {
+                        track.hasHighDefThumbnail = false
+                        self.setImageForTrack(track, size: size, needsHighDef: false)
+                        return
+                    } else {
+                        track.hasHighDefThumbnail = true
+                        self.image = cropImage16_9(image)
+                    }
+                }
+            }
+        default:
+            if let urlString = track.thumbnailUrl {
+                self.sd_setImageWithURL(NSURL(string: urlString), placeholderImage: placeHolder)
+            } else {
+                self.image = placeHolder
+            }
+        }
     }
 }
 
@@ -70,36 +106,12 @@ class Track {
     var title: String
     var type: SourceType
     var tag: String?
-    var streamUrl: String {
-        get {
-            switch self.type {
-            case .YOUTUBE:
-                print("this is very unusal that youtube track asks for stream URL.")
-                return self.id
-            case .SOUNDCLOUD:
-                let key = Track.soundCloudKey
-                return "https://api.soundcloud.com/tracks/\(self.id)/stream?client_id=\(key)"
-            default:
-                return self.id.stringByRemovingPercentEncoding!
-            }
-        }
-    }
-    
     var drop: Drop?
-    var thumbnailUrl: String?
-    var hasHqThumbnail:Bool {
-        get {
-            if self.thumbnailUrl == nil {
-                return false
-            }
-            if self.thumbnailUrl!.indexOf("http://img.youtube.com") >= 0 {
-                return false
-            }
-            return true
-        }
-    }
     var user: BaseUser?
     var releaseDate: NSDate?
+    
+    var hasHighDefThumbnail: Bool?
+    var thumbnailUrl: String?
     
     var isLiked: Bool {
         get {
@@ -111,7 +123,45 @@ class Track {
             return false
         }
     }
-
+    
+    var streamUrl: String {
+        get {
+            switch self.type {
+            case .YOUTUBE:
+                print("this is very exceptional case that youtube track asks for stream URL.")
+                return self.id
+            case .SOUNDCLOUD:
+                let key = Track.soundCloudKey
+                return "https://api.soundcloud.com/tracks/\(self.id)/stream?client_id=\(key)"
+            default:
+                return self.id.stringByRemovingPercentEncoding!
+            }
+        }
+    }
+    
+    func getYouTubeStreamURL(quality:XCDYouTubeVideoQuality, callback:(streamURL:String?, duration:Double?, error:NSError?)->Void) {
+        guard self.type == .YOUTUBE else {
+            let error = NSError(domain: "TrackYouTubeStreamURL", code: -1, userInfo: nil)
+            callback(streamURL: nil, duration: nil, error: error)
+            return
+        }
+        
+        XCDYouTubeClient.defaultClient().getVideoWithIdentifier(self.id, completionHandler: {
+            (video: XCDYouTubeVideo?, error: NSError?) -> Void in
+            if error != nil {
+                callback(streamURL: nil, duration:nil, error: error)
+                return
+            }
+            
+            if let streamURL = video?.streamURLs[quality.rawValue] as? NSURL {
+                callback(streamURL: streamURL.absoluteString, duration:video?.duration, error: nil)
+            } else {
+                let e = NSError(domain: "TrackYouTubeStreamURL", code: -2, userInfo: nil)
+                callback(streamURL: nil, duration:nil, error: e)
+            }
+        })
+    }
+    
     init(id: String, title: String, type: SourceType, tag: String? = nil, thumbnailUrl: String? = nil, drop: Drop? = nil, releaseDate: NSDate? = nil) {
         self.id = id
         self.title = title
@@ -535,7 +585,7 @@ class PlayLog {
         
         request(.POST, ApiPath.logPlaybackDetail, parameters: log, encoding: .JSON)
             .responseJSON { (req, resp, result) -> Void in
-                print("playback log posted: " + result.description)
+                print("playback detail log posted: " + result.description)
         }
     }
 }

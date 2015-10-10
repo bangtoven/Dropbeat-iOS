@@ -216,6 +216,10 @@
 		739C8F5F1BB340FE00BC9EB7 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		73A661961BC6EC5F00DD1179 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A661951BC6EC5F00DD1179 /* PlayerViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		73A661971BC6EC5F00DD1179 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A661951BC6EC5F00DD1179 /* PlayerViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		73A661A21BC9927900DD1179 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73A6619E1BC9923200DD1179 /* LNPopupController.framework */; };
+		73A661A31BC9927900DD1179 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73A6619E1BC9923200DD1179 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		73A661A71BC9929F00DD1179 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73A6619E1BC9923200DD1179 /* LNPopupController.framework */; };
+		73A661A81BC9929F00DD1179 /* LNPopupController.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73A6619E1BC9923200DD1179 /* LNPopupController.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		73A6864A1BA9A33600DA29DC /* Feed.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCEA1B9F683100444179 /* Feed.storyboard */; };
 		73AB346B1BB15AAE0031E2CC /* JHImageTransitionSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 73AB346A1BB15AAE0031E2CC /* JHImageTransitionSegue.m */; settings = {ASSET_TAGS = (); }; };
 		73AB346D1BB186B90031E2CC /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AB346C1BB186B90031E2CC /* ProfileViewController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -286,6 +290,55 @@
 		FCD1DA8F1B04CCB200F9EA70 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCD1DA8E1B04CCB200F9EA70 /* Images.xcassets */; };
 		FCD1DA921B04CCB200F9EA70 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCD1DA901B04CCB200F9EA70 /* LaunchScreen.xib */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		73A6619D1BC9923200DD1179 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 73A661991BC9923200DD1179 /* LNPopupController.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 39DB52E51B5823330061C589;
+			remoteInfo = LNPopupController;
+		};
+		73A661A41BC9927900DD1179 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 73A661991BC9923200DD1179 /* LNPopupController.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 39DB52E41B5823330061C589;
+			remoteInfo = LNPopupController;
+		};
+		73A661A91BC9929F00DD1179 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 73A661991BC9923200DD1179 /* LNPopupController.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 39DB52E41B5823330061C589;
+			remoteInfo = LNPopupController;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		73A661A61BC9927900DD1179 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				73A661A31BC9927900DD1179 /* LNPopupController.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		73A661AB1BC9929F00DD1179 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				73A661A81BC9929F00DD1179 /* LNPopupController.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		580621321B08CBAA009012D5 /* FeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = FeedViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -442,12 +495,12 @@
 		7361FCEC1B9F683500444179 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Feed.strings; sourceTree = "<group>"; };
 		7361FCF81B9F687E00444179 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
 		7361FCFB1B9F688000444179 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Settings.strings; sourceTree = "<group>"; };
-		738646111BA758BA00C21650 /* OldPlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = OldPlayerViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		738646151BA7631D00C21650 /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
 		738646161BA7631D00C21650 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
 		739C8F5C1BB340E200BC9EB7 /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Explore.storyboard; sourceTree = "<group>"; };
 		739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		73A661951BC6EC5F00DD1179 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		73A661991BC9923200DD1179 /* LNPopupController.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LNPopupController.xcodeproj; path = Libraries/LNPopupController/LNPopupController.xcodeproj; sourceTree = SOURCE_ROOT; };
 		73AB34691BB15AAE0031E2CC /* JHImageTransitionSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHImageTransitionSegue.h; sourceTree = "<group>"; };
 		73AB346A1BB15AAE0031E2CC /* JHImageTransitionSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JHImageTransitionSegue.m; sourceTree = "<group>"; };
 		73AB346C1BB186B90031E2CC /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
@@ -534,6 +587,7 @@
 				73AECC121BC6B7EA0040F0AF /* CoreData.framework in Frameworks */,
 				734C7DDF1BB4C1DA0071678C /* Raygun4iOS.framework in Frameworks */,
 				734C7DE01BB4C1DA0071678C /* Bolts.framework in Frameworks */,
+				73A661A71BC9929F00DD1179 /* LNPopupController.framework in Frameworks */,
 				734C7DDB1BB4C1DA0071678C /* FBSDKShareKit.framework in Frameworks */,
 				734C7DE11BB4C1DA0071678C /* FBSDKCoreKit.framework in Frameworks */,
 				734C7DE21BB4C1DA0071678C /* FBSDKLoginKit.framework in Frameworks */,
@@ -556,6 +610,7 @@
 				73AECC131BC6B7F10040F0AF /* CoreData.framework in Frameworks */,
 				588693CE1B13C4C500566124 /* Raygun4iOS.framework in Frameworks */,
 				588693CA1B13C3F600566124 /* Bolts.framework in Frameworks */,
+				73A661A21BC9927900DD1179 /* LNPopupController.framework in Frameworks */,
 				73FC90D01BAE79CD00284B8A /* FBSDKShareKit.framework in Frameworks */,
 				588693CB1B13C3F600566124 /* FBSDKCoreKit.framework in Frameworks */,
 				588693CC1B13C3F600566124 /* FBSDKLoginKit.framework in Frameworks */,
@@ -821,7 +876,6 @@
 			children = (
 				FCD1DA8B1B04CCB200F9EA70 /* Main.storyboard */,
 				586D166D1B0B972400C5147F /* StartupViewController.swift */,
-				738646111BA758BA00C21650 /* OldPlayerViewController.swift */,
 				5890D6191B05484A00AAEAE5 /* CenterViewControllers.swift */,
 				5890D6151B0538CD00AAEAE5 /* SearchViewController.swift */,
 				7361FCE31B9F5E7F00444179 /* EmailSubmitViewController.swift */,
@@ -898,6 +952,14 @@
 				739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */,
 			);
 			name = Explore;
+			sourceTree = "<group>";
+		};
+		73A6619A1BC9923200DD1179 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				73A6619E1BC9923200DD1179 /* LNPopupController.framework */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 		73AB34781BB1D3580031E2CC /* ACEExpandableTextCell */ = {
@@ -1034,6 +1096,7 @@
 		FCD1DA851B04CCB200F9EA70 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				73A661991BC9923200DD1179 /* LNPopupController.xcodeproj */,
 				58EAB3DE1B0D11110075304E /* Utils.swift */,
 				587DCD121B6D91F900AF792D /* Extension.swift */,
 				738646151BA7631D00C21650 /* GradientView.h */,
@@ -1061,10 +1124,12 @@
 				734C7D6D1BB4C1DA0071678C /* Sources */,
 				734C7DDA1BB4C1DA0071678C /* Frameworks */,
 				734C7DEB1BB4C1DA0071678C /* Resources */,
+				73A661AB1BC9929F00DD1179 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				73A661AA1BC9929F00DD1179 /* PBXTargetDependency */,
 			);
 			name = "for test";
 			productName = labs;
@@ -1078,10 +1143,12 @@
 				FCD1DA7E1B04CCB200F9EA70 /* Sources */,
 				FCD1DA7F1B04CCB200F9EA70 /* Frameworks */,
 				FCD1DA801B04CCB200F9EA70 /* Resources */,
+				73A661A61BC9927900DD1179 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				73A661A51BC9927900DD1179 /* PBXTargetDependency */,
 			);
 			name = labs;
 			productName = labs;
@@ -1120,6 +1187,12 @@
 			mainGroup = FCD1DA791B04CCB200F9EA70;
 			productRefGroup = FCD1DA831B04CCB200F9EA70 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 73A6619A1BC9923200DD1179 /* Products */;
+					ProjectRef = 73A661991BC9923200DD1179 /* LNPopupController.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				FCD1DA811B04CCB200F9EA70 /* labs */,
@@ -1127,6 +1200,16 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		73A6619E1BC9923200DD1179 /* LNPopupController.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = LNPopupController.framework;
+			remoteRef = 73A6619D1BC9923200DD1179 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		734C7DEB1BB4C1DA0071678C /* Resources */ = {
@@ -1410,6 +1493,19 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		73A661A51BC9927900DD1179 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LNPopupController;
+			targetProxy = 73A661A41BC9927900DD1179 /* PBXContainerItemProxy */;
+		};
+		73A661AA1BC9929F00DD1179 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = LNPopupController;
+			targetProxy = 73A661A91BC9929F00DD1179 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		586F49B91B7FE5010039CC6B /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
@@ -1483,7 +1579,7 @@
 					"$(PROJECT_DIR)/Libraries/Raygun4iOS",
 				);
 				INFOPLIST_FILE = "labs copy-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1515,7 +1611,7 @@
 					"$(PROJECT_DIR)/Libraries/Raygun4iOS",
 				);
 				INFOPLIST_FILE = "labs copy-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1627,7 +1723,7 @@
 					"$(PROJECT_DIR)/Libraries/Raygun4iOS",
 				);
 				INFOPLIST_FILE = labs/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1659,7 +1755,7 @@
 					"$(PROJECT_DIR)/Libraries/Raygun4iOS",
 				);
 				INFOPLIST_FILE = labs/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

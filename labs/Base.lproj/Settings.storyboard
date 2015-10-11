@@ -11,12 +11,11 @@
             <objects>
                 <navigationController id="wrH-6K-TL6" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="OEY-hf-yf0">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="OEY-hf-yf0">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
                         <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
-                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                         </textAttributes>
@@ -38,10 +37,10 @@
                         <viewControllerLayoutGuide type="bottom" id="5dN-D0-Zay"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Aod-3e-bpJ">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gZq-vN-jeU">
+                            <webView contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gZq-vN-jeU">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -280,6 +279,7 @@
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" title="Settings" id="PnR-Gj-UaB">
                         <barButtonItem key="backBarButtonItem" title=" " id="QyO-jC-a6c"/>
+                        <barButtonItem key="leftBarButtonItem" enabled="NO" title=" " id="J1E-RO-YQE"/>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
@@ -304,10 +304,10 @@
                         <viewControllerLayoutGuide type="bottom" id="HLb-WZ-ruf"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="0T0-la-QxF">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="Xs1-bK-OKC" customClass="TPKeyboardAvoidingScrollView">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" directionalLockEnabled="YES" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" keyboardDismissMode="onDrag" translatesAutoresizingMaskIntoConstraints="NO" id="Xs1-bK-OKC" customClass="TPKeyboardAvoidingScrollView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uyk-HL-41Q" userLabel="scrollInnterView">
@@ -448,10 +448,10 @@
                         <viewControllerLayoutGuide type="bottom" id="N8Q-it-Pdl"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="b2b-at-e6g">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GV5-Vd-u4x">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GV5-Vd-u4x">
                                 <rect key="frame" x="50" y="104" width="220" height="46"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.2274509804" green="0.3411764706" blue="0.58431372550000005" alpha="1" colorSpace="calibratedRGB"/>
@@ -469,7 +469,7 @@
                                     <action selector="onSigninWithFacebookBtnClicked:" destination="o1U-g9-yCX" eventType="touchUpInside" id="HQz-Ln-VM5"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gF3-PM-yQd">
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gF3-PM-yQd">
                                 <rect key="frame" x="50" y="170" width="220" height="46"/>
                                 <animations/>
                                 <constraints>
@@ -1394,8 +1394,8 @@ PASSWORD</string>
         <image name="next-96" width="96" height="96"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="0cz-K0-oaH"/>
-        <segue reference="2bs-21-K3o"/>
+        <segue reference="8t3-qt-1PE"/>
+        <segue reference="lRw-PC-czC"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
 </document>

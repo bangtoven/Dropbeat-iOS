@@ -7,15 +7,16 @@
 //
 
 import UIKit
+import LNPopupController
 
 class PlayerViewController: GAITrackedViewController {
 
+    var main: MainTabBarController!
+    
     private let player = DropbeatPlayer.defaultPlayer
 
     private var timer: NSTimer?
-    private var duration: Double?
-
-    @IBOutlet weak var hidePlayerButton: UIButton!
+    private var duration: Double = 0.0
     
     @IBOutlet weak var playerTitleHeightConstaint: NSLayoutConstraint!
     
@@ -35,75 +36,137 @@ class PlayerViewController: GAITrackedViewController {
     @IBOutlet weak var prevButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
     
+    private var popupPlayButton: UIBarButtonItem!
+    private var popupPauseButton: UIBarButtonItem!
+    private var popupLoadingView: UIBarButtonItem!
+    private var popupNextButton: UIBarButtonItem!
+    
     @IBOutlet weak var likeProgIndicator: UIActivityIndicatorView!
     @IBOutlet weak var likeBtn: UIButton!
     @IBOutlet weak var shareBtn: UIButton!
     @IBOutlet weak var repeatBtn: UIButton!
     @IBOutlet weak var shuffleBtn: UIButton!
     
-
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        popupPlayButton = UIBarButtonItem(image: UIImage(named: "popup_play"), style: .Plain, target: self, action: "playBtnClicked:")
+        popupPauseButton = UIBarButtonItem(image: UIImage(named: "popup_pause"), style: .Plain, target: self, action: "pauseBtnClicked:")
+        popupNextButton = UIBarButtonItem(image: UIImage(named: "popup_next"), style: .Plain, target: self, action: "onNextBtnClicked:")
+        
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        activityIndicator.startAnimating()
+        activityIndicator.color = UIColor.dropbeatColor()
+        activityIndicator.frame = CGRectMake(0, 0, 9, 10)
+        popupLoadingView = UIBarButtonItem(customView: activityIndicator)
+        
+        self.popupItem.leftBarButtonItems = [popupLoadingView, popupNextButton]
+        self.popupItem.rightBarButtonItems = [UIBarButtonItem(image: UIImage(named: "popup_playlist"), style: .Plain, target: self, action: "onPlaylistBtnClicked:")]
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.progressSliderBar.setThumbImage(UIImage(named: "ic_slider-thumb"), forState: .Normal)
+        
+        if UIScreen.mainScreen().bounds.height == 480 {
+            resizeViewUnder4inch()
+        }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "trackChanged:",
+            name: DropbeatPlayerTrackChangedNotification,
+            object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: "playerStateChanged:",
             name: DropbeatPlayerStateChangedNotification,
             object: nil)
+    }
+
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
-        self.timer = NSTimer(
-            timeInterval: 0.5,
-            target: self,
-            selector: "updateProgressView",
-            userInfo: nil,
-            repeats: true)
-        NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
-        
-        self.duration = nil
-        
-        updatePlayView(self.player.state)
-        updateCoverView()
+        updateViewForState(self.player.state)
+        updateViewForCurrentTrack()
         updateProgressView()
         updateLikeBtn()
         updateRepeatView()
         updateShuffleView()
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self,
-            name: DropbeatPlayerStateChangedNotification,
-            object: nil)
+    func trackChanged(noti: NSNotification) {
+        if let title = self.player.currentTrack?.title {
+            self.popupItem.title = title
+        }
         
-        self.timer?.invalidate()
+        if .Open == main.popupPresentationState {
+            updateViewForCurrentTrack()
+        }
     }
     
     func playerStateChanged(noti: NSNotification) {
-        if let state = STKAudioPlayerState(rawValue: noti.object as! UInt) {
-            if state == .Error {
-                let errMsg = NSLocalizedString("This track is not streamable", comment:"")
-                ViewUtils.showToast(self, message: errMsg)
+        if let newState = STKAudioPlayerState(rawValue: noti.object as! UInt) {
+            self.duration = self.player.duration
+            
+            self.timer?.invalidate()
+            self.timer = nil
+            
+            if newState == .Playing {
+                self.timer = NSTimer(
+                    timeInterval: 0.5,
+                    target: self,
+                    selector: "updateProgressView",
+                    userInfo: nil,
+                    repeats: true)
+                NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
             }
-            updatePlayView(state)
-            updateCoverView()
+
+            if .Open == main.popupPresentationState {
+                updateViewForState(newState)
+            }
+            
+            var firstItem: UIBarButtonItem!
+            switch newState {
+            case .Running, .Buffering:
+                firstItem = self.popupLoadingView
+            case .Paused:
+                firstItem = self.popupPlayButton
+            case .Playing:
+                firstItem = self.popupPauseButton
+            default:
+                for item in self.popupItem.leftBarButtonItems! {
+                    item.enabled = false
+                }
+                return
+            }
+
+            firstItem.enabled = (newState == .Paused) || (newState == .Playing)
+            popupNextButton.enabled = firstItem.enabled
+            
+            self.popupItem.leftBarButtonItems = [firstItem, popupNextButton]
         }
     }
     
     // MARK: - Update UI
     
-    func updateCoverView() {
+    func updateViewForCurrentTrack() {
+        print("make time label to 00:00")
+        progressSliderBar.value = 0
+        progressTextView.text = getTimeFormatText(0)
+        totalTextView.text = getTimeFormatText(0)
+
         if let track = self.player.currentTrack {
-            coverImageView.setImageForTrack(track, size: .LARGE)
+            self.playerTitle.text = track.title
+            self.coverImageView.setImageForTrack(track, size: .LARGE)
         } else {
-            coverImageView.image = UIImage(named: "default_cover_big")
+            self.coverImageView.image = UIImage(named: "default_cover_big")
         }
     }
     
-    func updatePlayView(state: STKAudioPlayerState) {
-        
-        if state != .Playing {
-            self.duration = nil
-        }
-        
-        playerTitle.text = self.player.currentTrack?.title
+    func updateViewForState(state: STKAudioPlayerState) {
+        totalTextView.text = getTimeFormatText(self.duration)
+
+        progressSliderBar.enabled = (state == .Playing)
         
         switch state {
         case .Ready:
@@ -111,12 +174,6 @@ class PlayerViewController: GAITrackedViewController {
             break
         case .Running:
             playerStatus.text = NSLocalizedString("LOADING", comment:"")
-            
-            print("make time label to 00:00")
-            progressSliderBar.value = 0
-            progressTextView.text = getTimeFormatText(0)
-            totalTextView.text = getTimeFormatText(0)
-            
             break
         case .Playing:
             playerStatus.text = NSLocalizedString("PLAYING", comment:"")
@@ -170,28 +227,18 @@ class PlayerViewController: GAITrackedViewController {
     }
     
     func updateProgressView() {
-        if self.player.state == .Playing {
-            progressSliderBar.enabled = true
+        let total = self.duration
+        if (total != 0) {
+            let curr = self.player.progress
+            let progress = Float(curr / total)
+            self.popupItem.progress = progress
             
-            if false == progressSliderBar.highlighted {
-                if self.duration == nil {
-                    self.duration = self.player.duration
-                }
-                let total = self.duration!
-                if (total == 0) {
-                    progressSliderBar.enabled = false
-                } else {
-                    let curr = self.player.progress
-                    if (progressSliderBar.enabled) {
-                        progressSliderBar.value = Float(curr / total * 100.0)
-                    }
-
-                    progressTextView.text = getTimeFormatText(curr)
-                    totalTextView.text = getTimeFormatText(total)
+            if .Open == main.popupPresentationState {
+                progressTextView.text = getTimeFormatText(curr)
+                if false == progressSliderBar.highlighted {
+                    progressSliderBar.value = progress
                 }
             }
-        } else {
-            progressSliderBar.enabled = false
         }
     }
     
@@ -239,30 +286,33 @@ class PlayerViewController: GAITrackedViewController {
     
     // MARK: - User Interactions
     
-    @IBAction func playBtnClicked(sender: UIButton?) {
+    func showToast(message: String) {
+        let vc = (main.popupPresentationState == .Open) ? self : main
+        ViewUtils.showToast(vc, message: message)
+    }
+    
+    @IBAction func playBtnClicked(sender: UIView?) {
         self.player.resume()
     }
     
-    @IBAction func pauseBtnClicked(sender: UIButton?) {
+    @IBAction func pauseBtnClicked(sender: UIView?) {
         self.player.pause()
     }
     
-    @IBAction func onNextBtnClicked(sender: UIButton) {
+    @IBAction func onNextBtnClicked(sender: UIView) {
         if self.player.next() == false {
-            let errMsg = NSLocalizedString("Last track of playlist.", comment:"")
-            ViewUtils.showToast(self, message: errMsg)
+            self.showToast(NSLocalizedString("Last track of playlist.", comment:""))
         }
     }
     
-    @IBAction func onPrevBtnClicked(sender: UIButton) {
+    @IBAction func onPrevBtnClicked(sender: UIView) {
         if self.player.prev() == false {
-            let errMsg = NSLocalizedString("First track of playlist.", comment:"")
-            ViewUtils.showToast(self, message: errMsg)
+            self.showToast(NSLocalizedString("First track of playlist.", comment:""))
         }
     }
     
     @IBAction func onProgressValueChanged(sender: UISlider) {
-        let curr = duration! * Double(sender.value / 100.0)
+        let curr = duration * Double(sender.value)
         progressTextView.text = getTimeFormatText(curr)
     }
     
@@ -280,14 +330,18 @@ class PlayerViewController: GAITrackedViewController {
         updateShuffleView()
     }
     
-    @IBAction func onPlaylistBtnClicked(sender: UIButton) {
+    @IBAction func onPlaylistBtnClicked(sender: UIView) {
         guard let playlist = self.player.currentPlaylist else {
-            ViewUtils.showToast(self,
-                message: NSLocalizedString("Failed to find playlist", comment:""))
+            self.showToast(NSLocalizedString("Failed to find playlist", comment:""))
             return
         }
         
-        performSegueWithIdentifier("PlaylistSegue", sender: playlist)
+        if main.popupPresentationState == .Open {
+            self.performSegueWithIdentifier("PlaylistSegue", sender: playlist)
+        } else {
+            main.performSegueWithIdentifier("PlaylistSegue", sender: playlist)
+        }
+        
     }
     
     @IBAction func onAddToPlaylistBtnClicked(sender: UIButton) {
@@ -314,7 +368,7 @@ class PlayerViewController: GAITrackedViewController {
     
     @IBAction func onLikeBtnClicked(sender: AnyObject) {
         guard let track = self.player.currentTrack else {
-            ViewUtils.showToast(self, message: NSLocalizedString("No track selected", comment:""))
+            self.showToast(NSLocalizedString("No track selected", comment:""))
             return
         }
         
@@ -346,8 +400,7 @@ class PlayerViewController: GAITrackedViewController {
     
     @IBAction func onTrackShareBtnClicked(sender: UIButton) {
         guard let track = self.player.currentTrack else {
-            ViewUtils.showToast(self,
-                message: NSLocalizedString("No track selected", comment:""))
+            self.showToast(NSLocalizedString("No track selected", comment:""))
             return
         }
         
@@ -385,15 +438,8 @@ class PlayerViewController: GAITrackedViewController {
     
     // MARK: -
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        hidePlayerButton.layer.cornerRadius = 10.0
-        progressSliderBar.setThumbImage(UIImage(named: "ic_slider-thumb"), forState: .Normal)
-        
-        if UIScreen.mainScreen().bounds.height == 480 {
-            resizeViewUnder4inch()
-        }
+    override func prefersStatusBarHidden() -> Bool {
+        return true
     }
     
     func resizeViewUnder4inch() {

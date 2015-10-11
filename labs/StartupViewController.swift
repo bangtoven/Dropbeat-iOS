@@ -15,9 +15,6 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.addObserver(self, selector: "appDidBecomeActive:",
-            name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -35,6 +32,9 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "StartupScreen"
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "appDidBecomeActive:",
+            name: UIApplicationDidBecomeActiveNotification, object: nil)
     }
 
     override func didReceiveMemoryWarning() {

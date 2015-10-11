@@ -10,8 +10,9 @@ import UIKit
 import MediaPlayer
 import AVFoundation
 
-public let DropbeatPlayerStateChangedNotification = "DropbeatPlayerStateChangedNotification"
-public let DropbeatPlayerErrorNotification = "DropbeatPlayerErrorNotification"
+public let DropbeatPlayerTrackChangedNotification = "TrackChangedNotification"
+public let DropbeatPlayerStateChangedNotification = "StateChangedNotification"
+public let DropbeatPlayerErrorNotification = "ErrorNotification"
 
 class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
@@ -88,6 +89,8 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
                 
                 if self.currentTrack == nil || track.id != self.currentTrack!.id {
                     self.currentTrack = track
+                    let noti = NSNotification(name: DropbeatPlayerTrackChangedNotification, object: track, userInfo: nil)
+                    NSNotificationCenter.defaultCenter().postNotification(noti)
                     print("new track: \(track.title)")
                 }
                 
@@ -272,8 +275,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     func seekTo(percent: Float) {
-        let time = Double(percent) / 100.0 * self.duration
-        print(time)
+        let time = Double(percent) * self.duration
         self.player.seekToTime(time)
         
         if let log = self.playbackLog {
@@ -351,7 +353,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
     func audioPlayer(audioPlayer: STKAudioPlayer!, didFinishPlayingQueueItemId queueItemId: NSObject!, withReason stopReason: STKAudioPlayerStopReason, andProgress progress: Double, andDuration duration: Double)
     {
-        print("Stopped: \(stopReason.rawValue)")
+        print("FinishPlaying: \(stopReason.rawValue)")
         
         self.timer?.invalidate()
         self.timer = nil

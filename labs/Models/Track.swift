@@ -582,7 +582,7 @@ class PlayLog {
             data.append(["type":"end"])
         }
         log["data"] = data
-        
+
         request(.POST, ApiPath.logPlaybackDetail, parameters: log, encoding: .JSON)
             .responseJSON { (req, resp, result) -> Void in
                 print("playback detail log posted: " + result.description)

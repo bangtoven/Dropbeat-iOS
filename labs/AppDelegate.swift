@@ -86,14 +86,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     override func remoteControlReceivedWithEvent(event: UIEvent?) {
         DropbeatPlayer.defaultPlayer.remoteControlReceivedWithEvent(event)
     }
-    
-    func applicationWillEnterForeground(application: UIApplication) {
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
-        loadAccountInfo()
-    }
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        loadAccountInfo()
         FBSDKAppEvents.activateApp()
     }
     
@@ -136,10 +132,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 }
             }
         }
-    }
-
-    func applicationWillTerminate(application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
     
     func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {

@@ -7,13 +7,13 @@
 //
 
 import UIKit
+import LNPopupController
 
-class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
+class MainTabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.delegate = self
         self.tabBar.tintColor = UIColor.dropbeatColor()
         
         let navBar = UINavigationBar.appearance()
@@ -29,22 +29,33 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
             exceptPlaylistTab?.removeAtIndex(3)
             self.setViewControllers(exceptPlaylistTab, animated: true)
         }
-    }
-    
-    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
-        if viewController == self.viewControllers?.last && Account.getCachedAccount() == nil {
-            NeedAuthViewController.showNeedAuthViewController(self)
-            return false
-        }
-        return true
-    }
-    
-    func hidePlayerView() {
         
+        self.popupBar.translucent = false
+        self.popupBar.tintColor = UIColor.dropbeatColor()
     }
     
     func showPlayerView() {
-        
+        switch self.popupPresentationState {
+        case .Closed:
+            self.tabBarController?.openPopupAnimated(true, completion: nil)
+        case .Hidden:
+            let secondVC = self.storyboard?.instantiateViewControllerWithIdentifier("PlayerViewController")
+            secondVC?.popupItem.title = "씨발"
+            //        secondVC?.popupItem.subtitle = "과연?"
+            secondVC?.popupItem.progress = 0.7
+            
+            
+            self.presentPopupBarWithContentViewController(secondVC!, openPopup: true, animated: true, completion: nil)
+            
+        case .Open:
+            self.tabBarController?.dismissPopupBarAnimated(true, completion: nil)
+        case .Transitioning:
+            break
+        }
+    }
+    
+    func hidePlayerView() {
+        self.tabBarController?.dismissPopupBarAnimated(true, completion: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -52,12 +63,62 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "loadAppLinkRequest", name: NotifyKey.fromAppLink, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "playerStateChanged:",
+            name: DropbeatPlayerStateChangedNotification,
+            object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.fromAppLink, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+            name: DropbeatPlayerStateChangedNotification,
+            object: nil)
+    }
+    
+    func playerStateChanged(noti: NSNotification) {
+        if self.popupPresentationState == .Open {
+            return
+        }
+        
+        if let state = STKAudioPlayerState(rawValue: noti.object as! UInt) {
+            if state == .Error {
+                let errMsg = NSLocalizedString("This track is not streamable", comment:"")
+                ViewUtils.showToast(self, message: errMsg)
+            }
+            
+            switch state {
+            case .Running, .Buffering:
+                let player = self.storyboard?.instantiateViewControllerWithIdentifier("PlayerViewController") as! PlayerViewController
+                player.popupItem.title = "asdf"
+                player.main = self
+                self.presentPopupBarWithContentViewController(player, animated: true, completion: nil)
+                self.tabBar.backgroundImage = UIImage(named: "tabbar_bg")
+//            case .Paused, .Stopped:
+//                playBtn.hidden = false
+//                pauseBtn.hidden = true
+//                prevButton.enabled = true
+//                nextButton.enabled = true
+//                loadingView.hidden = true
+//            case .Playing:
+//                playBtn.hidden = true
+//                pauseBtn.hidden = false
+//                prevButton.enabled = true
+//                nextButton.enabled = true
+//                loadingView.hidden = true
+            default:
+//                playerTitle.text = ""
+//                playBtn.hidden = false
+//                playBtn.enabled = false
+//                pauseBtn.hidden = true
+//                prevButton.enabled = false
+//                nextButton.enabled = false
+//                loadingView.hidden = true
+                break
+            }
+        }
     }
     
     override func viewDidAppear(animated: Bool) {

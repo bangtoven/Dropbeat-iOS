@@ -45,6 +45,7 @@ const NSInteger LNBarStyleInherit = -1;
 		
 		_backgroundView = [[UIToolbar alloc] initWithFrame:frame];
 		_backgroundView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+//        _backgroundView.translucent = NO;
 		[self addSubview:_backgroundView];
 		
 		_toolbar = [[UIToolbar alloc] initWithFrame:fullFrame];
@@ -56,8 +57,9 @@ const NSInteger LNBarStyleInherit = -1;
 		_progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
 		_progressView.translatesAutoresizingMaskIntoConstraints = NO;
 		_progressView.trackImage = [UIImage alloc];
+        _progressView.trackTintColor = [UIColor lightGrayColor];
 		[_toolbar addSubview:_progressView];
-		[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_progressView(1)]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_progressView)]];
+		[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_progressView(2)]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_progressView)]];
 		[self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_progressView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(_progressView)]];
 		
 		_highlightView = [[UIView alloc] initWithFrame:self.bounds];
@@ -266,7 +268,7 @@ const NSInteger LNBarStyleInherit = -1;
 			}
 			
 			NSMutableParagraphStyle* paragraph = [NSMutableParagraphStyle new];
-			paragraph.alignment = NSTextAlignmentCenter;
+			paragraph.alignment = NSTextAlignmentLeft;
 			
 			NSMutableDictionary* defaultTitleAttribures = [@{NSParagraphStyleAttributeName: paragraph, NSFontAttributeName: [UIFont systemFontOfSize:12], NSForegroundColorAttributeName: self.barStyle == UIBarStyleDefault ? [UIColor blackColor] : [UIColor whiteColor]} mutableCopy];
 			[defaultTitleAttribures addEntriesFromDictionary:_titleTextAttributes];

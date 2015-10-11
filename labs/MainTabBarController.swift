@@ -54,16 +54,16 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
             self, selector: "loadAppLinkRequest", name: NotifyKey.fromAppLink, object: nil)
     }
     
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        loadAppLinkRequest()
-    }
-    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.fromAppLink, object: nil)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        loadAppLinkRequest()
     }
 
     func loadAppLinkRequest() {

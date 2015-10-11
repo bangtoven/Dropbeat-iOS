@@ -87,7 +87,7 @@
         <!--Navigation Controller-->
         <scene sceneID="a6x-FB-tes">
             <objects>
-                <navigationController id="VjF-Z9-XAd" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="navcon" id="VjF-Z9-XAd" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="UYa-V0-7kf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

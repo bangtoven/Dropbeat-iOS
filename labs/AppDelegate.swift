@@ -29,14 +29,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var appLink: AppLinkParam?
     
     func setRootViewToStartupViewController () {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let storyboard = UIStoryboard(name: "Launch", bundle: nil)
         let startupVC = storyboard.instantiateInitialViewController()
         self.window?.rootViewController = startupVC
     }
     
     func setRootViewToMainTabBarController () {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let main = storyboard.instantiateViewControllerWithIdentifier("MainTabBarController")
+        let main = storyboard.instantiateInitialViewController()
+        main?.view.tintColor = UIColor.dropbeatColor()
         self.window?.rootViewController = main
     }
     

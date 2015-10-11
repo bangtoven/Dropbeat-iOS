@@ -10,8 +10,8 @@
         <!--Navigation Controller-->
         <scene sceneID="eaK-tE-QuB">
             <objects>
-                <navigationController id="MPe-vs-g2a" sceneMemberID="viewController">
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                <navigationController storyboardIdentifier="navcon" id="MPe-vs-g2a" sceneMemberID="viewController">
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="m0I-JF-h5h">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -23,7 +23,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sgt-ET-2Gc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2762" y="1887"/>
+            <point key="canvasLocation" x="-2705" y="2071"/>
         </scene>
         <!--Profile-->
         <scene sceneID="WK1-Fe-VLM">
@@ -595,7 +595,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     </connections>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-2287" y="1317"/>
+            <point key="canvasLocation" x="-2287" y="1389"/>
         </scene>
         <!--Track Sub View Controller-->
         <scene sceneID="uTn-Zq-McQ">
@@ -782,7 +782,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kgV-ih-hPd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1925" y="1058"/>
+            <point key="canvasLocation" x="-1925" y="1130"/>
         </scene>
         <!--Storyboard Link-->
         <scene sceneID="O5x-k0-Rmj">
@@ -816,7 +816,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rGu-rB-Fsz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1539" y="1191"/>
+            <point key="canvasLocation" x="-1539" y="1263"/>
         </scene>
         <!--Channel Sub View Controller-->
         <scene sceneID="bOq-ky-gkS">
@@ -1092,7 +1092,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xFM-ei-Azc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1925" y="1317"/>
+            <point key="canvasLocation" x="-1925" y="1389"/>
         </scene>
         <!--Follow Info Table View Controller-->
         <scene sceneID="z5Z-qg-Lbv">
@@ -1195,7 +1195,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p5b-Xv-e8o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2705" y="1317"/>
+            <point key="canvasLocation" x="-2705" y="1389"/>
         </scene>
         <!--Favorite Genres-->
         <scene sceneID="7kG-Tq-P2k">

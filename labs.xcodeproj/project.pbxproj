@@ -211,6 +211,8 @@
 		7361FCF71B9F687E00444179 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCF91B9F687E00444179 /* Settings.storyboard */; };
 		736D71DD1BCA90A100D54188 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736D71DC1BCA90A100D54188 /* MainTabBarController.swift */; settings = {ASSET_TAGS = (); }; };
 		736D71DE1BCA95D400D54188 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736D71DC1BCA90A100D54188 /* MainTabBarController.swift */; settings = {ASSET_TAGS = (); }; };
+		737FAB191BCAAFC700C1347B /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 737FAB181BCAAFC700C1347B /* Launch.storyboard */; settings = {ASSET_TAGS = (); }; };
+		737FAB1A1BCAAFFA00C1347B /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 737FAB181BCAAFC700C1347B /* Launch.storyboard */; settings = {ASSET_TAGS = (); }; };
 		738646171BA7631D00C21650 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738646161BA7631D00C21650 /* GradientView.m */; };
 		739C8F5D1BB340E200BC9EB7 /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 739C8F5C1BB340E200BC9EB7 /* Explore.storyboard */; settings = {ASSET_TAGS = (); }; };
 		739C8F5F1BB340FE00BC9EB7 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -495,6 +497,7 @@
 		7361FCF81B9F687E00444179 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
 		7361FCFB1B9F688000444179 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Settings.strings; sourceTree = "<group>"; };
 		736D71DC1BCA90A100D54188 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		737FAB181BCAAFC700C1347B /* Launch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		738646151BA7631D00C21650 /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
 		738646161BA7631D00C21650 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
 		739C8F5C1BB340E200BC9EB7 /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Explore.storyboard; sourceTree = "<group>"; };
@@ -808,7 +811,6 @@
 				733EDD9D1BBC45A500925F50 /* EditProfileViewController.swift */,
 				73AB347B1BB1E8FE0031E2CC /* EditFavoriteGenreViewController.swift */,
 				737FAB161BCAA91E00C1347B /* Custom segue */,
-				7361FCD21B9F55D500444179 /* Settings */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -877,10 +879,8 @@
 			children = (
 				FCD1DA8B1B04CCB200F9EA70 /* Main.storyboard */,
 				736D71DC1BCA90A100D54188 /* MainTabBarController.swift */,
-				586D166D1B0B972400C5147F /* StartupViewController.swift */,
-				5890D6151B0538CD00AAEAE5 /* SearchViewController.swift */,
-				7361FCE31B9F5E7F00444179 /* EmailSubmitViewController.swift */,
 				73A661951BC6EC5F00DD1179 /* PlayerViewController.swift */,
+				5890D6151B0538CD00AAEAE5 /* SearchViewController.swift */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -939,6 +939,16 @@
 				734C7D581BB457EB0071678C /* LinkedImageTransitionSegue.m */,
 			);
 			name = "Custom segue";
+			sourceTree = "<group>";
+		};
+		737FAB171BCAAFAD00C1347B /* Launch */ = {
+			isa = PBXGroup;
+			children = (
+				737FAB181BCAAFC700C1347B /* Launch.storyboard */,
+				586D166D1B0B972400C5147F /* StartupViewController.swift */,
+				7361FCE31B9F5E7F00444179 /* EmailSubmitViewController.swift */,
+			);
+			name = Launch;
 			sourceTree = "<group>";
 		};
 		738BCA171BA4B07C00D00D34 /* AXStretchableHeader */ = {
@@ -1094,11 +1104,13 @@
 				FCD1DA871B04CCB200F9EA70 /* AppDelegate.swift */,
 				58C3E7A21B8A40C300822842 /* AddableTrackListViewController.swift */,
 				7361FCE51B9F628100444179 /* Model & etc */,
+				737FAB171BCAAFAD00C1347B /* Launch */,
 				7361FCD81B9F58B900444179 /* Main */,
 				7361FCCF1B9F55BA00444179 /* Feed */,
 				739C8F5B1BB340D400BC9EB7 /* Explore */,
 				73AB34801BB2C72C0031E2CC /* Playlist */,
 				732717441BAC8814003E0B68 /* Profile */,
+				7361FCD21B9F55D500444179 /* Settings */,
 			);
 			name = Dropbeat;
 			path = labs;
@@ -1232,6 +1244,7 @@
 				734C7DF21BB4C1DA0071678C /* Main.storyboard in Resources */,
 				734C7DF31BB4C1DA0071678C /* Localizable.stringsdict in Resources */,
 				734C7DF51BB4C1DA0071678C /* LaunchScreen.xib in Resources */,
+				737FAB1A1BCAAFFA00C1347B /* Launch.storyboard in Resources */,
 				734C7DF61BB4C1DA0071678C /* Profile.storyboard in Resources */,
 				734C7DF71BB4C1DA0071678C /* Explore.storyboard in Resources */,
 				734C7DF91BB4C1DA0071678C /* Images.xcassets in Resources */,
@@ -1251,6 +1264,7 @@
 				FCD1DA8D1B04CCB200F9EA70 /* Main.storyboard in Resources */,
 				586F49C71B805D290039CC6B /* Localizable.stringsdict in Resources */,
 				FCD1DA921B04CCB200F9EA70 /* LaunchScreen.xib in Resources */,
+				737FAB191BCAAFC700C1347B /* Launch.storyboard in Resources */,
 				7327174A1BAC8836003E0B68 /* Profile.storyboard in Resources */,
 				739C8F5D1BB340E200BC9EB7 /* Explore.storyboard in Resources */,
 				FCD1DA8F1B04CCB200F9EA70 /* Images.xcassets in Resources */,
@@ -1718,7 +1732,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = "";
@@ -1750,7 +1763,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = "";

@@ -199,8 +199,9 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
         if (indexPath.row < tracks.count) {
             cellHeight = 76
         } else if let parentVc = self.parentViewController as? UserViewController,
-            navigationBar = parentVc.navigationController?.navigationBar {
-                let minHeight = parentVc.view.frame.size.height - (CGRectGetMaxY(navigationBar.frame)+CGRectGetHeight(parentVc.tabBar.bounds))
+            navigationBar = parentVc.navigationController?.navigationBar,
+            tabBar = parentVc.tabBarController?.tabBar {
+                let minHeight = parentVc.view.frame.size.height - (CGRectGetMaxY(navigationBar.frame)+CGRectGetHeight(tabBar.frame)+CGRectGetHeight(parentVc.tabBar.bounds))
                 let diff = minHeight - (CELL_HIGHT * CGFloat(tracks.count))
                 if diff > 0 {
                     cellHeight = diff

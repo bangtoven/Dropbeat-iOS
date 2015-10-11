@@ -23,6 +23,7 @@ class ProfileViewController: UserViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateLikeView", name: NotifyKey.likeUpdated, object: nil)
         
         if self.isMovingToParentViewController() == false && presented == true {
@@ -89,7 +90,11 @@ class ProfileViewController: UserViewController {
         let header = self.headerView as! ProfileHeaderView
         
         let handler = { () -> Void in
-            let account = Account.getCachedAccount()!
+            guard let account = Account.getCachedAccount() else {
+                // TODO: account 없으면?
+                return
+            }
+            
             if account.favoriteGenreIds.count == 0 {
                 header.favoriteGenresLabel.text =
                     NSLocalizedString("No favorite genre selected", comment: "")

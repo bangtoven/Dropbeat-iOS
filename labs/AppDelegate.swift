@@ -42,6 +42,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+//        UINavigationBar.appearance().barTintColor = UIColor.redColor()
+        self.window?.backgroundColor = UIColor.whiteColor()
+        
         if let fromUrl = launchOptions?[UIApplicationLaunchOptionsURLKey] as? NSURL {
             handleCustomURL(fromUrl)
         }

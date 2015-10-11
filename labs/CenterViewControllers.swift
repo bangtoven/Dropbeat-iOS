@@ -36,7 +36,8 @@ class CenterViewController: BaseViewController, UITabBarDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         
-    
+        
+        
         initConstaints()
         
         // set first item
@@ -219,6 +220,8 @@ class CenterViewController: BaseViewController, UITabBarDelegate{
                 .instantiateViewControllerWithIdentifier("PlayerViewController")
             self.presentViewController(pvc, animated: true, completion: nil)
         }
+        
+        self.showTabBarPlayer(!self.isTabBarPlayerVisible)
         
         if type != .TEST {
             currentMenu = type

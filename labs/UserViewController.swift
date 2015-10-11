@@ -298,10 +298,9 @@ class UserViewController: AXStretchableHeaderTabViewController {
         switch ratio {
         case 0..<0.75:
             UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
-        case 0.75...1.0:
-            UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
         default:
-            break
+//        case 0.75...1.0:
+            UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
         }
         
         if let navBar = self.navigationController?.navigationBar {
@@ -353,9 +352,9 @@ class UserViewController: AXStretchableHeaderTabViewController {
             if let followed = self.baseUser?.isFollowed() {
                 header.followButton?.selected = followed
             }
-            
-            self.didHeightRatioChange(self.headerViewHeightRatio)
         }
+        
+        self.didHeightRatioChange(self.headerViewHeightRatio)
     }
     
     override func viewDidAppear(animated: Bool) {

@@ -211,6 +211,8 @@
 		734C7DFA1BB4C1DA0071678C /* DateTools.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 585BACFA1B85ED9900FE137A /* DateTools.bundle */; };
 		7361FCE41B9F5E7F00444179 /* EmailSubmitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7361FCE31B9F5E7F00444179 /* EmailSubmitViewController.swift */; };
 		7361FCF71B9F687E00444179 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCF91B9F687E00444179 /* Settings.storyboard */; };
+		736D71DD1BCA90A100D54188 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736D71DC1BCA90A100D54188 /* MainTabBarController.swift */; settings = {ASSET_TAGS = (); }; };
+		736D71DE1BCA95D400D54188 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736D71DC1BCA90A100D54188 /* MainTabBarController.swift */; settings = {ASSET_TAGS = (); }; };
 		738646171BA7631D00C21650 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738646161BA7631D00C21650 /* GradientView.m */; };
 		739C8F5D1BB340E200BC9EB7 /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 739C8F5C1BB340E200BC9EB7 /* Explore.storyboard */; settings = {ASSET_TAGS = (); }; };
 		739C8F5F1BB340FE00BC9EB7 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -495,6 +497,7 @@
 		7361FCEC1B9F683500444179 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Feed.strings; sourceTree = "<group>"; };
 		7361FCF81B9F687E00444179 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
 		7361FCFB1B9F688000444179 /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Settings.strings; sourceTree = "<group>"; };
+		736D71DC1BCA90A100D54188 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		738646151BA7631D00C21650 /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
 		738646161BA7631D00C21650 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
 		739C8F5C1BB340E200BC9EB7 /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Explore.storyboard; sourceTree = "<group>"; };
@@ -875,6 +878,7 @@
 			isa = PBXGroup;
 			children = (
 				FCD1DA8B1B04CCB200F9EA70 /* Main.storyboard */,
+				736D71DC1BCA90A100D54188 /* MainTabBarController.swift */,
 				586D166D1B0B972400C5147F /* StartupViewController.swift */,
 				5890D6191B05484A00AAEAE5 /* CenterViewControllers.swift */,
 				5890D6151B0538CD00AAEAE5 /* SearchViewController.swift */,
@@ -1086,8 +1090,8 @@
 				7361FCD81B9F58B900444179 /* Main */,
 				7361FCCF1B9F55BA00444179 /* Feed */,
 				739C8F5B1BB340D400BC9EB7 /* Explore */,
-				732717441BAC8814003E0B68 /* Profile */,
 				73AB34801BB2C72C0031E2CC /* Playlist */,
+				732717441BAC8814003E0B68 /* Profile */,
 			);
 			name = Dropbeat;
 			path = labs;
@@ -1348,6 +1352,7 @@
 				734C7DC21BB4C1DA0071678C /* NSData+ImageContentType.m in Sources */,
 				734C7DC31BB4C1DA0071678C /* ResponseSerialization.swift in Sources */,
 				734C7DC41BB4C1DA0071678C /* SDWebImagePrefetcher.m in Sources */,
+				736D71DE1BCA95D400D54188 /* MainTabBarController.swift in Sources */,
 				734C7DC51BB4C1DA0071678C /* UIImage+MultiFormat.m in Sources */,
 				734C7DC61BB4C1DA0071678C /* SDWebImageCompat.m in Sources */,
 				734C7DC71BB4C1DA0071678C /* RBStoryboardModalSegue.m in Sources */,
@@ -1467,6 +1472,7 @@
 				5886939A1B13B51300566124 /* NSData+ImageContentType.m in Sources */,
 				73FC90C61BAE4AFA00284B8A /* ResponseSerialization.swift in Sources */,
 				588693A11B13B51300566124 /* SDWebImagePrefetcher.m in Sources */,
+				736D71DD1BCA90A100D54188 /* MainTabBarController.swift in Sources */,
 				588693A41B13B51300566124 /* UIImage+MultiFormat.m in Sources */,
 				5886939C1B13B51300566124 /* SDWebImageCompat.m in Sources */,
 				732717111BAC8649003E0B68 /* RBStoryboardModalSegue.m in Sources */,
@@ -1568,7 +1574,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = "";
@@ -1600,7 +1605,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = "";

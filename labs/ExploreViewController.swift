@@ -216,7 +216,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             self.updatePlaylist(false)
             
             self.trackTableView.reloadData()
-            self.updatePlay()
+            self.trackChanged()
         })
         
     }

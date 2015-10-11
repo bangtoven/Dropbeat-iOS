@@ -93,7 +93,7 @@ class PlaylistViewController: BaseViewController,
         }
         
         NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "updatePlayTrack:", name: NotifyKey.updatePlay, object: nil)
+            self, selector: "trackChanged", name: DropbeatPlayerTrackChangedNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "appWillEnterForeground",
             name: UIApplicationWillEnterForegroundNotification, object: nil)
@@ -104,7 +104,7 @@ class PlaylistViewController: BaseViewController,
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: DropbeatPlayerTrackChangedNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
     }
     
@@ -176,7 +176,7 @@ class PlaylistViewController: BaseViewController,
             self.playlistTableView.reloadData()
             
             self.updatePlaylistInfo()
-            self.updatePlayTrack(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
+            self.trackChanged()
             return
         }
         
@@ -234,7 +234,7 @@ class PlaylistViewController: BaseViewController,
             
             self.updatePlaylistInfo()
             self.playlistTableView.reloadData()
-            self.updatePlayTrack(DropbeatPlayer.defaultPlayer.currentTrack, playlistId: DropbeatPlayer.defaultPlayer.currentPlaylist?.id)
+            self.trackChanged()
         })
     }
     
@@ -742,29 +742,27 @@ class PlaylistViewController: BaseViewController,
         actionSheet.delegate = self
     }
     
-    func updatePlayTrack(noti: NSNotification) {
-        var params = noti.object as! Dictionary<String, AnyObject>
-        let track = params["track"] as! Track
-        let playlistId:String? = params["playlistId"] as? String
-        updatePlayTrack(track, playlistId: playlistId)
-    }
-    
-    func updatePlayTrack(track:Track?, playlistId:String?) {
+    func trackChanged() {
+        guard let track = DropbeatPlayer.defaultPlayer.currentTrack,
+            playlistId = DropbeatPlayer.defaultPlayer.currentPlaylist?.id else {
+                return
+        }
+        
         let indexPath = playlistTableView.indexPathForSelectedRow
         if (indexPath != nil) {
             let preSelectedTrack:Track = tracks[indexPath!.row]
-            if (preSelectedTrack.id != track!.id ||
-                (playlistId == nil && playlistId != currentPlaylist!.id)) {
+            if (preSelectedTrack.id != track.id ||
+                playlistId != currentPlaylist!.id) {
                 playlistTableView.deselectRowAtIndexPath(indexPath!, animated: false)
             }
         }
         
-        if (playlistId == nil || playlistId != currentPlaylist!.id) {
+        if playlistId != currentPlaylist!.id {
             return
         }
         
         for (idx, t) in currentPlaylist!.tracks.enumerate() {
-            if (t.id == track!.id) {
+            if (t.id == track.id) {
                 playlistTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
                     animated: true, scrollPosition: UITableViewScrollPosition.None)
                 break

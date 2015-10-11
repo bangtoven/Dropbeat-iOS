@@ -31,7 +31,7 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
         }
         
         self.trackTableView.reloadData()
-        self.updatePlay()
+        self.trackChanged()
         
         loadMoreSpinnerWrapper.hidden = true
         loadMoreSpinner.stopAnimating()
@@ -146,7 +146,7 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
             
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
-            self.updatePlay()
+            self.trackChanged()
         }
     }
 }
@@ -173,7 +173,7 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
         }
         
         self.trackTableView.reloadData()
-        self.updatePlay()
+        self.trackChanged()
     }
     
     func subViewWillDisappear() {

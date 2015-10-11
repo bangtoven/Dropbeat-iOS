@@ -12,8 +12,6 @@ class NotifyKey {
     static var statusBarTapped = "statusBarTapped"
     static var fromAppLink = "fromAppLink"
 
-    static var updatePlay = "updatePlay"
-    
     static var networkStatusChanged = "networkStatusChanged"
     static var likeUpdated = "likeUpdated"
 }

@@ -84,7 +84,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         self.screenName = "PlayableViewScreen"
         
         NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "updatePlay", name: NotifyKey.updatePlay, object: nil)
+            self, selector: "trackChanged", name: DropbeatPlayerTrackChangedNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "appWillEnterForeground",
             name: UIApplicationWillEnterForegroundNotification, object: nil)
@@ -95,12 +95,12 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "onDropFinished", name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
         
-        updatePlay()
+        trackChanged()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.updatePlay, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: DropbeatPlayerTrackChangedNotification, object: nil)
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidEnterBackgroundNotification, object: nil)
@@ -111,7 +111,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     }
     
     func appWillEnterForeground() {
-        updatePlay()
+        trackChanged()
     }
     
     func appDidEnterBackground() {
@@ -429,7 +429,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         actionSheetTargetTrack = nil
     }
     
-    func updatePlay() {
+    func trackChanged() {
         updateDropPlayStatus(DropPlayStatus.Ready)
         
         guard let track = DropbeatPlayer.defaultPlayer.currentTrack else {

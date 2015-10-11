@@ -179,7 +179,7 @@ extension FeedViewController: ScrollPagerDelegate {
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
             
-            self.updatePlay()
+            self.trackChanged()
         }
     }
     
@@ -896,7 +896,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
             
-            self.updatePlay()
+            self.trackChanged()
         })
     }
     
@@ -947,7 +947,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
-            self.updatePlay()
+            self.trackChanged()
         })
     }
     
@@ -1008,7 +1008,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             }
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
-            self.updatePlay()
+            self.trackChanged()
         })
     }
     
@@ -1057,7 +1057,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
             
-            self.updatePlay()
+            self.trackChanged()
         }
     }
     

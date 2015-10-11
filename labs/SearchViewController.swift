@@ -236,7 +236,7 @@ class SearchViewController: AddableTrackListViewController,
                 self.trackTableView.hidden = true
                 self.noSearchResultView.hidden = false
                 self.trackTableView.reloadData()
-                self.updatePlay()
+                self.trackChanged()
                 return
             }
             
@@ -257,7 +257,7 @@ class SearchViewController: AddableTrackListViewController,
             self.trackTableView.hidden = showNoResultView
             self.noSearchResultView.hidden = !showNoResultView
             
-            self.updatePlay()
+            self.trackChanged()
         })
     }
     

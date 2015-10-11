@@ -16,6 +16,20 @@ class ProfileHeaderView: UserHeaderView {
     }
 }
 
+class BeforeProfileViewController: UIViewController {
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if Account.getCachedAccount() == nil {
+            self.performSegueWithIdentifier("ShowSetting", sender: self)
+        } else {
+            self.performSegueWithIdentifier("ShowProfile", sender: self)
+        }
+    }
+    
+}
+
 class ProfileViewController: UserViewController {
 
     // hope there's a better way but....
@@ -37,6 +51,10 @@ class ProfileViewController: UserViewController {
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.likeUpdated, object: nil)
+    }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return super.preferredStatusBarStyle()
     }
 
     override func fetchUserInfo() {

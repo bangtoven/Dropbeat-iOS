@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="O7I-Zd-rw2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="KKR-Ov-ivh">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
@@ -18,10 +18,34 @@
                         <animations/>
                     </navigationBar>
                     <connections>
-                        <segue destination="O7I-Zd-rw2" kind="relationship" relationship="rootViewController" id="gfT-uk-kJJ"/>
+                        <segue destination="KKR-Ov-ivh" kind="relationship" relationship="rootViewController" id="8Ce-gw-HYl"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sgt-ET-2Gc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3117" y="2071"/>
+        </scene>
+        <!--Before Profile View Controller-->
+        <scene sceneID="SNW-Ba-SAy">
+            <objects>
+                <viewController id="KKR-Ov-ivh" customClass="BeforeProfileViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="TXj-bO-oV8"/>
+                        <viewControllerLayoutGuide type="bottom" id="tYm-HY-HGz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="UQh-9y-fs8">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="W4G-f4-lb8"/>
+                    <connections>
+                        <segue destination="O7I-Zd-rw2" kind="show" identifier="ShowProfile" animates="NO" id="WGr-FS-7kf"/>
+                        <segue destination="BdV-AA-UMZ" kind="custom" identifier="ShowSetting" customClass="RBStoryboardPushSegue" animates="NO" id="gqp-zz-6K4"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pQw-CA-guS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2705" y="2071"/>
         </scene>
@@ -1769,7 +1793,7 @@ and let us know your favorite genre.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lga-ln-Ocf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2287" y="2384"/>
+            <point key="canvasLocation" x="-2287" y="2440"/>
         </scene>
     </scenes>
     <resources>
@@ -1789,6 +1813,7 @@ and let us know your favorite genre.</string>
         <image name="sample_cover" width="225" height="225"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="gqp-zz-6K4"/>
         <segue reference="oVv-0f-qoK"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>

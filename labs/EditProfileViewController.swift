@@ -26,7 +26,11 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
         
         self.saveBarButton.enabled = false
-
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
         let account = Account.getCachedAccount()?.user
         self.nickname = account!.nickname
         self.aboutMe = account!.aboutMe

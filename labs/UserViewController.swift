@@ -8,6 +8,16 @@
 
 import UIKit
 
+extension UINavigationController {
+    override public func preferredStatusBarStyle() -> UIStatusBarStyle {
+        if let userVC = self.topViewController as? UserViewController {
+            return userVC.statusBarStyle
+        } else {
+            return .Default
+        }
+    }
+}
+
 class UserHeaderView: AXStretchableHeaderView {
     
     static func profileImageRect(vc: UIViewController) -> CGRect {
@@ -65,6 +75,8 @@ class UserViewController: AXStretchableHeaderTabViewController {
     var passedName: String?
     var passedImage: UIImage?
     
+    var statusBarStyle = UIStatusBarStyle.LightContent
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.tintColor = UIColor.dropbeatColor()
@@ -72,8 +84,6 @@ class UserViewController: AXStretchableHeaderTabViewController {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarTapped", name: NotifyKey.statusBarTapped, object: nil)
 
         self.view.addSubview(self.headerView!)
-
-        self.fetchUserInfo()
     }
     
     func fetchUserInfo() {
@@ -297,11 +307,11 @@ class UserViewController: AXStretchableHeaderTabViewController {
     override func didHeightRatioChange(ratio: CGFloat) {
         switch ratio {
         case 0..<0.75:
-            UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
+            self.statusBarStyle = .Default
         default:
-//        case 0.75...1.0:
-            UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: true)
+            self.statusBarStyle = .LightContent
         }
+        self.setNeedsStatusBarAppearanceUpdate()
         
         if let navBar = self.navigationController?.navigationBar {
             let transitionPoint: CGFloat = 0.6
@@ -337,7 +347,10 @@ class UserViewController: AXStretchableHeaderTabViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        self.fetchUserInfo()
+        
         if let navBar = self.navigationController?.navigationBar {
+            navBar.translucent = true
             navBar.lt_setBackgroundColor(UIColor(white: 1.0, alpha: 0))
             navBar.barTintColor = UIColor.clearColor()
             navBar.tintColor = UIColor.whiteColor()
@@ -352,9 +365,9 @@ class UserViewController: AXStretchableHeaderTabViewController {
             if let followed = self.baseUser?.isFollowed() {
                 header.followButton?.selected = followed
             }
+            
+            self.didHeightRatioChange(self.headerViewHeightRatio)
         }
-        
-        self.didHeightRatioChange(self.headerViewHeightRatio)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -388,7 +401,6 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 navBar.setBackgroundImage(nil, forBarMetrics: UIBarMetrics.Default)
                 navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.blackColor()]
             }
-            UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.Default, animated: true)
         }
     }
     

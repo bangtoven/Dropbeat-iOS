@@ -888,11 +888,11 @@
 		7361FCE51B9F628100444179 /* Model & etc */ = {
 			isa = PBXGroup;
 			children = (
+				73AECBAA1BC5CF280040F0AF /* DropbeatPlayer.swift */,
+				734C7D6B1BB47F410071678C /* Models */,
 				FC0D9D581B0CC4DE00E048CC /* Constants.swift */,
 				FC766BEE1B050D51006FD4FB /* NetworkPath.swift */,
 				FC766BF41B051AA4006FD4FB /* NetworkRequests.swift */,
-				734C7D6B1BB47F410071678C /* Models */,
-				73AECBAA1BC5CF280040F0AF /* DropbeatPlayer.swift */,
 			);
 			name = "Model & etc";
 			sourceTree = "<group>";

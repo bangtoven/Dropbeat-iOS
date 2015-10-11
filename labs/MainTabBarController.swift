@@ -11,6 +11,8 @@ import LNPopupController
 
 class MainTabBarController: UITabBarController {
 
+    var playerView: PlayerViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,7 +25,6 @@ class MainTabBarController: UITabBarController {
         navBar.setBackgroundImage(nil, forBarMetrics: UIBarMetrics.Default)
         navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.blackColor()]
 
-        
         if Account.getCachedAccount() == nil {
             var exceptPlaylistTab = self.viewControllers
             exceptPlaylistTab?.removeAtIndex(3)
@@ -32,30 +33,6 @@ class MainTabBarController: UITabBarController {
         
         self.popupBar.translucent = false
         self.popupBar.tintColor = UIColor.dropbeatColor()
-    }
-    
-    func showPlayerView() {
-        switch self.popupPresentationState {
-        case .Closed:
-            self.tabBarController?.openPopupAnimated(true, completion: nil)
-        case .Hidden:
-            let secondVC = self.storyboard?.instantiateViewControllerWithIdentifier("PlayerViewController")
-            secondVC?.popupItem.title = "씨발"
-            //        secondVC?.popupItem.subtitle = "과연?"
-            secondVC?.popupItem.progress = 0.7
-            
-            
-            self.presentPopupBarWithContentViewController(secondVC!, openPopup: true, animated: true, completion: nil)
-            
-        case .Open:
-            self.tabBarController?.dismissPopupBarAnimated(true, completion: nil)
-        case .Transitioning:
-            break
-        }
-    }
-    
-    func hidePlayerView() {
-        self.tabBarController?.dismissPopupBarAnimated(true, completion: nil)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -79,46 +56,41 @@ class MainTabBarController: UITabBarController {
     }
     
     func playerStateChanged(noti: NSNotification) {
-        if self.popupPresentationState == .Open {
-            return
-        }
-        
         if let state = STKAudioPlayerState(rawValue: noti.object as! UInt) {
-            if state == .Error {
-                let errMsg = NSLocalizedString("This track is not streamable", comment:"")
-                ViewUtils.showToast(self, message: errMsg)
+            
+            if self.popupPresentationState == .Open || self.popupPresentationState == .Transitioning {
+                return
             }
             
             switch state {
-            case .Running, .Buffering:
-                let player = self.storyboard?.instantiateViewControllerWithIdentifier("PlayerViewController") as! PlayerViewController
-                player.popupItem.title = "asdf"
-                player.main = self
-                self.presentPopupBarWithContentViewController(player, animated: true, completion: nil)
-                self.tabBar.backgroundImage = UIImage(named: "tabbar_bg")
-//            case .Paused, .Stopped:
-//                playBtn.hidden = false
-//                pauseBtn.hidden = true
-//                prevButton.enabled = true
-//                nextButton.enabled = true
-//                loadingView.hidden = true
-//            case .Playing:
-//                playBtn.hidden = true
-//                pauseBtn.hidden = false
-//                prevButton.enabled = true
-//                nextButton.enabled = true
-//                loadingView.hidden = true
+            case .Running, .Buffering, .Paused, .Playing:
+                self.showPopupPlayer()
+            case .Error:
+                let errMsg = NSLocalizedString("This track is not streamable", comment:"")
+                ViewUtils.showToast(self, message: errMsg)
+                fallthrough
             default:
-//                playerTitle.text = ""
-//                playBtn.hidden = false
-//                playBtn.enabled = false
-//                pauseBtn.hidden = true
-//                prevButton.enabled = false
-//                nextButton.enabled = false
-//                loadingView.hidden = true
-                break
+                self.hidePopupPlayer()
             }
         }
+    }
+    
+    func showPopupPlayer() {
+        if self.playerView == nil {
+            let pvc = self.storyboard?.instantiateViewControllerWithIdentifier("PlayerViewController") as! PlayerViewController
+            pvc.main = self
+            self.playerView = pvc
+        }
+
+        if self.popupPresentationState != .Closed {
+            self.tabBar.backgroundImage = UIImage(named: "tabbar_bg")
+            self.presentPopupBarWithContentViewController(self.playerView!, animated: true, completion: nil)
+        }
+    }
+    
+    func hidePopupPlayer() {
+        self.tabBar.backgroundImage = UIImage(named: "tabbar_bg_with_bar")
+        self.tabBarController?.dismissPopupBarAnimated(true, completion: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -139,13 +111,14 @@ class MainTabBarController: UITabBarController {
             let uvc = UIStoryboard(name: "Profile", bundle: nil).instantiateViewControllerWithIdentifier("UserViewController") as! UserViewController
             uvc.resource = userResource
             if let navController = self.selectedViewController as? UINavigationController {
-                self.hidePlayerView()
+                self.closePopupAnimated(true, completion: nil)
                 navController.pushViewController(uvc, animated: true)
             }
         case .USER_TRACK(user: let userResource, track: let trackResource):
             let uvc = UIStoryboard(name: "Profile", bundle: nil).instantiateViewControllerWithIdentifier("UserViewController") as! UserViewController
             uvc.resource = userResource
             if let navController = self.selectedViewController as? UINavigationController {
+                self.closePopupAnimated(true, completion: nil)
                 navController.pushViewController(uvc, animated: true)
             }
             
@@ -162,8 +135,11 @@ class MainTabBarController: UITabBarController {
                     return
                 }
                 
-                self.showPlayerView()
+                let playlist = Playlist(id: track!.user!.name, name: track!.user!.name, tracks: [track!])
+                playlist.type = .SHARED
+                DropbeatPlayer.defaultPlayer.currentPlaylist = playlist
                 DropbeatPlayer.defaultPlayer.play(track!)
+                self.showPopupPlayer()
             }
         case .SHARED_TRACK(let uid):
             Requests.getSharedTrack(uid, respCb: {
@@ -192,8 +168,12 @@ class MainTabBarController: UITabBarController {
                     return
                 }
                 
-                self.showPlayerView()
+                let playlist = Playlist(id: track!.title, name: track!.title, tracks: [track!])
+                playlist.type = .SHARED
+                DropbeatPlayer.defaultPlayer.currentPlaylist = playlist
                 DropbeatPlayer.defaultPlayer.play(track!)
+                self.showPopupPlayer()
+                self.openPopupAnimated(true, completion: nil)
             })
         case .SHARED_PLAYLIST(let uid):
             Requests.getSharedPlaylist(uid, respCb: {

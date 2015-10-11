@@ -11,16 +11,12 @@ import LNPopupController
 
 class PlayerViewController: GAITrackedViewController {
 
-    var main: MainTabBarController!
-    
+    weak var main: MainTabBarController!
     private let player = DropbeatPlayer.defaultPlayer
 
     private var timer: NSTimer?
     private var duration: Double = 0.0
     
-    @IBOutlet weak var playerTitleHeightConstaint: NSLayoutConstraint!
-    
-    @IBOutlet weak var coverView: UIView!
     @IBOutlet weak var coverImageView: UIImageView!
 
     @IBOutlet weak var playerTitle: MarqueeLabel!
@@ -164,8 +160,13 @@ class PlayerViewController: GAITrackedViewController {
     }
     
     func updateViewForState(state: STKAudioPlayerState) {
+        
+        if state == .Error {
+            let errMsg = NSLocalizedString("This track is not streamable", comment:"")
+            ViewUtils.showToast(self, message: errMsg)
+        }
+        
         totalTextView.text = getTimeFormatText(self.duration)
-
         progressSliderBar.enabled = (state == .Playing)
         
         switch state {
@@ -442,6 +443,8 @@ class PlayerViewController: GAITrackedViewController {
         return true
     }
     
+    @IBOutlet weak var coverView: UIView!
+    @IBOutlet weak var playerTitleHeightConstaint: NSLayoutConstraint!
     func resizeViewUnder4inch() {
         playerTitleHeightConstaint.constant = 28
         let heightConstraint = NSLayoutConstraint(item: coverView,

@@ -60,6 +60,7 @@
                         <segue destination="39v-uc-SBt" kind="relationship" relationship="viewControllers" id="iLb-9d-OHK"/>
                         <segue destination="86D-b6-wJW" kind="relationship" relationship="viewControllers" id="o7A-uM-1f2"/>
                         <segue destination="L4I-eD-jMc" kind="relationship" relationship="viewControllers" id="Ax4-cd-Xcq"/>
+                        <segue destination="ATs-9y-TgU" kind="custom" identifier="PlaylistSegue" customClass="RBStoryboardModalSegue" id="VnE-CJ-aLK"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lCq-0r-RCv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -98,7 +99,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZtQ-WG-i8B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1861" y="-1231"/>
+            <point key="canvasLocation" x="909" y="-1243"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="yGL-1L-Up8">
@@ -1410,7 +1411,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tnw-t1-G2s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1389" y="-1231"/>
+            <point key="canvasLocation" x="1389" y="-1243"/>
         </scene>
         <!--Storyboard Link-->
         <scene sceneID="gCw-un-Ow6">
@@ -1647,6 +1648,7 @@
         <image name="tabbar_search" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="VnE-CJ-aLK"/>
         <segue reference="V3J-9Z-qxl"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>

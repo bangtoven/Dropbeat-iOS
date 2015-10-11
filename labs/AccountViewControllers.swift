@@ -186,8 +186,9 @@ class FBSigninableViewController: BaseViewController {
         
 //        _PlayerViewController.sharedInstance!.resignObservers()
         let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
-        navController.popToRootViewControllerAnimated(false)
+//        let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
+//        navController.popToRootViewControllerAnimated(false)
+        appDelegate.setRootViewToStartupViewController()
         
         DropbeatPlayer.defaultPlayer.stop()
     }
@@ -411,8 +412,9 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         
 //        _PlayerViewController.sharedInstance!.resignObservers()
         let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
-        navController.popToRootViewControllerAnimated(false)
+//        let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
+//        navController.popToRootViewControllerAnimated(false)
+        appDelegate.setRootViewToStartupViewController()
         
         DropbeatPlayer.defaultPlayer.stop()
     }
@@ -640,8 +642,9 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                 
 //        _PlayerViewController.sharedInstance!.resignObservers()
         let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
-        navController.popToRootViewControllerAnimated(false)
+//        let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
+//        navController.popToRootViewControllerAnimated(false)
+        appDelegate.setRootViewToStartupViewController()
         
         DropbeatPlayer.defaultPlayer.stop()
     }

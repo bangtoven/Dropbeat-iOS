@@ -1397,4 +1397,5 @@ PASSWORD</string>
         <segue reference="0cz-K0-oaH"/>
         <segue reference="2bs-21-K3o"/>
     </inferredMetricsTieBreakers>
+    <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
 </document>

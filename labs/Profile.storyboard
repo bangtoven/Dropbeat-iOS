@@ -10,7 +10,6 @@
         <!--Navigation Controller-->
         <scene sceneID="eaK-tE-QuB">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="sgt-ET-2Gc" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController id="MPe-vs-g2a" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="m0I-JF-h5h">
@@ -22,6 +21,7 @@
                         <segue destination="O7I-Zd-rw2" kind="relationship" relationship="rootViewController" id="gfT-uk-kJJ"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sgt-ET-2Gc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2762" y="1887"/>
         </scene>
@@ -55,7 +55,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Profile" id="0uf-eu-ueC">
-                        <barButtonItem key="leftBarButtonItem" title="Item" systemItem="edit" id="JiH-Ct-BBd">
+                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="JiH-Ct-BBd">
                             <connections>
                                 <segue destination="moL-Bw-QiW" kind="show" identifier="showEditProfile" id="AA0-Wo-mUS"/>
                             </connections>

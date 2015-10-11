@@ -199,9 +199,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
                     UIActivityTypeAirDrop,
                     UIActivityTypeAssignToContact
                 ]
-            if #available(iOS 8.0, *) {
-                activityController.popoverPresentationController?.sourceView = self.view
-            }
+            activityController.popoverPresentationController?.sourceView = self.view
             self.presentViewController(activityController, animated:true, completion: nil)
             
             
@@ -406,8 +404,9 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         }
         actionSheet.delegate = self
         
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
+        actionSheet.showFromTabBar((self.tabBarController?.tabBar)!)
+//        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+//        actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
     }
     
     func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {

@@ -378,9 +378,7 @@ class PlayerViewController: GAITrackedViewController {
                 UIActivityTypeAirDrop,
                 UIActivityTypeAssignToContact
             ]
-            if #available(iOS 8.0, *) {
-                activityController.popoverPresentationController?.sourceView = self.shareBtn
-            }
+            activityController.popoverPresentationController?.sourceView = self.shareBtn
             self.presentViewController(activityController, animated:true, completion: nil)
         }
     }

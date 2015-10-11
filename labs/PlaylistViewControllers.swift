@@ -161,13 +161,8 @@ class PlaylistViewController: BaseViewController,
             tableView.separatorInset = UIEdgeInsetsZero
         }
         
-        if #available(iOS 8.0, *) {
-            tableView.layoutMargins = UIEdgeInsetsZero
-        }
-        
-        if #available(iOS 8.0, *) {
-            cell.layoutMargins = UIEdgeInsetsZero
-        }
+        tableView.layoutMargins = UIEdgeInsetsZero
+        cell.layoutMargins = UIEdgeInsetsZero
     }
     
     func loadPlaylist() {
@@ -297,9 +292,10 @@ class PlaylistViewController: BaseViewController,
         if fromPlayer {
             playlistActionSheet!.showInView(self.view)
         } else {
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            
-            playlistActionSheet!.showFromTabBar(appDelegate.centerContainer!.tabBar)
+             playlistActionSheet!.showFromTabBar((self.tabBarController?.tabBar)!)
+//            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+//            
+//            playlistActionSheet!.showFromTabBar(appDelegate.centerContainer!.tabBar)
         }
         playlistActionSheet!.delegate = self
     }
@@ -483,9 +479,7 @@ class PlaylistViewController: BaseViewController,
                     UIActivityTypeAirDrop,
                     UIActivityTypeAssignToContact
                 ]
-            if #available(iOS 8.0, *) {
-                activityController.popoverPresentationController?.sourceView = self.view
-            }
+            activityController.popoverPresentationController?.sourceView = self.view
             self.presentViewController(activityController, animated:true, completion: nil)
         }
     }
@@ -591,25 +585,24 @@ class PlaylistViewController: BaseViewController,
             var json = JSON(result!)
         
             if ((json["success"].bool ?? false) &&
-                    json["obj"].dictionary != nil && json["obj"]["uid"].string != nil) {
+                json["obj"].dictionary != nil && json["obj"]["uid"].string != nil) {
                     
-                let uid = json["obj"]["uid"].string
-                let url = "http://dropbeat.net/?playlist=\(uid!)"
-                        
-                let items:[AnyObject] = [self.currentPlaylist!.name, url]
-                
-                let activityController = UIActivityViewController(
+                    let uid = json["obj"]["uid"].string
+                    let url = "http://dropbeat.net/?playlist=\(uid!)"
+                    
+                    let items:[AnyObject] = [self.currentPlaylist!.name, url]
+                    
+                    let activityController = UIActivityViewController(
                         activityItems: items, applicationActivities: nil)
-                activityController.excludedActivityTypes = [
+                    activityController.excludedActivityTypes = [
                         UIActivityTypePrint,
                         UIActivityTypeSaveToCameraRoll,
                         UIActivityTypeAirDrop,
                         UIActivityTypeAssignToContact
                     ]
-                if #available(iOS 8.0, *) {
+                    
                     activityController.popoverPresentationController?.sourceView = self.view
-                }
-                self.presentViewController(activityController, animated:true, completion: nil)
+                    self.presentViewController(activityController, animated:true, completion: nil)
             } else {
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to share", comment:""),
@@ -741,9 +734,10 @@ class PlaylistViewController: BaseViewController,
         if fromPlayer {
             actionSheet.showInView(self.view)
         } else {
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            
-            actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
+            actionSheet.showFromTabBar((self.tabBarController?.tabBar)!)
+//            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+//            
+//            actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
         }
         actionSheet.delegate = self
     }

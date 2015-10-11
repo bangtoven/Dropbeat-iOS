@@ -57,11 +57,6 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "main" {
-            let vc:CenterViewController = segue.destinationViewController as! CenterViewController
-            let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            appDelegate.centerContainer = vc
-        }
         if segue.identifier == "genre_tutorial" {
             let vc = segue.destinationViewController as! EditFavoriteGenreViewController
             vc.fromStartup = true
@@ -164,8 +159,8 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                     })
                     return
                 }
-                let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-                appDelegate.account = account
+//                let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+//                appDelegate.account = account
                 
                 if (account != nil) {
                     let email:String = account!.user!.email
@@ -208,7 +203,11 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                     self.performSegueWithIdentifier("genre_tutorial", sender: self)
                     return
             }
-            self.performSegueWithIdentifier("main", sender: self)
+            
+//            self.performSegueWithIdentifier("main", sender: self)
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            appDelegate.setRootViewToMainTabBarController()
+            
         }
     }
     

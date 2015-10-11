@@ -51,11 +51,13 @@ class SettingsViewController: UITableViewController {
                 let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
                 keychainItemWrapper.resetKeychainItem()
                 Account.account = nil
+                
                 let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-                appDelegate.account = nil
-
-                let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
-                navController.popToRootViewControllerAnimated(false)
+//                appDelegate.account = nil
+//                let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
+//                navController.popToRootViewControllerAnimated(false)
+                appDelegate.setRootViewToStartupViewController()
+                
                 DropbeatPlayer.defaultPlayer.stop()
         })
     }

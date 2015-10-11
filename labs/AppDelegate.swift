@@ -20,8 +20,6 @@ enum AppLinkParam {
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var centerContainer: CenterViewController?
-    var account: Account?
     
     var networkStatus = NetworkStatus.NotReachable
     var shouldInitializeQualityState = true
@@ -29,6 +27,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var reachability: Reachability?
     
     var appLink: AppLinkParam?
+    
+    func setRootViewToStartupViewController () {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let startupVC = storyboard.instantiateInitialViewController()
+        self.window?.rootViewController = startupVC
+    }
+    
+    func setRootViewToMainTabBarController () {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let main = storyboard.instantiateViewControllerWithIdentifier("MainTabBarController")
+        self.window?.rootViewController = main
+    }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         super.touchesBegan(touches, withEvent: event)

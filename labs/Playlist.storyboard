@@ -115,7 +115,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="320" height="100"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="B5U-zE-xcz">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="B5U-zE-xcz">
                                     <rect key="frame" x="0.0" y="-136" width="320" height="200"/>
                                     <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -123,7 +123,7 @@
                                         <constraint firstAttribute="height" constant="200" id="8MB-dE-fPc"/>
                                     </constraints>
                                 </view>
-                                <navigationBar contentMode="scaleToFill" misplaced="YES" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uw9-cI-gBV">
+                                <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uw9-cI-gBV">
                                     <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                     <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -153,7 +153,6 @@
                                 <constraint firstAttribute="trailing" secondItem="uw9-cI-gBV" secondAttribute="trailing" id="VPu-Ts-1Aw"/>
                                 <constraint firstItem="uw9-cI-gBV" firstAttribute="leading" secondItem="8mC-9R-1EI" secondAttribute="leading" id="YSq-iy-rXA"/>
                                 <constraint firstItem="uw9-cI-gBV" firstAttribute="top" secondItem="8mC-9R-1EI" secondAttribute="top" constant="20" id="aoC-Kp-8D7"/>
-                                <constraint firstAttribute="bottom" secondItem="uw9-cI-gBV" secondAttribute="bottom" constant="20" id="vFl-NZ-lEl"/>
                             </constraints>
                         </view>
                         <prototypes>

@@ -243,7 +243,8 @@ class WebAdapter {
     var manager:Manager
     class var backgroundManager:Manager {
         let sessionId = "net.dropbeat.labs.background"
-        let config = NSURLSessionConfiguration.backgroundSessionConfiguration(sessionId)
+        let config = NSURLSessionConfiguration.backgroundSessionConfigurationWithIdentifier(sessionId)
+//        backgroundSessionConfiguration(sessionId)
         let manager = Manager(configuration: config)
         manager.startRequestsImmediately = true
         return manager

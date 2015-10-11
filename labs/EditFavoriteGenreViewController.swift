@@ -214,13 +214,8 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
             tableView.separatorInset = UIEdgeInsetsZero
         }
         
-        if #available(iOS 8.0, *) {
-            tableView.layoutMargins = UIEdgeInsetsZero
-        }
-        
-        if #available(iOS 8.0, *) {
-            cell.layoutMargins = UIEdgeInsetsZero
-        }
+        tableView.layoutMargins = UIEdgeInsetsZero
+        cell.layoutMargins = UIEdgeInsetsZero
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {

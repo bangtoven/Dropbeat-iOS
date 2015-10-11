@@ -1,6 +1,6 @@
 //
 //  DropbeatPlayer.swift
-//  AVPlayerTest
+//  DropbeatPlayer
 //
 //  Created by 방정호 on 2015. 10. 7..
 //  Copyright © 2015년 방정호. All rights reserved.

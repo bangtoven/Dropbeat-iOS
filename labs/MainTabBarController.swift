@@ -90,7 +90,7 @@ class MainTabBarController: UITabBarController {
     
     func hidePopupPlayer() {
         self.tabBar.backgroundImage = UIImage(named: "tabbar_bg_with_bar")
-        self.tabBarController?.dismissPopupBarAnimated(true, completion: nil)
+        self.dismissPopupBarAnimated(true, completion: nil)
     }
     
     override func viewDidAppear(animated: Bool) {

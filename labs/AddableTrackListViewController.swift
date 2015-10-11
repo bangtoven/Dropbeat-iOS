@@ -85,6 +85,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "trackChanged", name: DropbeatPlayerTrackChangedNotification, object: nil)
+        
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "appWillEnterForeground",
             name: UIApplicationWillEnterForegroundNotification, object: nil)
@@ -299,6 +300,10 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
 //        let noti = NSNotification(name: NotifyKey.playerPause, object: nil)
 //        NSNotificationCenter.defaultCenter().postNotification(noti)
         DropbeatPlayer.defaultPlayer.pause()
+        if let main = self.tabBarController as? MainTabBarController
+            where main.popupPresentationState == .Closed {
+                main.hidePopupPlayer()
+        }
         
         let sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
         do {
@@ -461,6 +466,11 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     
     func updateDropPlayStatus(status:DropPlayStatus) {
         if status == DropPlayStatus.Ready {
+            if let main = self.tabBarController as? MainTabBarController
+                where DropbeatPlayer.defaultPlayer.currentTrack != nil {
+                    main.showPopupPlayer()
+            }
+            
             releaseDropPlayer()
             dropPlayerContext.currentTrack = nil
             dropPlayTimer?.invalidate()

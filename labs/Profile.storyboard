@@ -865,7 +865,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SECTION:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vNB-L7-5Pz">
-                                            <rect key="frame" x="16" y="15" width="56" height="15"/>
+                                            <rect key="frame" x="16" y="15" width="56" height="14.5"/>
                                             <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="56" id="aok-q9-HiA"/>
@@ -874,13 +874,23 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="▼" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Vb-IK-kRF">
+                                            <rect key="frame" x="75" y="14" width="15" height="16"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="15" id="MJR-dQ-oOh"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="RECENT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kfP-4T-QRP" customClass="MarqueeLabel">
-                                            <rect key="frame" x="75" y="15" width="237" height="15"/>
+                                            <rect key="frame" x="91" y="14" width="221" height="16"/>
                                             <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="77c-dT-tOG"/>
                                             </constraints>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="13"/>
                                             <color key="textColor" red="0.5490196078431373" green="0.0" blue="0.90588235294117647" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                             <variation key="default">
@@ -930,24 +940,28 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                     <animations/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <constraints>
+                                        <constraint firstItem="nNB-RL-Mjl" firstAttribute="leading" secondItem="vNB-L7-5Pz" secondAttribute="trailing" constant="3" id="0Lo-yR-hKX"/>
                                         <constraint firstAttribute="trailing" secondItem="HRe-7P-qeb" secondAttribute="trailing" id="2vA-J1-UZo"/>
                                         <constraint firstAttribute="trailing" secondItem="nNB-RL-Mjl" secondAttribute="trailing" constant="20" id="3DA-Ad-0kz"/>
                                         <constraint firstAttribute="trailing" secondItem="kfP-4T-QRP" secondAttribute="trailing" constant="8" id="9Em-12-AbD"/>
                                         <constraint firstAttribute="trailing" secondItem="nNB-RL-Mjl" secondAttribute="trailing" constant="8" id="CLf-Iq-ILY"/>
+                                        <constraint firstItem="kfP-4T-QRP" firstAttribute="leading" secondItem="2Vb-IK-kRF" secondAttribute="trailing" constant="1" id="Gwa-pp-870"/>
                                         <constraint firstAttribute="centerY" secondItem="vNB-L7-5Pz" secondAttribute="centerY" id="Hrr-ud-hyB"/>
                                         <constraint firstItem="kfP-4T-QRP" firstAttribute="leading" secondItem="vNB-L7-5Pz" secondAttribute="trailing" constant="3" id="KAX-oe-hff"/>
                                         <constraint firstAttribute="bottom" secondItem="HRe-7P-qeb" secondAttribute="bottom" id="U7W-Zd-GPK"/>
-                                        <constraint firstItem="nNB-RL-Mjl" firstAttribute="leading" secondItem="kfP-4T-QRP" secondAttribute="leading" id="YFa-cW-ySU"/>
+                                        <constraint firstItem="2Vb-IK-kRF" firstAttribute="leading" secondItem="vNB-L7-5Pz" secondAttribute="trailing" constant="3" id="Vij-CX-5wD"/>
                                         <constraint firstItem="HRe-7P-qeb" firstAttribute="top" secondItem="Evx-Ya-Ymo" secondAttribute="top" id="dVb-br-4U8"/>
                                         <constraint firstItem="kfP-4T-QRP" firstAttribute="centerY" secondItem="Evx-Ya-Ymo" secondAttribute="centerY" id="g2h-iu-e5L"/>
                                         <constraint firstItem="HRe-7P-qeb" firstAttribute="leading" secondItem="Evx-Ya-Ymo" secondAttribute="leading" id="k5G-0z-TYt"/>
                                         <constraint firstItem="vNB-L7-5Pz" firstAttribute="leading" secondItem="Evx-Ya-Ymo" secondAttribute="leading" constant="16" id="l0G-aK-Cim"/>
+                                        <constraint firstItem="2Vb-IK-kRF" firstAttribute="centerY" secondItem="vNB-L7-5Pz" secondAttribute="centerY" id="v15-3d-bR8"/>
                                         <constraint firstItem="kfP-4T-QRP" firstAttribute="leading" secondItem="vNB-L7-5Pz" secondAttribute="trailing" constant="190" id="wVZ-oG-lMF"/>
                                         <constraint firstAttribute="centerY" secondItem="nNB-RL-Mjl" secondAttribute="centerY" id="yKm-MA-xEr"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
                                             <exclude reference="3DA-Ad-0kz"/>
+                                            <exclude reference="KAX-oe-hff"/>
                                             <exclude reference="wVZ-oG-lMF"/>
                                         </mask>
                                     </variation>
@@ -1391,7 +1405,7 @@ click below to discover your favorites</string>
                                         <rect key="frame" x="0.0" y="322" width="320" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CXO-Rc-ktN" id="dz0-4v-ZAn">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="45.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Progressive House" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4uB-VB-Hio">
@@ -1473,10 +1487,10 @@ click below to discover your favorites</string>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="normalCell" id="p3P-zr-0sU">
-                                <rect key="frame" x="0.0" y="114" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="113.5" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p3P-zr-0sU" id="lpT-pY-biA">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <animations/>
                                 </tableViewCellContentView>

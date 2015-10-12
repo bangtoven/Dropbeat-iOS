@@ -49,7 +49,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let main = storyboard.instantiateInitialViewController()
-        main?.view.tintColor = UIColor.dropbeatColor()
         self.window?.rootViewController = main
     }
     
@@ -65,7 +64,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-//        UINavigationBar.appearance().barTintColor = UIColor.redColor()
+        UINavigationBar.appearance().tintColor = UIColor.dropbeatColor()
         self.window?.backgroundColor = UIColor.whiteColor()
         
         if let fromUrl = launchOptions?[UIApplicationLaunchOptionsURLKey] as? NSURL {

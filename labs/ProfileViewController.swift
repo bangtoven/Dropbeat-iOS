@@ -10,30 +10,10 @@ import UIKit
 
 class ProfileHeaderView: UserHeaderView {
     @IBOutlet weak var favoriteGenresLabel: UILabel!
-
+    
     override func interactiveSubviews() -> [AnyObject]! {
         return []
     }
-}
-
-class BeforeProfileViewController: UIViewController {
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if Account.getCachedAccount() == nil {
-            self.performSegueWithIdentifier("ShowSetting", sender: self)
-        } else {
-            self.performSegueWithIdentifier("ShowProfile", sender: self)
-        }
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let rbSegue = segue as? RBStoryboardSegue {
-            rbSegue.animated = false
-        }
-    }
-    
 }
 
 class ProfileViewController: UserViewController {
@@ -115,7 +95,8 @@ class ProfileViewController: UserViewController {
         
         let handler = { () -> Void in
             guard let account = Account.getCachedAccount() else {
-                // TODO: account 없으면?
+                header.favoriteGenresLabel.text =
+                    NSLocalizedString("No favorite genre selected", comment: "")
                 return
             }
             
@@ -198,4 +179,39 @@ class ProfileViewController: UserViewController {
             settings.navigationItem.leftBarButtonItem = nil
         }
     }
+}
+
+
+// MARK: - Handle none account case
+
+class BeforeProfileNavigationController: UINavigationController {
+    
+    override func popToRootViewControllerAnimated(animated: Bool) -> [UIViewController]? {
+        if viewControllers.count > 2 {
+            return self.popToViewController(viewControllers[1], animated: animated)
+        } else {
+            return nil
+        }
+    }
+    
+}
+
+class BeforeProfileViewController: UIViewController {
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if Account.getCachedAccount() == nil {
+            self.performSegueWithIdentifier("ShowSetting", sender: self)
+        } else {
+            self.performSegueWithIdentifier("ShowProfile", sender: self)
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let rbSegue = segue as? RBStoryboardSegue {
+            rbSegue.animated = false
+        }
+    }
+    
 }

@@ -9,16 +9,16 @@
 import UIKit
 import LNPopupController
 
-class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
+class MainTabBarController: UITabBarController {
 
     var playerView: PlayerViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.delegate = self
         
         self.tabBar.tintColor = UIColor.dropbeatColor()
-        
+        self.view.tintColor = UIColor.dropbeatColor()
+
         let navBar = UINavigationBar.appearance()
         navBar.barTintColor = UIColor.whiteColor()
         navBar.tintColor = nil
@@ -32,17 +32,6 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
             self.setViewControllers(exceptPlaylistTab, animated: true)
         }
         
-        self.popupBar.translucent = false
-        self.popupBar.tintColor = UIColor.dropbeatColor()
-    }
-    
-    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController targetViewController: UIViewController) -> Bool {
-        if self.selectedViewController == self.viewControllers?.last &&
-            targetViewController == self.viewControllers?.last {
-            return false
-        }
-        
-        return true
     }
     
     override func viewWillAppear(animated: Bool) {

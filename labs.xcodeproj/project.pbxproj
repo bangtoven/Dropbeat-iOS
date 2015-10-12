@@ -81,6 +81,7 @@
 		7327174A1BAC8836003E0B68 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 732717451BAC8836003E0B68 /* Profile.storyboard */; };
 		7327174C1BAC8836003E0B68 /* TrackSubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717471BAC8836003E0B68 /* TrackSubViewController.swift */; };
 		7327174D1BAC8836003E0B68 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717481BAC8836003E0B68 /* UserViewController.swift */; };
+		73338BA31BCC176E007A9D6C /* Info-SSIBAL.plist in Resources */ = {isa = PBXBuildFile; fileRef = 73338BA21BCC176E007A9D6C /* Info-SSIBAL.plist */; settings = {ASSET_TAGS = (); }; };
 		733EDD9E1BBC45A500925F50 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733EDD9D1BBC45A500925F50 /* EditProfileViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		733EDD9F1BBC474A00925F50 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733EDD9D1BBC45A500925F50 /* EditProfileViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		734C7D591BB457EB0071678C /* LinkedImageTransitionSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 734C7D581BB457EB0071678C /* LinkedImageTransitionSegue.m */; settings = {ASSET_TAGS = (); }; };
@@ -481,6 +482,7 @@
 		732717451BAC8836003E0B68 /* Profile.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
 		732717471BAC8836003E0B68 /* TrackSubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackSubViewController.swift; sourceTree = "<group>"; };
 		732717481BAC8836003E0B68 /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
+		73338BA21BCC176E007A9D6C /* Info-SSIBAL.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-SSIBAL.plist"; sourceTree = "<group>"; };
 		733EDD9D1BBC45A500925F50 /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		734C7D571BB457EB0071678C /* LinkedImageTransitionSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkedImageTransitionSegue.h; sourceTree = "<group>"; };
 		734C7D581BB457EB0071678C /* LinkedImageTransitionSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinkedImageTransitionSegue.m; sourceTree = "<group>"; };
@@ -1129,6 +1131,7 @@
 				F98F65D2D15412F7828AF298 /* Frameworks */,
 				58BB0B121B122DCB00B07279 /* labs-Bridging-Header.h */,
 				FCD1DA861B04CCB200F9EA70 /* Info.plist */,
+				73338BA21BCC176E007A9D6C /* Info-SSIBAL.plist */,
 			);
 			name = "Supporting Files";
 			path = labs;
@@ -1248,6 +1251,7 @@
 				734C7DF61BB4C1DA0071678C /* Profile.storyboard in Resources */,
 				734C7DF71BB4C1DA0071678C /* Explore.storyboard in Resources */,
 				734C7DF91BB4C1DA0071678C /* Images.xcassets in Resources */,
+				73338BA31BCC176E007A9D6C /* Info-SSIBAL.plist in Resources */,
 				734C7DFA1BB4C1DA0071678C /* DateTools.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1599,7 +1603,7 @@
 					"$(PROJECT_DIR)/Libraries",
 					"$(PROJECT_DIR)/Libraries/Raygun4iOS",
 				);
-				INFOPLIST_FILE = "labs copy-Info.plist";
+				INFOPLIST_FILE = "labs/Info-SSIBAL.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -1630,7 +1634,7 @@
 					"$(PROJECT_DIR)/Libraries",
 					"$(PROJECT_DIR)/Libraries/Raygun4iOS",
 				);
-				INFOPLIST_FILE = "labs copy-Info.plist";
+				INFOPLIST_FILE = "labs/Info-SSIBAL.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (

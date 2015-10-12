@@ -60,6 +60,9 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             return
         }
         
+        let fakeNoti = NSNotification(name: DropbeatPlayerStateChangedNotification, object: STKAudioPlayerState.Buffering.rawValue, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotification(fakeNoti)
+        
         if track.type == .YOUTUBE {
             track.getYouTubeStreamURL(qualityState == .HQ ? .Medium360 : .Small240) {
                 (streamURL, duration, error) -> Void in
@@ -91,7 +94,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
                     self.currentTrack = track
                     let noti = NSNotification(name: DropbeatPlayerTrackChangedNotification, object: track, userInfo: nil)
                     NSNotificationCenter.defaultCenter().postNotification(noti)
-                    print("new track: \(track.title)")
+                    print("Starting track: \(track.title)")
                 }
                 
                 break
@@ -156,7 +159,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             self.player.queue(next.streamUrl, withQueueItemId: next.id)
         }
         
-        print("Enqueue next track: \(next.title)")
+        print("Enqueued track: \(next.title)")
     }
     
     // MARK: - Next track handling
@@ -353,7 +356,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
     func audioPlayer(audioPlayer: STKAudioPlayer!, didFinishPlayingQueueItemId queueItemId: NSObject!, withReason stopReason: STKAudioPlayerStopReason, andProgress progress: Double, andDuration duration: Double)
     {
-        print("FinishPlaying: \(stopReason.rawValue)")
+        print("Finish playing: \(stopReason.rawValue)")
         
         self.timer?.invalidate()
         self.timer = nil

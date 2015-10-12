@@ -28,6 +28,12 @@ class BeforeProfileViewController: UIViewController {
         }
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let rbSegue = segue as? RBStoryboardSegue {
+            rbSegue.animated = false
+        }
+    }
+    
 }
 
 class ProfileViewController: UserViewController {
@@ -183,6 +189,13 @@ class ProfileViewController: UserViewController {
             }
             
             genreHandler(genreResult!.results!)
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "ShowSettings" {
+            let settings = segue.destinationViewController as! SettingsViewController
+            settings.navigationItem.leftBarButtonItem = nil
         }
     }
 }

@@ -49,13 +49,13 @@ class SearchViewController: AddableTrackListViewController,
         autocomTableView.hidden = true
         searchResultView.hidden = true
         
-        searchBar.becomeFirstResponder()
-
         self.screenName = "SearchViewScreen"
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        searchBar.becomeFirstResponder()
         
         if self.isMovingToParentViewController() == false{
             // back from navigation stack. previous page was popped!!
@@ -126,6 +126,24 @@ class SearchViewController: AddableTrackListViewController,
         } else {
             return nil
         }
+    }
+    
+    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        let defaultHeight: CGFloat = 18
+        
+        if tableView == trackTableView {
+            if (section == 0) {
+                return self.users.count > 0 ? defaultHeight : 0
+            } else {
+                return defaultHeight
+            }
+        } else {
+            return 0
+        }
+    }
+    
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return self.tableView(tableView, heightForHeaderInSection: section)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

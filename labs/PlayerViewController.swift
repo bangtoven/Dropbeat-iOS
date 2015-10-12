@@ -43,6 +43,13 @@ class PlayerViewController: GAITrackedViewController {
     @IBOutlet weak var repeatBtn: UIButton!
     @IBOutlet weak var shuffleBtn: UIButton!
     
+    private var isOpened: Bool {
+        get {
+            let state = main.popupPresentationState
+            return (state == .Open || state == .Transitioning)
+        }
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
@@ -95,7 +102,7 @@ class PlayerViewController: GAITrackedViewController {
             self.popupItem.title = title
         }
         
-        if .Open == main.popupPresentationState {
+        if self.isOpened {
             updateViewForCurrentTrack()
         }
     }
@@ -117,7 +124,7 @@ class PlayerViewController: GAITrackedViewController {
                 NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
             }
 
-            if .Open == main.popupPresentationState {
+            if self.isOpened {
                 updateViewForState(newState)
             }
             
@@ -152,10 +159,11 @@ class PlayerViewController: GAITrackedViewController {
         totalTextView.text = getTimeFormatText(0)
 
         if let track = self.player.currentTrack {
-            self.playerTitle.text = track.title
-            self.coverImageView.setImageForTrack(track, size: .LARGE)
+            playerTitle.text = track.title
+            coverImageView.setImageForTrack(track, size: .LARGE)
+            totalTextView.text = getTimeFormatText(self.duration)
         } else {
-            self.coverImageView.image = UIImage(named: "default_cover_big")
+            coverImageView.image = UIImage(named: "default_cover_big")
         }
     }
     
@@ -234,7 +242,7 @@ class PlayerViewController: GAITrackedViewController {
             let progress = Float(curr / total)
             self.popupItem.progress = progress
             
-            if .Open == main.popupPresentationState {
+            if self.isOpened {
                 progressTextView.text = getTimeFormatText(curr)
                 if false == progressSliderBar.highlighted {
                     progressSliderBar.value = progress
@@ -253,42 +261,43 @@ class PlayerViewController: GAITrackedViewController {
     }
     
     func updateLikeBtn() {
+        var image: UIImage!
         if self.player.currentTrack?.isLiked == true {
-            likeBtn.setImage(UIImage(named:"ic_player_heart_fill_btn"), forState: UIControlState.Normal)
+            image = UIImage(named:"ic_player_heart_fill_btn")
         } else {
-            likeBtn.setImage(UIImage(named:"ic_player_heart_btn"), forState: UIControlState.Normal)
+            image = UIImage(named:"ic_player_heart_btn")
         }
+        likeBtn.setImage(image, forState: UIControlState.Normal)
     }
     
     func updateShuffleView() {
-        if (self.player.shuffleState == .NOT_SHUFFLE) {
-            shuffleBtn.setImage(UIImage(named: "ic_shuffle_gray"), forState: UIControlState.Normal)
-            prevButton.enabled = true
-        } else {
-            shuffleBtn.setImage(UIImage(named: "ic_shuffle"), forState: UIControlState.Normal)
-            prevButton.enabled = false
+        var image: UIImage!
+        switch self.player.shuffleState {
+        case .NOT_SHUFFLE:
+            image = UIImage(named: "ic_shuffle_gray")
+        case .SHUFFLE:
+            image = UIImage(named: "ic_shuffle")
         }
+        shuffleBtn.setImage(image, forState: UIControlState.Normal)
     }
     
     func updateRepeatView() {
+        var image: UIImage!
         switch(self.player.repeatState) {
-        case RepeatState.NOT_REPEAT:
-            let image:UIImage = UIImage(named: "ic_repeat_gray")!
-            repeatBtn.setImage(image, forState: UIControlState.Normal)
-            break
-        case RepeatState.REPEAT_ONE:
-            repeatBtn.setImage(UIImage(named: "ic_repeat_one"), forState: UIControlState.Normal)
-            break
-        case RepeatState.REPEAT_PLAYLIST:
-            repeatBtn.setImage(UIImage(named: "ic_repeat"), forState: UIControlState.Normal)
-            break
+        case .NOT_REPEAT:
+            image = UIImage(named: "ic_repeat_gray")
+        case .REPEAT_ONE:
+            image = UIImage(named: "ic_repeat_one")
+        case .REPEAT_PLAYLIST:
+            image = UIImage(named: "ic_repeat")
         }
+        repeatBtn.setImage(image, forState: UIControlState.Normal)
     }
     
     // MARK: - User Interactions
     
     func showToast(message: String) {
-        let vc = (main.popupPresentationState == .Open) ? self : main
+        let vc = self.isOpened ? self : main
         ViewUtils.showToast(vc, message: message)
     }
     
@@ -332,49 +341,45 @@ class PlayerViewController: GAITrackedViewController {
     }
     
     @IBAction func onPlaylistBtnClicked(sender: UIView) {
+        guard Account.getCachedAccount() != nil else {
+            main.showAuthViewController()
+            return
+        }
+        
         guard let playlist = self.player.currentPlaylist else {
             self.showToast(NSLocalizedString("Failed to find playlist", comment:""))
             return
         }
         
-        if main.popupPresentationState == .Open {
-            self.performSegueWithIdentifier("PlaylistSegue", sender: playlist)
-        } else {
-            main.performSegueWithIdentifier("PlaylistSegue", sender: playlist)
-        }
-        
+        main.performSegueWithIdentifier("PlaylistSegue", sender: playlist)
     }
     
     @IBAction func onAddToPlaylistBtnClicked(sender: UIButton) {
-        if (Account.getCachedAccount() == nil) {
-            NeedAuthViewController.showNeedAuthViewController(self)
+        guard Account.getCachedAccount() != nil else {
+            main.showAuthViewController()
             return
         }
-        let track = self.player.currentTrack
-        performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "PlaylistSegue" {
-            let playlistVC = segue.destinationViewController as! PlaylistViewController
-            playlistVC.currentPlaylist = sender as! Playlist
-            playlistVC.fromPlayer = true
-        } else if segue.identifier == "PlaylistSelectSegue" {
-            let playlistSelectVC = segue.destinationViewController as! PlaylistSelectViewController
-            playlistSelectVC.targetTrack = sender as? Track
-            playlistSelectVC.fromSection = "player"
-            playlistSelectVC.caller = self
-        }
-    }
-    
-    @IBAction func onLikeBtnClicked(sender: AnyObject) {
+        
         guard let track = self.player.currentTrack else {
             self.showToast(NSLocalizedString("No track selected", comment:""))
             return
         }
         
-        if (Account.getCachedAccount() == nil) {
-            NeedAuthViewController.showNeedAuthViewController(self)
+        main.performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        print(segue.identifier)
+    }
+    
+    @IBAction func onLikeBtnClicked(sender: AnyObject) {
+        guard Account.getCachedAccount() != nil else {
+            main.showAuthViewController()
+            return
+        }
+        
+        guard let track = self.player.currentTrack else {
+            self.showToast(NSLocalizedString("No track selected", comment:""))
             return
         }
         
@@ -385,11 +390,7 @@ class PlayerViewController: GAITrackedViewController {
             self.likeProgIndicator.stopAnimating()
             self.likeBtn.hidden = false
             
-            if error == nil {
-                if error!.domain == NeedAuthViewController.NeedAuthErrorDomain {
-                    NeedAuthViewController.showNeedAuthViewController(self)
-                }
-                
+            if error != nil {
                 ViewUtils.showConfirmAlert(self,
                     title: NSLocalizedString("Failed to save", comment: ""),
                     message: NSLocalizedString("Failed to save like info.", comment: ""))

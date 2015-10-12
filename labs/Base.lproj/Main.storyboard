@@ -39,7 +39,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rnG-HH-G81" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1441" y="-333"/>
+            <point key="canvasLocation" x="1757" y="-1059"/>
         </scene>
         <!--Main Tab Bar Controller-->
         <scene sceneID="2cq-gw-d7d">
@@ -60,11 +60,12 @@
                         <segue destination="86D-b6-wJW" kind="relationship" relationship="viewControllers" id="o7A-uM-1f2"/>
                         <segue destination="L4I-eD-jMc" kind="relationship" relationship="viewControllers" id="Ax4-cd-Xcq"/>
                         <segue destination="ATs-9y-TgU" kind="custom" identifier="PlaylistSegue" customClass="RBStoryboardModalSegue" id="VnE-CJ-aLK"/>
+                        <segue destination="e5t-t0-rLq" kind="custom" identifier="PlaylistSelectSegue" customClass="RBStoryboardModalSegue" id="IFq-rG-6rT"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lCq-0r-RCv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="355" y="-1243"/>
+            <point key="canvasLocation" x="903" y="-1263"/>
         </scene>
         <!--Storyboard Link-->
         <scene sceneID="jG7-su-SAl">
@@ -98,7 +99,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZtQ-WG-i8B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="909" y="-1243"/>
+            <point key="canvasLocation" x="1757" y="-1427"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="yGL-1L-Up8">
@@ -394,7 +395,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="909" y="-185"/>
+            <point key="canvasLocation" x="1291" y="-678"/>
         </scene>
         <!--Search Navigation Controller-->
         <scene sceneID="9e1-QR-URc">
@@ -422,7 +423,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eqe-ms-7yQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="909" y="-678"/>
+            <point key="canvasLocation" x="903" y="-678"/>
         </scene>
         <!--Storyboard Link-->
         <scene sceneID="eca-4k-cnZ">
@@ -456,7 +457,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7ze-cs-ZdD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1441" y="-45"/>
+            <point key="canvasLocation" x="1757" y="-494"/>
         </scene>
         <!--Storyboard Link-->
         <scene sceneID="zZM-Ms-sL6">
@@ -474,7 +475,7 @@
                                 <rect key="frame" x="25" y="89" width="164" height="36"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -864,13 +865,11 @@
                         <outlet property="shareBtn" destination="DYy-VZ-xtd" id="Pp0-Ik-E4g"/>
                         <outlet property="shuffleBtn" destination="vEf-jC-XT4" id="PZa-tI-V8f"/>
                         <outlet property="totalTextView" destination="cac-pA-EAb" id="6tb-Lt-EAG"/>
-                        <segue destination="ATs-9y-TgU" kind="custom" identifier="PlaylistSegue" customClass="RBStoryboardModalSegue" id="WMg-3w-EpM"/>
-                        <segue destination="e5t-t0-rLq" kind="custom" identifier="PlaylistSelectSegue" customClass="RBStoryboardModalSegue" id="V3J-9Z-qxl"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tnw-t1-G2s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1441" y="-1243"/>
+            <point key="canvasLocation" x="355" y="-1263"/>
         </scene>
         <!--Storyboard Link-->
         <scene sceneID="gCw-un-Ow6">
@@ -888,7 +887,7 @@
                                 <rect key="frame" x="16" y="89" width="164" height="36"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -922,7 +921,7 @@
                                 <rect key="frame" x="20" y="92" width="164" height="36"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -956,7 +955,7 @@
                                 <rect key="frame" x="20" y="93" width="164" height="36"/>
                                 <animations/>
                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                         </subviews>
@@ -1098,8 +1097,7 @@
         <image name="tabbar_search" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="VnE-CJ-aLK"/>
-        <segue reference="V3J-9Z-qxl"/>
+        <segue reference="IFq-rG-6rT"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
 </document>

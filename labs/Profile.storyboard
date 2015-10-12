@@ -86,7 +86,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="ic_header_dotdotdot_horizontal" id="A4Z-g0-obm">
                             <connections>
-                                <segue destination="BdV-AA-UMZ" kind="custom" customClass="RBStoryboardPushSegue" id="3I1-S8-OZw"/>
+                                <segue destination="BdV-AA-UMZ" kind="custom" identifier="ShowSettings" customClass="RBStoryboardPushSegue" id="3I1-S8-OZw"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

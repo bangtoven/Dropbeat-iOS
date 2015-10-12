@@ -4,7 +4,7 @@
 
 import Foundation
 
-let RELEASE = false
+let RELEASE = true
 
 extension ApiPath {
     static let hostV2 = RELEASE ? "http://dropbeat.net/api/v2/" : "http://spark.coroutine.io/api/v2/"

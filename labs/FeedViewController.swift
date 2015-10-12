@@ -207,13 +207,7 @@ extension FeedViewController: ScrollPagerDelegate {
             return
         }
         
-        if hidden {
-            navBar.shadowImage = UIImage()
-            navBar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
-        } else {
-            navBar.shadowImage = nil
-            navBar.setBackgroundImage(nil, forBarMetrics: UIBarMetrics.Default)
-        }
+        navBar.shadowImage = hidden ? UIImage() : nil
     }
 }
 
@@ -230,6 +224,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
     @IBOutlet weak var feedTypeSelectBtnWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var feedTypeSelectTableView: UITableView!
     @IBOutlet weak var genreTableView: UITableView!
+    @IBOutlet var genreSelectBtn: UIBarButtonItem!
     
     private var refreshControl: UIRefreshControl!
     
@@ -240,7 +235,6 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
     private var nextPage:Int = 0
     private var isLoading:Bool = false
             
-    private var genreSelectBtn: UIBarButtonItem!
     private var selectedGenre:Genre?
     
     private var selectedFeedMenu:FeedMenu!
@@ -267,9 +261,6 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         
         self.newUploadsSegment.addSegmentsWithTitles(["Popular","Recent"])
         self.newUploadsSegment.delegate = self
-        
-        genreSelectBtn = UIBarButtonItem(title: "Genre", style: .Plain, target: self, action: "onGenreBtnClicked:")
-        genreSelectBtn.tintColor = UIColor(netHex: 0x8F2CEF)
         
         selectedFeedMenu = feedMenus[0]
         feedTypeSelectTableView.selectRowAtIndexPath(NSIndexPath(forRow: 0, inSection: 0), animated: false,
@@ -689,7 +680,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         toFeedView(selectedFeedMenu.title)
     }
     
-    func onGenreBtnClicked(sender: AnyObject) {
+    @IBAction func onGenreBtnClicked(sender: AnyObject) {
         if viewMode == ViewMode.Filter {
             toFeedView(selectedFeedMenu.title)
         } else {
@@ -720,12 +711,16 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         
         trackTableView.backgroundColor = UIColor(netHex: 0xffffff)
         
-        genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
+//        genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
         
-        if genres[menu.type] != nil {
-            navigationItem.leftBarButtonItem = genreSelectBtn
+        if genres[menu.type]?.count > 0 {
+            genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
+            genreSelectBtn.enabled = true
+//            navigationItem.leftBarButtonItems = [genreSelectBtn]
         } else {
-            navigationItem.leftBarButtonItem = nil
+            genreSelectBtn.title = ""
+            genreSelectBtn.enabled = false
+//            navigationItem.leftBarButtonItems = []
         }
         
         if genreTableView.indexPathForSelectedRow != nil {
@@ -1075,7 +1070,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         feedTypeSelectTableView.hidden = false
         genreTableView.hidden = true
         feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_up"), forState: UIControlState.Normal)
-        genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
+//        genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
     }
     
     func toFeedView(selected:String) {
@@ -1085,7 +1080,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         genreTableView.hidden = true
         feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_down"), forState: UIControlState.Normal)
         updateFeedTypeSelectBtn(selected)
-        genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
+//        genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
     }
     
     func toGenreSelectView() {

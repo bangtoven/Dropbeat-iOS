@@ -9,13 +9,14 @@
 import UIKit
 import LNPopupController
 
-class MainTabBarController: UITabBarController {
+class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
 
     var playerView: PlayerViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.delegate = self
+        
         self.tabBar.tintColor = UIColor.dropbeatColor()
         
         let navBar = UINavigationBar.appearance()
@@ -33,6 +34,15 @@ class MainTabBarController: UITabBarController {
         
         self.popupBar.translucent = false
         self.popupBar.tintColor = UIColor.dropbeatColor()
+    }
+    
+    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController targetViewController: UIViewController) -> Bool {
+        if self.selectedViewController == self.viewControllers?.last &&
+            targetViewController == self.viewControllers?.last {
+            return false
+        }
+        
+        return true
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -76,13 +86,17 @@ class MainTabBarController: UITabBarController {
     }
     
     func showPopupPlayer() {
+        if self.popupPresentationState == .Open || self.popupPresentationState == .Transitioning {
+            return
+        }
+        
         if self.playerView == nil {
             let pvc = self.storyboard?.instantiateViewControllerWithIdentifier("PlayerViewController") as! PlayerViewController
             pvc.main = self
             self.playerView = pvc
         }
 
-        if self.popupPresentationState != .Closed {
+        if self.popupPresentationState != .Closed  {
             self.tabBar.backgroundImage = UIImage(named: "tabbar_bg")
             self.presentPopupBarWithContentViewController(self.playerView!, animated: true, completion: nil)
         }
@@ -209,15 +223,29 @@ class MainTabBarController: UITabBarController {
         appDelegate.appLink = nil
     }
     
+    func showAuthViewController() {
+        NeedAuthViewController.showNeedAuthViewController(self)
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        print(segue.identifier)
+
         if segue.identifier == "PlaylistSegue" {
             let playlistVC = segue.destinationViewController as! PlaylistViewController
             playlistVC.currentPlaylist = sender as! Playlist
             playlistVC.fromPlayer = true
+        } else if segue.identifier == "PlaylistSelectSegue" {
+            let playlistSelectVC = segue.destinationViewController as! PlaylistSelectViewController
+            playlistSelectVC.targetTrack = sender as? Track
+            playlistSelectVC.fromSection = "player"
+            playlistSelectVC.caller = self
         }
     }
     
-    
+    override func viewDidDisappear(animated: Bool) {
+        super.viewDidDisappear(animated)
+//        self.closePopupAnimated(true, completion: nil)
+    }
     
     // mayby useful later??
     

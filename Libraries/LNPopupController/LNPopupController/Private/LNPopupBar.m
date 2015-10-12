@@ -9,7 +9,7 @@
 #import "LNPopupBar+Private.h"
 #import "__MarqueeLabel.h"
 
-const CGFloat LNPopupBarHeight = 40.0;
+const CGFloat LNPopupBarHeight = 44.0;
 
 const NSInteger LNBarStyleInherit = -1;
 

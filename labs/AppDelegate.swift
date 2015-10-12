@@ -28,13 +28,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var appLink: AppLinkParam?
     
+    private func removeRootViewFromWindow() {
+        if let old = self.window?.rootViewController {
+            old.view.removeFromSuperview()
+            old.removeFromParentViewController()
+            self.window?.rootViewController = nil
+        }
+    }
+    
     func setRootViewToStartupViewController () {
+        self.removeRootViewFromWindow()
+        
         let storyboard = UIStoryboard(name: "Launch", bundle: nil)
         let startupVC = storyboard.instantiateInitialViewController()
         self.window?.rootViewController = startupVC
     }
     
     func setRootViewToMainTabBarController () {
+        self.removeRootViewFromWindow()
+
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let main = storyboard.instantiateInitialViewController()
         main?.view.tintColor = UIColor.dropbeatColor()

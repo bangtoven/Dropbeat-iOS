@@ -27,7 +27,11 @@ class PlaylistListTableViewController: UITableViewController {
     var playlists:[Playlist] = [Playlist]()
     var showCurrentPlaylist: Bool {
         get {
-            return (DropbeatPlayer.defaultPlayer.currentPlaylist != nil)
+            if let current = DropbeatPlayer.defaultPlayer.currentPlaylist {
+                return !self.playlists.contains({$0.id == current.id})
+            } else {
+                return false
+            }
         }
     }
 

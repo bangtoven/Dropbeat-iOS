@@ -248,9 +248,7 @@ class PlaylistViewController: BaseViewController,
         
         DropbeatPlayer.defaultPlayer.shuffleState = ShuffleState.NOT_SHUFFLE
         
-        if currentPlaylist.type != PlaylistType.USER {
-            DropbeatPlayer.defaultPlayer.currentPlaylist = currentPlaylist
-        }
+        DropbeatPlayer.defaultPlayer.currentPlaylist = currentPlaylist
         
         var section:String!
         switch (currentPlaylist.type) {
@@ -413,9 +411,8 @@ class PlaylistViewController: BaseViewController,
     }
     
     func onPlayTrackBtnClicked(track: Track) {
-        if currentPlaylist.type != PlaylistType.USER {
-            DropbeatPlayer.defaultPlayer.currentPlaylist = currentPlaylist
-        }
+        DropbeatPlayer.defaultPlayer.currentPlaylist = currentPlaylist
+
         var section:String!
         switch (currentPlaylist.type) {
         case .SHARED:
@@ -530,9 +527,8 @@ class PlaylistViewController: BaseViewController,
         
         DropbeatPlayer.defaultPlayer.shuffleState = ShuffleState.SHUFFLE
         
-        if currentPlaylist.type != PlaylistType.USER {
-            DropbeatPlayer.defaultPlayer.currentPlaylist = currentPlaylist
-        }
+        DropbeatPlayer.defaultPlayer.currentPlaylist = currentPlaylist
+
         var section:String!
         switch (currentPlaylist.type) {
         case .SHARED:

@@ -35,7 +35,7 @@ class PlayerViewController: GAITrackedViewController {
     private var popupPlayButton: UIBarButtonItem!
     private var popupPauseButton: UIBarButtonItem!
     private var popupLoadingView: UIBarButtonItem!
-    private var popupNextButton: UIBarButtonItem!
+//    private var popupNextButton: UIBarButtonItem!
     
     @IBOutlet weak var likeProgIndicator: UIActivityIndicatorView!
     @IBOutlet weak var likeBtn: UIButton!
@@ -53,18 +53,18 @@ class PlayerViewController: GAITrackedViewController {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        popupPlayButton = UIBarButtonItem(image: UIImage(named: "popup_play"), style: .Plain, target: self, action: "playBtnClicked:")
-        popupPauseButton = UIBarButtonItem(image: UIImage(named: "popup_pause"), style: .Plain, target: self, action: "pauseBtnClicked:")
-        popupNextButton = UIBarButtonItem(image: UIImage(named: "popup_next"), style: .Plain, target: self, action: "onNextBtnClicked:")
+        popupPlayButton = UIBarButtonItem(image: UIImage(named: "popup_big_play"), style: .Plain, target: self, action: "playBtnClicked:")
+        popupPauseButton = UIBarButtonItem(image: UIImage(named: "popup_big_pause"), style: .Plain, target: self, action: "pauseBtnClicked:")
+//        popupNextButton = UIBarButtonItem(image: UIImage(named: "popup_next"), style: .Plain, target: self, action: "onNextBtnClicked:")
         
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
         activityIndicator.startAnimating()
         activityIndicator.color = UIColor.dropbeatColor()
-        activityIndicator.frame = CGRectMake(0, 0, 9, 10)
+        activityIndicator.frame = CGRectMake(0, 0, 24, 24)
         popupLoadingView = UIBarButtonItem(customView: activityIndicator)
         
-        self.popupItem.leftBarButtonItems = [popupLoadingView, popupNextButton]
-        self.popupItem.rightBarButtonItems = [UIBarButtonItem(image: UIImage(named: "popup_playlist"), style: .Plain, target: self, action: "onPlaylistBtnClicked:")]
+        self.popupItem.leftBarButtonItems = [popupLoadingView]
+//        self.popupItem.rightBarButtonItems = [UIBarButtonItem(image: UIImage(named: "popup_big_list"), style: .Plain, target: self, action: "onPlaylistBtnClicked:")]
     }
     
     override func viewDidLoad() {
@@ -144,9 +144,10 @@ class PlayerViewController: GAITrackedViewController {
             }
 
             firstItem.enabled = (newState == .Paused) || (newState == .Playing)
-            popupNextButton.enabled = firstItem.enabled
+            self.popupItem.leftBarButtonItems = [firstItem]
             
-            self.popupItem.leftBarButtonItems = [firstItem, popupNextButton]
+//            popupNextButton.enabled = firstItem.enabled
+//            self.popupItem.leftBarButtonItems = [firstItem, popupNextButton]
         }
     }
     

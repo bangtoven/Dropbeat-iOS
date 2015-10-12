@@ -94,7 +94,7 @@
                     <size key="freeformSize" width="320" height="200"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Playlist"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="ShowPlaylist"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="PlaylistInNavigation"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZtQ-WG-i8B" userLabel="First Responder" sceneMemberID="firstResponder"/>

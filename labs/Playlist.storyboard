@@ -217,7 +217,7 @@
         <!--Playlist-->
         <scene sceneID="KnR-Az-kvY">
             <objects>
-                <viewController storyboardIdentifier="ShowPlaylist" id="xjv-Nu-UuS" customClass="PlaylistViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="xjv-Nu-UuS" customClass="PlaylistViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="DTJ-P8-OKf"/>
                         <viewControllerLayoutGuide type="bottom" id="PWY-yz-HEe"/>
@@ -230,7 +230,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dZf-ss-iss" userLabel="PlaylistInfo">
-                                        <rect key="frame" x="0.0" y="44" width="320" height="70"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="3 tracks" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hhC-uo-MWa">
                                                 <rect key="frame" x="8" y="36" width="211" height="17"/>
@@ -298,7 +298,6 @@
                                                 </state>
                                                 <connections>
                                                     <action selector="onLikeBtnClicked:" destination="xjv-Nu-UuS" eventType="touchUpInside" id="PU8-Dp-4mh"/>
-                                                    <action selector="onPlayPlaylistBtnClicked:" destination="xjv-Nu-UuS" eventType="touchUpInside" id="ElN-sr-Bvh"/>
                                                 </connections>
                                             </button>
                                         </subviews>
@@ -324,7 +323,7 @@
                                         </constraints>
                                     </view>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" bouncesZoom="NO" dataMode="prototypes" style="grouped" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="S87-AV-RDE">
-                                        <rect key="frame" x="0.0" y="114" width="320" height="390"/>
+                                        <rect key="frame" x="0.0" y="70" width="320" height="434"/>
                                         <animations/>
                                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="separatorColor" red="0.84094483440000001" green="0.84094483440000001" blue="0.84094483440000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -367,7 +366,7 @@
                                                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                             </state>
                                                             <connections>
-                                                                <action selector="onMenuBtnClicked:" destination="zft-fq-qtf" eventType="touchUpInside" id="n2Z-fZ-CgQ"/>
+                                                                <action selector="onMenuBtnClicked:" destination="xjv-Nu-UuS" eventType="touchUpInside" id="JcR-B1-YRs"/>
                                                             </connections>
                                                         </button>
                                                     </subviews>
@@ -396,41 +395,16 @@
                                             <outlet property="delegate" destination="xjv-Nu-UuS" id="WS6-R8-w1y"/>
                                         </connections>
                                     </tableView>
-                                    <navigationBar contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Fo-wT-kRD">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                        <animations/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="44" id="1CZ-ZA-pGx"/>
-                                        </constraints>
-                                        <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        <textAttributes key="titleTextAttributes">
-                                            <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
-                                        </textAttributes>
-                                        <items>
-                                            <navigationItem title="Playlist" id="hte-Im-2sQ">
-                                                <barButtonItem key="leftBarButtonItem" title="Close" style="plain" id="IcZ-H8-IHp">
-                                                    <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <connections>
-                                                        <action selector="onFakeBackBtnClicked:" destination="xjv-Nu-UuS" id="sNg-xM-lhS"/>
-                                                    </connections>
-                                                </barButtonItem>
-                                            </navigationItem>
-                                        </items>
-                                    </navigationBar>
                                 </subviews>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="1Fo-wT-kRD" secondAttribute="trailing" id="2dy-ho-I6J"/>
                                     <constraint firstAttribute="trailing" secondItem="S87-AV-RDE" secondAttribute="trailing" id="4PW-sV-Gvc"/>
                                     <constraint firstItem="dZf-ss-iss" firstAttribute="leading" secondItem="8DO-rz-kuN" secondAttribute="leading" id="6cW-EU-qvu"/>
                                     <constraint firstAttribute="bottom" secondItem="S87-AV-RDE" secondAttribute="bottom" id="Jph-pF-tEL"/>
                                     <constraint firstAttribute="trailing" secondItem="dZf-ss-iss" secondAttribute="trailing" id="Naq-Fj-RQT"/>
-                                    <constraint firstItem="1Fo-wT-kRD" firstAttribute="top" secondItem="8DO-rz-kuN" secondAttribute="top" id="Sj1-4z-cBa"/>
                                     <constraint firstItem="S87-AV-RDE" firstAttribute="leading" secondItem="8DO-rz-kuN" secondAttribute="leading" id="Vsu-dk-PJZ"/>
-                                    <constraint firstItem="1Fo-wT-kRD" firstAttribute="leading" secondItem="8DO-rz-kuN" secondAttribute="leading" id="kan-CP-GED"/>
-                                    <constraint firstItem="dZf-ss-iss" firstAttribute="top" secondItem="1Fo-wT-kRD" secondAttribute="bottom" id="qwn-Nw-0tw"/>
+                                    <constraint firstItem="dZf-ss-iss" firstAttribute="top" secondItem="8DO-rz-kuN" secondAttribute="top" id="ciD-UO-dwu"/>
                                     <constraint firstItem="S87-AV-RDE" firstAttribute="top" secondItem="dZf-ss-iss" secondAttribute="bottom" id="vdb-fN-cST"/>
                                 </constraints>
                             </view>
@@ -450,8 +424,6 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
-                        <outlet property="fakeNavigationBar" destination="1Fo-wT-kRD" id="7Xe-47-KC8"/>
-                        <outlet property="fakeNavigationBarHeightConstraint" destination="1CZ-ZA-pGx" id="yOd-7S-qRC"/>
                         <outlet property="likeBtn" destination="K1a-43-znW" id="gOl-uq-zla"/>
                         <outlet property="playPlaylistBtn" destination="P27-x3-MHe" id="z9N-IL-GeV"/>
                         <outlet property="playlistMenuBtn" destination="LPC-Ot-HNj" id="MKF-Pp-mlu"/>
@@ -465,6 +437,26 @@
             </objects>
             <point key="canvasLocation" x="249" y="-922"/>
         </scene>
+        <!--Before Playlist Navigation Controller-->
+        <scene sceneID="weW-Mi-Vq6">
+            <objects>
+                <navigationController storyboardIdentifier="PlaylistInNavigation" id="k9a-Gp-kWJ" customClass="BeforePlaylistNavigationController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="200"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="5UD-sF-ccK">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                        <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="xjv-Nu-UuS" kind="relationship" relationship="rootViewController" id="5Oo-kB-jKx"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2Zg-m8-noc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="249" y="-1434"/>
+        </scene>
     </scenes>
     <resources>
         <image name="ic_arrow_right" width="50" height="50"/>
@@ -477,5 +469,8 @@
         <image name="ic_playlist" width="52" height="52"/>
         <image name="ic_playlist_selected" width="52" height="52"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="5Oo-kB-jKx"/>
+    </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
 </document>

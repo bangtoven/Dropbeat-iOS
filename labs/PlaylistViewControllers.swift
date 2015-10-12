@@ -8,14 +8,22 @@
 
 import UIKit
 
-protocol PlaylistTableViewDelegate {
-    func onMenuBtnClicked(sender:PlaylistTrackTableViewCell)
+class BeforePlaylistNavigationController: UINavigationController {
+    var currentPlaylist:Playlist!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.navigationBar.tintColor = UIColor.dropbeatColor()
+        
+        let pvc = self.topViewController as! PlaylistViewController
+        pvc.currentPlaylist = currentPlaylist
+        
+        pvc.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: pvc, action: "doneBarButtonAction:")
+    }
 }
 
 class PlaylistTrackTableViewCell: UITableViewCell {
-    
-    var delegate:PlaylistTableViewDelegate?
-    
     @IBOutlet weak var menuBtn: UIButton!
     @IBOutlet weak var icon: UIImageView!
     @IBOutlet weak var trackTitle: UILabel!
@@ -28,15 +36,10 @@ class PlaylistTrackTableViewCell: UITableViewCell {
         selectedBgView.backgroundColor = UIColor(netHex: 0xdddddd)
         self.selectedBackgroundView = selectedBgView
     }
-    
-    @IBAction func onMenuBtnClicked(sender: UIButton) {
-        delegate?.onMenuBtnClicked(self)
-    }
-    
 }
 
 class PlaylistViewController: BaseViewController,
-        UITableViewDelegate, UITableViewDataSource, PlaylistTableViewDelegate, UIActionSheetDelegate{
+        UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate{
     
     @IBOutlet weak var likeBtn: UIButton!
     @IBOutlet weak var playlistMenuBtn: UIButton!
@@ -44,45 +47,32 @@ class PlaylistViewController: BaseViewController,
     @IBOutlet weak var playlistTableView: UITableView!
     @IBOutlet weak var playlistTrackCountView: UILabel!
     @IBOutlet weak var playlistNameView: UILabel!
-    @IBOutlet weak var fakeNavigationBar: UINavigationBar!
-    @IBOutlet weak var fakeNavigationBarHeightConstraint: NSLayoutConstraint!
     
     private var tracks:[Track] = [Track]()
     private var playlistActionSheet:UIActionSheet?
     private var menuSelectedTrack:Track?
     private var isLiked = false
     var currentPlaylist:Playlist!
-    var fromPlayer:Bool = false
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        if fromPlayer {
-            fakeNavigationBar.hidden = false
-        } else {
-            fakeNavigationBar.hidden = true
-            fakeNavigationBarHeightConstraint.constant = 0
-        }
-        
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.screenName = "PlaylistViewScreen"
+
         if currentPlaylist.type == PlaylistType.EXTERNAL ||
-                currentPlaylist.type == PlaylistType.SHARED {
-            playlistMenuBtn.hidden = true
-            playPlaylistBtn.hidden = true
-                    
-            if currentPlaylist.type == PlaylistType.SHARED {
-                likeBtn.hidden = false
-                updateLikeBtn()
-            }
+            currentPlaylist.type == PlaylistType.SHARED {
+                playlistMenuBtn.hidden = true
+                playPlaylistBtn.hidden = true
+                
+                if currentPlaylist.type == PlaylistType.SHARED {
+                    likeBtn.hidden = false
+                    updateLikeBtn()
+                }
         } else {
             playlistMenuBtn.hidden = false
             playPlaylistBtn.hidden = false
             likeBtn.hidden = true
         }
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        self.screenName = "PlaylistViewScreen"
-        
+
         updatePlaylistInfo()
         if currentPlaylist != nil {
             tracks.removeAll(keepCapacity: false)
@@ -110,7 +100,6 @@ class PlaylistViewController: BaseViewController,
     
     func updatePlaylistInfo() {
         self.title = currentPlaylist!.name
-        self.fakeNavigationBar.items?.last?.title = self.title
         
         playlistNameView.text = currentPlaylist!.name
         switch(currentPlaylist!.tracks.count) {
@@ -128,9 +117,8 @@ class PlaylistViewController: BaseViewController,
         loadPlaylist()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func doneBarButtonAction(sender: UIBarButtonItem) {
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -147,7 +135,6 @@ class PlaylistViewController: BaseViewController,
             cell.setSelected(true, animated: false)
         }
         cell.trackTitle.text = track.title
-        cell.delegate = self
         return cell
     }
     
@@ -263,39 +250,28 @@ class PlaylistViewController: BaseViewController,
             break
         }
         
-        let params: Dictionary<String, AnyObject> = [
-            "track": selectedTrack,
-            "playlistId": currentPlaylist!.id,
-            "section": section
-        ]
-        
         DropbeatPlayer.defaultPlayer.play(selectedTrack)
-//        
-//        NSNotificationCenter.defaultCenter().postNotificationName(
-//            NotifyKey.playerPlay, object: params)
-//        NSNotificationCenter.defaultCenter().postNotificationName(
-//            NotifyKey.updateShuffleState, object: nil)
     }
     
     @IBAction func onPlaylistMenuBtnClicked(sender: AnyObject) {
-        playlistActionSheet = UIActionSheet()
-        playlistActionSheet!.addButtonWithTitle(NSLocalizedString("Shuffle Play", comment:""))
-        playlistActionSheet!.addButtonWithTitle(NSLocalizedString("Share", comment:""))
-        playlistActionSheet!.addButtonWithTitle(NSLocalizedString("Rename", comment:""))
-        playlistActionSheet!.addButtonWithTitle(NSLocalizedString("Delete", comment:""))
-        playlistActionSheet!.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
-        playlistActionSheet!.destructiveButtonIndex = 3
-        playlistActionSheet!.cancelButtonIndex = 4
+        let actionSheet = UIActionSheet()
+        actionSheet.addButtonWithTitle(NSLocalizedString("Shuffle Play", comment:""))
+        actionSheet.addButtonWithTitle(NSLocalizedString("Share", comment:""))
+        actionSheet.addButtonWithTitle(NSLocalizedString("Rename", comment:""))
+        actionSheet.addButtonWithTitle(NSLocalizedString("Delete", comment:""))
+        actionSheet.addButtonWithTitle(NSLocalizedString("Cancel", comment:""))
+        actionSheet.destructiveButtonIndex = 3
+        actionSheet.cancelButtonIndex = 4
         
-        if fromPlayer {
-            playlistActionSheet!.showInView(self.view)
+        actionSheet.delegate = self
+        
+        if let tabBar = self.tabBarController?.tabBar {
+            actionSheet.showFromTabBar(tabBar)
         } else {
-             playlistActionSheet!.showFromTabBar((self.tabBarController?.tabBar)!)
-//            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//            
-//            playlistActionSheet!.showFromTabBar(appDelegate.centerContainer!.tabBar)
+            actionSheet.showInView(self.view)
         }
-        playlistActionSheet!.delegate = self
+        
+        self.playlistActionSheet = actionSheet
     }
     
     func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
@@ -425,20 +401,9 @@ class PlaylistViewController: BaseViewController,
             section = currentPlaylist.id
             break
         }
-        let params: Dictionary<String, AnyObject> = [
-            "track": track,
-            "playlistId": currentPlaylist!.id,
-            "section": section
-        ]
-        
+
         DropbeatPlayer.defaultPlayer.play(track)
 
-//        NSNotificationCenter.defaultCenter().postNotificationName(
-//            NotifyKey.playerPlay, object: params)
-        
-        if fromPlayer {
-            dismissViewControllerAnimated(true, completion: nil)
-        }
     }
     
     func onShareTrackBtnClicked(track: Track) {
@@ -542,18 +507,7 @@ class PlaylistViewController: BaseViewController,
             break
         }
         
-        let params: Dictionary<String, AnyObject> = [
-            "track": selectedTrack,
-            "playlistId": currentPlaylist!.id,
-            "section": section
-        ]
-        
         DropbeatPlayer.defaultPlayer.play(selectedTrack)
-//
-//        NSNotificationCenter.defaultCenter().postNotificationName(
-//            NotifyKey.playerPlay, object: params)
-//        NSNotificationCenter.defaultCenter().postNotificationName(
-//            NotifyKey.updateShuffleState, object: nil)
     }
     
     func onSharePlaylistBtnClicked() {
@@ -701,9 +655,10 @@ class PlaylistViewController: BaseViewController,
             })
     }
     
-    func onMenuBtnClicked(sender: PlaylistTrackTableViewCell) {
-        let indexPath:NSIndexPath = playlistTableView.indexPathForCell(sender)!
-        menuSelectedTrack = tracks[indexPath.row]
+    @IBAction func onMenuBtnClicked(sender: UIButton) {
+        let indexPath = playlistTableView.indexPathOfCellContains(sender)
+
+        menuSelectedTrack = tracks[indexPath!.row]
         
         let actionSheet = UIActionSheet()
         
@@ -727,15 +682,13 @@ class PlaylistViewController: BaseViewController,
             actionSheet.destructiveButtonIndex = 2
         }
         actionSheet.cancelButtonIndex = 3
-        if fromPlayer {
-            actionSheet.showInView(self.view)
-        } else {
-            actionSheet.showFromTabBar((self.tabBarController?.tabBar)!)
-//            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//            
-//            actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
-        }
         actionSheet.delegate = self
+        
+        if let tabBar = self.tabBarController?.tabBar {
+            actionSheet.showFromTabBar(tabBar)
+        } else {
+            actionSheet.showInView(self.view)
+        }
     }
     
     func trackChanged() {
@@ -798,12 +751,6 @@ class PlaylistViewController: BaseViewController,
                 }
                 callback(playlist:importedPlaylist, error:nil)
             })
-        }
-    }
-    
-    @IBAction func onFakeBackBtnClicked(sender: AnyObject) {
-        if fromPlayer {
-            dismissViewControllerAnimated(true, completion: nil)
         }
     }
     

@@ -366,7 +366,8 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
                     target: self, selector: "onDropFinished", userInfo: nil, repeats: false)
             }
             
-            if let when = dropPlayerContext.currentTrack!.drop!.when {
+            if let when = dropPlayerContext.currentTrack!.drop!.when
+                where when > 0 {
                 let fWhen = Float64(when)
                 let targetTime = CMTimeMakeWithSeconds(fWhen, 600)
                 dropPlayer?.seekToTime(targetTime, completionHandler: { (Bool) -> Void in

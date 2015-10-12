@@ -231,9 +231,8 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
         print(segue.identifier)
 
         if segue.identifier == "PlaylistSegue" {
-            let playlistVC = segue.destinationViewController as! PlaylistViewController
+            let playlistVC = segue.destinationViewController as! BeforePlaylistNavigationController
             playlistVC.currentPlaylist = sender as! Playlist
-            playlistVC.fromPlayer = true
         } else if segue.identifier == "PlaylistSelectSegue" {
             let playlistSelectVC = segue.destinationViewController as! PlaylistSelectViewController
             playlistSelectVC.targetTrack = sender as? Track

@@ -54,6 +54,12 @@ class PlaylistViewController: BaseViewController,
     private var isLiked = false
     var currentPlaylist:Playlist!
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let insets = UIEdgeInsetsMake(topLayoutGuide.length, 0, 44, 0)
+        playlistTableView.contentInset = insets
+    }
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "PlaylistViewScreen"

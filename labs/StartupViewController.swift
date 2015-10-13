@@ -57,10 +57,6 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "genre_tutorial" {
-            let vc = segue.destinationViewController as! EditFavoriteGenreViewController
-            vc.fromStartup = true
-        }
         if segue.identifier == "need_email" {
             let vc = segue.destinationViewController as! FBEmailSubmitViewController
             vc.delegate = self
@@ -198,11 +194,11 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) {
             self.progressHud?.hide(true)
-            if let account = Account.getCachedAccount()
-                where account.favoriteGenreIds.count == 0 {
-                    self.performSegueWithIdentifier("genre_tutorial", sender: self)
-                    return
-            }
+//            if let account = Account.getCachedAccount()
+//                where account.favoriteGenreIds.count == 0 {
+//                    self.performSegueWithIdentifier("genre_tutorial", sender: self)
+//                    return
+//            }
             
 //            self.performSegueWithIdentifier("main", sender: self)
             let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate

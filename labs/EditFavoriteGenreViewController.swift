@@ -86,6 +86,10 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
         onSaveGenreClicked()
     }
     
+    @IBAction func cancelAction(sender: AnyObject) {
+        self.performSegueWithIdentifier("unwindFromEditFavoriteGenres", sender: nil)
+    }
+    
     func onSaveGenreClicked() {
         if selectedGenreIds.count == 0 {
             return

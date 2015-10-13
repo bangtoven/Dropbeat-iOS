@@ -156,6 +156,9 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
     var baseUser: BaseUser?
     var fetchFunc: ((([Track]?, NSError?) -> Void) -> Void)?
     
+    override func viewDidLayoutSubviews() {
+    }
+    
     func subViewWillAppear() {
         if self.tracks.count == 0 && fetchFunc != nil {
 //            print("start fetching \(self.title!)")
@@ -204,6 +207,8 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
                 let diff = minHeight - (CELL_HIGHT * CGFloat(tracks.count))
                 if diff > 0 {
                     cellHeight = diff
+                } else {
+                    cellHeight = 44
                 }
         }
         return cellHeight

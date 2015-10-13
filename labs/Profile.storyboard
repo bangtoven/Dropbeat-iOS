@@ -1256,11 +1256,11 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                         <viewControllerLayoutGuide type="bottom" id="Tz5-M9-PHc"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="2as-zm-jfg">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZFP-Tc-gyd">
-                                <rect key="frame" x="0.0" y="367" width="320" height="60"/>
+                                <rect key="frame" x="0.0" y="416" width="320" height="60"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sde-c2-xOA" userLabel="border">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
@@ -1308,7 +1308,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsMultipleSelection="YES" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="42A-3X-iro">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.84094483440000001" green="0.84094483440000001" blue="0.84094483440000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -1470,7 +1470,14 @@ click below to discover your favorites</string>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
-                    <navigationItem key="navigationItem" title="Favorite Genres" id="SKr-E4-kop"/>
+                    <navigationItem key="navigationItem" title="Favorite Genres" id="SKr-E4-kop">
+                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="z8r-XV-wGW">
+                            <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                            <connections>
+                                <action selector="cancelAction:" destination="Y4m-6A-6NH" id="nCt-RO-CFG"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="discoverBtn" destination="khI-h3-E5k" id="ND1-fY-dja"/>
@@ -1486,7 +1493,7 @@ click below to discover your favorites</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ww1-mV-Trg" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="92y-9e-pvT" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1420" y="2071"/>
+            <point key="canvasLocation" x="-938" y="2071"/>
         </scene>
         <!--Edit Profile-->
         <scene sceneID="u0Z-Lm-Ou0">
@@ -1508,7 +1515,7 @@ click below to discover your favorites</string>
                                 </tableViewCellContentView>
                                 <animations/>
                                 <connections>
-                                    <segue destination="Y4m-6A-6NH" kind="show" id="DlU-iT-Yca"/>
+                                    <segue destination="xYK-Yz-7IH" kind="presentation" id="DlU-iT-Yca"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -1550,11 +1557,11 @@ click below to discover your favorites</string>
                         <viewControllerLayoutGuide type="bottom" id="XoJ-DK-fpF"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="d3z-zO-kvc">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="168" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="TcC-s4-hBI">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="xfe-w6-oC0">
@@ -1714,7 +1721,7 @@ and let us know your favorite genre.</string>
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KK7-Pw-Ttz">
-                                <rect key="frame" x="0.0" y="367" width="320" height="60"/>
+                                <rect key="frame" x="0.0" y="416" width="320" height="60"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G51-Ym-mJa">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
@@ -1785,7 +1792,7 @@ and let us know your favorite genre.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JAp-fS-auG" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="cNm-tq-YQC" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="-1005" y="2071"/>
+            <point key="canvasLocation" x="-523" y="2071"/>
         </scene>
         <!--Storyboard Link-->
         <scene sceneID="Cpm-cz-Nhv">
@@ -1820,6 +1827,26 @@ and let us know your favorite genre.</string>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lga-ln-Ocf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-2287" y="2440"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Ivd-WF-wbI">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xYK-Yz-7IH" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="OWD-DM-j1y">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                        <color key="tintColor" red="0.54901960780000003" green="0.0" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Y4m-6A-6NH" kind="relationship" relationship="rootViewController" id="HLI-Ou-7n8"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="2un-Pn-mNi" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1380" y="2071"/>
         </scene>
     </scenes>
     <resources>

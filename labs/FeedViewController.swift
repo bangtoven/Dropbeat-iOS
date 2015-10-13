@@ -280,6 +280,15 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         initialize()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        trackTableView.contentInset = UIEdgeInsetsZero
+        
+        let insets = UIEdgeInsetsMake(topLayoutGuide.length, 0, 44, 0)
+        feedTypeSelectTableView.contentInset = insets
+        genreTableView.contentInset = insets
+    }
+    
     func initialize() {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         initGenres { (error) -> Void in

@@ -29,6 +29,9 @@ class FollowInfoTableViewController: UITableViewController, AXSubViewController 
     var followInfoType: FollowInfoType!
     var userArray: [BaseUser] = []
     
+    override func viewDidLayoutSubviews() {
+    }
+    
     func subViewWillAppear() {
         if self.userArray.count == 0 {
 //            print("start fetching \(self.title!)")
@@ -77,6 +80,8 @@ class FollowInfoTableViewController: UITableViewController, AXSubViewController 
                 let diff = minHeight - (CELL_HIGHT * CGFloat(userArray.count))
                 if diff > 0 {
                     cellHeight = diff
+                } else {
+                    cellHeight = 44
                 }
         }
         return cellHeight

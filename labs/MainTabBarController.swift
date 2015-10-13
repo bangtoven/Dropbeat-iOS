@@ -9,22 +9,46 @@
 import UIKit
 import LNPopupController
 
-class PopupBarFrameUpdateNavigationController: UINavigationController {
-    
+//class PopupBarFrameUpdateNavigationController: UINavigationController {
+//    
+//    override func viewDidAppear(animated: Bool) {
+//        super.viewDidAppear(animated)
+//        
+//        self.updateContentFrame()
+//    }
+//    
+//    func updateContentFrame() {
+//        guard let tbc = self.tabBarController else {
+//            return
+//        }
+//        
+//        var newHeight = tbc.view.frame.height
+//        if tbc.popupPresentationState == .Closed {
+//            newHeight -= tbc.popupBar.frame.height
+//        }
+//        
+//        if newHeight != self.view.frame.height {
+//            print("update height: \(self.view.frame.height) -> \(newHeight)")
+//            self.view.frame.size.height = newHeight
+//            self.view.setNeedsLayout()
+//        }
+//    }
+//    
+//}
+
+extension UITableViewController {
+    override public func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let insets = UIEdgeInsetsMake(topLayoutGuide.length, 0, 44, 0)
+        tableView.contentInset = insets
+    }
+}
+
+extension AddableTrackListViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        guard let tbc = self.tabBarController else {
-            return
-        }
-        
-        let height = tbc.view.frame.height
-        if tbc.popupPresentationState == .Closed {
-            self.view.frame.size.height = height - tbc.popupBar.frame.height
-        } else {
-            self.view.frame.size.height = height
-        }
-
+        let insets = UIEdgeInsetsMake(topLayoutGuide.length, 0, 44, 0)
+        trackTableView.contentInset = insets
     }
 }
 
@@ -103,11 +127,11 @@ class MainTabBarController: UITabBarController {
             
             self.tabBar.backgroundImage = UIImage(named: "tabbar_bg")
             self.presentPopupBarWithContentViewController(self.playerView!, animated: true) {
-                for vc in self.viewControllers! {
-                    if let navCon = vc as? UINavigationController {
-                        navCon.viewDidLayoutSubviews()
-                    }
-                }
+//                for vc in self.viewControllers! {
+//                    if let navCon = vc as? PopupBarFrameUpdateNavigationController {
+//                        navCon.updateContentFrame()
+//                    }
+//                }
             }
         }
     }
@@ -116,11 +140,11 @@ class MainTabBarController: UITabBarController {
         if self.popupPresentationState == .Closed {
             self.tabBar.backgroundImage = UIImage(named: "tabbar_bg_with_bar")
             self.dismissPopupBarAnimated(true) {
-                for vc in self.viewControllers! {
-                    if let navCon = vc as? UINavigationController {
-                        navCon.viewDidLayoutSubviews()
-                    }
-                }
+//                for vc in self.viewControllers! {
+//                    if let navCon = vc as? PopupBarFrameUpdateNavigationController {
+//                        navCon.updateContentFrame()
+//                    }
+//                }
             }
         }
     }

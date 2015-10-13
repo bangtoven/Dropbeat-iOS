@@ -225,6 +225,8 @@
 		73A355AA1BCDBAC90002C00D /* EAIntroView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A355A41BCDBAC90002C00D /* EAIntroView.m */; settings = {ASSET_TAGS = (); }; };
 		73A355AB1BCDBAC90002C00D /* EARestrictedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A355A61BCDBAC90002C00D /* EARestrictedScrollView.m */; settings = {ASSET_TAGS = (); }; };
 		73A355AC1BCDBAC90002C00D /* EARestrictedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A355A61BCDBAC90002C00D /* EARestrictedScrollView.m */; settings = {ASSET_TAGS = (); }; };
+		73A355C01BCDC9B00002C00D /* VYPlayIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A355BF1BCDC9B00002C00D /* VYPlayIndicator.m */; settings = {ASSET_TAGS = (); }; };
+		73A355C11BCDC9B00002C00D /* VYPlayIndicator.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A355BF1BCDC9B00002C00D /* VYPlayIndicator.m */; settings = {ASSET_TAGS = (); }; };
 		73A661961BC6EC5F00DD1179 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A661951BC6EC5F00DD1179 /* PlayerViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		73A661971BC6EC5F00DD1179 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A661951BC6EC5F00DD1179 /* PlayerViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		73A661A21BC9927900DD1179 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73A6619E1BC9923200DD1179 /* LNPopupController.framework */; };
@@ -519,6 +521,8 @@
 		73A355A41BCDBAC90002C00D /* EAIntroView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EAIntroView.m; path = Libraries/EAIntroPage/EAIntroView.m; sourceTree = SOURCE_ROOT; };
 		73A355A51BCDBAC90002C00D /* EARestrictedScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EARestrictedScrollView.h; path = Libraries/EAIntroPage/EARestrictedScrollView.h; sourceTree = SOURCE_ROOT; };
 		73A355A61BCDBAC90002C00D /* EARestrictedScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EARestrictedScrollView.m; path = Libraries/EAIntroPage/EARestrictedScrollView.m; sourceTree = SOURCE_ROOT; };
+		73A355BE1BCDC9B00002C00D /* VYPlayIndicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VYPlayIndicator.h; sourceTree = "<group>"; };
+		73A355BF1BCDC9B00002C00D /* VYPlayIndicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VYPlayIndicator.m; sourceTree = "<group>"; };
 		73A661951BC6EC5F00DD1179 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		73A661991BC9923200DD1179 /* LNPopupController.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LNPopupController.xcodeproj; path = Libraries/LNPopupController/LNPopupController.xcodeproj; sourceTree = SOURCE_ROOT; };
 		73AB34691BB15AAE0031E2CC /* JHImageTransitionSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHImageTransitionSegue.h; sourceTree = "<group>"; };
@@ -860,6 +864,7 @@
 				589413531B83C3F700395AFA /* TPKeyboardAvoiding */,
 				589F0F0A1B6A0DE6000851CC /* MarqueeLabel */,
 				587837A11B440225008DF480 /* Reachability */,
+				73A355BD1BCDC9B00002C00D /* VYPlayIndicator */,
 				588693BF1B13B7A800566124 /* MBProgressHUD */,
 				588693771B13B51300566124 /* SDWebImage */,
 				58BB0B111B122D8200B07279 /* GAI */,
@@ -1007,6 +1012,16 @@
 			);
 			path = EAIntroPage;
 			sourceTree = "<group>";
+		};
+		73A355BD1BCDC9B00002C00D /* VYPlayIndicator */ = {
+			isa = PBXGroup;
+			children = (
+				73A355BE1BCDC9B00002C00D /* VYPlayIndicator.h */,
+				73A355BF1BCDC9B00002C00D /* VYPlayIndicator.m */,
+			);
+			name = VYPlayIndicator;
+			path = Libraries/VYPlayIndicator;
+			sourceTree = SOURCE_ROOT;
 		};
 		73A6619A1BC9923200DD1179 /* Products */ = {
 			isa = PBXGroup;
@@ -1428,6 +1443,7 @@
 				734C7DD61BB4C1DA0071678C /* ACEExpandableTextCell.m in Sources */,
 				734C7DD71BB4C1DA0071678C /* AXStretchableHeaderTabViewController.m in Sources */,
 				734C7DD81BB4C1DA0071678C /* Error.swift in Sources */,
+				73A355C11BCDC9B00002C00D /* VYPlayIndicator.m in Sources */,
 				734C7DD91BB4C1DA0071678C /* GBFlatButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1551,6 +1567,7 @@
 				73AB34761BB1D34A0031E2CC /* ACEExpandableTextCell.m in Sources */,
 				7327173B1BAC86BB003E0B68 /* AXStretchableHeaderTabViewController.m in Sources */,
 				73FC90C11BAE4AFA00284B8A /* Error.swift in Sources */,
+				73A355C01BCDC9B00002C00D /* VYPlayIndicator.m in Sources */,
 				732717301BAC86A8003E0B68 /* GBFlatButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

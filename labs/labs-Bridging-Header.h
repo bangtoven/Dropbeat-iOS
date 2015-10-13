@@ -58,6 +58,7 @@
 #import "UIView+WebCacheOperation.h"
 
 #import "MBProgressHUD.h"
+#import "VYPlayIndicator.h"
 
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>

@@ -209,7 +209,9 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
                 let diff = minHeight - (CELL_HIGHT * CGFloat(tracks.count))
                 if diff > 0 {
                     cellHeight = diff
-                } else {
+                }
+                
+                if cellHeight < 44 {
                     cellHeight = 44
                 }
         }

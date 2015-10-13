@@ -80,7 +80,9 @@ class FollowInfoTableViewController: UITableViewController, AXSubViewController 
                 let diff = minHeight - (CELL_HIGHT * CGFloat(userArray.count))
                 if diff > 0 {
                     cellHeight = diff
-                } else {
+                }
+                
+                if cellHeight < 44 {
                     cellHeight = 44
                 }
         }

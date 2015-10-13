@@ -263,11 +263,22 @@ class ViewUtils {
         if viewController.navigationController != nil {
             vc = viewController.navigationController!
         }
-        let hud = MBProgressHUD.showHUDAddedTo(vc.view, animated: true)
-        hud.mode = MBProgressHUDMode.Indeterminate
+//        let hud = MBProgressHUD.showHUDAddedTo(vc.view, animated: true)
+//        hud.mode = MBProgressHUDMode.Indeterminate
 //        hud.labelText = message
-        hud.removeFromSuperViewOnHide = true
+//        hud.removeFromSuperViewOnHide = true
+//        hud.show(true)
+        
+        let hud = MBProgressHUD.showHUDAddedTo(vc.view, animated: true)
+        hud.customView = UIView(frame: CGRectMake(0, 0, 37, 37))
+        hud.mode = .CustomView
+        let playIndicator = VYPlayIndicator()
+        playIndicator.frame = hud.customView.bounds
+        playIndicator.color = UIColor.whiteColor()
+        playIndicator.animatePlayback()
+        hud.customView.layer.addSublayer(playIndicator)
         hud.show(true)
+        
         return hud
     }
 }

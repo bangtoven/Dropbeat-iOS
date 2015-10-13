@@ -60,6 +60,9 @@ extension AddableTrackListViewController: STKAudioPlayerDelegate {
         guard let indexPath = trackTableView.indexPathForCell(sender) else {
             return
         }
+        
+        self.dropPlayCellIndexPath = indexPath
+        
         let track = tracks[indexPath.row]
         if let currentTrack = self.dropPlayCurrentTrack
             where currentTrack.id == track.id {
@@ -130,8 +133,18 @@ extension AddableTrackListViewController: STKAudioPlayerDelegate {
         ViewUtils.showToast(self, message: NSLocalizedString("Failed to play", comment:""))
     }
     
-    func updateDropPlayState(status:DropPlayState) {
-        if status == .Ready {
+    func updateDropPlayState(state:DropPlayState) {
+        if state == self.dropPlayState {
+            return
+        }
+        
+        self.dropPlayState = state
+        if let track = self.dropPlayCurrentTrack,
+            cell = trackTableView.cellForRowAtIndexPath(self.dropPlayCellIndexPath) as? AddableTrackTableViewCell {
+            self.setDropButtonForCellWithTrack(cell, track: track)
+        }
+
+        if state == .Ready {
             if let main = self.tabBarController as? MainTabBarController
                 where DropbeatPlayer.defaultPlayer.currentTrack != nil {
                     main.showPopupPlayer()
@@ -140,12 +153,9 @@ extension AddableTrackListViewController: STKAudioPlayerDelegate {
             
             self.pauseDrop()
         }
-        
-        self.dropPlayState = status
-        trackTableView.reloadData()
     }
     
-    func setDropButtonForCellWithTrack(cell:AddableTrackTableViewCell, track: Track, small: Bool = false) {
+    func setDropButtonForCellWithTrack(cell:AddableTrackTableViewCell, track: Track) {
         cell.dropBtn.hidden = (track.drop == nil)
         
         if cell.dropBtn.hidden == false {
@@ -160,7 +170,7 @@ extension AddableTrackListViewController: STKAudioPlayerDelegate {
                     break
                 }
             }
-            dropBtnImageName = small ? "\(dropBtnImageName)_small" : dropBtnImageName
+            dropBtnImageName = (self.needsBigSizeDropButton == false) ? "\(dropBtnImageName)_small" : dropBtnImageName
             
             cell.dropBtn.setImage(UIImage(named: dropBtnImageName), forState: UIControlState.Normal)
         }
@@ -176,9 +186,12 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     var tracks:[Track] = [Track]()
     var selectedTrack:Track?
     
+    var needsBigSizeDropButton = false
+    
     private var dropPlayer: STKAudioPlayer?
     private var dropPlayState = DropPlayState.Ready
     private var dropPlayCurrentTrack: Track?
+    private var dropPlayCellIndexPath: NSIndexPath!
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
@@ -531,6 +544,9 @@ class AddableTrackTableViewCell: UITableViewCell {
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
+        if selected == false {
+            print("어떤색이야")
+        }
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state

@@ -510,7 +510,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             }
             return cell
         } else {
-            var needsSmallDropButton = false
+            self.needsBigSizeDropButton = true
 
             var cell:AddableTrackTableViewCell!
             switch (selectedFeedMenu.type) {
@@ -520,7 +520,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
                 cell = getDropbeatTrackCell(indexPath)
             case .DAILY_CHART:
                 cell = getBeatportChartCell(indexPath)
-                needsSmallDropButton = true
+                self.needsBigSizeDropButton = false
             case .NEW_RELEASE:
                 cell = getNewReleaseCell(indexPath)
             case .POPULAR_NOW:
@@ -534,7 +534,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
                 cell.setSelected(true, animated: false)
             }
             
-            self.setDropButtonForCellWithTrack(cell, track: track, small: needsSmallDropButton)
+            self.setDropButtonForCellWithTrack(cell, track: track)
 
             return cell
         }

@@ -229,7 +229,7 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
 
         cell.thumbView.setImageForTrack(track, size: .SMALL)
 
-        self.setDropButtonForCellWithTrack(cell, track: track, small: true)
+        self.setDropButtonForCellWithTrack(cell, track: track)
         return cell
     }
     

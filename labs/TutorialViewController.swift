@@ -24,9 +24,17 @@ class TutorialViewController: FBSigninableViewController, EAIntroDelegate {
         
         if introView.hidden {
             introView.hidden = false
+
+            var font: UIFont!
+            if #available(iOS 8.2, *) {
+                font = UIFont.systemFontOfSize(30, weight: UIFontWeightLight)
+            } else {
+                font = UIFont.systemFontOfSize(30)
+            };
             
             let page1 = EAIntroPage()
             page1.title = "UNLIMITED FREE EDM"
+            page1.titleFont = font
             page1.titlePositionY = self.view.bounds.size.height / 2 + 34;
             page1.bgImage = UIImage(named: "tutorial_bg_1")
             
@@ -38,22 +46,26 @@ class TutorialViewController: FBSigninableViewController, EAIntroDelegate {
             page2.titleIconView = dropIcon
             
             page2.title = "A \"DROP\" BUTTON FOR TRACK HIGHLIGHTS"
+            page2.titleFont = font
             page2.titlePositionY = (self.view.bounds.size.height + viewHeight) / 2;
             page2.bgImage = UIImage(named: "tutorial_bg_2")
             
             
             let page3 = EAIntroPage()
             page3.title = "COMPREHENSIVE\n DISCOVERY AND\n STREAMING\n EDM PLATFORM"
+            page3.titleFont = font
             page3.titlePositionY = self.view.bounds.size.height / 2 + 80;
             page3.bgImage = UIImage(named: "tutorial_bg_3")
             
             let page4 = EAIntroPage()
             page4.title = "FOLLOW YOUR\nFAVORITE ARTISTS"
+            page4.titleFont = font
             page4.titlePositionY = self.view.bounds.size.height / 2 + 60;
             page4.bgImage = UIImage(named: "tutorial_bg_4")
             
             let page5 = EAIntroPage()
             page5.title = "MUSIC HOSTING,\n SHARING,\n AND OTHER SERVICES\nFOR DJS\n\nAVAILABLE ON THE WEB"
+            page5.titleFont = font
             page5.titlePositionY = self.view.bounds.size.height / 2 + 100;
             page5.bgImage = UIImage(named: "tutorial_bg_5")
             

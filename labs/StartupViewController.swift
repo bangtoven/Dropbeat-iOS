@@ -194,17 +194,19 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) {
             self.progressHud?.hide(true)
-//            if let account = Account.getCachedAccount()
-//                where account.favoriteGenreIds.count == 0 {
-//                    self.performSegueWithIdentifier("genre_tutorial", sender: self)
-//                    return
-//            }
             
-//            self.performSegueWithIdentifier("main", sender: self)
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            appDelegate.setRootViewToMainTabBarController()
-            
+            if Account.getCachedAccount() != nil {
+                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                appDelegate.setRootViewToMainTabBarController()
+            } else {
+                // tutorial
+                self.performSegueWithIdentifier("ShowTutorial", sender: self)
+            }
         }
+    }
+    
+    @IBAction func unwindFromTutorial(sender: UIStoryboardSegue) {
+        // asdfasdf
     }
     
     @IBAction func unwindFromGenreTutorialToStart(sender: UIStoryboardSegue) {

@@ -217,6 +217,14 @@
 		738646171BA7631D00C21650 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738646161BA7631D00C21650 /* GradientView.m */; };
 		739C8F5D1BB340E200BC9EB7 /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 739C8F5C1BB340E200BC9EB7 /* Explore.storyboard */; settings = {ASSET_TAGS = (); }; };
 		739C8F5F1BB340FE00BC9EB7 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		73A3559F1BCD97EB0002C00D /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A3559E1BCD97EB0002C00D /* TutorialViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		73A355A01BCD97EB0002C00D /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A3559E1BCD97EB0002C00D /* TutorialViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		73A355A71BCDBAC90002C00D /* EAIntroPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A355A21BCDBAC90002C00D /* EAIntroPage.m */; settings = {ASSET_TAGS = (); }; };
+		73A355A81BCDBAC90002C00D /* EAIntroPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A355A21BCDBAC90002C00D /* EAIntroPage.m */; settings = {ASSET_TAGS = (); }; };
+		73A355A91BCDBAC90002C00D /* EAIntroView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A355A41BCDBAC90002C00D /* EAIntroView.m */; settings = {ASSET_TAGS = (); }; };
+		73A355AA1BCDBAC90002C00D /* EAIntroView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A355A41BCDBAC90002C00D /* EAIntroView.m */; settings = {ASSET_TAGS = (); }; };
+		73A355AB1BCDBAC90002C00D /* EARestrictedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A355A61BCDBAC90002C00D /* EARestrictedScrollView.m */; settings = {ASSET_TAGS = (); }; };
+		73A355AC1BCDBAC90002C00D /* EARestrictedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A355A61BCDBAC90002C00D /* EARestrictedScrollView.m */; settings = {ASSET_TAGS = (); }; };
 		73A661961BC6EC5F00DD1179 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A661951BC6EC5F00DD1179 /* PlayerViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		73A661971BC6EC5F00DD1179 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A661951BC6EC5F00DD1179 /* PlayerViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		73A661A21BC9927900DD1179 /* LNPopupController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73A6619E1BC9923200DD1179 /* LNPopupController.framework */; };
@@ -504,6 +512,13 @@
 		738646161BA7631D00C21650 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
 		739C8F5C1BB340E200BC9EB7 /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Explore.storyboard; sourceTree = "<group>"; };
 		739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
+		73A3559E1BCD97EB0002C00D /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
+		73A355A11BCDBAC90002C00D /* EAIntroPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EAIntroPage.h; path = Libraries/EAIntroPage/EAIntroPage.h; sourceTree = SOURCE_ROOT; };
+		73A355A21BCDBAC90002C00D /* EAIntroPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EAIntroPage.m; path = Libraries/EAIntroPage/EAIntroPage.m; sourceTree = SOURCE_ROOT; };
+		73A355A31BCDBAC90002C00D /* EAIntroView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EAIntroView.h; path = Libraries/EAIntroPage/EAIntroView.h; sourceTree = SOURCE_ROOT; };
+		73A355A41BCDBAC90002C00D /* EAIntroView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EAIntroView.m; path = Libraries/EAIntroPage/EAIntroView.m; sourceTree = SOURCE_ROOT; };
+		73A355A51BCDBAC90002C00D /* EARestrictedScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EARestrictedScrollView.h; path = Libraries/EAIntroPage/EARestrictedScrollView.h; sourceTree = SOURCE_ROOT; };
+		73A355A61BCDBAC90002C00D /* EARestrictedScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EARestrictedScrollView.m; path = Libraries/EAIntroPage/EARestrictedScrollView.m; sourceTree = SOURCE_ROOT; };
 		73A661951BC6EC5F00DD1179 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		73A661991BC9923200DD1179 /* LNPopupController.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = LNPopupController.xcodeproj; path = Libraries/LNPopupController/LNPopupController.xcodeproj; sourceTree = SOURCE_ROOT; };
 		73AB34691BB15AAE0031E2CC /* JHImageTransitionSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JHImageTransitionSegue.h; sourceTree = "<group>"; };
@@ -836,6 +851,7 @@
 				732717011BAC8632003E0B68 /* SwiftyJSON.swift */,
 				732717421BAC8721003E0B68 /* ScrollPager.swift */,
 				73FC90CC1BAE5C9000284B8A /* KeychainItemWrapper.swift */,
+				73A355911BCD973B0002C00D /* EAIntroPage */,
 				73AECBF31BC6B47D0040F0AF /* XCDYoutubeKit */,
 				73AECBA71BC5CE350040F0AF /* StreamingKit */,
 				73AB34781BB1D3580031E2CC /* ACEExpandableTextCell */,
@@ -948,6 +964,7 @@
 			children = (
 				737FAB181BCAAFC700C1347B /* Launch.storyboard */,
 				586D166D1B0B972400C5147F /* StartupViewController.swift */,
+				73A3559E1BCD97EB0002C00D /* TutorialViewController.swift */,
 				7361FCE31B9F5E7F00444179 /* EmailSubmitViewController.swift */,
 			);
 			name = Launch;
@@ -976,6 +993,19 @@
 				739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */,
 			);
 			name = Explore;
+			sourceTree = "<group>";
+		};
+		73A355911BCD973B0002C00D /* EAIntroPage */ = {
+			isa = PBXGroup;
+			children = (
+				73A355A11BCDBAC90002C00D /* EAIntroPage.h */,
+				73A355A21BCDBAC90002C00D /* EAIntroPage.m */,
+				73A355A31BCDBAC90002C00D /* EAIntroView.h */,
+				73A355A41BCDBAC90002C00D /* EAIntroView.m */,
+				73A355A51BCDBAC90002C00D /* EARestrictedScrollView.h */,
+				73A355A61BCDBAC90002C00D /* EARestrictedScrollView.m */,
+			);
+			path = EAIntroPage;
 			sourceTree = "<group>";
 		};
 		73A6619A1BC9923200DD1179 /* Products */ = {
@@ -1283,6 +1313,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73A355AC1BCDBAC90002C00D /* EARestrictedScrollView.m in Sources */,
 				734C7D6E1BB4C1DA0071678C /* SearchViewController.swift in Sources */,
 				734C7D6F1BB4C1DA0071678C /* Track.swift in Sources */,
 				734C7D701BB4C1DA0071678C /* Playlist.swift in Sources */,
@@ -1354,6 +1385,8 @@
 				734C7DB31BB4C1DA0071678C /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				734C7DB41BB4C1DA0071678C /* User.swift in Sources */,
 				734C7DB51BB4C1DA0071678C /* ProfileViewController.swift in Sources */,
+				73A355A81BCDBAC90002C00D /* EAIntroPage.m in Sources */,
+				73A355A01BCD97EB0002C00D /* TutorialViewController.swift in Sources */,
 				73AECB9A1BC5CE2F0040F0AF /* STKAutoRecoveringHTTPDataSource.m in Sources */,
 				73AECBA61BC5CE2F0040F0AF /* STKQueueEntry.m in Sources */,
 				734C7DB61BB4C1DA0071678C /* AXTabBarItemButton.m in Sources */,
@@ -1365,6 +1398,7 @@
 				734C7DBD1BB4C1DA0071678C /* Account.swift in Sources */,
 				73A661971BC6EC5F00DD1179 /* PlayerViewController.swift in Sources */,
 				734C7DBE1BB4C1DA0071678C /* UIImage+GIF.m in Sources */,
+				73A355AA1BCDBAC90002C00D /* EAIntroView.m in Sources */,
 				73AECC081BC6B47D0040F0AF /* XCDYouTubeVideo.m in Sources */,
 				734C7DBF1BB4C1DA0071678C /* ServerTrustPolicy.swift in Sources */,
 				73AECB961BC5CE2F0040F0AF /* NSMutableArray+STKAudioPlayer.m in Sources */,
@@ -1402,6 +1436,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73A355AB1BCDBAC90002C00D /* EARestrictedScrollView.m in Sources */,
 				5890D6161B0538CD00AAEAE5 /* SearchViewController.swift in Sources */,
 				734C7D611BB47D260071678C /* Track.swift in Sources */,
 				734C7D631BB47D470071678C /* Playlist.swift in Sources */,
@@ -1473,6 +1508,8 @@
 				589413601B83C3F700395AFA /* TPKeyboardAvoidingCollectionView.m in Sources */,
 				734C7D5F1BB47CEF0071678C /* User.swift in Sources */,
 				73AB346D1BB186B90031E2CC /* ProfileViewController.swift in Sources */,
+				73A355A71BCDBAC90002C00D /* EAIntroPage.m in Sources */,
+				73A3559F1BCD97EB0002C00D /* TutorialViewController.swift in Sources */,
 				73AECB991BC5CE2F0040F0AF /* STKAutoRecoveringHTTPDataSource.m in Sources */,
 				73AECBA51BC5CE2F0040F0AF /* STKQueueEntry.m in Sources */,
 				7327173F1BAC86BB003E0B68 /* AXTabBarItemButton.m in Sources */,
@@ -1484,6 +1521,7 @@
 				734C7D5D1BB47CBE0071678C /* Account.swift in Sources */,
 				73A661961BC6EC5F00DD1179 /* PlayerViewController.swift in Sources */,
 				588693A31B13B51300566124 /* UIImage+GIF.m in Sources */,
+				73A355A91BCDBAC90002C00D /* EAIntroView.m in Sources */,
 				73AECC071BC6B47D0040F0AF /* XCDYouTubeVideo.m in Sources */,
 				73FC90C81BAE4AFA00284B8A /* ServerTrustPolicy.swift in Sources */,
 				73AECB951BC5CE2F0040F0AF /* NSMutableArray+STKAudioPlayer.m in Sources */,

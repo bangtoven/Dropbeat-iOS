@@ -9,6 +9,9 @@
 #ifndef labs_labs_Bridging_Header_h
 #define labs_labs_Bridging_Header_h
 
+#import "EAIntroPage.h"
+#import "EAIntroView.h"
+
 #import "NSMutableArray+STKAudioPlayer.h"
 #import "STKAudioPlayer.h"
 #import "STKAutoRecoveringHTTPDataSource.h"

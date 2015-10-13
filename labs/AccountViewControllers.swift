@@ -510,6 +510,8 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "SignupWithEmailViewScreen"
+        
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     @IBAction func onTapped(sender: AnyObject) {

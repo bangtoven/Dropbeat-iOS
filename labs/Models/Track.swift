@@ -431,8 +431,12 @@ class DropbeatTrack: Track {
         let id = json["id"].stringValue
         let coverArt = json["coverart_url"].string
         let streamUrl = json["stream_url"].stringValue
-        let dropStart = json["drop_start"].int
-        let drop = Drop(dref: streamUrl, type: "dropbeat", when: dropStart)
+
+        
+        var drop: Drop?
+        if let dropUrl = json["drop_url"].string {
+            drop = Drop(dref: dropUrl, type: "dropbeat", when: 0)
+        }
 
         self._streamUrl = streamUrl
         super.init(

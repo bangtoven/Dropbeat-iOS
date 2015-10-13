@@ -150,14 +150,14 @@ class ViewUtils {
             
         if #available(iOS 8.0, *) {
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: positiveBtnText, style: UIAlertActionStyle.Default,
-                    handler:{ (action:UIAlertAction!) -> Void in
-                        positiveBtnCallback?()
-                    }))
             alert.addAction(UIAlertAction(title: negativeBtnText, style: UIAlertActionStyle.Default,
                     handler:{ (action:UIAlertAction!) -> Void in
                         negativeBtnCallback?()
                     }))
+            alert.addAction(UIAlertAction(title: positiveBtnText, style: UIAlertActionStyle.Default,
+                handler:{ (action:UIAlertAction!) -> Void in
+                    positiveBtnCallback?()
+            }))
             viewController.presentViewController(alert, animated: true, completion: nil)
         } else {
             let alert = UIAlertView()
@@ -190,14 +190,14 @@ class ViewUtils {
             alert.addTextFieldWithConfigurationHandler({ (textField: UITextField) in
                 textField.placeholder = placeholder
             })
+            alert.addAction(UIAlertAction(title: negativeBtnText, style: UIAlertActionStyle.Default,
+                handler:{ (action:UIAlertAction!) -> Void in
+                    negativeBtnCallback?()
+            }))
             alert.addAction(UIAlertAction(title: positiveBtnText, style: UIAlertActionStyle.Default,
                     handler:{ (action:UIAlertAction) -> Void in
                         let textField = alert.textFields![0]
                         positiveBtnCallback(result: textField.text!)
-                    }))
-            alert.addAction(UIAlertAction(title: negativeBtnText, style: UIAlertActionStyle.Default,
-                    handler:{ (action:UIAlertAction!) -> Void in
-                        negativeBtnCallback?()
                     }))
             viewController.presentViewController(alert, animated: true, completion: nil)
             

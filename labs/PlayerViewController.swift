@@ -72,7 +72,7 @@ class PlayerViewController: GAITrackedViewController {
         
         self.progressSliderBar.setThumbImage(UIImage(named: "ic_slider-thumb"), forState: .Normal)
         
-        if UIScreen.mainScreen().bounds.height == 480 {
+        if UIScreen.mainScreen().bounds.height <= 500 {
             resizeViewUnder4inch()
         }
         
@@ -208,6 +208,7 @@ class PlayerViewController: GAITrackedViewController {
         switch state {
         case .Running, .Buffering:
             playBtn.hidden = true
+            playBtn.enabled = true
             pauseBtn.hidden = true
             loadingView.hidden = false
             prevButton.enabled = false
@@ -215,12 +216,14 @@ class PlayerViewController: GAITrackedViewController {
             loadingView.setSpinEnabled(true, duration: 0.7)
         case .Paused, .Stopped:
             playBtn.hidden = false
+            playBtn.enabled = true
             pauseBtn.hidden = true
             prevButton.enabled = true
             nextButton.enabled = true
             loadingView.hidden = true
         case .Playing:
             playBtn.hidden = true
+            playBtn.enabled = true
             pauseBtn.hidden = false
             prevButton.enabled = true
             nextButton.enabled = true
@@ -311,13 +314,17 @@ class PlayerViewController: GAITrackedViewController {
     }
     
     @IBAction func onNextBtnClicked(sender: UIView) {
-        if self.player.next() == false {
+        if self.player.repeatState == .REPEAT_ONE {
+            self.player.seekTo(0)
+        } else if self.player.next() == false {
             self.showToast(NSLocalizedString("Last track of playlist.", comment:""))
         }
     }
     
     @IBAction func onPrevBtnClicked(sender: UIView) {
-        if self.player.prev() == false {
+        if self.player.repeatState == .REPEAT_ONE {
+            self.player.seekTo(0)
+        } else if self.player.prev() == false {
             self.showToast(NSLocalizedString("First track of playlist.", comment:""))
         }
     }

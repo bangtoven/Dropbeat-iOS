@@ -169,9 +169,11 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
                 } else {
                     print(error)
                 }
+                self.trackTableView.tableHeaderView?.frame = CGRectZero
                 self.trackTableView.tableHeaderView = nil
             })
         } else {
+            self.trackTableView.tableHeaderView?.frame = CGRectZero
             self.trackTableView.tableHeaderView = nil
         }
         

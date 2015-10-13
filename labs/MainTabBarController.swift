@@ -9,6 +9,25 @@
 import UIKit
 import LNPopupController
 
+class PopupBarFrameUpdateNavigationController: UINavigationController {
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        guard let tbc = self.tabBarController else {
+            return
+        }
+        
+        let height = tbc.view.frame.height
+        if tbc.popupPresentationState == .Closed {
+            self.view.frame.size.height = height - tbc.popupBar.frame.height
+        } else {
+            self.view.frame.size.height = height
+        }
+
+    }
+}
+
 class MainTabBarController: UITabBarController {
 
     var playerView: PlayerViewController?
@@ -75,25 +94,35 @@ class MainTabBarController: UITabBarController {
     }
     
     func showPopupPlayer() {
-        if self.popupPresentationState == .Open || self.popupPresentationState == .Transitioning {
-            return
-        }
-        
-        if self.playerView == nil {
-            let pvc = self.storyboard?.instantiateViewControllerWithIdentifier("PlayerViewController") as! PlayerViewController
-            pvc.main = self
-            self.playerView = pvc
-        }
-
-        if self.popupPresentationState != .Closed  {
+        if self.popupPresentationState == .Hidden  {
+            if self.playerView == nil {
+                let pvc = self.storyboard?.instantiateViewControllerWithIdentifier("PlayerViewController") as! PlayerViewController
+                pvc.main = self
+                self.playerView = pvc
+            }
+            
             self.tabBar.backgroundImage = UIImage(named: "tabbar_bg")
-            self.presentPopupBarWithContentViewController(self.playerView!, animated: true, completion: nil)
+            self.presentPopupBarWithContentViewController(self.playerView!, animated: true) {
+                for vc in self.viewControllers! {
+                    if let navCon = vc as? UINavigationController {
+                        navCon.viewDidLayoutSubviews()
+                    }
+                }
+            }
         }
     }
     
     func hidePopupPlayer() {
-        self.tabBar.backgroundImage = UIImage(named: "tabbar_bg_with_bar")
-        self.dismissPopupBarAnimated(true, completion: nil)
+        if self.popupPresentationState == .Closed {
+            self.tabBar.backgroundImage = UIImage(named: "tabbar_bg_with_bar")
+            self.dismissPopupBarAnimated(true) {
+                for vc in self.viewControllers! {
+                    if let navCon = vc as? UINavigationController {
+                        navCon.viewDidLayoutSubviews()
+                    }
+                }
+            }
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -230,18 +259,4 @@ class MainTabBarController: UITabBarController {
         }
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-//        self.closePopupAnimated(true, completion: nil)
-    }
-    
-    // mayby useful later??
-    
-    private func removeInactiveViewController(inactiveViewController:UIViewController?) {
-        if let inactiveVC = inactiveViewController {
-            inactiveVC.willMoveToParentViewController(nil)
-            inactiveVC.view.removeFromSuperview()
-            inactiveVC.removeFromParentViewController()
-        }
-    }
 }

@@ -109,9 +109,13 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             return
         }
         
-        SDWebImageManager.sharedManager().downloadImageWithURL(NSURL(string: track.thumbnailUrl!), options: SDWebImageOptions.ContinueInBackground, progress: nil) {
-            (image, error, cacheType, finished, imageURL) -> Void in
-            self.currentThumbnail = image
+        if let thumbnailUrl = track.thumbnailUrl {
+            SDWebImageManager.sharedManager().downloadImageWithURL(NSURL(string: thumbnailUrl), options: SDWebImageOptions.ContinueInBackground, progress: nil) {
+                (image, error, cacheType, finished, imageURL) -> Void in
+                self.currentThumbnail = image
+            }
+        } else {
+            self.currentThumbnail = UIImage(named: "default_cover_big")
         }
         
         Requests.logPlay(track)

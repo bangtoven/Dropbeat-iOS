@@ -544,9 +544,6 @@ class AddableTrackTableViewCell: UITableViewCell {
     }
     
     override func setSelected(selected: Bool, animated: Bool) {
-        if selected == false {
-            print("어떤색이야")
-        }
         super.setSelected(selected, animated: animated)
         
         // Configure the view for the selected state

@@ -184,7 +184,7 @@ class ProfileViewController: UserViewController {
 
 // MARK: - Handle none account case
 
-class BeforeProfileNavigationController: UINavigationController {
+class BeforeProfileNavigationController: PopupBarFrameUpdateNavigationController {
     
     override func popToRootViewControllerAnimated(animated: Bool) -> [UIViewController]? {
         if viewControllers.count > 2 {

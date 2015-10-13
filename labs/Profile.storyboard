@@ -1202,6 +1202,10 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_following" translatesAutoresizingMaskIntoConstraints="NO" id="xg1-aA-UkP">
                                             <rect key="frame" x="287" y="25" width="25" height="25"/>
                                             <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="25" id="4d1-mT-v1L"/>
+                                                <constraint firstAttribute="width" constant="25" id="wHg-Ez-dHP"/>
+                                            </constraints>
                                         </imageView>
                                     </subviews>
                                     <animations/>
@@ -1413,7 +1417,7 @@ click below to discover your favorites</string>
                                         <rect key="frame" x="0.0" y="322" width="320" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CXO-Rc-ktN" id="dz0-4v-ZAn">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Progressive House" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4uB-VB-Hio">
@@ -1498,7 +1502,7 @@ click below to discover your favorites</string>
                                 <rect key="frame" x="0.0" y="114" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p3P-zr-0sU" id="lpT-pY-biA">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <animations/>
                                 </tableViewCellContentView>

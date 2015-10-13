@@ -356,6 +356,11 @@
                                     <constraint firstItem="Ttt-gN-ZOc" firstAttribute="leading" secondItem="3WY-tN-aLw" secondAttribute="leading" id="c5P-p0-GIS"/>
                                     <constraint firstAttribute="bottom" secondItem="Ttt-gN-ZOc" secondAttribute="bottom" id="hZP-ir-P96"/>
                                 </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="hZP-ir-P96"/>
+                                    </mask>
+                                </variation>
                             </view>
                         </subviews>
                         <animations/>
@@ -363,6 +368,7 @@
                         <gestureRecognizers/>
                         <constraints>
                             <constraint firstItem="Qli-Sc-q1N" firstAttribute="leading" secondItem="DUk-zN-s1T" secondAttribute="leading" id="CNm-Wk-lxY"/>
+                            <constraint firstItem="Btp-Vb-WVV" firstAttribute="top" secondItem="Ttt-gN-ZOc" secondAttribute="bottom" id="V9Q-Pm-myb"/>
                             <constraint firstItem="Btp-Vb-WVV" firstAttribute="top" secondItem="Qli-Sc-q1N" secondAttribute="bottom" id="ZEa-ge-jC1"/>
                             <constraint firstItem="3WY-tN-aLw" firstAttribute="leading" secondItem="DUk-zN-s1T" secondAttribute="leading" id="ZzP-qs-ZjK"/>
                             <constraint firstAttribute="trailing" secondItem="Qli-Sc-q1N" secondAttribute="trailing" id="bza-YD-HKs"/>
@@ -375,7 +381,7 @@
                             <outletCollection property="gestureRecognizers" destination="cHN-4n-eU9" appends="YES" id="8nt-HT-fgR"/>
                         </connections>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="jq4-xf-xcU">
                         <nil key="title"/>
                     </navigationItem>
@@ -400,7 +406,8 @@
         <!--Search Navigation Controller-->
         <scene sceneID="9e1-QR-URc">
             <objects>
-                <navigationController storyboardIdentifier="SearchNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="39v-uc-SBt" userLabel="Search Navigation Controller" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="SearchNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="39v-uc-SBt" userLabel="Search Navigation Controller" customClass="PopupBarFrameUpdateNavigationController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <tabBarItem key="tabBarItem" tag="2" title="" image="tabbar_search" id="zbU-Zl-G3U">
                         <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                     </tabBarItem>
@@ -417,6 +424,12 @@
                         </textAttributes>
                     </navigationBar>
                     <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="v1c-pu-6RN">
+                        <rect key="frame" x="0.0" y="156" width="200" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                        <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
+                    </toolbar>
                     <connections>
                         <segue destination="Bcu-6f-PCt" kind="relationship" relationship="rootViewController" id="Zm7-dw-hN2"/>
                     </connections>
@@ -973,10 +986,10 @@
             </objects>
             <point key="canvasLocation" x="87" y="-369"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Popup Bar Frame Update Navigation Controller-->
         <scene sceneID="LCx-N4-Mc2">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6Yd-3V-c2J" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6Yd-3V-c2J" customClass="PopupBarFrameUpdateNavigationController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="tabbar_feed" id="pHg-RO-aPm">
                         <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                     </tabBarItem>
@@ -997,10 +1010,10 @@
             </objects>
             <point key="canvasLocation" x="-185" y="-678"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Popup Bar Frame Update Navigation Controller-->
         <scene sceneID="oy7-i0-31g">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xhj-Hh-FVv" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xhj-Hh-FVv" customClass="PopupBarFrameUpdateNavigationController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="1" title="" image="tabbar_explore" id="ZRc-3T-fWd">
                         <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                     </tabBarItem>
@@ -1021,10 +1034,10 @@
             </objects>
             <point key="canvasLocation" x="87" y="-678"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Popup Bar Frame Update Navigation Controller-->
         <scene sceneID="jiT-Tn-bkr">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="86D-b6-wJW" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="86D-b6-wJW" customClass="PopupBarFrameUpdateNavigationController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" tag="3" title="" image="tabbar_playlist" id="zDH-jl-1PS">
                         <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                     </tabBarItem>
@@ -1097,7 +1110,7 @@
         <image name="tabbar_search" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="IFq-rG-6rT"/>
+        <segue reference="Qeg-fn-nRN"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
 </document>

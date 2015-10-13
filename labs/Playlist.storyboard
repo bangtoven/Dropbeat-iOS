@@ -17,10 +17,10 @@
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="PlaylistTableViewCell" rowHeight="50" id="gXU-C3-H5e" customClass="PlaylistTableViewCell" customModule="for_test" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="113.5" width="320" height="50"/>
+                                <rect key="frame" x="0.0" y="114" width="320" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gXU-C3-H5e" id="c51-mM-Kfp">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="49.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playlist" highlightedImage="ic_playlist_selected" translatesAutoresizingMaskIntoConstraints="NO" id="2Kt-WW-Uqa">
@@ -60,6 +60,7 @@
                                 <animations/>
                                 <inset key="separatorInset" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
                                 <connections>
+                                    <outlet property="iconImageView" destination="2Kt-WW-Uqa" id="E1C-Yv-1bE"/>
                                     <outlet property="nameView" destination="g1o-lI-JLT" id="PK0-t2-vHp"/>
                                     <segue destination="xjv-Nu-UuS" kind="show" identifier="PlaylistSegue" id="5GI-ft-6CL"/>
                                 </connections>
@@ -156,51 +157,52 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="PlaylistTableViewCell" rowHeight="50" id="Atm-hD-J2c" customClass="PlaylistTableViewCell" customModule="for_test" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="149.5" width="320" height="50"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="PlaylistTableViewCell" rowHeight="50" id="jaR-uH-yjd" customClass="PlaylistTableViewCell" customModule="for_test" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="150" width="320" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Atm-hD-J2c" id="UZg-4S-dht">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="49.5"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jaR-uH-yjd" id="yf4-9G-AuG">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playlist" highlightedImage="ic_playlist_selected" translatesAutoresizingMaskIntoConstraints="NO" id="ekc-tJ-vif">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playlist" highlightedImage="ic_playlist_selected" translatesAutoresizingMaskIntoConstraints="NO" id="Qfh-UM-4gb">
                                             <rect key="frame" x="10" y="10" width="30" height="30"/>
                                             <animations/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="30" id="aUm-n7-CBP"/>
-                                                <constraint firstAttribute="height" constant="30" id="moW-pR-COi"/>
+                                                <constraint firstAttribute="width" constant="30" id="ZfC-WG-QWZ"/>
+                                                <constraint firstAttribute="height" constant="30" id="aHz-LX-U7p"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Playlist name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dQt-VF-cFM">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Playlist name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zn9-uh-xHz">
                                             <rect key="frame" x="50" y="16" width="85" height="17"/>
                                             <animations/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                         </label>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_arrow_right" translatesAutoresizingMaskIntoConstraints="NO" id="Dda-0M-zUr">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_arrow_right" translatesAutoresizingMaskIntoConstraints="NO" id="1VE-th-1aa">
                                             <rect key="frame" x="292" y="15" width="20" height="20"/>
                                             <animations/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="20" id="2Ip-BY-tKR"/>
-                                                <constraint firstAttribute="width" constant="20" id="Rxx-Uw-8xG"/>
+                                                <constraint firstAttribute="width" constant="20" id="46C-5R-hVF"/>
+                                                <constraint firstAttribute="height" constant="20" id="AMO-wY-JTv"/>
                                             </constraints>
                                         </imageView>
                                     </subviews>
                                     <animations/>
                                     <constraints>
-                                        <constraint firstItem="Dda-0M-zUr" firstAttribute="trailing" secondItem="UZg-4S-dht" secondAttribute="trailingMargin" id="6Ae-rx-Jv4"/>
-                                        <constraint firstItem="ekc-tJ-vif" firstAttribute="leading" secondItem="UZg-4S-dht" secondAttribute="leadingMargin" constant="2" id="CaN-hU-Hjr"/>
-                                        <constraint firstAttribute="centerY" secondItem="ekc-tJ-vif" secondAttribute="centerY" id="GHz-lX-lXB"/>
-                                        <constraint firstAttribute="centerY" secondItem="Dda-0M-zUr" secondAttribute="centerY" id="VXn-V1-VKz"/>
-                                        <constraint firstItem="dQt-VF-cFM" firstAttribute="leading" secondItem="ekc-tJ-vif" secondAttribute="trailing" constant="10" id="uoK-Lt-UCE"/>
-                                        <constraint firstAttribute="centerY" secondItem="dQt-VF-cFM" secondAttribute="centerY" id="vBy-aF-tJ2"/>
+                                        <constraint firstAttribute="centerY" secondItem="1VE-th-1aa" secondAttribute="centerY" id="8RP-Lc-c6a"/>
+                                        <constraint firstAttribute="centerY" secondItem="zn9-uh-xHz" secondAttribute="centerY" id="9yg-uJ-jzI"/>
+                                        <constraint firstItem="zn9-uh-xHz" firstAttribute="leading" secondItem="Qfh-UM-4gb" secondAttribute="trailing" constant="10" id="XBo-xG-oRL"/>
+                                        <constraint firstItem="Qfh-UM-4gb" firstAttribute="leading" secondItem="yf4-9G-AuG" secondAttribute="leadingMargin" constant="2" id="eky-9s-3Cl"/>
+                                        <constraint firstAttribute="centerY" secondItem="Qfh-UM-4gb" secondAttribute="centerY" id="hKQ-tD-swx"/>
+                                        <constraint firstItem="1VE-th-1aa" firstAttribute="trailing" secondItem="yf4-9G-AuG" secondAttribute="trailingMargin" id="x2a-2f-GrP"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <animations/>
                                 <inset key="separatorInset" minX="8" minY="0.0" maxX="8" maxY="0.0"/>
                                 <connections>
-                                    <outlet property="nameView" destination="dQt-VF-cFM" id="00e-7m-P5Q"/>
+                                    <outlet property="iconImageView" destination="Qfh-UM-4gb" id="006-qT-OUl"/>
+                                    <outlet property="nameView" destination="zn9-uh-xHz" id="vSC-Zk-Kdr"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -330,10 +332,10 @@
                                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <prototypes>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="PlaylistTrackTableViewCell" rowHeight="44" id="zft-fq-qtf" customClass="PlaylistTrackTableViewCell" customModule="for_test" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="49.5" width="320" height="44"/>
+                                                <rect key="frame" x="0.0" y="50" width="320" height="44"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zft-fq-qtf" id="g53-xE-l6J">
-                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <subviews>
                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_nonplaying" highlightedImage="ic_playing" translatesAutoresizingMaskIntoConstraints="NO" id="Dx1-Qz-Dql">
@@ -470,7 +472,7 @@
         <image name="ic_playlist_selected" width="52" height="52"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="5Oo-kB-jKx"/>
+        <segue reference="5GI-ft-6CL"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
 </document>

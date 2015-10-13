@@ -25,14 +25,23 @@ class FollowInfoTableViewCell: UITableViewCell {
 
 class FollowInfoTableViewController: UITableViewController, AXSubViewController {
 
-    var user: User?
-    var fetchFunc: (((users: [BaseUser]?, error: NSError?) -> Void) -> Void)?
+    var user: User!
+    var followInfoType: FollowInfoType!
     var userArray: [BaseUser] = []
     
     func subViewWillAppear() {
         if self.userArray.count == 0 {
 //            print("start fetching \(self.title!)")
-            fetchFunc!({ (users, error) -> Void in
+
+            var fetchFunc: ((users: [BaseUser]?, error: NSError?) -> Void) -> Void
+            switch self.followInfoType! {
+            case .FOLLOWERS:
+                fetchFunc = user.fetchFollowers
+            case .FOLLOWING:
+                fetchFunc = user.fetchFollowing
+            }
+
+            fetchFunc({ (users, error) -> Void in
                 self.userArray = users!
                 self.tableView.reloadData()
                 self.tableView.tableHeaderView = nil

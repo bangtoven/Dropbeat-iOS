@@ -263,48 +263,53 @@ class Track {
     static func parseTracks(json: JSON) -> [Track] {
         var tracks = [Track]()
         for (_, s): (String, JSON) in json {
-            var id: AnyObject
-            if s["id"].string == nil {
-                if s["id"].int != nil {
-                    id = String(s["id"].int!)
+            let type = SourceType.fromString(s["type"].stringValue)
+            if type == .DROPBEAT {
+                tracks.append(DropbeatTrack(json: s))
+            } else {
+                var id: AnyObject
+                if s["id"].string == nil {
+                    if s["id"].int != nil {
+                        id = String(s["id"].int!)
+                    } else {
+                        continue
+                    }
                 } else {
+                    id = s["id"].string!
+                }
+                
+                let track = Track(
+                    id: id as! String,
+                    title: s["title"].stringValue,
+                    type: type,
+                    tag: s["tag"].stringValue
+                )
+                
+                var dropObj = s["drop"]
+                if dropObj != nil && dropObj["dref"].string != nil &&
+                    dropObj["dref"].stringValue.characters.count > 0 &&
+                    dropObj["type"].string != nil {
+                        track.drop = Drop(
+                            dref: dropObj["dref"].stringValue,
+                            type: dropObj["type"].stringValue,
+                            when: dropObj["when"].int)
+                }
+                
+                let tag = s["tag"]
+                if tag.error == nil {
+                    track.tag = s["tag"].stringValue
+                }
+                
+                let artwork = s["artwork"]
+                if artwork.error == nil {
+                    track.thumbnailUrl = s["artwork"].stringValue
+                }
+                
+                if (track.tag == nil) {
                     continue
                 }
-            } else {
-                id = s["id"].string!
+                tracks.append(track)
             }
-            
-            let track = Track(
-                id: id as! String,
-                title: s["title"].stringValue,
-                type: SourceType.fromString(s["type"].stringValue),
-                tag: s["tag"].stringValue
-            )
-            
-            var dropObj = s["drop"]
-            if dropObj != nil && dropObj["dref"].string != nil &&
-                dropObj["dref"].stringValue.characters.count > 0 &&
-                dropObj["type"].string != nil {
-                    track.drop = Drop(
-                        dref: dropObj["dref"].stringValue,
-                        type: dropObj["type"].stringValue,
-                        when: dropObj["when"].int)
-            }
-            
-            let tag = s["tag"]
-            if tag.error == nil {
-                track.tag = s["tag"].stringValue
-            }
-            
-            let artwork = s["artwork"]
-            if artwork.error == nil {
-                track.thumbnailUrl = s["artwork"].stringValue
-            }
-            
-            if (track.tag == nil) {
-                continue
-            }
-            tracks.append(track)
         }
         return tracks
     }

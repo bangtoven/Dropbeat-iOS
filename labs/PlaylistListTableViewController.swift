@@ -10,6 +10,7 @@ import UIKit
 
 class PlaylistTableViewCell: UITableViewCell {
     
+    @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var nameView: UILabel!
     
     override func awakeFromNib() {
@@ -44,10 +45,6 @@ class PlaylistListTableViewController: UITableViewController {
         super.viewWillAppear(animated)
 
         self.loadPlaylists()
-        
-        if tableView.indexPathForSelectedRow != nil {
-            tableView.deselectRowAtIndexPath(tableView.indexPathForSelectedRow!, animated: false)
-        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -135,7 +132,9 @@ class PlaylistListTableViewController: UITableViewController {
             "PlaylistTableViewCell", forIndexPath: indexPath) as! PlaylistTableViewCell
         cell.nameView.text = playlist.name
         if playlist.id == DropbeatPlayer.defaultPlayer.currentPlaylist?.id {
-            cell.setSelected(true, animated: false)
+            cell.iconImageView.image = UIImage(named: "ic_playlist_selected")
+        } else {
+            cell.iconImageView.image = UIImage(named: "ic_playlist")
         }
         return cell
     }

@@ -22,6 +22,8 @@ class NeedAuthViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.view.tintColor = UIColor.dropbeatColor()
+        
         signinBtn.layer.borderColor = UIColor.dropbeatColor().CGColor
         signinBtn.layer.borderWidth = 1
         signinBtn.layer.cornerRadius = 3.0

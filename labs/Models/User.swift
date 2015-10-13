@@ -143,6 +143,11 @@ class BaseUser {
     }
 }
 
+enum FollowInfoType {
+    case FOLLOWING
+    case FOLLOWERS
+}
+
 class User: BaseUser {
     var email: String
     var firstName: String
@@ -202,11 +207,6 @@ class User: BaseUser {
             }
             self.tracks = tracks
         }
-    }
-    
-    enum FollowInfoType {
-        case FOLLOWING
-        case FOLLOWERS
     }
     
     private func _fetchFollowInfo(type: FollowInfoType, callback:((users: [BaseUser]?, error: NSError?) -> Void)) {

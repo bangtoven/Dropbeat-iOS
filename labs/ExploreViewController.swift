@@ -62,8 +62,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             trackTableView.deselectRowAtIndexPath(trackTableView.indexPathForSelectedRow!, animated: false)
         }
         
-        self.nextPage = 0
-        self.loadExploreFeed(self.nextPage)
+        self.refresh()
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

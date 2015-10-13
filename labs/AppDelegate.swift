@@ -67,6 +67,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().tintColor = UIColor.dropbeatColor()
         self.window?.backgroundColor = UIColor.whiteColor()
         
+        self.applicationWillEnterForeground(application)
+        
         if let fromUrl = launchOptions?[UIApplicationLaunchOptionsURLKey] as? NSURL {
             handleCustomURL(fromUrl)
         }
@@ -97,10 +99,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     override func remoteControlReceivedWithEvent(event: UIEvent?) {
         DropbeatPlayer.defaultPlayer.remoteControlReceivedWithEvent(event)
     }
+    
+    func applicationWillEnterForeground(application: UIApplication) {
+        loadAccountInfo()
+    }
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        loadAccountInfo()
         FBSDKAppEvents.activateApp()
     }
     

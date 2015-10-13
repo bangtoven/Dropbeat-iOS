@@ -132,12 +132,12 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 let f1 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
                 f1.title = "Followers"
                 f1.user = user
-                f1.fetchFunc = user.fetchFollowers
+                f1.followInfoType = .FOLLOWERS
                 
                 let f2 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
                 f2.title = "Following"
                 f2.user = user
-                f2.fetchFunc = user.fetchFollowing
+                f2.followInfoType = .FOLLOWING
                 
                 if user.tracks.count == 0 {
                     self.viewControllers = [likes, f1, f2]

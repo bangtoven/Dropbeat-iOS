@@ -11,12 +11,18 @@
         <scene sceneID="eaK-tE-QuB">
             <objects>
                 <navigationController storyboardIdentifier="navcon" id="MPe-vs-g2a" sceneMemberID="viewController">
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="m0I-JF-h5h">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
                     </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" id="0ly-qI-EGR">
+                        <rect key="frame" x="0.0" y="436" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </toolbar>
                     <connections>
                         <segue destination="KKR-Ov-ivh" kind="relationship" relationship="rootViewController" id="8Ce-gw-HYl"/>
                     </connections>
@@ -34,7 +40,7 @@
                         <viewControllerLayoutGuide type="bottom" id="tYm-HY-HGz"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="UQh-9y-fs8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -58,11 +64,11 @@
                         <viewControllerLayoutGuide type="bottom" id="qwd-cc-Rrk"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="7se-B1-SZn">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="151"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="auO-9J-wxQ">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="151"/>
                                 <animations/>
                                 <connections>
                                     <outlet property="delegate" destination="O7I-Zd-rw2" id="H86-P7-CTx"/>
@@ -78,6 +84,7 @@
                             <constraint firstItem="auO-9J-wxQ" firstAttribute="leading" secondItem="7se-B1-SZn" secondAttribute="leading" id="plk-7b-4Pb"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <navigationItem key="navigationItem" title="Profile" id="0uf-eu-ueC">
                         <barButtonItem key="leftBarButtonItem" systemItem="edit" id="JiH-Ct-BBd">
                             <connections>
@@ -390,6 +397,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <constraint firstAttribute="trailing" secondItem="FKZ-Gf-yfe" secondAttribute="trailing" id="lQ6-HR-CeT"/>
                         </constraints>
                     </view>
+                    <extendedEdge key="edgesForExtendedLayout" top="YES"/>
                     <navigationItem key="navigationItem" id="wq8-Fc-BHx"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="200"/>
@@ -519,7 +527,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <state key="normal" title="+FOLLOW">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
-                            <state key="selected" title="✓FOLLOWING"/>
+                            <state key="selected" title="FOLLOWING"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="number" keyPath="radius">
                                     <real key="value" value="5"/>
@@ -865,7 +873,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SECTION:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vNB-L7-5Pz">
-                                            <rect key="frame" x="16" y="15" width="56" height="14.5"/>
+                                            <rect key="frame" x="16" y="15" width="56" height="15"/>
                                             <animations/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="56" id="aok-q9-HiA"/>
@@ -1244,11 +1252,11 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                         <viewControllerLayoutGuide type="bottom" id="Tz5-M9-PHc"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="2as-zm-jfg">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZFP-Tc-gyd">
-                                <rect key="frame" x="0.0" y="416" width="320" height="60"/>
+                                <rect key="frame" x="0.0" y="367" width="320" height="60"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sde-c2-xOA" userLabel="border">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
@@ -1296,7 +1304,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" allowsMultipleSelection="YES" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="42A-3X-iro">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="separatorColor" red="0.84094483440000001" green="0.84094483440000001" blue="0.84094483440000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -1405,7 +1413,7 @@ click below to discover your favorites</string>
                                         <rect key="frame" x="0.0" y="322" width="320" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CXO-Rc-ktN" id="dz0-4v-ZAn">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="45.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Progressive House" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4uB-VB-Hio">
@@ -1457,7 +1465,7 @@ click below to discover your favorites</string>
                             <constraint firstAttribute="trailing" secondItem="42A-3X-iro" secondAttribute="trailing" id="wgJ-64-pQv"/>
                         </constraints>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" title="Favorite Genres" id="SKr-E4-kop"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
@@ -1481,16 +1489,16 @@ click below to discover your favorites</string>
             <objects>
                 <tableViewController id="moL-Bw-QiW" customClass="EditProfileViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="ynf-Rf-puQ" customClass="TPKeyboardAvoidingTableView">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="431"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="normalCell" id="p3P-zr-0sU">
-                                <rect key="frame" x="0.0" y="113.5" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="114" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p3P-zr-0sU" id="lpT-pY-biA">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <animations/>
                                 </tableViewCellContentView>
@@ -1538,11 +1546,11 @@ click below to discover your favorites</string>
                         <viewControllerLayoutGuide type="bottom" id="XoJ-DK-fpF"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="d3z-zO-kvc">
-                        <rect key="frame" x="0.0" y="64" width="320" height="416"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="168" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="TcC-s4-hBI">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="416"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="xfe-w6-oC0">
@@ -1702,7 +1710,7 @@ and let us know your favorite genre.</string>
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KK7-Pw-Ttz">
-                                <rect key="frame" x="0.0" y="416" width="320" height="60"/>
+                                <rect key="frame" x="0.0" y="367" width="320" height="60"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G51-Ym-mJa">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
@@ -1827,7 +1835,7 @@ and let us know your favorite genre.</string>
         <image name="sample_cover" width="225" height="225"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gqp-zz-6K4"/>
+        <segue reference="3I1-S8-OZw"/>
         <segue reference="oVv-0f-qoK"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>

@@ -64,7 +64,7 @@ class PlayerViewController: GAITrackedViewController {
         popupLoadingView = UIBarButtonItem(customView: activityIndicator)
         
         self.popupItem.leftBarButtonItems = [popupLoadingView]
-//        self.popupItem.rightBarButtonItems = [UIBarButtonItem(image: UIImage(named: "popup_big_list"), style: .Plain, target: self, action: "onPlaylistBtnClicked:")]
+//        self.popupItem.rightBarButtonItems = [UIBarButtonItem(image: UIImage(named: "popup_palylist"), style: .Plain, target: self, action: "onPlaylistBtnClicked:")]
     }
     
     override func viewDidLoad() {
@@ -91,7 +91,7 @@ class PlayerViewController: GAITrackedViewController {
         
         updateViewForState(self.player.state)
         updateViewForCurrentTrack()
-        updateProgressView()
+        updateProgressView(true)
         updateLikeBtn()
         updateRepeatView()
         updateShuffleView()
@@ -118,7 +118,7 @@ class PlayerViewController: GAITrackedViewController {
                 self.timer = NSTimer(
                     timeInterval: 0.5,
                     target: self,
-                    selector: "updateProgressView",
+                    selector: "updateProgressView:",
                     userInfo: nil,
                     repeats: true)
                 NSRunLoop.currentRunLoop().addTimer(timer!, forMode: NSRunLoopCommonModes)
@@ -236,16 +236,16 @@ class PlayerViewController: GAITrackedViewController {
         }
     }
     
-    func updateProgressView() {
+    func updateProgressView(force: Bool = false) {
         let total = self.duration
         if (total != 0) {
             let curr = self.player.progress
             let progress = Float(curr / total)
             self.popupItem.progress = progress
             
-            if self.isOpened {
-                progressTextView.text = getTimeFormatText(curr)
+            if self.isOpened || force == true {
                 if false == progressSliderBar.highlighted {
+                    progressTextView.text = getTimeFormatText(curr)
                     progressSliderBar.value = progress
                 }
             }

@@ -65,22 +65,22 @@ class Playlist {
     static private func parsePlaylist(json: JSON) -> Playlist? {
         let playlistId: Int = json["id"].intValue
         let playlistName: String = json["name"].stringValue
-        var tracks: [Track] = []
-        for (_, s): (String, JSON) in json["data"] {
-            var id: AnyObject
-            if s["id"].string == nil {
-                id = String(s["id"].int!)
-            } else {
-                id = s["id"].string!
-            }
-            tracks.append(
-                Track(
-                    id: id as! String,
-                    title: s["title"].stringValue,
-                    type: SourceType.fromString(s["type"].stringValue)
-                )
-            )
-        }
+        let tracks = Track.parseTracks(json["data"])
+//        for (_, s): (String, JSON) in json["data"] {
+//            var id: AnyObject
+//            if s["id"].string == nil {
+//                id = String(s["id"].int!)
+//            } else {
+//                id = s["id"].string!
+//            }
+//            tracks.append(
+//                Track(
+//                    id: id as! String,
+//                    title: s["title"].stringValue,
+//                    type: SourceType.fromString(s["type"].stringValue)
+//                )
+//            )
+//        }
         
         return Playlist(id: String(playlistId), name: playlistName, tracks: tracks)
     }

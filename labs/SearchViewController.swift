@@ -183,25 +183,8 @@ class SearchViewController: AddableTrackListViewController,
                 
                 cell.thumbView.setImageForTrack(track, size: .SMALL)
 
-                var dropBtnImageName:String!
-                if dropPlayerContext.sectionName == getSectionName() &&
-                    dropPlayerContext.currentTrack?.id == track.id {
-                        switch(dropPlayerContext.playStatus) {
-                        case .Playing:
-                            dropBtnImageName = "ic_drop_pause_small"
-                            break
-                        case .Loading:
-                            dropBtnImageName = "ic_drop_loading_small"
-                            break
-                        case .Ready:
-                            dropBtnImageName = "ic_drop_small"
-                            break
-                        }
-                } else {
-                    dropBtnImageName = "ic_drop_small"
-                }
-                cell.dropBtn.setImage(UIImage(named: dropBtnImageName), forState: UIControlState.Normal)
-                cell.dropBtn.hidden = track.drop == nil
+                self.setDropButtonForCellWithTrack(cell, track: track, small: true)
+
                 return cell
             }
         } else {
@@ -216,7 +199,7 @@ class SearchViewController: AddableTrackListViewController,
         hideAutocomplete()
         
         // stop prev drop
-        onDropFinished()
+        updateDropPlayState(.Ready)
         
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Searching..", comment:""))
         searchResultView.hidden = false

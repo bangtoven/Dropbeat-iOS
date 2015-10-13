@@ -11,74 +11,175 @@ import AVKit
 import AVFoundation
 import Foundation
 
-protocol AddableTrackCellDelegate {
-    func onTrackMenuBtnClicked(sender:AddableTrackTableViewCell)
-    func onTrackDropBtnClicked(sender:AddableTrackTableViewCell)
-}
+// MARK: - Drop play extension
 
-class AddableTrackTableViewCell: UITableViewCell {
-    
-    var delegate:AddableTrackCellDelegate?
-    
-    @IBOutlet weak var filterView: UIView!
-    @IBOutlet weak var nameView: UILabel!
-    @IBOutlet weak var thumbView: UIImageView!
-    @IBOutlet weak var dropBtn: UIButton!
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        let selectedBgView = UIView(frame: self.bounds)
-        selectedBgView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
-        selectedBgView.backgroundColor = UIColor(netHex: 0xffffff)
-        self.selectedBackgroundView = selectedBgView
-    }
-    
-    override func setSelected(selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        // Configure the view for the selected state
-        if(selected) {
-            filterView.hidden = false
-            filterView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.4)
-        } else {
-            filterView.hidden = true
-        }
-    }
-    
-    @IBAction func onMenuBtnClicked(sender: UIButton) {
-        delegate?.onTrackMenuBtnClicked(self)
-    }
-    
-    @IBAction func onDropBtnClicked(sender: AnyObject) {
-        delegate?.onTrackDropBtnClicked(self)
-    }
-}
-
-enum DropPlayStatus {
+enum DropPlayState {
     case Ready
     case Playing
     case Loading
 }
 
-class DropPlayerContext {
-    var playStatus = DropPlayStatus.Ready
-    var currentTrack: Track?
-    var sectionName:String?
+extension AddableTrackListViewController: STKAudioPlayerDelegate {
+    
+    func playDropOfTrack(track: Track) -> Bool {
+        self.pauseDrop()
+
+        guard let streamUrl = track.drop?.streamUrl else {
+            return false
+        }
+        
+        if self.dropPlayer == nil {
+            print("instantiate new drop player")
+            self.dropPlayer = STKAudioPlayer()
+            self.dropPlayer?.delegate = self
+        }
+        
+        self.dropPlayCurrentTrack = track
+        self.dropPlayer?.play(streamUrl, withQueueItemId: track.title)
+
+        self.updateDropPlayState(.Loading)
+        
+        return true
+    }
+    
+    func pauseDrop() {
+        self.dropPlayCurrentTrack = nil
+        
+        self.dropPlayer?.pause()
+
+        self.dropPlayer?.dispose()
+        self.dropPlayer?.delegate = nil
+        self.dropPlayer = nil
+    }
+
+    func onTrackDropBtnClicked(sender: AddableTrackTableViewCell) {
+        if let selectedIndexPath = trackTableView.indexPathForSelectedRow {
+            trackTableView.deselectRowAtIndexPath(selectedIndexPath, animated: false)
+        }
+        
+        guard let indexPath = trackTableView.indexPathForCell(sender) else {
+            return
+        }
+        let track = tracks[indexPath.row]
+        if let currentTrack = self.dropPlayCurrentTrack
+            where currentTrack.id == track.id {
+                if self.dropPlayState != .Playing {
+                    return
+                }
+                self.updateDropPlayState(.Ready)
+                return
+        }
+        
+        guard self.playDropOfTrack(track) else {
+            return
+        }
+        
+        DropbeatPlayer.defaultPlayer.pause()
+        if let main = self.tabBarController as? MainTabBarController
+            where main.popupPresentationState == .Closed {
+                main.hidePopupPlayer()
+        }
+        
+        // Log to us
+        Requests.logPlayDrop(track)
+        
+        // Log to GA
+        let tracker = GAI.sharedInstance().defaultTracker
+        let event = GAIDictionaryBuilder.createEventWithCategory(
+            "player-play-from-drop",
+            action: "play-\(track.drop!.type)",
+            label: track.title,
+            value: 0
+            ).build()
+        var eventDict = [NSObject: AnyObject]()
+        for (key,value) in event {
+            eventDict[key as! NSObject] = value
+        }
+        tracker.send(eventDict)
+    }
+    
+    func audioPlayer(audioPlayer: STKAudioPlayer!, didStartPlayingQueueItemId queueItemId: NSObject!) {
+        print("Drop play start: \(queueItemId)")
+    }
+    
+    func audioPlayer(audioPlayer: STKAudioPlayer!, didFinishBufferingSourceWithQueueItemId queueItemId: NSObject!) {
+        print("Drop play ready: \(queueItemId)")
+    }
+    
+    func audioPlayer(audioPlayer: STKAudioPlayer!, stateChanged state: STKAudioPlayerState, previousState: STKAudioPlayerState) {
+        print("Drop play STATE: \(state.rawValue)")
+        switch state {
+        case .Running, .Buffering:
+            self.updateDropPlayState(.Loading)
+        case .Playing:
+            self.updateDropPlayState(.Playing)
+        default:
+            break
+        }
+    }
+    
+    func audioPlayer(audioPlayer: STKAudioPlayer!, didFinishPlayingQueueItemId queueItemId: NSObject!, withReason stopReason: STKAudioPlayerStopReason, andProgress progress: Double, andDuration duration: Double) {
+        print("Drop play finish: \(queueItemId)")
+        
+        self.updateDropPlayState(.Ready)
+    }
+    
+    func audioPlayer(audioPlayer: STKAudioPlayer!, unexpectedError errorCode: STKAudioPlayerErrorCode) {
+        print("Drop play ERROR: \(errorCode.rawValue)")
+        
+        ViewUtils.showToast(self, message: NSLocalizedString("Failed to play", comment:""))
+    }
+    
+    func updateDropPlayState(status:DropPlayState) {
+        if status == .Ready {
+            if let main = self.tabBarController as? MainTabBarController
+                where DropbeatPlayer.defaultPlayer.currentTrack != nil {
+                    main.showPopupPlayer()
+                    self.updateSelectedTrackCell()
+            }
+            
+            self.pauseDrop()
+        }
+        
+        self.dropPlayState = status
+        trackTableView.reloadData()
+    }
+    
+    func setDropButtonForCellWithTrack(cell:AddableTrackTableViewCell, track: Track, small: Bool = false) {
+        cell.dropBtn.hidden = (track.drop == nil)
+        
+        if cell.dropBtn.hidden == false {
+            var dropBtnImageName = "ic_drop"
+            if self.dropPlayCurrentTrack?.id == track.id {
+                switch(self.dropPlayState) {
+                case .Playing:
+                    dropBtnImageName = "ic_drop_pause"
+                case .Loading:
+                    dropBtnImageName = "ic_drop_loading"
+                default:
+                    break
+                }
+            }
+            dropBtnImageName = small ? "\(dropBtnImageName)_small" : dropBtnImageName
+            
+            cell.dropBtn.setImage(UIImage(named: dropBtnImageName), forState: UIControlState.Normal)
+        }
+    }
 }
 
+// MARK:
+
 class AddableTrackListViewController: BaseViewController, AddableTrackCellDelegate, UIActionSheetDelegate {
-    
-    static let DROP_TIMEOUT:NSTimeInterval = 20
     
     @IBOutlet weak var trackTableView: UITableView!
     
     var tracks:[Track] = [Track]()
-    var actionSheetTargetTrack:Track?
-    var dropPlayer:AVPlayer?
-    var dropPlayableItem:AVPlayerItem?
-    var dropPlayerContext:DropPlayerContext = DropPlayerContext()
-    var dropPlayTimer:NSTimer?
-
+    var selectedTrack:Track?
+    
+    private var dropPlayer: STKAudioPlayer?
+    private var dropPlayState = DropPlayState.Ready
+    private var dropPlayCurrentTrack: Track?
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "PlayableViewScreen"
@@ -93,22 +194,18 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
             self, selector: "appDidEnterBackground",
             name: UIApplicationDidEnterBackgroundNotification, object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "onDropFinished", name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
-        
         trackChanged()
     }
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        
         NSNotificationCenter.defaultCenter().removeObserver(self, name: DropbeatPlayerTrackChangedNotification, object: nil)
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidEnterBackgroundNotification, object: nil)
-        NSNotificationCenter.defaultCenter().removeObserver(
-            self, name: AVPlayerItemDidPlayToEndTimeNotification, object: nil)
-        
-        updateDropPlayStatus(DropPlayStatus.Ready)
+
+        updateDropPlayState(DropPlayState.Ready)
     }
     
     func appWillEnterForeground() {
@@ -116,7 +213,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     }
     
     func appDidEnterBackground() {
-        updateDropPlayStatus(DropPlayStatus.Ready)
+        updateDropPlayState(DropPlayState.Ready)
     }
     
     func updatePlaylist(forceUpdate:Bool) {
@@ -268,131 +365,13 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
     }
     
-    func onTrackDropBtnClicked(sender: AddableTrackTableViewCell) {
-        let indexPath:NSIndexPath? = trackTableView.indexPathForCell(sender)
-        if indexPath == nil {
-            return
-        }
-        let track = tracks[indexPath!.row]
-        if track.drop == nil {
-            return
-        }
-        
-        if dropPlayerContext.currentTrack != nil &&
-            dropPlayerContext.currentTrack!.id == track.id &&
-            dropPlayerContext.sectionName == getSectionName() {
-                
-            if dropPlayerContext.playStatus != DropPlayStatus.Playing {
-                return
-            }
-            self.updateDropPlayStatus(DropPlayStatus.Ready)
-            return
-        }
-        
-        guard let url = NSURL(string:track.streamUrl) else {
-            return
-        }
-        
-        dropPlayer?.pause()
-        dropPlayer?.removeObserver(self, forKeyPath: "status")
-        dropPlayTimer?.invalidate()
-        
-//        let noti = NSNotification(name: NotifyKey.playerPause, object: nil)
-//        NSNotificationCenter.defaultCenter().postNotification(noti)
-        DropbeatPlayer.defaultPlayer.pause()
-        if let main = self.tabBarController as? MainTabBarController
-            where main.popupPresentationState == .Closed {
-                main.hidePopupPlayer()
-        }
-        
-        let sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
-        do {
-            try sharedInstance.setCategory(AVAudioSessionCategoryPlayback)
-        } catch let audioSessionError as NSError {
-            print("Audio session error \(audioSessionError) \(audioSessionError.userInfo)")
-        }
-        
-        do {
-            try sharedInstance.setActive(true)
-        } catch _ {
-        }
-        dropPlayableItem = AVPlayerItem(URL: url)
-        
-        dropPlayer = AVPlayer(playerItem: dropPlayableItem!)
-        
-        let selectedIndexPath = trackTableView.indexPathForSelectedRow
-        if selectedIndexPath != nil {
-            trackTableView.deselectRowAtIndexPath(selectedIndexPath!, animated: false)
-        }
-        dropPlayerContext.currentTrack = track
-        dropPlayerContext.sectionName = getSectionName()
-        self.updateDropPlayStatus(DropPlayStatus.Loading)
-        
-        let player = dropPlayer!
-        let kvoOption = NSKeyValueObservingOptions(rawValue: 0)
-        player.addObserver(self, forKeyPath: "status", options: kvoOption, context: nil)
-        
-        
-        // Log to us
-        Requests.logPlayDrop(track)
-        
-        // Log to GA
-        let tracker = GAI.sharedInstance().defaultTracker
-        let event = GAIDictionaryBuilder.createEventWithCategory(
-            "player-play-from-drop",
-            action: "play-\(track.drop!.type)",
-            label: track.title,
-            value: 0
-            ).build()
-        var eventDict = [NSObject: AnyObject]()
-        for (key,value) in event {
-            eventDict[key as! NSObject] = value
-        }
-        tracker.send(eventDict)
-    }
-    
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
-        if object as? NSObject != dropPlayer ||
-            keyPath != "status" || dropPlayer == nil {
-            return
-        }
-        
-        if dropPlayer!.status == AVPlayerStatus.ReadyToPlay {
-            let playDrop = { () -> Void in
-                self.dropPlayer?.play()
-                self.updateDropPlayStatus(DropPlayStatus.Playing)
-                self.dropPlayTimer = NSTimer.scheduledTimerWithTimeInterval(
-                    AddableTrackListViewController.DROP_TIMEOUT,
-                    target: self, selector: "onDropFinished", userInfo: nil, repeats: false)
-            }
-            
-            if let when = dropPlayerContext.currentTrack!.drop!.when
-                where when > 0 {
-                let fWhen = Float64(when)
-                let targetTime = CMTimeMakeWithSeconds(fWhen, 600)
-                dropPlayer?.seekToTime(targetTime, completionHandler: { (Bool) -> Void in
-                    playDrop()
-                })
-            } else {
-                playDrop()
-            }
-        } else if dropPlayer!.status == AVPlayerStatus.Failed {
-            updateDropPlayStatus(DropPlayStatus.Ready)
-            ViewUtils.showToast(self, message: NSLocalizedString("Failed to play", comment:""))
-        }
-    }
-    
-    func onDropFinished() {
-        updateDropPlayStatus(DropPlayStatus.Ready)
-    }
-    
     func onTrackMenuBtnClicked(sender: AddableTrackTableViewCell) {
         let indexPath:NSIndexPath? = trackTableView.indexPathForCell(sender)
         if indexPath == nil {
             return
         }
         let track = tracks[indexPath!.row]
-        actionSheetTargetTrack = track
+        selectedTrack = track
         
         let actionSheet = UIActionSheet()
         let actionSheetItemCount = getTrackActionSheetCount(track)
@@ -416,7 +395,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     }
     
     func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
-        let track:Track? = actionSheetTargetTrack
+        let track:Track? = selectedTrack
         var foundIdx = -1
         if track != nil {
             for (idx, t)  in tracks.enumerate() {
@@ -431,17 +410,21 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
             return
         }
         
-        onTrackActionSheetClicked(actionSheetTargetTrack!, buttonIndex: buttonIndex)
-        actionSheetTargetTrack = nil
+        onTrackActionSheetClicked(selectedTrack!, buttonIndex: buttonIndex)
+        selectedTrack = nil
     }
     
     func trackChanged() {
-        updateDropPlayStatus(DropPlayStatus.Ready)
+        updateDropPlayState(DropPlayState.Ready)
         
+        self.updateSelectedTrackCell()
+    }
+    
+    private func updateSelectedTrackCell() {
         guard let track = DropbeatPlayer.defaultPlayer.currentTrack else {
             return
         }
-
+        
         let indexPath = trackTableView.indexPathForSelectedRow
         if indexPath != nil {
             let preSelectedTrack = tracks[indexPath!.row]
@@ -452,33 +435,11 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         
         for (idx, t) in tracks.enumerate() {
             if (t.id == track.id) {
-                trackTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
+                trackTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: trackTableView.numberOfSections-1),
                     animated: false, scrollPosition: UITableViewScrollPosition.None)
                 break
             }
         }
-    }
-    
-    func releaseDropPlayer() {
-        dropPlayer?.pause()
-        dropPlayer?.removeObserver(self, forKeyPath: "status")
-        dropPlayer = nil
-    }
-    
-    func updateDropPlayStatus(status:DropPlayStatus) {
-        if status == DropPlayStatus.Ready {
-            if let main = self.tabBarController as? MainTabBarController
-                where DropbeatPlayer.defaultPlayer.currentTrack != nil {
-                    main.showPopupPlayer()
-            }
-            
-            releaseDropPlayer()
-            dropPlayerContext.currentTrack = nil
-            dropPlayTimer?.invalidate()
-            dropPlayTimer = nil
-        }
-        dropPlayerContext.playStatus = status
-        trackTableView.reloadData()
     }
 
     //////////////////////////
@@ -542,5 +503,50 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     
     func getSectionName() -> String {
         return ""
+    }
+}
+
+// MARK: - AddableTrackTableViewCell
+
+protocol AddableTrackCellDelegate {
+    func onTrackMenuBtnClicked(sender:AddableTrackTableViewCell)
+    func onTrackDropBtnClicked(sender:AddableTrackTableViewCell)
+}
+
+class AddableTrackTableViewCell: UITableViewCell {
+    
+    var delegate:AddableTrackCellDelegate?
+    
+    @IBOutlet weak var filterView: UIView!
+    @IBOutlet weak var nameView: UILabel!
+    @IBOutlet weak var thumbView: UIImageView!
+    @IBOutlet weak var dropBtn: UIButton!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        let selectedBgView = UIView(frame: self.bounds)
+        selectedBgView.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
+        selectedBgView.backgroundColor = UIColor(netHex: 0xffffff)
+        self.selectedBackgroundView = selectedBgView
+    }
+    
+    override func setSelected(selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        
+        // Configure the view for the selected state
+        if(selected) {
+            filterView.hidden = false
+            filterView.backgroundColor = UIColor.blackColor().colorWithAlphaComponent(0.4)
+        } else {
+            filterView.hidden = true
+        }
+    }
+    
+    @IBAction func onMenuBtnClicked(sender: UIButton) {
+        delegate?.onTrackMenuBtnClicked(self)
+    }
+    
+    @IBAction func onDropBtnClicked(sender: AnyObject) {
+        delegate?.onTrackDropBtnClicked(self)
     }
 }

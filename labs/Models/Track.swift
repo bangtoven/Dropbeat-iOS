@@ -633,11 +633,10 @@ extension Track { // for Play Failure Log
 class Drop {
     var type:String
     var dref:String
-    var when:Int?
+
     init (dref:String, type:String, when:Int?) {
         self.type = type
         self.dref = dref
-        self.when = when
     }
     
     var streamUrl:String? {
@@ -645,7 +644,10 @@ class Drop {
             if self.type == "soundcloud" {
                 let key = Track.soundCloudKey
                 return "https://api.soundcloud.com/tracks/\(self.dref)/stream?client_id=\(key)"
-            } else if (self.type != "youtube" && self.dref.characters.startsWith("http".characters)) {
+            } else if self.type == "dropbeat" {
+                return self.dref
+            }
+            else if (self.type != "youtube" && self.dref.characters.startsWith("http".characters)) {
                 return self.dref.stringByRemovingPercentEncoding!
             }
             return nil

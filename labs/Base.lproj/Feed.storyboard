@@ -234,13 +234,8 @@
                                                         </imageView>
                                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R87-2L-HJO">
                                                             <rect key="frame" x="0.0" y="0.0" width="300" height="150"/>
-                                                            <animations/>
-                                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
-                                                        </view>
-                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eXF-25-i32">
-                                                            <rect key="frame" x="0.0" y="0.0" width="300" height="150"/>
                                                             <subviews>
-                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" highlightedImage="ic_playing_indicator" highlighted="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NSh-Ja-1jt">
+                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playing_indicator" translatesAutoresizingMaskIntoConstraints="NO" id="NSh-Ja-1jt">
                                                                     <rect key="frame" x="255" y="15" width="30" height="30"/>
                                                                     <animations/>
                                                                     <constraints>
@@ -248,6 +243,17 @@
                                                                         <constraint firstAttribute="height" constant="30" id="U2b-hh-77c"/>
                                                                     </constraints>
                                                                 </imageView>
+                                                            </subviews>
+                                                            <animations/>
+                                                            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="trailing" secondItem="NSh-Ja-1jt" secondAttribute="trailing" constant="15" id="1Uk-Tl-ggI"/>
+                                                                <constraint firstItem="NSh-Ja-1jt" firstAttribute="top" secondItem="R87-2L-HJO" secondAttribute="top" constant="15" id="Dyc-e8-n8T"/>
+                                                            </constraints>
+                                                        </view>
+                                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eXF-25-i32">
+                                                            <rect key="frame" x="0.0" y="0.0" width="300" height="150"/>
+                                                            <subviews>
                                                                 <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cyA-ya-XpD" customClass="GradientView">
                                                                     <rect key="frame" x="0.0" y="75" width="300" height="75"/>
                                                                     <subviews>
@@ -309,14 +315,12 @@
                                                             </subviews>
                                                             <animations/>
                                                             <constraints>
-                                                                <constraint firstItem="NSh-Ja-1jt" firstAttribute="top" secondItem="eXF-25-i32" secondAttribute="top" constant="15" id="9EX-WD-Zen"/>
                                                                 <constraint firstAttribute="trailing" secondItem="Ogu-GT-YwW" secondAttribute="trailing" id="9T1-Jq-TQx"/>
                                                                 <constraint firstAttribute="bottom" secondItem="Ogu-GT-YwW" secondAttribute="bottom" id="F2e-s7-a90"/>
                                                                 <constraint firstAttribute="trailing" secondItem="cyA-ya-XpD" secondAttribute="trailing" id="JQh-vI-gBe"/>
                                                                 <constraint firstItem="cyA-ya-XpD" firstAttribute="leading" secondItem="eXF-25-i32" secondAttribute="leading" id="W3c-aP-iMA"/>
                                                                 <constraint firstAttribute="bottom" secondItem="cyA-ya-XpD" secondAttribute="bottom" id="YhU-zu-zDL"/>
                                                                 <constraint firstItem="Ogu-GT-YwW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="gcx-fX-D7z" secondAttribute="trailing" id="gxu-WP-Nvk"/>
-                                                                <constraint firstAttribute="trailing" secondItem="NSh-Ja-1jt" secondAttribute="trailing" constant="15" id="nZJ-Ig-rud"/>
                                                                 <constraint firstItem="Ogu-GT-YwW" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="t4h-Pp-1is" secondAttribute="trailing" id="p1O-Z0-JdK"/>
                                                             </constraints>
                                                         </view>

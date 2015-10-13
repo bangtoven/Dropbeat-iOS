@@ -92,7 +92,7 @@ extension FeedViewController: ScrollPagerDelegate {
         cell.thumnailCenterConstraint.constant = verticalOffset
     }
     
-    func getDropbeatTrackCell(indexPath:NSIndexPath) -> UITableViewCell {
+    func getDropbeatTrackCell(indexPath:NSIndexPath) -> AddableTrackTableViewCell {
         let cell = trackTableView.dequeueReusableCellWithIdentifier(
             "DropbeatTrackTableViewCell", forIndexPath: indexPath) as! DropbeatTrackTableViewCell
         
@@ -229,7 +229,6 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
     private var refreshControl: UIRefreshControl!
     
     private var genres:[FeedType:[Genre]] = [FeedType:[Genre]]()
-    private var selectedTrack:Track?
     private var feedTypeSelectMode:Int = 0
     private var viewMode:ViewMode = ViewMode.Normal
     private var nextPage:Int = 0
@@ -442,70 +441,27 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             marginWidth += 64.0
         }
         
-        var dropBtn:UIButton?
-        var dropIcReadyName = "ic_drop"
-        var dropIcLoadingName = "ic_drop_loading"
-        var dropIcPlayingName = "ic_drop_pause"
-        
         switch selectedFeedMenu.type {
         case .NEW_RELEASE:
             let trackCell = cell as! NewReleasedTrackTableViewCell
             trackCell.titleWidthConstaint.constant = self.view.bounds.width - marginWidth
             trackCell.artistWidthConstraint.constant = self.view.bounds.width - marginWidth
-            dropBtn = trackCell.dropBtn
-            
         case .POPULAR_NOW:
             if selectedGenre != nil && selectedGenre!.key.characters.count > 0 {
                 let trackCell = cell as! BpTrendingTrackTableViewCell
                 trackCell.titleWidthConstaint.constant = self.view.bounds.width - marginWidth
                 trackCell.artistWidthConstraint.constant = self.view.bounds.width - marginWidth
-                dropBtn = trackCell.dropBtn
             } else {
                 let trackCell = cell as! TrendingTrackTableViewCell
                 trackCell.titleWidthConstaint.constant = self.view.bounds.width - marginWidth
                 trackCell.artistWidthConstraint.constant = self.view.bounds.width - marginWidth
-                dropBtn = trackCell.dropBtn
             }
         case .DAILY_CHART:
-            let trackCell = cell as! BpChartTrackTableViewCell
-            dropBtn = trackCell.dropBtn
-            dropIcReadyName = "ic_drop_small"
-            dropIcLoadingName = "ic_drop_loading_small"
-            dropIcPlayingName = "ic_drop_pause_small"
-            
+            break
         case .NEW_UPLOADS, .FOLLOWING_TRACKS:
-            let trackCell = cell as! DropbeatTrackTableViewCell
-            dropBtn = trackCell.dropBtn
-            
             // for parallax effect
+            let trackCell = cell as! DropbeatTrackTableViewCell
             self.updateTrackCellImageOffset(trackCell)
-        }
-        
-        if dropBtn != nil {
-            if track.drop != nil {
-                let currDropTrack = dropPlayerContext.currentTrack
-                
-                if currDropTrack != nil &&
-                    currDropTrack!.id == track.id &&
-                    getSectionName() == dropPlayerContext.sectionName {
-                    switch (dropPlayerContext.playStatus) {
-                    case .Ready:
-                        dropBtn!.setImage(UIImage(named:dropIcReadyName), forState: UIControlState.Normal)
-                        break
-                    case .Loading:
-                        dropBtn!.setImage(UIImage(named:dropIcLoadingName), forState: UIControlState.Normal)
-                        break
-                    case .Playing:
-                        dropBtn!.setImage(UIImage(named:dropIcPlayingName), forState: UIControlState.Normal)
-                        break
-                    }
-                } else {
-                    dropBtn!.setImage(UIImage(named:dropIcReadyName), forState: UIControlState.Normal)
-                }
-                dropBtn!.hidden = false
-            } else {
-                dropBtn!.hidden = true
-            }
         }
         
         if indexPath.row == tracks.count - 1 {
@@ -554,7 +510,9 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             }
             return cell
         } else {
-            var cell:UITableViewCell!
+            var needsSmallDropButton = false
+
+            var cell:AddableTrackTableViewCell!
             switch (selectedFeedMenu.type) {
             case .FOLLOWING_TRACKS:
                 cell = getDropbeatTrackCell(indexPath)
@@ -562,6 +520,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
                 cell = getDropbeatTrackCell(indexPath)
             case .DAILY_CHART:
                 cell = getBeatportChartCell(indexPath)
+                needsSmallDropButton = true
             case .NEW_RELEASE:
                 cell = getNewReleaseCell(indexPath)
             case .POPULAR_NOW:
@@ -574,11 +533,14 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
                     DropbeatPlayer.defaultPlayer.currentTrack!.id == track.id) {
                 cell.setSelected(true, animated: false)
             }
+            
+            self.setDropButtonForCellWithTrack(cell, track: track, small: needsSmallDropButton)
+
             return cell
         }
     }
     
-    func getBeatportChartCell(indexPath:NSIndexPath) -> UITableViewCell{
+    func getBeatportChartCell(indexPath:NSIndexPath) -> AddableTrackTableViewCell{
         let cell:BpChartTrackTableViewCell = trackTableView.dequeueReusableCellWithIdentifier(
             "BpChartTrackTableViewCell", forIndexPath: indexPath) as! BpChartTrackTableViewCell
         let track:BeatportTrack = tracks[indexPath.row] as! BeatportTrack
@@ -594,7 +556,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         return cell
     }
     
-    func getTrendingCell(indexPath:NSIndexPath) -> UITableViewCell{
+    func getTrendingCell(indexPath:NSIndexPath) -> AddableTrackTableViewCell{
         let cell:TrendingTrackTableViewCell = trackTableView.dequeueReusableCellWithIdentifier(
             "TrendingTrackTableViewCell", forIndexPath: indexPath) as! TrendingTrackTableViewCell
         let track:TrendingTrack = tracks[indexPath.row] as! TrendingTrack
@@ -609,7 +571,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         return cell
     }
     
-    func getBeatportTrendingCell(indexPath:NSIndexPath) -> UITableViewCell {
+    func getBeatportTrendingCell(indexPath:NSIndexPath) -> AddableTrackTableViewCell {
         let cell:BpTrendingTrackTableViewCell = trackTableView.dequeueReusableCellWithIdentifier(
             "BpTrendingTrackTableViewCell", forIndexPath: indexPath) as! BpTrendingTrackTableViewCell
         let track:BeatportTrack = tracks[indexPath.row] as! BeatportTrack
@@ -629,7 +591,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         return cell
     }
     
-    func getNewReleaseCell(indexPath:NSIndexPath) -> UITableViewCell{
+    func getNewReleaseCell(indexPath:NSIndexPath) -> AddableTrackTableViewCell{
         let cell:NewReleasedTrackTableViewCell = trackTableView.dequeueReusableCellWithIdentifier(
             "NewReleasedTrackTableViewCell", forIndexPath: indexPath) as! NewReleasedTrackTableViewCell
         let track:NewReleaseTrack = tracks[indexPath.row] as! NewReleaseTrack
@@ -692,7 +654,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
 
         self.setNavigationBarBorderHidden(menu.type == .NEW_UPLOADS)
         
-        onDropFinished()
+        updateDropPlayState(.Ready)
         updateFeedTypeSelectBtn(menu.title)
         switch menu.type {
         case .DAILY_CHART:

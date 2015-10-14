@@ -56,7 +56,7 @@ class PlaylistViewController: BaseViewController,
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let insets = UIEdgeInsetsMake(topLayoutGuide.length, 0, 44, 0)
+        let insets = UIEdgeInsetsMake(0, 0, 44, 0)
         playlistTableView.contentInset = insets
     }
     
@@ -577,7 +577,7 @@ class PlaylistViewController: BaseViewController,
         }
         let removePlaylist = currentPlaylist!
         let confirmMessage = NSString.localizedStringWithFormat(
-                NSLocalizedString("Are you sure you want do delete '%@' playlist with %d tracks?", comment:""),
+                NSLocalizedString("Are you sure you want to delete '%@' playlist with %d tracks?", comment:""),
                 removePlaylist.name, removePlaylist.tracks.count) as String
         
         ViewUtils.showConfirmAlert(

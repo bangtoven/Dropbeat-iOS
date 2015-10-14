@@ -164,18 +164,28 @@ class MainTabBarController: UITabBarController {
         
         switch param {
         case .USER(let userResource):
-            let uvc = UIStoryboard(name: "Profile", bundle: nil).instantiateViewControllerWithIdentifier("UserViewController") as! UserViewController
-            uvc.resource = userResource
             if let navController = self.selectedViewController as? UINavigationController {
+                if let currentUserView = navController.topViewController as? UserViewController
+                    where currentUserView.resource == userResource {
+                    print("same user")
+                } else {
+                    let uvc = UIStoryboard(name: "Profile", bundle: nil).instantiateViewControllerWithIdentifier("UserViewController") as! UserViewController
+                    uvc.resource = userResource
+                    navController.pushViewController(uvc, animated: true)
+                }
                 self.closePopupAnimated(true, completion: nil)
-                navController.pushViewController(uvc, animated: true)
             }
         case .USER_TRACK(user: let userResource, track: let trackResource):
-            let uvc = UIStoryboard(name: "Profile", bundle: nil).instantiateViewControllerWithIdentifier("UserViewController") as! UserViewController
-            uvc.resource = userResource
             if let navController = self.selectedViewController as? UINavigationController {
+                if let currentUserView = navController.topViewController as? UserViewController
+                    where currentUserView.resource == userResource {
+                        print("same user")
+                } else {
+                    let uvc = UIStoryboard(name: "Profile", bundle: nil).instantiateViewControllerWithIdentifier("UserViewController") as! UserViewController
+                    uvc.resource = userResource
+                    navController.pushViewController(uvc, animated: true)
+                }
                 self.closePopupAnimated(true, completion: nil)
-                navController.pushViewController(uvc, animated: true)
             }
             
             DropbeatTrack.resolve(userResource, track: trackResource) {

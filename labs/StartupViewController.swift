@@ -11,21 +11,27 @@ import Raygun4iOS
 
 class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControllerDelegate {
 
-    private var progressHud:MBProgressHUD?
+    @IBOutlet weak var activityIndicatorView: UIView!
+//    var playIndicator: VYPlayIndicator?
+//    private var progressHud:MBProgressHUD?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let playIndicator = VYPlayIndicator()
+        playIndicator.frame = activityIndicatorView.bounds
+        playIndicator.color = UIColor.dropbeatColor()
+        playIndicator.animatePlayback()
+        self.activityIndicatorView.backgroundColor = UIColor.whiteColor()
+        self.activityIndicatorView.layer.addSublayer(playIndicator)
     }
     
     override func viewDidAppear(animated: Bool) {
-        if (self.progressHud == nil || self.progressHud?.alpha == 0) {
-            self.progressHud = ViewUtils.showProgress(self, message: nil)
-            checkVersion() {
-                Track.loadSoundCloudKey({ (error: NSError) -> Void in
-                    print("loadSoundCloudKey: "+error.description)
-                })
-                self.initialize()
-            }
+        checkVersion() {
+            Track.loadSoundCloudKey({ (error: NSError) -> Void in
+                print("loadSoundCloudKey: "+error.description)
+            })
+            self.initialize()
         }
     }
     
@@ -48,11 +54,8 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     }
     
     func appDidBecomeActive(noti:NSNotification) {
-        if (self.progressHud == nil || self.progressHud?.alpha == 0) {
-            self.progressHud = ViewUtils.showProgress(self, message: nil)
-            checkVersion() {
-                self.initialize()
-            }
+        checkVersion() {
+            self.initialize()
         }
     }
     
@@ -64,6 +67,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     }
     
     func checkVersion(callback: ()->Void) {
+//        self.playIndicator?.animatePlayback()
         Requests.getClientVersion {
                 (reuqest: NSURLRequest, response: NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil || result == nil) {
@@ -79,7 +83,8 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                     message: message!,
                     btnText: NSLocalizedString("Retry", comment:""),
                     callback: { () -> Void in
-                        self.progressHud?.hide(true)
+//                        self.progressHud?.hide(true)
+//                        self.playIndicator?.stopPlayback()
                         self.checkVersion(callback)
                     })
                 return
@@ -93,7 +98,8 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                     message: NSLocalizedString("Improper data format", comment:""),
                     btnText: NSLocalizedString("Retry", comment:""),
                     callback: { () -> Void in
-                        self.progressHud?.hide(true)
+//                        self.progressHud?.hide(true)
+//                        self.playIndicator?.stopPlayback()
                         self.checkVersion(callback)
                     })
                 return
@@ -109,7 +115,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                     message: NSLocalizedString("We have released a new version of DROPBEAT. Please download on AppStore", comment:""),
                     btnText: NSLocalizedString("Download", comment:""),
                     callback: { () -> Void in
-                        self.progressHud?.hide(true)
+//                        self.progressHud?.hide(true)
                         let url = NSURL(string: "http://itunes.apple.com/app/id998263412")
                         (UIApplication).sharedApplication().openURL(url!)
                     })
@@ -120,6 +126,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     }
     
     func initialize() {
+//        self.playIndicator?.animatePlayback()
         Requests.getFeedGenre { (req, resp, result, error) -> Void in
             if (error != nil) {
                     ViewUtils.showConfirmAlert(self,
@@ -150,7 +157,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                         message: message!,
                         btnText: NSLocalizedString("Retry", comment:""),
                         callback: { () -> Void in
-                            self.progressHud?.hide(true)
+//                            self.playIndicator?.stopPlayback()
                             self.initialize()
                     })
                     return
@@ -182,7 +189,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         
         let email = account.user!.email
         if email.indexOf("@dropbeat.net") > -1 {
-            progressHud?.hide(true)
+//            progressHud?.hide(true)
             performSegueWithIdentifier("need_email", sender: nil)
             return
         }
@@ -193,7 +200,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     func showMainController() {
         let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) {
-            self.progressHud?.hide(true)
+//            self.progressHud?.hide(true)
             
             if Account.getCachedAccount() != nil {
                 let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate

@@ -22,27 +22,32 @@ enum DropPlayState {
 extension AddableTrackListViewController: STKAudioPlayerDelegate {
     
     func playDropOfTrack(track: Track) -> Bool {
-        self.pauseDrop()
-
         guard let streamUrl = track.drop?.streamUrl else {
             return false
         }
         
         if self.dropPlayer == nil {
-            print("instantiate new drop player")
             self.dropPlayer = STKAudioPlayer()
             self.dropPlayer?.delegate = self
         }
         
         self.dropPlayCurrentTrack = track
-        self.dropPlayer?.play(streamUrl, withQueueItemId: track.title)
-
         self.updateDropPlayState(.Loading)
+        
+        self.dropPlayer?.play(streamUrl, withQueueItemId: track.title)
         
         return true
     }
     
     func pauseDrop() {
+        if let prevTrack = self.dropPlayCurrentTrack,
+            prevIndexPath = self.dropPlayCellIndexPath,
+            cell = trackTableView.cellForRowAtIndexPath(prevIndexPath) as? AddableTrackTableViewCell {
+                self.dropPlayState = .Ready
+                self.setDropButtonForCellWithTrack(cell, track: prevTrack)
+        }
+        
+        self.dropPlayCellIndexPath = nil
         self.dropPlayCurrentTrack = nil
         
         self.dropPlayer?.pause()
@@ -61,8 +66,6 @@ extension AddableTrackListViewController: STKAudioPlayerDelegate {
             return
         }
         
-        self.dropPlayCellIndexPath = indexPath
-        
         let track = tracks[indexPath.row]
         if let currentTrack = self.dropPlayCurrentTrack
             where currentTrack.id == track.id {
@@ -73,6 +76,9 @@ extension AddableTrackListViewController: STKAudioPlayerDelegate {
                 return
         }
         
+        self.pauseDrop()
+
+        self.dropPlayCellIndexPath = indexPath
         guard self.playDropOfTrack(track) else {
             return
         }
@@ -140,7 +146,8 @@ extension AddableTrackListViewController: STKAudioPlayerDelegate {
         
         self.dropPlayState = state
         if let track = self.dropPlayCurrentTrack,
-            cell = trackTableView.cellForRowAtIndexPath(self.dropPlayCellIndexPath) as? AddableTrackTableViewCell {
+            indexPath = self.dropPlayCellIndexPath,
+            cell = trackTableView.cellForRowAtIndexPath(indexPath) as? AddableTrackTableViewCell {
             self.setDropButtonForCellWithTrack(cell, track: track)
         }
 
@@ -191,7 +198,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     private var dropPlayer: STKAudioPlayer?
     private var dropPlayState = DropPlayState.Ready
     private var dropPlayCurrentTrack: Track?
-    private var dropPlayCellIndexPath: NSIndexPath!
+    private var dropPlayCellIndexPath: NSIndexPath?
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)

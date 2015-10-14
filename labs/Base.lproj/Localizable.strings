@@ -157,7 +157,7 @@
 "Failed to connect facebook" = "Failed to connect facebook";
 "Failed to acquire user info permission. Do you want to retry facebook connect?" = "Failed to acquire user info permission. Do you want to retry facebook connect?";
 "MY BOOKMARK LIST" = "MY BOOKMARK LIST";
-"Are you sure you want do delete '%@' playlist with %d tracks?" = "Are you sure you want do delete '%@' playlist with %d tracks?";
+"Are you sure you want to delete '%@' playlist with %d tracks?" = "Are you sure you want to delete '%@' playlist with %d tracks?";
 
 "Failed to submit" = "Failed to submit";
 "Failed to submit form" = "Failed to submit form";

@@ -770,6 +770,14 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         loadFeed(selectedFeedMenu.type, forceRefresh: true)
     }
     
+    override func trackChanged() {
+        if self.nextPage > 1 {
+            print("pagenation in same tab.")
+        } else {
+            super.trackChanged()
+        }
+    }
+    
     func loadFeed(type:FeedType, forceRefresh:Bool=false) {
         self.lastContentOffset = CGPointZero
         

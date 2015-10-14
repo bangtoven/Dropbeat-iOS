@@ -28,16 +28,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var appLink: AppLinkParam?
     
-    private func removeRootViewFromWindow() {
+    func setRootViewToStartupViewController () {
         if let old = self.window?.rootViewController {
             old.view.removeFromSuperview()
             old.removeFromParentViewController()
             self.window?.rootViewController = nil
         }
-    }
-    
-    func setRootViewToStartupViewController () {
-        self.removeRootViewFromWindow()
         
         let storyboard = UIStoryboard(name: "Launch", bundle: nil)
         let startupVC = storyboard.instantiateInitialViewController()
@@ -45,11 +41,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func setRootViewToMainTabBarController () {
-        self.removeRootViewFromWindow()
-
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let main = storyboard.instantiateInitialViewController()
-        self.window?.rootViewController = main
+        if let old = self.window?.rootViewController {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let main = storyboard.instantiateInitialViewController()
+            
+            UIView.transitionFromView(old.view, toView: main!.view, duration: 0.2, options: UIViewAnimationOptions.TransitionCrossDissolve, completion: { (finished) -> Void in
+                self.window?.rootViewController = nil
+                self.window?.rootViewController = main
+                old.view.removeFromSuperview()
+                old.removeFromParentViewController()
+            })
+        } else {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let main = storyboard.instantiateInitialViewController()
+            self.window?.rootViewController = main
+        }
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {

@@ -98,7 +98,9 @@ class UserViewController: AXStretchableHeaderTabViewController {
             progressHud.hide(true)
             
             if (error != nil) {
-                ViewUtils.showNoticeAlert(self, title: "Error", message: (error?.localizedDescription)!)
+                ViewUtils.showNoticeAlert(self, title: "Can't get user information", message: error?.localizedDescription ?? "", btnText: "OK", callback: { () -> Void in
+                    self.navigationController?.popViewControllerAnimated(true)
+                })
                 return
             }
             

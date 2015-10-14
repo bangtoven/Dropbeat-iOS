@@ -103,6 +103,10 @@ class PlaylistListTableViewController: UITableViewController {
         return self.showCurrentPlaylist ? 2 : 1
     }
     
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return (self.showCurrentPlaylist && section == 0) ? " CURRENT PLAYLIST" : " "
+    }
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.showCurrentPlaylist {
             if section == 0 {

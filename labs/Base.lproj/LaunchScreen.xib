@@ -20,6 +20,11 @@
                         <constraint firstAttribute="height" constant="60" id="VEp-Qn-BHn"/>
                         <constraint firstAttribute="width" secondItem="J5h-G4-8Lo" secondAttribute="height" multiplier="1:1" id="tnQ-Eq-OuG"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="tnQ-Eq-OuG"/>
+                        </mask>
+                    </variation>
                 </imageView>
             </subviews>
             <animations/>
@@ -34,6 +39,6 @@
         </view>
     </objects>
     <resources>
-        <image name="logo_without_text" width="219" height="247"/>
+        <image name="logo_without_text" width="109" height="123"/>
     </resources>
 </document>

@@ -84,6 +84,10 @@ class PlayerViewController: GAITrackedViewController {
             selector: "playerStateChanged:",
             name: DropbeatPlayerStateChangedNotification,
             object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "viewWillAppear:",
+            name: UIApplicationWillEnterForegroundNotification, object: nil)
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -299,6 +303,10 @@ class PlayerViewController: GAITrackedViewController {
     }
     
     // MARK: - User Interactions
+    
+    override func viewForPopupInteractionGestureRecognizer() -> UIView {
+        return self.coverView
+    }
     
     func showToast(message: String) {
         let vc = self.isOpened ? self : main

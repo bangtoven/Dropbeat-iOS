@@ -218,6 +218,8 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
     private var newUploadsSelectedIndex = 0
     var lastContentOffset: CGPoint = CGPointZero
     
+    @IBOutlet var followGuideHeaderView: UIView!
+    
     @IBOutlet weak var loadMoreSpinner: UIActivityIndicatorView!
     @IBOutlet weak var loadMoreSpinnerWrapper: UIView!
     @IBOutlet weak var feedTypeSelectBtn: UIButton!
@@ -242,7 +244,6 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
     private let feedMenus:[FeedMenu] = {
         var types = [FeedMenu]()
         if let user = Account.getCachedAccount()?.user where user.num_following > 0 {
-            print("number of followings: \(user.num_following)")
             types.append(FeedMenu(title: NSLocalizedString("Following Tracks", comment:""), type: FeedType.FOLLOWING_TRACKS))
         }
         types.append(FeedMenu(title: NSLocalizedString("New Uploads", comment:""), type: FeedType.NEW_UPLOADS))
@@ -320,6 +321,14 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
 
         if selectedFeedMenu.type == .NEW_UPLOADS{
             self.setNavigationBarBorderHidden(true)
+        }
+        
+        if self.tabBarController?.selectedIndex != 0 {
+            feedTypeSelectTableView.reloadData()
+            
+            if selectedFeedMenu.type == .FOLLOWING_TRACKS {
+                loadFollowingTracks(true)
+            }
         }
     }
     
@@ -782,20 +791,82 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         self.lastContentOffset = CGPointZero
         
         switch(type) {
+        case .FOLLOWING_TRACKS:
+            loadFollowingTracks(forceRefresh)
         case .NEW_UPLOADS:
             loadNewUploadsFeed(forceRefresh)
         case .POPULAR_NOW:
             loadTrendingFeed(forceRefresh)
-            break
         case .DAILY_CHART:
             loadBeatportChartFeed(forceRefresh)
-            break
         case .NEW_RELEASE:
             loadNewReleaseFeed(forceRefresh)
-            break
-        case .FOLLOWING_TRACKS:
-            loadFollowingTracks(forceRefresh)
-            break
+        }
+    }
+    
+    func loadFollowingTracks(forceRefresh:Bool=false) {
+        if isLoading {
+            return
+        }
+        
+        var progressHud:MBProgressHUD?
+        if !refreshControl.refreshing && nextPage <= 0 {
+            progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+        }
+        DropbeatTrack.fetchFollowingTracks(nextPage) { (tracks, error) -> Void in
+            self.isLoading = false
+            progressHud?.hide(true)
+            if self.refreshControl.refreshing {
+                self.refreshControl.endRefreshing()
+            }
+            if (error != nil || tracks == nil) {
+                if (error != nil && error!.domain == NSURLErrorDomain &&
+                    error!.code == NSURLErrorNotConnectedToInternet) {
+                        ViewUtils.showNoticeAlert(self,
+                            title: NSLocalizedString("Failed to load", comment:""),
+                            message: NSLocalizedString("Internet is not connected", comment:""))
+                        return
+                }
+                let message = NSLocalizedString("Failed to load following tracks feed.", comment:"")
+                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
+                return
+            }
+            
+            if tracks!.count == 0 {
+                self.nextPage = -1
+                self.loadMoreSpinner.stopAnimating()
+                self.loadMoreSpinnerWrapper.hidden = true
+                
+                self.trackTableView.tableHeaderView = self.followGuideHeaderView
+            } else {
+                // when the user only follows Dropbeat official
+                CheckOnlyFollowDropbeat: if (self.nextPage == 0) {
+                    guard let user = Account.getCachedAccount()?.user
+                        where user.num_following == 1 else {
+                            break CheckOnlyFollowDropbeat
+                    }
+                    
+                    guard let dropbeat = tracks![0].user as? User
+                        where dropbeat.resourceName == "dropbeat" else {
+                            break CheckOnlyFollowDropbeat
+                    }
+                    
+                    self.trackTableView.tableHeaderView = self.followGuideHeaderView
+                }
+
+                self.nextPage += 1
+            }
+            
+            if forceRefresh {
+                self.tracks.removeAll(keepCapacity: true)
+            }
+            for track in tracks! {
+                self.tracks.append(track)
+            }
+            self.updatePlaylist(false)
+            self.trackTableView.reloadData()
+            
+            self.trackChanged()
         }
     }
     
@@ -984,55 +1055,6 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             self.trackTableView.reloadData()
             self.trackChanged()
         })
-    }
-    
-    func loadFollowingTracks(forceRefresh:Bool=false) {
-        if isLoading {
-            return
-        }
-        
-        var progressHud:MBProgressHUD?
-        if !refreshControl.refreshing && nextPage == 0 {
-            progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        }
-        DropbeatTrack.fetchFollowingTracks(nextPage) { (tracks, error) -> Void in
-            self.isLoading = false
-            progressHud?.hide(true)
-            if self.refreshControl.refreshing {
-                self.refreshControl.endRefreshing()
-            }
-            if (error != nil || tracks == nil) {
-                if (error != nil && error!.domain == NSURLErrorDomain &&
-                    error!.code == NSURLErrorNotConnectedToInternet) {
-                        ViewUtils.showNoticeAlert(self,
-                            title: NSLocalizedString("Failed to load", comment:""),
-                            message: NSLocalizedString("Internet is not connected", comment:""))
-                        return
-                }
-                let message = NSLocalizedString("Failed to load following tracks feed.", comment:"")
-                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
-                return
-            }
-            
-            if tracks == nil || tracks!.count == 0 {
-                self.nextPage = -1
-                self.loadMoreSpinner.stopAnimating()
-                self.loadMoreSpinnerWrapper.hidden = true
-            } else {
-                self.nextPage += 1
-            }
-            
-            if forceRefresh {
-                self.tracks.removeAll(keepCapacity: true)
-            }
-            for track in tracks! {
-                self.tracks.append(track)
-            }
-            self.updatePlaylist(false)
-            self.trackTableView.reloadData()
-            
-            self.trackChanged()
-        }
     }
     
     @IBAction func onFeedTypeSelectorClicked(sender: AnyObject) {

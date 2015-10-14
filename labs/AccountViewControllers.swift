@@ -88,7 +88,7 @@ class FBSigninableViewController: BaseViewController {
     @IBAction func onSigninWithFacebookBtnClicked(sender: UIButton) {
         let fbManager:FBSDKLoginManager = FBSDKLoginManager()
         progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Signining in..", comment:""))
-        fbManager.logOut()
+//        fbManager.logOut()
         fbManager.logInWithReadPermissions(["email", "user_likes"], fromViewController:self, handler: { (result:FBSDKLoginManagerLoginResult!, error:NSError!) -> Void in
             if (error != nil) {
                 // Process error

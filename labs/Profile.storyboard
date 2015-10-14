@@ -357,8 +357,8 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                         <outlet property="coverImageView" destination="28F-a0-7DJ" id="3p8-Rf-nVm"/>
                         <outlet property="favoriteGenresLabel" destination="NMG-so-3ze" id="H84-tZ-SlY"/>
                         <outlet property="followInfoView" destination="YA6-OZ-OEg" id="be2-ni-kw7"/>
-                        <outlet property="followersLabel" destination="h4F-tR-uFu" id="1cd-Xo-z68"/>
-                        <outlet property="followingLabel" destination="fFV-Vq-tFx" id="nkD-yP-3Fe"/>
+                        <outlet property="followersNumberLabel" destination="h4F-tR-uFu" id="1cd-Xo-z68"/>
+                        <outlet property="followingNumberLabel" destination="fFV-Vq-tFx" id="nkD-yP-3Fe"/>
                         <outlet property="labelHeightConstraint" destination="MzU-D0-Ho4" id="3GD-8K-dGZ"/>
                         <outlet property="nameLabel" destination="FkO-V7-6TM" id="G84-Fi-PXb"/>
                         <outlet property="profileImageHeight" destination="XhM-hE-42n" id="AH3-bb-HyJ"/>
@@ -623,8 +623,8 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                         <outlet property="coverImageView" destination="aWi-Py-fBl" id="ZXf-W8-0yw"/>
                         <outlet property="followButton" destination="vXx-yx-Jsd" id="QAU-K8-P14"/>
                         <outlet property="followInfoView" destination="gax-rl-ueX" id="Sgg-Ri-em3"/>
-                        <outlet property="followersLabel" destination="WTF-sb-sq9" id="CaZ-VK-t23"/>
-                        <outlet property="followingLabel" destination="jpB-FU-AdQ" id="ezL-Xy-w4v"/>
+                        <outlet property="followersNumberLabel" destination="WTF-sb-sq9" id="CaZ-VK-t23"/>
+                        <outlet property="followingNumberLabel" destination="jpB-FU-AdQ" id="ezL-Xy-w4v"/>
                         <outlet property="labelHeightConstraint" destination="1ZR-qt-rgi" id="Vt2-Go-fhG"/>
                         <outlet property="nameLabel" destination="T3m-jL-CaC" id="LSZ-Wk-VvO"/>
                         <outlet property="profileImageHeight" destination="IHJ-0s-gSd" id="0Mn-Lx-IBr"/>

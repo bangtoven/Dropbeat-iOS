@@ -30,8 +30,8 @@ class UserHeaderView: AXStretchableHeaderView {
     @IBOutlet weak var profileImageHeight: NSLayoutConstraint!
 
     @IBOutlet weak var followInfoView: UIView!
-    @IBOutlet weak var followersLabel: UILabel!
-    @IBOutlet weak var followingLabel: UILabel!
+    @IBOutlet weak var followersNumberLabel: UILabel!
+    @IBOutlet weak var followingNumberLabel: UILabel!
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var aboutMeLabel: UILabel!
@@ -120,36 +120,46 @@ class UserViewController: AXStretchableHeaderTabViewController {
         switch self.baseUser {
         case let user as User:
             header.aboutMeLabel.text = user.aboutMe
-            header.followInfoView.hidden = false
-            header.followersLabel.text = String(user.num_followers)
-            header.followingLabel.text = String(user.num_following)
+            if user.num_followers == -1 {
+                header.followInfoView.hidden = true
+            } else {
+                header.followInfoView.hidden = false
+                header.followersNumberLabel.text = String(user.num_followers)
+                header.followingNumberLabel.text = String(user.num_following)
+            }
             
             if self.viewControllers == nil {
-                let likes = instantiateSubVC()
-                likes.title = "Likes"
-                likes.baseUser = user
-                likes.fetchFunc = user.fetchTracksFromLikeList
+                var viewControllers = [UIViewController]()
                 
-                let f1 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
-                f1.title = "Followers"
-                f1.user = user
-                f1.followInfoType = .FOLLOWERS
-                
-                let f2 = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
-                f2.title = "Following"
-                f2.user = user
-                f2.followInfoType = .FOLLOWING
-                
-                if user.tracks.count == 0 {
-                    self.viewControllers = [likes, f1, f2]
-                } else {
+                if user.tracks.count > 0 {
                     let uploads = instantiateSubVC()
                     uploads.title = "Uploads"
                     uploads.tracks = user.tracks
                     uploads.baseUser = user
-
-                    self.viewControllers = [uploads, likes, f1, f2]
+                    viewControllers.append(uploads)
                 }
+                
+                let likes = instantiateSubVC()
+                likes.title = "Likes"
+                likes.baseUser = user
+                likes.fetchFunc = user.fetchTracksFromLikeList
+                viewControllers.append(likes)
+                
+                if user.num_followers != -1 {
+                    let followers = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
+                    followers.title = "Followers"
+                    followers.user = user
+                    followers.followInfoType = .FOLLOWERS
+                    viewControllers.append(followers)
+                }
+                
+                let following = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
+                following.title = "Following"
+                following.user = user
+                following.followInfoType = .FOLLOWING
+                viewControllers.append(following)
+                
+                self.viewControllers = viewControllers
             }
             
             if user.id == Account.getCachedAccount()?.user?.id {
@@ -266,7 +276,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 if let user = self.baseUser as? User {
                     user.num_followers += user.isFollowed() ? 1 : -1
                     let header = self.headerView as! UserHeaderView
-                    header.followersLabel.text = String(user.num_followers)
+                    header.followersNumberLabel.text = String(user.num_followers)
                     
                     if let followerView = self.viewControllers[self.viewControllers.count-2] as? FollowInfoTableViewController {
                         followerView.userArray = []

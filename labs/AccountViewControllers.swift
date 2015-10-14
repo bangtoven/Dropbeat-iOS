@@ -746,7 +746,7 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         if passwordConfirm!.characters.count == 0 {
             passwordConfirmErrorView.text = NSLocalizedString("Required Field", comment:"")
         } else if passwordConfirm != password {
-            passwordConfirmErrorView.text = NSLocalizedString("Confirmation password for not match original", comment:"")
+            passwordConfirmErrorView.text = NSLocalizedString("Different password with first one", comment:"")
         }
         if (passwordConfirmErrorView.text!).characters.count > 0 {
             passwordConfirmErrorView.hidden = false

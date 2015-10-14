@@ -44,8 +44,7 @@ class ProfileViewController: UserViewController {
     }
 
     override func fetchUserInfo() {
-        let user = Account.getCachedAccount()?.user
-        self.baseUser = user
+        let user = Account.getCachedAccount()!.user
 
         let header = self.headerView as! ProfileHeaderView
         header.maximumOfHeight = self.view.bounds.width * 3/8 + 140
@@ -53,11 +52,26 @@ class ProfileViewController: UserViewController {
         header.nameLabel.hidden = false
         header.profileImageView.hidden = false
         
-        self.applyFetchedInfoToView()
-        self.setFavoriteGenreLabel()
-        self.setAboutMeLabel()
+        let progressHud = ViewUtils.showProgress(self, message: nil)
+        BaseUser.resolve(user!.resourceName) { (user, error) -> Void in
+            progressHud.hide(true)
+            
+            if (error != nil) {
+                ViewUtils.showNoticeAlert(self, title: "Can't get user information", message: error?.localizedDescription ?? "", btnText: "OK", callback: { () -> Void in
+                    self.navigationController?.popViewControllerAnimated(true)
+                })
+                return
+            }
+            
+            if let u = user {
+                self.baseUser = u
+                self.applyFetchedInfoToView()
+                self.setFavoriteGenreLabel()
+                self.setAboutMeLabel()
+                self.title = "Profile"
+            }
+        }
         
-        self.title = "Profile"
     }
     
     func updateLikeView() {

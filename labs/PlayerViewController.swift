@@ -45,8 +45,12 @@ class PlayerViewController: GAITrackedViewController {
     
     private var isOpened: Bool {
         get {
-            let state = main.popupPresentationState
-            return (state == .Open || state == .Transitioning)
+            if main == nil {
+                return false
+            } else {
+                let state = main.popupPresentationState
+                return (state == .Open || state == .Transitioning)
+            }
         }
     }
     

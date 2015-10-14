@@ -165,7 +165,7 @@
 "Invalid email format" = "Invalid email format";
 "Must be less than %d characters long" = "Must be less than %d characters long";
 "Must be longer than %d charaters" = "Must be longer than %d charaters";
-"Confirmation password for not match original" = "Confirmation password for not match original";
+"Different password with first one" = "Different password with first one";
 "Nickname already exists" = "Nickname already exists";
 "Email already exists" = "Email already exists";
 "Failed to change nickname" = "Failed to change nickname";

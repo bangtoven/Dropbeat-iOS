@@ -287,6 +287,10 @@ class UserViewController: AXStretchableHeaderTabViewController {
                     let header = self.headerView as! UserHeaderView
                     header.followersNumberLabel.text = String(user.num_followers)
                     
+                    guard self.viewControllers.count > 2 else {
+                        return
+                    }
+                    
                     if let followerView = self.viewControllers[self.viewControllers.count-2] as? FollowInfoTableViewController {
                         followerView.userArray = []
                         followerView.subViewWillAppear()

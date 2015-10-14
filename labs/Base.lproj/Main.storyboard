@@ -532,7 +532,7 @@
                                     <constraint firstItem="VKD-4B-yI5" firstAttribute="top" secondItem="v15-V3-VyD" secondAttribute="top" id="52w-tP-3K5"/>
                                     <constraint firstAttribute="trailing" secondItem="VKD-4B-yI5" secondAttribute="trailing" id="CSE-Mj-AxZ"/>
                                     <constraint firstAttribute="bottom" secondItem="VKD-4B-yI5" secondAttribute="bottom" id="b6g-4L-U7K"/>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" secondItem="v15-V3-VyD" secondAttribute="height" multiplier="1:1" id="fdu-y3-Wtw"/>
+                                    <constraint firstAttribute="width" secondItem="v15-V3-VyD" secondAttribute="height" multiplier="1:1" id="fdu-y3-Wtw"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UvZ-Nc-LQ1" userLabel="ControlView">

@@ -33,7 +33,7 @@ class TutorialViewController: FBSigninableViewController, EAIntroDelegate {
             };
             
             let page1 = EAIntroPage()
-            page1.title = "UNLIMITED FREE EDM"
+            page1.title = "ENJOY UNLIMITED\nFREE STREAMING"
             page1.titleFont = font
             page1.titlePositionY = self.view.bounds.size.height / 2 + 34;
             page1.bgImage = UIImage(named: "tutorial_bg_1")
@@ -45,26 +45,26 @@ class TutorialViewController: FBSigninableViewController, EAIntroDelegate {
             page2.titleIconPositionY = (self.view.bounds.size.height + viewHeight) / 2 - dropImg.size.height
             page2.titleIconView = dropIcon
             
-            page2.title = "A \"DROP\" BUTTON FOR TRACK HIGHLIGHTS"
+            page2.title = "PLAY ONLY\nTHE HIGHLIGHTS"
             page2.titleFont = font
             page2.titlePositionY = (self.view.bounds.size.height + viewHeight) / 2;
             page2.bgImage = UIImage(named: "tutorial_bg_2")
             
             
-            let page3 = EAIntroPage()
-            page3.title = "COMPREHENSIVE\n DISCOVERY AND\n STREAMING\n EDM PLATFORM"
-            page3.titleFont = font
-            page3.titlePositionY = self.view.bounds.size.height / 2 + 80;
-            page3.bgImage = UIImage(named: "tutorial_bg_3")
+//            let page3 = EAIntroPage()
+//            page3.title = "COMPREHENSIVE\n DISCOVERY AND\n STREAMING\n EDM PLATFORM"
+//            page3.titleFont = font
+//            page3.titlePositionY = self.view.bounds.size.height / 2 + 80;
+//            page3.bgImage = UIImage(named: "tutorial_bg_3")
             
             let page4 = EAIntroPage()
-            page4.title = "FOLLOW YOUR\nFAVORITE ARTISTS"
+            page4.title = "DISCOVER AND\nFOLLOW YOUR\nFAVORITE ARTISTS"
             page4.titleFont = font
             page4.titlePositionY = self.view.bounds.size.height / 2 + 60;
             page4.bgImage = UIImage(named: "tutorial_bg_4")
             
             let page5 = EAIntroPage()
-            page5.title = "MUSIC HOSTING,\n SHARING,\n AND OTHER SERVICES\nFOR DJS\n\nAVAILABLE ON THE WEB"
+            page5.title = "EXPLORE MORE\nFEATURES FOR DJs\n@ DROPBEAT.NET"
             page5.titleFont = font
             page5.titlePositionY = self.view.bounds.size.height / 2 + 100;
             page5.bgImage = UIImage(named: "tutorial_bg_5")
@@ -72,7 +72,7 @@ class TutorialViewController: FBSigninableViewController, EAIntroDelegate {
             let finalPage = EAIntroPage(customView: self.accountView)
             finalPage.bgImage = UIImage(named: "tutorial_bg_6")
             
-            introView.pages = [page1, page2, page3, page4, page5, finalPage]
+            introView.pages = [page1, page2, page4, page5, finalPage]
             introView.bgViewContentMode = UIViewContentMode.ScaleAspectFill
             
             introView.swipeToExit = false

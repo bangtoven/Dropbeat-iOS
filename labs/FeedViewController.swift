@@ -327,6 +327,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             feedTypeSelectTableView.reloadData()
             
             if selectedFeedMenu.type == .FOLLOWING_TRACKS {
+                self.nextPage = 0
                 loadFollowingTracks(true)
             }
         }

@@ -185,9 +185,7 @@ class Track {
             drop = Drop(dref: dropObj["dref"].stringValue,
                 type: dropObj["type"].stringValue,
                 when: dropObj["when"].int)
-        } else {
-            print("no drop data")
-        }
+        } 
         
         self.init(
             id: json["id"].stringValue,

@@ -119,8 +119,10 @@ class UserViewController: AXStretchableHeaderTabViewController {
         var isSelf = false
         switch self.baseUser {
         case let user as User:
+            let isDropbeat = (user.resourceName == "dropbeat")
+            
             header.aboutMeLabel.text = user.aboutMe
-            if user.num_followers == -1 {
+            if isDropbeat {
                 header.followInfoView.hidden = true
             } else {
                 header.followInfoView.hidden = false
@@ -129,37 +131,44 @@ class UserViewController: AXStretchableHeaderTabViewController {
             }
             
             if self.viewControllers == nil {
-                var viewControllers = [UIViewController]()
-                
-                if user.tracks.count > 0 {
-                    let uploads = instantiateSubVC()
-                    uploads.title = "Uploads"
-                    uploads.tracks = user.tracks
-                    uploads.baseUser = user
-                    viewControllers.append(uploads)
-                }
-                
-                let likes = instantiateSubVC()
-                likes.title = "Likes"
-                likes.baseUser = user
-                likes.fetchFunc = user.fetchTracksFromLikeList
-                viewControllers.append(likes)
-                
-                if user.num_followers != -1 {
+                if isDropbeat {
+                    let recommends = instantiateSubVC()
+                    recommends.title = "Recommends"
+                    recommends.baseUser = user
+                    recommends.fetchFunc = user.fetchTracksFromLikeList
+
+                    self.viewControllers = [recommends]
+                } else {
+                    var viewControllers = [UIViewController]()
+
+                    if user.tracks.count > 0 {
+                        let uploads = instantiateSubVC()
+                        uploads.title = "Uploads"
+                        uploads.tracks = user.tracks
+                        uploads.baseUser = user
+                        viewControllers.append(uploads)
+                    }
+                    
+                    let likes = instantiateSubVC()
+                    likes.title = "Likes"
+                    likes.baseUser = user
+                    likes.fetchFunc = user.fetchTracksFromLikeList
+                    viewControllers.append(likes)
+                    
                     let followers = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
                     followers.title = "Followers"
                     followers.user = user
                     followers.followInfoType = .FOLLOWERS
                     viewControllers.append(followers)
+                    
+                    let following = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
+                    following.title = "Following"
+                    following.user = user
+                    following.followInfoType = .FOLLOWING
+                    viewControllers.append(following)
+                    
+                    self.viewControllers = viewControllers
                 }
-                
-                let following = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
-                following.title = "Following"
-                following.user = user
-                following.followInfoType = .FOLLOWING
-                viewControllers.append(following)
-                
-                self.viewControllers = viewControllers
             }
             
             if user.id == Account.getCachedAccount()?.user?.id {

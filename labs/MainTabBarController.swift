@@ -64,7 +64,7 @@ class MainTabBarController: UITabBarController {
 
         let navBar = UINavigationBar.appearance()
         navBar.barTintColor = UIColor.whiteColor()
-        navBar.tintColor = nil
+        navBar.tintColor = UIColor.dropbeatColor()
         navBar.shadowImage = nil
         navBar.setBackgroundImage(nil, forBarMetrics: UIBarMetrics.Default)
         navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.blackColor()]

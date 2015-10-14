@@ -22,8 +22,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     var networkStatus = NetworkStatus.NotReachable
-    var shouldInitializeQualityState = true
-    var futureQuality: QualityState?
+//    var shouldInitializeQualityState = true
+//    var futureQuality: QualityState?
     var reachability: Reachability?
     
     var appLink: AppLinkParam?
@@ -205,16 +205,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func networkReachabilityChanged (noti: NSNotification) {
         networkStatus = reachability!.currentReachabilityStatus()
         
-        if (networkStatus != .NotReachable) {
-            let quality: QualityState = (networkStatus == .ReachableViaWiFi) ? .HQ : .LQ
-            if (shouldInitializeQualityState || DropbeatPlayer.defaultPlayer.state == .Stopped) {
-                shouldInitializeQualityState = false
-                DropbeatPlayer.defaultPlayer.qualityState = quality
-            } else {
-                futureQuality = quality
-            }
-        }
-        NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.networkStatusChanged, object: nil)
+//        if (networkStatus != .NotReachable) {
+//            let quality: QualityState = (networkStatus == .ReachableViaWiFi) ? .HQ : .LQ
+//            if (shouldInitializeQualityState || DropbeatPlayer.defaultPlayer.state == .Stopped) {
+//                shouldInitializeQualityState = false
+//                DropbeatPlayer.defaultPlayer.qualityState = quality
+//            } else {
+//                futureQuality = quality
+//            }
+//        }
+//        NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.networkStatusChanged, object: nil)
         
         switch (networkStatus) {
         case .NotReachable:

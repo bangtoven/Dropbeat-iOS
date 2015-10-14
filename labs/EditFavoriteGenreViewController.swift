@@ -711,7 +711,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
             cell.likeBtn.setImage(UIImage(named:"ic_like"), forState: UIControlState.Normal)
             cell.likeBtn.backgroundColor = UIColor(netHex:0x8F2CEF)
         } else {
-            cell.likeBtn.setTitle("LIKE", forState: UIControlState.Normal)
+            cell.likeBtn.setTitle("LIKE ", forState: UIControlState.Normal)
             cell.likeBtn.setImage(UIImage(named:"ic_dislike"), forState: UIControlState.Normal)
             cell.likeBtn.backgroundColor = UIColor(netHex:0xC87EF4)
         }
@@ -772,6 +772,7 @@ class GenreSampleTableViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.likeBtn.tintColor = UIColor.whiteColor()
         self.likeBtn.layer.cornerRadius = 3.0
     }
     

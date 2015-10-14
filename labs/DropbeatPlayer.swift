@@ -58,6 +58,17 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
     // MARK: - Play
     
+    var youTubeQuality: XCDYouTubeVideoQuality {
+        get {
+            let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            if appDelegate.networkStatus == .ReachableViaWiFi {
+                return .HD720
+            } else {
+                return .Medium360
+            }
+        }
+    }
+    
     func play(track: Track) {
         self.lastError = nil
         if track.id == self.currentTrack?.id {
@@ -67,7 +78,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         self.state = .Buffering
         
         if track.type == .YOUTUBE {
-            track.getYouTubeStreamURL(qualityState == .HQ ? .Medium360 : .Small240) {
+            track.getYouTubeStreamURL(self.youTubeQuality) {
                 (streamURL, duration, error) -> Void in
                 if error != nil {
                     self.handleError()
@@ -150,7 +161,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         }
         
         if next.type == .YOUTUBE {
-            next.getYouTubeStreamURL(qualityState == .HQ ? .Medium360 : .Small240) {
+            next.getYouTubeStreamURL(self.youTubeQuality) {
                 (streamURL, duration, error) -> Void in
                 if error != nil {
                     next.postFailureLog()
@@ -440,7 +451,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
     var repeatState = RepeatState.NOT_REPEAT
     var shuffleState = ShuffleState.NOT_SHUFFLE
-    var qualityState = QualityState.HQ
+//    var qualityState = QualityState.HQ
     
     func changeRepeatState() {
         repeatState = repeatState.next()
@@ -454,9 +465,9 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         self.enqueueNextTrack()
     }
     
-    func changeQualityState() {
-        qualityState = qualityState.toggle()
-    }
+//    func changeQualityState() {
+//        qualityState = qualityState.toggle()
+//    }
 }
 
 // MARK: - Enums
@@ -483,14 +494,14 @@ enum ShuffleState: Int  {
     }
 }
 
-enum QualityState: Int  {
-    case LQ = 0
-    case HQ = 1
-    
-    func toggle() -> QualityState {
-        switch self {
-        case .LQ: return .HQ
-        case .HQ: return .LQ
-        }
-    }
-}
+//enum QualityState: Int  {
+//    case LQ = 0
+//    case HQ = 1
+//    
+//    func toggle() -> QualityState {
+//        switch self {
+//        case .LQ: return .HQ
+//        case .HQ: return .LQ
+//        }
+//    }
+//}

@@ -81,7 +81,6 @@ class UserViewController: AXStretchableHeaderTabViewController {
         super.viewDidLoad()
         self.view.tintColor = UIColor.dropbeatColor()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarTapped", name: NotifyKey.statusBarTapped, object: nil)
 
         self.view.addSubview(self.headerView!)
     }
@@ -375,6 +374,8 @@ class UserViewController: AXStretchableHeaderTabViewController {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "statusBarTapped", name: NotifyKey.statusBarTapped, object: nil)
+        
         let header = self.headerView as! UserHeaderView
         
         if let passedName = self.passedName {
@@ -390,6 +391,8 @@ class UserViewController: AXStretchableHeaderTabViewController {
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.statusBarTapped, object: nil)
         
         if let topVC = self.navigationController?.topViewController as? UserViewController
             where topVC != self {

@@ -158,7 +158,6 @@ class MainTabBarController: UITabBarController {
     func loadAppLinkRequest() {
         guard let appDelegate = UIApplication.sharedApplication().delegate as? AppDelegate,
             param = appDelegate.appLink else {
-                print("no app link param.")
                 return
         }
         

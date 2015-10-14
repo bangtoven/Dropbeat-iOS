@@ -84,10 +84,6 @@ class PlayerViewController: GAITrackedViewController {
             selector: "playerStateChanged:",
             name: DropbeatPlayerStateChangedNotification,
             object: nil)
-        
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "viewWillAppear:",
-            name: UIApplicationWillEnterForegroundNotification, object: nil)
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -158,7 +154,6 @@ class PlayerViewController: GAITrackedViewController {
     // MARK: - Update UI
     
     func updateViewForCurrentTrack() {
-        print("make time label to 00:00")
         progressSliderBar.value = 0
         progressTextView.text = getTimeFormatText(0)
         totalTextView.text = getTimeFormatText(0)

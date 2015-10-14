@@ -32,6 +32,10 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         }
         
         UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "applicationWillEnterForeground",
+            name: UIApplicationWillEnterForegroundNotification, object: nil)
     }
     
     private var playbackLog: PlayLog?
@@ -60,8 +64,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             return
         }
         
-        let fakeNoti = NSNotification(name: DropbeatPlayerStateChangedNotification, object: STKAudioPlayerState.Buffering.rawValue, userInfo: nil)
-        NSNotificationCenter.defaultCenter().postNotification(fakeNoti)
+        self.state = .Buffering
         
         if track.type == .YOUTUBE {
             track.getYouTubeStreamURL(qualityState == .HQ ? .Medium360 : .Small240) {
@@ -282,11 +285,12 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     func seekTo(percent: Float) {
-        let time = Double(percent) * self.duration
-        self.player.seekToTime(time)
+        let oldTime = self.progress
+        let newTime = Double(percent) * self.duration
+        self.player.seekToTime(newTime)
         
         if let log = self.playbackLog {
-            log.seek(from: Int(self.duration), to: Int(time))
+            log.seek(from: Int(oldTime), to: Int(newTime))
         }
     }
     
@@ -308,7 +312,16 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
     // MARK: - State change
 
-    var state = STKAudioPlayerState.Ready
+    func applicationWillEnterForeground() {
+        self.state = self.player.state
+    }
+    
+    var state = STKAudioPlayerState.Ready {
+        didSet {
+            let noti = NSNotification(name: DropbeatPlayerStateChangedNotification, object: state.rawValue, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotification(noti)
+        }
+    }
 
     func audioPlayer(audioPlayer: STKAudioPlayer!, didFinishBufferingSourceWithQueueItemId queueItemId: NSObject!)
     {
@@ -318,9 +331,6 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     func audioPlayer(audioPlayer: STKAudioPlayer!, stateChanged state: STKAudioPlayerState, previousState: STKAudioPlayerState)
     {
         self.state = state
-
-        let noti = NSNotification(name: DropbeatPlayerStateChangedNotification, object: state.rawValue, userInfo: nil)
-        NSNotificationCenter.defaultCenter().postNotification(noti)
 
         switch state {
         case .Ready:

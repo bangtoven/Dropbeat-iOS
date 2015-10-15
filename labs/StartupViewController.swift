@@ -80,7 +80,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
 //                }
                 ViewUtils.showNoticeAlert(self,
                     title: "We're sorry.",//NSLocalizedString("Failed to fetch version info", comment:""),
-                    message: "Something went wrong. Please check your internet connection. Let's see if we can fix this together. Cross your fingers and hit the Retry.",//message!,
+                    message: "Please check your internet connection. \nLet's see if we can fix this together. Cross your fingers and hit the Retry.",//message!,
                     btnText: NSLocalizedString("Retry", comment:""),
                     callback: { () -> Void in
 //                        self.progressHud?.hide(true)
@@ -148,12 +148,12 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                         error!.code == NSURLErrorNotConnectedToInternet) {
                             message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
                     } else {
-                        message = "We're sorry. Let's see if we can fix this together. Cross your fingers and hit the Retry."//NSLocalizedString("Failed to fetch user info", comment:"")
+                        message = "Something went wrong, but Dropbeat is so awesome that you should give it a try. Cross your fingers, hit the retry, and our app shall be healed."//NSLocalizedString("Failed to fetch user info", comment:"")
                         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
                         keychainItemWrapper.setObject(nil, forKey: "auth_token")
                     }
                     ViewUtils.showNoticeAlert(self,
-                        title: "Something went wrong.",//NSLocalizedString("Failed to fetch user info", comment:""),
+                        title: "We're sorry.",//NSLocalizedString("Failed to fetch user info", comment:""),
                         message: message!,
                         btnText: NSLocalizedString("Retry", comment:""),
                         callback: { () -> Void in

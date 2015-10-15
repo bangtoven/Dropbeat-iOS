@@ -4,6 +4,7 @@ extension NSDate
 {
     static func dateFromString(var string: String) -> NSDate? {
         let formatter = NSDateFormatter()
+        formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
         if string.contains("000Z") {
             formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.000Z"
         } else if string.length <= 10 {

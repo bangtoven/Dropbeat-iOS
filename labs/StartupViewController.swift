@@ -71,16 +71,16 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         Requests.getClientVersion {
                 (reuqest: NSURLRequest, response: NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             if (error != nil || result == nil) {
-                var message:String?
-                if (error != nil && error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                    message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
-                } else {
-                    message = NSLocalizedString("Failed to fetch version info.", comment:"")
-                }
+//                var message:String?
+//                if (error != nil && error!.domain == NSURLErrorDomain &&
+//                        error!.code == NSURLErrorNotConnectedToInternet) {
+//                    message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
+//                } else {
+//                    message = NSLocalizedString("Failed to fetch version info.", comment:"")
+//                }
                 ViewUtils.showNoticeAlert(self,
-                    title: NSLocalizedString("Failed to fetch version info", comment:""),
-                    message: message!,
+                    title: "We're sorry.",//NSLocalizedString("Failed to fetch version info", comment:""),
+                    message: "Something went wrong. Please check your internet connection. Let's see if we can fix this together. Cross your fingers and hit the Retry.",//message!,
                     btnText: NSLocalizedString("Retry", comment:""),
                     callback: { () -> Void in
 //                        self.progressHud?.hide(true)
@@ -148,12 +148,12 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                         error!.code == NSURLErrorNotConnectedToInternet) {
                             message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
                     } else {
-                        message = NSLocalizedString("Failed to fetch user info", comment:"")
+                        message = "We're sorry. Let's see if we can fix this together. Cross your fingers and hit the Retry."//NSLocalizedString("Failed to fetch user info", comment:"")
                         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
                         keychainItemWrapper.setObject(nil, forKey: "auth_token")
                     }
                     ViewUtils.showNoticeAlert(self,
-                        title: NSLocalizedString("Failed to fetch user info", comment:""),
+                        title: "Something went wrong.",//NSLocalizedString("Failed to fetch user info", comment:""),
                         message: message!,
                         btnText: NSLocalizedString("Retry", comment:""),
                         callback: { () -> Void in

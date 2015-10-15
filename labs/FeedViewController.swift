@@ -692,16 +692,14 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         
         trackTableView.backgroundColor = UIColor(netHex: 0xffffff)
         
-//        genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
+        genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
         
         if genres[menu.type]?.count > 0 {
             genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
             genreSelectBtn.enabled = true
-//            navigationItem.leftBarButtonItems = [genreSelectBtn]
         } else {
             genreSelectBtn.title = ""
             genreSelectBtn.enabled = false
-//            navigationItem.leftBarButtonItems = []
         }
         
         if genreTableView.indexPathForSelectedRow != nil {
@@ -1072,7 +1070,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         feedTypeSelectTableView.hidden = false
         genreTableView.hidden = true
         feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_up"), forState: UIControlState.Normal)
-//        genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
+        genreSelectBtn.title = genreSelectBtn.enabled ? NSLocalizedString("Genre", comment:"") : ""
     }
     
     func toFeedView(selected:String) {
@@ -1082,7 +1080,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         genreTableView.hidden = true
         feedTypeSelectBtn.setImage(UIImage(named:"ic_arrow_down"), forState: UIControlState.Normal)
         updateFeedTypeSelectBtn(selected)
-//        genreSelectBtn.title = NSLocalizedString("Genre", comment:"")
+        genreSelectBtn.title = genreSelectBtn.enabled ? NSLocalizedString("Genre", comment:"") : ""
     }
     
     func toGenreSelectView() {

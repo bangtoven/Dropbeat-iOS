@@ -31,6 +31,11 @@ extension UIImageView {
     func setImageForTrack(track: Track, size: ThumnailSize, var needsHighDef: Bool = true) {
         if size == .SMALL {
             needsHighDef = false
+        } else {
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            if appDelegate.networkStatus == .ReachableViaWiFi {
+                needsHighDef = true
+            }
         }
         
         let placeHolder = size == .LARGE ?
@@ -87,6 +92,63 @@ extension UIImageView {
     }
 }
 
+extension Track {
+    private var preferredQuality: [XCDYouTubeVideoQuality] {
+        get {
+            var preferredQuality: [XCDYouTubeVideoQuality] = [.Medium360, .Small240]
+            
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            if appDelegate.networkStatus == .ReachableViaWiFi {
+                preferredQuality.insert(.HD720, atIndex: 0)
+            }
+            
+            return preferredQuality
+        }
+    }
+    
+    private func qualityToString(quality: XCDYouTubeVideoQuality) -> String {
+        switch quality {
+        case .Small240: return "Small240"
+        case .Medium360: return "Medium360"
+        case .HD720: return "HD720"
+        case .HD1080: return "HD1080"
+        }
+    }
+    
+    func getYouTubeStreamURL(callback:(streamURL:String?, duration:Double?, error:NSError?)->Void) {
+        guard self.type == .YOUTUBE else {
+            let error = NSError(domain: "TrackYouTubeStreamURL", code: -1, userInfo: nil)
+            callback(streamURL: nil, duration: nil, error: error)
+            return
+        }
+        
+        XCDYouTubeClient.defaultClient().getVideoWithIdentifier(self.id, completionHandler: {
+            (video: XCDYouTubeVideo?, error: NSError?) -> Void in
+            if error != nil {
+                callback(streamURL: nil, duration:nil, error: error)
+                return
+            }
+            
+            var streamURL: NSURL?
+            for quality in self.preferredQuality {
+                if let url = video?.streamURLs[quality.rawValue] as? NSURL {
+                    streamURL = url
+                    break
+                } else {
+                    print("(\(self.title)) doesn't have \(self.qualityToString(quality)) stream url. try next quality.")
+                }
+            }
+            
+            if streamURL != nil {
+                callback(streamURL: streamURL!.absoluteString, duration:video?.duration, error: nil)
+            } else {
+                let e = NSError(domain: "TrackYouTubeStreamURL", code: -2, userInfo: nil)
+                callback(streamURL: nil, duration:nil, error: e)
+            }
+        })
+    }
+}
+
 class Track {
     static var soundCloudKey: String = "02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea"
     static func loadSoundCloudKey (callback:(NSError)->Void) {
@@ -137,29 +199,6 @@ class Track {
                 return self.id.stringByRemovingPercentEncoding!
             }
         }
-    }
-    
-    func getYouTubeStreamURL(quality:XCDYouTubeVideoQuality, callback:(streamURL:String?, duration:Double?, error:NSError?)->Void) {
-        guard self.type == .YOUTUBE else {
-            let error = NSError(domain: "TrackYouTubeStreamURL", code: -1, userInfo: nil)
-            callback(streamURL: nil, duration: nil, error: error)
-            return
-        }
-        
-        XCDYouTubeClient.defaultClient().getVideoWithIdentifier(self.id, completionHandler: {
-            (video: XCDYouTubeVideo?, error: NSError?) -> Void in
-            if error != nil {
-                callback(streamURL: nil, duration:nil, error: error)
-                return
-            }
-            
-            if let streamURL = video?.streamURLs[quality.rawValue] as? NSURL {
-                callback(streamURL: streamURL.absoluteString, duration:video?.duration, error: nil)
-            } else {
-                let e = NSError(domain: "TrackYouTubeStreamURL", code: -2, userInfo: nil)
-                callback(streamURL: nil, duration:nil, error: e)
-            }
-        })
     }
     
     init(id: String, title: String, type: SourceType, tag: String? = nil, thumbnailUrl: String? = nil, drop: Drop? = nil, releaseDate: NSDate? = nil) {
@@ -598,7 +637,7 @@ class PlayLog {
 }
 
 extension Track { // for Play Failure Log
-    func postFailureLog() {
+    func postFailureLog(description: String) {
         var log = [String:AnyObject]()
         
         log["title"] = self.title
@@ -625,9 +664,11 @@ extension Track { // for Play Failure Log
         
         log["location"] = Account.location
         
+        log["description"] = description
+        
         request(.POST, ApiPath.logPlayFailure, parameters: log, encoding: .JSON)
             .responseJSON{ (req, resp, result) -> Void in
-                print("play failure log posted: " + result.description)
+                print("play failure log posted: " + result.description + " (\(description))")
         }
     }
 }

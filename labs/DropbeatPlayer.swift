@@ -40,48 +40,66 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
     private var playbackLog: PlayLog?
     
-    func resetPlaybackLog(currentTime: Int?) {
+    private func resetPlaybackLog(currentTime: Int?) {
         if let playbackLog = self.playbackLog {
             playbackLog.finished(currentTime)
             self.playbackLog = nil
         }
     }
     
-    var currentTrack: Track?
-    private var currentIndex = -1
-    private var currentThumbnail = UIImage(named: "default_cover_big")
-    var currentPlaylist: Playlist? {
+    // MARK: - Play
+    
+    var currentTrack: Track? {
         didSet {
+            let noti = NSNotification(name: DropbeatPlayerTrackChangedNotification, object: currentTrack, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotification(noti)
+            
+            if currentTrack == nil {
+                self.currentThumbnail = UIImage(named: "default_cover_big")
+            }
+        }
+    }
+    private var _copiedPlaylist: Playlist?
+    var currentPlaylist: Playlist? {
+        get {
+            return _copiedPlaylist
+        }
+        set {
+            _copiedPlaylist = newValue?.copy()
             currentIndex = -1
         }
     }
+    private var currentIndex = -1
     
-    // MARK: - Play
-    
-    var youTubeQuality: XCDYouTubeVideoQuality {
-        get {
-            let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            if appDelegate.networkStatus == .ReachableViaWiFi {
-                return .HD720
-            } else {
-                return .Medium360
+    private func getIndexOfTrackWithId(id: String) -> Int {
+        guard let currentPlaylist = self.currentPlaylist else {
+            return -1
+        }
+
+        for (index,track) in currentPlaylist.tracks.enumerate() {
+            if track.id == id {
+                return index
             }
         }
+        
+        return self.currentIndex
     }
     
     func play(track: Track) {
         self.lastError = nil
         if track.id == self.currentTrack?.id {
+            self.currentTrack = track // to send notification
             return
         }
         
         self.state = .Buffering
         
         if track.type == .YOUTUBE {
-            track.getYouTubeStreamURL(self.youTubeQuality) {
+            track.getYouTubeStreamURL() {
                 (streamURL, duration, error) -> Void in
                 if error != nil {
-                    self.handleError()
+                    self.currentIndex = self.getIndexOfTrackWithId(track.id)
+                    self.handleErrorAndPlayNextTrack(track, description: "can't start play: invalid youtube stream url")
                     return
                 }
                 
@@ -96,23 +114,11 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     {
         self.lastError = nil
         
-        guard let currentPlaylist = self.currentPlaylist else {
-            return
-        }
-        
-        for (i,track) in currentPlaylist.tracks.enumerate() {
-            if track.id == queueItemId {
-                self.currentIndex = i
-                
-                if self.currentTrack == nil || track.id != self.currentTrack!.id {
-                    self.currentTrack = track
-                    let noti = NSNotification(name: DropbeatPlayerTrackChangedNotification, object: track, userInfo: nil)
-                    NSNotificationCenter.defaultCenter().postNotification(noti)
-                    print("Starting track: \(track.title)")
-                }
-                
-                break
-            }
+        self.currentIndex = self.getIndexOfTrackWithId(queueItemId as! String)
+        if currentIndex != -1 {
+            let track = currentPlaylist!.tracks[currentIndex]
+            self.currentTrack = track
+            print("Starting track: \(track.title)")
         }
         
         self.didPlayStart()
@@ -161,10 +167,10 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         }
         
         if next.type == .YOUTUBE {
-            next.getYouTubeStreamURL(self.youTubeQuality) {
+            next.getYouTubeStreamURL() {
                 (streamURL, duration, error) -> Void in
                 if error != nil {
-                    next.postFailureLog()
+                    next.postFailureLog("failed to enqueue track: invalid youtube stream url")
                     // remove this track and find new one.
                     self.currentPlaylist?.tracks.removeAtIndex(index)
                     self.enqueueNextTrack()
@@ -173,13 +179,15 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
                 
                 self.player.clearQueue()
                 self.player.queue(streamURL!, withQueueItemId: next.id, duration: duration!)
+                
+                print("Enqueued track: \(next.title)")
             }
         } else {
             self.player.clearQueue()
             self.player.queue(next.streamUrl, withQueueItemId: next.id)
+            
+            print("Enqueued track: \(next.title)")
         }
-        
-        print("Enqueued track: \(next.title)")
     }
     
     // MARK: - Next track handling
@@ -209,7 +217,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     enum _Pick { case NEXT; case PREV }
-    func pickTrack(pick: _Pick) -> (Track, Int)? {
+    private func pickTrack(pick: _Pick) -> (Track, Int)? {
         guard let playlist = currentPlaylist
             where playlist.tracks.count != 0 else {
                 return nil
@@ -372,16 +380,20 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
 
     var lastError: STKAudioPlayerErrorCode?
  
-    private func handleError() {
+    private func handleErrorAndPlayNextTrack(track: Track?, description: String) {
         print("Error!")
         
         let noti = NSNotification(name: DropbeatPlayerErrorNotification, object: (lastError ?? .Other).rawValue, userInfo: nil)
         NSNotificationCenter.defaultCenter().postNotification(noti)
+        self.state = self.player.state
         
-        self.next()
+        if self.next() == false {
+            if let track = self.currentTrack {
+                self.play(track)
+            }
+        }
 
-        let track = DropbeatPlayer.defaultPlayer.currentTrack
-        track?.postFailureLog()
+        track?.postFailureLog(description)
     }
     
     func audioPlayer(audioPlayer: STKAudioPlayer!, didFinishPlayingQueueItemId queueItemId: NSObject!, withReason stopReason: STKAudioPlayerStopReason, andProgress progress: Double, andDuration duration: Double)
@@ -392,7 +404,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         self.timer = nil
         
         if stopReason == STKAudioPlayerStopReason.Error {
-            self.handleError()
+            self.handleErrorAndPlayNextTrack(self.currentTrack, description: "play finished with error: \(stopReason)")
         }
         
         self.currentTrack = nil
@@ -435,6 +447,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     private var timer: NSTimer?
+    private var currentThumbnail = UIImage(named: "default_cover_big")
 
     func updatePlayingInfoCenter() {
         guard let track = self.currentTrack else {
@@ -458,7 +471,6 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
     var repeatState = RepeatState.NOT_REPEAT
     var shuffleState = ShuffleState.NOT_SHUFFLE
-//    var qualityState = QualityState.HQ
     
     func changeRepeatState() {
         repeatState = repeatState.next()
@@ -471,10 +483,6 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         self.player.clearQueue()
         self.enqueueNextTrack()
     }
-    
-//    func changeQualityState() {
-//        qualityState = qualityState.toggle()
-//    }
 }
 
 // MARK: - Enums

@@ -14,6 +14,15 @@ enum PlaylistType {
     case USER
 }
 
+extension Playlist {
+    func copy() -> Playlist {
+        let copied = Playlist(id: self.id, name: self.name, tracks: self.tracks)
+        copied.type = self.type
+        copied.dummy = self.dummy
+        return copied
+    }
+}
+
 class Playlist {
     static var allPlaylists = [Playlist]()
     

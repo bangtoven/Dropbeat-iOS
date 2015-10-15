@@ -9,33 +9,6 @@
 import UIKit
 import LNPopupController
 
-//class PopupBarFrameUpdateNavigationController: UINavigationController {
-//    
-//    override func viewDidAppear(animated: Bool) {
-//        super.viewDidAppear(animated)
-//        
-//        self.updateContentFrame()
-//    }
-//    
-//    func updateContentFrame() {
-//        guard let tbc = self.tabBarController else {
-//            return
-//        }
-//        
-//        var newHeight = tbc.view.frame.height
-//        if tbc.popupPresentationState == .Closed {
-//            newHeight -= tbc.popupBar.frame.height
-//        }
-//        
-//        if newHeight != self.view.frame.height {
-//            print("update height: \(self.view.frame.height) -> \(newHeight)")
-//            self.view.frame.size.height = newHeight
-//            self.view.setNeedsLayout()
-//        }
-//    }
-//    
-//}
-
 extension UITableViewController {
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -86,6 +59,10 @@ class MainTabBarController: UITabBarController {
             selector: "playerStateChanged:",
             name: DropbeatPlayerStateChangedNotification,
             object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "playerErrorNotified:",
+            name: DropbeatPlayerErrorNotification,
+            object: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -95,6 +72,14 @@ class MainTabBarController: UITabBarController {
         NSNotificationCenter.defaultCenter().removeObserver(self,
             name: DropbeatPlayerStateChangedNotification,
             object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self,
+            name: DropbeatPlayerErrorNotification,
+            object: nil)
+    }
+    
+    func playerErrorNotified(noti: NSNotification) {
+        let errMsg = NSLocalizedString("This track is not streamable", comment:"")
+        ViewUtils.showToast(self, message: errMsg)
     }
     
     func playerStateChanged(noti: NSNotification) {

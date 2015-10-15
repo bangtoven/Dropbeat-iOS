@@ -50,12 +50,12 @@ class SearchViewController: AddableTrackListViewController,
         searchResultView.hidden = true
         
         self.screenName = "SearchViewScreen"
+        
+        searchBar.becomeFirstResponder()
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        
-        searchBar.becomeFirstResponder()
         
         if self.isMovingToParentViewController() == false{
             // back from navigation stack. previous page was popped!!

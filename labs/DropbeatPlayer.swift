@@ -171,9 +171,11 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
                     return
                 }
                 
+                self.player.clearQueue()
                 self.player.queue(streamURL!, withQueueItemId: next.id, duration: duration!)
             }
         } else {
+            self.player.clearQueue()
             self.player.queue(next.streamUrl, withQueueItemId: next.id)
         }
         
@@ -295,7 +297,10 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         get { return self.player.progress }
     }
     
-    func seekTo(percent: Float) {
+    func seekTo(var percent: Float) {
+        if percent > 0.98 {
+            percent = 0.98
+        }
         let oldTime = self.progress
         let newTime = Double(percent) * self.duration
         self.player.seekToTime(newTime)
@@ -389,6 +394,8 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         if stopReason == STKAudioPlayerStopReason.Error {
             self.handleError()
         }
+        
+        self.currentTrack = nil
     }
     
     func audioPlayer(audioPlayer: STKAudioPlayer!, unexpectedError errorCode: STKAudioPlayerErrorCode)

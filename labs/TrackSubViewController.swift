@@ -251,7 +251,16 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
     }
     
     override func getPlaylistName() -> String? {
-        return self.baseUser?.name
+        let title = self.title ?? "tracks"
+        if let user = self.baseUser as? User,
+            mySelf = Account.getCachedAccount()?.user
+            where user.id == mySelf.id {
+                return "My \(title)"
+        } else if let name = self.baseUser?.name {
+            return "\(name)'s \(title)"
+        } else {
+            return title
+        }
     }
     
     override func getSectionName() -> String {

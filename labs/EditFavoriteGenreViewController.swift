@@ -301,7 +301,7 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
         
         let genreHandler = {(genreMap:[String:[Genre]]) -> Void in
             self.progressHud?.hide(true)
-            let genres = genreMap["default"]
+            let genres = genreMap["dropbeat"]
             if genres == nil {
                 return
             }

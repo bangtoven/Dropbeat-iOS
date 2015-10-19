@@ -11,6 +11,12 @@ import UIKit
 class ProfileHeaderView: UserHeaderView {
     @IBOutlet weak var favoriteGenresLabel: UILabel!
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        self.favoriteGenresLabel.text = ""
+    }
+    
     override func interactiveSubviews() -> [AnyObject]! {
         return []
     }

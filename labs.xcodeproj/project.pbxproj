@@ -60,6 +60,12 @@
 		58C3E7A31B8A40C300822842 /* AddableTrackListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C3E7A21B8A40C300822842 /* AddableTrackListViewController.swift */; };
 		58EAB3DD1B0D0BB00075304E /* PlaylistSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EAB3DC1B0D0BB00075304E /* PlaylistSelectViewController.swift */; };
 		58EAB3DF1B0D11110075304E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EAB3DE1B0D11110075304E /* Utils.swift */; };
+		731173311BD543B700F17A31 /* GKCropBorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731173261BD543B700F17A31 /* GKCropBorderView.m */; settings = {ASSET_TAGS = (); }; };
+		731173321BD543B700F17A31 /* GKImageCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731173281BD543B700F17A31 /* GKImageCropOverlayView.m */; settings = {ASSET_TAGS = (); }; };
+		731173331BD543B700F17A31 /* GKImageCropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7311732A1BD543B700F17A31 /* GKImageCropView.m */; settings = {ASSET_TAGS = (); }; };
+		731173341BD543B700F17A31 /* GKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7311732C1BD543B700F17A31 /* GKImageCropViewController.m */; settings = {ASSET_TAGS = (); }; };
+		731173351BD543B700F17A31 /* GKImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 7311732E1BD543B700F17A31 /* GKImagePicker.m */; settings = {ASSET_TAGS = (); }; };
+		731173361BD543B700F17A31 /* GKResizeableCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731173301BD543B700F17A31 /* GKResizeableCropOverlayView.m */; settings = {ASSET_TAGS = (); }; };
 		731D92721BAEE4FB0068742A /* FollowInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731D92711BAEE4FB0068742A /* FollowInfoTableViewController.swift */; };
 		732717021BAC8632003E0B68 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717011BAC8632003E0B68 /* SwiftyJSON.swift */; };
 		732717101BAC8649003E0B68 /* RBStoryboardLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 732717041BAC8649003E0B68 /* RBStoryboardLink.m */; };
@@ -440,6 +446,18 @@
 		58C3E7A21B8A40C300822842 /* AddableTrackListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddableTrackListViewController.swift; sourceTree = "<group>"; };
 		58EAB3DC1B0D0BB00075304E /* PlaylistSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaylistSelectViewController.swift; sourceTree = "<group>"; };
 		58EAB3DE1B0D11110075304E /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		731173251BD543B700F17A31 /* GKCropBorderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKCropBorderView.h; sourceTree = "<group>"; };
+		731173261BD543B700F17A31 /* GKCropBorderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKCropBorderView.m; sourceTree = "<group>"; };
+		731173271BD543B700F17A31 /* GKImageCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKImageCropOverlayView.h; sourceTree = "<group>"; };
+		731173281BD543B700F17A31 /* GKImageCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImageCropOverlayView.m; sourceTree = "<group>"; };
+		731173291BD543B700F17A31 /* GKImageCropView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKImageCropView.h; sourceTree = "<group>"; };
+		7311732A1BD543B700F17A31 /* GKImageCropView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImageCropView.m; sourceTree = "<group>"; };
+		7311732B1BD543B700F17A31 /* GKImageCropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKImageCropViewController.h; sourceTree = "<group>"; };
+		7311732C1BD543B700F17A31 /* GKImageCropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImageCropViewController.m; sourceTree = "<group>"; };
+		7311732D1BD543B700F17A31 /* GKImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKImagePicker.h; sourceTree = "<group>"; };
+		7311732E1BD543B700F17A31 /* GKImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImagePicker.m; sourceTree = "<group>"; };
+		7311732F1BD543B700F17A31 /* GKResizeableCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKResizeableCropOverlayView.h; sourceTree = "<group>"; };
+		731173301BD543B700F17A31 /* GKResizeableCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKResizeableCropOverlayView.m; sourceTree = "<group>"; };
 		731D92711BAEE4FB0068742A /* FollowInfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowInfoTableViewController.swift; sourceTree = "<group>"; };
 		732717011BAC8632003E0B68 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = Libraries/SwiftyJSON.swift; sourceTree = SOURCE_ROOT; };
 		732717031BAC8649003E0B68 /* RBStoryboardLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RBStoryboardLink.h; path = Libraries/RBStoryboard/RBStoryboardLink.h; sourceTree = SOURCE_ROOT; };
@@ -782,6 +800,26 @@
 			name = GAI;
 			sourceTree = "<group>";
 		};
+		731173241BD543B700F17A31 /* GKImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				731173251BD543B700F17A31 /* GKCropBorderView.h */,
+				731173261BD543B700F17A31 /* GKCropBorderView.m */,
+				731173271BD543B700F17A31 /* GKImageCropOverlayView.h */,
+				731173281BD543B700F17A31 /* GKImageCropOverlayView.m */,
+				731173291BD543B700F17A31 /* GKImageCropView.h */,
+				7311732A1BD543B700F17A31 /* GKImageCropView.m */,
+				7311732B1BD543B700F17A31 /* GKImageCropViewController.h */,
+				7311732C1BD543B700F17A31 /* GKImageCropViewController.m */,
+				7311732D1BD543B700F17A31 /* GKImagePicker.h */,
+				7311732E1BD543B700F17A31 /* GKImagePicker.m */,
+				7311732F1BD543B700F17A31 /* GKResizeableCropOverlayView.h */,
+				731173301BD543B700F17A31 /* GKResizeableCropOverlayView.m */,
+			);
+			name = GKImagePicker;
+			path = Libraries/GKImagePicker;
+			sourceTree = SOURCE_ROOT;
+		};
 		732717231BAC8691003E0B68 /* UINavigationBar+Awesome */ = {
 			isa = PBXGroup;
 			children = (
@@ -848,6 +886,7 @@
 				732717011BAC8632003E0B68 /* SwiftyJSON.swift */,
 				732717421BAC8721003E0B68 /* ScrollPager.swift */,
 				73FC90CC1BAE5C9000284B8A /* KeychainItemWrapper.swift */,
+				731173241BD543B700F17A31 /* GKImagePicker */,
 				73A355911BCD973B0002C00D /* EAIntroPage */,
 				73AECBF31BC6B47D0040F0AF /* XCDYoutubeKit */,
 				73AECBA71BC5CE350040F0AF /* StreamingKit */,
@@ -1467,6 +1506,7 @@
 				585BAD101B85ED9900FE137A /* DTTimePeriodChain.m in Sources */,
 				73AECC031BC6B47D0040F0AF /* XCDYouTubeLogger.m in Sources */,
 				586D166E1B0B972400C5147F /* StartupViewController.swift in Sources */,
+				731173331BD543B700F17A31 /* GKImageCropView.m in Sources */,
 				5886939B1B13B51300566124 /* SDImageCache.m in Sources */,
 				5886939F1B13B51300566124 /* SDWebImageDownloaderOperation.m in Sources */,
 				73AECB9B1BC5CE2F0040F0AF /* STKCoreFoundationDataSource.m in Sources */,
@@ -1507,6 +1547,7 @@
 				73FC90C21BAE4AFA00284B8A /* Manager.swift in Sources */,
 				589413611B83C3F700395AFA /* TPKeyboardAvoidingScrollView.m in Sources */,
 				580621331B08CBAA009012D5 /* FeedViewController.swift in Sources */,
+				731173321BD543B700F17A31 /* GKImageCropOverlayView.m in Sources */,
 				732717141BAC8649003E0B68 /* RBStoryboardSegue.m in Sources */,
 				732717261BAC8691003E0B68 /* UINavigationBar+Awesome.m in Sources */,
 				73FC90C01BAE4AFA00284B8A /* Download.swift in Sources */,
@@ -1532,6 +1573,7 @@
 				73AECC071BC6B47D0040F0AF /* XCDYouTubeVideo.m in Sources */,
 				73FC90C81BAE4AFA00284B8A /* ServerTrustPolicy.swift in Sources */,
 				73AECB951BC5CE2F0040F0AF /* NSMutableArray+STKAudioPlayer.m in Sources */,
+				731173361BD543B700F17A31 /* GKResizeableCropOverlayView.m in Sources */,
 				589413621B83C3F700395AFA /* TPKeyboardAvoidingTableView.m in Sources */,
 				587837A41B4402D0008DF480 /* Reachability.m in Sources */,
 				5886939A1B13B51300566124 /* NSData+ImageContentType.m in Sources */,
@@ -1542,7 +1584,9 @@
 				5886939C1B13B51300566124 /* SDWebImageCompat.m in Sources */,
 				732717111BAC8649003E0B68 /* RBStoryboardModalSegue.m in Sources */,
 				73AECBA31BC5CE2F0040F0AF /* STKLocalFileDataSource.m in Sources */,
+				731173351BD543B700F17A31 /* GKImagePicker.m in Sources */,
 				7327173E1BAC86BB003E0B68 /* AXTabBar.m in Sources */,
+				731173341BD543B700F17A31 /* GKImageCropViewController.m in Sources */,
 				585BAD0F1B85ED9900FE137A /* DTTimePeriod.m in Sources */,
 				73FC90BF1BAE4AFA00284B8A /* Alamofire.swift in Sources */,
 				585BAD121B85ED9900FE137A /* DTTimePeriodGroup.m in Sources */,
@@ -1553,6 +1597,7 @@
 				FCD1DA881B04CCB200F9EA70 /* AppDelegate.swift in Sources */,
 				73AECC011BC6B47D0040F0AF /* XCDYouTubeClient.m in Sources */,
 				732717181BAC865E003E0B68 /* MarqueeLabel.m in Sources */,
+				731173311BD543B700F17A31 /* GKCropBorderView.m in Sources */,
 				58C3E7A31B8A40C300822842 /* AddableTrackListViewController.swift in Sources */,
 				5890D6181B053F4900AAEAE5 /* SettingsViewControllers.swift in Sources */,
 				73AB34761BB1D34A0031E2CC /* ACEExpandableTextCell.m in Sources */,

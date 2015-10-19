@@ -100,8 +100,8 @@ typedef void (^DYAlertPickerViewDismissCallback)(void);
     self.containerView.center = CGPointMake(self.center.x, self.center.y);
 
 //
-    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
+//    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:nil];
 }
 
 
@@ -318,42 +318,42 @@ typedef void (^DYAlertPickerViewDismissCallback)(void);
          ];
     });
     // Request to stop receiving accelerometer events and turn off accelerometer
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+//    [[NSNotificationCenter defaultCenter] removeObserver:self];
+//    [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
 
 }
 
-- (void)orientationChanged:(NSNotification *)notification {
-    // Respond to changes in device orientation
-    UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
-
-    if (isUIDeviceOrientation == NO
-        && (UIDeviceOrientationIsPortrait(orientation)
-        || UIDeviceOrientationIsLandscape(orientation))) {
-        
-    } else {
-        return;
-    }
-    
-    isUIDeviceOrientation = YES;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        for (UIView *v in [self subviews]) {
-            [v removeFromSuperview];
-        }
-        self.layer.transform = CATransform3DMakeScale(1, 1, 1);
-        [self removeFromSuperview];
-        [self setNeedsDisplay];
-        // Request to stop receiving accelerometer events and turn off accelerometer
-        [[NSNotificationCenter defaultCenter] removeObserver:self];
-        [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
-        [self show];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            isUIDeviceOrientation = NO;
-        });
-        
-    });
-
-}
+//- (void)orientationChanged:(NSNotification *)notification {
+//    // Respond to changes in device orientation
+//    UIDeviceOrientation orientation = [UIDevice currentDevice].orientation;
+//
+//    if (isUIDeviceOrientation == NO
+//        && (UIDeviceOrientationIsPortrait(orientation)
+//        || UIDeviceOrientationIsLandscape(orientation))) {
+//        
+//    } else {
+//        return;
+//    }
+//    
+//    isUIDeviceOrientation = YES;
+//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//        for (UIView *v in [self subviews]) {
+//            [v removeFromSuperview];
+//        }
+//        self.layer.transform = CATransform3DMakeScale(1, 1, 1);
+//        [self removeFromSuperview];
+//        [self setNeedsDisplay];
+//        // Request to stop receiving accelerometer events and turn off accelerometer
+//        [[NSNotificationCenter defaultCenter] removeObserver:self];
+//        [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
+//        [self show];
+//        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+//            isUIDeviceOrientation = NO;
+//        });
+//        
+//    });
+//
+//}
 
 #pragma mark - cancel/confirm button delegate
 

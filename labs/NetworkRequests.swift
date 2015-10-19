@@ -16,6 +16,30 @@ class Requests {
             respCb(request!, response, result.value, result.error as? NSError)
         })
     }
+//    
+//    static var keychainResetTried = false
+//    
+//    static func send(method: Method, url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, background: Bool = false,respCb: RespCallback) -> Request {
+//        let adapter = WebAdapter(url: url, method: method, params: params, auth: auth, background:background)
+//        let request = adapter.send({ (req, resp, result) -> Void in
+//            if resp?.statusCode == 401 {
+//                if self.keychainResetTried == false {
+//                    self.keychainResetTried = true
+//                    
+//                    let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
+//                    keychainItemWrapper.setObject(nil, forKey: "auth_token")
+//                    print("reset keychain and retry request.")
+//                    self.send(method, url: url, params: params, auth: auth, background: background, respCb: respCb)
+//                    
+//                    return
+//                } else {
+//                    print("401 error multiple times.: \(url)")
+//                }
+//            }
+//            respCb(req!, resp, result.value, result.error as? NSError)
+//        })
+//        return request
+//    }
     
     static func sendGet(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, background: Bool = false, respCb: RespCallback) -> Request {
         return send(Method.GET, url: url, params: params, auth: auth, background:background, respCb: respCb)

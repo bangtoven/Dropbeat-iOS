@@ -64,6 +64,11 @@ class SearchViewController: AddableTrackListViewController,
             }
             self.trackTableView.reloadData()
         }
+        
+        if let selectedTab = self.tabBarController?.selectedIndex
+            where !(selectedTab == 2 || selectedTab == 5){
+                searchBar.becomeFirstResponder()
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

@@ -118,29 +118,12 @@ class Utils {
 class ViewUtils {
     static func showNoticeAlert(viewController:UIViewController, title:String, message:String, btnText:String=NSLocalizedString("Confirm", comment:""), callback:(() -> Void)?=nil) {
         
-        if #available(iOS 8.0, *) {
-            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: btnText, style: UIAlertActionStyle.Default,
-                handler:{ (action:UIAlertAction!) -> Void in
-                    callback?()
-            }))
-            viewController.presentViewController(alert, animated: true, completion: nil)
-        } else {
-            let alert = UIAlertView()
-            let alertDelegate = AlertViewDelegate.sharedInstance
-            alertDelegate.onClickedButtonAtIndex = { (alertView:UIAlertView, buttonIndex:Int) -> Void in
-                if (buttonIndex == 0) {
-                    callback?()
-                }
-                alert.delegate = nil
-                alertDelegate.onClickedButtonAtIndex = nil
-            }
-            alert.title = title
-            alert.message = message
-            alert.addButtonWithTitle(btnText)
-            alert.delegate = alertDelegate
-            alert.show()
-        }
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        alert.addAction(UIAlertAction(title: btnText, style: UIAlertActionStyle.Default,
+            handler:{ (action:UIAlertAction!) -> Void in
+                callback?()
+        }))
+        viewController.presentViewController(alert, animated: true, completion: nil)
     }
     
     static func showConfirmAlert(viewController:UIViewController,
@@ -148,7 +131,6 @@ class ViewUtils {
             positiveBtnText:String=NSLocalizedString("Proceed", comment:""), positiveBtnCallback: (() -> Void)?=nil,
             negativeBtnText:String=NSLocalizedString("Cancel", comment:""), negativeBtnCallback: (() -> Void)?=nil) {
             
-        if #available(iOS 8.0, *) {
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: negativeBtnText, style: UIAlertActionStyle.Default,
                     handler:{ (action:UIAlertAction!) -> Void in
@@ -159,25 +141,6 @@ class ViewUtils {
                     positiveBtnCallback?()
             }))
             viewController.presentViewController(alert, animated: true, completion: nil)
-        } else {
-            let alert = UIAlertView()
-            let alertDelegate = AlertViewDelegate.sharedInstance
-            alertDelegate.onClickedButtonAtIndex = { (alertView:UIAlertView, buttonIndex:Int) -> Void in
-                if (buttonIndex == 0) {
-                    positiveBtnCallback?()
-                } else {
-                    negativeBtnCallback?()
-                }
-                alert.delegate = nil
-                alertDelegate.onClickedButtonAtIndex = nil
-            }
-            alert.title = title
-            alert.message = message
-            alert.addButtonWithTitle(positiveBtnText)
-            alert.addButtonWithTitle(negativeBtnText)
-            alert.delegate = alertDelegate
-            alert.show()
-        }
     }
     
     static func showTextInputAlert(viewController:UIViewController,
@@ -185,7 +148,6 @@ class ViewUtils {
             positiveBtnText:String=NSLocalizedString("Submit", comment:""), positiveBtnCallback: (result:String) -> Void,
             negativeBtnText:String=NSLocalizedString("Cancel", comment:""), negativeBtnCallback: (() -> Void)?=nil) {
     
-        if #available(iOS 8.0, *) {
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
             alert.addTextFieldWithConfigurationHandler({ (textField: UITextField) in
                 textField.placeholder = placeholder
@@ -200,32 +162,6 @@ class ViewUtils {
                         positiveBtnCallback(result: textField.text!)
                     }))
             viewController.presentViewController(alert, animated: true, completion: nil)
-            
-            
-        } else {
-            
-            let alert = UIAlertView()
-            let alertDelegate = AlertViewDelegate.sharedInstance
-            alertDelegate.onClickedButtonAtIndex = { (alertView:UIAlertView, buttonIndex:Int) -> Void in
-                if (buttonIndex == 0) {
-                    let textField = alertView.textFieldAtIndex(0)!
-                    positiveBtnCallback(result: textField.text!)
-                } else {
-                    negativeBtnCallback?()
-                }
-                alert.delegate = nil
-                alertDelegate.onClickedButtonAtIndex = nil
-            }
-            alert.alertViewStyle = UIAlertViewStyle.PlainTextInput
-            let alertTextField = alert.textFieldAtIndex(0)
-            alertTextField?.placeholder = placeholder
-            alert.title = title
-            alert.message = message
-            alert.addButtonWithTitle(positiveBtnText)
-            alert.addButtonWithTitle(negativeBtnText)
-            alert.delegate = alertDelegate
-            alert.show()
-        }
     }
     
     static func showCheck(viewController:UIViewController, message:String) {

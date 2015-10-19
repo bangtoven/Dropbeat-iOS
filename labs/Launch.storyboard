@@ -170,7 +170,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="141" y="-1279"/>
+            <point key="canvasLocation" x="289" y="-1333"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ivq-a2-2t3">
@@ -192,7 +192,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OtA-5j-YwT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-73" y="-1955"/>
+            <point key="canvasLocation" x="-143" y="-1943"/>
         </scene>
         <!--Startup View Controller-->
         <scene sceneID="coR-i5-ZSt">
@@ -245,7 +245,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HqA-pN-cwS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="359" y="-1955"/>
+            <point key="canvasLocation" x="289" y="-1943"/>
         </scene>
         <!--Tutorial View Controller-->
         <scene sceneID="IXC-WB-1Uf">
@@ -259,7 +259,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tutorial_bg_1" translatesAutoresizingMaskIntoConstraints="NO" id="qJ7-Q9-q1m">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tutorial_bg_1" translatesAutoresizingMaskIntoConstraints="NO" id="qJ7-Q9-q1m">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                                 <animations/>
                             </imageView>
@@ -272,10 +272,10 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="OOg-SH-BRb" firstAttribute="top" secondItem="FUC-Ob-HPq" secondAttribute="top" id="4ID-OB-oRK"/>
                             <constraint firstItem="OOg-SH-BRb" firstAttribute="leading" secondItem="FUC-Ob-HPq" secondAttribute="leading" id="FrG-4t-mqM"/>
                             <constraint firstItem="qJ7-Q9-q1m" firstAttribute="leading" secondItem="FUC-Ob-HPq" secondAttribute="leading" id="J6Z-rm-0Dp"/>
                             <constraint firstAttribute="trailing" secondItem="OOg-SH-BRb" secondAttribute="trailing" id="NaP-Eq-D0f"/>
-                            <constraint firstItem="OOg-SH-BRb" firstAttribute="top" secondItem="eZm-PX-AcE" secondAttribute="bottom" constant="-20" id="Rh0-cu-MRA"/>
                             <constraint firstItem="MNM-Y8-anj" firstAttribute="top" secondItem="OOg-SH-BRb" secondAttribute="bottom" id="Wuj-tT-R1u"/>
                             <constraint firstItem="MNM-Y8-anj" firstAttribute="top" secondItem="qJ7-Q9-q1m" secondAttribute="bottom" id="uog-zX-cY4"/>
                             <constraint firstAttribute="trailing" secondItem="qJ7-Q9-q1m" secondAttribute="trailing" id="yBf-NX-sre"/>
@@ -410,20 +410,34 @@
                                 <constraint firstAttribute="height" constant="3" id="wdm-f1-fMR"/>
                             </constraints>
                         </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jwX-sU-zc3">
+                            <rect key="frame" x="45" y="375" width="230" height="27"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <state key="normal" title="I already have a Dropbeat email account.">
+                                <color key="titleColor" red="1" green="1" blue="1" alpha="0.75" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <segue destination="C6t-3H-Tbs" kind="show" id="gzv-Pe-U0k"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <animations/>
                     <constraints>
                         <constraint firstItem="djp-sl-iTE" firstAttribute="centerX" secondItem="MF5-pR-j61" secondAttribute="centerX" id="6Oy-48-vYL"/>
                         <constraint firstAttribute="trailing" secondItem="wmp-La-o7u" secondAttribute="trailing" id="NwG-8S-YNi"/>
                         <constraint firstItem="djp-sl-iTE" firstAttribute="centerY" secondItem="MF5-pR-j61" secondAttribute="centerY" constant="-97" id="SCT-a0-Na6"/>
+                        <constraint firstItem="jwX-sU-zc3" firstAttribute="top" secondItem="Wha-jS-VIP" secondAttribute="bottom" constant="10" id="Zqg-Xp-emJ"/>
                         <constraint firstItem="wmp-La-o7u" firstAttribute="leading" secondItem="MF5-pR-j61" secondAttribute="leading" id="l4L-0V-WXc"/>
                         <constraint firstItem="wmp-La-o7u" firstAttribute="centerY" secondItem="MF5-pR-j61" secondAttribute="centerY" constant="60" id="phb-f5-PYZ"/>
                         <constraint firstItem="7Br-HT-DCf" firstAttribute="centerX" secondItem="MF5-pR-j61" secondAttribute="centerX" id="uZP-OK-P67"/>
                         <constraint firstItem="7Br-HT-DCf" firstAttribute="centerY" secondItem="MF5-pR-j61" secondAttribute="centerY" constant="-132" id="wuv-aR-v1b"/>
+                        <constraint firstItem="jwX-sU-zc3" firstAttribute="centerX" secondItem="MF5-pR-j61" secondAttribute="centerX" id="x4D-8h-Ccv"/>
                     </constraints>
                 </view>
             </objects>
-            <point key="canvasLocation" x="1452" y="-1244"/>
+            <point key="canvasLocation" x="1200" y="-1943"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="xOb-kh-9p9">
@@ -443,7 +457,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="spZ-fA-bJa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="920" y="-1244"/>
+            <point key="canvasLocation" x="760" y="-1943"/>
         </scene>
         <!--Sign up with Email-->
         <scene sceneID="2ng-bZ-ing">
@@ -888,7 +902,7 @@ PASSWORD</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="1920" y="-1244"/>
+            <point key="canvasLocation" x="1691" y="-2304"/>
         </scene>
         <!--Sign in with Email-->
         <scene sceneID="aFQ-c2-bb6">
@@ -1113,7 +1127,7 @@ PASSWORD</string>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2329" y="-1244"/>
+            <point key="canvasLocation" x="1691" y="-1582"/>
         </scene>
     </scenes>
     <resources>
@@ -1122,4 +1136,7 @@ PASSWORD</string>
         <image name="logo_without_text" width="109" height="123"/>
         <image name="tutorial_bg_1" width="375" height="670"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="gzv-Pe-U0k"/>
+    </inferredMetricsTieBreakers>
 </document>

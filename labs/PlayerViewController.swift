@@ -384,7 +384,7 @@ class PlayerViewController: GAITrackedViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        print(segue.identifier)
+        print("prepare for segue from PlayerView: \(segue.identifier)")
     }
     
     @IBAction func onLikeBtnClicked(sender: AnyObject) {

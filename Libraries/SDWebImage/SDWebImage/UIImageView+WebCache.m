@@ -18,17 +18,30 @@
 - (UIImage *)imageWithScaledToHeight: (CGFloat) height
 {
     float oldHeight = self.size.height;
+    if (oldHeight == height) {
+        return self;
+    }
+    
     float scaleFactor = height / oldHeight;
     
     float newHeight = oldHeight * scaleFactor;
     float newWidth = self.size.width * scaleFactor;
     
+    return [self imageWithScaledToSize:CGSizeMake(newWidth, newHeight)];
+}
+
+- (UIImage *)imageWithScaledToSize: (CGSize) size
+{
+    float newWidth = size.width;
+    float newHeight = size.height;
+
     UIGraphicsBeginImageContext(CGSizeMake(newWidth, newHeight));
     [self drawInRect:CGRectMake(0, 0, newWidth, newHeight)];
     UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return newImage;
 }
+
 @end
 
 static char imageURLKey;

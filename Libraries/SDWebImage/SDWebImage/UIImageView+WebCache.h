@@ -9,6 +9,11 @@
 #import "SDWebImageCompat.h"
 #import "SDWebImageManager.h"
 
+@interface UIImage (Resize)
+- (UIImage *)imageWithScaledToHeight: (CGFloat) height;
+- (UIImage *)imageWithScaledToSize: (CGSize) size;
+@end
+
 /**
  * Integrates SDWebImage async downloading and caching of remote images with UIImageView.
  *

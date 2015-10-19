@@ -205,6 +205,8 @@ class ViewUtils {
 //        hud.removeFromSuperViewOnHide = true
 //        hud.show(true)
         
+        MBProgressHUD.hideAllHUDsForView(vc.view, animated: true)
+
         let hud = MBProgressHUD.showHUDAddedTo(vc.view, animated: true)
         hud.customView = UIView(frame: CGRectMake(0, 0, 37, 37))
         hud.mode = .CustomView

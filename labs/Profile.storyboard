@@ -1512,76 +1512,70 @@ click below to discover your favorites</string>
                         <animations/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="image" rowHeight="140" id="4Ho-KC-gXx" customClass="EditImageTableViewCell" customModule="for_test" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="image" rowHeight="140" id="6KP-ds-vBQ" customClass="EditImageTableViewCell" customModule="for_test" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="114" width="320" height="140"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4Ho-KC-gXx" id="aYz-CR-WMq">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6KP-ds-vBQ" id="IAV-OG-MIz">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="139"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_cover_big" translatesAutoresizingMaskIntoConstraints="NO" id="foS-GZ-DEa">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_cover_big" translatesAutoresizingMaskIntoConstraints="NO" id="yG5-dT-TlU">
                                             <rect key="frame" x="0.0" y="0.0" width="320" height="139"/>
                                             <animations/>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PDU-P1-ZF4">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wd2-Cq-T19">
                                             <rect key="frame" x="98" y="0.0" width="222" height="139"/>
                                             <animations/>
                                             <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="10"/>
                                             <state key="normal" image="ic_camera"/>
-                                            <connections>
-                                                <action selector="changeCoverImage:" destination="moL-Bw-QiW" eventType="touchUpInside" id="GGS-fM-GM3"/>
-                                            </connections>
                                         </button>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_profile" translatesAutoresizingMaskIntoConstraints="NO" id="swN-e5-Uub">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_profile" translatesAutoresizingMaskIntoConstraints="NO" id="AhG-7U-Du3">
                                             <rect key="frame" x="10" y="49" width="80" height="80"/>
                                             <animations/>
                                             <constraints>
-                                                <constraint firstAttribute="height" constant="80" id="TPr-ug-d5b"/>
-                                                <constraint firstAttribute="width" constant="80" id="g96-xE-eOw"/>
+                                                <constraint firstAttribute="width" constant="80" id="6ly-PU-jaz"/>
+                                                <constraint firstAttribute="height" constant="80" id="zfj-9S-I3Y"/>
                                             </constraints>
                                         </imageView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ls9-wb-uqp">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UYt-fX-nul">
                                             <rect key="frame" x="10" y="49" width="80" height="80"/>
                                             <animations/>
                                             <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="5"/>
                                             <state key="normal" image="ic_camera"/>
-                                            <connections>
-                                                <action selector="changeProfileImage:" destination="moL-Bw-QiW" eventType="touchUpInside" id="CZd-Kf-B0U"/>
-                                            </connections>
                                         </button>
                                     </subviews>
                                     <animations/>
                                     <constraints>
-                                        <constraint firstAttribute="bottomMargin" secondItem="swN-e5-Uub" secondAttribute="bottom" constant="2" id="3TO-b0-5wC"/>
-                                        <constraint firstAttribute="trailing" secondItem="foS-GZ-DEa" secondAttribute="trailing" id="3rZ-cD-Rx4"/>
-                                        <constraint firstItem="ls9-wb-uqp" firstAttribute="leading" secondItem="swN-e5-Uub" secondAttribute="leading" id="48V-LI-bKb"/>
-                                        <constraint firstAttribute="bottom" secondItem="swN-e5-Uub" secondAttribute="bottom" constant="10" id="75e-hp-jhu"/>
-                                        <constraint firstItem="foS-GZ-DEa" firstAttribute="top" secondItem="aYz-CR-WMq" secondAttribute="top" id="8Co-lP-M98"/>
-                                        <constraint firstAttribute="bottom" secondItem="foS-GZ-DEa" secondAttribute="bottom" id="8UM-5f-rdr"/>
-                                        <constraint firstItem="swN-e5-Uub" firstAttribute="leading" secondItem="aYz-CR-WMq" secondAttribute="leadingMargin" constant="2" id="BPQ-gE-yFj"/>
-                                        <constraint firstItem="foS-GZ-DEa" firstAttribute="leading" secondItem="aYz-CR-WMq" secondAttribute="leading" id="Gdu-He-7xm"/>
-                                        <constraint firstItem="swN-e5-Uub" firstAttribute="leading" secondItem="aYz-CR-WMq" secondAttribute="leading" constant="10" id="Uhq-xE-FKd"/>
-                                        <constraint firstAttribute="bottom" secondItem="PDU-P1-ZF4" secondAttribute="bottom" id="Yua-nu-jad"/>
-                                        <constraint firstItem="ls9-wb-uqp" firstAttribute="trailing" secondItem="swN-e5-Uub" secondAttribute="trailing" id="h58-ar-wIw"/>
-                                        <constraint firstItem="ls9-wb-uqp" firstAttribute="top" secondItem="swN-e5-Uub" secondAttribute="top" id="oda-7H-pyP"/>
-                                        <constraint firstItem="ls9-wb-uqp" firstAttribute="bottom" secondItem="swN-e5-Uub" secondAttribute="bottom" id="pwt-Iy-aJt"/>
-                                        <constraint firstItem="PDU-P1-ZF4" firstAttribute="leading" secondItem="swN-e5-Uub" secondAttribute="trailing" constant="8" id="vui-mC-U5i"/>
-                                        <constraint firstAttribute="trailing" secondItem="PDU-P1-ZF4" secondAttribute="trailing" id="xe4-W9-lc6"/>
-                                        <constraint firstItem="PDU-P1-ZF4" firstAttribute="top" secondItem="aYz-CR-WMq" secondAttribute="top" id="yDd-sN-GS7"/>
+                                        <constraint firstItem="UYt-fX-nul" firstAttribute="bottom" secondItem="AhG-7U-Du3" secondAttribute="bottom" id="1yi-ta-GsL"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="AhG-7U-Du3" secondAttribute="bottom" constant="2" id="5XH-na-Mxy"/>
+                                        <constraint firstItem="yG5-dT-TlU" firstAttribute="top" secondItem="IAV-OG-MIz" secondAttribute="top" id="A2N-0q-cQ7"/>
+                                        <constraint firstItem="Wd2-Cq-T19" firstAttribute="top" secondItem="IAV-OG-MIz" secondAttribute="top" id="DoX-um-dVk"/>
+                                        <constraint firstItem="UYt-fX-nul" firstAttribute="top" secondItem="AhG-7U-Du3" secondAttribute="top" id="JSn-wT-uVH"/>
+                                        <constraint firstItem="UYt-fX-nul" firstAttribute="leading" secondItem="AhG-7U-Du3" secondAttribute="leading" id="ORN-WF-ygM"/>
+                                        <constraint firstAttribute="bottom" secondItem="yG5-dT-TlU" secondAttribute="bottom" id="R2S-36-ctO"/>
+                                        <constraint firstItem="yG5-dT-TlU" firstAttribute="leading" secondItem="IAV-OG-MIz" secondAttribute="leading" id="Wko-fO-B4O"/>
+                                        <constraint firstItem="Wd2-Cq-T19" firstAttribute="leading" secondItem="AhG-7U-Du3" secondAttribute="trailing" constant="8" id="YVv-p9-LQ3"/>
+                                        <constraint firstAttribute="trailing" secondItem="Wd2-Cq-T19" secondAttribute="trailing" id="bM9-3k-m3d"/>
+                                        <constraint firstAttribute="trailing" secondItem="yG5-dT-TlU" secondAttribute="trailing" id="eSg-BW-g9G"/>
+                                        <constraint firstItem="AhG-7U-Du3" firstAttribute="leading" secondItem="IAV-OG-MIz" secondAttribute="leadingMargin" constant="2" id="lol-pn-fnY"/>
+                                        <constraint firstAttribute="bottom" secondItem="Wd2-Cq-T19" secondAttribute="bottom" id="mqr-ha-1a8"/>
+                                        <constraint firstItem="UYt-fX-nul" firstAttribute="trailing" secondItem="AhG-7U-Du3" secondAttribute="trailing" id="o5g-fv-Rtc"/>
+                                        <constraint firstItem="AhG-7U-Du3" firstAttribute="leading" secondItem="IAV-OG-MIz" secondAttribute="leading" constant="10" id="rTN-oU-d3a"/>
+                                        <constraint firstAttribute="bottom" secondItem="AhG-7U-Du3" secondAttribute="bottom" constant="10" id="rhg-pK-ShO"/>
                                     </constraints>
                                     <variation key="default">
                                         <mask key="constraints">
-                                            <exclude reference="3TO-b0-5wC"/>
-                                            <exclude reference="BPQ-gE-yFj"/>
+                                            <exclude reference="5XH-na-Mxy"/>
+                                            <exclude reference="lol-pn-fnY"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
                                 <animations/>
                                 <connections>
-                                    <outlet property="coverImageView" destination="foS-GZ-DEa" id="Ra2-2f-OR3"/>
-                                    <outlet property="profileImageView" destination="swN-e5-Uub" id="cRc-Ka-44n"/>
+                                    <outlet property="coverImageView" destination="yG5-dT-TlU" id="A5l-iW-Cye"/>
+                                    <outlet property="profileImageView" destination="AhG-7U-Du3" id="Lcv-bw-MMy"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="normalCell" id="p3P-zr-0sU">
@@ -1976,11 +1970,8 @@ and let us know your favorite genre.</string>
         <image name="default_artwork" width="60" height="60"/>
         <image name="default_cover_big" width="320" height="320"/>
         <image name="default_profile" width="80" height="80"/>
-<<<<<<< HEAD
         <image name="ic_back" width="24" height="24"/>
-=======
         <image name="ic_camera" width="24" height="24"/>
->>>>>>> profile-image
         <image name="ic_check" width="47" height="47"/>
         <image name="ic_dislike" width="25" height="25"/>
         <image name="ic_drop_small" width="40" height="40"/>

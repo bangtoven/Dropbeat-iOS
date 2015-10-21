@@ -241,6 +241,10 @@ class Track {
     }
     
     convenience init (channelTrack json: JSON) {
+        if json["channel_title"].stringValue == "EDM squirrel" {
+            print(json["title"].stringValue)
+        }
+        
         let id = json["video_id"].string ?? json["id"].stringValue
         self.init(
             id: id,

@@ -8,9 +8,6 @@
 
 import UIKit
 
-//\b(.*): (.*)
-//$1 <- map["$1"]
-
 enum UserType {
     case USER
     case ARTIST
@@ -148,17 +145,15 @@ enum FollowInfoType {
     case FOLLOWERS
 }
 
+// MARK: - User
+
 class User: BaseUser {
     var email: String
     var firstName: String
     var lastName: String
     var nickname: String {
-        get {
-            return self.name
-        }
-        set(n) {
-            self.name = n
-        }
+        get { return self.name }
+        set(n) { self.name = n }
     }
     var fbId: String?
     var num_tracks: Int
@@ -275,14 +270,7 @@ class User: BaseUser {
     }
 }
 
-class ChannelPlaylist {
-    var name:String
-    var uid: String
-    init (uid: String, name: String) {
-        self.name = name
-        self.uid = uid
-    }
-}
+// MARK: - Channel
 
 class Channel: BaseUser {
     var genre: [String]
@@ -290,21 +278,16 @@ class Channel: BaseUser {
     var isBookmarked:Bool
     var idx:Int?
     
-    init(id: String, name: String, thumbnail: String? = nil, resourceName: String) {
+    var facebookId: Int?
+
+    private init(id: String, name: String, thumbnail: String? = nil, resourceName: String) {
         self.playlists = [ChannelPlaylist]()
         self.genre = []
         self.isBookmarked = false
         super.init(userType: UserType.CHANNEL, id: id, name: name, image: thumbnail, coverImage: thumbnail, resourceName: resourceName)
     }
     
-    init(id: String, name: String, thumbnail: String? = nil, genre: [String], playlists: [ChannelPlaylist], resourceName: String) {
-        self.playlists = playlists
-        self.genre = genre
-        self.isBookmarked = false
-        super.init(userType: UserType.CHANNEL, id: id, name: name, image: thumbnail, coverImage: thumbnail, resourceName: resourceName)
-    }
-    
-    override convenience init(json: JSON) {
+    override init(json: JSON) {
         var detail = json["user"]
         
         let name = detail["channel_name"].stringValue
@@ -333,7 +316,13 @@ class Channel: BaseUser {
         let resourceName = detail["resource_name"].stringValue
         let id = detail["channel_id"].stringValue
         
-        self.init(id: id, name:name, thumbnail: thumbnail, genre:genreArray, playlists: playlists, resourceName: resourceName)
+        self.facebookId = Int(detail["channel_uid"].stringValue)
+        
+        self.playlists = playlists
+        self.genre = genreArray
+        self.isBookmarked = false
+        
+        super.init(userType: UserType.CHANNEL, id: id, name: name, image: thumbnail, coverImage: thumbnail, resourceName: resourceName)
     }
     
     static func parseChannelList(data: AnyObject) -> [Channel] {
@@ -360,6 +349,13 @@ class Channel: BaseUser {
     }
 }
 
+struct ChannelPlaylist {
+    var uid: String
+    var name:String
+}
+
+// MARK: - Artist
+
 class Artist: BaseUser {
     static let SECTION_PODCAST = "podcast"
     static let SECTION_LIVESET = "liveset"
@@ -370,17 +366,15 @@ class Artist: BaseUser {
     var sectionedTracks = [String:[Track]]()
     var events: [ArtistEvent] = []
     
-    init (id:String, name:String, image:String, resourceName:String) {
-        super.init(userType: UserType.ARTIST, id: id, name: name, image: image, coverImage: image, resourceName: resourceName)
-    }
-    
-    override convenience init (json: JSON) {
+    override init (json: JSON) {
         var detail = json["user"]
-        self.init(
-            id: detail["artist_id"].stringValue,
-            name: detail["artist_name"].stringValue,
-            image: detail["artist_image"].stringValue,
-            resourceName: detail["resource_name"].stringValue)
+
+        let id = detail["artist_id"].stringValue
+        let name = detail["artist_name"].stringValue
+        let image = detail["artist_image"].stringValue
+        let resourceName = detail["resource_name"].stringValue
+        
+        super.init(userType: UserType.ARTIST, id: id, name: name, image: image, coverImage: image, resourceName: resourceName)
         
         self.hasEvent = detail["has_event"].boolValue
         self.hasPodcast = detail["has_podcast"].boolValue

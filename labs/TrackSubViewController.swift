@@ -136,6 +136,7 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
             }
             
             for (_, item): (String, JSON) in json["items"] {
+                // TODO: 아무 트랙이나 옴.
                 let snippet = item["snippet"]
                 if snippet != JSON.null {
                     let track = Track(channelSnippet: snippet)

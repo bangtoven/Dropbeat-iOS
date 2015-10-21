@@ -4,7 +4,7 @@
 
 import Foundation
 
-let RELEASE = true
+let RELEASE = false
 
 extension ApiPath {
     static let hostV2 = RELEASE ? "http://dropbeat.net/api/v2/" : "http://spark.coroutine.io/api/v2/"
@@ -35,10 +35,6 @@ public class ApiPath {
     static let followUser = user + "follow/"
     static let unfollowUser = user + "unfollow/"
     
-    // Feed
-    static let feed = host + "feed/"
-    static let feedChannel = feed + "channel/"
-    
     // Playlist
     static let playlist = host + "playlist/"
     static let playlistList = playlist + "list/"
@@ -63,9 +59,6 @@ public class ApiPath {
     static let meta = host + "meta/"
     static let metaVersion = meta + "version/"
     static let metaKey = meta + "key/"
-    
-    // Bookmark
-    static let bookmark = host + "channelbookmark/"
     
     // Genre
     static let genre = host + "genre/"
@@ -118,7 +111,7 @@ public class CorePath {
     static let event = host + "event/"
     
     // core.channel
-    static let channel = host + "channel/"
+    static let channel = host + "v1/channel/"
     // core.channel playlist
     static let channelFeed = channel + "feed/"
     static let channelGproxy = channel + "gproxy/"

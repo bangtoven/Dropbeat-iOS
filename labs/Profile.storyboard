@@ -1512,8 +1512,80 @@ click below to discover your favorites</string>
                         <animations/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="image" rowHeight="140" id="4Ho-KC-gXx" customClass="EditImageTableViewCell" customModule="for_test" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="114" width="320" height="140"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4Ho-KC-gXx" id="aYz-CR-WMq">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="139"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_cover_big" translatesAutoresizingMaskIntoConstraints="NO" id="foS-GZ-DEa">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="139"/>
+                                            <animations/>
+                                        </imageView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PDU-P1-ZF4">
+                                            <rect key="frame" x="98" y="0.0" width="222" height="139"/>
+                                            <animations/>
+                                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="10"/>
+                                            <state key="normal" image="ic_camera"/>
+                                            <connections>
+                                                <action selector="changeCoverImage:" destination="moL-Bw-QiW" eventType="touchUpInside" id="GGS-fM-GM3"/>
+                                            </connections>
+                                        </button>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_profile" translatesAutoresizingMaskIntoConstraints="NO" id="swN-e5-Uub">
+                                            <rect key="frame" x="10" y="49" width="80" height="80"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="80" id="TPr-ug-d5b"/>
+                                                <constraint firstAttribute="width" constant="80" id="g96-xE-eOw"/>
+                                            </constraints>
+                                        </imageView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ls9-wb-uqp">
+                                            <rect key="frame" x="10" y="49" width="80" height="80"/>
+                                            <animations/>
+                                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="5"/>
+                                            <state key="normal" image="ic_camera"/>
+                                            <connections>
+                                                <action selector="changeProfileImage:" destination="moL-Bw-QiW" eventType="touchUpInside" id="CZd-Kf-B0U"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstAttribute="bottomMargin" secondItem="swN-e5-Uub" secondAttribute="bottom" constant="2" id="3TO-b0-5wC"/>
+                                        <constraint firstAttribute="trailing" secondItem="foS-GZ-DEa" secondAttribute="trailing" id="3rZ-cD-Rx4"/>
+                                        <constraint firstItem="ls9-wb-uqp" firstAttribute="leading" secondItem="swN-e5-Uub" secondAttribute="leading" id="48V-LI-bKb"/>
+                                        <constraint firstAttribute="bottom" secondItem="swN-e5-Uub" secondAttribute="bottom" constant="10" id="75e-hp-jhu"/>
+                                        <constraint firstItem="foS-GZ-DEa" firstAttribute="top" secondItem="aYz-CR-WMq" secondAttribute="top" id="8Co-lP-M98"/>
+                                        <constraint firstAttribute="bottom" secondItem="foS-GZ-DEa" secondAttribute="bottom" id="8UM-5f-rdr"/>
+                                        <constraint firstItem="swN-e5-Uub" firstAttribute="leading" secondItem="aYz-CR-WMq" secondAttribute="leadingMargin" constant="2" id="BPQ-gE-yFj"/>
+                                        <constraint firstItem="foS-GZ-DEa" firstAttribute="leading" secondItem="aYz-CR-WMq" secondAttribute="leading" id="Gdu-He-7xm"/>
+                                        <constraint firstItem="swN-e5-Uub" firstAttribute="leading" secondItem="aYz-CR-WMq" secondAttribute="leading" constant="10" id="Uhq-xE-FKd"/>
+                                        <constraint firstAttribute="bottom" secondItem="PDU-P1-ZF4" secondAttribute="bottom" id="Yua-nu-jad"/>
+                                        <constraint firstItem="ls9-wb-uqp" firstAttribute="trailing" secondItem="swN-e5-Uub" secondAttribute="trailing" id="h58-ar-wIw"/>
+                                        <constraint firstItem="ls9-wb-uqp" firstAttribute="top" secondItem="swN-e5-Uub" secondAttribute="top" id="oda-7H-pyP"/>
+                                        <constraint firstItem="ls9-wb-uqp" firstAttribute="bottom" secondItem="swN-e5-Uub" secondAttribute="bottom" id="pwt-Iy-aJt"/>
+                                        <constraint firstItem="PDU-P1-ZF4" firstAttribute="leading" secondItem="swN-e5-Uub" secondAttribute="trailing" constant="8" id="vui-mC-U5i"/>
+                                        <constraint firstAttribute="trailing" secondItem="PDU-P1-ZF4" secondAttribute="trailing" id="xe4-W9-lc6"/>
+                                        <constraint firstItem="PDU-P1-ZF4" firstAttribute="top" secondItem="aYz-CR-WMq" secondAttribute="top" id="yDd-sN-GS7"/>
+                                    </constraints>
+                                    <variation key="default">
+                                        <mask key="constraints">
+                                            <exclude reference="3TO-b0-5wC"/>
+                                            <exclude reference="BPQ-gE-yFj"/>
+                                        </mask>
+                                    </variation>
+                                </tableViewCellContentView>
+                                <animations/>
+                                <connections>
+                                    <outlet property="coverImageView" destination="foS-GZ-DEa" id="Ra2-2f-OR3"/>
+                                    <outlet property="profileImageView" destination="swN-e5-Uub" id="cRc-Ka-44n"/>
+                                </connections>
+                            </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="normalCell" id="p3P-zr-0sU">
-                                <rect key="frame" x="0.0" y="114" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="254" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p3P-zr-0sU" id="lpT-pY-biA">
                                     <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
@@ -1904,7 +1976,11 @@ and let us know your favorite genre.</string>
         <image name="default_artwork" width="60" height="60"/>
         <image name="default_cover_big" width="320" height="320"/>
         <image name="default_profile" width="80" height="80"/>
+<<<<<<< HEAD
         <image name="ic_back" width="24" height="24"/>
+=======
+        <image name="ic_camera" width="24" height="24"/>
+>>>>>>> profile-image
         <image name="ic_check" width="47" height="47"/>
         <image name="ic_dislike" width="25" height="25"/>
         <image name="ic_drop_small" width="40" height="40"/>

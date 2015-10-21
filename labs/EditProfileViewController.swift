@@ -9,15 +9,41 @@
 import UIKit
 
 enum ProfileDataType: Int {
-    case NICKNAME = 0
+    case IMAGE = 0
+    case NICKNAME
     case ABOUT_ME
     case FAVORITE_GENRE
 }
 
-class EditProfileViewController: UITableViewController, ACEExpandableTableViewDelegate, UIActionSheetDelegate {
+class EditImageTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var coverImageView: UIImageView!
+    @IBOutlet weak var profileImageView: UIImageView!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        self.coverImageView.clipsToBounds = true
+        
+        self.profileImageView.layer.cornerRadius = 10
+        self.profileImageView.layer.borderWidth = 2
+        self.profileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
+        self.profileImageView.clipsToBounds = true
+    }
+}
+
+class EditProfileViewController: UITableViewController, ACEExpandableTableViewDelegate, GKImagePickerDelegate {
 
     var nickname: String!
     var aboutMe: String!
+    var profileImage: UIImage?
+    var coverImage: UIImage?
+    var isProfileImageChanged = false {
+        didSet { self.saveBarButton.enabled = true }
+    }
+    var isCoverImageChanged = false {
+        didSet { self.saveBarButton.enabled = true }
+    }
     
     @IBOutlet weak var saveBarButton: UIBarButtonItem!
     
@@ -26,14 +52,71 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
         
         self.saveBarButton.enabled = false
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
         
         let account = Account.getCachedAccount()?.user
         self.nickname = account!.nickname
         self.aboutMe = account!.aboutMe
+        
+        let imageManager = SDWebImageManager.sharedManager()
+        if let profileImage = account!.image {
+            imageManager.downloadImageWithURL(NSURL(string: profileImage), options: .HighPriority, progress: nil) {
+                (image, error, cacheType, finished, imageURL) -> Void in
+                self.profileImage = image
+                self.tableView.reloadData()
+            }
+        }
+        if let coverImage = account!.coverImage {
+            imageManager.downloadImageWithURL(NSURL(string: coverImage), options: .HighPriority, progress: nil) {
+                (image, error, cacheType, finished, imageURL) -> Void in
+                self.coverImage = image
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    // MARK: - images
+    
+    private var imagePicker: GKImagePicker?
+    
+    func imagePicker(imagePicker: GKImagePicker!, pickedImage image: UIImage!) {
+        let resized = image.imageWithScaledToSize(imagePicker.cropSize)
+
+        switch resized.size.height {
+        case 600: // Profile
+            self.profileImage = resized
+            self.isProfileImageChanged = true
+        case 300: // Cover
+            self.coverImage = resized
+            self.isCoverImageChanged = true
+        default:
+            print("image picker size error: \(resized.size.height)")
+            break
+        }
+        
+        print(resized)
+        self.imagePicker = nil
+        self.tableView.reloadData()
+    }
+    
+    @IBAction func changeProfileImage(sender: UIButton) {
+        let imagePicker = GKImagePicker()
+        imagePicker.cropSize = CGSize(width: 600, height: 600)
+        imagePicker.delegate = self
+        imagePicker.useFrontCameraAsDefault = true
+     
+        imagePicker.showActionSheetOnViewController(self, onPopoverFromView: sender)
+        
+        self.imagePicker = imagePicker
+    }
+    
+    @IBAction func changeCoverImage(sender: UIButton) {
+        let imagePicker = GKImagePicker()
+        imagePicker.cropSize = CGSize(width: 1200, height: 300)
+        imagePicker.delegate = self
+        
+        imagePicker.showActionSheetOnViewController(self, onPopoverFromView: sender)
+
+        self.imagePicker = imagePicker
     }
     
     // MARK: - save changes
@@ -151,21 +234,19 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
         if self.nickname == account!.nickname && self.aboutMe == account!.aboutMe {
             self.navigationController?.popViewControllerAnimated(true)
         } else {
-            UIActionSheet(
+            let actionSheet = UIAlertController(
                 title: NSLocalizedString("Your changes will be lost if you don’t save them.", comment:""),
-                delegate: self,
-                cancelButtonTitle: NSLocalizedString("Cancel", comment:""),
-                destructiveButtonTitle: NSLocalizedString("Don't save", comment:"")
-            ).showFromBarButtonItem(sender, animated: true)
-        }
-    }
-    
-    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
-        switch buttonIndex {
-        case actionSheet.destructiveButtonIndex:
-            self.navigationController?.popViewControllerAnimated(true)
-        default:
-            break
+                message: nil,
+                preferredStyle: .ActionSheet)
+            actionSheet.addAction(UIAlertAction(
+                title: NSLocalizedString("Cancel", comment:""),
+                style: .Cancel, handler: nil))
+            actionSheet.addAction(UIAlertAction(
+                title: NSLocalizedString("Don't save", comment:""),
+                style: .Destructive, handler: { (action) -> Void in
+                self.navigationController?.popViewControllerAnimated(true)
+            }))
+            self.presentViewController(actionSheet, animated: true, completion: nil)
         }
     }
     
@@ -181,8 +262,8 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
             }
         case .ABOUT_ME:
             self.aboutMe = text
-        case .FAVORITE_GENRE:
-            break
+        default:
+            return
         }
         
         let account = Account.getCachedAccount()?.user
@@ -199,7 +280,7 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -208,6 +289,8 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch ProfileDataType(rawValue: section)! {
+        case .IMAGE:
+            return "Profile & cover images"
         case .NICKNAME:
             return "Nickname"
         case .ABOUT_ME:
@@ -216,16 +299,29 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
             return "Favorite genres"
         }
     }
+    
+    override func tableView(tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        if section == ProfileDataType.IMAGE.rawValue {
+            return "You can see full cover image @ dropbeat.net website."
+        } else {
+            return nil
+        }
+    }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         switch ProfileDataType(rawValue: indexPath.section)! {
+        case .IMAGE:
+            let cell = tableView.dequeueReusableCellWithIdentifier("image", forIndexPath: indexPath) as! EditImageTableViewCell
+            cell.profileImageView.image = self.profileImage ?? UIImage(named: "default_profile")
+            cell.coverImageView.image = self.coverImage ?? UIImage(named: "default_cover_big")
+            return cell
         case .NICKNAME:
-            let cell = tableView.expandableTextCellWithId("cellId")
+            let cell = tableView.expandableTextCellWithId("Nickname")
             cell.textView.placeholder = "Nickname"
             cell.text = self.nickname
             return cell
         case .ABOUT_ME:
-            let cell = tableView.expandableTextCellWithId("cellId")
+            let cell = tableView.expandableTextCellWithId("AboutMe")
             cell.textView.placeholder = "About me"
             cell.text = self.aboutMe
             return cell
@@ -242,9 +338,12 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
     var aboutMeCellHeight: CGFloat = 50
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if indexPath.section == ProfileDataType.ABOUT_ME.rawValue {
+        switch ProfileDataType(rawValue: indexPath.section)! {
+        case .IMAGE:
+            return self.view.bounds.width * 3/8
+        case .ABOUT_ME:
             return max(self.aboutMeCellHeight, 50)
-        } else {
+        default:
             return 50
         }
     }

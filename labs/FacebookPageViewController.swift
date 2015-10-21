@@ -27,6 +27,7 @@ extension NSURL {
 class FacebookPageViewController: UIViewController, UIWebViewDelegate {
 
     @IBOutlet weak var webView: UIWebView!
+    private var rootUrlFixed = false
     var url: NSURL!
     
     override func viewDidLoad() {
@@ -34,16 +35,15 @@ class FacebookPageViewController: UIViewController, UIWebViewDelegate {
         
         self.title = " "
         
-        self.webView.hidden = true
         self.webView.loadRequest(NSURLRequest(URL: self.url))
         self.webView.delegate = self
     }
     
     @IBAction func back(sender: UIBarButtonItem) {
-        if self.webView.canGoBack {
-            self.webView.goBack()
-        } else {
+        if self.url.isSamePage(webView.request?.URL) {
             self.navigationController?.popViewControllerAnimated(true)
+        } else {
+            self.webView.goBack()
         }
     }
 
@@ -59,15 +59,14 @@ class FacebookPageViewController: UIViewController, UIWebViewDelegate {
         if self.url.isSamePage(request.URL) && (self.url.isSamePage(webView.request?.URL) == false) {
             print("Reload root page.")
             self.didUpdateContentOffset = false
-        }
-        
-        let contentOffset = Int(webView.stringByEvaluatingJavaScriptFromString("window.scrollY") ?? "0")!
-        if contentOffset != 0 {
-            self.lastContentOffset = contentOffset
-        }
-        
-        if request.URL?.scheme == "dropbeat" {
-            print("loading!!!")
+        } else if (self.url.isSamePage(request.URL) == false) && self.url.isSamePage(webView.request?.URL) {
+            let contentOffset = Int(webView.stringByEvaluatingJavaScriptFromString("window.scrollY") ?? "0")!
+            if contentOffset != 0 {
+                print("Save content offset: \(contentOffset)")
+                self.lastContentOffset = contentOffset
+            }
+        } else if request.URL?.scheme == "dropbeat" {
+            print("Load app link.")
             self.loadingAppLink = true
         }
         return true
@@ -79,6 +78,13 @@ class FacebookPageViewController: UIViewController, UIWebViewDelegate {
     private var updateContentOffsetTryCount = 0
     
     func webViewDidFinishLoad(webView: UIWebView) {
+        if let url = webView.request?.URL
+            where self.rootUrlFixed == false && url.pathComponents!.count == 2 {
+                print("Root url: \(url)")
+                self.url = url
+                self.rootUrlFixed = true
+        }
+        
         self.title = webView.stringByEvaluatingJavaScriptFromString("document.title")
         
         if self.didUpdateContentOffset != true {
@@ -132,7 +138,6 @@ class FacebookPageViewController: UIViewController, UIWebViewDelegate {
             }
         }
         
-        self.webView.hidden = false
         self.updateContentOffsetTimer?.invalidate()
         self.updateContentOffsetTimer = nil
         self.updateContentOffsetTryCount = 0

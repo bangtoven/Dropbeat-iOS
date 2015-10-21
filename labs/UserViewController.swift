@@ -226,6 +226,15 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 
                 self.viewControllers = subViewArr
             }
+            
+            if let facebookId = channel.facebookId {
+                print("This is facebook page: \(facebookId)")
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(
+                    image: UIImage(named: "ic_facebook_line_small"),
+                    style: .Plain,
+                    target: self,
+                    action: "showFacebookPage")
+            }
         default:
             assertionFailure()
         }
@@ -267,6 +276,19 @@ class UserViewController: AXStretchableHeaderTabViewController {
                     showMoreButton.hidden = false
                 }
             }
+        }
+    }
+    
+    func showFacebookPage() {
+        self.performSegueWithIdentifier("showFacebookPage", sender: self)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let channel = self.baseUser as? Channel,
+            facebookId = channel.facebookId
+            where segue.identifier == "showFacebookPage" {
+                let facebookPageVC = segue.destinationViewController as! FacebookPageViewController
+                facebookPageVC.url = NSURL(string: "https://www.facebook.com/\(facebookId)")
         }
     }
     

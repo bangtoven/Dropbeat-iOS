@@ -116,17 +116,6 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
         }
     }
     
-    @IBAction func channelSelectAction(sender: UIButton) {
-        let indexPath = self.trackTableView.indexPathOfCellContains(sender)
-        let track = self.tracks[indexPath!.row]
-        
-        if track.user?.resourceName == nil {
-            self.performSegueWithIdentifier("showChannelInfo", sender: sender)
-        } else {
-            self.performSegueWithIdentifier("showFacebookPage", sender: sender)
-        }
-    }
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         switch segue.identifier! {
         case "PlaylistSelectSegue":
@@ -148,9 +137,6 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             let uvc = segue.destinationViewController as! UserViewController
             uvc.resource = track.user?.resourceName
             uvc.passedImage = sourceImageView.image
-        case "showFacebookPage":
-            let facebookPageVC = segue.destinationViewController as! FacebookPageViewController
-            facebookPageVC.url = NSURL(string: "https://m.facebook.com/edmdaramzi")
         default:
             break
         }
@@ -205,6 +191,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             
             var particals = [Track]()
             for (_, s): (String, JSON) in respObj["data"] {
+                // TODO: 아무 트랙이나 옴.
                 let track = Track(channelTrack: s)
                 particals.append(track)
             }

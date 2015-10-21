@@ -200,7 +200,7 @@
                                                     <rect key="frame" x="100" y="10" width="180" height="32"/>
                                                     <animations/>
                                                     <connections>
-                                                        <action selector="channelSelectAction:" destination="U5L-Wr-xF8" eventType="touchUpInside" id="bG2-KQ-h13"/>
+                                                        <segue destination="yPo-Jx-H1t" kind="custom" identifier="showChannelInfo" customClass="LinkedImageTransitionSegue" id="nyU-8a-lfg"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -276,8 +276,6 @@
                         <outlet property="loadMoreSpinnerWrapper" destination="cWQ-M4-hL4" id="e2f-i4-dtN"/>
                         <outlet property="trackTableView" destination="PQQ-L1-16Z" id="Jbc-Tm-4NL"/>
                         <segue destination="Q1D-RM-qCq" kind="custom" identifier="PlaylistSelectSegue" customClass="RBStoryboardModalSegue" id="qbT-Vd-lNZ"/>
-                        <segue destination="yPo-Jx-H1t" kind="custom" identifier="showChannelInfo" customClass="LinkedImageTransitionSegue" id="yI8-OC-X7e"/>
-                        <segue destination="6XE-2R-EzT" kind="show" identifier="showFacebookPage" id="wc9-JI-XO5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fze-0m-cNL" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -370,56 +368,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FVj-Iz-Mto" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1463" y="115"/>
-        </scene>
-        <!--Title-->
-        <scene sceneID="ATc-Fj-jBf">
-            <objects>
-                <viewController id="6XE-2R-EzT" customClass="FacebookPageViewController" customModule="labs" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="maq-Sk-O6B"/>
-                        <viewControllerLayoutGuide type="bottom" id="5pU-W2-4wd"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="BnQ-tg-d1c">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LlT-th-AHo">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
-                                <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </webView>
-                        </subviews>
-                        <animations/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="5pU-W2-4wd" firstAttribute="top" secondItem="LlT-th-AHo" secondAttribute="bottom" id="D6p-NP-t7X"/>
-                            <constraint firstItem="LlT-th-AHo" firstAttribute="leading" secondItem="BnQ-tg-d1c" secondAttribute="leading" id="RLN-M2-NuO"/>
-                            <constraint firstItem="LlT-th-AHo" firstAttribute="top" secondItem="maq-Sk-O6B" secondAttribute="bottom" id="aes-K3-NQ3"/>
-                            <constraint firstAttribute="trailing" secondItem="LlT-th-AHo" secondAttribute="trailing" id="z4O-cd-xeD"/>
-                        </constraints>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <navigationItem key="navigationItem" title="Title" id="lho-BK-BiX">
-                        <barButtonItem key="leftBarButtonItem" image="ic_back" id="HOu-7C-67F">
-                            <connections>
-                                <action selector="back:" destination="6XE-2R-EzT" id="HmD-tx-6jZ"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="webView" destination="LlT-th-AHo" id="aNa-jj-GvK"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="8Jn-mY-nzC" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1463" y="638"/>
+            <point key="canvasLocation" x="1415" y="375"/>
         </scene>
     </scenes>
     <resources>
         <image name="default_artwork" width="60" height="60"/>
         <image name="default_profile" width="80" height="80"/>
-        <image name="ic_back" width="24" height="24"/>
         <image name="ic_header_dotdotdot" width="22" height="22"/>
         <image name="ic_playing_indicator" width="104" height="104"/>
     </resources>

@@ -366,7 +366,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     </connections>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-2287" y="2071"/>
+            <point key="canvasLocation" x="-2287" y="2211"/>
         </scene>
         <!--User View Controller-->
         <scene sceneID="10W-2V-DkZ">
@@ -404,6 +404,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <connections>
                         <outlet property="containerView" destination="FKZ-Gf-yfe" id="RYA-t4-tdn"/>
                         <outlet property="headerView" destination="0ib-J0-KQD" id="4RD-Io-Gto"/>
+                        <segue destination="LSV-IW-ZQs" kind="show" identifier="showFacebookPage" id="7cn-fT-NE2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aCV-kH-mc3" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -633,7 +634,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     </connections>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-2287" y="1389"/>
+            <point key="canvasLocation" x="-2705" y="1248"/>
         </scene>
         <!--Track Sub View Controller-->
         <scene sceneID="uTn-Zq-McQ">
@@ -820,7 +821,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kgV-ih-hPd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1925" y="1130"/>
+            <point key="canvasLocation" x="-3123" y="1498"/>
         </scene>
         <!--Storyboard Link-->
         <scene sceneID="O5x-k0-Rmj">
@@ -854,7 +855,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rGu-rB-Fsz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1539" y="1263"/>
+            <point key="canvasLocation" x="-2919" y="1717"/>
         </scene>
         <!--Channel Sub View Controller-->
         <scene sceneID="bOq-ky-gkS">
@@ -1144,7 +1145,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xFM-ei-Azc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1925" y="1389"/>
+            <point key="canvasLocation" x="-2705" y="1498"/>
         </scene>
         <!--Follow Info Table View Controller-->
         <scene sceneID="z5Z-qg-Lbv">
@@ -1251,7 +1252,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p5b-Xv-e8o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2705" y="1389"/>
+            <point key="canvasLocation" x="-3123" y="1248"/>
         </scene>
         <!--Favorite Genres-->
         <scene sceneID="7kG-Tq-P2k">
@@ -1832,7 +1833,7 @@ and let us know your favorite genre.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lga-ln-Ocf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2287" y="2440"/>
+            <point key="canvasLocation" x="-2287" y="2472"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ivd-WF-wbI">
@@ -1854,11 +1855,56 @@ and let us know your favorite genre.</string>
             </objects>
             <point key="canvasLocation" x="-1380" y="2071"/>
         </scene>
+        <!--Facebook Page-->
+        <scene sceneID="UYO-E8-i3f">
+            <objects>
+                <viewController id="LSV-IW-ZQs" customClass="FacebookPageViewController" customModule="labs" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jRl-1f-qsO"/>
+                        <viewControllerLayoutGuide type="bottom" id="N17-mK-Aec"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bm3-7a-1gU">
+                        <rect key="frame" x="0.0" y="64" width="320" height="136"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wgI-8T-5OA">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="136"/>
+                                <animations/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </webView>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="wgI-8T-5OA" secondAttribute="trailing" id="Nnf-KE-RDc"/>
+                            <constraint firstItem="wgI-8T-5OA" firstAttribute="top" secondItem="jRl-1f-qsO" secondAttribute="bottom" id="QSd-SQ-0I8"/>
+                            <constraint firstItem="wgI-8T-5OA" firstAttribute="leading" secondItem="bm3-7a-1gU" secondAttribute="leading" id="q6N-6a-vN1"/>
+                            <constraint firstItem="N17-mK-Aec" firstAttribute="top" secondItem="wgI-8T-5OA" secondAttribute="bottom" id="rY5-rT-Eja"/>
+                        </constraints>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <navigationItem key="navigationItem" title="Facebook Page" id="e55-ac-p1d">
+                        <barButtonItem key="leftBarButtonItem" image="ic_back" id="Q2e-Mi-G53">
+                            <connections>
+                                <action selector="back:" destination="LSV-IW-ZQs" id="Yi0-5o-02E"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <connections>
+                        <outlet property="webView" destination="wgI-8T-5OA" id="vZe-bk-9Wr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="pJv-XH-E2b" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2287" y="1248"/>
+        </scene>
     </scenes>
     <resources>
         <image name="default_artwork" width="60" height="60"/>
         <image name="default_cover_big" width="320" height="320"/>
         <image name="default_profile" width="80" height="80"/>
+        <image name="ic_back" width="24" height="24"/>
         <image name="ic_check" width="47" height="47"/>
         <image name="ic_dislike" width="25" height="25"/>
         <image name="ic_drop_small" width="40" height="40"/>

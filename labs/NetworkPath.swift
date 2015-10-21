@@ -42,14 +42,17 @@ public class ApiPath {
     static let userChangeEmail = user + "change_email/"
     static let userEmailSignup = user + "email_signup/"
     static let userEmailSignin = user + "email_signin/"
-    static let userChangeNickname = user + "change_nickname/"
-    static let userChangeAboutMe = user + "change_desc/"
     static let userLikeList = user + "like/"
     static let userFollowers = user + "followers/"
     static let userFollowing = user + "following/"
     
     static let followUser = user + "follow/"
     static let unfollowUser = user + "unfollow/"
+    
+    static let userChangeNickname = user + "change_nickname/"
+    static let userChangeAboutMe = user + "change_desc/"
+    static let userChangeProfileImage = user + "change_profile_img/"
+    static let userChangeCoverImage = user + "change_profile_cover_img/"
     
     // Playlist
     static let playlist = hostV1 + "playlist/"
@@ -75,6 +78,7 @@ public class ApiPath {
     static let meta = hostV1 + "meta/"
     static let metaVersion = meta + "version/"
     static let metaKey = meta + "key/"
+    static let metaUploadHost = meta + "upload_host/"
     
     // Genre
     static let genre = hostV1 + "genre/"

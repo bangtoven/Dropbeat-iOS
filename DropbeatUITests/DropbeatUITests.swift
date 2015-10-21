@@ -31,10 +31,18 @@ class DropbeatUITests: XCTestCase {
     func testExample() {
         
         let app = XCUIApplication()
-        app.tabBars.childrenMatchingType(.Button).elementBoundByIndex(4).tap()
+        app.navigationBars["Profile"].buttons["Edit"].tap()
+        
+        let tablesQuery = app.tables
+        tablesQuery.cells.containingType(.Button, identifier:"ic camera").childrenMatchingType(.Button).matchingIdentifier("ic camera").elementBoundByIndex(0).tap()
+        app.sheets.collectionViews.buttons["Phto Library"].tap()
+        tablesQuery.buttons["Moments"].tap()
+        app.collectionViews.cells["Photo, Landscape, March 12, 2011, 4:17 PM"].tap()
+        app.buttons["Use"].tap()
+        app.navigationBars["Edit Profile"].buttons["Save"].tap()
+        
         app.navigationBars["Profile"].buttons["Edit"].tap()
         app.navigationBars["Edit Profile"].buttons["Cancel"].tap()
-        
     }
     
 }

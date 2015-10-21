@@ -1529,6 +1529,9 @@ click below to discover your favorites</string>
                                             <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="10"/>
                                             <state key="normal" image="ic_camera"/>
+                                            <connections>
+                                                <action selector="changeCoverImage:" destination="moL-Bw-QiW" eventType="touchUpInside" id="d2g-Nl-6ca"/>
+                                            </connections>
                                         </button>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_profile" translatesAutoresizingMaskIntoConstraints="NO" id="AhG-7U-Du3">
                                             <rect key="frame" x="10" y="49" width="80" height="80"/>
@@ -1544,6 +1547,9 @@ click below to discover your favorites</string>
                                             <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                             <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="5"/>
                                             <state key="normal" image="ic_camera"/>
+                                            <connections>
+                                                <action selector="changeProfileImage:" destination="moL-Bw-QiW" eventType="touchUpInside" id="rga-hJ-pYi"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <animations/>

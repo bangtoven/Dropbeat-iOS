@@ -63,6 +63,12 @@
 		731173381BD5776B00F17A31 /* FacebookPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731173371BD5776B00F17A31 /* FacebookPageViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		731D92721BAEE4FB0068742A /* FollowInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731D92711BAEE4FB0068742A /* FollowInfoTableViewController.swift */; };
 		731EFBF41BD7DEBD00DFF4E0 /* DropbeatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731EFBF31BD7DEBD00DFF4E0 /* DropbeatUITests.swift */; };
+		731EFC081BD7E56200DFF4E0 /* GKCropBorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731EFBFD1BD7E56200DFF4E0 /* GKCropBorderView.m */; settings = {ASSET_TAGS = (); }; };
+		731EFC091BD7E56200DFF4E0 /* GKImageCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731EFBFF1BD7E56200DFF4E0 /* GKImageCropOverlayView.m */; settings = {ASSET_TAGS = (); }; };
+		731EFC0A1BD7E56200DFF4E0 /* GKImageCropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731EFC011BD7E56200DFF4E0 /* GKImageCropView.m */; settings = {ASSET_TAGS = (); }; };
+		731EFC0B1BD7E56200DFF4E0 /* GKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 731EFC031BD7E56200DFF4E0 /* GKImageCropViewController.m */; settings = {ASSET_TAGS = (); }; };
+		731EFC0C1BD7E56200DFF4E0 /* GKImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 731EFC051BD7E56200DFF4E0 /* GKImagePicker.m */; settings = {ASSET_TAGS = (); }; };
+		731EFC0D1BD7E56200DFF4E0 /* GKResizeableCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731EFC071BD7E56200DFF4E0 /* GKResizeableCropOverlayView.m */; settings = {ASSET_TAGS = (); }; };
 		732717021BAC8632003E0B68 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717011BAC8632003E0B68 /* SwiftyJSON.swift */; };
 		732717101BAC8649003E0B68 /* RBStoryboardLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 732717041BAC8649003E0B68 /* RBStoryboardLink.m */; };
 		732717111BAC8649003E0B68 /* RBStoryboardModalSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 732717071BAC8649003E0B68 /* RBStoryboardModalSegue.m */; };
@@ -216,6 +222,8 @@
 		737FAB191BCAAFC700C1347B /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 737FAB181BCAAFC700C1347B /* Launch.storyboard */; settings = {ASSET_TAGS = (); }; };
 		737FAB1A1BCAAFFA00C1347B /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 737FAB181BCAAFC700C1347B /* Launch.storyboard */; settings = {ASSET_TAGS = (); }; };
 		738646171BA7631D00C21650 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738646161BA7631D00C21650 /* GradientView.m */; };
+		739B00AB1BD7ED7600EF126F /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739B00AA1BD7ED7600EF126F /* ImageUploader.swift */; settings = {ASSET_TAGS = (); }; };
+		739B00AC1BD7ED7900EF126F /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739B00AA1BD7ED7600EF126F /* ImageUploader.swift */; settings = {ASSET_TAGS = (); }; };
 		739C8F5D1BB340E200BC9EB7 /* Explore.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 739C8F5C1BB340E200BC9EB7 /* Explore.storyboard */; settings = {ASSET_TAGS = (); }; };
 		739C8F5F1BB340FE00BC9EB7 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		73A3559F1BCD97EB0002C00D /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A3559E1BCD97EB0002C00D /* TutorialViewController.swift */; settings = {ASSET_TAGS = (); }; };
@@ -454,6 +462,18 @@
 		731EFBF11BD7DEBD00DFF4E0 /* DropbeatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DropbeatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		731EFBF31BD7DEBD00DFF4E0 /* DropbeatUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropbeatUITests.swift; sourceTree = "<group>"; };
 		731EFBF51BD7DEBD00DFF4E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		731EFBFC1BD7E56200DFF4E0 /* GKCropBorderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKCropBorderView.h; sourceTree = "<group>"; };
+		731EFBFD1BD7E56200DFF4E0 /* GKCropBorderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKCropBorderView.m; sourceTree = "<group>"; };
+		731EFBFE1BD7E56200DFF4E0 /* GKImageCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKImageCropOverlayView.h; sourceTree = "<group>"; };
+		731EFBFF1BD7E56200DFF4E0 /* GKImageCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImageCropOverlayView.m; sourceTree = "<group>"; };
+		731EFC001BD7E56200DFF4E0 /* GKImageCropView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKImageCropView.h; sourceTree = "<group>"; };
+		731EFC011BD7E56200DFF4E0 /* GKImageCropView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImageCropView.m; sourceTree = "<group>"; };
+		731EFC021BD7E56200DFF4E0 /* GKImageCropViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKImageCropViewController.h; sourceTree = "<group>"; };
+		731EFC031BD7E56200DFF4E0 /* GKImageCropViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImageCropViewController.m; sourceTree = "<group>"; };
+		731EFC041BD7E56200DFF4E0 /* GKImagePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKImagePicker.h; sourceTree = "<group>"; };
+		731EFC051BD7E56200DFF4E0 /* GKImagePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKImagePicker.m; sourceTree = "<group>"; };
+		731EFC061BD7E56200DFF4E0 /* GKResizeableCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKResizeableCropOverlayView.h; sourceTree = "<group>"; };
+		731EFC071BD7E56200DFF4E0 /* GKResizeableCropOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKResizeableCropOverlayView.m; sourceTree = "<group>"; };
 		732717011BAC8632003E0B68 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = Libraries/SwiftyJSON.swift; sourceTree = SOURCE_ROOT; };
 		732717031BAC8649003E0B68 /* RBStoryboardLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RBStoryboardLink.h; path = Libraries/RBStoryboard/RBStoryboardLink.h; sourceTree = SOURCE_ROOT; };
 		732717041BAC8649003E0B68 /* RBStoryboardLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RBStoryboardLink.m; path = Libraries/RBStoryboard/RBStoryboardLink.m; sourceTree = SOURCE_ROOT; };
@@ -518,6 +538,7 @@
 		737FAB181BCAAFC700C1347B /* Launch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
 		738646151BA7631D00C21650 /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
 		738646161BA7631D00C21650 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
+		739B00AA1BD7ED7600EF126F /* ImageUploader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
 		739C8F5C1BB340E200BC9EB7 /* Explore.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Explore.storyboard; sourceTree = "<group>"; };
 		739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		73A3559E1BCD97EB0002C00D /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
@@ -811,6 +832,26 @@
 			path = DropbeatUITests;
 			sourceTree = "<group>";
 		};
+		731EFBFB1BD7E56200DFF4E0 /* GKImagePicker */ = {
+			isa = PBXGroup;
+			children = (
+				731EFBFC1BD7E56200DFF4E0 /* GKCropBorderView.h */,
+				731EFBFD1BD7E56200DFF4E0 /* GKCropBorderView.m */,
+				731EFBFE1BD7E56200DFF4E0 /* GKImageCropOverlayView.h */,
+				731EFBFF1BD7E56200DFF4E0 /* GKImageCropOverlayView.m */,
+				731EFC001BD7E56200DFF4E0 /* GKImageCropView.h */,
+				731EFC011BD7E56200DFF4E0 /* GKImageCropView.m */,
+				731EFC021BD7E56200DFF4E0 /* GKImageCropViewController.h */,
+				731EFC031BD7E56200DFF4E0 /* GKImageCropViewController.m */,
+				731EFC041BD7E56200DFF4E0 /* GKImagePicker.h */,
+				731EFC051BD7E56200DFF4E0 /* GKImagePicker.m */,
+				731EFC061BD7E56200DFF4E0 /* GKResizeableCropOverlayView.h */,
+				731EFC071BD7E56200DFF4E0 /* GKResizeableCropOverlayView.m */,
+			);
+			name = GKImagePicker;
+			path = Libraries/GKImagePicker;
+			sourceTree = SOURCE_ROOT;
+		};
 		732717231BAC8691003E0B68 /* UINavigationBar+Awesome */ = {
 			isa = PBXGroup;
 			children = (
@@ -867,6 +908,7 @@
 				734C7D621BB47D470071678C /* Playlist.swift */,
 				734C7D641BB47D750071678C /* Genre.swift */,
 				734C7D5A1BB47ACD0071678C /* OldModels.swift */,
+				739B00AA1BD7ED7600EF126F /* ImageUploader.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -877,6 +919,7 @@
 				732717011BAC8632003E0B68 /* SwiftyJSON.swift */,
 				732717421BAC8721003E0B68 /* ScrollPager.swift */,
 				73FC90CC1BAE5C9000284B8A /* KeychainItemWrapper.swift */,
+				731EFBFB1BD7E56200DFF4E0 /* GKImagePicker */,
 				73A355911BCD973B0002C00D /* EAIntroPage */,
 				73AECBF31BC6B47D0040F0AF /* XCDYoutubeKit */,
 				73AECBA71BC5CE350040F0AF /* StreamingKit */,
@@ -1464,6 +1507,7 @@
 				73A355A81BCDBAC90002C00D /* EAIntroPage.m in Sources */,
 				73A355A01BCD97EB0002C00D /* TutorialViewController.swift in Sources */,
 				73AECB9A1BC5CE2F0040F0AF /* STKAutoRecoveringHTTPDataSource.m in Sources */,
+				739B00AC1BD7ED7900EF126F /* ImageUploader.swift in Sources */,
 				73AECBA61BC5CE2F0040F0AF /* STKQueueEntry.m in Sources */,
 				734C7DB61BB4C1DA0071678C /* AXTabBarItemButton.m in Sources */,
 				734C7DB81BB4C1DA0071678C /* Extension.swift in Sources */,
@@ -1570,6 +1614,7 @@
 				FC766BF51B051AA4006FD4FB /* NetworkRequests.swift in Sources */,
 				734C7D651BB47D750071678C /* Genre.swift in Sources */,
 				734C7D5B1BB47ACD0071678C /* OldModels.swift in Sources */,
+				731EFC0A1BD7E56200DFF4E0 /* GKImageCropView.m in Sources */,
 				731173381BD5776B00F17A31 /* FacebookPageViewController.swift in Sources */,
 				732717431BAC8721003E0B68 /* ScrollPager.swift in Sources */,
 				732717151BAC8649003E0B68 /* UIViewController+RBStoryboardLink.m in Sources */,
@@ -1589,9 +1634,12 @@
 				73A355A71BCDBAC90002C00D /* EAIntroPage.m in Sources */,
 				73A3559F1BCD97EB0002C00D /* TutorialViewController.swift in Sources */,
 				73AECB991BC5CE2F0040F0AF /* STKAutoRecoveringHTTPDataSource.m in Sources */,
+				739B00AB1BD7ED7600EF126F /* ImageUploader.swift in Sources */,
 				73AECBA51BC5CE2F0040F0AF /* STKQueueEntry.m in Sources */,
 				7327173F1BAC86BB003E0B68 /* AXTabBarItemButton.m in Sources */,
 				587DCD131B6D91F900AF792D /* Extension.swift in Sources */,
+				731EFC081BD7E56200DFF4E0 /* GKCropBorderView.m in Sources */,
+				731EFC0D1BD7E56200DFF4E0 /* GKResizeableCropOverlayView.m in Sources */,
 				582AFA1E1B09200B001ADEED /* AccountViewControllers.swift in Sources */,
 				585BAD111B85ED9900FE137A /* DTTimePeriodCollection.m in Sources */,
 				587B5BD81B6AD2B6009BD05D /* FeedTableViewCell.swift in Sources */,
@@ -1599,8 +1647,10 @@
 				734C7D5D1BB47CBE0071678C /* Account.swift in Sources */,
 				73A661961BC6EC5F00DD1179 /* PlayerViewController.swift in Sources */,
 				588693A31B13B51300566124 /* UIImage+GIF.m in Sources */,
+				731EFC0B1BD7E56200DFF4E0 /* GKImageCropViewController.m in Sources */,
 				73A355A91BCDBAC90002C00D /* EAIntroView.m in Sources */,
 				73AECC071BC6B47D0040F0AF /* XCDYouTubeVideo.m in Sources */,
+				731EFC091BD7E56200DFF4E0 /* GKImageCropOverlayView.m in Sources */,
 				73FC90C81BAE4AFA00284B8A /* ServerTrustPolicy.swift in Sources */,
 				73AECB951BC5CE2F0040F0AF /* NSMutableArray+STKAudioPlayer.m in Sources */,
 				589413621B83C3F700395AFA /* TPKeyboardAvoidingTableView.m in Sources */,
@@ -1612,6 +1662,7 @@
 				588693A41B13B51300566124 /* UIImage+MultiFormat.m in Sources */,
 				5886939C1B13B51300566124 /* SDWebImageCompat.m in Sources */,
 				732717111BAC8649003E0B68 /* RBStoryboardModalSegue.m in Sources */,
+				731EFC0C1BD7E56200DFF4E0 /* GKImagePicker.m in Sources */,
 				73AECBA31BC5CE2F0040F0AF /* STKLocalFileDataSource.m in Sources */,
 				7327173E1BAC86BB003E0B68 /* AXTabBar.m in Sources */,
 				585BAD0F1B85ED9900FE137A /* DTTimePeriod.m in Sources */,
@@ -1951,6 +2002,7 @@
 				731EFBF91BD7DEBD00DFF4E0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		734C7DFC1BB4C1DA0071678C /* Build configuration list for PBXNativeTarget "for test" */ = {
 			isa = XCConfigurationList;

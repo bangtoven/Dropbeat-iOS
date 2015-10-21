@@ -9,6 +9,8 @@
 #ifndef labs_labs_Bridging_Header_h
 #define labs_labs_Bridging_Header_h
 
+#import "GKImagePicker.h"
+
 #import "EAIntroPage.h"
 #import "EAIntroView.h"
 

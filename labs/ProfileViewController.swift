@@ -82,14 +82,16 @@ class ProfileViewController: UserViewController {
     
     func updateLikeView() {
         print("like updated")
-        if let likesSubView = self.viewControllers[self.viewControllers.count-3] as? TrackSubViewController {
+        if let viewControllers = self.viewControllers,
+            likesSubView = viewControllers[viewControllers.count-3] as? TrackSubViewController {
             likesSubView.tracks = []
             likesSubView.subViewWillAppear()
         }
     }
     
     func updateFollowingView() {
-        if let followingView = self.viewControllers[self.viewControllers.count-1] as? FollowInfoTableViewController {
+        if let viewControllers = self.viewControllers,
+            followingView = viewControllers[viewControllers.count-1] as? FollowInfoTableViewController {
             followingView.userArray = []
             followingView.subViewWillAppear()
         }

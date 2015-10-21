@@ -137,12 +137,56 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
             self.submitNickname()
         } else if self.aboutMe != account!.aboutMe {
             self.submitAboutMe()
+        } else if self.isProfileImageChanged {
+            self.updateImage(.Profile)
+        } else if self.isCoverImageChanged {
+            self.updateImage(.Cover)
         } else {
             self.performSegueWithIdentifier("unwindFromEditProfile", sender: nil)
         }
     }
     
     private var progressHud: MBProgressHUD!
+    
+    func updateImage(type: ImageType) {
+        
+        self.isSubmitting = true
+        self.progressHud = ViewUtils.showProgress(self, message: "Uploading image")
+
+        let image = type == .Profile ? self.profileImage : self.coverImage
+        ImageUploader.uploadImage(image!, type: type) {
+            (url, error) -> Void in
+            if url == nil {
+                self.progressHud.hide(true)
+                self.isSubmitting = false
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Failed to upload image", comment:""),
+                    message: error!.localizedDescription)
+                return
+            }
+            
+            self.progressHud.mode = MBProgressHUDMode.CustomView
+            self.progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark"))
+            self.progressHud.hide(true, afterDelay: 1)
+            self.isSubmitting = false
+            let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)));
+            dispatch_after(popTime, dispatch_get_main_queue(), {() -> Void in
+                
+                let account = Account.getCachedAccount()?.user
+                switch type {
+                case .Profile:
+                    self.isProfileImageChanged = false
+                    account!.image = url
+                case .Cover:
+                    self.isCoverImageChanged = false
+                    account!.coverImage = url
+                }
+                
+                self.syncProfileData()
+                
+            })
+        }
+    }
     
     func submitNickname() {
         let newNickname = self.nickname

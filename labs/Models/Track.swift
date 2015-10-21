@@ -82,6 +82,33 @@ extension UIImageView {
                     }
                 }
             }
+        case .SOUNDCLOUD:
+            if let lowUrlString = track.thumbnailUrl {
+                let highUrlString = lowUrlString.stringByReplacingOccurrencesOfString("large.jpg", withString: "t500x500.jpg")
+                
+                if needsHighDef == false {
+                    self.sd_setImageWithURL(NSURL(string: lowUrlString), placeholderImage: placeHolder)
+                }
+                else if let notNilHasHigh = track.hasHighDefThumbnail {
+                    let urlString = notNilHasHigh ? highUrlString : lowUrlString
+                    self.sd_setImageWithURL(NSURL(string: urlString), placeholderImage: placeHolder)
+                }
+                else {
+                    self.sd_setImageWithURL(NSURL(string: highUrlString), placeholderImage: placeHolder) {
+                        (image, error, cacheType, imageURL) -> Void in
+                        
+                        if let _ = error {
+                            track.hasHighDefThumbnail = false
+                            self.setImageForTrack(track, size: size, needsHighDef: false)
+                            return
+                        } else {
+                            track.hasHighDefThumbnail = true
+                        }
+                    }
+                }
+            } else {
+                self.image = placeHolder
+            }
         default:
             if let urlString = track.thumbnailUrl {
                 self.sd_setImageWithURL(NSURL(string: urlString), placeholderImage: placeHolder)

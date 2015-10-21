@@ -62,6 +62,7 @@
 		58EAB3DF1B0D11110075304E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EAB3DE1B0D11110075304E /* Utils.swift */; };
 		731173381BD5776B00F17A31 /* FacebookPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731173371BD5776B00F17A31 /* FacebookPageViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		731D92721BAEE4FB0068742A /* FollowInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731D92711BAEE4FB0068742A /* FollowInfoTableViewController.swift */; };
+		731EFBF41BD7DEBD00DFF4E0 /* DropbeatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731EFBF31BD7DEBD00DFF4E0 /* DropbeatUITests.swift */; };
 		732717021BAC8632003E0B68 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717011BAC8632003E0B68 /* SwiftyJSON.swift */; };
 		732717101BAC8649003E0B68 /* RBStoryboardLink.m in Sources */ = {isa = PBXBuildFile; fileRef = 732717041BAC8649003E0B68 /* RBStoryboardLink.m */; };
 		732717111BAC8649003E0B68 /* RBStoryboardModalSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 732717071BAC8649003E0B68 /* RBStoryboardModalSegue.m */; };
@@ -305,6 +306,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		731EFBF61BD7DEBD00DFF4E0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FCD1DA7A1B04CCB200F9EA70 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FCD1DA811B04CCB200F9EA70;
+			remoteInfo = labs;
+		};
 		73A6619D1BC9923200DD1179 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 73A661991BC9923200DD1179 /* LNPopupController.xcodeproj */;
@@ -443,6 +451,9 @@
 		58EAB3DE1B0D11110075304E /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		731173371BD5776B00F17A31 /* FacebookPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookPageViewController.swift; sourceTree = "<group>"; };
 		731D92711BAEE4FB0068742A /* FollowInfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowInfoTableViewController.swift; sourceTree = "<group>"; };
+		731EFBF11BD7DEBD00DFF4E0 /* DropbeatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DropbeatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		731EFBF31BD7DEBD00DFF4E0 /* DropbeatUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropbeatUITests.swift; sourceTree = "<group>"; };
+		731EFBF51BD7DEBD00DFF4E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		732717011BAC8632003E0B68 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = Libraries/SwiftyJSON.swift; sourceTree = SOURCE_ROOT; };
 		732717031BAC8649003E0B68 /* RBStoryboardLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RBStoryboardLink.h; path = Libraries/RBStoryboard/RBStoryboardLink.h; sourceTree = SOURCE_ROOT; };
 		732717041BAC8649003E0B68 /* RBStoryboardLink.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RBStoryboardLink.m; path = Libraries/RBStoryboard/RBStoryboardLink.m; sourceTree = SOURCE_ROOT; };
@@ -593,6 +604,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		731EFBEE1BD7DEBD00DFF4E0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		734C7DDA1BB4C1DA0071678C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -782,6 +800,15 @@
 				732717221BAC8673003E0B68 /* GAITracker.h */,
 			);
 			name = GAI;
+			sourceTree = "<group>";
+		};
+		731EFBF21BD7DEBD00DFF4E0 /* DropbeatUITests */ = {
+			isa = PBXGroup;
+			children = (
+				731EFBF31BD7DEBD00DFF4E0 /* DropbeatUITests.swift */,
+				731EFBF51BD7DEBD00DFF4E0 /* Info.plist */,
+			);
+			path = DropbeatUITests;
 			sourceTree = "<group>";
 		};
 		732717231BAC8691003E0B68 /* UINavigationBar+Awesome */ = {
@@ -1128,6 +1155,7 @@
 				FCD1DA841B04CCB200F9EA70 /* Dropbeat */,
 				7361FCE61B9F631100444179 /* Resources */,
 				FCD1DA851B04CCB200F9EA70 /* Supporting Files */,
+				731EFBF21BD7DEBD00DFF4E0 /* DropbeatUITests */,
 				FCD1DA831B04CCB200F9EA70 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -1137,6 +1165,7 @@
 			children = (
 				FCD1DA821B04CCB200F9EA70 /* labs.app */,
 				734C7DFF1BB4C1DA0071678C /* for test.app */,
+				731EFBF11BD7DEBD00DFF4E0 /* DropbeatUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1181,6 +1210,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		731EFBF01BD7DEBD00DFF4E0 /* DropbeatUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 731EFBFA1BD7DEBD00DFF4E0 /* Build configuration list for PBXNativeTarget "DropbeatUITests" */;
+			buildPhases = (
+				731EFBED1BD7DEBD00DFF4E0 /* Sources */,
+				731EFBEE1BD7DEBD00DFF4E0 /* Frameworks */,
+				731EFBEF1BD7DEBD00DFF4E0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				731EFBF71BD7DEBD00DFF4E0 /* PBXTargetDependency */,
+			);
+			name = DropbeatUITests;
+			productName = DropbeatUITests;
+			productReference = 731EFBF11BD7DEBD00DFF4E0 /* DropbeatUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		734C7D6C1BB4C1DA0071678C /* for test */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 734C7DFC1BB4C1DA0071678C /* Build configuration list for PBXNativeTarget "for test" */;
@@ -1230,6 +1277,10 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = dropbeat;
 				TargetAttributes = {
+					731EFBF01BD7DEBD00DFF4E0 = {
+						CreatedOnToolsVersion = 7.0.1;
+						TestTargetID = FCD1DA811B04CCB200F9EA70;
+					};
 					734C7D6C1BB4C1DA0071678C = {
 						DevelopmentTeam = XGLQXMFR26;
 					};
@@ -1260,6 +1311,7 @@
 			targets = (
 				FCD1DA811B04CCB200F9EA70 /* labs */,
 				734C7D6C1BB4C1DA0071678C /* for test */,
+				731EFBF01BD7DEBD00DFF4E0 /* DropbeatUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1275,6 +1327,13 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		731EFBEF1BD7DEBD00DFF4E0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		734C7DEB1BB4C1DA0071678C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1318,6 +1377,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		731EFBED1BD7DEBD00DFF4E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				731EFBF41BD7DEBD00DFF4E0 /* DropbeatUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		734C7D6D1BB4C1DA0071678C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1570,6 +1637,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		731EFBF71BD7DEBD00DFF4E0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FCD1DA811B04CCB200F9EA70 /* labs */;
+			targetProxy = 731EFBF61BD7DEBD00DFF4E0 /* PBXContainerItemProxy */;
+		};
 		73A661A51BC9927900DD1179 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = LNPopupController;
@@ -1634,6 +1706,37 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		731EFBF81BD7DEBD00DFF4E0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = DropbeatUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.dropbeat.DropbeatUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = labs;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		731EFBF91BD7DEBD00DFF4E0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = DropbeatUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = net.dropbeat.DropbeatUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = labs;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
 		734C7DFD1BB4C1DA0071678C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1841,6 +1944,14 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		731EFBFA1BD7DEBD00DFF4E0 /* Build configuration list for PBXNativeTarget "DropbeatUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				731EFBF81BD7DEBD00DFF4E0 /* Debug */,
+				731EFBF91BD7DEBD00DFF4E0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		734C7DFC1BB4C1DA0071678C /* Build configuration list for PBXNativeTarget "for test" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

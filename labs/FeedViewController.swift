@@ -451,7 +451,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if tableView != self.trackTableView || tracks.count == 0 {
+        if tableView != self.trackTableView || tracks.count == 0 || self.tabBarController?.selectedIndex != 0 {
             return
         }
         var marginWidth:CGFloat = 36.0

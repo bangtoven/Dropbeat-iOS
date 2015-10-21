@@ -4,21 +4,37 @@
 
 import Foundation
 
-let RELEASE = false
+enum HostType {
+    case Dropbeat
+    case Coroutine
+    case Monocheese
+}
+let hostType: HostType = .Dropbeat
 
 extension ApiPath {
-    static let hostV2 = RELEASE ? "http://dropbeat.net/api/v2/" : "http://spark.coroutine.io/api/v2/"
+    static let hostV2 = host + "v2/"
 
     static let streamFollowing = hostV2 + "stream/following/"
 }
 
 public class ApiPath {
-    static let host = RELEASE ? "http://dropbeat.net/api/v1/" : "http://spark.coroutine.io/api/v1/"
+    static var host: String {
+        switch hostType {
+        case .Dropbeat:
+            return "http://dropbeat.net/api/"
+        case .Coroutine:
+            return "http://spark.coroutine.io/api/"
+        case .Monocheese:
+            return "http://monocheese.iptime.org:19030/api/"
+        }
+    }
+    static let hostV1 = host + "v1/"
     
-    static let resolveResource = host + "resolve/"
+    // Resolve
+    static let resolveResource = hostV1 + "resolve/"
 
     // User
-    static let user = host + "user/"
+    static let user = hostV1 + "user/"
     static let userSignIn = user + "signin_fb_android/"
     static let userSelf = user + "self/"
     static let userSignOut = user + "signout/"
@@ -36,7 +52,7 @@ public class ApiPath {
     static let unfollowUser = user + "unfollow/"
     
     // Playlist
-    static let playlist = host + "playlist/"
+    static let playlist = hostV1 + "playlist/"
     static let playlistList = playlist + "list/"
     static let playlistSet = playlist + "set/"
     static let playlistIntial = playlist + "initial/"
@@ -45,7 +61,7 @@ public class ApiPath {
     static let playlistDel = playlist + "del/"
     
     // Log
-    static let log = host + "log/"
+    static let log = hostV1 + "log/"
     static let logSearch = log + "search/"
     static let logResolve = log + "resolve/"
     static let logTrackAdd = log + "trackadd/"
@@ -56,42 +72,57 @@ public class ApiPath {
     static let logDebug = log + "debug/"
     
     // Meta
-    static let meta = host + "meta/"
+    static let meta = hostV1 + "meta/"
     static let metaVersion = meta + "version/"
     static let metaKey = meta + "key/"
     
     // Genre
-    static let genre = host + "genre/"
+    static let genre = hostV1 + "genre/"
     static let genreFavorite = genre + "favorite/"
     static let genreAddFavorite = genre + "add_favorite/"
     static let genreDelFavorite = genre + "del_favorite/"
     
     // Track
-    static let track = host + "track/"
+    static let track = hostV1 + "track/"
     static let trackShare = track + "shared/"
     static let trackLike = track + "like/"
     static let trackDislike = track + "dislike/"
     
-    static let userTrack = host + "usertrack/"
+    static let userTrack = hostV1 + "usertrack/"
     static let userTrackNewUploads = userTrack + "newest/"
     static let userTrackLike = userTrack + "like/"
     
     // Artist
-    static let artist = host + "artist/"
+    static let artist = hostV1 + "artist/"
     static let artistFollow = artist + "follow/"
     static let artistUnfollow = artist + "unfollow/"
     
     // Feedback
-    static let feedback = host + "async/feedback/"
+    static let feedback = hostV1 + "async/feedback/"
     
 }
 
-public class CorePath {
-    static let host = RELEASE ? "http://core.dropbeat.net/api/" : "http://core.coroutine.io/api/"
+extension CorePath {
+    // core.channel
+    static let channel = host + "v1/channel/"
+    static let channelFeed = channel + "feed/"
+    static let channelGproxy = channel + "gproxy/"
     
     // core.search
     static let newSearch = host + "v1/search/"
+}
+
+public class CorePath {
+    static var host: String {
+        switch hostType {
+        case .Dropbeat:
+            return "http://core.dropbeat.net/api/"
+        case .Coroutine, .Monocheese:
+            return "http://core.coroutine.io/api/"
+        }
+    }
     
+    // core.search
     static let search = host + "search/"
     static let searchLiveset = search + "liveset/"
     
@@ -110,12 +141,6 @@ public class CorePath {
     // core.event
     static let event = host + "event/"
     
-    // core.channel
-    static let channel = host + "v1/channel/"
-    // core.channel playlist
-    static let channelFeed = channel + "feed/"
-    static let channelGproxy = channel + "gproxy/"
-
     // core.artistFilter
     static let artistFilter = host + "artist/filter/"
     

@@ -38,7 +38,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>0.1.1.0</string>
+	<string>0.1.1.2</string>
 	<key>FacebookAppID</key>
 	<string>754181154701901</string>
 	<key>FacebookDisplayName</key>
@@ -49,6 +49,7 @@
 	</array>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
+		<string>fb</string>
 		<string>fbapi</string>
 		<string>fb-messenger-api</string>
 		<string>fbauth2</string>

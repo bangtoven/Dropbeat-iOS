@@ -84,29 +84,8 @@ extension UIImageView {
                 }
             }
         case .SOUNDCLOUD:
-            if let lowUrlString = track.thumbnailUrl {
-                let highUrlString = lowUrlString.stringByReplacingOccurrencesOfString("large.jpg", withString: "t500x500.jpg")
-                
-                if needsHighDef == false {
-                    self.sd_setImageWithURL(NSURL(string: lowUrlString), placeholderImage: placeHolder)
-                }
-                else if let notNilHasHigh = track.hasHighDefThumbnail {
-                    let urlString = notNilHasHigh ? highUrlString : lowUrlString
-                    self.sd_setImageWithURL(NSURL(string: urlString), placeholderImage: placeHolder)
-                }
-                else {
-                    self.sd_setImageWithURL(NSURL(string: highUrlString), placeholderImage: placeHolder) {
-                        (image, error, cacheType, imageURL) -> Void in
-                        
-                        if let _ = error {
-                            track.hasHighDefThumbnail = false
-                            self.setImageForTrack(track, size: size, needsHighDef: false)
-                            return
-                        } else {
-                            track.hasHighDefThumbnail = true
-                        }
-                    }
-                }
+            if let urlString = track.thumbnailUrl {
+                self.sd_setImageWithURL(NSURL(string: urlString), placeholderImage: placeHolder)
             } else {
                 self.sd_setImageWithURL(
                     NSURL(string: "\(CorePath.soundCloudImage)?uid=\(track.id)&size=large"),
@@ -235,14 +214,21 @@ class Track {
         self.drop = drop
         self.type = type
         self.tag = tag
-        
-        if let url = thumbnailUrl {
-            self.thumbnailUrl = url
-        } else if type == .YOUTUBE {
-            self.thumbnailUrl = "http://img.youtube.com/vi/\(id)/mqdefault.jpg"
-        }
-        
         self.releaseDate = releaseDate
+        
+        switch type {
+        case .YOUTUBE:
+            self.thumbnailUrl = "http://img.youtube.com/vi/\(id)/mqdefault.jpg"
+        case .SOUNDCLOUD:
+            if let urlString = thumbnailUrl
+                where urlString.contains("large.jpg") {
+                self.thumbnailUrl = urlString.stringByReplacingOccurrencesOfString("large.jpg", withString: "t500x500.jpg")
+            } else {
+                fallthrough
+            }
+        default:
+            self.thumbnailUrl = thumbnailUrl
+        }
     }
     
     private convenience init(json: JSON) {

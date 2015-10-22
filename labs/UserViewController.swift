@@ -49,6 +49,10 @@ class UserHeaderView: AXStretchableHeaderView {
         
         self.nameLabel.text = ""
         self.aboutMeLabel.enabledTextCheckingTypes = NSTextCheckingAllSystemTypes
+        self.aboutMeLabel.linkAttributes = [
+            NSUnderlineStyleAttributeName : true,
+            NSForegroundColorAttributeName : UIColor.dropbeatColor().CGColor
+        ]
         self.aboutMeLabel.text = ""
         
         self.coverImageView.clipsToBounds = true
@@ -295,10 +299,6 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
         }
     }
     
-    func showFacebookPage() {
-        self.performSegueWithIdentifier("showFacebookPage", sender: self)
-    }
-    
     func attributedLabel(label: TTTAttributedLabel!, didLongPressLinkWithURL url: NSURL!, atPoint point: CGPoint) {
         self.attributedLabel(label, didSelectLinkWithURL: url)
     }
@@ -319,15 +319,30 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
         self.presentViewController(actionSheet, animated: true, completion: nil)
     }
     
+    func showFacebookPage() {
+        guard let channel = self.baseUser as? Channel,
+            facebookId = channel.facebookId else {
+            return
+        }
+        
+        let facebookURL = NSURL(string: "fb://profile/\(facebookId)")!
+        if UIApplication.sharedApplication().canOpenURL(facebookURL) {
+            UIApplication.sharedApplication().openURL(facebookURL)
+        } else {
+            let url = NSURL(string: "https://www.facebook.com/\(facebookId)")!
+            UIApplication.sharedApplication().openURL(url)
+//            self.performSegueWithIdentifier("showFacebookPage", sender: facebookId)
+        }
+    }
+    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let channel = self.baseUser as? Channel,
-            facebookId = channel.facebookId
+        if let facebookId = sender as? Int
             where segue.identifier == "showFacebookPage" {
                 let facebookPageVC = segue.destinationViewController as! FacebookPageViewController
                 facebookPageVC.url = NSURL(string: "https://www.facebook.com/\(facebookId)")
         }
     }
-    
+
     @IBAction func followAction(sender: UIButton) {
         if (Account.getCachedAccount() == nil) {
             NeedAuthViewController.showNeedAuthViewController(self)

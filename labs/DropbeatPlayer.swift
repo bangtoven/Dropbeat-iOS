@@ -9,6 +9,7 @@
 import UIKit
 import MediaPlayer
 import AVFoundation
+import Raygun4iOS
 
 public let DropbeatPlayerTrackChangedNotification = "TrackChangedNotification"
 public let DropbeatPlayerStateChangedNotification = "StateChangedNotification"
@@ -32,6 +33,10 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "audioSessionInterrupted:",
             name: AVAudioSessionInterruptionNotification, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "audioSessionRouteChanged:",
+            name: AVAudioSessionRouteChangeNotification, object: nil)
     }
     
     private var playbackLog: PlayLog?
@@ -83,6 +88,13 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
     func play(track: Track) {
         self.lastError = nil
+        if self.state == .Disposed {
+            let e = NSError(domain: "DropbeatPlayer", code: -713, userInfo: [NSLocalizedDescriptionKey:"플레이 요청하려 하는데 player가 dispose 되어 있는 상황이 실제로 발생합니다!"])
+            Raygun.sharedReporter().sendError(e, withTags: ["정호가 로그 받을라고 가라로 만든 거"], withUserCustomData: ["data":"레이건에서 이거 튀어나오면 대박ㅋㅋㅋ"])
+            self.player = STKAudioPlayer()
+            self.player.delegate = self
+        }
+        
         if track.id == self.currentTrack?.id {
             self.currentTrack = track // to send notification
             return
@@ -337,7 +349,44 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     // MARK: - Audio Session
     
     func audioSessionInterrupted(noti: NSNotification) {
-        print(noti)
+        guard let userInfo = noti.userInfo,
+            typeObj = userInfo[AVAudioSessionInterruptionTypeKey] as? NSNumber,
+            type = AVAudioSessionInterruptionType(rawValue: typeObj.unsignedIntegerValue) else {
+                return
+        }
+        
+        switch type {
+        case .Began:
+            print("Audio session interruption begins.")
+            self.pause()
+            self.deactivateAudioSession()
+        case .Ended:
+            print("Audio session interruption ended.")
+            if let option = userInfo[AVAudioSessionInterruptionOptionKey] as? NSNumber
+                where .ShouldResume == AVAudioSessionInterruptionOptions(rawValue: option.unsignedIntegerValue) {
+                    print("Resume after interruption.")
+                    self.resume()
+            } else {
+                self.activateAudioSession()
+            }
+        }
+    }
+    
+    func audioSessionRouteChanged(noti: NSNotification) {
+        print(noti.userInfo)
+        
+        guard let userInfo = noti.userInfo,
+            changeReasonObj = userInfo[AVAudioSessionRouteChangeReasonKey] as? NSNumber,
+            changeReason = AVAudioSessionRouteChangeReason(rawValue: changeReasonObj.unsignedIntegerValue) else {
+                return
+        }
+        
+        switch changeReason {
+        case .OldDeviceUnavailable:
+            self.pause()
+        default:
+            break
+        }
     }
     
     private func activateAudioSession() {

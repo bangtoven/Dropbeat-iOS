@@ -1526,7 +1526,7 @@ click below to discover your favorites</string>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wd2-Cq-T19">
                                             <rect key="frame" x="98" y="0.0" width="222" height="139"/>
                                             <animations/>
-                                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="10"/>
                                             <state key="normal" image="ic_camera"/>
                                             <connections>
@@ -1544,8 +1544,8 @@ click below to discover your favorites</string>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UYt-fX-nul">
                                             <rect key="frame" x="10" y="49" width="80" height="80"/>
                                             <animations/>
-                                            <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                            <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="5"/>
+                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="5"/>
                                             <state key="normal" image="ic_camera"/>
                                             <connections>
                                                 <action selector="changeProfileImage:" destination="moL-Bw-QiW" eventType="touchUpInside" id="rga-hJ-pYi"/>

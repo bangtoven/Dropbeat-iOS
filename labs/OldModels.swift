@@ -51,17 +51,17 @@ class BeatportChart {
             
             let releasedAt = NSDate.dateFromString(s["released"].stringValue)
             
-            var drop:Drop?
-            var dropObj = s["drop"]
-            if dropObj != nil && dropObj["dref"].string != nil &&
-                dropObj["dref"].stringValue.characters.count > 0 &&
-                dropObj["type"].string != nil {
-                    
-                    drop = Drop(
-                        dref: dropObj["dref"].stringValue,
-                        type: dropObj["type"].stringValue,
-                        when: dropObj["when"].int)
-            }
+//            var drop:Drop?
+//            var dropObj = s["drop"]
+//            if dropObj != nil && dropObj["dref"].string != nil &&
+//                dropObj["dref"].stringValue.characters.count > 0 &&
+//                dropObj["type"].string != nil {
+//                    
+//                    drop = Drop(
+//                        dref: dropObj["dref"].stringValue,
+//                        type: dropObj["type"].stringValue,
+//                        when: dropObj["when"].int)
+//            }
             
             let track = BeatportTrack(
                 id: uid,
@@ -74,7 +74,7 @@ class BeatportChart {
                 label: s["label"].string,
                 releasedAt:releasedAt)
             
-            track.drop = drop
+            track.drop = Drop(json: s["drop"])
             
             tracks.append(track)
         }
@@ -119,18 +119,18 @@ class StreamNew {
                 releasedAt: releasedAt
             )
             
-            var drop:Drop?
-            var dropObj = s["drop"]
-            if dropObj != nil && dropObj["dref"].string != nil &&
-                dropObj["dref"].stringValue.characters.count > 0 &&
-                dropObj["type"].string != nil {
-                    
-                    drop = Drop(
-                        dref: dropObj["dref"].stringValue,
-                        type: dropObj["type"].stringValue,
-                        when: dropObj["when"].int)
-            }
-            track.drop = drop
+//            var drop:Drop?
+//            var dropObj = s["drop"]
+//            if dropObj != nil && dropObj["dref"].string != nil &&
+//                dropObj["dref"].stringValue.characters.count > 0 &&
+//                dropObj["type"].string != nil {
+//                    
+//                    drop = Drop(
+//                        dref: dropObj["dref"].stringValue,
+//                        type: dropObj["type"].stringValue,
+//                        when: dropObj["when"].int)
+//            }
+            track.drop = Drop(json: s["drop"])
             
             tracks.append(track)
         }
@@ -173,18 +173,18 @@ class StreamTrending {
                 snippet:s["snippet"].stringValue
             )
             
-            var drop:Drop?
-            var dropObj = s["drop"]
-            if dropObj != nil && dropObj["dref"].string != nil &&
-                dropObj["dref"].stringValue.characters.count > 0 &&
-                dropObj["type"].string != nil {
-                    
-                    drop = Drop(
-                        dref: dropObj["dref"].stringValue,
-                        type: dropObj["type"].stringValue,
-                        when: dropObj["when"].int)
-            }
-            track.drop = drop
+//            var drop:Drop?
+//            var dropObj = s["drop"]
+//            if dropObj != nil && dropObj["dref"].string != nil &&
+//                dropObj["dref"].stringValue.characters.count > 0 &&
+//                dropObj["type"].string != nil {
+//                    
+//                    drop = Drop(
+//                        dref: dropObj["dref"].stringValue,
+//                        type: dropObj["type"].stringValue,
+//                        when: dropObj["when"].int)
+//            }
+            track.drop = Drop(json: s["drop"])
             
             tracks.append(track)
         }
@@ -248,18 +248,18 @@ class StreamBeatportTrending {
                 label: s["label"].string,
                 releasedAt:releasedAt)
             
-            var drop:Drop?
-            var dropObj = s["drop"]
-            if dropObj != nil && dropObj["dref"].string != nil &&
-                dropObj["dref"].stringValue.characters.count > 0 &&
-                dropObj["type"].string != nil {
-                    
-                    drop = Drop(
-                        dref: dropObj["dref"].stringValue,
-                        type: dropObj["type"].stringValue,
-                        when: dropObj["when"].int)
-            }
-            track.drop = drop
+//            var drop:Drop?
+//            var dropObj = s["drop"]
+//            if dropObj != nil && dropObj["dref"].string != nil &&
+//                dropObj["dref"].stringValue.characters.count > 0 &&
+//                dropObj["type"].string != nil {
+//                    
+//                    drop = Drop(
+//                        dref: dropObj["dref"].stringValue,
+//                        type: dropObj["type"].stringValue,
+//                        when: dropObj["when"].int)
+//            }
+            track.drop = Drop(json: s["drop"])
             
             tracks.append(track)
         }

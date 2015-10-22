@@ -29,6 +29,7 @@ enum SourceType: String {
 extension UIImageView {
     enum ThumnailSize { case LARGE; case SMALL }
     func setImageForTrack(track: Track, size: ThumnailSize, var needsHighDef: Bool = true) {
+        
         if size == .SMALL {
             needsHighDef = false
         } else {
@@ -107,7 +108,9 @@ extension UIImageView {
                     }
                 }
             } else {
-                self.image = placeHolder
+                self.sd_setImageWithURL(
+                    NSURL(string: "\(CorePath.soundCloudImage)?uid=\(track.id)&size=large"),
+                    placeholderImage: placeHolder)
             }
         default:
             if let urlString = track.thumbnailUrl {
@@ -118,6 +121,8 @@ extension UIImageView {
         }
     }
 }
+
+// MARK: - YouTube track
 
 extension Track {
     private var preferredQuality: [XCDYouTubeVideoQuality] {
@@ -203,28 +208,24 @@ class Track {
     var thumbnailUrl: String?
     
     var isLiked: Bool {
-        get {
-            if let account = Account.getCachedAccount() {
-                return account.likes.contains { like in
-                    like.track.id == self.id
-                }
+        if let account = Account.getCachedAccount() {
+            return account.likes.contains { like in
+                like.track.id == self.id
             }
-            return false
         }
+        return false
     }
     
     var streamUrl: String {
-        get {
-            switch self.type {
-            case .YOUTUBE:
-                print("this is very exceptional case that youtube track asks for stream URL.")
-                return self.id
-            case .SOUNDCLOUD:
-                let key = Track.soundCloudKey
-                return "https://api.soundcloud.com/tracks/\(self.id)/stream?client_id=\(key)"
-            default:
-                return self.id.stringByRemovingPercentEncoding!
-            }
+        switch self.type {
+        case .YOUTUBE:
+            print("this is very exceptional case that youtube track asks for stream URL.")
+            return self.id
+        case .SOUNDCLOUD:
+            let key = Track.soundCloudKey
+            return "https://api.soundcloud.com/tracks/\(self.id)/stream?client_id=\(key)"
+        default:
+            return self.id.stringByRemovingPercentEncoding!
         }
     }
     
@@ -244,21 +245,19 @@ class Track {
         self.releaseDate = releaseDate
     }
     
-    convenience init(artistTrack json: JSON) {
-        var drop: Drop?
-        let dropObj = json["drop"]
-        if dropObj != JSON.null {
-            drop = Drop(dref: dropObj["dref"].stringValue,
-                type: dropObj["type"].stringValue,
-                when: dropObj["when"].int)
-        } 
-        
+    private convenience init(json: JSON) {
         self.init(
             id: json["id"].stringValue,
             title: json["title"].stringValue,
             type: SourceType.fromString(json["type"].stringValue),
-            drop: drop,
-            releaseDate: NSDate.dateFromString(json["release_date"].stringValue))
+            tag: json["tag"].string,
+            thumbnailUrl: json["artwork"].string,
+            drop: Drop(json: json["drop"]))
+    }
+    
+    private convenience init(artistTrack json: JSON) {
+        self.init(json: json)
+        self.releaseDate = NSDate.dateFromString(json["release_date"].stringValue)
         
         self.user = BaseUser(
             userType: .ARTIST,
@@ -267,17 +266,9 @@ class Track {
             resourceName: json["resource_name"].stringValue)
     }
     
-    convenience init (channelTrack json: JSON) {
-        if json["channel_title"].stringValue == "EDM squirrel" {
-            print(json["title"].stringValue)
-        }
-        
-        let id = json["video_id"].string ?? json["id"].stringValue
-        self.init(
-            id: id,
-            title: json["title"].stringValue,
-            type: .YOUTUBE,
-            releaseDate: NSDate.dateFromString(json["published_at"].stringValue))
+    private convenience init (channelTrack json: JSON) {
+        self.init(json: json)
+        self.releaseDate = NSDate.dateFromString(json["published_at"].stringValue)
         
         self.user = BaseUser(
             userType: .CHANNEL,
@@ -286,114 +277,40 @@ class Track {
             resourceName: json["resource_name"].stringValue)
     }
     
-    convenience init (channelSnippet snippet: JSON) {
-        let id = snippet["resourceId"]["videoId"].stringValue
-        self.init(
-            id: id,
-            title: snippet["title"].stringValue,
-            type: .YOUTUBE,
-            releaseDate: NSDate.dateFromString(snippet["publishedAt"].stringValue))
-    }
-    
-    static func parsePodcastTracks(json: JSON) -> [Track] {
+    static func parseTracks(json: JSON) -> [Track] {
         var tracks = [Track]()
-        for (_, s): (String, JSON) in json {
-            let id = s["stream_url"].string
-            let title = s["title"].string
-            if (id == nil || title == nil) {
-                continue
+        for (_, t): (String, JSON) in json {
+            var track: Track {
+                if t["unique_key"] != JSON.null {
+                    return DropbeatTrack(json: t)
+                } else if t["dj"] != JSON.null {
+                    return Track(artistTrack: t)
+                } else if t["channel_title"] != JSON.null {
+                    return Track(channelTrack: t)
+                } else {
+                    return Track(json: t)
+                }
             }
-            let track = Track(
-                id: id!,
-                title: title!,
-                type: .PODCAST,
-                tag:nil
-            )
-            
-            var drop:Drop?
-            var dropObj = s["drop"]
-            if dropObj != nil && dropObj["dref"].string != nil &&
-                dropObj["dref"].stringValue.characters.count > 0 &&
-                dropObj["type"].string != nil {
-                    
-                    drop = Drop(
-                        dref: dropObj["dref"].stringValue,
-                        type: dropObj["type"].stringValue,
-                        when: dropObj["when"].int)
-            }
-            track.drop = drop
             
             tracks.append(track)
         }
         return tracks
     }
     
-    static func parseTracks(json: JSON) -> [Track] {
-        var tracks = [Track]()
-        for (_, s): (String, JSON) in json {
-            let type = SourceType.fromString(s["type"].stringValue)
-            if type == .DROPBEAT {
-                tracks.append(DropbeatTrack(json: s))
-            } else {
-                var id: AnyObject
-                if s["id"].string == nil {
-                    if s["id"].int != nil {
-                        id = String(s["id"].int!)
-                    } else {
-                        continue
-                    }
-                } else {
-                    id = s["id"].string!
-                }
-                
-                let track = Track(
-                    id: id as! String,
-                    title: s["title"].stringValue,
-                    type: type,
-                    tag: s["tag"].stringValue
-                )
-                
-                var dropObj = s["drop"]
-                if dropObj != nil && dropObj["dref"].string != nil &&
-                    dropObj["dref"].stringValue.characters.count > 0 &&
-                    dropObj["type"].string != nil {
-                        track.drop = Drop(
-                            dref: dropObj["dref"].stringValue,
-                            type: dropObj["type"].stringValue,
-                            when: dropObj["when"].int)
-                }
-                
-                let tag = s["tag"]
-                if tag.error == nil {
-                    track.tag = s["tag"].stringValue
-                }
-                
-                let artwork = s["artwork"]
-                if artwork.error == nil {
-                    track.thumbnailUrl = s["artwork"].stringValue
-                }
-                
-                if (track.tag == nil) {
-                    continue
-                }
-                tracks.append(track)
+    static func fetchFollowingTracks(pageIdx: Int, callback:((tracks:[Track]?, error:NSError?) -> Void)) {
+        Requests.sendGet(ApiPath.streamFollowing, params: ["p": pageIdx], auth: true) { (req, res, result, error) -> Void in
+            if (error != nil) {
+                callback(tracks: nil, error: error)
+                return
             }
+            if (result == nil) {
+                callback(tracks: [], error: nil)
+                return
+            }
+            
+            let tracks = Track.parseTracks(JSON(result!)["data"])
+            callback(tracks: tracks, error: nil)
         }
-        return tracks
-    }
-    
-    static func parseTracks(data: AnyObject, key: String, secondKey: String?=nil) -> [Track] {
-        var t = JSON(data)
-        var tracksObj:JSON
-        if (!t["success"].boolValue || t[key] == nil) {
-            return []
-        }
-        if (secondKey != nil) {
-            tracksObj = t[key][secondKey!]
-        } else {
-            tracksObj = t[key]
-        }
-        return self.parseTracks(tracksObj)
     }
     
     static func parseSharedTrack(data: AnyObject) -> Track? {
@@ -483,40 +400,33 @@ class DropbeatTrack: Track {
     }
     
     private var _streamUrl: String
-    override var streamUrl: String { get {return _streamUrl } }
+    override var streamUrl: String { return _streamUrl }
     
     var trackType: TrackType = .TRACK
     var description: String?
     var genre: String?
-    var likeCount: Int = 0
-    var playCount: Int = 0
-    var repostCount: Int = 0
+    var likeCount = 0
+    var playCount = 0
+    var repostCount = 0
     var resourcePath: String!
     var uniqueKey: String!
  
     init (json: JSON) {
-        let name = json["name"].stringValue
-        let id = json["id"].stringValue
-        let coverArt = json["coverart_url"].string
-        let streamUrl = json["stream_url"].stringValue
 
-        
-        var drop: Drop?
-        if let dropUrl = json["drop_url"].string {
-            drop = Drop(dref: dropUrl, type: "dropbeat", when: 0)
-        }
-
-        self._streamUrl = streamUrl
+        self._streamUrl = json["stream_url"].stringValue
         super.init(
-            id: id,
-            title: name,
+            id: json["id"].stringValue,
+            title: json["name"].stringValue,
             type: .DROPBEAT,
-            thumbnailUrl: coverArt,
-            drop: drop,
+            thumbnailUrl: json["coverart_url"].string,
             releaseDate: NSDate.dateFromString(json["created_at"].stringValue))
         
+        if let dropUrl = json["drop_url"].string {
+            self.drop = Drop(dref: dropUrl, type: .DROPBEAT)
+        }
+        
         self.description = json["description"].stringValue
-        self.trackType = (json["track_type"].stringValue == "TRACK") ? TrackType.TRACK : TrackType.MIXSET
+        self.trackType = (json["track_type"].stringValue == "TRACK") ? .TRACK : .MIXSET
         self.likeCount = json["like_count"].intValue
         self.playCount = json["play_count"].intValue
         self.repostCount = json["repost_count"].intValue
@@ -524,8 +434,7 @@ class DropbeatTrack: Track {
         self.resourcePath = json["resource_path"].stringValue
         self.uniqueKey = json["unique_key"].stringValue
         
-        let genreId = json["genre_id"].intValue
-        self.genre = GenreList.getGenreName(genreId)
+        self.genre = GenreList.getGenreName(json["genre_id"].intValue)
         
         self.user = BaseUser(
             userType: .USER,
@@ -566,38 +475,6 @@ class DropbeatTrack: Track {
         let URL = "http://dropbeat.net/r/\(userResourceName)/\(self.resourcePath)"
         afterShare(error: nil, sharedURL: URL)
     }
-
-    static func fetchFollowingTracks(pageIdx: Int, callback:((tracks:[Track]?, error:NSError?) -> Void)) {
-        Requests.sendGet(ApiPath.streamFollowing, params: ["p": pageIdx], auth: true) { (req, res, result, error) -> Void in
-            if (error != nil) {
-                callback(tracks: nil, error: error)
-                return
-            }
-            if (result == nil) {
-                callback(tracks: [], error: nil)
-                return
-            }
-            
-            var tracks = [Track]()
-            for (_, json) in JSON(result!)["data"] {
-                var track:Track?
-                if json["unique_key"] != JSON.null {
-                    track = DropbeatTrack(json: json)
-                } else if json["dj"] != JSON.null {
-                    track = Track(artistTrack: json)
-                } else if json["channel_title"] != JSON.null {
-                    track = Track(channelTrack: json)
-                } else {
-                    print("what the hell is this??")
-                }
-                
-                if let t = track {
-                    tracks.append(t)
-                }
-            }
-            callback(tracks: tracks, error: nil)
-        }
-    }
     
     enum Order: Int {
         case POPULAR = 0
@@ -621,9 +498,9 @@ class DropbeatTrack: Track {
             }
             
             var tracks = [DropbeatTrack]()
-            for (_, json) in JSON(result!)["data"] {
-                let t = DropbeatTrack(json: json)
-                tracks.append(t)
+            for (_, t) in JSON(result!)["data"] {
+                let track = DropbeatTrack(json: t)
+                tracks.append(track)
             }
             callback(tracks: tracks, error: nil)
         }
@@ -705,26 +582,37 @@ extension Track { // for Play Failure Log
 }
 
 class Drop {
-    var type:String
     var dref:String
-
-    init (dref:String, type:String, when:Int?) {
+    var type:SourceType
+    
+    init (dref:String, type:SourceType) {
         self.type = type
         self.dref = dref
     }
     
-    var streamUrl:String? {
-        get {
-            if self.type == "soundcloud" {
-                let key = Track.soundCloudKey
-                return "https://api.soundcloud.com/tracks/\(self.dref)/stream?client_id=\(key)"
-            } else if self.type == "dropbeat" {
-                return self.dref
-            }
-            else if (self.type != "youtube" && self.dref.characters.startsWith("http".characters)) {
-                return self.dref.stringByRemovingPercentEncoding!
-            }
+    convenience init? (json: JSON) {
+        if json == JSON.null {
             return nil
+        }
+        
+        self.init(
+            dref: json["dref"].stringValue,
+            type: SourceType.fromString(json["type"].stringValue)
+        )
+    }
+    
+    var streamUrl:String? {
+        switch self.type {
+        case .DROPBEAT:
+            return self.dref
+        case .SOUNDCLOUD:
+            return "https://api.soundcloud.com/tracks/\(self.dref)/stream?client_id=\(Track.soundCloudKey)"
+        default:
+            if self.dref.characters.startsWith("http".characters) {
+                return self.dref.stringByRemovingPercentEncoding!
+            } else {
+                return nil
+            }
         }
     }
 }

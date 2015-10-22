@@ -341,6 +341,9 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
+        if self.viewMode != .Normal {
+            toFeedView(selectedFeedMenu.title)
+        }
         self.setNavigationBarBorderHidden(false)
     }
     
@@ -812,7 +815,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         if !refreshControl.refreshing && nextPage <= 0 {
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
-        DropbeatTrack.fetchFollowingTracks(nextPage) { (tracks, error) -> Void in
+        Track.fetchFollowingTracks(nextPage) { (tracks, error) -> Void in
             self.isLoading = false
             progressHud?.hide(true)
             if self.refreshControl.refreshing {
@@ -1065,6 +1068,11 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
     }
     
     func toFeedTypeSelectView() {
+        if let selectedFeedMenu = self.selectedFeedMenu,
+            index = feedMenus.indexOf({ $0.type == selectedFeedMenu.type }) {
+            feedTypeSelectTableView.selectRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0), animated: false, scrollPosition: .None)
+        }
+        
         viewMode = ViewMode.MenuSelect
         trackTableView.hidden = true
         feedTypeSelectTableView.hidden = false

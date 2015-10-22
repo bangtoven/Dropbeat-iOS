@@ -135,15 +135,8 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
                 self.loadMoreSpinner.stopAnimating()
             }
             
-            for (_, item): (String, JSON) in json["items"] {
-                // TODO: 아무 트랙이나 옴.
-                let snippet = item["snippet"]
-                if snippet != JSON.null {
-                    let track = Track(channelSnippet: snippet)
-                    track.user = self.baseUser
-                    self.tracks.append(track)
-                }
-            }
+            let tracks = Track.parseTracks(json["items"])
+            self.tracks.appendContentsOf(tracks)
             
             self.updatePlaylist(false)
             self.trackTableView.reloadData()

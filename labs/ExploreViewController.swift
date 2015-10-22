@@ -189,14 +189,9 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
                 return
             }
             
-            var particals = [Track]()
-            for (_, s): (String, JSON) in respObj["data"] {
-                // TODO: 아무 트랙이나 옴.
-                let track = Track(channelTrack: s)
-                particals.append(track)
-            }
+            let tracks = Track.parseTracks(respObj["data"])
             
-            if particals.count == 0 {
+            if tracks.count == 0 {
                 self.nextPage = -1
                 self.loadMoreSpinnerWrapper.hidden = true
                 self.loadMoreSpinner.stopAnimating()
@@ -209,9 +204,8 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
                 self.tracks.removeAll(keepCapacity: false)
             }
             
-            for track in particals {
-                self.tracks.append(track)
-            }
+            self.tracks.appendContentsOf(tracks)
+            
             self.updatePlaylist(false)
             
             self.trackTableView.reloadData()

@@ -412,10 +412,10 @@ class Artist: BaseUser {
                 callback(tracks: [], error: nil)
                 return
             }
-            let tracks = Track.parseTracks(result!, key: "data")
-            for t in tracks {
-                t.user = self
-            }
+            let json = JSON(result!)
+            let tracks = Track.parseTracks(json["data"])
+            tracks.forEach({ $0.user = self })
+
             self.sectionedTracks[Artist.SECTION_LIVESET] = tracks
             callback(tracks:self.sectionedTracks[Artist.SECTION_LIVESET], error:nil)
         }
@@ -447,10 +447,25 @@ class Artist: BaseUser {
                 return
             }
             
-            let tracks = Track.parsePodcastTracks(t["data"])
-            for t in tracks {
-                t.user = self
+            var tracks = [Track]()
+            for (_, s): (String, JSON) in t["data"] {
+                guard let streamUrl = s["stream_url"].string,
+                    title = s["title"].string else {
+                        continue
+                }
+                
+                let track = Track(
+                    id: streamUrl,
+                    title: title,
+                    type: .PODCAST,
+                    drop: Drop(json: s["drop"])
+                )
+                
+                track.user = self
+                
+                tracks.append(track)
             }
+            
             self.sectionedTracks[Artist.SECTION_PODCAST] = tracks
             callback(tracks:self.sectionedTracks[Artist.SECTION_PODCAST], error:nil)
         }

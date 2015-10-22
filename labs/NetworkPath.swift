@@ -126,6 +126,9 @@ public class CorePath {
         }
     }
     
+    // core.image
+    static let soundCloudImage = host + "image/soundcloud/"
+    
     // core.search
     static let search = host + "search/"
     static let searchLiveset = search + "liveset/"

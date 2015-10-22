@@ -145,12 +145,13 @@ class Requests {
     }
     
     static func getChannelPlaylist(uid: String, pageToken: String?, respCb: RespCallback) -> Request {
-        var params:[String:AnyObject] = [
-            "part": "id,snippet",
-            "key" : ApiKey.google,
-            "maxResults" : 50,
-            "playlistId": uid
-        ]
+//        var params:[String:AnyObject] = [
+//            "part": "id,snippet",
+//            "key" : ApiKey.google,
+//            "maxResults" : 50,
+//            "playlistId": uid
+//        ]
+        var params = ["uid":uid]
         if pageToken != nil {
             params["pageToken"] = pageToken!
         }

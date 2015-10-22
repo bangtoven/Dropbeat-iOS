@@ -109,7 +109,7 @@ class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate, UISc
             
             let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)));
             dispatch_after(popTime, dispatch_get_main_queue(), {() -> Void in
-                delegate?.onAfterEmailUpdate()
+                self.delegate?.onAfterEmailUpdate()
             })
         })
     }

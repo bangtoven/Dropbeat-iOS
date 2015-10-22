@@ -18,7 +18,7 @@ class ProfileHeaderView: UserHeaderView {
     }
     
     override func interactiveSubviews() -> [AnyObject]! {
-        return []
+        return [self.aboutMeLabel]
     }
 }
 

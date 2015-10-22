@@ -224,17 +224,6 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HQp-Si-f4V">
-                            <rect key="frame" x="284" y="90" width="26" height="26"/>
-                            <animations/>
-                            <color key="backgroundColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="26" id="Fne-cg-FBl"/>
-                                <constraint firstAttribute="width" constant="26" id="Xi9-zJ-Ola"/>
-                            </constraints>
-                            <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
-                            <state key="normal" image="ic_edit_small"/>
-                        </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NMG-so-3ze">
                             <rect key="frame" x="12" y="288" width="298" height="32"/>
                             <animations/>
@@ -247,17 +236,6 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u5n-Ne-nsf">
-                            <rect key="frame" x="284" y="258" width="26" height="26"/>
-                            <animations/>
-                            <color key="backgroundColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="26" id="YYn-Ue-QKo"/>
-                                <constraint firstAttribute="height" constant="26" id="c39-qB-Sfm"/>
-                            </constraints>
-                            <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
-                            <state key="normal" image="ic_edit_small"/>
-                        </button>
                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_profile" translatesAutoresizingMaskIntoConstraints="NO" id="OvH-3x-Zmw">
                             <rect key="frame" x="10" y="80" width="80" height="80"/>
                             <animations/>
@@ -268,31 +246,20 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorite genres" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d25-qj-hfp">
-                            <rect key="frame" x="12" y="262" width="262" height="18"/>
+                            <rect key="frame" x="12" y="262" width="106" height="18"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AWU-Mb-cAl">
-                            <rect key="frame" x="284" y="178" width="26" height="26"/>
-                            <animations/>
-                            <color key="backgroundColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="26" id="AYA-vq-nal"/>
-                                <constraint firstAttribute="height" constant="26" id="uqb-p8-pEp"/>
-                            </constraints>
-                            <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
-                            <state key="normal" image="ic_edit_small"/>
-                        </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jGf-w7-U4L">
-                            <rect key="frame" x="12" y="182" width="262" height="18"/>
+                            <rect key="frame" x="12" y="182" width="67" height="18"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nby-Gg-QD2">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nby-Gg-QD2" customClass="TTTAttributedLabel">
                             <rect key="frame" x="12" y="208" width="298" height="32"/>
                             <animations/>
                             <constraints>
@@ -310,37 +277,27 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <constraints>
                         <constraint firstItem="jGf-w7-U4L" firstAttribute="leading" secondItem="q60-kv-KpD" secondAttribute="leading" constant="12" id="11u-AR-QE0"/>
                         <constraint firstItem="4ip-PU-2k0" firstAttribute="top" secondItem="q60-kv-KpD" secondAttribute="top" id="1lo-0y-A9o"/>
-                        <constraint firstItem="u5n-Ne-nsf" firstAttribute="top" secondItem="NMG-so-3ze" secondAttribute="top" id="1pA-zn-fy0"/>
-                        <constraint firstItem="HQp-Si-f4V" firstAttribute="trailing" secondItem="u5n-Ne-nsf" secondAttribute="trailing" id="3hM-x7-uwN"/>
                         <constraint firstAttribute="bottom" secondItem="NMG-so-3ze" secondAttribute="bottom" constant="4" id="8uz-Pg-647"/>
-                        <constraint firstItem="HQp-Si-f4V" firstAttribute="centerY" secondItem="FkO-V7-6TM" secondAttribute="centerY" id="9Y6-Tz-eZD"/>
                         <constraint firstItem="OvH-3x-Zmw" firstAttribute="leading" secondItem="q60-kv-KpD" secondAttribute="leading" constant="10" id="Abv-GV-Iyn"/>
                         <constraint firstAttribute="trailing" secondItem="nby-Gg-QD2" secondAttribute="trailing" constant="10" id="Af3-yb-aAO"/>
                         <constraint firstItem="28F-a0-7DJ" firstAttribute="bottom" secondItem="OvH-3x-Zmw" secondAttribute="bottom" priority="900" constant="-40" id="BMu-hS-yQb"/>
-                        <constraint firstItem="nby-Gg-QD2" firstAttribute="top" secondItem="AWU-Mb-cAl" secondAttribute="bottom" constant="4" id="G5f-lR-rK8"/>
                         <constraint firstItem="d25-qj-hfp" firstAttribute="top" secondItem="nby-Gg-QD2" secondAttribute="bottom" constant="22" id="Kmn-SY-2Vo"/>
-                        <constraint firstItem="AWU-Mb-cAl" firstAttribute="leading" secondItem="jGf-w7-U4L" secondAttribute="trailing" constant="10" id="NpF-Dr-Avo"/>
                         <constraint firstItem="YA6-OZ-OEg" firstAttribute="leading" secondItem="q60-kv-KpD" secondAttribute="leading" constant="100" id="PoJ-sS-OgT"/>
                         <constraint firstItem="4ip-PU-2k0" firstAttribute="leading" secondItem="q60-kv-KpD" secondAttribute="leading" id="QfY-dP-01k"/>
                         <constraint firstAttribute="trailing" secondItem="4ip-PU-2k0" secondAttribute="trailing" id="S0F-GL-HzP"/>
                         <constraint firstItem="nby-Gg-QD2" firstAttribute="top" secondItem="jGf-w7-U4L" secondAttribute="bottom" constant="8" id="TL8-3f-eCn"/>
                         <constraint firstItem="FLS-j9-oHE" firstAttribute="bottom" secondItem="28F-a0-7DJ" secondAttribute="bottom" id="Wps-FE-CcH"/>
                         <constraint firstAttribute="trailing" secondItem="NMG-so-3ze" secondAttribute="trailing" constant="10" id="X43-Q7-flm"/>
-                        <constraint firstItem="u5n-Ne-nsf" firstAttribute="leading" secondItem="d25-qj-hfp" secondAttribute="trailing" constant="10" id="Yib-pz-Ptz"/>
                         <constraint firstItem="28F-a0-7DJ" firstAttribute="leading" secondItem="q60-kv-KpD" secondAttribute="leading" id="ZfB-2L-4vN"/>
                         <constraint firstItem="28F-a0-7DJ" firstAttribute="top" secondItem="q60-kv-KpD" secondAttribute="top" id="awv-R9-OWA"/>
                         <constraint firstAttribute="trailing" secondItem="28F-a0-7DJ" secondAttribute="trailing" id="c4F-Gw-yxv"/>
-                        <constraint firstAttribute="trailing" secondItem="u5n-Ne-nsf" secondAttribute="trailing" constant="10" id="cJ6-lw-eux"/>
                         <constraint firstAttribute="trailing" secondItem="FkO-V7-6TM" secondAttribute="trailing" constant="10" id="cjS-HZ-Jkq"/>
-                        <constraint firstItem="u5n-Ne-nsf" firstAttribute="trailing" secondItem="NMG-so-3ze" secondAttribute="trailing" id="dV3-UU-REw"/>
-                        <constraint firstAttribute="trailing" secondItem="AWU-Mb-cAl" secondAttribute="trailing" constant="10" id="dVN-Xj-SGb"/>
                         <constraint firstItem="YA6-OZ-OEg" firstAttribute="bottom" secondItem="OvH-3x-Zmw" secondAttribute="bottom" constant="-2" id="fLm-ix-eXa"/>
                         <constraint firstItem="NMG-so-3ze" firstAttribute="leading" secondItem="q60-kv-KpD" secondAttribute="leading" constant="12" id="gEm-vc-PgE"/>
                         <constraint firstItem="nby-Gg-QD2" firstAttribute="leading" secondItem="q60-kv-KpD" secondAttribute="leading" constant="12" id="hSL-IG-PcI"/>
                         <constraint firstItem="FLS-j9-oHE" firstAttribute="leading" secondItem="28F-a0-7DJ" secondAttribute="leading" id="hiD-TF-ElF"/>
                         <constraint firstItem="FkO-V7-6TM" firstAttribute="leading" secondItem="OvH-3x-Zmw" secondAttribute="trailing" constant="10" id="oR1-iP-XzW"/>
                         <constraint firstItem="d25-qj-hfp" firstAttribute="leading" secondItem="NMG-so-3ze" secondAttribute="leading" id="pDu-Oz-Zqn"/>
-                        <constraint firstItem="NMG-so-3ze" firstAttribute="top" secondItem="u5n-Ne-nsf" secondAttribute="bottom" constant="4" id="rNN-oX-SVc"/>
                         <constraint firstItem="28F-a0-7DJ" firstAttribute="bottom" secondItem="FkO-V7-6TM" secondAttribute="bottom" constant="6" id="vTh-1L-BSJ"/>
                         <constraint firstItem="NMG-so-3ze" firstAttribute="top" secondItem="d25-qj-hfp" secondAttribute="bottom" constant="8" id="y0q-I2-e6B"/>
                         <constraint firstItem="FLS-j9-oHE" firstAttribute="trailing" secondItem="28F-a0-7DJ" secondAttribute="trailing" id="z37-fL-s8n"/>
@@ -349,7 +306,6 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <variation key="default">
                         <mask key="constraints">
                             <exclude reference="cjS-HZ-Jkq"/>
-                            <exclude reference="1pA-zn-fy0"/>
                         </mask>
                     </variation>
                     <connections>
@@ -548,7 +504,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="caU-41-nTd">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="caU-41-nTd" customClass="TTTAttributedLabel">
                             <rect key="frame" x="12" y="255" width="298" height="32"/>
                             <animations/>
                             <constraints>
@@ -1981,7 +1937,6 @@ and let us know your favorite genre.</string>
         <image name="ic_check" width="47" height="47"/>
         <image name="ic_dislike" width="25" height="25"/>
         <image name="ic_drop_small" width="40" height="40"/>
-        <image name="ic_edit_small" width="18" height="18"/>
         <image name="ic_following" width="25" height="25"/>
         <image name="ic_header_dotdotdot" width="22" height="22"/>
         <image name="ic_header_dotdotdot_horizontal" width="22" height="22"/>

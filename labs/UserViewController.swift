@@ -34,20 +34,21 @@ class UserHeaderView: AXStretchableHeaderView {
     @IBOutlet weak var followingNumberLabel: UILabel!
     
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var aboutMeLabel: UILabel!
+    @IBOutlet weak var aboutMeLabel: TTTAttributedLabel!
     @IBOutlet weak var labelHeightConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var showMoreButton: UIButton!
     @IBOutlet weak var followButton: UIButton!
     
     override func interactiveSubviews() -> [AnyObject]! {
-        return [self.showMoreButton, self.followButton]
+        return [self.showMoreButton, self.followButton, self.aboutMeLabel]
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         
         self.nameLabel.text = ""
+        self.aboutMeLabel.enabledTextCheckingTypes = NSTextCheckingAllSystemTypes
         self.aboutMeLabel.text = ""
         
         self.coverImageView.clipsToBounds = true
@@ -65,9 +66,23 @@ class UserHeaderView: AXStretchableHeaderView {
         self.followInfoView.hidden = true
         self.profileImageView.hidden = true
     }
+    
+    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+        let targetView = super.hitTest(point, withEvent: event)
+        if let tttLabel = targetView as? TTTAttributedLabel {
+            let converted = self.convertPoint(point, toView: tttLabel)
+            if tttLabel.linkAtPoint(converted) != nil {
+                return tttLabel
+            } else {
+                return nil
+            }
+        } else {
+            return targetView
+        }
+    }
 }
 
-class UserViewController: AXStretchableHeaderTabViewController {
+class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLabelDelegate {
     
     var baseUser: BaseUser!
     var resource: String!
@@ -116,6 +131,8 @@ class UserViewController: AXStretchableHeaderTabViewController {
     
     func applyFetchedInfoToView() {
         let header = self.headerView as! UserHeaderView
+        header.aboutMeLabel.delegate = self
+        
         var isSelf = false
         switch self.baseUser {
         case let user as User:
@@ -280,6 +297,26 @@ class UserViewController: AXStretchableHeaderTabViewController {
     
     func showFacebookPage() {
         self.performSegueWithIdentifier("showFacebookPage", sender: self)
+    }
+    
+    func attributedLabel(label: TTTAttributedLabel!, didLongPressLinkWithURL url: NSURL!, atPoint point: CGPoint) {
+        self.attributedLabel(label, didSelectLinkWithURL: url)
+    }
+    
+    func attributedLabel(label: TTTAttributedLabel!, didSelectLinkWithURL url: NSURL!) {
+        let actionSheet = UIAlertController(
+            title: nil,
+            message: url.absoluteString,
+            preferredStyle: .ActionSheet)
+        actionSheet.addAction(UIAlertAction(
+            title: NSLocalizedString("Cancel", comment: "Cancel"),
+            style: .Cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(
+            title: NSLocalizedString("Open Link", comment: "Open Link"),
+            style: .Default, handler: { (action) -> Void in
+            UIApplication.sharedApplication().openURL(url)
+        }))
+        self.presentViewController(actionSheet, animated: true, completion: nil)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

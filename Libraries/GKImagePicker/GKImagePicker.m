@@ -107,7 +107,7 @@
     self.presentingViewController = viewController;
     self.popoverView = popoverView;
     NSString *fromCameraString = NSLocalizedString(@"Take Photo", @"Take Photo");
-    NSString *fromLibraryString = NSLocalizedString(@"Phto Library", @"Phto Library");
+    NSString *fromLibraryString = NSLocalizedString(@"Photo Library", @"Photo Library");
     NSString *cancelTitle = NSLocalizedString(@"Cancel", @"Cancel");
     
     if (NSFoundationVersionNumber >= NSFoundationVersionNumber_iOS_8_0) {

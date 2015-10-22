@@ -228,6 +228,8 @@
 		7374F7301BD87DE3007802CC /* GKResizeableCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731EFC071BD7E56200DFF4E0 /* GKResizeableCropOverlayView.m */; settings = {ASSET_TAGS = (); }; };
 		737FAB191BCAAFC700C1347B /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 737FAB181BCAAFC700C1347B /* Launch.storyboard */; settings = {ASSET_TAGS = (); }; };
 		737FAB1A1BCAAFFA00C1347B /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 737FAB181BCAAFC700C1347B /* Launch.storyboard */; settings = {ASSET_TAGS = (); }; };
+		73840F251BD9562F00BC8943 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73840F241BD9562F00BC8943 /* TTTAttributedLabel.m */; settings = {ASSET_TAGS = (); }; };
+		73840F261BD9562F00BC8943 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73840F241BD9562F00BC8943 /* TTTAttributedLabel.m */; settings = {ASSET_TAGS = (); }; };
 		738646171BA7631D00C21650 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738646161BA7631D00C21650 /* GradientView.m */; };
 		739B00AB1BD7ED7600EF126F /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739B00AA1BD7ED7600EF126F /* ImageUploader.swift */; settings = {ASSET_TAGS = (); }; };
 		739B00AC1BD7ED7900EF126F /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739B00AA1BD7ED7600EF126F /* ImageUploader.swift */; settings = {ASSET_TAGS = (); }; };
@@ -543,6 +545,8 @@
 		7361FCF81B9F687E00444179 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
 		736D71DC1BCA90A100D54188 /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		737FAB181BCAAFC700C1347B /* Launch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Launch.storyboard; sourceTree = "<group>"; };
+		73840F231BD9562F00BC8943 /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
+		73840F241BD9562F00BC8943 /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		738646151BA7631D00C21650 /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
 		738646161BA7631D00C21650 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
 		739B00AA1BD7ED7600EF126F /* ImageUploader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageUploader.swift; sourceTree = "<group>"; };
@@ -926,6 +930,7 @@
 				732717011BAC8632003E0B68 /* SwiftyJSON.swift */,
 				732717421BAC8721003E0B68 /* ScrollPager.swift */,
 				73FC90CC1BAE5C9000284B8A /* KeychainItemWrapper.swift */,
+				73840F221BD9562F00BC8943 /* TTTAttributedLabel */,
 				731EFBFB1BD7E56200DFF4E0 /* GKImagePicker */,
 				73A355911BCD973B0002C00D /* EAIntroPage */,
 				73AECBF31BC6B47D0040F0AF /* XCDYoutubeKit */,
@@ -1046,6 +1051,16 @@
 			);
 			name = Launch;
 			sourceTree = "<group>";
+		};
+		73840F221BD9562F00BC8943 /* TTTAttributedLabel */ = {
+			isa = PBXGroup;
+			children = (
+				73840F231BD9562F00BC8943 /* TTTAttributedLabel.h */,
+				73840F241BD9562F00BC8943 /* TTTAttributedLabel.m */,
+			);
+			name = TTTAttributedLabel;
+			path = Libraries/TTTAttributedLabel;
+			sourceTree = SOURCE_ROOT;
 		};
 		738BCA171BA4B07C00D00D34 /* AXStretchableHeader */ = {
 			isa = PBXGroup;
@@ -1456,6 +1471,7 @@
 				734C7D771BB4C1DA0071678C /* LinkedImageTransitionSegue.m in Sources */,
 				734C7D791BB4C1DA0071678C /* SZTextView.m in Sources */,
 				734C7D7A1BB4C1DA0071678C /* UserViewController.swift in Sources */,
+				73840F261BD9562F00BC8943 /* TTTAttributedLabel.m in Sources */,
 				73AECC061BC6B47D0040F0AF /* XCDYouTubePlayerScript.m in Sources */,
 				734C7D7B1BB4C1DA0071678C /* MultipartFormData.swift in Sources */,
 				734C7D7C1BB4C1DA0071678C /* Stream.swift in Sources */,
@@ -1588,6 +1604,7 @@
 				73AECC051BC6B47D0040F0AF /* XCDYouTubePlayerScript.m in Sources */,
 				73FC90C31BAE4AFA00284B8A /* MultipartFormData.swift in Sources */,
 				73FC90C91BAE4AFA00284B8A /* Stream.swift in Sources */,
+				73840F251BD9562F00BC8943 /* TTTAttributedLabel.m in Sources */,
 				73AB346B1BB15AAE0031E2CC /* JHImageTransitionSegue.m in Sources */,
 				7327173D1BAC86BB003E0B68 /* AXStretchableHeaderView.m in Sources */,
 				58EAB3DD1B0D0BB00075304E /* PlaylistSelectViewController.swift in Sources */,

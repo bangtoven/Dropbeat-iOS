@@ -28,30 +28,10 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "applicationWillEnterForeground",
             name: UIApplicationWillEnterForegroundNotification, object: nil)
-        // AVAudioSessionInterruptionNotification
-    }
-    
-    private func activateAudioSession() {
-        let sharedInstance = AVAudioSession.sharedInstance()
-        do {
-            try sharedInstance.setCategory(AVAudioSessionCategoryPlayback)
-            try sharedInstance.setActive(true)
-        } catch let audioSessionError as NSError {
-            print("Audio session error \(audioSessionError) \(audioSessionError.userInfo)")
-        }
         
-        UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
-    }
-    
-    private func deactivateAudioSession() {
-        let sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
-        do {
-            try sharedInstance.setActive(false)
-        } catch let audioSessionError as NSError {
-            print("Audio session error \(audioSessionError) \(audioSessionError.userInfo)")
-        }
-        
-        UIApplication.sharedApplication().endReceivingRemoteControlEvents()
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "audioSessionInterrupted:",
+            name: AVAudioSessionInterruptionNotification, object: nil)
     }
     
     private var playbackLog: PlayLog?
@@ -354,10 +334,41 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         self.deactivateAudioSession()
     }
     
+    // MARK: - Audio Session
+    
+    func audioSessionInterrupted(noti: NSNotification) {
+        print(noti)
+    }
+    
+    private func activateAudioSession() {
+        let sharedInstance = AVAudioSession.sharedInstance()
+        do {
+            try sharedInstance.setCategory(AVAudioSessionCategoryPlayback)
+            try sharedInstance.setActive(true)
+        } catch let audioSessionError as NSError {
+            print("Audio session error \(audioSessionError) \(audioSessionError.userInfo)")
+        }
+        
+        UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
+    }
+    
+    private func deactivateAudioSession() {
+        let sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
+        do {
+            try sharedInstance.setActive(false)
+        } catch let audioSessionError as NSError {
+            print("Audio session error \(audioSessionError) \(audioSessionError.userInfo)")
+        }
+        
+        UIApplication.sharedApplication().endReceivingRemoteControlEvents()
+    }
+    
+    
     // MARK: - State change
 
     func applicationWillEnterForeground() {
         self.state = self.player.state
+        self.activateAudioSession()
     }
     
     var state = STKAudioPlayerState.Ready {

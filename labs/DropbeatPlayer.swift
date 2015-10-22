@@ -23,6 +23,15 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         super.init()
         self.player.delegate = self
         
+        self.activateAudioSession()
+        
+        NSNotificationCenter.defaultCenter().addObserver(
+            self, selector: "applicationWillEnterForeground",
+            name: UIApplicationWillEnterForegroundNotification, object: nil)
+        // AVAudioSessionInterruptionNotification
+    }
+    
+    private func activateAudioSession() {
         let sharedInstance = AVAudioSession.sharedInstance()
         do {
             try sharedInstance.setCategory(AVAudioSessionCategoryPlayback)
@@ -32,10 +41,17 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         }
         
         UIApplication.sharedApplication().beginReceivingRemoteControlEvents()
+    }
+    
+    private func deactivateAudioSession() {
+        let sharedInstance:AVAudioSession = AVAudioSession.sharedInstance()
+        do {
+            try sharedInstance.setActive(false)
+        } catch let audioSessionError as NSError {
+            print("Audio session error \(audioSessionError) \(audioSessionError.userInfo)")
+        }
         
-        NSNotificationCenter.defaultCenter().addObserver(
-            self, selector: "applicationWillEnterForeground",
-            name: UIApplicationWillEnterForegroundNotification, object: nil)
+        UIApplication.sharedApplication().endReceivingRemoteControlEvents()
     }
     
     private var playbackLog: PlayLog?
@@ -94,6 +110,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         
         self.state = .Buffering
         
+        self.activateAudioSession()
         if track.type == .YOUTUBE {
             track.getYouTubeStreamURL() {
                 (streamURL, duration, error) -> Void in
@@ -319,6 +336,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     func resume() {
+        self.activateAudioSession()
         self.player.resume()
     }
     
@@ -332,6 +350,8 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         
         self.currentTrack = nil
         self.currentPlaylist = nil
+        
+        self.deactivateAudioSession()
     }
     
     // MARK: - State change

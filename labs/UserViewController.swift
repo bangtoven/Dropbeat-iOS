@@ -227,8 +227,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
                 self.viewControllers = subViewArr
             }
             
-            if let facebookId = channel.facebookId {
-                print("This is facebook page: \(facebookId)")
+            if channel.facebookId != nil {
                 self.navigationItem.rightBarButtonItem = UIBarButtonItem(
                     image: UIImage(named: "ic_facebook_line_small"),
                     style: .Plain,
@@ -236,7 +235,7 @@ class UserViewController: AXStretchableHeaderTabViewController {
                     action: "showFacebookPage")
             }
         default:
-            assertionFailure()
+            print("applyFetchedInfoToView: This should never happen.")
         }
         
         if let name = self.baseUser?.name {

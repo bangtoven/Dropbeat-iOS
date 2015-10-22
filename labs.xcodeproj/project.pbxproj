@@ -219,6 +219,13 @@
 		7361FCF71B9F687E00444179 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCF91B9F687E00444179 /* Settings.storyboard */; };
 		736D71DD1BCA90A100D54188 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736D71DC1BCA90A100D54188 /* MainTabBarController.swift */; settings = {ASSET_TAGS = (); }; };
 		736D71DE1BCA95D400D54188 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736D71DC1BCA90A100D54188 /* MainTabBarController.swift */; settings = {ASSET_TAGS = (); }; };
+		7374F72A1BD87DB5007802CC /* FacebookPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731173371BD5776B00F17A31 /* FacebookPageViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		7374F72B1BD87DE3007802CC /* GKCropBorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731EFBFD1BD7E56200DFF4E0 /* GKCropBorderView.m */; settings = {ASSET_TAGS = (); }; };
+		7374F72C1BD87DE3007802CC /* GKImageCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731EFBFF1BD7E56200DFF4E0 /* GKImageCropOverlayView.m */; settings = {ASSET_TAGS = (); }; };
+		7374F72D1BD87DE3007802CC /* GKImageCropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731EFC011BD7E56200DFF4E0 /* GKImageCropView.m */; settings = {ASSET_TAGS = (); }; };
+		7374F72E1BD87DE3007802CC /* GKImageCropViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 731EFC031BD7E56200DFF4E0 /* GKImageCropViewController.m */; settings = {ASSET_TAGS = (); }; };
+		7374F72F1BD87DE3007802CC /* GKImagePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 731EFC051BD7E56200DFF4E0 /* GKImagePicker.m */; settings = {ASSET_TAGS = (); }; };
+		7374F7301BD87DE3007802CC /* GKResizeableCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731EFC071BD7E56200DFF4E0 /* GKResizeableCropOverlayView.m */; settings = {ASSET_TAGS = (); }; };
 		737FAB191BCAAFC700C1347B /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 737FAB181BCAAFC700C1347B /* Launch.storyboard */; settings = {ASSET_TAGS = (); }; };
 		737FAB1A1BCAAFFA00C1347B /* Launch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 737FAB181BCAAFC700C1347B /* Launch.storyboard */; settings = {ASSET_TAGS = (); }; };
 		738646171BA7631D00C21650 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738646161BA7631D00C21650 /* GradientView.m */; };
@@ -1435,7 +1442,10 @@
 				73A355AC1BCDBAC90002C00D /* EARestrictedScrollView.m in Sources */,
 				734C7D6E1BB4C1DA0071678C /* SearchViewController.swift in Sources */,
 				734C7D6F1BB4C1DA0071678C /* Track.swift in Sources */,
+				7374F7301BD87DE3007802CC /* GKResizeableCropOverlayView.m in Sources */,
 				734C7D701BB4C1DA0071678C /* Playlist.swift in Sources */,
+				7374F72B1BD87DE3007802CC /* GKCropBorderView.m in Sources */,
+				7374F72F1BD87DE3007802CC /* GKImagePicker.m in Sources */,
 				734C7D711BB4C1DA0071678C /* MBProgressHUD.m in Sources */,
 				73AECBAC1BC5CF280040F0AF /* DropbeatPlayer.swift in Sources */,
 				734C7D721BB4C1DA0071678C /* Request.swift in Sources */,
@@ -1477,6 +1487,7 @@
 				734C7D981BB4C1DA0071678C /* KeychainItemWrapper.swift in Sources */,
 				734C7D991BB4C1DA0071678C /* Validation.swift in Sources */,
 				734C7D9A1BB4C1DA0071678C /* DTConstants.m in Sources */,
+				7374F72A1BD87DB5007802CC /* FacebookPageViewController.swift in Sources */,
 				734C7D9B1BB4C1DA0071678C /* FollowInfoTableViewController.swift in Sources */,
 				73AECBA21BC5CE2F0040F0AF /* STKHTTPDataSource.m in Sources */,
 				734C7D9D1BB4C1DA0071678C /* GBFlatSelectableButton.m in Sources */,
@@ -1518,6 +1529,7 @@
 				734C7DBD1BB4C1DA0071678C /* Account.swift in Sources */,
 				73A661971BC6EC5F00DD1179 /* PlayerViewController.swift in Sources */,
 				734C7DBE1BB4C1DA0071678C /* UIImage+GIF.m in Sources */,
+				7374F72D1BD87DE3007802CC /* GKImageCropView.m in Sources */,
 				73A355AA1BCDBAC90002C00D /* EAIntroView.m in Sources */,
 				73AECC081BC6B47D0040F0AF /* XCDYouTubeVideo.m in Sources */,
 				734C7DBF1BB4C1DA0071678C /* ServerTrustPolicy.swift in Sources */,
@@ -1543,6 +1555,8 @@
 				734C7DCF1BB4C1DA0071678C /* AppDelegate.swift in Sources */,
 				73AECC021BC6B47D0040F0AF /* XCDYouTubeClient.m in Sources */,
 				734C7DD01BB4C1DA0071678C /* MarqueeLabel.m in Sources */,
+				7374F72C1BD87DE3007802CC /* GKImageCropOverlayView.m in Sources */,
+				7374F72E1BD87DE3007802CC /* GKImageCropViewController.m in Sources */,
 				734C7DD11BB4C1DA0071678C /* AddableTrackListViewController.swift in Sources */,
 				734C7DD51BB4C1DA0071678C /* SettingsViewControllers.swift in Sources */,
 				734C7DD61BB4C1DA0071678C /* ACEExpandableTextCell.m in Sources */,

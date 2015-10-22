@@ -737,7 +737,7 @@ class Like {
         }
         guard filteredLikes.count == 1 else {
             print("filtered likes count is not 1. what the hell?")
-            assertionFailure()
+            callback?(error: NSError(domain: "unlikeTrack", code: -9, userInfo: nil))
             return
         }
         

@@ -62,7 +62,6 @@
 		58EAB3DF1B0D11110075304E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58EAB3DE1B0D11110075304E /* Utils.swift */; };
 		731173381BD5776B00F17A31 /* FacebookPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731173371BD5776B00F17A31 /* FacebookPageViewController.swift */; };
 		731D92721BAEE4FB0068742A /* FollowInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731D92711BAEE4FB0068742A /* FollowInfoTableViewController.swift */; };
-		731EFBF41BD7DEBD00DFF4E0 /* DropbeatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731EFBF31BD7DEBD00DFF4E0 /* DropbeatUITests.swift */; };
 		731EFC081BD7E56200DFF4E0 /* GKCropBorderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731EFBFD1BD7E56200DFF4E0 /* GKCropBorderView.m */; };
 		731EFC091BD7E56200DFF4E0 /* GKImageCropOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731EFBFF1BD7E56200DFF4E0 /* GKImageCropOverlayView.m */; };
 		731EFC0A1BD7E56200DFF4E0 /* GKImageCropView.m in Sources */ = {isa = PBXBuildFile; fileRef = 731EFC011BD7E56200DFF4E0 /* GKImageCropView.m */; };
@@ -323,13 +322,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		731EFBF61BD7DEBD00DFF4E0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = FCD1DA7A1B04CCB200F9EA70 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = FCD1DA811B04CCB200F9EA70;
-			remoteInfo = labs;
-		};
 		73A6619D1BC9923200DD1179 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 73A661991BC9923200DD1179 /* LNPopupController.xcodeproj */;
@@ -468,9 +460,6 @@
 		58EAB3DE1B0D11110075304E /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		731173371BD5776B00F17A31 /* FacebookPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FacebookPageViewController.swift; sourceTree = "<group>"; };
 		731D92711BAEE4FB0068742A /* FollowInfoTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowInfoTableViewController.swift; sourceTree = "<group>"; };
-		731EFBF11BD7DEBD00DFF4E0 /* DropbeatUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DropbeatUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		731EFBF31BD7DEBD00DFF4E0 /* DropbeatUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropbeatUITests.swift; sourceTree = "<group>"; };
-		731EFBF51BD7DEBD00DFF4E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		731EFBFC1BD7E56200DFF4E0 /* GKCropBorderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKCropBorderView.h; sourceTree = "<group>"; };
 		731EFBFD1BD7E56200DFF4E0 /* GKCropBorderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GKCropBorderView.m; sourceTree = "<group>"; };
 		731EFBFE1BD7E56200DFF4E0 /* GKImageCropOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GKImageCropOverlayView.h; sourceTree = "<group>"; };
@@ -628,7 +617,7 @@
 		FC766BEE1B050D51006FD4FB /* NetworkPath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkPath.swift; sourceTree = "<group>"; };
 		FC766BF41B051AA4006FD4FB /* NetworkRequests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = NetworkRequests.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		FCD1DA821B04CCB200F9EA70 /* labs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = labs.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FCD1DA861B04CCB200F9EA70 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FCD1DA861B04CCB200F9EA70 /* Info-Dropbeat.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Info-Dropbeat.plist"; sourceTree = "<group>"; };
 		FCD1DA871B04CCB200F9EA70 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FCD1DA8C1B04CCB200F9EA70 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FCD1DA8E1B04CCB200F9EA70 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -636,13 +625,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		731EFBEE1BD7DEBD00DFF4E0 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		734C7DDA1BB4C1DA0071678C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -832,15 +814,6 @@
 				732717221BAC8673003E0B68 /* GAITracker.h */,
 			);
 			name = GAI;
-			sourceTree = "<group>";
-		};
-		731EFBF21BD7DEBD00DFF4E0 /* DropbeatUITests */ = {
-			isa = PBXGroup;
-			children = (
-				731EFBF31BD7DEBD00DFF4E0 /* DropbeatUITests.swift */,
-				731EFBF51BD7DEBD00DFF4E0 /* Info.plist */,
-			);
-			path = DropbeatUITests;
 			sourceTree = "<group>";
 		};
 		731EFBFB1BD7E56200DFF4E0 /* GKImagePicker */ = {
@@ -1220,7 +1193,6 @@
 				FCD1DA841B04CCB200F9EA70 /* Dropbeat */,
 				7361FCE61B9F631100444179 /* Resources */,
 				FCD1DA851B04CCB200F9EA70 /* Supporting Files */,
-				731EFBF21BD7DEBD00DFF4E0 /* DropbeatUITests */,
 				FCD1DA831B04CCB200F9EA70 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -1230,7 +1202,6 @@
 			children = (
 				FCD1DA821B04CCB200F9EA70 /* labs.app */,
 				734C7DFF1BB4C1DA0071678C /* for test.app */,
-				731EFBF11BD7DEBD00DFF4E0 /* DropbeatUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1265,7 +1236,7 @@
 				7361FCCC1B9F457C00444179 /* Libraries */,
 				F98F65D2D15412F7828AF298 /* Frameworks */,
 				58BB0B121B122DCB00B07279 /* labs-Bridging-Header.h */,
-				FCD1DA861B04CCB200F9EA70 /* Info.plist */,
+				FCD1DA861B04CCB200F9EA70 /* Info-Dropbeat.plist */,
 				73338BA21BCC176E007A9D6C /* Info-SSIBAL.plist */,
 			);
 			name = "Supporting Files";
@@ -1275,24 +1246,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		731EFBF01BD7DEBD00DFF4E0 /* DropbeatUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 731EFBFA1BD7DEBD00DFF4E0 /* Build configuration list for PBXNativeTarget "DropbeatUITests" */;
-			buildPhases = (
-				731EFBED1BD7DEBD00DFF4E0 /* Sources */,
-				731EFBEE1BD7DEBD00DFF4E0 /* Frameworks */,
-				731EFBEF1BD7DEBD00DFF4E0 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				731EFBF71BD7DEBD00DFF4E0 /* PBXTargetDependency */,
-			);
-			name = DropbeatUITests;
-			productName = DropbeatUITests;
-			productReference = 731EFBF11BD7DEBD00DFF4E0 /* DropbeatUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 		734C7D6C1BB4C1DA0071678C /* for test */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 734C7DFC1BB4C1DA0071678C /* Build configuration list for PBXNativeTarget "for test" */;
@@ -1342,10 +1295,6 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = dropbeat;
 				TargetAttributes = {
-					731EFBF01BD7DEBD00DFF4E0 = {
-						CreatedOnToolsVersion = 7.0.1;
-						TestTargetID = FCD1DA811B04CCB200F9EA70;
-					};
 					734C7D6C1BB4C1DA0071678C = {
 						DevelopmentTeam = XGLQXMFR26;
 					};
@@ -1376,7 +1325,6 @@
 			targets = (
 				FCD1DA811B04CCB200F9EA70 /* labs */,
 				734C7D6C1BB4C1DA0071678C /* for test */,
-				731EFBF01BD7DEBD00DFF4E0 /* DropbeatUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1392,13 +1340,6 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
-		731EFBEF1BD7DEBD00DFF4E0 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		734C7DEB1BB4C1DA0071678C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1442,14 +1383,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		731EFBED1BD7DEBD00DFF4E0 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				731EFBF41BD7DEBD00DFF4E0 /* DropbeatUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		734C7D6D1BB4C1DA0071678C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1719,11 +1652,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		731EFBF71BD7DEBD00DFF4E0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = FCD1DA811B04CCB200F9EA70 /* labs */;
-			targetProxy = 731EFBF61BD7DEBD00DFF4E0 /* PBXContainerItemProxy */;
-		};
 		73A661A51BC9927900DD1179 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = LNPopupController;
@@ -1788,37 +1716,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		731EFBF81BD7DEBD00DFF4E0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = DropbeatUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.dropbeat.DropbeatUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = labs;
-				USES_XCTRUNNER = YES;
-			};
-			name = Debug;
-		};
-		731EFBF91BD7DEBD00DFF4E0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_NO_COMMON_BLOCKS = YES;
-				INFOPLIST_FILE = DropbeatUITests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = net.dropbeat.DropbeatUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = labs;
-				USES_XCTRUNNER = YES;
-			};
-			name = Release;
-		};
 		734C7DFD1BB4C1DA0071678C /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1974,7 +1871,7 @@
 					"$(PROJECT_DIR)/Libraries",
 					"$(PROJECT_DIR)/Libraries/Raygun4iOS",
 				);
-				INFOPLIST_FILE = labs/Info.plist;
+				INFOPLIST_FILE = "labs/Info-Dropbeat.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -2005,7 +1902,7 @@
 					"$(PROJECT_DIR)/Libraries",
 					"$(PROJECT_DIR)/Libraries/Raygun4iOS",
 				);
-				INFOPLIST_FILE = labs/Info.plist;
+				INFOPLIST_FILE = "labs/Info-Dropbeat.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
@@ -2026,15 +1923,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		731EFBFA1BD7DEBD00DFF4E0 /* Build configuration list for PBXNativeTarget "DropbeatUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				731EFBF81BD7DEBD00DFF4E0 /* Debug */,
-				731EFBF91BD7DEBD00DFF4E0 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		734C7DFC1BB4C1DA0071678C /* Build configuration list for PBXNativeTarget "for test" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

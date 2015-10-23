@@ -21,6 +21,7 @@ class BaseUser {
     var resourceName: String
     var image: String?
     var coverImage: String?
+    var aboutMe: String?
     
     private var _isFollowed: Bool?
     func isFollowed() -> Bool {
@@ -44,12 +45,13 @@ class BaseUser {
         self._isFollowed = nil
     }
     
-    init(userType: UserType, id: String? = nil, name: String, image: String?, coverImage: String? = nil, resourceName: String) {
+    init(userType: UserType, id: String? = nil, name: String, image: String?, coverImage: String? = nil, aboutMe: String? = nil,resourceName: String) {
         self.userType = userType
         self.id = id
         self.name = name
         self.image = image
         self.coverImage = coverImage
+        self.aboutMe = aboutMe
         self.resourceName = resourceName
     }
     
@@ -159,7 +161,6 @@ class User: BaseUser {
     var num_tracks: Int
     var num_following: Int
     var num_followers: Int
-    var aboutMe: String
     var tracks: [DropbeatTrack] = []
     var likes: [Like]?
     
@@ -172,7 +173,6 @@ class User: BaseUser {
         self.num_tracks = userJson["num_tracks"].intValue
         self.num_following = userJson["num_following"].intValue
         self.num_followers = userJson["num_followers"].intValue
-        self.aboutMe = userJson["description"].stringValue
         
         var fbId:String?
         if userJson["fb_id"].string != nil && userJson["fb_id"].stringValue.characters.count > 0 {
@@ -191,6 +191,7 @@ class User: BaseUser {
             name: userJson["nickname"].stringValue,
             image: profileImage,
             coverImage: userJson["profile_cover_image"].string,
+            aboutMe: userJson["description"].stringValue,
             resourceName: userJson["resource_name"].stringValue
         )
         
@@ -313,6 +314,7 @@ class Channel: BaseUser {
                 }
             }
         }
+        
         let resourceName = detail["resource_name"].stringValue
         let id = detail["channel_id"].stringValue
         
@@ -322,7 +324,14 @@ class Channel: BaseUser {
         self.genre = genreArray
         self.isBookmarked = false
         
-        super.init(userType: UserType.CHANNEL, id: id, name: name, image: thumbnail, coverImage: thumbnail, resourceName: resourceName)
+        super.init(
+            userType: UserType.CHANNEL,
+            id: id,
+            name: name,
+            image: thumbnail,
+            coverImage: thumbnail,
+            aboutMe: detail["channel_description"].string,
+            resourceName: resourceName)
     }
     
     static func parseChannelList(data: AnyObject) -> [Channel] {

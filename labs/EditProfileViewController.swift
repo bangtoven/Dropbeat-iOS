@@ -290,7 +290,7 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
                 style: .Destructive, handler: { (action) -> Void in
                 self.navigationController?.popViewControllerAnimated(true)
             }))
-            self.presentViewController(actionSheet, animated: true, completion: nil)
+            self.showDetailViewController(actionSheet, sender: sender)// presentViewController(actionSheet, animated: true, completion: nil)
         }
     }
     

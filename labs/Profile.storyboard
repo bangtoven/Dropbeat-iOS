@@ -93,7 +93,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" image="ic_header_dotdotdot_horizontal" id="A4Z-g0-obm">
                             <connections>
-                                <segue destination="BdV-AA-UMZ" kind="custom" identifier="ShowSettings" customClass="RBStoryboardPushSegue" id="3I1-S8-OZw"/>
+                                <action selector="moreAction:" destination="O7I-Zd-rw2" id="43h-aQ-7hn"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -102,6 +102,7 @@
                     <connections>
                         <outlet property="containerView" destination="auO-9J-wxQ" id="HB9-Fb-znr"/>
                         <outlet property="headerView" destination="q60-kv-KpD" id="BKH-Pn-QdG"/>
+                        <segue destination="BdV-AA-UMZ" kind="custom" identifier="ShowSettings" customClass="RBStoryboardPushSegue" id="iTT-98-t6f"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oGl-sG-Oui" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -215,7 +216,7 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Jungho jungho" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FkO-V7-6TM">
-                            <rect key="frame" x="100" y="92" width="121" height="22"/>
+                            <rect key="frame" x="100" y="92" width="120.5" height="22"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="22" id="YtU-Dg-dM7"/>
@@ -246,14 +247,14 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             </constraints>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Favorite genres" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="d25-qj-hfp">
-                            <rect key="frame" x="12" y="262" width="106" height="18"/>
+                            <rect key="frame" x="12" y="262" width="105.5" height="18"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jGf-w7-U4L">
-                            <rect key="frame" x="12" y="182" width="67" height="18"/>
+                            <rect key="frame" x="12" y="182" width="66.5" height="18"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
@@ -516,15 +517,17 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dvv-yY-0jh">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="bottom" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dvv-yY-0jh">
                             <rect key="frame" x="12" y="255" width="298" height="32"/>
                             <animations/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="W60-QC-Ysp"/>
                                 <constraint firstAttribute="width" constant="64" id="dq4-Ud-s7e"/>
                             </constraints>
-                            <state key="normal">
-                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <inset key="titleEdgeInsets" minX="0.0" minY="0.0" maxX="10" maxY="0.0"/>
+                            <state key="normal" title="......">
+                                <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <variation key="default">
@@ -590,7 +593,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     </connections>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-2705" y="1248"/>
+            <point key="canvasLocation" x="-2287" y="1540"/>
         </scene>
         <!--Track Sub View Controller-->
         <scene sceneID="uTn-Zq-McQ">
@@ -777,7 +780,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kgV-ih-hPd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3123" y="1498"/>
+            <point key="canvasLocation" x="-1869" y="1281"/>
         </scene>
         <!--Storyboard Link-->
         <scene sceneID="O5x-k0-Rmj">
@@ -811,7 +814,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rGu-rB-Fsz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2919" y="1717"/>
+            <point key="canvasLocation" x="-1480" y="1417"/>
         </scene>
         <!--Channel Sub View Controller-->
         <scene sceneID="bOq-ky-gkS">
@@ -1101,7 +1104,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xFM-ei-Azc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2705" y="1498"/>
+            <point key="canvasLocation" x="-1869" y="1540"/>
         </scene>
         <!--Follow Info Table View Controller-->
         <scene sceneID="z5Z-qg-Lbv">
@@ -1208,7 +1211,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="p5b-Xv-e8o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3123" y="1248"/>
+            <point key="canvasLocation" x="-2705" y="1540"/>
         </scene>
         <!--Favorite Genres-->
         <scene sceneID="7kG-Tq-P2k">
@@ -1380,7 +1383,7 @@ click below to discover your favorites</string>
                                         <rect key="frame" x="0.0" y="322" width="320" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CXO-Rc-ktN" id="dz0-4v-ZAn">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="45.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Progressive House" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4uB-VB-Hio">
@@ -1469,10 +1472,10 @@ click below to discover your favorites</string>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="image" rowHeight="140" id="6KP-ds-vBQ" customClass="EditImageTableViewCell" customModule="for_test" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="114" width="320" height="140"/>
+                                <rect key="frame" x="0.0" y="113.5" width="320" height="140"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6KP-ds-vBQ" id="IAV-OG-MIz">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="139"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="139.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_cover_big" translatesAutoresizingMaskIntoConstraints="NO" id="yG5-dT-TlU">
@@ -1541,10 +1544,10 @@ click below to discover your favorites</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="normalCell" id="p3P-zr-0sU">
-                                <rect key="frame" x="0.0" y="254" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="253.5" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p3P-zr-0sU" id="lpT-pY-biA">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <animations/>
                                 </tableViewCellContentView>
@@ -1861,7 +1864,7 @@ and let us know your favorite genre.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lga-ln-Ocf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2287" y="2472"/>
+            <point key="canvasLocation" x="-2312" y="2522"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Ivd-WF-wbI">
@@ -1925,7 +1928,7 @@ and let us know your favorite genre.</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pJv-XH-E2b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2287" y="1248"/>
+            <point key="canvasLocation" x="-1420" y="1218"/>
         </scene>
     </scenes>
     <resources>
@@ -1946,7 +1949,7 @@ and let us know your favorite genre.</string>
         <image name="sample_cover" width="225" height="225"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="gqp-zz-6K4"/>
+        <segue reference="iTT-98-t6f"/>
         <segue reference="oVv-0f-qoK"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>

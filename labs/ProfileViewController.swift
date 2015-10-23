@@ -80,6 +80,49 @@ class ProfileViewController: UserViewController {
         
     }
     
+    @IBAction func moreAction(sender: UIBarButtonItem) {
+        let actionSheet = UIAlertController(
+            title: nil,
+            message: nil,
+            preferredStyle: .ActionSheet)
+        actionSheet.addAction(UIAlertAction(
+            title: NSLocalizedString("Cancel", comment: "Cancel"),
+            style: .Cancel, handler: nil))
+        actionSheet.addAction(UIAlertAction(
+            title: "View as public",
+            style: .Default,
+            handler: { (action) -> Void in
+                let userVC = self.storyboard?.instantiateViewControllerWithIdentifier("UserViewController") as! UserViewController
+                userVC.resource = self.baseUser.resourceName
+                self.navigationController?.pushViewController(userVC, animated: true)
+        }))
+        actionSheet.addAction(UIAlertAction(
+            title: "Application info",
+            style: .Default,
+            handler: { (action) -> Void in
+                self.performSegueWithIdentifier("ShowSettings", sender: sender)
+        }))
+        actionSheet.addAction(UIAlertAction(
+            title: "Sign out",
+            style: .Destructive,
+            handler: { (action) -> Void in
+                ViewUtils.showConfirmAlert(self,
+                    title: NSLocalizedString("Are you sure?", comment:""),
+                    message: NSLocalizedString("Are you sure you want to sign out?", comment:""),
+                    positiveBtnText: NSLocalizedString("Sign out", comment:""), positiveBtnCallback: { () -> Void in
+                        let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
+                        keychainItemWrapper.resetKeychainItem()
+                        Account.account = nil
+
+                        DropbeatPlayer.defaultPlayer.stop()
+
+                        let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                        appDelegate.setRootViewToStartupViewController()
+                })
+        }))
+        self.showDetailViewController(actionSheet, sender: sender)//presentViewController(actionSheet, animated: true, completion: nil)
+    }
+    
     func updateLikeView() {
         print("like updated")
         if let viewControllers = self.viewControllers,

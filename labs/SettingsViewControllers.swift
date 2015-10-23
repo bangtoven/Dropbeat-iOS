@@ -19,14 +19,14 @@ class SettingsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        signoutBtn.hidden = true
+
         if Account.getCachedAccount() != nil {
             signinBtn.hidden = true
             signupBtn.hidden = true
-            signoutBtn.hidden = false
         } else {
             signinBtn.hidden = false
             signupBtn.hidden = false
-            signoutBtn.hidden = true
         }
         
         let verObject: AnyObject? = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"]
@@ -67,7 +67,7 @@ class SettingsViewController: UITableViewController {
             return 50
         }
         if Account.getCachedAccount() != nil {
-            return 50
+            return 0
         }
         return 126
     }

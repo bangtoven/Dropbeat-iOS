@@ -170,7 +170,7 @@
                                         <color key="sectionIndexTrackingBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <prototypes>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationLevel="1" indentationWidth="10" reuseIdentifier="SearchResultUserCell" rowHeight="76" id="2EW-GP-Mvu" customClass="SearchResultUserCell" customModule="for_test" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="50" width="320" height="76"/>
+                                                <rect key="frame" x="0.0" y="49.5" width="320" height="76"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2EW-GP-Mvu" id="yDc-D1-3hK">
                                                     <rect key="frame" x="0.0" y="0.0" width="320" height="76"/>
@@ -228,7 +228,7 @@
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="AddableTrackTableViewCell" rowHeight="76" id="eYx-8G-TaG" customClass="AddableTrackTableViewCell" customModule="for_test" customModuleProvider="target">
-                                                <rect key="frame" x="0.0" y="126" width="320" height="76"/>
+                                                <rect key="frame" x="0.0" y="125.5" width="320" height="76"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eYx-8G-TaG" id="HHu-OI-Pfo">
                                                     <rect key="frame" x="0.0" y="0.0" width="320" height="76"/>
@@ -1109,7 +1109,7 @@
         <image name="tabbar_search" width="22" height="22"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="IFq-rG-6rT"/>
+        <segue reference="Qeg-fn-nRN"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
 </document>

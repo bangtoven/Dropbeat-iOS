@@ -24,7 +24,7 @@ extension UITableView {
 }
 
 extension UIView {
-    func setSpinEnabled(enable:Bool = true, duration: CFTimeInterval = 1.0) {
+    func setSpinEnabled(enable: Bool = true, duration: CFTimeInterval = 1.0) {
         self.layer.removeAllAnimations()
         
         if enable {
@@ -57,8 +57,8 @@ extension UIColor {
         self.init(red:(netHex >> 16) & 0xff, green:(netHex >> 8) & 0xff, blue:netHex & 0xff)
     }
     
-    static func dropbeatColor(alpha: CGFloat = 1.0, saturation: CGFloat = 1.0) -> UIColor {
-        var c = UIColor(netHex:0x982EF4)
+    static func dropbeatColor(alpha alpha: CGFloat = 1.0, saturation: CGFloat = 1.0, light: Bool = false) -> UIColor {
+        var c = light ? UIColor(netHex:0xcd85ff) : UIColor(netHex:0x982EF4)
         if alpha != 1.0 || saturation != 1.0 {
             c = UIColor(baseColor: c, alpha: alpha, saturation: saturation)
         }

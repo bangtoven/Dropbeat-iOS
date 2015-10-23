@@ -430,6 +430,7 @@ const NSInteger LNBarStyleInherit = -1;
 	
 	[_leftBarButtonItems enumerateObjectsUsingBlock:^(UIBarButtonItem * _Nonnull barButtonItem, NSUInteger idx, BOOL * _Nonnull stop) {
 		[items addObject:barButtonItem];
+        _progressView.tintColor = barButtonItem.tintColor;
 		
 		if(idx != _leftBarButtonItems.count - 1)
 		{

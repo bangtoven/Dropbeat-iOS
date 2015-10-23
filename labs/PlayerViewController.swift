@@ -58,8 +58,9 @@ class PlayerViewController: GAITrackedViewController {
         super.init(coder: aDecoder)
         
         popupPlayButton = UIBarButtonItem(image: UIImage(named: "popup_big_play"), style: .Plain, target: self, action: "playBtnClicked:")
+        popupPlayButton.tintColor = UIColor.dropbeatColor()
         popupPauseButton = UIBarButtonItem(image: UIImage(named: "popup_big_pause"), style: .Plain, target: self, action: "pauseBtnClicked:")
-//        popupNextButton = UIBarButtonItem(image: UIImage(named: "popup_next"), style: .Plain, target: self, action: "onNextBtnClicked:")
+        popupPauseButton.tintColor = UIColor.dropbeatColor()
         
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
         activityIndicator.startAnimating()
@@ -68,7 +69,6 @@ class PlayerViewController: GAITrackedViewController {
         popupLoadingView = UIBarButtonItem(customView: activityIndicator)
         
         self.popupItem.leftBarButtonItems = [popupLoadingView]
-//        self.popupItem.rightBarButtonItems = [UIBarButtonItem(image: UIImage(named: "popup_palylist"), style: .Plain, target: self, action: "onPlaylistBtnClicked:")]
     }
     
     override func viewDidLoad() {

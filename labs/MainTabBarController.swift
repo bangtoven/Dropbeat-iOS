@@ -32,7 +32,7 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.tabBar.tintColor = UIColor.dropbeatColor()
+        self.tabBar.tintColor = UIColor.dropbeatColor(light: true)
         self.view.tintColor = UIColor.dropbeatColor()
 
         let navBar = UINavigationBar.appearance()

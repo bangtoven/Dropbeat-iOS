@@ -22,6 +22,8 @@ class TutorialViewController: FBSigninableViewController, EAIntroDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
         
+        self.title = " " 
+        
         if introView.hidden {
             introView.hidden = false
 

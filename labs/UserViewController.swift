@@ -430,9 +430,9 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
                 navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor()]
             case 0.5..<0.6:
                 let r = 6 - 10*ratio
-                navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(r, saturation: r)]
+                navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(alpha: r, saturation: r)]
             default:
-                navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(0, saturation: 0)]
+                navBar.titleTextAttributes = [NSForegroundColorAttributeName:UIColor.dropbeatColor(alpha: 0, saturation: 0)]
             }
         }
     }

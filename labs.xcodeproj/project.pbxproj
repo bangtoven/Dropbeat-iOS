@@ -966,6 +966,7 @@
 				FC0D9D581B0CC4DE00E048CC /* Constants.swift */,
 				FC766BEE1B050D51006FD4FB /* NetworkPath.swift */,
 				FC766BF41B051AA4006FD4FB /* NetworkRequests.swift */,
+				58C3E7A21B8A40C300822842 /* AddableTrackListViewController.swift */,
 			);
 			name = "Model & etc";
 			sourceTree = "<group>";
@@ -1017,6 +1018,7 @@
 		737FAB171BCAAFAD00C1347B /* Launch */ = {
 			isa = PBXGroup;
 			children = (
+				FCD1DA871B04CCB200F9EA70 /* AppDelegate.swift */,
 				737FAB181BCAAFC700C1347B /* Launch.storyboard */,
 				586D166D1B0B972400C5147F /* StartupViewController.swift */,
 				73A3559E1BCD97EB0002C00D /* TutorialViewController.swift */,
@@ -1209,8 +1211,6 @@
 		FCD1DA841B04CCB200F9EA70 /* Dropbeat */ = {
 			isa = PBXGroup;
 			children = (
-				FCD1DA871B04CCB200F9EA70 /* AppDelegate.swift */,
-				58C3E7A21B8A40C300822842 /* AddableTrackListViewController.swift */,
 				7361FCE51B9F628100444179 /* Model & etc */,
 				737FAB171BCAAFAD00C1347B /* Launch */,
 				7361FCD81B9F58B900444179 /* Main */,

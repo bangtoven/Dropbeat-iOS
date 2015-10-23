@@ -225,7 +225,7 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
                 self.viewControllers = subViewArr
             }
         case let channel as Channel:
-            header.aboutMeLabel.text = channel.genre.joinWithSeparator(", ")
+            header.aboutMeLabel.text = channel.aboutMe ?? channel.genre.joinWithSeparator(", ")
             if header.aboutMeLabel.text?.length == 0 {
                 header.aboutMeLabel.text = "\n"
             }
@@ -281,9 +281,9 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
         }
         
         if let showMoreButton = header.showMoreButton {
+            showMoreButton.hidden = true
             let descriptionHeight = self.calculateDescriptionContentSize()
             if descriptionHeight <= 32 {
-                showMoreButton.hidden = true
                 self.headerView!.maximumOfHeight -= (32-descriptionHeight)
                 header.labelHeightConstraint.constant = descriptionHeight
             } else {
@@ -294,6 +294,14 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
                 }
                 if descriptionHeight > 64 {
                     showMoreButton.hidden = false
+                    
+                    let gradient = GradientView(frame: showMoreButton.bounds)
+                    print(gradient.frame)
+                    gradient.opaque = false
+                    gradient.reverse = true
+                    gradient.fillColor = UIColor.whiteColor()
+                    gradient.userInteractionEnabled = false
+                    showMoreButton.addSubview(gradient)
                 }
             }
         }
@@ -378,7 +386,7 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
         }   
     }
     
-    @IBAction func showMoreAction(sender: AnyObject) {
+    @IBAction func showMoreAction(sender: UIView) {
         let header = self.headerView as! UserHeaderView
         let label = header.aboutMeLabel
         let currentHeight = label.frame.height
@@ -390,6 +398,7 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
             header.labelHeightConstraint.constant = contentHeight
             self.selectedScrollView.setContentOffset(CGPointMake(0, self.selectedScrollView.contentOffset.y-diff), animated: false)
             self.layoutViewControllers()
+            sender.hidden = true
         }
     }
     

@@ -144,9 +144,10 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
             Account.getAccountWithCompletionHandler({(account:Account?, error:NSError?) -> Void in
                 if (error != nil) {
                     var message:String?
-                    if (error != nil && error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                            message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
+                    if (error != nil &&
+                        error!.domain == NSURLErrorDomain &&
+                        (error!.code == NSURLErrorNotConnectedToInternet || error!.code == NSURLErrorTimedOut)) {
+                            message = NSLocalizedString("Please check your internet connection. \nLet's see if we can fix this together. Cross your fingers and hit the Retry.", comment:"")
                     } else {
                         message = "Something went wrong, but Dropbeat is so awesome that you should give it a try. Cross your fingers, hit the retry, and our app shall be healed."//NSLocalizedString("Failed to fetch user info", comment:"")
                         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)

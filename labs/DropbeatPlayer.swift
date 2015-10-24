@@ -175,6 +175,8 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             return
         }
         
+        self.player.clearQueue()
+
         if next.type == .YOUTUBE {
             next.getYouTubeStreamURL() {
                 (streamURL, duration, error) -> Void in
@@ -186,13 +188,11 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
                     return
                 }
                 
-                self.player.clearQueue()
                 self.player.queue(streamURL!, withQueueItemId: next.id, duration: duration!)
                 
                 print("Enqueued track: \(next.title)")
             }
         } else {
-            self.player.clearQueue()
             self.player.queue(next.streamUrl, withQueueItemId: next.id)
             
             print("Enqueued track: \(next.title)")
@@ -558,10 +558,10 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         self.stateChangeCallCounter++
         
         dispatch_after(
-            dispatch_time(DISPATCH_TIME_NOW, Int64(1 * NSEC_PER_SEC)),
+            dispatch_time(DISPATCH_TIME_NOW, Int64(0.75 * Double(NSEC_PER_SEC))),
             dispatch_get_main_queue()) { () in
+                
                 if self.stateChangeCallCounter == 1 {
-                    self.player.clearQueue()
                     self.enqueueNextTrack()
                 }
                 

@@ -186,11 +186,13 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
                     return
                 }
                 
+                self.player.clearQueue()
                 self.player.queue(streamURL!, withQueueItemId: next.id, duration: duration!)
                 
                 print("Enqueued track: \(next.title)")
             }
         } else {
+            self.player.clearQueue()
             self.player.queue(next.streamUrl, withQueueItemId: next.id)
             
             print("Enqueued track: \(next.title)")
@@ -550,38 +552,31 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     var repeatState = RepeatState.NOT_REPEAT
     var shuffleState = ShuffleState.NOT_SHUFFLE
     
-    var stateChangedCallback: (Void->Void)?
+    private var stateChangeCallCounter = 0
     
-    func changeRepeatState(callback: (Void->Void)) {
+    private func changeState() {
+        self.stateChangeCallCounter++
+        
+        dispatch_after(
+            dispatch_time(DISPATCH_TIME_NOW, Int64(1 * NSEC_PER_SEC)),
+            dispatch_get_main_queue()) { () in
+                if self.stateChangeCallCounter == 1 {
+                    self.player.clearQueue()
+                    self.enqueueNextTrack()
+                }
+                
+                self.stateChangeCallCounter--
+        }
+    }
+    
+    func changeRepeatState() {
         repeatState = repeatState.next()
-        self.stateChangedHandler(callback)
+        self.changeState()
     }
     
-    func changeShuffleState(callback: (Void->Void)) {
+    func changeShuffleState() {
         shuffleState = shuffleState.toggle()
-        self.stateChangedHandler(callback)
-    }
-    
-    private func stateChangedHandler(callback: (Void->Void)) {
-        if self.player.pendingQueueCount != 0 {
-            self.player.clearQueue()
-            self.stateChangedCallback = callback
-        } else {
-            self.player.clearQueue()
-            print("Send state-changed-callback right back.")
-            self.enqueueNextTrack()
-            callback()
-            self.stateChangedCallback = nil
-        }
-    }
-    
-    func audioPlayer(audioPlayer: STKAudioPlayer!, didCancelQueuedItems queuedItems: [AnyObject]!) {
-        if let callback = self.stateChangedCallback {
-            print("Send state-changed-callback after clearing queue.")
-            self.enqueueNextTrack()
-            callback()
-            self.stateChangedCallback = nil
-        }
+        self.changeState()
     }
 }
 

@@ -345,23 +345,14 @@ class PlayerViewController: GAITrackedViewController {
         self.player.seekTo(sender.value)
     }
     
-    private var stateChangeTimer: NSTimer?
-    
     @IBAction func onRepeatBtnClicked(sender: UIButton) {
-        
-        sender.enabled = false
-        self.player.changeRepeatState() {
-            sender.enabled = true
-            self.updateRepeatView()
-        }
+        self.player.changeRepeatState()
+        updateRepeatView()
     }
     
     @IBAction func onShuffleBtnClicked(sender: UIButton) {
-        sender.enabled = false
-        self.player.changeShuffleState() {
-            sender.enabled = true
-            self.updateShuffleView()
-        }
+        self.player.changeShuffleState()
+        updateShuffleView()
     }
     
     @IBAction func onPlaylistBtnClicked(sender: UIView) {

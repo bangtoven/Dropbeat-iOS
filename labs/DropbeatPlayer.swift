@@ -332,7 +332,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         self.player.resume()
     }
     
-    func pause() {
+    func pause(internally internally: Bool = false) {
         self.player.pause()
     }
     
@@ -358,17 +358,18 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         switch type {
         case .Began:
             print("Audio session interruption begins.")
-            self.pause()
+            self.pause(internally: true)
             self.deactivateAudioSession()
         case .Ended:
             print("Audio session interruption ended.")
-            if let option = userInfo[AVAudioSessionInterruptionOptionKey] as? NSNumber
-                where .ShouldResume == AVAudioSessionInterruptionOptions(rawValue: option.unsignedIntegerValue) {
-                    print("Resume after interruption.")
-                    self.resume()
-            } else {
-                self.activateAudioSession()
-            }
+            self.activateAudioSession()
+//            if let option = userInfo[AVAudioSessionInterruptionOptionKey] as? NSNumber
+//                where .ShouldResume == AVAudioSessionInterruptionOptions(rawValue: option.unsignedIntegerValue) {
+//                    print("Resume after interruption.")
+//                    self.resume()
+//            } else {
+//                self.activateAudioSession()
+//            }
         }
     }
     
@@ -383,7 +384,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         
         switch changeReason {
         case .OldDeviceUnavailable:
-            self.pause()
+            self.pause(internally: true)
         default:
             break
         }
@@ -514,13 +515,22 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         case .RemoteControlPlay:
             self.resume()
         case .RemoteControlPause:
-            self.pause()
+            self.pause(internally: true)
         case .RemoteControlStop:
             self.stop()
         case .RemoteControlPreviousTrack:
             self.prev()
         case .RemoteControlNextTrack:
             self.next()
+        case .RemoteControlTogglePlayPause:
+            switch self.state {
+            case .Playing:
+                self.pause(internally: true)
+            case .Paused:
+                self.resume()
+            default:
+                break
+            }
         default:
             break
         }
@@ -540,7 +550,7 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             trackInfo[MPMediaItemPropertyArtwork] = albumArt
         }
         trackInfo[MPMediaItemPropertyTitle] = track.title
-        trackInfo[MPMediaItemPropertyArtist] = track.user?.name ?? ""
+        trackInfo[MPMediaItemPropertyArtist] = track.user?.name ?? "Dropbeat"
         trackInfo[MPMediaItemPropertyPlaybackDuration] = self.duration
         trackInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = self.progress
         trackInfo[MPNowPlayingInfoPropertyPlaybackRate] = self.state == .Playing ? 1.0 : 0.0

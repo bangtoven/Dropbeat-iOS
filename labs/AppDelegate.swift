@@ -21,55 +21,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
-    var networkStatus = NetworkStatus.NotReachable
-//    var shouldInitializeQualityState = true
-//    var futureQuality: QualityState?
     var reachability: Reachability?
+    var networkStatus = NetworkStatus.NotReachable
     
     var appLink: AppLinkParam?
-    
-    func setRootViewToStartupViewController () {
-        if let old = self.window?.rootViewController {
-            old.view.removeFromSuperview()
-            old.removeFromParentViewController()
-            self.window?.rootViewController = nil
-        }
-        
-        let storyboard = UIStoryboard(name: "Launch", bundle: nil)
-        let startupVC = storyboard.instantiateInitialViewController()
-        self.window?.rootViewController = startupVC
-    }
-    
-    func setRootViewToMainTabBarController () {
-        if let old = self.window?.rootViewController {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let main = storyboard.instantiateInitialViewController()
-            
-            UIView.transitionFromView(old.view, toView: main!.view, duration: 0.2, options: UIViewAnimationOptions.TransitionCrossDissolve, completion: { (finished) -> Void in
-                self.window?.rootViewController = nil
-                self.window?.rootViewController = main
-                old.view.removeFromSuperview()
-                old.removeFromParentViewController()
-            })
-        } else {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let main = storyboard.instantiateInitialViewController()
-            self.window?.rootViewController = main
-        }
-    }
-    
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        super.touchesBegan(touches, withEvent: event)
-        let touch = event!.allTouches()?.first
-        let location = touch!.locationInView(self.window)
-        let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
-        if (CGRectContainsPoint(statusBarFrame, location)) {
-            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.statusBarTapped, object: nil)
-        }
-    }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        
         UINavigationBar.appearance().tintColor = UIColor.dropbeatColor()
         self.window?.backgroundColor = UIColor.whiteColor()
         
@@ -79,13 +36,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             handleCustomURL(fromUrl)
         }
         
+        let settings: UIUserNotificationSettings = UIUserNotificationSettings( forTypes: [.Badge, .Alert, .Sound], categories: nil )
+        application.registerUserNotificationSettings( settings )
+        application.registerForRemoteNotifications()
+        
         // GA settings
         let gai = GAI.sharedInstance()
         // optional
         gai.trackUncaughtExceptions = true
         gai.dispatchInterval = 20
         gai.logger.logLevel = GAILogLevel.Error
-        
         gai.trackerWithTrackingId("UA-49094112-1")
         
         reachability = Reachability(hostName: "www.google.com")
@@ -111,10 +71,75 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         FBSDKAppEvents.activateApp()
     }
+}
+
+extension AppDelegate {
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+        completionHandler(UIBackgroundFetchResult.NewData)
+        
+        print(userInfo)
+    }
     
+    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        let characterSet: NSCharacterSet = NSCharacterSet( charactersInString: "<>" )
+        
+        let deviceTokenString: String = ( deviceToken.description as NSString )
+            .stringByTrimmingCharactersInSet( characterSet )
+            .stringByReplacingOccurrencesOfString( " ", withString: "" ) as String
+        
+        print("Registered device token: \(deviceTokenString)")
+    }
+    
+    func application( application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError ) {
+        print(error.localizedDescription)
+    }
+}
+
+extension AppDelegate {
+    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+        handleCustomURL(url)
+        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+    }
+    
+    func handleCustomURL(url:NSURL) {
+        if url.scheme == ExternalUrlKey.scheme && url.host == ExternalUrlKey.defaultIdentifier {
+            var param: AppLinkParam?
+            
+            if let query = url.getKeyVals() where query.count == 1 {
+                if let sharedTrackUid = query["track"] {
+                    param = .SHARED_TRACK(sharedTrackUid)
+                } else if let sharedPlaylistUid = query["playlist"] {
+                    param = .SHARED_PLAYLIST(sharedPlaylistUid)
+                }
+            } else {
+                var components = url.pathComponents!
+                switch components.count {
+                case 3:
+                    if let user = components.popLast() {
+                        param = .USER(user)
+                    }
+                case 4:
+                    if let track = components.popLast(), user = components.popLast() {
+                        param = AppLinkParam.USER_TRACK(user: user, track: track)
+                    }
+                default:
+                    break
+                }
+            }
+            
+            if param != nil {
+                self.appLink = param
+                NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.fromAppLink, object: nil)
+            } else {
+                print("invalid custom url: \(url)")
+            }
+        }
+    }
+}
+
+extension AppDelegate {
     func loadAccountInfo() {
         Account.loadLocation { (dict) -> Void in }
         
@@ -156,65 +181,49 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
-        handleCustomURL(url)
-        return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
-    }
-    
-    func handleCustomURL(url:NSURL) {
-        if url.scheme == ExternalUrlKey.scheme && url.host == ExternalUrlKey.defaultIdentifier {
-            var param: AppLinkParam?
-
-            if let query = url.getKeyVals() where query.count == 1 {
-                if let sharedTrackUid = query["track"] {
-                    param = .SHARED_TRACK(sharedTrackUid)
-                } else if let sharedPlaylistUid = query["playlist"] {
-                    param = .SHARED_PLAYLIST(sharedPlaylistUid)
-                }
-            } else {
-                var components = url.pathComponents!
-                switch components.count {
-                case 3:
-                    if let user = components.popLast() {
-                        param = .USER(user)
-                    }
-                case 4:
-                    if let track = components.popLast(), user = components.popLast() {
-                        param = AppLinkParam.USER_TRACK(user: user, track: track)
-                    }
-                default:
-                    break
-                }
-            }
-            
-            if param != nil {
-                self.appLink = param
-                NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.fromAppLink, object: nil)
-            } else {
-                print("invalid custom url: \(url)")
-            }
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        super.touchesBegan(touches, withEvent: event)
+        let touch = event!.allTouches()?.first
+        let location = touch!.locationInView(self.window)
+        let statusBarFrame = UIApplication.sharedApplication().statusBarFrame
+        if (CGRectContainsPoint(statusBarFrame, location)) {
+            NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.statusBarTapped, object: nil)
         }
     }
     
-    func resetAppToFirstController() {
-        let mainStoryboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let startupViewController = mainStoryboard.instantiateViewControllerWithIdentifier("StartupViewController") as! StartupViewController
-        self.window!.rootViewController = startupViewController
+    func setRootViewToStartupViewController () {
+        if let old = self.window?.rootViewController {
+            old.view.removeFromSuperview()
+            old.removeFromParentViewController()
+            self.window?.rootViewController = nil
+        }
+        
+        let storyboard = UIStoryboard(name: "Launch", bundle: nil)
+        let startupVC = storyboard.instantiateInitialViewController()
+        self.window?.rootViewController = startupVC
     }
+    
+    func setRootViewToMainTabBarController () {
+        if let old = self.window?.rootViewController {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let main = storyboard.instantiateInitialViewController()
+            
+            UIView.transitionFromView(old.view, toView: main!.view, duration: 0.2, options: UIViewAnimationOptions.TransitionCrossDissolve, completion: { (finished) -> Void in
+                self.window?.rootViewController = nil
+                self.window?.rootViewController = main
+                old.view.removeFromSuperview()
+                old.removeFromParentViewController()
+            })
+        } else {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let main = storyboard.instantiateInitialViewController()
+            self.window?.rootViewController = main
+        }
+    }
+    
     
     func networkReachabilityChanged (noti: NSNotification) {
         networkStatus = reachability!.currentReachabilityStatus()
-        
-//        if (networkStatus != .NotReachable) {
-//            let quality: QualityState = (networkStatus == .ReachableViaWiFi) ? .HQ : .LQ
-//            if (shouldInitializeQualityState || DropbeatPlayer.defaultPlayer.state == .Stopped) {
-//                shouldInitializeQualityState = false
-//                DropbeatPlayer.defaultPlayer.qualityState = quality
-//            } else {
-//                futureQuality = quality
-//            }
-//        }
-//        NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.networkStatusChanged, object: nil)
         
         switch (networkStatus) {
         case .NotReachable:
@@ -225,6 +234,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("networkReachability: ReachableViaWWAN")
         }
     }
-    
 }
 

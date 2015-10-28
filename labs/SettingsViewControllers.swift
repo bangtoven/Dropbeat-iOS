@@ -29,7 +29,7 @@ class SettingsViewController: UITableViewController {
             signupBtn.hidden = false
         }
         
-        let verObject: AnyObject? = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"]
+        let verObject: AnyObject? = NSBundle.mainBundle().infoDictionary?["CFBundleVersion"]
         versionView.text = verObject as? String
 
         // Do any additional setup after loading the view.

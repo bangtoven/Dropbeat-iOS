@@ -9,7 +9,7 @@ enum HostType {
     case Coroutine
     case Monocheese
 }
-let hostType: HostType = .Dropbeat
+let hostType: HostType = .Monocheese
 
 extension ApiPath {
     static let hostV2 = host + "v2/"
@@ -25,7 +25,7 @@ public class ApiPath {
         case .Coroutine:
             return "http://spark.coroutine.io/api/"
         case .Monocheese:
-            return "http://monocheese.iptime.org:19030/api/"
+            return "http://172.30.1.4:8000/api/"
         }
     }
     static let hostV1 = host + "v1/"
@@ -53,6 +53,8 @@ public class ApiPath {
     static let userChangeAboutMe = user + "change_desc/"
     static let userChangeProfileImage = user + "change_profile_img/"
     static let userChangeCoverImage = user + "change_profile_cover_img/"
+    
+    static let userRegisterDeviceID = user + "device_id/"
     
     // Playlist
     static let playlist = hostV1 + "playlist/"

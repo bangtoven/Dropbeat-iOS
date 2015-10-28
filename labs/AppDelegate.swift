@@ -36,10 +36,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             handleCustomURL(fromUrl)
         }
         
-        let settings: UIUserNotificationSettings = UIUserNotificationSettings( forTypes: [.Badge, .Alert, .Sound], categories: nil )
-        application.registerUserNotificationSettings( settings )
-        application.registerForRemoteNotifications()
-        
         // GA settings
         let gai = GAI.sharedInstance()
         // optional
@@ -54,6 +50,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         reachability!.startNotifier()
         
         Raygun.sharedReporterWithApiKey("5vjswgUxxTkQxkoeNzkJeg==")
+        
+        // Push Notification
+        let settings: UIUserNotificationSettings = UIUserNotificationSettings( forTypes: [.Badge, .Alert, .Sound], categories: nil )
+        application.registerUserNotificationSettings( settings )
+        application.registerForRemoteNotifications()
         
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
@@ -90,6 +91,7 @@ extension AppDelegate {
             .stringByReplacingOccurrencesOfString( " ", withString: "" ) as String
         
         print("Registered device token: \(deviceTokenString)")
+        Account.deviceID = deviceTokenString
     }
     
     func application( application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError ) {

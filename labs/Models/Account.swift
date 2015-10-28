@@ -14,6 +14,19 @@ class Account {
     var likes = [Like]()
     var favoriteGenreIds = Set<String>()
     var following = [BaseUser]()
+    
+    static var deviceID: String!
+    func registerDeviceID(callback:((error: NSError?) -> Void)?) {
+        Requests.sendPost(ApiPath.userRegisterDeviceID, params: ["id":Account.deviceID ?? "asdfasdf"], auth: true) { (req, resp, result, error) -> Void in
+            if error == nil {
+                print(JSON(result!))
+                callback?(error: nil)
+            } else {
+                print(error!)
+                callback?(error: error!)
+            }
+        }
+    }
 
     init(token:String, user:User?) {
         self.user = user
@@ -77,6 +90,9 @@ class Account {
                 self.account!.favoriteGenreIds.insert(favoriteId)
             }
             
+            self.account?.registerDeviceID({ (error) -> Void in
+                
+            })
             handler(account:self.account, error: nil)
         }
         

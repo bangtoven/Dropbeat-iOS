@@ -48,7 +48,11 @@ extension UIImageView {
             let lowUrlString = "http://img.youtube.com/vi/\(track.id)/mqdefault.jpg"
             let highUrlString = "http://img.youtube.com/vi/\(track.id)/sddefault.jpg"
             
-            func cropImage16_9(image: UIImage) -> UIImage {
+            func cropImage16_9(_image: UIImage?) -> UIImage? {
+                guard let image = _image else {
+                    return nil
+                }
+                
                 let newHeight = image.size.width * 9/16
                 let rect = CGRectMake(
                     0, 0.5 * (image.size.height - newHeight),
@@ -66,7 +70,7 @@ extension UIImageView {
                 self.sd_setImageWithURL(NSURL(string: urlString), placeholderImage: placeHolder) {
                     (image, error, cacheType, imageURL) -> Void in
                     
-                    self.image = cropImage16_9(image)
+                    self.image = (image != nil) ? cropImage16_9(image) : placeHolder
                 }
             }
             else {

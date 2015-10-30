@@ -144,13 +144,14 @@ class ViewUtils {
     }
     
     static func showTextInputAlert(viewController:UIViewController,
-            title:String, message:String, placeholder:String,
+        title:String, message:String, placeholder:String, text: String? = nil,
             positiveBtnText:String=NSLocalizedString("Submit", comment:""), positiveBtnCallback: (result:String) -> Void,
             negativeBtnText:String=NSLocalizedString("Cancel", comment:""), negativeBtnCallback: (() -> Void)?=nil) {
     
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
             alert.addTextFieldWithConfigurationHandler({ (textField: UITextField) in
                 textField.placeholder = placeholder
+                textField.text = text
             })
             alert.addAction(UIAlertAction(title: negativeBtnText, style: UIAlertActionStyle.Default,
                 handler:{ (action:UIAlertAction!) -> Void in

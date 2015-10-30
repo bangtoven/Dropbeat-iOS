@@ -8,6 +8,10 @@
 
 import UIKit
 
+let PlaylistErrorDomain = "PlaylistErrorDomain"
+let PlaylistAlreadyContainsTrackError = -1
+let PlaylistImportFailedError = -2
+
 enum PlaylistType {
     case EXTERNAL
     case SHARED
@@ -23,8 +27,9 @@ extension Playlist {
     }
 }
 
-let PlaylistErrorDomain = "PlaylistErrorDomain"
-let PlaylistAlreadyContainsTrackError = -1
+func trackToDict(t: Track) -> [String:AnyObject] {
+    return ["title": t.title, "id": t.id, "type": t.type.rawValue]
+}
 
 class Playlist {
     static var allPlaylists = [Playlist]()
@@ -98,10 +103,6 @@ class Playlist {
         return parsePlaylist(json["playlist"])
     }
     
-    func trackToDict(t: Track) -> [String:AnyObject] {
-        return ["title": t.title, "id": t.id, "type": t.type.rawValue]
-    }
-    
     func toJson() -> [String:AnyObject] {
         var playlist: [String:AnyObject] = [
             "id": self.id,
@@ -171,6 +172,46 @@ class Playlist {
                 self.tracks.removeAtIndex(index)
             }
             afterDelete(error: nil)
+        }
+    }
+    
+    func setTracks(newTracks: [Track], callback: (error:NSError?) -> Void) {
+        let newTracksDict = newTracks.map(trackToDict)
+        
+        Requests.setPlaylist(self.id, data: newTracksDict) { (request, response, result, error) -> Void in
+            if (error != nil) {
+                callback(error: error)
+                return
+            }
+            
+            self.tracks = newTracks
+            callback(error: nil)
+        }
+    }
+    
+    static func importPlaylist(playlist:Playlist, callback: (playlist:Playlist?, error:NSError?) -> Void) {
+        
+        Requests.createPlaylist(playlist.name) { (req, resp, result, error) -> Void in
+            if (error != nil || result == nil) {
+                callback(playlist:nil, error: error != nil ? error :
+                    NSError(domain: PlaylistErrorDomain, code: PlaylistImportFailedError, userInfo: nil))
+                return
+            }
+            
+            let importedPlaylist = Playlist.parsePlaylist(JSON(result!)["obj"])
+            importedPlaylist.tracks = playlist.tracks
+            let tracksDict = importedPlaylist.tracks.map(trackToDict)
+            
+            Requests.setPlaylist(importedPlaylist.id, data: tracksDict) { (req, resp, result, error) -> Void in
+                if (result == nil || error != nil || !(JSON(result!)["success"].bool ?? false)) {
+                    Requests.deletePlaylist(importedPlaylist.id, respCb: Requests.EMPTY_RESPONSE_CALLBACK)
+                    callback(playlist:nil, error: NSError(domain: PlaylistErrorDomain, code: PlaylistImportFailedError, userInfo: ["message":"Failed to save playlist"]))
+                    return
+                }
+                
+                Playlist.allPlaylists.append(importedPlaylist)
+                callback(playlist:importedPlaylist, error:nil)
+            }
         }
     }
 }

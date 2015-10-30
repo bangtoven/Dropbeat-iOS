@@ -27,8 +27,8 @@ class PlaylistSelectViewController: PlaylistListTableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = super.tableView(tableView, cellForRowAtIndexPath: indexPath)
-        cell.accessoryType = .None
+        let cell = super.tableView(tableView, cellForRowAtIndexPath: indexPath) as! PlaylistTableViewCell
+        cell.playButton.hidden = true
         return cell
     }
     

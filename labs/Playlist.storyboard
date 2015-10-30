@@ -16,11 +16,11 @@
                         <animations/>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="PlaylistTableViewCell" rowHeight="50" id="gXU-C3-H5e" customClass="PlaylistTableViewCell" customModule="for_test" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="PlaylistTableViewCell" rowHeight="50" id="gXU-C3-H5e" customClass="PlaylistTableViewCell" customModule="for_test" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="114" width="320" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gXU-C3-H5e" id="c51-mM-Kfp">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="49"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playlist" highlightedImage="ic_playlist_selected" translatesAutoresizingMaskIntoConstraints="NO" id="2Kt-WW-Uqa">
@@ -39,7 +39,7 @@
                                             <color key="highlightedColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pIi-Ow-VWl">
-                                            <rect key="frame" x="282" y="10" width="30" height="30"/>
+                                            <rect key="frame" x="249" y="10" width="30" height="30"/>
                                             <animations/>
                                             <state key="normal" image="ic_play_btn"/>
                                             <connections>
@@ -159,11 +159,11 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="PlaylistTableViewCell" rowHeight="50" id="Ufm-8w-p6B" customClass="PlaylistTableViewCell" customModule="for_test" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="0.0" shouldIndentWhileEditing="NO" reuseIdentifier="PlaylistTableViewCell" rowHeight="50" id="Ufm-8w-p6B" customClass="PlaylistTableViewCell" customModule="for_test" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="94" width="375" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ufm-8w-p6B" id="bjF-aw-wbB">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="342" height="49"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_playlist" highlightedImage="ic_playlist_selected" translatesAutoresizingMaskIntoConstraints="NO" id="KDh-WJ-8p0">
@@ -182,7 +182,7 @@
                                             <color key="highlightedColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
                                         </label>
                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qlb-fi-ncI">
-                                            <rect key="frame" x="337" y="10" width="30" height="30"/>
+                                            <rect key="frame" x="304" y="10" width="30" height="30"/>
                                             <animations/>
                                             <state key="normal" image="ic_play_btn"/>
                                             <connections>
@@ -231,59 +231,32 @@
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dZf-ss-iss" userLabel="PlaylistInfo">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                <subviews>
-                                    <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l5k-JU-wfV">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                        <animations/>
-                                    </navigationBar>
-                                    <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UQr-uF-8vN">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                        <animations/>
-                                        <items>
-                                            <barButtonItem image="ic_check_all" id="l07-Rx-tvU"/>
-                                            <barButtonItem image="ic_delete_row" id="sCm-Sq-ldf"/>
-                                            <barButtonItem style="plain" systemItem="flexibleSpace" id="nTt-Tv-phS"/>
-                                            <barButtonItem systemItem="play" id="KHQ-nC-FvZ">
-                                                <connections>
-                                                    <action selector="onPlayPlaylistBtnClicked:" destination="xjv-Nu-UuS" id="gcx-5t-FGt"/>
-                                                </connections>
-                                            </barButtonItem>
-                                            <barButtonItem image="ic_shuffle_toolbar" id="YUe-xp-PIr"/>
-                                            <barButtonItem systemItem="action" id="0Oe-lH-hVV"/>
-                                            <barButtonItem image="ic_download" id="H7R-07-2WS">
-                                                <connections>
-                                                    <action selector="onLikeBtnClicked:" destination="xjv-Nu-UuS" id="If9-zH-eHk"/>
-                                                </connections>
-                                            </barButtonItem>
-                                            <barButtonItem systemItem="compose" id="tYM-cV-GQl"/>
-                                            <barButtonItem systemItem="trash" id="V9p-1e-RVE"/>
-                                        </items>
-                                        <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                    </toolbar>
-                                </subviews>
+                            <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UQr-uF-8vN">
+                                <rect key="frame" x="0.0" y="-44" width="375" height="44"/>
                                 <animations/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstItem="l5k-JU-wfV" firstAttribute="bottom" secondItem="UQr-uF-8vN" secondAttribute="bottom" id="1mt-bE-6NV"/>
-                                    <constraint firstItem="l5k-JU-wfV" firstAttribute="top" secondItem="UQr-uF-8vN" secondAttribute="top" id="CnX-fL-nqV"/>
-                                    <constraint firstItem="UQr-uF-8vN" firstAttribute="leading" secondItem="dZf-ss-iss" secondAttribute="leading" id="DAi-rV-O56"/>
-                                    <constraint firstItem="UQr-uF-8vN" firstAttribute="top" secondItem="dZf-ss-iss" secondAttribute="top" id="Gu9-hx-TRc"/>
-                                    <constraint firstAttribute="trailing" secondItem="UQr-uF-8vN" secondAttribute="trailing" id="Z2J-a5-D82"/>
-                                    <constraint firstAttribute="height" constant="44" id="ZL2-gp-Rdc"/>
-                                    <constraint firstItem="l5k-JU-wfV" firstAttribute="leading" secondItem="UQr-uF-8vN" secondAttribute="leading" id="f7v-Oz-E7a"/>
-                                    <constraint firstItem="l5k-JU-wfV" firstAttribute="trailing" secondItem="UQr-uF-8vN" secondAttribute="trailing" id="sjc-IU-xna"/>
-                                    <constraint firstAttribute="bottom" secondItem="UQr-uF-8vN" secondAttribute="bottom" id="wet-ov-2Ih"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="ZL2-gp-Rdc"/>
-                                    </mask>
-                                </variation>
-                            </view>
+                                <items>
+                                    <barButtonItem enabled="NO" image="ic_delete_row" id="sCm-Sq-ldf">
+                                        <connections>
+                                            <action selector="onDeleteTrackBtnClicked:" destination="xjv-Nu-UuS" id="Cbc-hu-pkq"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="nTt-Tv-phS"/>
+                                    <barButtonItem image="ic_rename" id="tYM-cV-GQl">
+                                        <connections>
+                                            <action selector="onRenamePlaylistBtnClicked:" destination="xjv-Nu-UuS" id="TKM-5m-heT"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="4Jt-bb-t6c"/>
+                                    <barButtonItem systemItem="trash" id="V9p-1e-RVE">
+                                        <connections>
+                                            <action selector="onDeletePlaylistBtnClicked:" destination="xjv-Nu-UuS" id="6Cx-l8-Whu"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                                <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </toolbar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" bouncesZoom="NO" dataMode="prototypes" style="grouped" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="S87-AV-RDE">
-                                <rect key="frame" x="0.0" y="44" width="375" height="559"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="separatorColor" red="0.84094483440000001" green="0.84094483440000001" blue="0.84094483440000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -360,22 +333,14 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="S87-AV-RDE" firstAttribute="top" secondItem="dZf-ss-iss" secondAttribute="bottom" id="43g-Dr-hDN"/>
-                            <constraint firstItem="dZf-ss-iss" firstAttribute="top" secondItem="DTJ-P8-OKf" secondAttribute="bottom" id="4ab-gj-rsV"/>
-                            <constraint firstItem="S87-AV-RDE" firstAttribute="top" secondItem="dZf-ss-iss" secondAttribute="bottom" id="AEu-ZT-GmB"/>
+                            <constraint firstItem="S87-AV-RDE" firstAttribute="top" secondItem="UQr-uF-8vN" secondAttribute="bottom" id="9eL-py-9zg"/>
                             <constraint firstAttribute="trailing" secondItem="S87-AV-RDE" secondAttribute="trailing" id="Lae-nX-eMW"/>
+                            <constraint firstItem="UQr-uF-8vN" firstAttribute="leading" secondItem="pqX-YS-kRc" secondAttribute="leading" id="MM1-js-cBp"/>
                             <constraint firstItem="S87-AV-RDE" firstAttribute="leading" secondItem="pqX-YS-kRc" secondAttribute="leading" id="bue-4E-7TI"/>
-                            <constraint firstItem="dZf-ss-iss" firstAttribute="leading" secondItem="pqX-YS-kRc" secondAttribute="leading" id="gHs-rh-aMr"/>
-                            <constraint firstItem="dZf-ss-iss" firstAttribute="top" secondItem="DTJ-P8-OKf" secondAttribute="bottom" id="h7l-5h-Tv5"/>
                             <constraint firstItem="PWY-yz-HEe" firstAttribute="top" secondItem="S87-AV-RDE" secondAttribute="bottom" id="qtD-js-Dkb"/>
-                            <constraint firstAttribute="trailing" secondItem="dZf-ss-iss" secondAttribute="trailing" id="zPi-Mk-nrx"/>
+                            <constraint firstItem="UQr-uF-8vN" firstAttribute="top" secondItem="DTJ-P8-OKf" secondAttribute="bottom" constant="-44" id="tqU-2B-Uf3"/>
+                            <constraint firstAttribute="trailing" secondItem="UQr-uF-8vN" secondAttribute="trailing" id="xA9-wP-Nse"/>
                         </constraints>
-                        <variation key="default">
-                            <mask key="constraints">
-                                <exclude reference="h7l-5h-Tv5"/>
-                                <exclude reference="AEu-ZT-GmB"/>
-                            </mask>
-                        </variation>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <navigationItem key="navigationItem" id="XBH-um-wMs">
@@ -384,21 +349,31 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="checkAllBarButton" destination="l07-Rx-tvU" id="d31-Kh-PCd"/>
-                        <outlet property="deleteBarButton" destination="V9p-1e-RVE" id="PUB-aE-99W"/>
                         <outlet property="deleteRowBarButton" destination="sCm-Sq-ldf" id="JYz-vd-qPV"/>
                         <outlet property="importBarButton" destination="H7R-07-2WS" id="8Ji-Ds-dhH"/>
-                        <outlet property="infoView" destination="dZf-ss-iss" id="9nl-TT-2be"/>
-                        <outlet property="infoViewTopConstraint" destination="4ab-gj-rsV" id="HOD-Z0-PV6"/>
-                        <outlet property="playBarButton" destination="KHQ-nC-FvZ" id="BVL-yJ-gJ1"/>
                         <outlet property="playlistTableView" destination="S87-AV-RDE" id="zCE-rm-VoO"/>
-                        <outlet property="renameBarButton" destination="tYM-cV-GQl" id="RkB-pz-gMp"/>
-                        <outlet property="shareBarButton" destination="0Oe-lH-hVV" id="2zL-KW-8tX"/>
-                        <outlet property="shuffleBarButton" destination="YUe-xp-PIr" id="RB7-ou-E1L"/>
+                        <outlet property="shareBarButton" destination="G6E-ZT-TcW" id="pAv-Z4-18W"/>
                         <outlet property="toolbar" destination="UQr-uF-8vN" id="APc-NZ-5UG"/>
+                        <outlet property="toolbarTopConstraint" destination="tqU-2B-Uf3" id="v2g-rP-xse"/>
                         <segue destination="ZzL-Fd-jJD" kind="presentation" identifier="PlaylistSelectSegue" id="LpB-7E-vq9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yuy-eL-gxp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem image="ic_check_all" id="l07-Rx-tvU">
+                    <connections>
+                        <action selector="toggleSelectAll:" destination="xjv-Nu-UuS" id="YdD-nL-yiK"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="ic_download" id="H7R-07-2WS">
+                    <connections>
+                        <action selector="onImportBtnClicked:" destination="xjv-Nu-UuS" id="PO4-gh-TiY"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem systemItem="action" id="G6E-ZT-TcW">
+                    <connections>
+                        <action selector="onSharePlaylistBtnClicked:" destination="xjv-Nu-UuS" id="q4h-cg-pWy"/>
+                    </connections>
+                </barButtonItem>
             </objects>
             <point key="canvasLocation" x="249" y="-922"/>
         </scene>
@@ -433,7 +408,7 @@
         <image name="ic_playing" width="20" height="20"/>
         <image name="ic_playlist" width="52" height="52"/>
         <image name="ic_playlist_selected" width="52" height="52"/>
-        <image name="ic_shuffle_toolbar" width="37" height="37"/>
+        <image name="ic_rename" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="5GI-ft-6CL"/>

@@ -112,7 +112,7 @@ class PlaylistListTableViewController: UITableViewController {
         ViewUtils.showTextInputAlert(
             self, title: NSLocalizedString("Create new playlist", comment:""),
             message: NSLocalizedString("Type new playlist name", comment:""),
-            placeholder: NSLocalizedString("Playlist 01", comment:""),
+            placeholder: NSLocalizedString("Playlist name", comment:""),
             positiveBtnText: NSLocalizedString("Create", comment:""),
             positiveBtnCallback: { (result) -> Void in
                 if (result.characters.count == 0) {

@@ -23,14 +23,17 @@ extension Playlist {
     }
 }
 
+let PlaylistErrorDomain = "PlaylistErrorDomain"
+let PlaylistAlreadyContainsTrackError = -1
+
 class Playlist {
     static var allPlaylists = [Playlist]()
     
     var id: String
     var name: String
     var tracks: [Track]
-    var type:PlaylistType = PlaylistType.USER
-    var dummy = false
+    var type = PlaylistType.USER
+    private var dummy = false
     
     init(id: String, name: String, tracks: [Track]) {
         self.id = id
@@ -38,17 +41,29 @@ class Playlist {
         self.tracks = tracks
     }
     
-    func getTrackIdx(track:Track) -> Int {
-        for (idx, t): (Int, Track) in tracks.enumerate() {
-            if t.id == track.id {
-                return idx
-            }
+    func resolve(callback:((error:NSError?)->Void)) {
+        guard dummy else {
+            callback(error: nil)
+            return
         }
-        return -1
+        
+        Requests.getPlaylist(id) { (request, response, result, error) -> Void in
+            if (error != nil) {
+                callback(error: error!)
+                return
+            }
+            
+            let playlist = Playlist.parsePlaylist(JSON(result!)["playlist"])
+            self.name = playlist.name
+            self.tracks = playlist.tracks
+            self.dummy = false
+            
+            callback(error: nil)
+        }
     }
     
     static func fetchAllPlaylists(callback:(playlists:[Playlist]?, error:NSError?)->Void) {
-        Requests.fetchPlaylistList({ (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.fetchPlaylistList() { (request, response, result, error) -> Void in
             if error != nil || result == nil {
                 callback(playlists:nil, error: error)
                 return
@@ -57,30 +72,22 @@ class Playlist {
             var json = JSON(result!)
             var playlists :[Playlist] = []
             for (_, s): (String, JSON) in json["data"] {
-                if let playlist = parsePlaylist(s) {
-                    playlist.dummy = true
-                    playlists.append(playlist)
-                }
+                let playlist = parsePlaylist(s)
+                playlist.dummy = true
+                playlists.append(playlist)
             }
-//            if playlists.count == 0 {
-//                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to fetch playlists", comment:""), message: error!.description)
-//                return
-//            }
+
             Playlist.allPlaylists = playlists.reverse()
             callback(playlists: Playlist.allPlaylists, error: nil)            
-        })
+        }
     }
     
-    static private func parsePlaylist(json: JSON) -> Playlist? {
+    static func parsePlaylist(json: JSON) -> Playlist {
         let playlistId: Int = json["id"].intValue
         let playlistName: String = json["name"].stringValue
         let tracks = Track.parseTracks(json["data"])
         
         return Playlist(id: String(playlistId), name: playlistName, tracks: tracks)
-    }
-    
-    static func parsePlaylist(data: AnyObject, key: String = "obj") -> Playlist? {
-        return parsePlaylist(JSON(data)[key])
     }
     
     static func parseSharedPlaylist(data: AnyObject) -> Playlist? {
@@ -91,122 +98,78 @@ class Playlist {
         return parsePlaylist(json["playlist"])
     }
     
-    func toJson() -> Dictionary<String, AnyObject> {
-        var playlist: Dictionary<String, AnyObject> = [
+    func trackToDict(t: Track) -> [String:AnyObject] {
+        return ["title": t.title, "id": t.id, "type": t.type.rawValue]
+    }
+    
+    func toJson() -> [String:AnyObject] {
+        var playlist: [String:AnyObject] = [
             "id": self.id,
             "name": self.name,
         ]
         
-        var data: [Dictionary<String, AnyObject>] = []
-        
-        // Parse tracks to JSON like array.
-        for t: Track in self.tracks {
-            data.append([
-                "id": t.id,
-                "title": t.title,
-                "type": t.type.rawValue
-                ])
-        }
-        playlist["data"] = data
+        playlist["data"] = tracks.map(trackToDict)
         return playlist
     }
     
     func addTrack(track: Track, section:String, afterAdd: (error:NSError?) -> Void) {
-        let tracks = self.tracks
-        
-        var dummyTracks = [[String:AnyObject]]()
-        for t in tracks {
-            if (track.id == t.id) {
-                afterAdd(error: NSError(domain: "addTrack", code:101, userInfo: nil))
-                return
-            }
-            dummyTracks.append(["title": t.title, "id": t.id, "type": t.type.rawValue])
+        if self.dummy {
+            resolve({ (error) -> Void in
+                if error != nil {
+                    afterAdd(error: error)
+                } else {
+                    self.addTrack(track, section: section, afterAdd: afterAdd)
+                }
+            })
+            return
         }
-        dummyTracks.append(["title": track.title, "id": track.id, "type": track.type.rawValue])
         
-        if Account.getCachedAccount() != nil {
-            // Log to us
-            Requests.logTrackAdd(track.title)
+        if tracks.contains({ $0.id == track.id }) {
+            afterAdd(error: NSError(
+                domain: PlaylistErrorDomain,
+                code: PlaylistAlreadyContainsTrackError,
+                userInfo: nil))
+            return
         }
-        // Log to GA
-        let tracker = GAI.sharedInstance().defaultTracker
-        let event = GAIDictionaryBuilder.createEventWithCategory(
-            "playlist-add-from-\(section)",
-            action: "add-\(track.type)",
-            label: track.title,
-            value: 0
-            ).build()
         
-        tracker.send(event as [NSObject: AnyObject]!)
+        var newTracks = self.tracks // copy tracks array.
+        newTracks.append(track)
         
-        Requests.setPlaylist(self.id, data: dummyTracks) {
-            (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
-            
+        let newTracksDict = newTracks.map(trackToDict)
+        
+        Requests.setPlaylist(self.id, data: newTracksDict) { (request, response, result, error) -> Void in
             if (error != nil) {
                 afterAdd(error: error)
                 return
             }
-            var changedPlaylist:Playlist? = nil
-            for p in Playlist.allPlaylists {
-                if (p.id == self.id) {
-                    changedPlaylist = p
-                    break
-                }
-            }
-            if (changedPlaylist == nil) {
-                afterAdd(error: nil)
-                return
-            }
-            for t in changedPlaylist!.tracks {
-                if (t.id == self.id) {
-                    afterAdd(error: nil)
-                    return
-                }
-            }
-            changedPlaylist!.tracks.append(track)
+            
+            self.tracks.append(track)
             afterAdd(error: nil)
+            
+            // Log
+            Requests.logTrackAdd(track.title)
+            let event = GAIDictionaryBuilder.createEventWithCategory(
+                "playlist-add-from-\(section)",
+                action: "add-\(track.type)",
+                label: track.title,
+                value: 0
+                ).build()
+            GAI.sharedInstance().defaultTracker.send(event as [NSObject: AnyObject]!)
         }
     }
     
     func deleteTrack(track: Track, afterDelete: (error:NSError?) -> Void) {
-        let tracks = self.tracks
+        let newTracksDict = tracks.filter({ $0.id != track.id }).map(trackToDict)
         
-        var dummyTracks = [[String:AnyObject]]()
-        for t in tracks {
-            if (t.id != track.id) {
-                dummyTracks.append(["title": t.title, "id": t.id, "type": t.type.rawValue])
-            }
-        }
-        
-        Requests.setPlaylist(self.id, data: dummyTracks) {
-            (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.setPlaylist(self.id, data: newTracksDict) { (request, response, result, error) -> Void in
             if (error != nil) {
                 afterDelete(error: error)
                 return
             }
-            var playlist:Playlist? = nil
-            for p in Playlist.allPlaylists {
-                if (p.id == self.id) {
-                    playlist = p
-                    break
-                }
-            }
-            if (playlist == nil) {
-                afterDelete(error: nil)
-                return
-            }
-            var foundIdx:Int?
-            for (idx, t) in playlist!.tracks.enumerate() {
-                if (t.id == track.id) {
-                    foundIdx = idx
-                }
-            }
-            if (foundIdx == nil) {
-                afterDelete(error: nil)
-                return
-            }
-            playlist!.tracks.removeAtIndex(foundIdx!)
             
+            if let index = self.tracks.indexOf({ $0.id == track.id }) {
+                self.tracks.removeAtIndex(index)
+            }
             afterDelete(error: nil)
         }
     }

@@ -12,6 +12,7 @@ class PlaylistTableViewCell: UITableViewCell {
     
     @IBOutlet weak var iconImageView: UIImageView!
     @IBOutlet weak var nameView: UILabel!
+    @IBOutlet weak var playButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,12 +28,10 @@ class PlaylistListTableViewController: UITableViewController {
 
     var playlists:[Playlist] = [Playlist]()
     var showCurrentPlaylist: Bool {
-        get {
-            if let current = DropbeatPlayer.defaultPlayer.currentPlaylist {
-                return !self.playlists.contains({$0.id == current.id})
-            } else {
-                return false
-            }
+        if let current = DropbeatPlayer.defaultPlayer.currentPlaylist {
+            return !self.playlists.contains({$0.id == current.id})
+        } else {
+            return false
         }
     }
 
@@ -40,11 +39,55 @@ class PlaylistListTableViewController: UITableViewController {
         super.viewDidLoad()
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
     }
+    
+    func loadPlaylists() {
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+        Playlist.fetchAllPlaylists { (playlists, error) -> Void in
+            progressHud.hide(true)
+            if error != nil || playlists == nil {
+                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to fetch", comment:""),
+                    message: NSLocalizedString("Failed to fetch playlists.", comment:""),
+                    positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
+                        self.loadPlaylists()
+                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""))
+                return
+            }
+            
+            self.playlists = playlists!
+            self.tableView.reloadData()
+        }
+    }
 
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 
         self.loadPlaylists()
+    }
+    
+    @IBAction func playAction(sender: UIButton) {
+        if let indexPath = self.tableView.indexPathOfCellContains(sender) {
+            let playlist = playlists[indexPath.row]
+            playlist.resolve({ (error) -> Void in
+                if error != nil {
+                    ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to fetch", comment:""),
+                        message: NSLocalizedString("Failed to fetch playlists.", comment:""),
+                        positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
+                            self.playAction(sender)
+                        }, negativeBtnText: NSLocalizedString("Cancel", comment:""))
+                    return
+                }
+                
+                if let firstTrack = playlist.tracks.first {
+                    let player = DropbeatPlayer.defaultPlayer
+                    player.shuffleState = ShuffleState.NOT_SHUFFLE
+                    player.currentPlaylist = playlist
+                    player.play(firstTrack)
+                    self.tableView.reloadData()
+                } else {
+                    ViewUtils.showToast(self, message: NSLocalizedString("Empty playlist", comment:""))
+                }
+            })
+        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -98,6 +141,9 @@ class PlaylistListTableViewController: UITableViewController {
                 })
         })
     }
+}
+
+extension PlaylistListTableViewController {
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return self.showCurrentPlaylist ? 2 : 1
@@ -140,24 +186,16 @@ class PlaylistListTableViewController: UITableViewController {
         } else {
             cell.iconImageView.image = UIImage(named: "ic_playlist")
         }
-        return cell
-    }
-    
-    func loadPlaylists() {
-        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        Playlist.fetchAllPlaylists { (playlists, error) -> Void in
-            progressHud.hide(true)
-            if error != nil || playlists == nil {
-                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to fetch", comment:""),
-                    message: NSLocalizedString("Failed to fetch playlists.", comment:""),
-                    positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                        self.loadPlaylists()
-                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""))
-                return
-            }
-            
-            self.playlists = playlists!
-            self.tableView.reloadData()
+        
+        if self.showCurrentPlaylist && indexPath.section == 0 {
+            cell.playButton.hidden = true
+            cell.accessoryType = .DisclosureIndicator
+        } else {
+            cell.playButton.hidden = false
+            cell.accessoryType = .None
+
         }
+        
+        return cell
     }
 }

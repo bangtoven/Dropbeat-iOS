@@ -30,6 +30,8 @@ class PlaylistViewController: BaseViewController {
         super.viewDidLoad()
         self.screenName = "PlaylistViewScreen"
         
+        self.toolbarTopConstraint.constant = -44
+        self.toolbar.hidden = true
         self.toolbar.setBackgroundImage(UIImage(named: "toolbar_background"), forToolbarPosition: .Any, barMetrics: .Default)
         
         self.playlistTableView.allowsMultipleSelectionDuringEditing = true
@@ -214,43 +216,6 @@ extension PlaylistViewController : UITableViewDelegate, UITableViewDataSource {
 
 // MARK: Edit
 extension PlaylistViewController {
-    
-    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return currentPlaylist.type == .USER
-    }
-    
-    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
-        reordered = true
-        
-        let t = currentPlaylist.tracks.removeAtIndex(sourceIndexPath.row)
-        currentPlaylist.tracks.insert(t, atIndex: destinationIndexPath.row)
-    }
-    
-    @IBAction func toggleSelectAll(sender: UIBarButtonItem) {
-        if let count = playlistTableView.indexPathsForSelectedRows?.count where count == tracks.count {
-            for i in 0..<tracks.count {
-                let indexPath = NSIndexPath(forRow: i, inSection: 0)
-                playlistTableView.deselectRowAtIndexPath(indexPath, animated: false)
-            }
-        } else {
-            for i in 0..<tracks.count {
-                let indexPath = NSIndexPath(forRow: i, inSection: 0)
-                playlistTableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: .None)
-            }
-        }
-        self.onSelectedRowsChanged()
-    }
-    
-    func onSelectedRowsChanged() {
-        let count = playlistTableView.indexPathsForSelectedRows?.count ?? 0
-        
-        deleteRowBarButton.enabled = (count != 0)
-        
-        checkAllBarButton.image = (count == tracks.count) ?
-            UIImage(named: "ic_check_all_filled") :
-            UIImage(named: "ic_check_all")
-    }
-    
     override func setEditing(editing: Bool, animated: Bool) {
         guard currentPlaylist.type == .USER else {
             return
@@ -297,34 +262,29 @@ extension PlaylistViewController {
         self.playlistTableView.reloadData()
     }
     
-    func updateReorderedTracks() {
-        guard reordered else {
-            return
-        }
-        
-        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Deleting..", comment:""))
-        currentPlaylist.setTracks(tracks) { (error) -> Void in
-            progressHud.hide(true)
-            if error != nil {
-                var message = NSLocalizedString("Failed to delete track", comment:"")
-                if (error!.domain == NSURLErrorDomain &&
-                    error!.code == NSURLErrorNotConnectedToInternet) {
-                        message =  NSLocalizedString("Internet is not connected.", comment:"")
-                }
-                
-                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to delete", comment:""),
-                    message: message,
-                    positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                        self.updateReorderedTracks()
-                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback:{ () -> Void in
-                        self.reordered = false
-                    })
-                return
+    @IBAction func toggleSelectAll(sender: UIBarButtonItem) {
+        if let count = playlistTableView.indexPathsForSelectedRows?.count where count == tracks.count {
+            for i in 0..<tracks.count {
+                let indexPath = NSIndexPath(forRow: i, inSection: 0)
+                playlistTableView.deselectRowAtIndexPath(indexPath, animated: false)
             }
-            
-            self.reordered = false
-            self.loadPlaylist()
+        } else {
+            for i in 0..<tracks.count {
+                let indexPath = NSIndexPath(forRow: i, inSection: 0)
+                playlistTableView.selectRowAtIndexPath(indexPath, animated: false, scrollPosition: .None)
+            }
         }
+        self.onSelectedRowsChanged()
+    }
+    
+    func onSelectedRowsChanged() {
+        let count = playlistTableView.indexPathsForSelectedRows?.count ?? 0
+        
+        deleteRowBarButton.enabled = (count != 0)
+        
+        checkAllBarButton.image = (count == tracks.count) ?
+            UIImage(named: "ic_check_all_filled") :
+            UIImage(named: "ic_check_all")
     }
     
     @IBAction func onDeleteTrackBtnClicked(sender: UIBarButtonItem) {
@@ -464,6 +424,56 @@ extension PlaylistViewController {
                     self.navigationController?.popViewControllerAnimated(true)
                 })
         })
+    }
+}
+
+// MARK: Reorder 
+extension PlaylistViewController {
+    func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return currentPlaylist.type == .USER
+    }
+    
+    func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+        reordered = true
+        
+        let t = currentPlaylist.tracks.removeAtIndex(sourceIndexPath.row)
+        currentPlaylist.tracks.insert(t, atIndex: destinationIndexPath.row)
+    }
+    
+    @IBAction func reverseTracksOrder(sender: AnyObject) {
+        reordered = true
+        currentPlaylist.tracks = tracks.reverse()
+        playlistTableView.reloadData()
+    }
+    
+    func updateReorderedTracks() {
+        guard reordered else {
+            return
+        }
+        
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Deleting..", comment:""))
+        currentPlaylist.setTracks(tracks) { (error) -> Void in
+            progressHud.hide(true)
+            if error != nil {
+                var message = NSLocalizedString("Failed to delete track", comment:"")
+                if (error!.domain == NSURLErrorDomain &&
+                    error!.code == NSURLErrorNotConnectedToInternet) {
+                        message =  NSLocalizedString("Internet is not connected.", comment:"")
+                }
+                
+                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to delete", comment:""),
+                    message: message,
+                    positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
+                        self.updateReorderedTracks()
+                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback:{ () -> Void in
+                        self.reordered = false
+                })
+                return
+            }
+            
+            self.reordered = false
+            self.loadPlaylist()
+        }
     }
 }
 

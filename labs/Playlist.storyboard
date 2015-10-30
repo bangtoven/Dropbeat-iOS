@@ -231,8 +231,8 @@
                         <rect key="frame" x="0.0" y="64" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UQr-uF-8vN">
-                                <rect key="frame" x="0.0" y="-44" width="375" height="44"/>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UQr-uF-8vN">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                                 <animations/>
                                 <items>
                                     <barButtonItem enabled="NO" image="ic_delete_row" id="sCm-Sq-ldf">
@@ -241,12 +241,18 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="nTt-Tv-phS"/>
+                                    <barButtonItem image="ic_reverse_order" id="6qD-Yh-Ukh">
+                                        <connections>
+                                            <action selector="reverseTracksOrder:" destination="xjv-Nu-UuS" id="37Y-1P-cMp"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem width="16" style="plain" systemItem="fixedSpace" id="41c-M3-lRo"/>
                                     <barButtonItem image="ic_rename" id="tYM-cV-GQl">
                                         <connections>
                                             <action selector="onRenamePlaylistBtnClicked:" destination="xjv-Nu-UuS" id="TKM-5m-heT"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem width="20" style="plain" systemItem="fixedSpace" id="4Jt-bb-t6c"/>
+                                    <barButtonItem width="16" style="plain" systemItem="fixedSpace" id="4Jt-bb-t6c"/>
                                     <barButtonItem systemItem="trash" id="V9p-1e-RVE">
                                         <connections>
                                             <action selector="onDeletePlaylistBtnClicked:" destination="xjv-Nu-UuS" id="6Cx-l8-Whu"/>
@@ -256,7 +262,7 @@
                                 <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </toolbar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" bouncesZoom="NO" dataMode="prototypes" style="grouped" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="S87-AV-RDE">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                                <rect key="frame" x="0.0" y="44" width="375" height="559"/>
                                 <animations/>
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="separatorColor" red="0.84094483440000001" green="0.84094483440000001" blue="0.84094483440000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -338,7 +344,7 @@
                             <constraint firstItem="UQr-uF-8vN" firstAttribute="leading" secondItem="pqX-YS-kRc" secondAttribute="leading" id="MM1-js-cBp"/>
                             <constraint firstItem="S87-AV-RDE" firstAttribute="leading" secondItem="pqX-YS-kRc" secondAttribute="leading" id="bue-4E-7TI"/>
                             <constraint firstItem="PWY-yz-HEe" firstAttribute="top" secondItem="S87-AV-RDE" secondAttribute="bottom" id="qtD-js-Dkb"/>
-                            <constraint firstItem="UQr-uF-8vN" firstAttribute="top" secondItem="DTJ-P8-OKf" secondAttribute="bottom" constant="-44" id="tqU-2B-Uf3"/>
+                            <constraint firstItem="UQr-uF-8vN" firstAttribute="top" secondItem="DTJ-P8-OKf" secondAttribute="bottom" id="tqU-2B-Uf3"/>
                             <constraint firstAttribute="trailing" secondItem="UQr-uF-8vN" secondAttribute="trailing" id="xA9-wP-Nse"/>
                         </constraints>
                     </view>
@@ -359,11 +365,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yuy-eL-gxp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <barButtonItem image="ic_check_all" id="l07-Rx-tvU">
-                    <connections>
-                        <action selector="toggleSelectAll:" destination="xjv-Nu-UuS" id="YdD-nL-yiK"/>
-                    </connections>
-                </barButtonItem>
                 <barButtonItem image="ic_download" id="H7R-07-2WS">
                     <connections>
                         <action selector="onImportBtnClicked:" destination="xjv-Nu-UuS" id="PO4-gh-TiY"/>
@@ -372,6 +373,11 @@
                 <barButtonItem systemItem="action" id="G6E-ZT-TcW">
                     <connections>
                         <action selector="onSharePlaylistBtnClicked:" destination="xjv-Nu-UuS" id="q4h-cg-pWy"/>
+                    </connections>
+                </barButtonItem>
+                <barButtonItem image="ic_check_all" id="l07-Rx-tvU">
+                    <connections>
+                        <action selector="toggleSelectAll:" destination="xjv-Nu-UuS" id="YdD-nL-yiK"/>
                     </connections>
                 </barButtonItem>
             </objects>
@@ -409,6 +415,7 @@
         <image name="ic_playlist" width="52" height="52"/>
         <image name="ic_playlist_selected" width="52" height="52"/>
         <image name="ic_rename" width="25" height="25"/>
+        <image name="ic_reverse_order" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="5GI-ft-6CL"/>

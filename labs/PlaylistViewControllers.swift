@@ -180,7 +180,8 @@ extension PlaylistViewController : UITableViewDelegate, UITableViewDataSource {
         let track = tracks[indexPath.row]
         cell.trackTitle.text = track.title
 
-        cell.trackTitleMarginConstraint.constant = editing ? -8 : 30
+        cell.titleLeftMargin.constant = editing ? 2 : 40
+        cell.titleRightMargin.constant = editing ? 8 : 40
         cell.icon.hidden = editing
         cell.menuBtn.hidden = editing
 
@@ -268,7 +269,7 @@ extension PlaylistViewController {
         self.navigationItem.rightBarButtonItems = editing ? [self.editButtonItem()] : [self.editButtonItem(), self.shareBarButton]
         
         // toolbar animation
-        let duration = animated ? 0.5 : 0
+        let duration = animated ? 0.2 : 0
         let navBar = self.navigationController?.navigationBar
         if editing {
             navBar?.translucent = false
@@ -293,12 +294,7 @@ extension PlaylistViewController {
         
         // table view
         self.playlistTableView.setEditing(editing, animated: false)
-        
-        for cell in (self.playlistTableView.visibleCells as? [PlaylistTrackTableViewCell])! {
-            cell.trackTitleMarginConstraint.constant = editing ? -8 : 30
-            cell.icon.hidden = editing
-            cell.menuBtn.hidden = editing
-        }
+        self.playlistTableView.reloadData()
     }
     
     func updateReorderedTracks() {
@@ -725,7 +721,8 @@ class BeforePlaylistNavigationController: UINavigationController {
 
 class PlaylistTrackTableViewCell: UITableViewCell {
     @IBOutlet weak var icon: UIImageView!
-    @IBOutlet weak var trackTitleMarginConstraint: NSLayoutConstraint!
+    @IBOutlet weak var titleLeftMargin: NSLayoutConstraint!
+    @IBOutlet weak var titleRightMargin: NSLayoutConstraint!
     @IBOutlet weak var trackTitle: UILabel!
     @IBOutlet weak var menuBtn: UIButton!
     

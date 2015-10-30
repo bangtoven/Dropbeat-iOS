@@ -32,6 +32,7 @@ class UserHeaderView: AXStretchableHeaderView {
     @IBOutlet weak var followInfoView: UIView!
     @IBOutlet weak var followersNumberLabel: UILabel!
     @IBOutlet weak var followingNumberLabel: UILabel!
+    @IBOutlet weak var showFollowInfoButton: UIButton!
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var aboutMeLabel: TTTAttributedLabel!
@@ -41,7 +42,7 @@ class UserHeaderView: AXStretchableHeaderView {
     @IBOutlet weak var followButton: UIButton!
     
     override func interactiveSubviews() -> [AnyObject]! {
-        return [self.showMoreButton, self.followButton, self.aboutMeLabel]
+        return [showMoreButton, followButton, aboutMeLabel, showFollowInfoButton]
     }
     
     override func awakeFromNib() {
@@ -170,23 +171,29 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
                         viewControllers.append(uploads)
                     }
                     
+                    let repost = instantiateSubVC()
+                    repost.title = "Reposts"
+                    repost.baseUser = user
+                    repost.fetchFunc = user.fetchTracksFromLikeList
+                    viewControllers.append(repost)
+                    
                     let likes = instantiateSubVC()
                     likes.title = "Likes"
                     likes.baseUser = user
                     likes.fetchFunc = user.fetchTracksFromLikeList
                     viewControllers.append(likes)
                     
-                    let followers = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
-                    followers.title = "Followers"
-                    followers.user = user
-                    followers.followInfoType = .FOLLOWERS
-                    viewControllers.append(followers)
-                    
-                    let following = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
-                    following.title = "Following"
-                    following.user = user
-                    following.followInfoType = .FOLLOWING
-                    viewControllers.append(following)
+//                    let followers = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
+//                    followers.title = "Followers"
+//                    followers.user = user
+//                    followers.followInfoType = .FOLLOWERS
+//                    viewControllers.append(followers)
+//                    
+//                    let following = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
+//                    following.title = "Following"
+//                    following.user = user
+//                    following.followInfoType = .FOLLOWING
+//                    viewControllers.append(following)
                     
                     self.viewControllers = viewControllers
                 }
@@ -339,15 +346,21 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
         } else {
             let url = NSURL(string: "https://www.facebook.com/\(facebookId)")!
             UIApplication.sharedApplication().openURL(url)
-//            self.performSegueWithIdentifier("showFacebookPage", sender: facebookId)
+        }
+    }
+    
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        if identifier == "ShowFollowInfo" {
+            return (self.baseUser is User)
+        } else {
+            return super.shouldPerformSegueWithIdentifier(identifier, sender: sender)
         }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let facebookId = sender as? Int
-            where segue.identifier == "showFacebookPage" {
-                let facebookPageVC = segue.destinationViewController as! FacebookPageViewController
-                facebookPageVC.url = NSURL(string: "https://www.facebook.com/\(facebookId)")
+        if segue.identifier == "ShowFollowInfo" {
+            let followInfoVC = segue.destinationViewController as! FollowInfoViewController
+            followInfoVC.user = self.baseUser as! User
         }
     }
 
@@ -372,10 +385,10 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
                         return
                     }
                     
-                    if let followerView = self.viewControllers[self.viewControllers.count-2] as? FollowInfoTableViewController {
-                        followerView.userArray = []
-                        followerView.subViewWillAppear()
-                    }
+//                    if let followerView = self.viewControllers[self.viewControllers.count-2] as? FollowInfoTableViewController {
+//                        followerView.userArray = []
+//                        followerView.subViewWillAppear()
+//                    }
                 }
             }
         }

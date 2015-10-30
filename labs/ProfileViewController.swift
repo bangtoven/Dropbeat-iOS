@@ -18,7 +18,7 @@ class ProfileHeaderView: UserHeaderView {
     }
     
     override func interactiveSubviews() -> [AnyObject]! {
-        return [self.aboutMeLabel]
+        return [aboutMeLabel, showFollowInfoButton]
     }
 }
 
@@ -34,7 +34,7 @@ class ProfileViewController: UserViewController {
         
         if self.isMovingToParentViewController() == false && presented == true {
             self.fetchUserInfo()
-            self.updateFollowingView()
+//            self.updateFollowingView()
         }
         
         presented = true
@@ -132,13 +132,13 @@ class ProfileViewController: UserViewController {
         }
     }
     
-    func updateFollowingView() {
-        if let viewControllers = self.viewControllers,
-            followingView = viewControllers[viewControllers.count-1] as? FollowInfoTableViewController {
-            followingView.userArray = []
-            followingView.subViewWillAppear()
-        }
-    }
+//    func updateFollowingView() {
+//        if let viewControllers = self.viewControllers,
+//            followingView = viewControllers.last as? FollowInfoTableViewController {
+//            followingView.userArray = []
+//            followingView.subViewWillAppear()
+//        }
+//    }
     
     @IBAction func unwindFromEditProfile(sender: UIStoryboardSegue) {
         print("unwindFromEditProfile")
@@ -239,6 +239,8 @@ class ProfileViewController: UserViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        super.prepareForSegue(segue, sender: sender)
+        
         if segue.identifier == "ShowSettings" {
             let settings = segue.destinationViewController as! SettingsViewController
             settings.navigationItem.leftBarButtonItem = nil
@@ -269,7 +271,9 @@ class BeforeProfileViewController: UIViewController {
         if Account.getCachedAccount() == nil {
             self.performSegueWithIdentifier("ShowSetting", sender: self)
         } else {
-            self.performSegueWithIdentifier("ShowProfile", sender: self)
+//            self.performSegueWithIdentifier("ShowProfile", sender: self)
+            let vc = self.storyboard?.instantiateViewControllerWithIdentifier("ProfileViewController") as! ProfileViewController
+            self.navigationController?.pushViewController(vc, animated: false)
         }
     }
     

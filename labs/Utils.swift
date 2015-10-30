@@ -132,7 +132,7 @@ class ViewUtils {
             negativeBtnText:String=NSLocalizedString("Cancel", comment:""), negativeBtnCallback: (() -> Void)?=nil) {
             
             let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addAction(UIAlertAction(title: negativeBtnText, style: UIAlertActionStyle.Default,
+            alert.addAction(UIAlertAction(title: negativeBtnText, style: UIAlertActionStyle.Cancel,
                     handler:{ (action:UIAlertAction!) -> Void in
                         negativeBtnCallback?()
                     }))
@@ -153,7 +153,7 @@ class ViewUtils {
                 textField.placeholder = placeholder
                 textField.text = text
             })
-            alert.addAction(UIAlertAction(title: negativeBtnText, style: UIAlertActionStyle.Default,
+            alert.addAction(UIAlertAction(title: negativeBtnText, style: UIAlertActionStyle.Cancel,
                 handler:{ (action:UIAlertAction!) -> Void in
                     negativeBtnCallback?()
             }))

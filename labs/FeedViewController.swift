@@ -38,22 +38,39 @@ extension FeedViewController: ScrollPagerDelegate {
         
         self.onTrackLikeBtnClicked(track) {
             let likeImage = track.isLiked ? UIImage(named:"ic_like") : UIImage(named:"ic_dislike")
-            sender.setImage(likeImage, forState: UIControlState.Normal)
+            let cell = self.trackTableView.cellForRowAtIndexPath(indexPath!) as! DropbeatTrackTableViewCell
+            cell.likeButton.setImage(likeImage, forState: UIControlState.Normal)
         }
     }
     
-    @IBAction func addToPlaylistAction(sender: UIButton) {
+    @IBAction func moreAction(sender: UIButton) {
         let indexPath = self.trackTableView.indexPathOfCellContains(sender)
         let track = self.tracks[indexPath!.row]
+
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        actionSheet.addAction(UIAlertAction(
+            title: NSLocalizedString("Add to playlist", comment:""),
+            style: .Default,
+            handler: { (action) -> Void in
+                self.onTrackAddBtnClicked(track)
+        }))
+        actionSheet.addAction(UIAlertAction(
+            title: NSLocalizedString("Repost", comment:""),
+            style: .Default,
+            handler: { (action) -> Void in
+                self.onTrackRepostAction(track)
+        }))
+        actionSheet.addAction(UIAlertAction(
+            title: NSLocalizedString("Share", comment:""),
+            style: .Default,
+            handler: { (action) -> Void in
+                self.onTrackShareBtnClicked(track)
+        }))
+        actionSheet.addAction(UIAlertAction(
+            title: NSLocalizedString("Cancel", comment:""),
+            style: .Cancel, handler: nil))
         
-        self.onTrackAddBtnClicked(track)
-    }
-    
-    @IBAction func shareAction(sender: UIButton) {
-        let indexPath = self.trackTableView.indexPathOfCellContains(sender)
-        let track = self.tracks[indexPath!.row]
-        
-        self.onTrackShareBtnClicked(track)
+        self.showViewController(actionSheet, sender: sender)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

@@ -5,6 +5,9 @@
  Created by vulpes on 2015. 8. 16..
  Copyright (c) 2015년 dropbeat. All rights reserved.
  */
+
+"Repost" = "Repost";
+
 "Saving.." = "Saving..";
 "Retry" = "Retry";
 "Failed to save" = "Failed to save";
@@ -72,6 +75,7 @@
 "Failed to initalize feed." = "Failed to initalize feed.";
 "You are following %d artists" = "You are following %d artists";
 "Failed to share" = "Failed to share";
+"Failed to repost" = "Failed to repost";
 "Track is not in feed" = "Track is not in feed";
 "Order by" = "Order by";
 "Genre" = "Genre";

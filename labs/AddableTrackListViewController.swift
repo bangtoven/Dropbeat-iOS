@@ -284,6 +284,36 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         
     }
     
+    func onTrackRepostAction(track:Track) {
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+        track.repostTrack { (data, error) -> Void in
+            if error != nil {
+                progressHud.hide(true)
+                if error!.domain == "repostTrack" {
+                    ViewUtils.showNoticeAlert(self, title: error!.localizedDescription,
+                        message: "")
+                } else {
+                    var message = error!.localizedDescription
+                    if (error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                            message = NSLocalizedString("Internet is not connected.", comment:"")
+                    }
+                    ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to repost", comment:""),
+                        message: message,
+                        positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
+                            self.onTrackRepostAction(track)
+                    })
+                }
+                return
+            }
+            
+            progressHud.mode = MBProgressHUDMode.CustomView
+            progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark"))
+            progressHud.hide(true, afterDelay: 1)
+        }
+        return
+    }
+    
     func onTrackShareBtnClicked(track:Track) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         let section = getSectionName()
@@ -461,8 +491,10 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         case 1:
             return NSLocalizedString("Add to playlist", comment:"")
         case 2:
-            return NSLocalizedString("Share", comment:"")
+            return NSLocalizedString("Repost", comment:"")
         case 3:
+            return NSLocalizedString("Share", comment:"")
+        case 4:
             return NSLocalizedString("Cancel", comment:"")
         default:
             return ""
@@ -470,11 +502,11 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
     }
     
     func getTrackActionSheetCount(track: Track) -> Int {
-        return 4
+        return 5
     }
     
     func getTrackActionSheetCancelButtonIndex(track: Track) -> Int {
-        return 3
+        return 4
     }
     
     func onTrackActionSheetClicked(targetTrack: Track, buttonIndex: Int) {
@@ -483,10 +515,10 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
             onTrackLikeBtnClicked(targetTrack)
         case 1:
             onTrackAddBtnClicked(targetTrack)
-            break
         case 2:
+            onTrackRepostAction(targetTrack)
+        case 3:
             onTrackShareBtnClicked(targetTrack)
-            break
         default:
             break
         }

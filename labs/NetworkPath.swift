@@ -9,7 +9,7 @@ enum HostType {
     case Coroutine
     case Monocheese
 }
-let hostType: HostType = .Dropbeat
+let hostType: HostType = .Coroutine
 
 extension ApiPath {
     static let hostV2 = host + "v2/"
@@ -45,6 +45,7 @@ public class ApiPath {
     static let userLikeList = user + "like/"
     static let userFollowers = user + "followers/"
     static let userFollowing = user + "following/"
+    static let repost = user + "repost/"
     
     static let followUser = user + "follow/"
     static let unfollowUser = user + "unfollow/"

@@ -333,6 +333,40 @@ class Track {
             drop: nil)
     }
     
+    func repostTrack(afterRepost: (data:JSON?, error:NSError?) -> Void) {
+        let data = self.toRepostData()
+        
+        Requests.sendPost(ApiPath.repost, params: ["data":data], auth: true) { (req, resp, result, error) -> Void in
+            guard error == nil else {
+                afterRepost(data: nil, error: error)
+                return
+            }
+            
+            let json = JSON(result!)
+            guard json["success"].bool == true else {
+                let err = NSError(domain: "repostTrack", code: 1, userInfo: [NSLocalizedDescriptionKey:json["error"].stringValue])
+                afterRepost(data: nil, error: err)
+                return
+            }
+            
+            afterRepost(data: json, error: nil)
+        }
+    }
+    
+    func toRepostData() -> [String:String] {
+        var data = [String:String]()
+        data["id"] = self.id
+        data["title"] = self.title
+        data["type"] = self.type.rawValue
+        if self.user != nil {
+            data["author_resource_name"] = self.user!.resourceName
+            data["author_nickname"] = self.user!.name
+            data["author_profile_image"] = self.user!.image
+        }
+        
+        return data
+    }
+    
     func shareTrack(section:String, afterShare: (error:NSError?, sharedURL:NSURL?) -> Void) {
         Requests.shareTrack(self, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, data:AnyObject?, error:NSError?) -> Void in
             if error != nil {
@@ -444,6 +478,13 @@ class DropbeatTrack: Track {
             let t = DropbeatTrack(json: JSON(result!)["data"])
             callback(track: t, error: nil)
         }
+    }
+    
+    override func toRepostData() -> [String : String] {
+        return [
+            "id" : self.id,
+            "type" : self.type.rawValue
+        ]
     }
     
     override func shareTrack(section:String, afterShare: (error:NSError?, sharedURL:NSURL?) -> Void) {

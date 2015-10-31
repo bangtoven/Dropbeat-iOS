@@ -20,8 +20,8 @@ class PlaylistViewController: BaseViewController {
     @IBOutlet var importBarButton: UIBarButtonItem!
     @IBOutlet var shareBarButton: UIBarButtonItem!
     
-    var currentPlaylist:Playlist!
-    private var tracks:[Track] { return self.currentPlaylist.tracks }
+    var playlist:Playlist!
+    private var tracks:[Track] { return self.playlist.tracks }
     private var reordered = false
     
     // MARK: - methods
@@ -35,6 +35,15 @@ class PlaylistViewController: BaseViewController {
         self.toolbar.setBackgroundImage(UIImage(named: "toolbar_background"), forToolbarPosition: .Any, barMetrics: .Default)
         
         self.playlistTableView.allowsMultipleSelectionDuringEditing = true
+        
+        if self.navigationController is BeforePlaylistNavigationController {
+            self.editButtonItem().enabled = false
+            self.editButtonItem().width = 0
+        }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         loadPlaylist()
     }
     
@@ -63,16 +72,16 @@ class PlaylistViewController: BaseViewController {
         if (indexPath != nil) {
             let preSelectedTrack:Track = tracks[indexPath!.row]
             if (preSelectedTrack.id != track.id ||
-                playlistId != currentPlaylist!.id) {
+                playlistId != playlist!.id) {
                     playlistTableView.deselectRowAtIndexPath(indexPath!, animated: false)
             }
         }
         
-        if playlistId != currentPlaylist!.id {
+        if playlistId != playlist!.id {
             return
         }
         
-        for (idx, t) in currentPlaylist!.tracks.enumerate() {
+        for (idx, t) in playlist!.tracks.enumerate() {
             if (t.id == track.id) {
                 playlistTableView.selectRowAtIndexPath(NSIndexPath(forRow: idx, inSection: 0),
                     animated: true, scrollPosition: UITableViewScrollPosition.None)
@@ -86,9 +95,9 @@ class PlaylistViewController: BaseViewController {
             self.setEditing(false, animated: true)
         }
         
-        self.title = currentPlaylist.name
+        self.title = playlist.name
         
-        switch currentPlaylist.type {
+        switch playlist.type {
         case .USER:
             self.navigationItem.rightBarButtonItems = [self.editButtonItem(), self.shareBarButton]
         case .SHARED:
@@ -97,14 +106,14 @@ class PlaylistViewController: BaseViewController {
             self.navigationItem.rightBarButtonItems = nil
         }
         
-        if currentPlaylist.type != .USER {
+        if playlist.type != .USER {
             self.playlistTableView.reloadData()
             self.trackChanged()
             return
         }
         
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading playlist..", comment:""))
-        Requests.getPlaylist(currentPlaylist!.id, respCb: {
+        Requests.getPlaylist(playlist!.id, respCb: {
             (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
             progressHud.hide(true)
             if (error != nil || result == nil) {
@@ -136,10 +145,14 @@ class PlaylistViewController: BaseViewController {
                 return
             }
             
-            self.currentPlaylist = Playlist.parsePlaylist(res["playlist"])
-            
+            self.playlist = Playlist.parsePlaylist(res["playlist"])
             self.playlistTableView.reloadData()
-            self.trackChanged()
+            
+            if let currentPlaylist = DropbeatPlayer.defaultPlayer.currentPlaylist
+                where currentPlaylist.id == self.playlist.id {
+                DropbeatPlayer.defaultPlayer.currentPlaylist = self.playlist
+                DropbeatPlayer.defaultPlayer.updateCurrentIndexAndQueue()
+            }
         })
     }
     
@@ -163,7 +176,7 @@ extension PlaylistViewController : UITableViewDelegate, UITableViewDataSource {
                 return NSLocalizedString("Empty playlist", comment:"")
             } else {
                 return NSString.localizedStringWithFormat(
-                    NSLocalizedString("%d tracks", comment: ""), currentPlaylist!.tracks.count) as String
+                    NSLocalizedString("%d tracks", comment: ""), playlist!.tracks.count) as String
             }
         }
         
@@ -187,9 +200,8 @@ extension PlaylistViewController : UITableViewDelegate, UITableViewDataSource {
         cell.icon.hidden = editing
         cell.menuBtn.hidden = editing
 
-        if self.editing {
-            cell.setSelected(false, animated: false)
-        } else if (currentPlaylist.id == DropbeatPlayer.defaultPlayer.currentPlaylist?.id &&
+        if (self.editing == false &&
+            playlist.id == DropbeatPlayer.defaultPlayer.currentPlaylist?.id &&
             DropbeatPlayer.defaultPlayer.currentTrack != nil &&
             DropbeatPlayer.defaultPlayer.currentTrack!.id == track.id) {
                 cell.setSelected(true, animated: false)
@@ -202,7 +214,7 @@ extension PlaylistViewController : UITableViewDelegate, UITableViewDataSource {
         if tableView.editing {
             self.onSelectedRowsChanged()
         } else {
-            DropbeatPlayer.defaultPlayer.currentPlaylist = currentPlaylist
+            DropbeatPlayer.defaultPlayer.currentPlaylist = playlist
             DropbeatPlayer.defaultPlayer.play(tracks[indexPath.row])
         }
     }
@@ -217,13 +229,20 @@ extension PlaylistViewController : UITableViewDelegate, UITableViewDataSource {
 // MARK: Edit
 extension PlaylistViewController {
     override func setEditing(editing: Bool, animated: Bool) {
-        guard currentPlaylist.type == .USER else {
+        guard playlist.type == .USER else {
             return
         }
         
         if self.editing == true && editing == false {
             if reordered {
-                self.updateReorderedTracks()
+                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Are you sure?", comment:""),
+                    message: "Order of tracks will be changed.",
+                    positiveBtnText: NSLocalizedString("Change", comment:""), positiveBtnCallback: {
+                        self.updateReorderedTracks()
+                    }, negativeBtnCallback: {
+                        self.reordered = false
+                        self.loadPlaylist()
+                })
             }
         }
         
@@ -258,8 +277,13 @@ extension PlaylistViewController {
         }
         
         // table view
+        for indexPath in playlistTableView.indexPathsForSelectedRows ?? [] {
+            playlistTableView.deselectRowAtIndexPath(indexPath, animated: false)
+        }
+        
         self.playlistTableView.setEditing(editing, animated: false)
         self.playlistTableView.reloadData()
+        self.onSelectedRowsChanged()
     }
     
     @IBAction func toggleSelectAll(sender: UIBarButtonItem) {
@@ -288,6 +312,20 @@ extension PlaylistViewController {
     }
     
     @IBAction func onDeleteTrackBtnClicked(sender: UIBarButtonItem) {
+        if let selectedIndexPaths = playlistTableView.indexPathsForSelectedRows {
+            let count = selectedIndexPaths.count
+            let countMessage = NSString.localizedStringWithFormat(
+                NSLocalizedString("%d tracks", comment: ""), count) as String
+            let message = countMessage + " will be deleted."
+            ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Are you sure?", comment:""),
+                message: message,
+                positiveBtnText: NSLocalizedString("Delete", comment:""), positiveBtnCallback: {
+                    self.deleteSelectedRows()
+            })
+        }
+    }
+    
+    private func deleteSelectedRows() {
         for indexPath in playlistTableView.indexPathsForSelectedRows ?? [] {
             let trackToDelete = tracks[indexPath.row]
             if trackToDelete.id == DropbeatPlayer.defaultPlayer.currentTrack?.id {
@@ -296,19 +334,15 @@ extension PlaylistViewController {
         }
         
         var newTracks : [Track] {
-            var newTracks = [Track]()
-            for row in 0..<tracks.count {
-                let indexPath = NSIndexPath(forRow: row, inSection: 0)
-                let cell = playlistTableView.cellForRowAtIndexPath(indexPath)
-                if cell?.selected == false {
-                    newTracks.append(tracks[row])
-                }
+            var newTracks = self.tracks // copy
+            for indexPath in playlistTableView.indexPathsForSelectedRows ?? [] {
+                newTracks.removeAtIndex(indexPath.row)
             }
             return newTracks
         }
         
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Deleting..", comment:""))
-        currentPlaylist.setTracks(newTracks) { (error) -> Void in
+        playlist.setTracks(newTracks) { (error) -> Void in
             progressHud.hide(true)
             if error != nil {
                 var message = NSLocalizedString("Failed to delete track", comment:"")
@@ -320,8 +354,8 @@ extension PlaylistViewController {
                 ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to delete", comment:""),
                     message: message,
                     positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                        self.onDeleteTrackBtnClicked(sender)
-                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
+                        self.deleteSelectedRows()
+                    })
                 return
             }
             
@@ -330,7 +364,7 @@ extension PlaylistViewController {
     }
     
     @IBAction func onRenamePlaylistBtnClicked(sender: UIBarButtonItem) {
-        let targetPlaylist = currentPlaylist!
+        let targetPlaylist = playlist!
         
         ViewUtils.showTextInputAlert(
             self, title: NSLocalizedString("Change playlist name", comment:""),
@@ -362,7 +396,7 @@ extension PlaylistViewController {
                             return
                         }
                         
-                        self.currentPlaylist.name = newName
+                        self.playlist.name = newName
                         self.loadPlaylist()
                 })
         })
@@ -376,7 +410,7 @@ extension PlaylistViewController {
                 message: NSLocalizedString("At least one playlist should exist", comment:""))
             return
         }
-        let removePlaylist = currentPlaylist!
+        let removePlaylist = playlist!
         let confirmMessage = NSString.localizedStringWithFormat(
             NSLocalizedString("Are you sure you want to delete '%@' playlist with %d tracks?", comment:""),
             removePlaylist.name, removePlaylist.tracks.count) as String
@@ -430,19 +464,19 @@ extension PlaylistViewController {
 // MARK: Reorder 
 extension PlaylistViewController {
     func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return currentPlaylist.type == .USER
+        return playlist.type == .USER
     }
     
     func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         reordered = true
         
-        let t = currentPlaylist.tracks.removeAtIndex(sourceIndexPath.row)
-        currentPlaylist.tracks.insert(t, atIndex: destinationIndexPath.row)
+        let t = playlist.tracks.removeAtIndex(sourceIndexPath.row)
+        playlist.tracks.insert(t, atIndex: destinationIndexPath.row)
     }
     
     @IBAction func reverseTracksOrder(sender: AnyObject) {
         reordered = true
-        currentPlaylist.tracks = tracks.reverse()
+        playlist.tracks = tracks.reverse()
         playlistTableView.reloadData()
     }
     
@@ -452,7 +486,7 @@ extension PlaylistViewController {
         }
         
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Deleting..", comment:""))
-        currentPlaylist.setTracks(tracks) { (error) -> Void in
+        playlist.setTracks(tracks) { (error) -> Void in
             progressHud.hide(true)
             if error != nil {
                 var message = NSLocalizedString("Failed to delete track", comment:"")
@@ -465,8 +499,9 @@ extension PlaylistViewController {
                     message: message,
                     positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
                         self.updateReorderedTracks()
-                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback:{ () -> Void in
+                    }, negativeBtnCallback:{ () -> Void in
                         self.reordered = false
+                        self.loadPlaylist()
                 })
                 return
             }
@@ -488,7 +523,7 @@ extension PlaylistViewController {
         }
         
         let progressHud = ViewUtils.showProgress(self, message: nil)
-        Playlist.importPlaylist(self.currentPlaylist) { (playlist, error) -> Void in
+        Playlist.importPlaylist(self.playlist) { (playlist, error) -> Void in
             progressHud.hide(true)
             if error != nil {
                 var message:String?
@@ -503,14 +538,14 @@ extension PlaylistViewController {
                 return
             }
             
-            self.currentPlaylist = playlist
+            self.playlist = playlist
             self.loadPlaylist()
         }
     }
     
     @IBAction func onSharePlaylistBtnClicked(sender: UIBarButtonItem) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        Requests.sharePlaylist(currentPlaylist!, respCb: {
+        Requests.sharePlaylist(playlist!, respCb: {
             (req, resp, result, error) -> Void in
             progressHud.hide(true)
             var message:String = NSLocalizedString("Failed to share playlist.", comment:"")
@@ -538,7 +573,7 @@ extension PlaylistViewController {
                     let uid = json["obj"]["uid"].string
                     let url = "http://dropbeat.net/?playlist=\(uid!)"
                     
-                    let items:[AnyObject] = [self.currentPlaylist!.name, url]
+                    let items:[AnyObject] = [self.playlist!.name, url]
                     
                     let activityController = UIActivityViewController(
                         activityItems: items, applicationActivities: nil)
@@ -570,7 +605,7 @@ extension PlaylistViewController {
         
         let actionSheet = UIAlertController(title: selectedTrack.title, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         
-        if currentPlaylist.type != PlaylistType.USER {
+        if playlist.type != PlaylistType.USER {
             let title = selectedTrack.isLiked ?
                 NSLocalizedString("Unlike", comment:"") :
                 NSLocalizedString("Like", comment:"")
@@ -713,14 +748,11 @@ extension PlaylistViewController {
 // MARK: -
 
 class BeforePlaylistNavigationController: UINavigationController {
-    weak var currentPlaylist:Playlist!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationBar.tintColor = UIColor.dropbeatColor()
         
         let pvc = self.topViewController as! PlaylistViewController
-        pvc.currentPlaylist = currentPlaylist
         pvc.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Done, target: self, action: "doneBarButtonAction:")
     }
     

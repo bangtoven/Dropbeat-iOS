@@ -265,8 +265,9 @@ class MainTabBarController: UITabBarController {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "PlaylistSegue" {
-            let playlistVC = segue.destinationViewController as! BeforePlaylistNavigationController
-            playlistVC.currentPlaylist = sender as! Playlist
+            let navigationControl = segue.destinationViewController as! UINavigationController
+            let playlistVC = navigationControl.topViewController as! PlaylistViewController
+            playlistVC.playlist = sender as! Playlist
         } else if segue.identifier == "PlaylistSelectSegue" {
             let playlistSelectVC = segue.destinationViewController as! PlaylistSelectViewController
             playlistSelectVC.targetTrack = sender as? Track

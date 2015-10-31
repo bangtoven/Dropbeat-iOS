@@ -247,7 +247,7 @@
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem width="16" style="plain" systemItem="fixedSpace" id="41c-M3-lRo"/>
-                                    <barButtonItem image="ic_rename" id="tYM-cV-GQl">
+                                    <barButtonItem systemItem="compose" id="tYM-cV-GQl">
                                         <connections>
                                             <action selector="onRenamePlaylistBtnClicked:" destination="xjv-Nu-UuS" id="TKM-5m-heT"/>
                                         </connections>
@@ -414,11 +414,10 @@
         <image name="ic_playing" width="20" height="20"/>
         <image name="ic_playlist" width="52" height="52"/>
         <image name="ic_playlist_selected" width="52" height="52"/>
-        <image name="ic_rename" width="25" height="25"/>
         <image name="ic_reverse_order" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="5GI-ft-6CL"/>
+        <segue reference="5Oo-kB-jKx"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
 </document>

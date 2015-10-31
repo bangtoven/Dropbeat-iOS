@@ -71,6 +71,13 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         }
     }
     private var currentIndex = -1
+    func updateCurrentIndexAndQueue() {
+        if let track = self.currentTrack {
+            self.currentIndex = self.getIndexOfTrackWithId(track.id)
+            self.currentTrack = track // to send notification
+            self.enqueueNextTrack()
+        }
+    }
     
     private func getIndexOfTrackWithId(id: String) -> Int {
         guard let currentPlaylist = self.currentPlaylist else {

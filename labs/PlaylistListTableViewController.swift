@@ -104,7 +104,7 @@ class PlaylistListTableViewController: UITableViewController {
                 playlist = playlists[indexPath.row]
             }
             let playlistVC = segue.destinationViewController as! PlaylistViewController
-            playlistVC.currentPlaylist = playlist
+            playlistVC.playlist = playlist
         }
     }
     

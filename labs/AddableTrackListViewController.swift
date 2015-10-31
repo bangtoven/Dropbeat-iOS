@@ -307,20 +307,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
                 return
             }
             
-            let items = [track.title, sharedURL!]
-            
-            let activityController = UIActivityViewController(
-                    activityItems: items, applicationActivities: nil)
-            activityController.excludedActivityTypes = [
-                    UIActivityTypePrint,
-                    UIActivityTypeSaveToCameraRoll,
-                    UIActivityTypeAirDrop,
-                    UIActivityTypeAssignToContact
-                ]
-            activityController.popoverPresentationController?.sourceView = self.view
-            self.presentViewController(activityController, animated:true, completion: nil)
-            
-            
+            self.showActivityViewControllerWithShareURL(sharedURL!, string: track.title)
         }
     }
     

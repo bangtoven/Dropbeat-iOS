@@ -9,6 +9,23 @@
 import Foundation
 import UIKit
 
+extension UIViewController {
+    func showActivityViewControllerWithShareURL(url: NSURL, string: String? = nil) {
+        var items: [AnyObject] = [url]
+        if string != nil {
+            items.append(string!)
+        }
+        
+        let activityController = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        activityController.excludedActivityTypes = [
+            UIActivityTypePrint,
+            UIActivityTypeSaveToCameraRoll,
+            UIActivityTypeAssignToContact
+        ]
+        self.presentViewController(activityController, animated:true, completion: nil)
+    }
+}
+
 extension UITableView {
     func indexPathOfCellContains(sender: UIView) -> NSIndexPath? {
         var view:UIView? = sender

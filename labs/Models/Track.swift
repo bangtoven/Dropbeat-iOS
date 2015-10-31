@@ -333,7 +333,7 @@ class Track {
             drop: nil)
     }
     
-    func shareTrack(section:String, afterShare: (error:NSError?, sharedURL:NSString?) -> Void) {
+    func shareTrack(section:String, afterShare: (error:NSError?, sharedURL:NSURL?) -> Void) {
         Requests.shareTrack(self, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, data:AnyObject?, error:NSError?) -> Void in
             if error != nil {
                 afterShare(error: error, sharedURL: nil)
@@ -377,7 +377,7 @@ class Track {
                 ).build()
             tracker.send(event as [NSObject: AnyObject]!)
             
-            let URL = "http://dropbeat.net/?track=" + uid!
+            let URL = NSURL(string: "http://dropbeat.net/?track=" + uid!)
             afterShare(error: nil, sharedURL:URL)
         })
     }
@@ -446,7 +446,7 @@ class DropbeatTrack: Track {
         }
     }
     
-    override func shareTrack(section:String, afterShare: (error:NSError?, sharedURL:NSString?) -> Void) {
+    override func shareTrack(section:String, afterShare: (error:NSError?, sharedURL:NSURL?) -> Void) {
         guard let userResourceName = self.user?.resourceName else {
             super.shareTrack(section, afterShare: afterShare)
             return
@@ -462,7 +462,7 @@ class DropbeatTrack: Track {
             ).build()
         tracker.send(event as [NSObject: AnyObject]!)
         
-        let URL = "http://dropbeat.net/r/\(userResourceName)/\(self.resourcePath)"
+        let URL = NSURL(string: "http://dropbeat.net/r/\(userResourceName)/\(self.resourcePath)")
         afterShare(error: nil, sharedURL: URL)
     }
     

@@ -30,13 +30,15 @@ class FollowInfoViewController: UIViewController, UITableViewDataSource, UITable
     
     var user: User!
     var userArray: [BaseUser] = []
+    var followInfoType = FollowInfoType.FOLLOWING
     
     func scrollPager(scrollPager: ScrollPager, changedIndex: Int) {
         if changedIndex == 0 {
-            loadUserArray(.FOLLOWING)
+            self.followInfoType = .FOLLOWING
         } else {
-            loadUserArray(.FOLLOWERS)
+            self.followInfoType = .FOLLOWERS
         }
+        loadUserArray()
     }
     
     override func viewDidLoad() {
@@ -45,10 +47,14 @@ class FollowInfoViewController: UIViewController, UITableViewDataSource, UITable
 
         infoTypeSegment.delegate = self
         infoTypeSegment.addSegmentsWithTitles(["Following","Followers"])
-        loadUserArray(.FOLLOWING)
     }
     
-    func loadUserArray(followInfoType: FollowInfoType) {
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        loadUserArray()
+    }
+    
+    func loadUserArray() {
         var fetchFunc: ((users: [BaseUser]?, error: NSError?) -> Void) -> Void
         switch followInfoType {
         case .FOLLOWERS:
@@ -73,7 +79,7 @@ class FollowInfoViewController: UIViewController, UITableViewDataSource, UITable
                     message: message!,
                     positiveBtnText: NSLocalizedString("Retry", comment:""),
                     positiveBtnCallback: { () -> Void in
-                        self.loadUserArray(followInfoType)
+                        self.loadUserArray()
                     }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                 return
             }
@@ -111,7 +117,7 @@ class FollowInfoViewController: UIViewController, UITableViewDataSource, UITable
             cell.profileImageView.image = UIImage(named: "default_profile")
         }
         
-        cell.isFollowedImageView.hidden = (u.isFollowed() == false)
+        cell.isFollowedImageView.hidden = (self.followInfoType == .FOLLOWING) || (u.isFollowed() == false)
         
         return cell
     }

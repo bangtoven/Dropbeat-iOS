@@ -438,18 +438,7 @@ class PlayerViewController: GAITrackedViewController {
                 return
             }
             
-            let items:[AnyObject] = [track.title, sharedURL!]
-            
-            let activityController = UIActivityViewController(
-                activityItems: items, applicationActivities: nil)
-            activityController.excludedActivityTypes = [
-                UIActivityTypePrint,
-                UIActivityTypeSaveToCameraRoll,
-                UIActivityTypeAirDrop,
-                UIActivityTypeAssignToContact
-            ]
-            activityController.popoverPresentationController?.sourceView = self.shareBtn
-            self.presentViewController(activityController, animated:true, completion: nil)
+            self.showActivityViewControllerWithShareURL(sharedURL!, string: track.title)
         }
     }
     

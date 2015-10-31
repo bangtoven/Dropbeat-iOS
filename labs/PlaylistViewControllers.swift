@@ -571,21 +571,9 @@ extension PlaylistViewController {
                 json["obj"].dictionary != nil && json["obj"]["uid"].string != nil) {
                     
                     let uid = json["obj"]["uid"].string
-                    let url = "http://dropbeat.net/?playlist=\(uid!)"
+                    let url = NSURL(string: "http://dropbeat.net/?playlist=\(uid!)")
                     
-                    let items:[AnyObject] = [self.playlist!.name, url]
-                    
-                    let activityController = UIActivityViewController(
-                        activityItems: items, applicationActivities: nil)
-                    activityController.excludedActivityTypes = [
-                        UIActivityTypePrint,
-                        UIActivityTypeSaveToCameraRoll,
-                        UIActivityTypeAirDrop,
-                        UIActivityTypeAssignToContact
-                    ]
-                    
-                    activityController.popoverPresentationController?.sourceView = self.view
-                    self.presentViewController(activityController, animated:true, completion: nil)
+                    self.showActivityViewControllerWithShareURL(url!, string: self.playlist.name)
             } else {
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to share", comment:""),
@@ -712,14 +700,13 @@ extension PlaylistViewController {
                 return
             }
             
-            let items:[AnyObject] = [track.title, sharedURL!]
+            let items:[AnyObject] = [sharedURL!]
             
             let activityController = UIActivityViewController(
                 activityItems: items, applicationActivities: nil)
             activityController.excludedActivityTypes = [
                 UIActivityTypePrint,
                 UIActivityTypeSaveToCameraRoll,
-                UIActivityTypeAirDrop,
                 UIActivityTypeAssignToContact
             ]
             activityController.popoverPresentationController?.sourceView = self.view

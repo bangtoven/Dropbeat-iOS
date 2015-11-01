@@ -212,8 +212,7 @@ class FeedbackViewController: BaseViewController,
             return
         }
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Sending..", comment:""))
-        Requests.sendFeedback(senderEmail!, content: text) {
-                (req, resp, result, error) -> Void in
+        Requests.sendFeedback(senderEmail!, content: text) { (result, error) -> Void in
             var message:String = NSLocalizedString("Failed to send feedback.", comment:"")
             var success = true
             if success && error != nil {

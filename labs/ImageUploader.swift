@@ -31,7 +31,7 @@ class ImageUploader {
 
     private func getUploadImageUrl() {
         let req = Requests.sendGet(ApiPath.metaUploadHost, auth: false) {
-            (req, resp, result, error) -> Void in
+            (result, error) -> Void in
             guard let r = result, host = JSON(r)["host"].string else {
                 print("Can't fetch upload host.")
                 self.callback(url: nil, error: error)
@@ -140,13 +140,13 @@ class ImageUploader {
             ApiPath.userChangeProfileImage :
             ApiPath.userChangeCoverImage
         
-        Requests.sendPost(path, params: ["url": url], auth: true, respCb: { (req, resp, result, error) -> Void in
+        Requests.sendPost(path, params: ["url": url], auth: true) { (result, error) -> Void in
             if error == nil {
                 print("Image uploading SUCCESS.")
                 self.callback(url: url, error: nil)
             } else {
                 self.callback(url: nil, error: error)
             }
-        })
+        }
     }
 }

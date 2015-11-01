@@ -113,8 +113,7 @@ class PlaylistViewController: BaseViewController {
         }
         
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading playlist..", comment:""))
-        Requests.getPlaylist(playlist!.id, respCb: {
-            (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.getPlaylist(playlist!.id) { (result, error) -> Void in
             progressHud.hide(true)
             if (error != nil || result == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
@@ -153,7 +152,7 @@ class PlaylistViewController: BaseViewController {
                 DropbeatPlayer.defaultPlayer.currentPlaylist = self.playlist
                 DropbeatPlayer.defaultPlayer.updateCurrentIndexAndQueue()
             }
-        })
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -379,9 +378,7 @@ extension PlaylistViewController {
                 
                 let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Changing..", comment:""))
                 
-                Requests.changePlaylistName(
-                    targetPlaylist.id, name: newName, respCb: {
-                        (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                Requests.changePlaylistName(targetPlaylist.id, name: newName) { (result, error) -> Void in
                         progressHud.hide(true)
                         if (error != nil) {
                             var message:String?
@@ -398,7 +395,7 @@ extension PlaylistViewController {
                         
                         self.playlist.name = newName
                         self.loadPlaylist()
-                })
+                }
         })
     }
     
@@ -422,8 +419,7 @@ extension PlaylistViewController {
                 
                 let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Deleting..", comment:""))
                 
-                Requests.deletePlaylist(removePlaylist.id, respCb: {
-                    (request:NSURLRequest, response: NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                Requests.deletePlaylist(removePlaylist.id) { (result, error) -> Void in
                     
                     progressHud.hide(true)
                     if (error != nil || result == nil) {
@@ -456,7 +452,7 @@ extension PlaylistViewController {
                     
                     self.editing = false
                     self.navigationController?.popViewControllerAnimated(true)
-                })
+                }
         })
     }
 }
@@ -545,8 +541,7 @@ extension PlaylistViewController {
     
     @IBAction func onSharePlaylistBtnClicked(sender: UIBarButtonItem) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        Requests.sharePlaylist(playlist!, respCb: {
-            (req, resp, result, error) -> Void in
+        Requests.sharePlaylist(playlist!) {(result, error) -> Void in
             progressHud.hide(true)
             var message:String = NSLocalizedString("Failed to share playlist.", comment:"")
             var success = true
@@ -579,7 +574,7 @@ extension PlaylistViewController {
                     title: NSLocalizedString("Failed to share", comment:""),
                     message: message)
             }
-        })
+        }
     }
 }
 

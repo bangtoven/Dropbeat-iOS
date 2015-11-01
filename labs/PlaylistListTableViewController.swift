@@ -120,8 +120,7 @@ class PlaylistListTableViewController: UITableViewController {
                 }
                 let progressHud = ViewUtils.showProgress(self,
                     message: NSLocalizedString("Creating playlist..", comment:""))
-                Requests.createPlaylist(result, respCb: {
-                    (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+                Requests.createPlaylist(result) {(result, error) -> Void in
                     progressHud.hide(true)
                     if (error != nil) {
                         var message:String?
@@ -138,7 +137,7 @@ class PlaylistListTableViewController: UITableViewController {
                         return
                     }
                     self.loadPlaylists()
-                })
+                }
         })
     }
 }

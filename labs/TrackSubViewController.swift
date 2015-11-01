@@ -99,7 +99,7 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
     }
     
     func loadTracks(playlistUid:String, pageToken:String?) {
-        Requests.getChannelPlaylist(playlistUid, pageToken: pageToken) { (req: NSURLRequest, resp: NSHTTPURLResponse?, result: AnyObject?, error :NSError?) -> Void in
+        Requests.getChannelPlaylist(playlistUid, pageToken: pageToken) { (result, error) -> Void in
             if self.isSectioned != true {
                 self.trackTableView.tableHeaderView = nil
             } else {

@@ -223,8 +223,7 @@ class SearchViewController: AddableTrackListViewController,
             ).build()
         tracker.send(event as [NSObject: AnyObject]!)
         
-        Requests.search(keyword, respCb: {
-                (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.search(keyword) {(result, error) -> Void in
             progressHud.hide(true)
             
             if (error != nil || result == nil) {
@@ -264,7 +263,7 @@ class SearchViewController: AddableTrackListViewController,
             self.noSearchResultView.hidden = !showNoResultView
             
             self.trackChanged()
-        })
+        }
     }
     
     // MARK: auto complete
@@ -362,4 +361,127 @@ class AutocomTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+}
+
+class AutocompleteRequester {
+    let youtubeApiPath = "https://clients1.google.com/complete/search"
+    let funcRegexPattern = "[a-zA-Z0-9\\.]+\\(([^\\)]+)\\)"
+    let koreanRegexPattern = ".*[ㄱ-ㅎㅏ-ㅣ가-힣]+."
+    
+    var defaultParams:[String:String]
+    var onTheFlyRequests = [String:Request]()
+    
+    var handler:(keywords:Array<String>?, error:NSError?) -> Void
+    
+    init (handler:(keywords:Array<String>?, error:NSError?) -> Void) {
+        self.handler = handler
+        self.defaultParams = [
+            "client": "youtube",
+            "hl": "en",
+            "gl": "us",
+            "gs_rn": "23",
+            "gs_ri": "youtube",
+            "tok": "I9KDmvOmJAg1Xq-coNjwGg",
+            "ds": "yt",
+            "cp": "3",
+            "gs_gbg": "K111AA607"
+        ]
+    }
+    
+    func send(keyword:String) {
+        if (keyword.characters.count == 0) {
+            self.handler(keywords: [], error: nil)
+            return
+        }
+        var params = Dictionary<String, String>()
+        for key in defaultParams.keys {
+            params[key] = defaultParams[key]
+        }
+        
+        var id:String?
+        
+        repeat {
+            id = makeRandId()
+        } while(onTheFlyRequests[id!] != nil)
+        
+        params["q"] = keyword
+        params["gs_id"] = id!
+        
+        let req = request(Method.GET, self.youtubeApiPath, parameters: params).responseString(encoding: NSUTF8StringEncoding,
+            completionHandler: {
+                (request:NSURLRequest?, response:NSHTTPURLResponse?, result:Result<String>) -> Void in
+                self.onTheFlyRequests.removeValueForKey(id!)
+                
+                if (result.error != nil) {
+                    self.handler(keywords: nil, error:result.error as? NSError)
+                    return
+                }
+                let resultStr = result.value
+                if (resultStr == nil) {
+                    self.handler(keywords: nil, error:NSError(domain: "autocompleteRequester", code: 0, userInfo: nil))
+                    return
+                }
+                let funcRegex = try! NSRegularExpression(pattern: self.funcRegexPattern, options: [])
+                //                let koreanRegex = try! NSRegularExpression(pattern: self.koreanRegexPattern, options: [])
+                
+                let matches = funcRegex.matchesInString(resultStr!,
+                    options: [],
+                    range:NSMakeRange(0, resultStr!.characters.count))
+                if (matches.count > 0) {
+                    let substring = NSString(string:resultStr!).substringWithRange(matches[0].rangeAtIndex(1))
+                    let data:NSData = substring.dataUsingEncoding(NSUTF8StringEncoding)!
+                    var error: NSError?
+                    
+                    // convert NSData to 'AnyObject'
+                    let anyObj: AnyObject?
+                    do {
+                        anyObj = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0))
+                    } catch let error1 as NSError {
+                        error = error1
+                        anyObj = nil
+                    } catch {
+                        fatalError()
+                    }
+                    
+                    if (error != nil) {
+                        self.handler(keywords:nil, error:error)
+                        return
+                    }
+                    if (anyObj is Array<AnyObject>) {
+                        let argArray = anyObj as! Array<AnyObject>
+                        if (argArray.count > 2) {
+                            let words = argArray[1] as! Array<AnyObject>
+                            //                            let q:String = argArray[0] as! String
+                            //                            let appendix: AnyObject = argArray[2] as AnyObject
+                            
+                            var keywords = [String]()
+                            for word in words {
+                                let entries = word as! Array<AnyObject>
+                                let keyword = entries[0] as! String
+                                keywords.append(keyword)
+                            }
+                            self.handler(keywords: keywords, error: nil)
+                            return
+                        }
+                    }
+                }
+                self.handler(keywords: nil, error: NSError(domain: "autocom", code: 0, userInfo: nil))
+        })
+        onTheFlyRequests[id!] = req
+    }
+    
+    func cancelAll() {
+        for request in onTheFlyRequests.values {
+            request.cancel()
+        }
+    }
+    
+    private func makeRandId()->String {
+        let possible = Array("abcdefghijklmnopqrstuvwxyz0123456789".characters)
+        var id = ""
+        for _ in 0...1 {
+            id.append(possible[random() % possible.count])
+        }
+        return id
+    }
 }

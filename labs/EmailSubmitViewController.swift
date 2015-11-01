@@ -85,8 +85,7 @@ class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate, UISc
         }
         isSubmitting = true
         let progressHud = ViewUtils.showProgress(self, message: "")
-        Requests.userChangeEmail(email!, respCb: {
-            (req, resp, result, error) -> Void in
+        Requests.userChangeEmail(email!) {(result, error) -> Void in
             self.isSubmitting = false
             if error != nil || result == nil {
                 progressHud.hide(true)
@@ -111,7 +110,7 @@ class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate, UISc
             dispatch_after(popTime, dispatch_get_main_queue(), {() -> Void in
                 self.delegate?.onAfterEmailUpdate()
             })
-        })
+        }
     }
     
     func showErrorAlert(error:NSError?) {

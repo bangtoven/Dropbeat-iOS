@@ -165,7 +165,7 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
             for key:String in idsToRemove {
                 genreIds.append(key)
             }
-            Requests.delFavoriteGenre(genreIds, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            Requests.delFavoriteGenre(genreIds) { (result, error) -> Void in
                 if error != nil || result == nil ||
                     !(JSON(result!)["success"].bool ?? false) {
                         handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
@@ -173,7 +173,7 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
                 }
                 doneRemove = true
                 handler(nil)
-            })
+            }
         } else {
             doneRemove = true
             handler(nil)
@@ -185,7 +185,7 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
             for key:String in idsToAdd {
                 genreIds.append(key)
             }
-            Requests.addFavoriteGenre(genreIds, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            Requests.addFavoriteGenre(genreIds) { (result, error) -> Void in
                 if error != nil || result == nil ||
                     !(JSON(result!)["success"].bool ?? false) {
                         handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
@@ -194,7 +194,7 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
                 
                 doneAdd = true
                 handler(nil)
-            })
+            }
         } else {
             doneAdd = true
             handler(nil)
@@ -259,7 +259,7 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
             progressHud = ViewUtils.showProgress(self, message: "")
         }
         isLoading = true
-        Requests.getFavoriteGenres { (req, resp, result, error) -> Void in
+        Requests.getFavoriteGenres { (result, error) -> Void in
             
             if error != nil || result == nil {
                 self.progressHud?.hide(true)
@@ -330,7 +330,7 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
             progressHud = ViewUtils.showProgress(self, message: "")
         }
         isLoading = true
-        Requests.getFeedGenre { (req, resp, result, error) -> Void in
+        Requests.getFeedGenre { (result, error) -> Void in
             self.progressHud?.hide(true)
             self.isLoading = false
             
@@ -539,7 +539,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
             for key:String in idsToRemove {
                 genreIds.append(key)
             }
-            Requests.delFavoriteGenre(genreIds, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            Requests.delFavoriteGenre(genreIds) { (result, error) -> Void in
                 if error != nil || result == nil ||
                     !(JSON(result!)["success"].bool ?? false) {
                         handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
@@ -547,7 +547,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
                 }
                 doneRemove = true
                 handler(nil)
-            })
+            }
         } else {
             doneRemove = true
             handler(nil)
@@ -559,7 +559,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
             for key:String in idsToAdd {
                 genreIds.append(key)
             }
-            Requests.addFavoriteGenre(genreIds, respCb: { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            Requests.addFavoriteGenre(genreIds) { (result, error) -> Void in
                 if error != nil || result == nil ||
                     !(JSON(result!)["success"].bool ?? false) {
                         handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
@@ -568,7 +568,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
                 
                 doneAdd = true
                 handler(nil)
-            })
+            }
         } else {
             doneAdd = true
             handler(nil)
@@ -725,7 +725,7 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
     
     func loadSamples() {
         let progressHud = ViewUtils.showProgress(self, message: "")
-        Requests.getGenreSamples { (req, resp, result, error) -> Void in
+        Requests.getGenreSamples { (result, error) -> Void in
             progressHud.hide(true)
             if error != nil || result == nil {
                 ViewUtils.showConfirmAlert(self,

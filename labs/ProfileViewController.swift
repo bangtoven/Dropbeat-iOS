@@ -217,7 +217,7 @@ class ProfileViewController: UserViewController {
         
         let progressHud = ViewUtils.showProgress(self, message: "")
         header.favoriteGenresLabel.text = ""
-        Requests.getFeedGenre { (req, resp, result, error) -> Void in
+        Requests.getFeedGenre { (result, error) -> Void in
             progressHud.hide(true)
             
             var genreResult:GenreList?

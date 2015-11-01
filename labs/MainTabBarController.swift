@@ -192,8 +192,7 @@ class MainTabBarController: UITabBarController {
                 self.showPopupPlayer()
             }
         case .SHARED_TRACK(let uid):
-            Requests.getSharedTrack(uid, respCb: {
-                (req, resp, result, error) -> Void in
+            Requests.getSharedTrack(uid) { (result, error) -> Void in
                 
                 var success:Bool = true
                 var track:Track?
@@ -224,10 +223,9 @@ class MainTabBarController: UITabBarController {
                 DropbeatPlayer.defaultPlayer.play(track!)
                 self.showPopupPlayer()
                 self.openPopupAnimated(true, completion: nil)
-            })
+            }
         case .SHARED_PLAYLIST(let uid):
-            Requests.getSharedPlaylist(uid, respCb: {
-                (req, resp, result, error) -> Void in
+            Requests.getSharedPlaylist(uid) { (result, error) -> Void in
                 
                 var success:Bool = true
                 var playlist:Playlist?
@@ -253,7 +251,7 @@ class MainTabBarController: UITabBarController {
                 
                 playlist!.type = PlaylistType.SHARED
                 self.performSegueWithIdentifier("PlaylistSegue", sender: playlist)
-            })
+            }
         }
         
         appDelegate.appLink = nil

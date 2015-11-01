@@ -207,7 +207,7 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
         self.isSubmitting = true
         self.progressHud = ViewUtils.showProgress(self, message: "Nickname")
         
-        Requests.changeNickname(newNickname, respCb: self.responseHandlerWith(
+        Requests.changeNickname(newNickname, handler: self.responseHandlerWith(
             onSuccess: {
                 Account.getCachedAccount()!.user!.nickname = newNickname
             }, onFailure: {
@@ -223,15 +223,14 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
         self.isSubmitting = true
         self.progressHud = ViewUtils.showProgress(self, message: "About me")
 
-        Requests.changeAboutMe(newAboutMe, respCb: self.responseHandlerWith(
+        Requests.changeAboutMe(newAboutMe, handler: self.responseHandlerWith(
             onSuccess: {
                 Account.getCachedAccount()!.user!.aboutMe = newAboutMe
         }))
     }
     
-    private func responseHandlerWith(onSuccess onSuccess:(Void->Void), onFailure:(Void->Void)? = nil)
-        -> RespCallback {
-            return { (req:NSURLRequest, res:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+    private func responseHandlerWith(onSuccess onSuccess:(Void->Void), onFailure:(Void->Void)? = nil) -> ResponseHandler {
+            return { (result, error) -> Void in
                 
                 if error != nil || result == nil {
                     self.progressHud.hide(true)

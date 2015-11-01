@@ -68,8 +68,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     
     func checkVersion(callback: ()->Void) {
 //        self.playIndicator?.animatePlayback()
-        Requests.getClientVersion {
-                (reuqest: NSURLRequest, response: NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.getClientVersion { (result, error) -> Void in
             if (error != nil || result == nil) {
 //                var message:String?
 //                if (error != nil && error!.domain == NSURLErrorDomain &&
@@ -127,7 +126,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     
     func initialize() {
 //        self.playIndicator?.animatePlayback()
-        Requests.getFeedGenre { (req, resp, result, error) -> Void in
+        Requests.getFeedGenre { (result, error) -> Void in
             if (error != nil) {
                     ViewUtils.showConfirmAlert(self,
                         title: NSLocalizedString("Failed to load", comment:""),
@@ -249,8 +248,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     }
     
     func requestNextLikeInfos(pages:[FBPage], pageUrl:String, callback:(data:[FBPage]?, error:NSError?) -> Void) {
-        Requests.sendGet(pageUrl, params: nil, auth:false, respCb: {
-                (req, resp, result, error) -> Void in
+        Requests.sendGet(pageUrl, params: nil, auth:false) { (result, error) -> Void in
             if (error != nil) {
                 callback(data:nil, error:error)
                 return
@@ -280,7 +278,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
             } else {
                 callback(data:concatPages, error:nil)
             }
-        })
+        }
     }
     
     func facebookSignin(rerequest:Bool, callback:(cancel:Bool, error:NSError?) -> Void) {

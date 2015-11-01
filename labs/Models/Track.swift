@@ -167,7 +167,7 @@ extension Track {
 class Track {
     static var soundCloudKey: String = "02gUJC0hH2ct1EGOcYXQIzRFU91c72Ea"
     static func loadSoundCloudKey (callback:(NSError)->Void) {
-        Requests.sendGet(ApiPath.metaKey, auth: false) { (req, resp, result, error) -> Void in
+        Requests.sendGet(ApiPath.metaKey, auth: false) { (result, error) -> Void in
             if error != nil {
                 print("can't fetch sound cloud key")
                 return
@@ -288,7 +288,7 @@ class Track {
     }
     
     static func fetchFollowingTracks(pageIdx: Int, callback:((tracks:[Track]?, error:NSError?) -> Void)) {
-        Requests.sendGet(ApiPath.streamFollowing, params: ["p": pageIdx], auth: true) { (req, res, result, error) -> Void in
+        Requests.sendGet(ApiPath.streamFollowing, params: ["p": pageIdx], auth: true) { (result, error) -> Void in
             if (error != nil) {
                 callback(tracks: nil, error: error)
                 return
@@ -336,7 +336,7 @@ class Track {
     func repostTrack(afterRepost: (data:JSON?, error:NSError?) -> Void) {
         let data = self.toRepostData()
         
-        Requests.sendPost(ApiPath.repost, params: ["data":data], auth: true) { (req, resp, result, error) -> Void in
+        Requests.sendPost(ApiPath.repost, params: ["data":data], auth: true) { (result, error) -> Void in
             guard error == nil else {
                 afterRepost(data: nil, error: error)
                 return
@@ -368,7 +368,7 @@ class Track {
     }
     
     func shareTrack(section:String, afterShare: (error:NSError?, sharedURL:NSURL?) -> Void) {
-        Requests.shareTrack(self, respCb: { (req:NSURLRequest, resp:NSHTTPURLResponse?, data:AnyObject?, error:NSError?) -> Void in
+        Requests.shareTrack(self) { (data, error) -> Void in
             if error != nil {
                 afterShare(error: error, sharedURL: nil)
                 return
@@ -413,7 +413,7 @@ class Track {
             
             let URL = NSURL(string: "http://dropbeat.net/?track=" + uid!)
             afterShare(error: nil, sharedURL:URL)
-        })
+        }
     }
 }
 
@@ -469,7 +469,7 @@ class DropbeatTrack: Track {
     
     static func resolve(user: String, track: String, callback:((track: Track?, error: NSError?) -> Void)) {
         Requests.sendGet(ApiPath.resolveResource, params:["url":"/r/\(user)/\(track)"], auth: false) {
-            (req, resp, result, error) -> Void in
+            (result, error) -> Void in
             if (error != nil || JSON(result!)["success"] == false) {
                 callback(track: nil, error: error)
                 return
@@ -518,7 +518,7 @@ class DropbeatTrack: Track {
         case .POPULAR: params["order"] = "popular"
         case .RECENT: params["order"] = "recent"
         }
-        Requests.sendGet(ApiPath.userTrackNewUploads, params: params, auth: false) { (req, res, result, error) -> Void in
+        Requests.sendGet(ApiPath.userTrackNewUploads, params: params, auth: false) { (result, error) -> Void in
             if (error != nil) {
                 callback(tracks: nil, error: error)
                 return
@@ -568,9 +568,10 @@ class PlayLog {
         }
         log["data"] = data
 
-        request(.POST, ApiPath.logPlaybackDetail, parameters: log, encoding: .JSON)
-            .responseJSON { (req, resp, result) -> Void in
-                print("playback detail log posted: " + result.description)
+        Requests.sendPost(ApiPath.logPlaybackDetail, params: log, auth: false) { (result, error) -> Void in
+            if result != nil {
+                print("playback detail log posted: \(JSON(result!))")
+            }
         }
     }
 }
@@ -605,9 +606,10 @@ extension Track { // for Play Failure Log
         
         log["description"] = description
         
-        request(.POST, ApiPath.logPlayFailure, parameters: log, encoding: .JSON)
-            .responseJSON{ (req, resp, result) -> Void in
-                print("play failure log posted: " + result.description + " (\(description))")
+        Requests.sendPost(ApiPath.logPlayFailure, params: log, auth: false) { (result, error) -> Void in
+            if result != nil {
+                print("play failure log posted: \(JSON(result!)) (\(description))")
+            }
         }
     }
 }
@@ -703,7 +705,7 @@ class Like {
         
         switch track {
         case is DropbeatTrack:
-            Requests.sendPost(ApiPath.userTrackLike, params: ["track_id":track.id], auth: true) { (req, resp, result, error) -> Void in
+            Requests.sendPost(ApiPath.userTrackLike, params: ["track_id":track.id], auth: true) { (result, error) -> Void in
                 if error != nil {
                     callback?(error:error)
                     return
@@ -729,7 +731,7 @@ class Like {
                 }
             }
         default:
-            Requests.doLike(track, respCb: { (req, resp, result, error) -> Void in
+            Requests.doLike(track) { (result, error) -> Void in
                 if error != nil {
                     callback?(error:error)
                     return
@@ -753,7 +755,7 @@ class Like {
                     NSNotificationCenter.defaultCenter().postNotificationName(
                         NotifyKey.likeUpdated, object: nil)
                 }
-            })
+            }
         }
     }
     
@@ -775,7 +777,7 @@ class Like {
         let likeId = filteredLikes.first?.id
         switch track {
         case is DropbeatTrack:
-            Requests.send(.DELETE, url: ApiPath.userTrackLike, params: ["like_id":likeId!], auth: true) { (req, resp, result, error) -> Void in
+            Requests.send(.DELETE, url: ApiPath.userTrackLike, params: ["like_id":likeId!], auth: true) { (result, error) -> Void in
                 if error != nil {
                     callback?(error:error)
                     return
@@ -800,7 +802,7 @@ class Like {
             }
             break
         default:
-            Requests.doUnlike(likeId!, respCb: { (req, resp, result, error) -> Void in
+            Requests.doUnlike(likeId!) { (result, error) -> Void in
                 if error != nil {
                     callback?(error:error)
                     return
@@ -822,7 +824,7 @@ class Like {
                 
                 NSNotificationCenter.defaultCenter().postNotificationName(
                     NotifyKey.likeUpdated, object: nil)
-            })
+            }
         }
     }
     

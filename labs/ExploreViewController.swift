@@ -162,8 +162,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
             trackTableView.scrollsToTop = true
         }
-        Requests.fetchExploreChannelFeed(pageIdx, respCb: {
-            (req, resp, result, error) -> Void in
+        Requests.fetchExploreChannelFeed(pageIdx) {(result, error) -> Void in
             
             progressHud?.hide(true)
             self.refreshControl.endRefreshing()
@@ -210,7 +209,7 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             
             self.trackTableView.reloadData()
             self.trackChanged()
-        })
+        }
         
     }
     

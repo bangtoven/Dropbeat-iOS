@@ -52,7 +52,7 @@ class Playlist {
             return
         }
         
-        Requests.getPlaylist(id) { (request, response, result, error) -> Void in
+        Requests.getPlaylist(id) { (result, error) -> Void in
             if (error != nil) {
                 callback(error: error!)
                 return
@@ -68,7 +68,7 @@ class Playlist {
     }
     
     static func fetchAllPlaylists(callback:(playlists:[Playlist]?, error:NSError?)->Void) {
-        Requests.fetchPlaylistList() { (request, response, result, error) -> Void in
+        Requests.fetchPlaylistList() { (result, error) -> Void in
             if error != nil || result == nil {
                 callback(playlists:nil, error: error)
                 return
@@ -138,7 +138,7 @@ class Playlist {
         
         let newTracksDict = newTracks.map(trackToDict)
         
-        Requests.setPlaylist(self.id, data: newTracksDict) { (request, response, result, error) -> Void in
+        Requests.setPlaylist(self.id, data: newTracksDict) { (result, error) -> Void in
             if (error != nil) {
                 afterAdd(error: error)
                 return
@@ -162,7 +162,7 @@ class Playlist {
     func deleteTrack(track: Track, afterDelete: (error:NSError?) -> Void) {
         let newTracksDict = tracks.filter({ $0.id != track.id }).map(trackToDict)
         
-        Requests.setPlaylist(self.id, data: newTracksDict) { (request, response, result, error) -> Void in
+        Requests.setPlaylist(self.id, data: newTracksDict) { (result, error) -> Void in
             if (error != nil) {
                 afterDelete(error: error)
                 return
@@ -178,7 +178,7 @@ class Playlist {
     func setTracks(newTracks: [Track], callback: (error:NSError?) -> Void) {
         let newTracksDict = newTracks.map(trackToDict)
         
-        Requests.setPlaylist(self.id, data: newTracksDict) { (request, response, result, error) -> Void in
+        Requests.setPlaylist(self.id, data: newTracksDict) { (result, error) -> Void in
             if (error != nil) {
                 callback(error: error)
                 return
@@ -191,7 +191,7 @@ class Playlist {
     
     static func importPlaylist(playlist:Playlist, callback: (playlist:Playlist?, error:NSError?) -> Void) {
         
-        Requests.createPlaylist(playlist.name) { (req, resp, result, error) -> Void in
+        Requests.createPlaylist(playlist.name) { (result, error) -> Void in
             if (error != nil || result == nil) {
                 callback(playlist:nil, error: error != nil ? error :
                     NSError(domain: PlaylistErrorDomain, code: PlaylistImportFailedError, userInfo: nil))
@@ -202,9 +202,9 @@ class Playlist {
             importedPlaylist.tracks = playlist.tracks
             let tracksDict = importedPlaylist.tracks.map(trackToDict)
             
-            Requests.setPlaylist(importedPlaylist.id, data: tracksDict) { (req, resp, result, error) -> Void in
+            Requests.setPlaylist(importedPlaylist.id, data: tracksDict) { (result, error) -> Void in
                 if (result == nil || error != nil || !(JSON(result!)["success"].bool ?? false)) {
-                    Requests.deletePlaylist(importedPlaylist.id, respCb: Requests.EMPTY_RESPONSE_CALLBACK)
+                    Requests.deletePlaylist(importedPlaylist.id, handler: Requests.EMPTY_RESPONSE_CALLBACK)
                     callback(playlist:nil, error: NSError(domain: PlaylistErrorDomain, code: PlaylistImportFailedError, userInfo: ["message":"Failed to save playlist"]))
                     return
                 }

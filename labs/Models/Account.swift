@@ -91,7 +91,7 @@ class Account {
         }
         
         
-        Requests.userSelf({ (request: NSURLRequest, response: NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.userSelf(){ (result, error) -> Void in
             if (error != nil) {
                 errorHandler(error!)
                 return
@@ -123,9 +123,9 @@ class Account {
             })
             
             responseHandler()
-        })
+        }
         
-        Requests.getFavoriteGenres { (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.getFavoriteGenres() { (result, error) -> Void in
             if error != nil || result == nil {
                 errorHandler(error != nil ? error! :
                     NSError(domain: "getFavorites", code: 103, userInfo: nil))
@@ -150,7 +150,7 @@ class Account {
     static var location:[String:String]?
     
     static func loadLocation(callback:((dict:[String:String]) -> Void)) {
-        Requests.sendGet("http://geo.ironbricks.com/json/", auth: false) { (req, resp, result, error) -> Void in
+        Requests.sendGet("http://geo.ironbricks.com/json/", auth: false) { (result, error) -> Void in
             if error != nil {
                 Account.location = [:]
                 return
@@ -162,7 +162,7 @@ class Account {
             let lng = json["longitude"].stringValue
             
             let url = "http://maps.google.com/maps/api/geocode/json?latlng=\(lat),\(lng)&sensor=false&language=en"
-            Requests.sendGet(url, auth: false) { (req, resp, result, error) -> Void in
+            Requests.sendGet(url, auth: false) { (result, error) -> Void in
                 if error != nil {
                     Account.location = [:]
                     return

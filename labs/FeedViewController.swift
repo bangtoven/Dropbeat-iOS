@@ -422,8 +422,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             return
         }
         
-        Requests.getFeedGenre {
-                (req, resp, result, error) -> Void in
+        Requests.getFeedGenre { (result, error) -> Void in
             if error != nil || result == nil {
                 callback(error:error != nil ? error : NSError(domain: "initGenre", code:0, userInfo:nil))
                 return
@@ -902,8 +901,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         if !refreshControl.refreshing && nextPage == 0 {
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
-        Requests.getStreamTrending(selectedGenre!.key, pageIdx: nextPage, respCb: {
-            (req, resp, result, error) -> Void in
+        Requests.getStreamTrending(selectedGenre!.key, pageIdx: nextPage) {(result, error) -> Void in
             self.isLoading = false
             progressHud?.hide(true)
             if self.refreshControl.refreshing {
@@ -961,7 +959,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             self.trackTableView.reloadData()
             
             self.trackChanged()
-        })
+        }
     }
     
     func loadBeatportChartFeed(forceRefresh:Bool=false) {
@@ -977,8 +975,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         if selectedGenre!.key.characters.count == 0 {
             genreKey = "TOP100"
         }
-        Requests.fetchBeatportChart(genreKey, respCb: {
-                (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+        Requests.fetchBeatportChart(genreKey) {(result, error) -> Void in
             progressHud?.hide(true)
             if self.refreshControl.refreshing {
                 self.refreshControl.endRefreshing()
@@ -1012,7 +1009,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
             self.trackChanged()
-        })
+        }
     }
     
     func loadNewReleaseFeed(forceRefresh:Bool=false) {
@@ -1028,8 +1025,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         if !refreshControl.refreshing && nextPage == 0 {
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
-        Requests.getStreamNew(selectedGenre!.key, pageIdx: nextPage, respCb: {
-            (req, resp, result, error) -> Void in
+        Requests.getStreamNew(selectedGenre!.key, pageIdx: nextPage) {(result, error) -> Void in
             self.isLoading = false
             progressHud?.hide(true)
             if self.refreshControl.refreshing {
@@ -1073,7 +1069,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             self.updatePlaylist(false)
             self.trackTableView.reloadData()
             self.trackChanged()
-        })
+        }
     }
     
     @IBAction func onFeedTypeSelectorClicked(sender: AnyObject) {

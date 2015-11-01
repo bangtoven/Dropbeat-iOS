@@ -143,8 +143,7 @@ class FBSigninableViewController: BaseViewController {
                 "fb_id": fbId
             ]
             
-            Requests.userSignin(userParam, respCb: {
-                    (request:NSURLRequest, response:NSHTTPURLResponse?, result:AnyObject?, error:NSError?) -> Void in
+            Requests.userSignin(userParam) { (result, error) -> Void in
                 if (error != nil) {
                     fbManager.logOut()
                     var message:String?
@@ -173,7 +172,7 @@ class FBSigninableViewController: BaseViewController {
                 let user = User(json: JSON(result!))
                 
                 self.afterSignin(user, token: token)
-            })
+            }
         })
     }
     
@@ -321,7 +320,7 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         let progressHud = ViewUtils.showProgress(self, message: "")
         isSubmitting = true
         
-        Requests.emailSignin(email!, password: password!) { (req, resp, result, error) -> Void in
+        Requests.emailSignin(email!, password: password!) { (result, error) -> Void in
             if error != nil || result == nil {
                 self.isSubmitting = false
                 progressHud.hide(true)
@@ -585,8 +584,7 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
         
         let progressHud = ViewUtils.showProgress(self, message: "")
         Requests.emailSignup(email!, firstName: firstname!, lastName: lastname!,
-            nickname: nickname!, password: password!,
-            respCb: { (req, resp, result, error) -> Void in
+            nickname: nickname!, password: password!) { (result, error) -> Void in
                 
                 if error != nil || result == nil {
                     self.isSubmitting = false
@@ -635,7 +633,7 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                     self.afterSignup(json["token"].stringValue)
                 })
                 
-        })
+        }
     }
     
     func afterSignup(token:String) {

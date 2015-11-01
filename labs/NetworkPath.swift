@@ -11,12 +11,6 @@ enum HostType {
 }
 let hostType: HostType = .Coroutine
 
-extension ApiPath {
-    static let hostV2 = host + "v2/"
-
-    static let streamFollowing = hostV2 + "stream/following/"
-}
-
 public class ApiPath {
     static var host: String {
         switch hostType {
@@ -28,6 +22,15 @@ public class ApiPath {
             return "http://monocheese.iptime.org:19030/api/"
         }
     }
+}
+
+extension ApiPath {
+    static let hostV2 = host + "v2/"
+
+    static let streamFollowing = hostV2 + "stream/following/"
+}
+
+extension ApiPath {
     static let hostV1 = host + "v1/"
     
     // Resolve

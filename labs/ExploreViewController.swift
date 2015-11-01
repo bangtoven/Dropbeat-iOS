@@ -181,14 +181,13 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
                 return
             }
             
-            let respObj = JSON(result!)
-            if !(respObj["success"].bool ?? false) {
+            if !(result!["success"].bool ?? false) {
                 let message = NSLocalizedString("Failed to load channel feed.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }
             
-            let tracks = Track.parseTracks(respObj["data"])
+            let tracks = Track.parseTracks(result!["data"])
             
             if tracks.count == 0 {
                 self.nextPage = -1

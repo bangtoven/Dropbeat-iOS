@@ -135,8 +135,7 @@ class PlaylistViewController: BaseViewController {
                 return
             }
             
-            var res = JSON(result!)
-            if !res["success"].boolValue {
+            if !(result!["success"].boolValue) {
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to fetch", comment:""),
                     message: NSLocalizedString("Failed to fetch playlist", comment:""),
@@ -144,7 +143,7 @@ class PlaylistViewController: BaseViewController {
                 return
             }
             
-            self.playlist = Playlist.parsePlaylist(res["playlist"])
+            self.playlist = Playlist.parsePlaylist(result!["playlist"])
             self.playlistTableView.reloadData()
             
             if let currentPlaylist = DropbeatPlayer.defaultPlayer.currentPlaylist
@@ -435,9 +434,7 @@ extension PlaylistViewController {
                             message: message!)
                         return
                     }
-                    let res = result as! NSDictionary
-                    let success:Bool = res.objectForKey("success") as! Bool? ?? false
-                    if (!success) {
+                    if !(result!["success"].boolValue) {
                         let message = "Failed to update playlist"
                         ViewUtils.showNoticeAlert(self,
                             title: NSLocalizedString("Failed to delete", comment:""), message: message)
@@ -560,12 +557,10 @@ extension PlaylistViewController {
                 return
             }
             
-            var json = JSON(result!)
-            
-            if ((json["success"].bool ?? false) &&
-                json["obj"].dictionary != nil && json["obj"]["uid"].string != nil) {
+            if ((result!["success"].bool ?? false) &&
+                result!["obj"].dictionary != nil && result!["obj"]["uid"].string != nil) {
                     
-                    let uid = json["obj"]["uid"].string
+                    let uid = result!["obj"]["uid"].string
                     let url = NSURL(string: "http://dropbeat.net/?playlist=\(uid!)")
                     
                     self.showActivityViewControllerWithShareURL(url!, string: self.playlist.name)

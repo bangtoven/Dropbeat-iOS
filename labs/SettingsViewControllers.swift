@@ -182,7 +182,7 @@ class FeedbackViewController: BaseViewController,
     @IBAction func onTapped(sender: AnyObject) {
         emailView.endEditing(true)
         textView.endEditing(true)
-    }
+    }   
     
     @IBAction func onSubmitBtnClicked(sender: AnyObject) {
         var senderEmail:String?
@@ -227,7 +227,7 @@ class FeedbackViewController: BaseViewController,
                 success = false
             }
             
-            if success && !(JSON(result!)["success"].bool ?? false) {
+            if success && !(result!["success"].bool ?? false) {
                 success = false
             }
             

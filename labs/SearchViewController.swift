@@ -247,7 +247,7 @@ class SearchViewController: AddableTrackListViewController,
             
             self.users = [BaseUser]()
             
-            let json = JSON(result!)["data"]
+            let json = result!["data"]
             for (_, a):(String,JSON) in json["artists"] {
                 if let user = BaseUser(json: a) {
                     self.users.append(user)

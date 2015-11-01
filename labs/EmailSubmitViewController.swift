@@ -92,8 +92,7 @@ class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate, UISc
                 self.showErrorAlert(error)
                 return
             }
-            var json = JSON(result!)
-            if !(json["success"].bool ?? false) {
+            if !(result!["success"].bool ?? false) {
                 progressHud.hide(true)
                 self.emailErrorView.text = NSLocalizedString("Email already exist", comment:"")
                 self.emailErrorView.hidden = false

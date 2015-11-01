@@ -122,10 +122,9 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
             if pageToken == nil {
                 self.tracks.removeAll(keepCapacity: false)
             }
-            var json = JSON(result!)
             
-            if json["nextPageToken"].error == nil {
-                self.nextPageToken = json["nextPageToken"].stringValue
+            if result!["nextPageToken"].error == nil {
+                self.nextPageToken = result!["nextPageToken"].stringValue
             } else {
                 self.nextPageToken = nil
             }
@@ -135,7 +134,7 @@ class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSourc
                 self.loadMoreSpinner.stopAnimating()
             }
             
-            let tracks = Track.parseTracks(json["items"])
+            let tracks = Track.parseTracks(result!["items"])
             self.tracks.appendContentsOf(tracks)
             
             self.updatePlaylist(false)

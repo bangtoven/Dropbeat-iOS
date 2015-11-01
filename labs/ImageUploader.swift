@@ -32,7 +32,7 @@ class ImageUploader {
     private func getUploadImageUrl() {
         let req = Requests.sendGet(ApiPath.metaUploadHost, auth: false) {
             (result, error) -> Void in
-            guard let r = result, host = JSON(r)["host"].string else {
+            guard let r = result, host = r["host"].string else {
                 print("Can't fetch upload host.")
                 self.callback(url: nil, error: error)
                 return

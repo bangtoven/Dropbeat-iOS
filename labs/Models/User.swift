@@ -77,20 +77,21 @@ class BaseUser {
     static func resolve(resource: String, callback:((user: BaseUser?, error: NSError?) -> Void)) {
         Requests.sendGet(ApiPath.resolveResource, params:["url":"/r/"+resource], auth: false) {
             (result, error) -> Void in
-            if (error != nil || JSON(result!)["success"] == false) {
+            if (error != nil || result!["success"] == false) {
                 callback(user: nil, error: error)
                 return
             }
             
             var user: BaseUser?
-            let type: String = JSON(result!)["data"]["user_type"].stringValue
+            let data = result!["data"]
+            let type: String = data["user_type"].stringValue
             switch type {
             case "user":
-                user = User(json: JSON(result!)["data"])
+                user = User(json: data)
             case "artist":
-                user = Artist(json: JSON(result!)["data"])
+                user = Artist(json: data)
             case "channel":
-                user = Channel(json: JSON(result!)["data"])
+                user = Channel(json: data)
             default:
                 callback(user: nil, error: NSError(domain: "ResolveUser", code: -1, userInfo: [NSLocalizedDescriptionKey:"Unknown user type: \(type)"]))
                 return
@@ -120,7 +121,7 @@ class BaseUser {
                 callback(error: error)
                 return
             }
-            if JSON(result!)["success"].boolValue != true {
+            if result!["success"].boolValue != true {
                 callback(error: error)
             } else {
                 self._isFollowed = follow
@@ -218,7 +219,7 @@ class User: BaseUser {
                 return
             }
             var users = [BaseUser]()
-            for (_, json): (String, JSON) in JSON(result!)["data"] {
+            for (_, json): (String, JSON) in result!["data"] {
                 if let user = BaseUser(json: json) {
                     users.append(user)
                 }
@@ -246,7 +247,7 @@ class User: BaseUser {
                 callback(likes: [], error: nil)
                 return
             }
-            self.likes = Like.parseLikes(result!, key: "data")
+            self.likes = Like.parseLikes(result!["data"])
             callback(likes:self.likes, error:nil)
         }
     }
@@ -334,8 +335,7 @@ class Channel: BaseUser {
             resourceName: resourceName)
     }
     
-    static func parseChannelList(data: AnyObject) -> [Channel] {
-        var json = JSON(data)
+    static func parseChannelList(json: JSON) -> [Channel] {
         var channels: [Channel] = []
         let index = 0
         for (_, s): (String, JSON) in json["data"] {
@@ -421,8 +421,8 @@ class Artist: BaseUser {
                 callback(tracks: [], error: nil)
                 return
             }
-            let json = JSON(result!)
-            let tracks = Track.parseTracks(json["data"])
+            
+            let tracks = Track.parseTracks(result!["data"])
             tracks.forEach({ $0.user = self })
 
             self.sectionedTracks[Artist.SECTION_LIVESET] = tracks
@@ -450,14 +450,13 @@ class Artist: BaseUser {
                 callback(tracks: [], error: nil)
                 return
             }
-            var t = JSON(result!)
-            if !t["success"].boolValue {
+            if !(result!["success"].boolValue) {
                 callback(tracks: [], error: nil)
                 return
             }
             
             var tracks = [Track]()
-            for (_, s): (String, JSON) in t["data"] {
+            for (_, s): (String, JSON) in result!["data"] {
                 guard let streamUrl = s["stream_url"].string,
                     title = s["title"].string else {
                         continue
@@ -495,7 +494,7 @@ class Artist: BaseUser {
                 callback(events: [], error: nil)
                 return
             }
-            self.events = ArtistEvent.parseEvents(result!)
+            self.events = ArtistEvent.parseEvents(result!["data"])
             callback(events:self.events, error:nil)
         }
     }
@@ -516,11 +515,9 @@ class ArtistEvent {
         self.venue = json["venue"].stringValue
     }
     
-    static func parseEvents(data: AnyObject) -> [ArtistEvent] {
-        let eventsJson = JSON(data)["data"]
-        
+    static func parseEvents(json: JSON) -> [ArtistEvent] {
         var events = [ArtistEvent]()
-        for (_, e): (String, JSON) in eventsJson {
+        for (_, e): (String, JSON) in json {
             events.append(ArtistEvent(json: e))
         }
         return events

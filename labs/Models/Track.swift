@@ -173,7 +173,7 @@ class Track {
                 return
             }
             
-            if let r = result, key = JSON(r)["soundcloud_key"].string {
+            if let r = result, key = r["soundcloud_key"].string {
                 soundCloudKey = key
             }
         }
@@ -298,13 +298,12 @@ class Track {
                 return
             }
             
-            let tracks = Track.parseTracks(JSON(result!)["data"])
+            let tracks = Track.parseTracks(result!["data"])
             callback(tracks: tracks, error: nil)
         }
     }
     
-    static func parseSharedTrack(data: AnyObject) -> Track? {
-        var json = JSON(data)
+    static func parseSharedTrack(json: JSON) -> Track? {
         if !(json["success"].bool ?? false) {
             return nil
         }
@@ -342,14 +341,13 @@ class Track {
                 return
             }
             
-            let json = JSON(result!)
-            guard json["success"].bool == true else {
-                let err = NSError(domain: "repostTrack", code: 1, userInfo: [NSLocalizedDescriptionKey:json["error"].stringValue])
+            guard result!["success"].bool == true else {
+                let err = NSError(domain: "repostTrack", code: 1, userInfo: [NSLocalizedDescriptionKey:result!["error"].stringValue])
                 afterRepost(data: nil, error: err)
                 return
             }
             
-            afterRepost(data: json, error: nil)
+            afterRepost(data: result!, error: nil)
         }
     }
     
@@ -368,31 +366,30 @@ class Track {
     }
     
     func shareTrack(section:String, afterShare: (error:NSError?, sharedURL:NSURL?) -> Void) {
-        Requests.shareTrack(self) { (data, error) -> Void in
+        Requests.shareTrack(self) { (result, error) -> Void in
             if error != nil {
                 afterShare(error: error, sharedURL: nil)
                 return
             }
             
-            if data == nil {
+            if result == nil {
                 afterShare(error: NSError(domain: "shareTrack", code: 0, userInfo: nil), sharedURL: nil)
                 return
             }
             
-            var json = JSON(data!)
-            if !(json["success"].bool ?? false) ||
-                (json["obj"].dictionary == nil && json["data"].dictionary == nil) {
+            if !(result!["success"].bool ?? false) ||
+                (result!["obj"].dictionary == nil && result!["data"].dictionary == nil) {
                     afterShare(error: NSError(domain: "shareTrack", code: 1, userInfo: nil), sharedURL: nil)
                     return
             }
             
             var uid:String?
             
-            if json["obj"].dictionary != nil {
-                let dict = json["obj"]
+            if result!["obj"].dictionary != nil {
+                let dict = result!["obj"]
                 uid = dict["uid"].string
             } else {
-                let dict = json["data"]
+                let dict = result!["data"]
                 uid = dict["uid"].string
             }
             
@@ -470,12 +467,12 @@ class DropbeatTrack: Track {
     static func resolve(user: String, track: String, callback:((track: Track?, error: NSError?) -> Void)) {
         Requests.sendGet(ApiPath.resolveResource, params:["url":"/r/\(user)/\(track)"], auth: false) {
             (result, error) -> Void in
-            if (error != nil || JSON(result!)["success"] == false) {
+            if (error != nil || result!["success"] == false) {
                 callback(track: nil, error: error)
                 return
             }
             
-            let t = DropbeatTrack(json: JSON(result!)["data"])
+            let t = DropbeatTrack(json: result!["data"])
             callback(track: t, error: nil)
         }
     }
@@ -529,7 +526,7 @@ class DropbeatTrack: Track {
             }
             
             var tracks = [DropbeatTrack]()
-            for (_, t) in JSON(result!)["data"] {
+            for (_, t) in result!["data"] {
                 let track = DropbeatTrack(json: t)
                 tracks.append(track)
             }
@@ -570,7 +567,7 @@ class PlayLog {
 
         Requests.sendPost(ApiPath.logPlaybackDetail, params: log, auth: false) { (result, error) -> Void in
             if result != nil {
-                print("playback detail log posted: \(JSON(result!))")
+                print("playback detail log posted: \(result!)")
             }
         }
     }
@@ -608,7 +605,7 @@ extension Track { // for Play Failure Log
         
         Requests.sendPost(ApiPath.logPlayFailure, params: log, auth: false) { (result, error) -> Void in
             if result != nil {
-                print("play failure log posted: \(JSON(result!)) (\(description))")
+                print("play failure log posted: \(result!) (\(description))")
             }
         }
     }
@@ -679,17 +676,9 @@ class Like {
         self.track = track
     }
     
-    static func parseLikes(data:AnyObject?, key: String = "like") -> [Like]? {
-        if data == nil {
-            return nil
-        }
-        let json = JSON(data!)
-        if !(json["success"].bool ?? false) || json[key] == nil {
-            return nil
-        }
-        
+    static func parseLikes(json:JSON) -> [Like]? {
         var likes = [Like]()
-        for (_, obj): (String, JSON) in json[key] {
+        for (_, obj): (String, JSON) in json {
             if let like = Like(json: obj) {
                 likes.append(like)
             }
@@ -711,18 +700,13 @@ class Like {
                     return
                 }
                 
-                var json:JSON?
-                if result != nil {
-                    json = JSON(result!)
-                }
-                
-                if result == nil || !(json!["success"].bool ?? false) {
+                if result == nil || !(result!["success"].bool ?? false) {
                     callback?(error:NSError(domain:"doLike", code: 0, userInfo:nil))
                     return
                 }
                 
-                if let like = Like(json: json!["obj"]) {
-                    let account = Account.getCachedAccount()
+                if let like = Like(json: result!["obj"]) {
+                   let account = Account.getCachedAccount()
                     account!.likes.append(like)
                     callback?(error:nil)
                     
@@ -737,17 +721,12 @@ class Like {
                     return
                 }
                 
-                var json:JSON?
-                if result != nil {
-                    json = JSON(result!)
-                }
-                
-                if result == nil || !(json!["success"].bool ?? false) {
+                if result == nil || !(result!["success"].bool ?? false) {
                     callback?(error:NSError(domain:"doLike", code: 0, userInfo:nil))
                     return
                 }
                 
-                if let like = Like(json: json!["obj"]) {
+                if let like = Like(json: result!["obj"]) {
                     let account = Account.getCachedAccount()
                     account!.likes.append(like)
                     callback?(error:nil)
@@ -782,7 +761,7 @@ class Like {
                     callback?(error:error)
                     return
                 }
-                if result == nil || !(JSON(result!)["success"].bool ?? false) {
+                if result == nil || !(result!["success"].bool ?? false) {
                     callback?(error:NSError(domain:"doUnlike", code: 0, userInfo:nil))
                     return
                 }
@@ -807,7 +786,7 @@ class Like {
                     callback?(error:error)
                     return
                 }
-                if result == nil || !(JSON(result!)["success"].bool ?? false) {
+                if result == nil || !(result!["success"].bool ?? false) {
                     callback?(error:NSError(domain:"doUnlike", code: 0, userInfo:nil))
                     return
                 }

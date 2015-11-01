@@ -16,9 +16,7 @@ class BeatportChart {
         self.results = tracks
     }
     
-    static func parseBeatportChart(data: AnyObject) -> BeatportChart {
-        var json = JSON(data)
-        
+    static func parseBeatportChart(json: JSON) -> BeatportChart {
         if !(json["success"].bool ?? false) {
             return BeatportChart(success:false, tracks:nil)
         }
@@ -90,8 +88,7 @@ class StreamNew {
         results = tracks
     }
     
-    static func parseStreamNew(data: AnyObject) -> StreamNew {
-        var json = JSON(data)
+    static func parseStreamNew(json: JSON) -> StreamNew {
         if !(json["success"].bool ?? false) || json["data"] == nil {
             return StreamNew(success: false, tracks: nil)
         }
@@ -147,8 +144,7 @@ class StreamTrending {
         results = tracks
     }
     
-    static func parseStreamTrending(data: AnyObject) -> StreamTrending {
-        var json = JSON(data)
+    static func parseStreamTrending(json: JSON) -> StreamTrending {
         if !(json["success"].bool ?? false) || json["data"] == nil {
             return StreamTrending(success: false, tracks: nil)
         }
@@ -201,9 +197,7 @@ class StreamBeatportTrending {
         results = tracks
     }
     
-    static func parseStreamBeatportTrending(data: AnyObject) -> StreamBeatportTrending {
-        var json = JSON(data)
-        
+    static func parseStreamBeatportTrending(json: JSON) -> StreamBeatportTrending {
         if !(json["success"].bool ?? false) {
             return StreamBeatportTrending(success:false, tracks:nil)
         }
@@ -323,8 +317,7 @@ class FBPageLikes {
         self.nextPageToken = nextPageToken
     }
     
-    static func parseFBPageLikes(data: AnyObject) -> FBPageLikes? {
-        let json = JSON(data)
+    static func parseFBPageLikes(json: JSON) -> FBPageLikes? {
         var pages = [FBPage]()
         
         if json["data"].array == nil || json["error"] != nil {

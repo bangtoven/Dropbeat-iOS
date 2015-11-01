@@ -4,13 +4,14 @@
 
 import Foundation
 
-typealias ResponseHandler = ((result:AnyObject?, error:NSError?) -> Void)
+typealias ResponseHandler = ((result:JSON?, error:NSError?) -> Void)
 
 class Requests {
     static func send(method: Method, url: String, params: [String:AnyObject]? = nil, auth: Bool, background: Bool = false, handler: ResponseHandler) -> Request {
         let adapter = WebAdapter(url: url, method: method, params: params, auth: auth, background:background)
         return adapter.send({ (request, response, result) -> Void in
-            handler(result:result.value, error:result.error as? NSError)
+            // TODO: asdfresult.valueresult.value
+            handler(result:JSON(result.value!), error:result.error as? NSError)
         })
     }
     

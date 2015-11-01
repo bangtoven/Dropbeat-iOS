@@ -89,8 +89,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                 return
             }
             
-            let res = result as! NSDictionary
-            let iosVersion:String? = res.objectForKey("ios_version") as! String?
+            let iosVersion = result!["ios_version"].string
             if (iosVersion == nil) {
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to fetch version info", comment:""),
@@ -228,7 +227,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                 return
             }
             
-            let likes = FBPageLikes.parseFBPageLikes(result)
+            let likes = FBPageLikes.parseFBPageLikes(JSON(result!))
             if likes == nil {
                 callback(data:nil, error:NSError(domain: "requestLikeInfos", code: 0, userInfo: nil))
                 return

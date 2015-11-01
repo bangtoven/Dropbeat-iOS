@@ -97,14 +97,13 @@ class Account {
                 return
             }
             
-            let res = JSON(result!)
-            let success:Bool = res["success"].bool ?? false
+            let success:Bool = result!["success"].bool ?? false
             if !success {
                 errorHandler(NSError(domain: "account", code: 101, userInfo: nil))
                 return
             }
             
-            let user = User(json: JSON(result!))
+            let user = User(json: result!)
             let account = Account(token:token!, user:user)
             self.account = account
             
@@ -132,13 +131,12 @@ class Account {
                 return
             }
             
-            let json = JSON(result!)
-            if !(json["success"].bool ?? false) || json["data"] == nil {
+            if !(result!["success"].bool ?? false) || result!["data"] == nil {
                 errorHandler(NSError(domain: "getFavorites", code: 103, userInfo: nil))
                 return
             }
             
-            for (_, s): (String, JSON) in json["data"] {
+            for (_, s): (String, JSON) in result!["data"] {
                 favoriteGenreIds.append(String(s.intValue))
             }
             
@@ -155,11 +153,10 @@ class Account {
                 Account.location = [:]
                 return
             }
-            let json = JSON(result!)
             
             var location = [String:String]()
-            let lat = json["latitude"].stringValue
-            let lng = json["longitude"].stringValue
+            let lat = result!["latitude"].stringValue
+            let lng = result!["longitude"].stringValue
             
             let url = "http://maps.google.com/maps/api/geocode/json?latlng=\(lat),\(lng)&sensor=false&language=en"
             Requests.sendGet(url, auth: false) { (result, error) -> Void in
@@ -167,7 +164,7 @@ class Account {
                     Account.location = [:]
                     return
                 }
-                let json = JSON(result!)["results"]
+                let json = result!["results"]
                 
                 location["country_name"] = json[json.count-1]["address_components"][0]["long_name"].stringValue
                 location["country_code"] = json[json.count-1]["address_components"][0]["short_name"].stringValue

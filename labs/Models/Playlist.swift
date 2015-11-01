@@ -58,7 +58,7 @@ class Playlist {
                 return
             }
             
-            let playlist = Playlist.parsePlaylist(JSON(result!)["playlist"])
+            let playlist = Playlist.parsePlaylist(result!["playlist"])
             self.name = playlist.name
             self.tracks = playlist.tracks
             self.dummy = false
@@ -74,9 +74,8 @@ class Playlist {
                 return
             }
             
-            var json = JSON(result!)
-            var playlists :[Playlist] = []
-            for (_, s): (String, JSON) in json["data"] {
+            var playlists = [Playlist]()
+            for (_, s): (String, JSON) in result!["data"] {
                 let playlist = parsePlaylist(s)
                 playlist.dummy = true
                 playlists.append(playlist)
@@ -95,8 +94,7 @@ class Playlist {
         return Playlist(id: String(playlistId), name: playlistName, tracks: tracks)
     }
     
-    static func parseSharedPlaylist(data: AnyObject) -> Playlist? {
-        var json = JSON(data)
+    static func parseSharedPlaylist(json: JSON) -> Playlist? {
         if !(json["success"].bool ?? false) || json["playlist"] == nil {
             return nil
         }
@@ -198,12 +196,12 @@ class Playlist {
                 return
             }
             
-            let importedPlaylist = Playlist.parsePlaylist(JSON(result!)["obj"])
+            let importedPlaylist = Playlist.parsePlaylist(result!["obj"])
             importedPlaylist.tracks = playlist.tracks
             let tracksDict = importedPlaylist.tracks.map(trackToDict)
             
             Requests.setPlaylist(importedPlaylist.id, data: tracksDict) { (result, error) -> Void in
-                if (result == nil || error != nil || !(JSON(result!)["success"].bool ?? false)) {
+                if (result == nil || error != nil || !(result!["success"].bool ?? false)) {
                     Requests.deletePlaylist(importedPlaylist.id) {_,_ in }
                     callback(playlist:nil, error: NSError(domain: PlaylistErrorDomain, code: PlaylistImportFailedError, userInfo: ["message":"Failed to save playlist"]))
                     return

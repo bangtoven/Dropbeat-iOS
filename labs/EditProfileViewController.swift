@@ -247,7 +247,7 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
                     return
                 }
                 
-                if !(JSON(result!)["success"].bool ?? false) {
+                if !(result!["success"].bool ?? false) {
                     self.progressHud.hide(true)
                     self.isSubmitting = false
                     onFailure?()

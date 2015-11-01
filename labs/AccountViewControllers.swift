@@ -158,18 +158,17 @@ class FBSigninableViewController: BaseViewController {
                     self.progressHud?.hide(true)
                     return
                 }
-                let res = JSON(result!)
-                let success:Bool = res["success"].bool ?? false
+                let success:Bool = result!["success"].bool ?? false
                 if (!success) {
                     fbManager.logOut()
-                    let errorMsg:String = res["error"].string ?? NSLocalizedString("Failed to sign in", comment:"")
+                    let errorMsg:String = result!["error"].string ?? NSLocalizedString("Failed to sign in", comment:"")
                     ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to sign in", comment:""), message: errorMsg)
                     self.progressHud?.hide(true)
                     return
                 }
                 
-                let token = res["token"].stringValue
-                let user = User(json: JSON(result!))
+                let token = result!["token"].stringValue
+                let user = User(json: result!)
                 
                 self.afterSignin(user, token: token)
             }
@@ -343,14 +342,13 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                 return
             }
             
-            let json = JSON(result!)
-            if !(json["success"].bool ?? false) || json["token"].string == nil {
+            if !(result!["success"].bool ?? false) || result!["token"].string == nil {
                 self.isSubmitting = false
                 progressHud.hide(true)
                 
-                if json["error"].string != nil &&
-                    Int(json["error"].stringValue) != nil &&
-                    self.handleRemoteError(Int(json["error"].stringValue)!) {
+                if result!["error"].string != nil &&
+                    Int(result!["error"].stringValue) != nil &&
+                    self.handleRemoteError(Int(result!["error"].stringValue)!) {
                         return
                 }
                 
@@ -359,7 +357,7 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                     message: NSLocalizedString("Failed to sign in", comment:""))
                 return
             }
-            self.afterSignin(json["token"].stringValue)
+            self.afterSignin(result!["token"].stringValue)
         }
         
     }
@@ -607,16 +605,14 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                         message: NSLocalizedString("Failed to submit form", comment:""))
                     return
                 }
-                
-                var json = JSON(result!)
-                
-                if !(json["success"].bool ?? false) || json["token"].string == nil {
+                                
+                if !(result!["success"].bool ?? false) || result!["token"].string == nil {
                     self.isSubmitting = false
                     progressHud.hide(true)
                     
-                    if json["error"].string != nil &&
-                        Int(json["error"].stringValue) != nil &&
-                        self.handleRemoteError(Int(json["error"].stringValue)!) {
+                    if result!["error"].string != nil &&
+                        Int(result!["error"].stringValue) != nil &&
+                        self.handleRemoteError(Int(result!["error"].stringValue)!) {
                             return
                     }
                     
@@ -630,7 +626,7 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                 progressHud.hide(true, afterDelay: 1)
                 let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1.0 * Double(NSEC_PER_SEC)));
                 dispatch_after(popTime, dispatch_get_main_queue(), {() -> Void in
-                    self.afterSignup(json["token"].stringValue)
+                    self.afterSignup(result!["token"].stringValue)
                 })
                 
         }

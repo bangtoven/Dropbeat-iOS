@@ -75,9 +75,8 @@ class BaseUser {
     }
     
     static func resolve(resource: String, callback:((user: BaseUser?, error: NSError?) -> Void)) {
-        Requests.sendGet(ApiPath.resolveResource, params:["url":"/r/"+resource], auth: false) {
-            (result, error) -> Void in
-            if (error != nil || result!["success"] == false) {
+        Requests.sendGet(ApiPath.resolveResource, params:["url":"/r/"+resource], auth: false) { (result, error) -> Void in
+            if (error != nil) {
                 callback(user: nil, error: error)
                 return
             }
@@ -121,16 +120,13 @@ class BaseUser {
                 callback(error: error)
                 return
             }
-            if result!["success"].boolValue != true {
-                callback(error: error)
-            } else {
-                self._isFollowed = follow
-                Account.getCachedAccount()?.syncFollowingInfo({ (error) -> Void in
-                    self._isFollowed = nil
-                    self.isFollowed()
-                })
-                callback(error: nil)
-            }
+            
+            self._isFollowed = follow
+            Account.getCachedAccount()?.syncFollowingInfo({ (error) -> Void in
+                self._isFollowed = nil
+                self.isFollowed()
+            })
+            callback(error: nil)
         }
     }
     
@@ -440,17 +436,12 @@ class Artist: BaseUser {
             callback(tracks: [], error: nil)
             return
         }
-        Requests.sendGet(CorePath.podcast, params: ["q": name, "p": -1], auth: false) {
-            (result, error) -> Void in
+        Requests.sendGet(CorePath.podcast, params: ["q": name, "p": -1], auth: false) { (result, error) -> Void in
             if (error != nil) {
                 callback(tracks: nil, error: error)
                 return
             }
             if (result == nil) {
-                callback(tracks: [], error: nil)
-                return
-            }
-            if !(result!["success"].boolValue) {
                 callback(tracks: [], error: nil)
                 return
             }

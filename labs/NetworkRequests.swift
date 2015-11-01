@@ -6,12 +6,28 @@ import Foundation
 
 typealias ResponseHandler = ((result:JSON?, error:NSError?) -> Void)
 
+let DropbeatRequestErrorDomain = "DropbeatRequestErrorDomain"
+
 class Requests {
     static func send(method: Method, url: String, params: [String:AnyObject]? = nil, auth: Bool, background: Bool = false, handler: ResponseHandler) -> Request {
         let adapter = WebAdapter(url: url, method: method, params: params, auth: auth, background:background)
         return adapter.send({ (request, response, result) -> Void in
-            // TODO: asdfresult.valueresult.value
-            handler(result:JSON(result.value!), error:result.error as? NSError)
+            guard result.error == nil else {
+                handler(result: nil, error: result.error as? NSError)
+                return
+            }
+            
+            let json = JSON(result.value!)
+            guard json["success"].boolValue == true else {
+                let error = NSError(
+                    domain: DropbeatRequestErrorDomain,
+                    code: -1,
+                    userInfo: [NSLocalizedDescriptionKey:json["error"].stringValue])
+                handler(result: nil, error: error)
+                return
+            }
+            
+            handler(result:json, error:nil)
         })
     }
     

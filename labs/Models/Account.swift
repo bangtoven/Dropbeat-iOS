@@ -97,12 +97,6 @@ class Account {
                 return
             }
             
-            let success:Bool = result!["success"].bool ?? false
-            if !success {
-                errorHandler(NSError(domain: "account", code: 101, userInfo: nil))
-                return
-            }
-            
             let user = User(json: result!)
             let account = Account(token:token!, user:user)
             self.account = account
@@ -125,14 +119,8 @@ class Account {
         }
         
         Requests.getFavoriteGenres() { (result, error) -> Void in
-            if error != nil || result == nil {
-                errorHandler(error != nil ? error! :
-                    NSError(domain: "getFavorites", code: 103, userInfo: nil))
-                return
-            }
-            
-            if !(result!["success"].bool ?? false) || result!["data"] == nil {
-                errorHandler(NSError(domain: "getFavorites", code: 103, userInfo: nil))
+            if error != nil {
+                errorHandler(error!)
                 return
             }
             

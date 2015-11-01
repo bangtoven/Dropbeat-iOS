@@ -116,7 +116,7 @@ class PlaylistViewController: BaseViewController {
         Requests.getPlaylist(playlist!.id) { (result, error) -> Void in
             progressHud.hide(true)
             if (error != nil || result == nil) {
-                if (error != nil && error!.domain == NSURLErrorDomain &&
+                if (error!.domain == NSURLErrorDomain &&
                     error!.code == NSURLErrorNotConnectedToInternet) {
                         let message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
                         ViewUtils.showConfirmAlert(self,
@@ -127,15 +127,14 @@ class PlaylistViewController: BaseViewController {
                                 self.loadPlaylist()
                             }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                         return
+                }else if error!.domain == DropbeatRequestErrorDomain {
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to fetch", comment:""),
+                        message: NSLocalizedString("Failed to fetch playlist", comment:""),
+                        btnText: NSLocalizedString("Confirm", comment:""))
+                    return
                 }
-                ViewUtils.showNoticeAlert(self,
-                    title: NSLocalizedString("Failed to fetch", comment:""),
-                    message: NSLocalizedString("Failed to fetch playlist", comment:""),
-                    btnText: NSLocalizedString("Confirm", comment:""))
-                return
-            }
-            
-            if !(result!["success"].boolValue) {
+                
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to fetch", comment:""),
                     message: NSLocalizedString("Failed to fetch playlist", comment:""),
@@ -434,12 +433,7 @@ extension PlaylistViewController {
                             message: message!)
                         return
                     }
-                    if !(result!["success"].boolValue) {
-                        let message = "Failed to update playlist"
-                        ViewUtils.showNoticeAlert(self,
-                            title: NSLocalizedString("Failed to delete", comment:""), message: message)
-                        return
-                    }
+
                     if DropbeatPlayer.defaultPlayer.currentPlaylist?.id == removePlaylist.id {
                         
                         DropbeatPlayer.defaultPlayer.shuffleState = ShuffleState.NOT_SHUFFLE
@@ -557,13 +551,10 @@ extension PlaylistViewController {
                 return
             }
             
-            if ((result!["success"].bool ?? false) &&
-                result!["obj"].dictionary != nil && result!["obj"]["uid"].string != nil) {
-                    
-                    let uid = result!["obj"]["uid"].string
-                    let url = NSURL(string: "http://dropbeat.net/?playlist=\(uid!)")
-                    
-                    self.showActivityViewControllerWithShareURL(url!, string: self.playlist.name)
+            if let uid = result!["obj"]["uid"].string {
+                let url = NSURL(string: "http://dropbeat.net/?playlist=\(uid)")
+                
+                self.showActivityViewControllerWithShareURL(url!, string: self.playlist.name)
             } else {
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to share", comment:""),

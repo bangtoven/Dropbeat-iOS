@@ -304,29 +304,15 @@ class Track {
     }
     
     static func parseSharedTrack(json: JSON) -> Track? {
-        if !(json["success"].bool ?? false) {
-            return nil
-        }
-        var s:JSON?
-        if json["data"] != nil {
-            s = json["data"]
-        } else {
-            s = json["obj"]
-        }
-        
-        if s == nil {
-            return nil
-        }
-        
-        if s!["ref"] == nil || s!["track_name"] == nil ||
-            s!["type"].string == nil {
-                return nil
+        var data = json["data"]
+        if data == JSON.null {
+            data = json["obj"]
         }
         
         return Track(
-            id: s!["ref"].stringValue,
-            title: s!["track_name"].stringValue,
-            type: SourceType.fromString(s!["type"].stringValue),
+            id: data["ref"].stringValue,
+            title: data["track_name"].stringValue,
+            type: SourceType.fromString(data["type"].stringValue),
             tag: nil,
             thumbnailUrl: nil,
             drop: nil)
@@ -338,12 +324,6 @@ class Track {
         Requests.sendPost(ApiPath.repost, params: ["data":data], auth: true) { (result, error) -> Void in
             guard error == nil else {
                 afterRepost(data: nil, error: error)
-                return
-            }
-            
-            guard result!["success"].bool == true else {
-                let err = NSError(domain: "repostTrack", code: 1, userInfo: [NSLocalizedDescriptionKey:result!["error"].stringValue])
-                afterRepost(data: nil, error: err)
                 return
             }
             
@@ -372,44 +352,29 @@ class Track {
                 return
             }
             
-            if result == nil {
-                afterShare(error: NSError(domain: "shareTrack", code: 0, userInfo: nil), sharedURL: nil)
-                return
+            var data = result!["obj"]
+            if data == JSON.null {
+                data = result!["data"]
             }
-            
-            if !(result!["success"].bool ?? false) ||
-                (result!["obj"].dictionary == nil && result!["data"].dictionary == nil) {
-                    afterShare(error: NSError(domain: "shareTrack", code: 1, userInfo: nil), sharedURL: nil)
-                    return
-            }
-            
-            var uid:String?
-            
-            if result!["obj"].dictionary != nil {
-                let dict = result!["obj"]
-                uid = dict["uid"].string
+            if let uid = data["uid"].string {
+                // Log to GA
+                let tracker = GAI.sharedInstance().defaultTracker
+                let event = GAIDictionaryBuilder.createEventWithCategory(
+                    "track-share",
+                    action: "from-\(section)",
+                    label: self.title,
+                    value: 0
+                    ).build()
+                tracker.send(event as [NSObject: AnyObject]!)
+                
+                let URL = NSURL(string: "http://dropbeat.net/?track=" + uid)
+                afterShare(error: nil, sharedURL:URL)
             } else {
-                let dict = result!["data"]
-                uid = dict["uid"].string
-            }
-            
-            if uid == nil {
                 afterShare(error: NSError(domain: "shareTrack", code: 1, userInfo: nil), sharedURL: nil)
                 return
             }
             
-            // Log to GA
-            let tracker = GAI.sharedInstance().defaultTracker
-            let event = GAIDictionaryBuilder.createEventWithCategory(
-                "track-share",
-                action: "from-\(section)",
-                label: self.title,
-                value: 0
-                ).build()
-            tracker.send(event as [NSObject: AnyObject]!)
             
-            let URL = NSURL(string: "http://dropbeat.net/?track=" + uid!)
-            afterShare(error: nil, sharedURL:URL)
         }
     }
 }
@@ -467,7 +432,7 @@ class DropbeatTrack: Track {
     static func resolve(user: String, track: String, callback:((track: Track?, error: NSError?) -> Void)) {
         Requests.sendGet(ApiPath.resolveResource, params:["url":"/r/\(user)/\(track)"], auth: false) {
             (result, error) -> Void in
-            if (error != nil || result!["success"] == false) {
+            if (error != nil) {
                 callback(track: nil, error: error)
                 return
             }
@@ -700,11 +665,6 @@ class Like {
                     return
                 }
                 
-                if result == nil || !(result!["success"].bool ?? false) {
-                    callback?(error:NSError(domain:"doLike", code: 0, userInfo:nil))
-                    return
-                }
-                
                 if let like = Like(json: result!["obj"]) {
                    let account = Account.getCachedAccount()
                     account!.likes.append(like)
@@ -718,11 +678,6 @@ class Like {
             Requests.doLike(track) { (result, error) -> Void in
                 if error != nil {
                     callback?(error:error)
-                    return
-                }
-                
-                if result == nil || !(result!["success"].bool ?? false) {
-                    callback?(error:NSError(domain:"doLike", code: 0, userInfo:nil))
                     return
                 }
                 
@@ -761,10 +716,7 @@ class Like {
                     callback?(error:error)
                     return
                 }
-                if result == nil || !(result!["success"].bool ?? false) {
-                    callback?(error:NSError(domain:"doUnlike", code: 0, userInfo:nil))
-                    return
-                }
+                
                 var foundIdx = -1
                 for (idx, like): (Int, Like) in account.likes.enumerate() {
                     if like.track.id == track.id {
@@ -786,10 +738,7 @@ class Like {
                     callback?(error:error)
                     return
                 }
-                if result == nil || !(result!["success"].bool ?? false) {
-                    callback?(error:NSError(domain:"doUnlike", code: 0, userInfo:nil))
-                    return
-                }
+                
                 var foundIdx = -1
                 for (idx, like): (Int, Like) in account.likes.enumerate() {
                     if like.track.id == track.id {

@@ -289,7 +289,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
         track.repostTrack { (data, error) -> Void in
             if error != nil {
                 progressHud.hide(true)
-                if error!.domain == "repostTrack" {
+                if error!.domain == DropbeatRequestErrorDomain {
                     ViewUtils.showNoticeAlert(self, title: error!.localizedDescription,
                         message: "")
                 } else {

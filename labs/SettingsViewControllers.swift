@@ -213,26 +213,13 @@ class FeedbackViewController: BaseViewController,
         }
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Sending..", comment:""))
         Requests.sendFeedback(senderEmail!, content: text) { (result, error) -> Void in
-            var message:String = NSLocalizedString("Failed to send feedback.", comment:"")
-            var success = true
-            if success && error != nil {
-                success = false
-                if (error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                    message = " " + NSLocalizedString("Internet is not connected", comment:"")
-                }
-            }
-            
-            if success && result == nil {
-                success = false
-            }
-            
-            if success && !(result!["success"].bool ?? false) {
-                success = false
-            }
-            
-            if !success {
+            if error != nil {
                 progressHud.hide(true)
+                var message = NSLocalizedString("Failed to send feedback.", comment:"")
+                if (error!.domain == NSURLErrorDomain &&
+                    error!.code == NSURLErrorNotConnectedToInternet) {
+                        message = " " + NSLocalizedString("Internet is not connected", comment:"")
+                }
                 ViewUtils.showConfirmAlert(self,
                     title: NSLocalizedString("Failed to send", comment:""),
                     message: message,
@@ -243,13 +230,15 @@ class FeedbackViewController: BaseViewController,
                         
                     }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                 return
+                
             }
+            
             ViewUtils.showNoticeAlert(self,
-                    title: NSLocalizedString("Feedback Submitted!", comment:""),
-                    message: NSLocalizedString("Thank you for your feedback.", comment:""),
-                    btnText: NSLocalizedString("Confirm", comment:""), callback: { () -> Void in
-                progressHud.hide(true)
-                self.navigationController?.popViewControllerAnimated(true)
+                title: NSLocalizedString("Feedback Submitted!", comment:""),
+                message: NSLocalizedString("Thank you for your feedback.", comment:""),
+                btnText: NSLocalizedString("Confirm", comment:""), callback: { () -> Void in
+                    progressHud.hide(true)
+                    self.navigationController?.popViewControllerAnimated(true)
             })
         }
     }

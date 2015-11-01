@@ -239,18 +239,14 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
                         ViewUtils.showConfirmAlert(self,
                             title: NSLocalizedString("Failed to change", comment:""),
                             message: NSLocalizedString("Internet is not connected", comment:""))
+                    } else if error!.domain == DropbeatRequestErrorDomain {
+                        onFailure?()
+                        return
                     } else {
                         ViewUtils.showNoticeAlert(self,
                             title: NSLocalizedString("Failed to change", comment:""),
                             message: NSLocalizedString("Failed to change", comment:""))
                     }
-                    return
-                }
-                
-                if !(result!["success"].bool ?? false) {
-                    self.progressHud.hide(true)
-                    self.isSubmitting = false
-                    onFailure?()
                     return
                 }
                 

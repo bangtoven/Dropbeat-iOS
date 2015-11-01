@@ -17,10 +17,6 @@ class BeatportChart {
     }
     
     static func parseBeatportChart(json: JSON) -> BeatportChart {
-        if !(json["success"].bool ?? false) {
-            return BeatportChart(success:false, tracks:nil)
-        }
-        
         var tracks:[BeatportTrack] = [BeatportTrack]()
         for (_, s): (String, JSON) in json["data"] {
             if s["artist_name"].string == nil {
@@ -89,7 +85,7 @@ class StreamNew {
     }
     
     static func parseStreamNew(json: JSON) -> StreamNew {
-        if !(json["success"].bool ?? false) || json["data"] == nil {
+        if json["data"] == nil {
             return StreamNew(success: false, tracks: nil)
         }
         
@@ -145,7 +141,7 @@ class StreamTrending {
     }
     
     static func parseStreamTrending(json: JSON) -> StreamTrending {
-        if !(json["success"].bool ?? false) || json["data"] == nil {
+        if json["data"] == nil {
             return StreamTrending(success: false, tracks: nil)
         }
         
@@ -198,10 +194,6 @@ class StreamBeatportTrending {
     }
     
     static func parseStreamBeatportTrending(json: JSON) -> StreamBeatportTrending {
-        if !(json["success"].bool ?? false) {
-            return StreamBeatportTrending(success:false, tracks:nil)
-        }
-        
         var tracks:[BeatportTrack] = [BeatportTrack]()
         for (_, s): (String, JSON) in json["data"] {
             if s["artist_name"].string == nil {

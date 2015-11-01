@@ -42,8 +42,7 @@ class PlaylistSelectViewController: PlaylistListTableViewController {
         playlist.addTrack(targetTrack!, section: fromSection) { (error) -> Void in
             progressHud.hide(true)
             if error != nil {
-                if (error!.domain == PlaylistErrorDomain &&
-                    error!.code == PlaylistAlreadyContainsTrackError) {
+                if (error!.domain == DropbeatRequestErrorDomain) {
                         ViewUtils.showToast(self, message: NSLocalizedString("Already in Playlist", comment:""))
                         if let indexPath = self.tableView.indexPathForSelectedRow {
                             self.tableView.deselectRowAtIndexPath(indexPath, animated: false)

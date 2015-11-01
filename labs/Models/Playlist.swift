@@ -8,10 +8,6 @@
 
 import UIKit
 
-let PlaylistErrorDomain = "PlaylistErrorDomain"
-let PlaylistAlreadyContainsTrackError = -1
-let PlaylistImportFailedError = -2
-
 enum PlaylistType {
     case EXTERNAL
     case SHARED
@@ -95,9 +91,6 @@ class Playlist {
     }
     
     static func parseSharedPlaylist(json: JSON) -> Playlist? {
-        if !(json["success"].bool ?? false) || json["playlist"] == nil {
-            return nil
-        }
         return parsePlaylist(json["playlist"])
     }
     
@@ -125,8 +118,8 @@ class Playlist {
         
         if tracks.contains({ $0.id == track.id }) {
             afterAdd(error: NSError(
-                domain: PlaylistErrorDomain,
-                code: PlaylistAlreadyContainsTrackError,
+                domain: DropbeatRequestErrorDomain,
+                code: -1,
                 userInfo: nil))
             return
         }
@@ -190,9 +183,8 @@ class Playlist {
     static func importPlaylist(playlist:Playlist, callback: (playlist:Playlist?, error:NSError?) -> Void) {
         
         Requests.createPlaylist(playlist.name) { (result, error) -> Void in
-            if (error != nil || result == nil) {
-                callback(playlist:nil, error: error != nil ? error :
-                    NSError(domain: PlaylistErrorDomain, code: PlaylistImportFailedError, userInfo: nil))
+            if (error != nil) {
+                callback(playlist:nil, error: error)
                 return
             }
             
@@ -201,9 +193,9 @@ class Playlist {
             let tracksDict = importedPlaylist.tracks.map(trackToDict)
             
             Requests.setPlaylist(importedPlaylist.id, data: tracksDict) { (result, error) -> Void in
-                if (result == nil || error != nil || !(result!["success"].bool ?? false)) {
+                if (error != nil) {
                     Requests.deletePlaylist(importedPlaylist.id) {_,_ in }
-                    callback(playlist:nil, error: NSError(domain: PlaylistErrorDomain, code: PlaylistImportFailedError, userInfo: ["message":"Failed to save playlist"]))
+                    callback(playlist:nil, error: error)
                     return
                 }
                 

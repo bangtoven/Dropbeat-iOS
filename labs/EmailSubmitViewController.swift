@@ -87,15 +87,14 @@ class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate, UISc
         let progressHud = ViewUtils.showProgress(self, message: "")
         Requests.userChangeEmail(email!) {(result, error) -> Void in
             self.isSubmitting = false
-            if error != nil || result == nil {
+            if error != nil {
                 progressHud.hide(true)
+                if error!.domain == DropbeatRequestErrorDomain {
+                    self.emailErrorView.text = NSLocalizedString("Email already exist", comment:"")
+                    self.emailErrorView.hidden = false
+                    return
+                }
                 self.showErrorAlert(error)
-                return
-            }
-            if !(result!["success"].bool ?? false) {
-                progressHud.hide(true)
-                self.emailErrorView.text = NSLocalizedString("Email already exist", comment:"")
-                self.emailErrorView.hidden = false
                 return
             }
             

@@ -166,10 +166,9 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
                 genreIds.append(key)
             }
             Requests.delFavoriteGenre(genreIds) { (result, error) -> Void in
-                if error != nil || result == nil ||
-                    !(result!["success"].bool ?? false) {
-                        handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
-                        return
+                if error != nil {
+                    handler(error!)
+                    return
                 }
                 doneRemove = true
                 handler(nil)
@@ -186,10 +185,9 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
                 genreIds.append(key)
             }
             Requests.addFavoriteGenre(genreIds) { (result, error) -> Void in
-                if error != nil || result == nil ||
-                    !(result!["success"].bool ?? false) {
-                        handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
-                        return
+                if error != nil {
+                    handler(error!)
+                    return
                 }
                 
                 doneAdd = true
@@ -266,16 +264,6 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
                 self.progressHud = nil
                 self.isLoading = false
                 self.showError(error, callback: { () -> Void in
-                    self.loadFavorites()
-                })
-                return
-            }
-            
-            if !(result!["success"].bool ?? false) || result!["data"] == nil {
-                self.progressHud?.hide(true)
-                self.progressHud = nil
-                self.isLoading = false
-                self.showError(nil, callback: { () -> Void in
                     self.loadFavorites()
                 })
                 return
@@ -539,10 +527,9 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
                 genreIds.append(key)
             }
             Requests.delFavoriteGenre(genreIds) { (result, error) -> Void in
-                if error != nil || result == nil ||
-                    !(result!["success"].bool ?? false) {
-                        handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
-                        return
+                if error != nil {
+                    handler(error!)
+                    return
                 }
                 doneRemove = true
                 handler(nil)
@@ -559,10 +546,9 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
                 genreIds.append(key)
             }
             Requests.addFavoriteGenre(genreIds) { (result, error) -> Void in
-                if error != nil || result == nil ||
-                    !(result!["success"].bool ?? false) {
-                        handler(error != nil ? error : NSError(domain: "addFavorite", code: 1, userInfo: nil))
-                        return
+                if error != nil {
+                    handler(error!)
+                    return
                 }
                 
                 doneAdd = true
@@ -738,14 +724,8 @@ class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCell
             }
             
             let samples = GenreSample.parseGenreSamples(result!)
-            if samples == nil {
-                ViewUtils.showNoticeAlert(self,
-                    title: NSLocalizedString("Failed to load", comment:""),
-                    message: NSLocalizedString("Failed to load genre samples", comment:""))
-                return
-            }
             self.samples.removeAll(keepCapacity: false)
-            for sample in samples! {
+            for sample in samples {
                 self.samples.append(sample)
             }
             self.tableView.reloadData()

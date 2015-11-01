@@ -44,10 +44,6 @@ class GenreList {
     }
     
     static func parseGenre(json: JSON) -> GenreList {
-        if !(json["success"].bool ?? false) {
-            return GenreList(success: false, results: nil)
-        }
-        
         var genres = [String:[Genre]]()
         var defaultGenres = [Genre]()
         var channelGenres = [Genre]()
@@ -142,11 +138,7 @@ class GenreSample {
         return nil
     }
     
-    static func parseGenreSamples(json:JSON) -> [GenreSample]? {
-        if !(json["success"].bool ?? false) || json["data"] == nil {
-            return nil
-        }
-        
+    static func parseGenreSamples(json:JSON) -> [GenreSample] {
         var samples = [GenreSample]()
         var count = 0
         for (_, s): (String, JSON) in json["data"] {

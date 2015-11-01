@@ -147,22 +147,17 @@ class FBSigninableViewController: BaseViewController {
                 if (error != nil) {
                     fbManager.logOut()
                     var message:String?
-                    if (error != nil && error!.domain == NSURLErrorDomain &&
+                    if (error!.domain == NSURLErrorDomain &&
                             error!.code == NSURLErrorNotConnectedToInternet) {
                         message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
-                    } else {
+                    } else if error!.domain == DropbeatRequestErrorDomain {
+                        message = error?.localizedDescription
+                    }
+                    else {
                         message = NSLocalizedString("Failed to sign in.", comment:"")
                     }
                     ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to sign in", comment:""),
                         message: message!)
-                    self.progressHud?.hide(true)
-                    return
-                }
-                let success:Bool = result!["success"].bool ?? false
-                if (!success) {
-                    fbManager.logOut()
-                    let errorMsg:String = result!["error"].string ?? NSLocalizedString("Failed to sign in", comment:"")
-                    ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to sign in", comment:""), message: errorMsg)
                     self.progressHud?.hide(true)
                     return
                 }
@@ -323,7 +318,7 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
             if error != nil || result == nil {
                 self.isSubmitting = false
                 progressHud.hide(true)
-                if (error != nil && error!.domain == NSURLErrorDomain &&
+                if (error!.domain == NSURLErrorDomain &&
                     error!.code == NSURLErrorNotConnectedToInternet) {
                         
                         ViewUtils.showConfirmAlert(self,
@@ -334,6 +329,16 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                                 self.doSubmit()
                         })
                         return
+                } else if error!.domain == DropbeatRequestErrorDomain {
+                    if let errorCode = Int(error?.localizedDescription ?? "")
+                        where self.handleRemoteError(errorCode) {
+                            return
+                    }
+                    
+                    ViewUtils.showNoticeAlert(self,
+                        title: NSLocalizedString("Failed to sign in", comment:""),
+                        message: NSLocalizedString("Failed to sign in", comment:""))
+                    return
                 }
                 
                 ViewUtils.showNoticeAlert(self,
@@ -342,21 +347,6 @@ class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                 return
             }
             
-            if !(result!["success"].bool ?? false) || result!["token"].string == nil {
-                self.isSubmitting = false
-                progressHud.hide(true)
-                
-                if result!["error"].string != nil &&
-                    Int(result!["error"].stringValue) != nil &&
-                    self.handleRemoteError(Int(result!["error"].stringValue)!) {
-                        return
-                }
-                
-                ViewUtils.showNoticeAlert(self,
-                    title: NSLocalizedString("Failed to sign in", comment:""),
-                    message: NSLocalizedString("Failed to sign in", comment:""))
-                return
-            }
             self.afterSignin(result!["token"].stringValue)
         }
         
@@ -587,7 +577,7 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                 if error != nil || result == nil {
                     self.isSubmitting = false
                     progressHud.hide(true)
-                    if (error != nil && error!.domain == NSURLErrorDomain &&
+                    if (error!.domain == NSURLErrorDomain &&
                         error!.code == NSURLErrorNotConnectedToInternet) {
                             
                             ViewUtils.showConfirmAlert(self,
@@ -598,6 +588,16 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                                     self.doSubmit()
                             })
                             return
+                    } else if error!.domain == DropbeatRequestErrorDomain {
+                        if let errorCode = Int(error?.localizedDescription ?? "")
+                            where self.handleRemoteError(errorCode) {
+                                return
+                        }
+                        
+                        ViewUtils.showNoticeAlert(self,
+                            title: NSLocalizedString("Failed to sign up", comment:""),
+                            message: NSLocalizedString("Failed to submit form", comment:""))
+                        return
                     }
                     
                     ViewUtils.showNoticeAlert(self,
@@ -605,22 +605,7 @@ class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, U
                         message: NSLocalizedString("Failed to submit form", comment:""))
                     return
                 }
-                                
-                if !(result!["success"].bool ?? false) || result!["token"].string == nil {
-                    self.isSubmitting = false
-                    progressHud.hide(true)
-                    
-                    if result!["error"].string != nil &&
-                        Int(result!["error"].stringValue) != nil &&
-                        self.handleRemoteError(Int(result!["error"].stringValue)!) {
-                            return
-                    }
-                    
-                    ViewUtils.showNoticeAlert(self,
-                        title: NSLocalizedString("Failed to sign up", comment:""),
-                        message: NSLocalizedString("Failed to submit form", comment:""))
-                    return
-                }
+                   
                 progressHud.mode = MBProgressHUDMode.CustomView
                 progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark"))
                 progressHud.hide(true, afterDelay: 1)

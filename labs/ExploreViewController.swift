@@ -169,20 +169,18 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
             
             self.isLoading = false
             if (error != nil || result == nil) {
-                if (error != nil && error!.domain == NSURLErrorDomain &&
+                if (error!.domain == NSURLErrorDomain &&
                     error!.code == NSURLErrorNotConnectedToInternet) {
                         ViewUtils.showNoticeAlert(self,
                             title: NSLocalizedString("Failed to load", comment:""),
                             message: NSLocalizedString("Internet is not connected", comment:""))
                         return
+                } else if error!.domain == DropbeatRequestErrorDomain {
+                    let message = NSLocalizedString("Failed to load channel feed.", comment:"")
+                    ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
+                    return
                 }
                 let message = "Failed to load channel feed."
-                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
-                return
-            }
-            
-            if !(result!["success"].bool ?? false) {
-                let message = NSLocalizedString("Failed to load channel feed.", comment:"")
                 ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
                 return
             }

@@ -10,6 +10,10 @@ import Foundation
 import UIKit
 
 extension UIViewController {
+    func isVisible() -> Bool {
+         return self.isViewLoaded() && (self.view.window != nil)
+    }
+    
     func showActivityViewControllerWithShareURL(url: NSURL, string: String? = nil) {
         var items: [AnyObject] = [url]
         if string != nil {
@@ -135,6 +139,11 @@ class Utils {
 class ViewUtils {
     static func showNoticeAlert(viewController:UIViewController, title:String, message:String, btnText:String=NSLocalizedString("Confirm", comment:""), callback:(() -> Void)?=nil) {
         
+        guard viewController.isVisible() else {
+            print("Not visible. Aleart cancelled.: \(viewController)")
+            return
+        }
+        
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         alert.addAction(UIAlertAction(title: btnText, style: UIAlertActionStyle.Default,
             handler:{ (action:UIAlertAction!) -> Void in
@@ -148,7 +157,12 @@ class ViewUtils {
             positiveBtnText:String=NSLocalizedString("Proceed", comment:""), positiveBtnCallback: (() -> Void)?=nil,
             negativeBtnText:String=NSLocalizedString("Cancel", comment:""), negativeBtnCallback: (() -> Void)?=nil) {
             
-            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+                guard viewController.isVisible() else {
+                    print("Not visible. Aleart cancelled.: \(viewController)")
+                    return
+                }
+                
+                let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
             alert.addAction(UIAlertAction(title: negativeBtnText, style: UIAlertActionStyle.Cancel,
                     handler:{ (action:UIAlertAction!) -> Void in
                         negativeBtnCallback?()
@@ -165,21 +179,26 @@ class ViewUtils {
             positiveBtnText:String=NSLocalizedString("Submit", comment:""), positiveBtnCallback: (result:String) -> Void,
             negativeBtnText:String=NSLocalizedString("Cancel", comment:""), negativeBtnCallback: (() -> Void)?=nil) {
     
-            let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
-            alert.addTextFieldWithConfigurationHandler({ (textField: UITextField) in
-                textField.placeholder = placeholder
-                textField.text = text
-            })
-            alert.addAction(UIAlertAction(title: negativeBtnText, style: UIAlertActionStyle.Cancel,
-                handler:{ (action:UIAlertAction!) -> Void in
-                    negativeBtnCallback?()
-            }))
-            alert.addAction(UIAlertAction(title: positiveBtnText, style: UIAlertActionStyle.Default,
+                guard viewController.isVisible() else {
+                    print("Not visible. Aleart cancelled.: \(viewController)")
+                    return
+                }
+                
+                let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+                alert.addTextFieldWithConfigurationHandler({ (textField: UITextField) in
+                    textField.placeholder = placeholder
+                    textField.text = text
+                })
+                alert.addAction(UIAlertAction(title: negativeBtnText, style: UIAlertActionStyle.Cancel,
+                    handler:{ (action:UIAlertAction!) -> Void in
+                        negativeBtnCallback?()
+                }))
+                alert.addAction(UIAlertAction(title: positiveBtnText, style: UIAlertActionStyle.Default,
                     handler:{ (action:UIAlertAction) -> Void in
                         let textField = alert.textFields![0]
                         positiveBtnCallback(result: textField.text!)
-                    }))
-            viewController.presentViewController(alert, animated: true, completion: nil)
+                }))
+                viewController.presentViewController(alert, animated: true, completion: nil)
     }
     
     static func showCheck(viewController:UIViewController, message:String) {
@@ -187,6 +206,12 @@ class ViewUtils {
         if viewController.navigationController != nil {
             vc = viewController.navigationController!
         }
+        
+        guard vc.isVisible() else {
+            print("Not visible. Aleart cancelled.: \(vc)")
+            return
+        }
+        
         let hud:MBProgressHUD = MBProgressHUD.showHUDAddedTo(vc.view, animated: true)
 //        hud.color = UIColor(netHex: 0x8F2CEF).colorWithAlphaComponent(0.8)
         hud.customView = UIImageView(image: UIImage(named: "37x-Checkmark"))
@@ -203,6 +228,12 @@ class ViewUtils {
         if viewController.navigationController != nil {
             vc = viewController.navigationController!
         }
+        
+        guard vc.isVisible() else {
+            print("Not visible. Aleart cancelled.: \(vc)")
+            return
+        }
+        
         let hud:MBProgressHUD = MBProgressHUD.showHUDAddedTo(vc.view, animated: true)
         hud.mode = MBProgressHUDMode.Text
         hud.labelText = message

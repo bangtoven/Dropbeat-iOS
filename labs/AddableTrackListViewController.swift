@@ -279,9 +279,8 @@ class AddableTrackListViewController: GAITrackedViewController, AddableTrackCell
         }
         params["section"] = getSectionName()
         
-        // TODO: playlist
+        // TODO: playlist???
         DropbeatPlayer.defaultPlayer.play(track)
-        
     }
     
     func onTrackRepostAction(track:Track) {

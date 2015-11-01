@@ -23,7 +23,7 @@ class Requests {
                     domain: DropbeatRequestErrorDomain,
                     code: -1,
                     userInfo: [NSLocalizedDescriptionKey:json["error"].stringValue])
-                handler(result: nil, error: error)
+                handler(result: json, error: error)
                 return
             }
             

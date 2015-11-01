@@ -133,9 +133,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
                     return
                 }
-                else {
-                    NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.likeUpdated, object: nil)
-                }
             }
             
             account.syncFollowingInfo { (error) -> Void in

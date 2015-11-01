@@ -88,6 +88,10 @@
 		7327174D1BAC8836003E0B68 /* UserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 732717481BAC8836003E0B68 /* UserViewController.swift */; };
 		733EDD9E1BBC45A500925F50 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733EDD9D1BBC45A500925F50 /* EditProfileViewController.swift */; };
 		733EDD9F1BBC474A00925F50 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 733EDD9D1BBC45A500925F50 /* EditProfileViewController.swift */; };
+		734944B31BE678BF0096B615 /* ChannelSubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734944B21BE678BF0096B615 /* ChannelSubViewController.swift */; };
+		734944B51BE678FF0096B615 /* RepostSubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734944B41BE678FF0096B615 /* RepostSubViewController.swift */; };
+		734944B61BE679AB0096B615 /* RepostSubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734944B41BE678FF0096B615 /* RepostSubViewController.swift */; };
+		734944B71BE679B00096B615 /* ChannelSubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734944B21BE678BF0096B615 /* ChannelSubViewController.swift */; };
 		734C7D591BB457EB0071678C /* LinkedImageTransitionSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 734C7D581BB457EB0071678C /* LinkedImageTransitionSegue.m */; };
 		734C7D5B1BB47ACD0071678C /* OldModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734C7D5A1BB47ACD0071678C /* OldModels.swift */; };
 		734C7D5D1BB47CBE0071678C /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 734C7D5C1BB47CBE0071678C /* Account.swift */; };
@@ -516,6 +520,8 @@
 		732717481BAC8836003E0B68 /* UserViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserViewController.swift; sourceTree = "<group>"; };
 		73338BA21BCC176E007A9D6C /* Info-SSIBAL.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Info-SSIBAL.plist"; sourceTree = "<group>"; };
 		733EDD9D1BBC45A500925F50 /* EditProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		734944B21BE678BF0096B615 /* ChannelSubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChannelSubViewController.swift; sourceTree = "<group>"; };
+		734944B41BE678FF0096B615 /* RepostSubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepostSubViewController.swift; sourceTree = "<group>"; };
 		734C7D571BB457EB0071678C /* LinkedImageTransitionSegue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LinkedImageTransitionSegue.h; sourceTree = "<group>"; };
 		734C7D581BB457EB0071678C /* LinkedImageTransitionSegue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LinkedImageTransitionSegue.m; sourceTree = "<group>"; };
 		734C7D5A1BB47ACD0071678C /* OldModels.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OldModels.swift; sourceTree = "<group>"; };
@@ -872,6 +878,8 @@
 				732717481BAC8836003E0B68 /* UserViewController.swift */,
 				73D5667C1BE3E28500BED716 /* FollowInfoViewController.swift */,
 				732717471BAC8836003E0B68 /* TrackSubViewController.swift */,
+				734944B41BE678FF0096B615 /* RepostSubViewController.swift */,
+				734944B21BE678BF0096B615 /* ChannelSubViewController.swift */,
 				73AB346C1BB186B90031E2CC /* ProfileViewController.swift */,
 				733EDD9D1BBC45A500925F50 /* EditProfileViewController.swift */,
 				73AB347B1BB1E8FE0031E2CC /* EditFavoriteGenreViewController.swift */,
@@ -1430,6 +1438,7 @@
 				734C7D961BB4C1DA0071678C /* RBStoryboardPopoverSegue.m in Sources */,
 				73AECC0A1BC6B47D0040F0AF /* XCDYouTubeVideoOperation.m in Sources */,
 				734C7D981BB4C1DA0071678C /* KeychainItemWrapper.swift in Sources */,
+				734944B71BE679B00096B615 /* ChannelSubViewController.swift in Sources */,
 				734C7D991BB4C1DA0071678C /* Validation.swift in Sources */,
 				734C7D9A1BB4C1DA0071678C /* DTConstants.m in Sources */,
 				7374F72A1BD87DB5007802CC /* FacebookPageViewController.swift in Sources */,
@@ -1489,6 +1498,7 @@
 				734C7DC71BB4C1DA0071678C /* RBStoryboardModalSegue.m in Sources */,
 				73AECBA41BC5CE2F0040F0AF /* STKLocalFileDataSource.m in Sources */,
 				734C7DC81BB4C1DA0071678C /* AXTabBar.m in Sources */,
+				734944B61BE679AB0096B615 /* RepostSubViewController.swift in Sources */,
 				734C7DC91BB4C1DA0071678C /* DTTimePeriod.m in Sources */,
 				734C7DCA1BB4C1DA0071678C /* Alamofire.swift in Sources */,
 				734C7DCB1BB4C1DA0071678C /* DTTimePeriodGroup.m in Sources */,
@@ -1564,6 +1574,7 @@
 				732717311BAC86A8003E0B68 /* GBFlatSelectableButton.m in Sources */,
 				73AB347C1BB1E8FE0031E2CC /* EditFavoriteGenreViewController.swift in Sources */,
 				5886939D1B13B51300566124 /* SDWebImageDecoder.m in Sources */,
+				734944B51BE678FF0096B615 /* RepostSubViewController.swift in Sources */,
 				739C8F5F1BB340FE00BC9EB7 /* ExploreViewController.swift in Sources */,
 				588693A71B13B51300566124 /* UIView+WebCacheOperation.m in Sources */,
 				FC766BEF1B050D51006FD4FB /* NetworkPath.swift in Sources */,
@@ -1590,6 +1601,7 @@
 				73AB346D1BB186B90031E2CC /* ProfileViewController.swift in Sources */,
 				73A355A71BCDBAC90002C00D /* EAIntroPage.m in Sources */,
 				73A3559F1BCD97EB0002C00D /* TutorialViewController.swift in Sources */,
+				734944B31BE678BF0096B615 /* ChannelSubViewController.swift in Sources */,
 				73AECB991BC5CE2F0040F0AF /* STKAutoRecoveringHTTPDataSource.m in Sources */,
 				739B00AB1BD7ED7600EF126F /* ImageUploader.swift in Sources */,
 				73AECBA51BC5CE2F0040F0AF /* STKQueueEntry.m in Sources */,

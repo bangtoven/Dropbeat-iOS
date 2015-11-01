@@ -11,8 +11,6 @@ import Foundation
 class NotifyKey {
     static var statusBarTapped = "statusBarTapped"
     static var fromAppLink = "fromAppLink"
-    
-    static var likeUpdated = "likeUpdated"
 }
 
 class ApiKey {

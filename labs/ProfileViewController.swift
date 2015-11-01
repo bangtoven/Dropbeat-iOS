@@ -30,19 +30,14 @@ class ProfileViewController: UserViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateLikeView", name: NotifyKey.likeUpdated, object: nil)
-        
         if self.isMovingToParentViewController() == false && presented == true {
             self.fetchUserInfo()
-//            self.updateFollowingView()
+            if let subVC = self.selectedViewController as? AXSubViewController {
+                subVC.subViewWillAppear()
+            }
         }
         
         presented = true
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.likeUpdated, object: nil)
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -50,7 +45,7 @@ class ProfileViewController: UserViewController {
     }
 
     override func fetchUserInfo() {
-        let user = Account.getCachedAccount()!.user
+        let accountUser = Account.getCachedAccount()!.user
 
         let header = self.headerView as! ProfileHeaderView
         header.maximumOfHeight = self.view.bounds.width * 3/8 + 140
@@ -59,24 +54,22 @@ class ProfileViewController: UserViewController {
         header.profileImageView.hidden = false
         
         let progressHud = ViewUtils.showProgress(self, message: nil)
-        BaseUser.resolve(user!.resourceName) { (user, error) -> Void in
+        BaseUser.resolve(accountUser!.resourceName) { (user, error) -> Void in
             progressHud.hide(true)
             
             if (error != nil) {
-                ViewUtils.showNoticeAlert(self, title: "Can't get user information", message: error?.localizedDescription ?? "", btnText: "OK", callback: { () -> Void in
-                    self.navigationController?.popViewControllerAnimated(true)
+                ViewUtils.showNoticeAlert(self, title: "Can't get user information", message: error?.localizedDescription ?? "", callback: { () -> Void in
+                    self.fetchUserInfo()
                 })
                 return
             }
             
-            if let u = user {
-                self.baseUser = u
-                self.applyFetchedInfoToView()
-                self.setFavoriteGenreLabel()
-                self.setAboutMeLabel()
-                self.title = "Profile"
-                self.screenName = "MyProfileScreen"
-            }
+            self.user = user!
+            self.applyFetchedInfoToView()
+            self.setFavoriteGenreLabel()
+            self.setAboutMeLabel()
+            self.title = "Profile"
+            self.screenName = "MyProfileScreen"
         }
         
     }
@@ -94,7 +87,7 @@ class ProfileViewController: UserViewController {
             style: .Default,
             handler: { (action) -> Void in
                 let userVC = self.storyboard?.instantiateViewControllerWithIdentifier("UserViewController") as! UserViewController
-                userVC.resource = self.baseUser.resourceName
+                userVC.resource = self.user.resourceName
                 self.navigationController?.pushViewController(userVC, animated: true)
         }))
         actionSheet.addAction(UIAlertAction(
@@ -123,23 +116,6 @@ class ProfileViewController: UserViewController {
         }))
         self.showDetailViewController(actionSheet, sender: sender)//presentViewController(actionSheet, animated: true, completion: nil)
     }
-    
-    func updateLikeView() {
-        print("like updated")
-        if let viewControllers = self.viewControllers,
-            likesSubView = viewControllers[viewControllers.count-3] as? TrackSubViewController {
-            likesSubView.tracks = []
-            likesSubView.subViewWillAppear()
-        }
-    }
-    
-//    func updateFollowingView() {
-//        if let viewControllers = self.viewControllers,
-//            followingView = viewControllers.last as? FollowInfoTableViewController {
-//            followingView.userArray = []
-//            followingView.subViewWillAppear()
-//        }
-//    }
     
     @IBAction func unwindFromEditProfile(sender: UIStoryboardSegue) {
         print("unwindFromEditProfile")

@@ -89,7 +89,7 @@ class UserHeaderView: AXStretchableHeaderView {
 
 class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLabelDelegate {
     
-    var baseUser: BaseUser!
+    var user: BaseUser!
     var resource: String!
 
     var passedName: String?
@@ -124,8 +124,8 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
             }
             
             if let u = user {
-                self.baseUser = u
-                self.screenName = "\(self.baseUser.name)'sProfileScreen"
+                self.user = u
+                self.screenName = "\(self.user.name)'sProfileScreen"
                 self.applyFetchedInfoToView()
             }
         }
@@ -140,7 +140,7 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
         header.aboutMeLabel.delegate = self
         
         var isSelf = false
-        switch self.baseUser {
+        switch self.user {
         case let user as User:
             let isDropbeat = (user.resourceName == "dropbeat")
             
@@ -157,7 +157,7 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
                 if isDropbeat {
                     let recommends = instantiateSubVC()
                     recommends.title = "Recommends"
-                    recommends.baseUser = user
+                    recommends.user = user
                     recommends.fetchFunc = user.fetchTracksFromLikeList
 
                     self.viewControllers = [recommends]
@@ -168,33 +168,21 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
                         let uploads = instantiateSubVC()
                         uploads.title = "Uploads"
                         uploads.tracks = user.tracks
-                        uploads.baseUser = user
+                        uploads.user = user
                         viewControllers.append(uploads)
                     }
                     
-                    let repost = instantiateSubVC()
+                    let repost = self.storyboard?.instantiateViewControllerWithIdentifier("RepostSubViewController") as! RepostSubViewController
                     repost.title = "Reposts"
-                    repost.baseUser = user
-                    repost.fetchFunc = user.fetchTracksFromLikeList
+                    repost.user = user
+                    repost.fetchFunc = user.fetchReposts
                     viewControllers.append(repost)
                     
                     let likes = instantiateSubVC()
                     likes.title = "Likes"
-                    likes.baseUser = user
+                    likes.user = user
                     likes.fetchFunc = user.fetchTracksFromLikeList
                     viewControllers.append(likes)
-                    
-//                    let followers = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
-//                    followers.title = "Followers"
-//                    followers.user = user
-//                    followers.followInfoType = .FOLLOWERS
-//                    viewControllers.append(followers)
-//                    
-//                    let following = self.storyboard?.instantiateViewControllerWithIdentifier("FollowInfoTableViewController") as! FollowInfoTableViewController
-//                    following.title = "Following"
-//                    following.user = user
-//                    following.followInfoType = .FOLLOWING
-//                    viewControllers.append(following)
                     
                     self.viewControllers = viewControllers
                 }
@@ -210,14 +198,14 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
                     let subView = instantiateSubVC()
                     subView.title = section.capitalizedString
                     subView.tracks = tracks
-                    subView.baseUser = artist
+                    subView.user = artist
                     subViewArr.append(subView)
                 }
                 
                 if artist.hasLiveset {
                     let subView = instantiateSubVC()
                     subView.title = "Liveset"
-                    subView.baseUser = artist
+                    subView.user = artist
                     subView.fetchFunc = artist.fetchLiveset
                     subViewArr.append(subView)
                 }
@@ -225,7 +213,7 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
                 if artist.hasPodcast {
                     let subView = instantiateSubVC()
                     subView.title = "Podcast"
-                    subView.baseUser = artist
+                    subView.user = artist
                     subView.fetchFunc = artist.fetchPodcast
                     subViewArr.append(subView)
                 }
@@ -242,13 +230,13 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
                 var subViewArr = [ChannelSubViewController]()
                 let recent = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
                 recent.title = "Recent"
-                recent.baseUser = channel
+                recent.user = channel
                 subViewArr.append(recent)
                 
                 if channel.playlists.count > 1 {
                     let sections = self.storyboard?.instantiateViewControllerWithIdentifier("ChannelSubViewController") as! ChannelSubViewController
                     sections.title = "Sections"
-                    sections.baseUser = channel
+                    sections.user = channel
                     sections.isSectioned = true
                     subViewArr.append(sections)
                 }
@@ -267,14 +255,14 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
             print("applyFetchedInfoToView: This should never happen.")
         }
         
-        if let name = self.baseUser?.name {
+        if let name = self.user?.name {
             self.title = name
             header.nameLabel.text = name
         }
-        if let profileImage = self.baseUser?.image {
+        if let profileImage = self.user?.image {
             header.profileImageView.sd_setImageWithURL(NSURL(string: profileImage), placeholderImage: UIImage(named: "default_profile"))
         }
-        if let coverImage = self.baseUser?.coverImage {
+        if let coverImage = self.user?.coverImage {
             header.coverImageView.sd_setImageWithURL(NSURL(string: coverImage), placeholderImage: UIImage(named: "default_cover_big"),
                 forMinimumHeight: self.headerView!.maximumOfHeight*1.5)
         }
@@ -283,7 +271,7 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
             header.followButton?.enabled = false
             header.followButton?.userInteractionEnabled = false
         } else {
-            if let followed = self.baseUser?.isFollowed() {
+            if let followed = self.user?.isFollowed() {
                 header.followButton.selected = followed
             }
         }
@@ -336,7 +324,7 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
     }
     
     func showFacebookPage() {
-        guard let channel = self.baseUser as? Channel,
+        guard let channel = self.user as? Channel,
             facebookId = channel.facebookId else {
             return
         }
@@ -352,7 +340,7 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
     
     override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
         if identifier == "ShowFollowInfo" {
-            return (self.baseUser is User)
+            return (self.user is User)
         } else {
             return super.shouldPerformSegueWithIdentifier(identifier, sender: sender)
         }
@@ -361,7 +349,7 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "ShowFollowInfo" {
             let followInfoVC = segue.destinationViewController as! FollowInfoViewController
-            followInfoVC.user = self.baseUser as! User
+            followInfoVC.user = self.user as! User
         }
     }
 
@@ -375,28 +363,19 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
         let handler = { (error: NSError?) -> Void in
             progressHud.hide(true)
             if (error == nil) {
-                sender.selected = self.baseUser.isFollowed()
+                sender.selected = self.user.isFollowed()
                 
-                if let user = self.baseUser as? User {
+                if let user = self.user as? User {
                     user.num_followers += user.isFollowed() ? 1 : -1
                     let header = self.headerView as! UserHeaderView
                     header.followersNumberLabel.text = String(user.num_followers)
-                    
-                    guard self.viewControllers.count > 2 else {
-                        return
-                    }
-                    
-//                    if let followerView = self.viewControllers[self.viewControllers.count-2] as? FollowInfoTableViewController {
-//                        followerView.userArray = []
-//                        followerView.subViewWillAppear()
-//                    }
                 }
             }
         }
         if sender.selected {
-            self.baseUser.unfollow(handler)
+            self.user.unfollow(handler)
         } else {
-            self.baseUser.follow(handler)
+            self.user.follow(handler)
         }   
     }
     
@@ -480,9 +459,9 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
         
         if self.isMovingToParentViewController() == false {
             // back from navigation stack. previous page was popped!!
-            self.baseUser?.updateFollowInfo()
+            self.user?.updateFollowInfo()
             let header = self.headerView as! UserHeaderView
-            if let followed = self.baseUser?.isFollowed() {
+            if let followed = self.user?.isFollowed() {
                 header.followButton?.selected = followed
             }
             
@@ -512,6 +491,11 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
         super.viewWillDisappear(animated)
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.statusBarTapped, object: nil)
+        
+        
+        if let subVC = self.selectedViewController as? AXSubViewController {
+            subVC.subViewWillDisappear()
+        }
         
         if let topVC = self.navigationController?.topViewController as? UserViewController
             where topVC != self {

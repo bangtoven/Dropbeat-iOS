@@ -9,6 +9,7 @@
 import UIKit
 
 enum UserType {
+    case UNKNOWN
     case USER
     case ARTIST
     case CHANNEL
@@ -112,6 +113,9 @@ class BaseUser {
             key = "artist_id"
         case .CHANNEL:
             key = "channel_id"
+        case .UNKNOWN:
+            callback(error: NSError(domain: DropbeatRequestErrorDomain, code: -1, userInfo: [NSLocalizedDescriptionKey : "Can't follow unknown type user."]))
+            return
         }
         params[key] = self.id
         
@@ -230,6 +234,18 @@ class User: BaseUser {
     
     func fetchFollowing(callback:((users: [BaseUser]?, error: NSError?) -> Void)) {
         self._fetchFollowInfo(.FOLLOWING, callback: callback)
+    }
+    
+    func fetchReposts(callback:((tracks:[Track]?, error:NSError?) -> Void)) {
+        Requests.sendGet(ApiPath.repost, params: ["user_id": self.id!], auth: true) { (result, error) -> Void in
+            if (error != nil) {
+                callback(tracks: nil, error: error)
+                return
+            }
+            
+            let tracks = Track.parseTracks(result!["data"])
+            callback(tracks: tracks, error: nil)
+        }
     }
     
     func fetchLikeList(callback:((likes:[Like]?, error:NSError?) -> Void)) {

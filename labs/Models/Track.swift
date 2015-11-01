@@ -187,6 +187,9 @@ class Track {
     var user: BaseUser?
     var releaseDate: NSDate?
     
+    var repostingUser: User?
+    var repostedDate: NSDate?
+    
     var hasHighDefThumbnail: Bool?
     var thumbnailUrl: String?
     
@@ -267,11 +270,33 @@ class Track {
             resourceName: json["resource_name"].stringValue)
     }
     
+    static func parseRepostedTrack(json: JSON) -> Track {
+        var track: Track!
+        if json["unique_key"] != JSON.null {
+            track = DropbeatTrack(json: json)
+        } else {
+            track = Track(json: json)
+            if json["author_resource_name"] != JSON.null {
+                track.user = BaseUser(
+                    userType: .UNKNOWN,
+                    name: json["author_nickname"].stringValue,
+                    image: json["author_profile_image"].string,
+                    resourceName: json["author_resource_name"].stringValue)
+            }
+        }
+        track.repostingUser = User(json: json["repost"])
+        track.repostedDate = NSDate.dateFromString(json["repost"]["created_at"].stringValue)
+        
+        return track
+    }
+    
     static func parseTracks(json: JSON) -> [Track] {
         var tracks = [Track]()
         for (_, t): (String, JSON) in json {
             var track: Track {
-                if t["unique_key"] != JSON.null {
+                if t["repost"] != JSON.null {
+                    return parseRepostedTrack(t)
+                } else if t["unique_key"] != JSON.null {
                     return DropbeatTrack(json: t)
                 } else if t["dj"] != JSON.null {
                     return Track(artistTrack: t)
@@ -669,9 +694,6 @@ class Like {
                    let account = Account.getCachedAccount()
                     account!.likes.append(like)
                     callback?(error:nil)
-                    
-                    NSNotificationCenter.defaultCenter().postNotificationName(
-                        NotifyKey.likeUpdated, object: nil)
                 }
             }
         default:
@@ -685,9 +707,6 @@ class Like {
                     let account = Account.getCachedAccount()
                     account!.likes.append(like)
                     callback?(error:nil)
-                    
-                    NSNotificationCenter.defaultCenter().postNotificationName(
-                        NotifyKey.likeUpdated, object: nil)
                 }
             }
         }
@@ -727,9 +746,6 @@ class Like {
                 
                 account.likes.removeAtIndex(foundIdx)
                 callback?(error:nil)
-                
-                NSNotificationCenter.defaultCenter().postNotificationName(
-                    NotifyKey.likeUpdated, object: nil)
             }
             break
         default:
@@ -749,9 +765,6 @@ class Like {
                 
                 account.likes.removeAtIndex(foundIdx)
                 callback?(error:nil)
-                
-                NSNotificationCenter.defaultCenter().postNotificationName(
-                    NotifyKey.likeUpdated, object: nil)
             }
         }
     }

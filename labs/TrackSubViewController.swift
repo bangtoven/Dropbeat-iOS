@@ -8,153 +8,24 @@
 
 import UIKit
 
-class ChannelSubViewController: TrackSubViewController, DYAlertPickViewDataSource, DYAlertPickViewDelegate {
-    var isSectioned: Bool = false
-    
-    private var currentSectionIndex: Int = 0
-    private var nextPageToken:String?
-    private var listEnd:Bool = false
-    
-    @IBOutlet weak var indicatorView: UIView!
-    @IBOutlet weak var loadMoreSpinner: UIActivityIndicatorView!
-    @IBOutlet weak var loadMoreSpinnerWrapper: UIView!
-    
-    override func subViewWillAppear() {
-        if self.tracks.count == 0 {
-//            print("start fetching channel \(self.title!)")
-            
-            if self.isSectioned != true {
-                self.selectSection(0)
-            } else {
-                self.selectSection(1)
-            }
-        }
-        
-        self.trackTableView.reloadData()
-        self.trackChanged()
-        
-        loadMoreSpinnerWrapper.hidden = true
-        loadMoreSpinner.stopAnimating()
-    }
-    
-    @IBOutlet weak var sectionLabel: MarqueeLabel!
-    func selectSection (index: Int) {
-        self.currentSectionIndex = index
-        let channel = self.baseUser as! Channel
-        let playlist = channel.playlists[index]
-        nextPageToken = nil
-        listEnd = false
-        
-        if self.isSectioned {
-            self.indicatorView.hidden = false
-        }
-        
-        if (self.trackTableView.tableHeaderView != nil) {
-            self.sectionLabel.text = channel.playlists[index].name
-        }
-        
-        self.loadTracks(playlist.uid, pageToken: nextPageToken)
-    }
-    
-    @IBAction func showSelectSection(sender: AnyObject) {
-        let picker: DYAlertPickView = DYAlertPickView(headerTitle: "Choose Section", cancelButtonTitle: nil, confirmButtonTitle: nil, switchButtonTitle: nil)
-        picker.dataSource = self
-        picker.delegate = self
-        picker.tintColor = UIColor.dropbeatColor()
-        picker.headerBackgroundColor = UIColor.dropbeatColor()
-        picker.headerTitleColor = UIColor.dropbeatColor()
-        picker.showAndSelectedIndex(self.currentSectionIndex-1)
-    }
-    
-    func numberOfRowsInDYAlertPickerView(pickerView: DYAlertPickView) -> Int {
-        let channel = self.baseUser as! Channel
-        return channel.playlists.count-1
-    }
-    
-    func titleForRowInDYAlertPickView(titleForRow: Int) -> NSAttributedString! {
-        let attr = [NSFontAttributeName: UIFont.systemFontOfSize(16)]
-        let channel = self.baseUser as! Channel
-        return NSAttributedString(string:channel.playlists[titleForRow+1].name, attributes:attr)
-    }
-    
-    func didConfirmWithItemAtRowInDYAlertPickView(row: Int) {
-        self.selectSection(row+1)
-    }
-    
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if tableView != self.trackTableView || tracks.count == 0 {
-            return
-        }
-        if indexPath.row == tracks.count - 1 {
-            if listEnd || nextPageToken == nil {
-                return
-            }
-            loadMoreSpinnerWrapper.hidden = false
-            loadMoreSpinner.startAnimating()
-            
-            let channel = self.baseUser as! Channel
-            let playlist = channel.playlists[self.currentSectionIndex]
-            loadTracks(playlist.uid, pageToken: nextPageToken)
-        }
-    }
-    
-    func loadTracks(playlistUid:String, pageToken:String?) {
-        Requests.getChannelPlaylist(playlistUid, pageToken: pageToken) { (result, error) -> Void in
-            if self.isSectioned != true {
-                self.trackTableView.tableHeaderView = nil
-            } else {
-                self.indicatorView.hidden = true
-            }
-            
-            if (error != nil || result == nil) {
-                if (error != nil && error!.domain == NSURLErrorDomain &&
-                    error!.code == NSURLErrorNotConnectedToInternet) {
-                        ViewUtils.showNoticeAlert(self,
-                            title: NSLocalizedString("Failed to load", comment:""),
-                            message: NSLocalizedString("Internet is not connected", comment:""))
-                        return
-                }
-                let message = NSLocalizedString("Failed to load tracks.", comment:"")
-                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
-                return
-            }
-            
-            if pageToken == nil {
-                self.tracks.removeAll(keepCapacity: false)
-            }
-            
-            if result!["nextPageToken"].error == nil {
-                self.nextPageToken = result!["nextPageToken"].stringValue
-            } else {
-                self.nextPageToken = nil
-            }
-            if self.nextPageToken == nil {
-                self.listEnd = true
-                self.loadMoreSpinnerWrapper.hidden = true
-                self.loadMoreSpinner.stopAnimating()
-            }
-            
-            let tracks = Track.parseTracks(result!["items"])
-            self.tracks.appendContentsOf(tracks)
-            
-            self.updatePlaylist(false)
-            self.trackTableView.reloadData()
-            self.trackChanged()
-        }
-    }
+class TrackSubTableViewwCell: AddableTrackTableViewCell {
+    @IBOutlet weak var dropButtonWidthConstraint: NSLayoutConstraint!
 }
 
 class TrackSubViewController: AddableTrackListViewController, UITableViewDataSource, UITableViewDelegate, AXSubViewController, AXStretchableSubViewControllerViewSource {
     
-    var baseUser: BaseUser?
+    @IBOutlet var loadingHeaderView: UIView!
+    
+    var user: BaseUser?
     var fetchFunc: ((([Track]?, NSError?) -> Void) -> Void)?
     
     override func viewDidLayoutSubviews() {
     }
     
     func subViewWillAppear() {
-        if self.tracks.count == 0 && fetchFunc != nil {
-//            print("start fetching \(self.title!)")
+        if fetchFunc != nil {
+            self.trackTableView.tableHeaderView = self.loadingHeaderView
+            
             fetchFunc!({ (tracks, error) -> Void in
                 if let t = tracks {
                     self.tracks = t
@@ -162,12 +33,8 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
                 } else {
                     print(error)
                 }
-                self.trackTableView.tableHeaderView?.frame = CGRectZero
                 self.trackTableView.tableHeaderView = nil
             })
-        } else {
-            self.trackTableView.tableHeaderView?.frame = CGRectZero
-            self.trackTableView.tableHeaderView = nil
         }
         
         self.trackTableView.reloadData()
@@ -190,16 +57,16 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
         return tracks.count + 1
     }
     
-    let CELL_HIGHT:CGFloat = 76
+    let CELL_HEIGHT:CGFloat = 76
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         var cellHeight: CGFloat = 0
         if (indexPath.row < tracks.count) {
-            cellHeight = 76
+            cellHeight = CELL_HEIGHT
         } else if let parentVc = self.parentViewController as? UserViewController,
             navigationBar = parentVc.navigationController?.navigationBar {
                 let minHeight = parentVc.view.frame.size.height - (CGRectGetMaxY(navigationBar.frame)+CGRectGetHeight(parentVc.tabBar.bounds))
-                let diff = minHeight - (CELL_HIGHT * CGFloat(tracks.count))
+                let diff = minHeight - (CELL_HEIGHT * CGFloat(tracks.count))
                 if diff > 0 {
                     cellHeight = diff
                 }
@@ -223,15 +90,17 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
             return cell!
         }
         
-        let cell:AddableTrackTableViewCell = tableView.dequeueReusableCellWithIdentifier("AddableTrackTableViewCell", forIndexPath: indexPath) as! AddableTrackTableViewCell
-        let track = tracks[indexPath.row]
-
+        let cell = tableView.dequeueReusableCellWithIdentifier("TrackSubTableViewwCell", forIndexPath: indexPath) as! TrackSubTableViewwCell
         cell.delegate = self
+
+        let track = tracks[indexPath.row]
         cell.nameView.text = track.title
 
         cell.thumbView.setImageForTrack(track, size: .SMALL)
 
         self.setDropButtonForCellWithTrack(cell, track: track)
+        cell.dropButtonWidthConstraint.constant = cell.dropBtn.hidden ? 0 : 44
+        
         return cell
     }
     
@@ -240,16 +109,16 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
     }
     
     override func getPlaylistId() -> String? {
-        return "user_\(self.baseUser?.id)_\(self.title)"
+        return "user_\(self.user?.id)_\(self.title)"
     }
     
     override func getPlaylistName() -> String? {
         let title = self.title ?? "tracks"
-        if let user = self.baseUser as? User,
+        if let user = self.user as? User,
             mySelf = Account.getCachedAccount()?.user
             where user.id == mySelf.id {
                 return "My \(title)"
-        } else if let name = self.baseUser?.name {
+        } else if let name = self.user?.name {
             return "\(name)'s \(title)"
         } else {
             return title
@@ -257,7 +126,7 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
     }
     
     override func getSectionName() -> String {
-        return "user_\(self.baseUser?.name)_\(self.title)"
+        return "user_\(self.user?.name)_\(self.title)"
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

@@ -126,7 +126,7 @@ class CopyrightViewController: UIViewController {
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
-class FeedbackViewController: BaseViewController,
+class FeedbackViewController: GAITrackedViewController,
         UITextFieldDelegate, UITextViewDelegate, UIScrollViewDelegate {
 
     @IBOutlet weak var scrollInnerWidthConstraint: NSLayoutConstraint!

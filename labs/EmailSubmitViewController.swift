@@ -20,7 +20,7 @@ protocol FBEmailSubmitViewControllerDelegate {
     func onAfterEmailUpdate()
 }
 
-class FBEmailSubmitViewController: BaseViewController, UITextFieldDelegate, UIScrollViewDelegate {
+class FBEmailSubmitViewController: GAITrackedViewController, UITextFieldDelegate, UIScrollViewDelegate {
     
     @IBOutlet weak var scrollInnerWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollView: TPKeyboardAvoidingCollectionView!

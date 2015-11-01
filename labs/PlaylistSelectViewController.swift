@@ -8,13 +8,18 @@
 
 import UIKit
 
-class PlaylistSelectViewController: PlaylistListTableViewController {
+class PlaylistSelectViewController: PlaylistListTableViewController, UITableViewDelegate {
     
     override var showCurrentPlaylist: Bool { return false }
     
     var targetTrack:Track?
     var fromSection:String = "unknown"
     var caller:UIViewController?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.screenName = "PlaylistSelectScreen"
+    }
     
     @IBAction func onBackBtnClicked(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
@@ -32,7 +37,7 @@ class PlaylistSelectViewController: PlaylistListTableViewController {
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let playlist = playlists[indexPath.row]
         addToPlaylist(playlist)
     }

@@ -4,6 +4,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "GAITrackedViewController.h"
 #import "AXStretchableHeaderView.h"
 #import "AXTabBar.h"
 
@@ -19,7 +20,7 @@
 - (void)subViewWillDisappear;
 @end
 
-@interface AXStretchableHeaderTabViewController : UIViewController <UIScrollViewDelegate, AXTabBarDelegate>
+@interface AXStretchableHeaderTabViewController : GAITrackedViewController <UIScrollViewDelegate, AXTabBarDelegate>
 @property (nonatomic) NSUInteger selectedIndex;
 @property (readwrite, nonatomic) UIViewController *selectedViewController;
 @property (readonly, nonatomic) UIScrollView *selectedScrollView;

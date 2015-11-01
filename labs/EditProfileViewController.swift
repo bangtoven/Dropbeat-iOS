@@ -143,6 +143,15 @@ class EditProfileViewController: UITableViewController, ACEExpandableTableViewDe
             self.updateImage(.Cover)
         } else {
             self.performSegueWithIdentifier("unwindFromEditProfile", sender: nil)
+            
+            let tracker = GAI.sharedInstance().defaultTracker
+            let event = GAIDictionaryBuilder.createEventWithCategory(
+                "edit-profile",
+                action: "edit-profile",
+                label: self.title,
+                value: 0
+                ).build()
+            tracker.send(event as [NSObject: AnyObject]!)
         }
     }
     

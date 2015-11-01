@@ -24,7 +24,10 @@ class PlaylistTableViewCell: UITableViewCell {
     }
 }
 
-class PlaylistListTableViewController: UITableViewController {
+class PlaylistListTableViewController: GAITrackedViewController {
+    
+    @IBOutlet weak var tableView: UITableView!
+    
 
     var playlists:[Playlist] = [Playlist]()
     var showCurrentPlaylist: Bool {
@@ -37,6 +40,7 @@ class PlaylistListTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.screenName = "PlaylistListScreen"
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
     }
     
@@ -142,17 +146,17 @@ class PlaylistListTableViewController: UITableViewController {
     }
 }
 
-extension PlaylistListTableViewController {
+extension PlaylistListTableViewController: UITableViewDataSource {
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return self.showCurrentPlaylist ? 2 : 1
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return (self.showCurrentPlaylist && section == 0) ? " CURRENT PLAYLIST" : " "
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.showCurrentPlaylist {
             if section == 0 {
                 return 1
@@ -164,7 +168,7 @@ extension PlaylistListTableViewController {
         }
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var playlist: Playlist
         
         if self.showCurrentPlaylist {

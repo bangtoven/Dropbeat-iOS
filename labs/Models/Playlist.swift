@@ -34,7 +34,7 @@ class Playlist {
     var name: String
     var tracks: [Track]
     var type = PlaylistType.USER
-    private var dummy = false
+    var dummy = false
     
     init(id: String, name: String, tracks: [Track]) {
         self.id = id

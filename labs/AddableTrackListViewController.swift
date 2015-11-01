@@ -186,7 +186,7 @@ extension AddableTrackListViewController: STKAudioPlayerDelegate {
 
 // MARK:
 
-class AddableTrackListViewController: BaseViewController, AddableTrackCellDelegate, UIActionSheetDelegate {
+class AddableTrackListViewController: GAITrackedViewController, AddableTrackCellDelegate, UIActionSheetDelegate {
     
     @IBOutlet weak var trackTableView: UITableView!
     
@@ -290,8 +290,7 @@ class AddableTrackListViewController: BaseViewController, AddableTrackCellDelega
             if error != nil {
                 progressHud.hide(true)
                 if error!.domain == DropbeatRequestErrorDomain {
-                    ViewUtils.showNoticeAlert(self, title: error!.localizedDescription,
-                        message: "")
+                    ViewUtils.showToast(self, message: NSLocalizedString("Already reposted.", comment:""))
                 } else {
                     var message = error!.localizedDescription
                     if (error!.domain == NSURLErrorDomain &&

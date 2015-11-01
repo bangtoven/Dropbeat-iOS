@@ -75,6 +75,7 @@ class ProfileViewController: UserViewController {
                 self.setFavoriteGenreLabel()
                 self.setAboutMeLabel()
                 self.title = "Profile"
+                self.screenName = "MyProfileScreen"
             }
         }
         

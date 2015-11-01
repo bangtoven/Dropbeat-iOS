@@ -21,7 +21,7 @@ class GenreTableViewCell: UITableViewCell {
     }
 }
 
-class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
+class EditFavoriteGenreViewController: GAITrackedViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var discoverBtn: UIButton!
@@ -369,7 +369,7 @@ class EditFavoriteGenreViewController: BaseViewController, UITableViewDelegate, 
 }
 
 
-class GenreDiscoveryViewController: BaseViewController, GenreSampleTableViewCellDelegate, UITableViewDelegate, UITableViewDataSource {
+class GenreDiscoveryViewController: GAITrackedViewController, GenreSampleTableViewCellDelegate, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var footerBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var footerView: UIView!

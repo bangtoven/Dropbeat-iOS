@@ -125,6 +125,7 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
             
             if let u = user {
                 self.baseUser = u
+                self.screenName = "\(self.baseUser.name)'sProfileScreen"
                 self.applyFetchedInfoToView()
             }
         }

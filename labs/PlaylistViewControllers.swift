@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PlaylistViewController: BaseViewController {
+class PlaylistViewController: GAITrackedViewController {
 
     @IBOutlet weak var playlistTableView: UITableView!
 
@@ -169,11 +169,13 @@ extension PlaylistViewController : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         var title: String {
-            if self.tracks.count == 0 {
+            if self.playlist.dummy {
+                return " "
+            } else if tracks.count == 0 {
                 return NSLocalizedString("Empty playlist", comment:"")
             } else {
                 return NSString.localizedStringWithFormat(
-                    NSLocalizedString("%d tracks", comment: ""), playlist!.tracks.count) as String
+                    NSLocalizedString("%d tracks", comment: ""), tracks.count) as String
             }
         }
         

@@ -8,7 +8,7 @@ import UIKit
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
-class NeedAuthViewController: BaseViewController {
+class NeedAuthViewController: GAITrackedViewController {
     static let NeedAuthErrorDomain = "NeedAuthErrorDomain"
     
     class func showNeedAuthViewController(from: UIViewController!) {
@@ -72,7 +72,7 @@ class NeedAuthViewController: BaseViewController {
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
-class FBSigninableViewController: BaseViewController {
+class FBSigninableViewController: GAITrackedViewController {
     
     @IBOutlet weak var signinWithFacebookBtn: UIButton!
     private var progressHud:MBProgressHUD?
@@ -233,7 +233,7 @@ class SigninViewController: FBSigninableViewController{
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
-class SigninWithEmailViewController: BaseViewController, UIScrollViewDelegate, UITextFieldDelegate{
+class SigninWithEmailViewController: GAITrackedViewController, UIScrollViewDelegate, UITextFieldDelegate{
     
     @IBOutlet weak var scrollInner: UIView!
     @IBOutlet weak var scrollInnerWidthConstraint: NSLayoutConstraint!
@@ -456,7 +456,7 @@ class SignupViewController: FBSigninableViewController {
 //  Copyright (c) 2015년 dropbeat. All rights reserved.
 //
 
-class SignupWithEmailViewController: BaseViewController, UIScrollViewDelegate, UITextFieldDelegate {
+class SignupWithEmailViewController: GAITrackedViewController, UIScrollViewDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var createAccountBtn: UIButton!
     @IBOutlet weak var scrollInnerConstraint: NSLayoutConstraint!

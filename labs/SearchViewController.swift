@@ -393,7 +393,7 @@ class AutocompleteRequester {
             self.handler(keywords: [], error: nil)
             return
         }
-        var params = Dictionary<String, String>()
+        var params = [String: String]()
         for key in defaultParams.keys {
             params[key] = defaultParams[key]
         }

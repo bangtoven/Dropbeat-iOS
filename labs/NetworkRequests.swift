@@ -7,37 +7,32 @@ import Foundation
 typealias ResponseHandler = ((result:AnyObject?, error:NSError?) -> Void)
 
 class Requests {
-    static var EMPTY_RESPONSE_CALLBACK = {(result:AnyObject?, error:NSError?) -> Void in
-    }
-    
-    static func send(method: Method, url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, background: Bool = false,handler: ResponseHandler) -> Request {
+    static func send(method: Method, url: String, params: [String:AnyObject]? = nil, auth: Bool, background: Bool = false, handler: ResponseHandler) -> Request {
         let adapter = WebAdapter(url: url, method: method, params: params, auth: auth, background:background)
         return adapter.send({ (request, response, result) -> Void in
             handler(result:result.value, error:result.error as? NSError)
         })
     }
     
-    static func sendGet(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, background: Bool = false, handler: ResponseHandler) -> Request {
+    static func sendGet(url: String, params: [String:AnyObject]? = nil, auth: Bool, background: Bool = false, handler: ResponseHandler) -> Request {
         return send(Method.GET, url: url, params: params, auth: auth, background:background, handler: handler)
     }
    
-    static func sendPost(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, handler: ResponseHandler) -> Request {
+    static func sendPost(url: String, params: [String:AnyObject]? = nil, auth: Bool, handler: ResponseHandler) -> Request {
         return send(Method.POST, url: url, params: params, auth: auth, handler: handler)
     }
     
-    static func sendPut(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, handler: ResponseHandler) -> Request {
+    static func sendPut(url: String, params: [String:AnyObject]? = nil, auth: Bool, handler: ResponseHandler) -> Request {
         return send(Method.PUT, url: url, params: params, auth: auth, handler: handler)
     }
-    
-    static func sendHead(url: String, params: Dictionary<String, AnyObject>? = nil, auth: Bool, handler: ResponseHandler) -> Request {
-        return send(Method.HEAD, url: url, params: params, auth: auth, handler: handler)
-    }
-    
+}
+
+extension Requests {
     static func userSelf(handler: ResponseHandler) -> Request {
         return sendGet(ApiPath.userSelf, auth: true, handler: handler)
     }
     
-    static func userSignin(params: Dictionary<String, String>, handler: ResponseHandler) -> Request {
+    static func userSignin(params: [String: String], handler: ResponseHandler) -> Request {
         return sendPost(ApiPath.userSignIn, params: params, auth: false, handler: handler)
     }
     
@@ -232,7 +227,7 @@ class Requests {
 class WebAdapter {
     var url: String?
     var method :Method?
-    var params :Dictionary<String, AnyObject>?
+    var params :[String:AnyObject]?
     var auth: Bool?
     var background: Bool?
     var manager:Manager
@@ -245,7 +240,7 @@ class WebAdapter {
         return manager
     }
     
-    init(url :String, method :Method, params: Dictionary<String, AnyObject>?, auth :Bool, background :Bool = false) {
+    init(url :String, method :Method, params: [String:AnyObject]?, auth :Bool, background :Bool = false) {
         self.url = url
         self.method = method
         self.params = params
@@ -270,14 +265,8 @@ class WebAdapter {
     
     func send(handler: ((NSURLRequest?, NSHTTPURLResponse?, Result<AnyObject>) -> Void)) -> Request {
         prepare()
-        
-        var enc :ParameterEncoding?
-        if (self.method == Method.GET) {
-            enc = .URL
-        } else {
-            enc = .JSON
-        }
-        let req = manager.request(self.method!, self.url!, parameters: self.params, encoding: enc!)
+        let enc :ParameterEncoding = (self.method == Method.GET) ? .URL : .JSON
+        let req = manager.request(self.method!, self.url!, parameters: self.params, encoding: enc)
         req.validate().responseJSON(completionHandler: handler)
         return req
     }

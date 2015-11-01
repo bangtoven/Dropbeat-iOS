@@ -204,7 +204,7 @@ class Playlist {
             
             Requests.setPlaylist(importedPlaylist.id, data: tracksDict) { (result, error) -> Void in
                 if (result == nil || error != nil || !(JSON(result!)["success"].bool ?? false)) {
-                    Requests.deletePlaylist(importedPlaylist.id, handler: Requests.EMPTY_RESPONSE_CALLBACK)
+                    Requests.deletePlaylist(importedPlaylist.id) {_,_ in }
                     callback(playlist:nil, error: NSError(domain: PlaylistErrorDomain, code: PlaylistImportFailedError, userInfo: ["message":"Failed to save playlist"]))
                     return
                 }

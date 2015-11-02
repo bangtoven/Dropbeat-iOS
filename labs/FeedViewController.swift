@@ -70,7 +70,7 @@ extension FeedViewController: ScrollPagerDelegate {
             title: NSLocalizedString("Cancel", comment:""),
             style: .Cancel, handler: nil))
         
-        self.showViewController(actionSheet, sender: sender)
+        self.presentViewController(actionSheet, animated: true, completion: nil)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -94,7 +94,9 @@ extension FeedViewController: ScrollPagerDelegate {
             let uvc = segue.destinationViewController as! UserViewController
             uvc.resource = track.user?.resourceName
             uvc.passedImage = sourceImageView.image
-            
+        case "ShowReposterInfo":
+            // TODO: asdfasdfasdf
+            break
         default:
             break
         }
@@ -111,7 +113,7 @@ extension FeedViewController: ScrollPagerDelegate {
     
     func getDropbeatTrackCell(indexPath:NSIndexPath) -> AddableTrackTableViewCell {
         let cell = trackTableView.dequeueReusableCellWithIdentifier(
-            "DropbeatTrackTableViewCell", forIndexPath: indexPath) as! DropbeatTrackTableViewCell
+            "RepostedTrackTableViewCell", forIndexPath: indexPath) as! DropbeatTrackTableViewCell
         
         cell.delegate = self
         
@@ -520,7 +522,15 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             return 60
         }
         switch(selectedFeedMenu.type) {
-        case .FOLLOWING_TRACKS, .NEW_UPLOADS:
+        case .FOLLOWING_TRACKS:
+            var height = self.view.bounds.width * 0.5 + 60
+            if tracks[indexPath.row].repostingUser != nil {
+                height += 55
+            } else {
+                height += 55
+            }
+            return height
+        case .NEW_UPLOADS:
             return self.view.bounds.width * 0.5 + 60
         case .POPULAR_NOW :
             return (15 * self.view.bounds.width / 30) + 52

@@ -28,6 +28,41 @@ class FeedSelectTableViewCell: UITableViewCell {
 
 }
 
+class RepostedTrackTableViewCell: DropbeatTrackTableViewCell {
+    
+    @IBOutlet weak var trackCellView: UIView!
+    @IBOutlet weak var reposterProfileImageView: UIImageView!
+    @IBOutlet weak var reposterNameLabel: UILabel!
+    @IBOutlet weak var repostedDateLabel: UILabel!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        
+        reposterProfileImageView.layer.cornerRadius = 4
+        reposterProfileImageView.layer.borderWidth = 1
+        reposterProfileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
+        
+        trackCellView.layer.cornerRadius = 2
+        trackCellView.layer.borderColor = UIColor(white: 0.8, alpha: 1.0).CGColor
+        trackCellView.layer.borderWidth = 0.5
+        
+        let authorName = "Bangtoven"
+        let attrString = NSMutableAttributedString(
+            string: "\(authorName) reposted",
+            attributes: [
+                NSForegroundColorAttributeName:UIColor.darkGrayColor(),
+                NSFontAttributeName:UIFont.systemFontOfSize(15)
+            ])
+        attrString.setAttributes([
+            NSForegroundColorAttributeName:UIColor.dropbeatColor(),
+            NSFontAttributeName:UIFont.boldSystemFontOfSize(15)
+            ], range: NSMakeRange(0, authorName.length))
+
+        reposterNameLabel.attributedText = attrString
+        //
+    }
+}
+
 class DropbeatTrackTableViewCell: AddableTrackTableViewCell {
     
     @IBOutlet weak var likeButton: UIButton!

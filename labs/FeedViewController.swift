@@ -111,25 +111,64 @@ extension FeedViewController: ScrollPagerDelegate {
         cell.thumnailCenterConstraint.constant = verticalOffset
     }
     
-    func getDropbeatTrackCell(indexPath:NSIndexPath) -> AddableTrackTableViewCell {
-        let cell = trackTableView.dequeueReusableCellWithIdentifier(
-            "RepostedTrackTableViewCell", forIndexPath: indexPath) as! DropbeatTrackTableViewCell
-        
-        cell.delegate = self
-        
+    func getRepostedTrackCell(indexPath:NSIndexPath) -> RepostedTrackTableViewCell {
         let track = tracks[indexPath.row]
-        cell.nameView.text = track.title
-        cell.releaseDateLabel.text = track.releaseDate?.timeAgoSinceNow()
+        let reposter = track.repostingUser!
         
-        cell.thumbView.setImageForTrack(track, size: .LARGE, needsHighDef: false)
+        let cell = trackTableView.dequeueReusableCellWithIdentifier(
+            "RepostedTrackTableViewCell", forIndexPath: indexPath) as! RepostedTrackTableViewCell
         
-        cell.userNameView.text = track.user?.name
-        if let imageUrl = track.user?.image {
-            cell.userProfileImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
+        let authorName = reposter.name
+        let attrString = NSMutableAttributedString(
+            string: "\(authorName) reposted",
+            attributes: [
+                NSForegroundColorAttributeName:UIColor.darkGrayColor(),
+                NSFontAttributeName:UIFont.systemFontOfSize(15)
+            ])
+        attrString.setAttributes([
+            NSForegroundColorAttributeName:UIColor.dropbeatColor(),
+            NSFontAttributeName:UIFont.boldSystemFontOfSize(15)
+            ], range: NSMakeRange(0, authorName.length))
+        
+        cell.reposterNameLabel.attributedText = attrString
+        
+        if let imageUrl = reposter.image {
+            cell.reposterProfileImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
         } else {
-            cell.userProfileImageView.image = UIImage(named: "default_profile")
+            cell.reposterProfileImageView.image = UIImage(named: "default_profile")
+        }
+        cell.repostedDateLabel.text = track.repostedDate?.timeAgoSinceNow()
+        
+        if track.user == nil {
+            cell.authorInfoView.hidden = true
+            cell.authorInfoViewBottomMargin.constant = 10
+        } else {
+            cell.authorInfoView.hidden = false
+            cell.authorInfoViewBottomMargin.constant = 58
         }
         
+        return cell
+    }
+    
+    func getDropbeatTrackCell(indexPath:NSIndexPath) -> AddableTrackTableViewCell {
+        let track = tracks[indexPath.row]
+        let cell = (track.repostingUser != nil) ? getRepostedTrackCell(indexPath) :
+            trackTableView.dequeueReusableCellWithIdentifier("DropbeatTrackTableViewCell", forIndexPath: indexPath) as! DropbeatTrackTableViewCell
+        cell.delegate = self
+        
+        if let user = track.user {
+            cell.userNameView.text = user.name
+            if let imageUrl = user.image {
+                cell.userProfileImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
+            } else {
+                cell.userProfileImageView.image = UIImage(named: "default_profile")
+            }
+        }
+        
+        cell.nameView.text = track.title
+        cell.releaseDateLabel.text = track.releaseDate?.timeAgoSinceNow()
+        cell.thumbView.setImageForTrack(track, size: .LARGE, needsHighDef: false)
+
         let likeImage = track.isLiked ? UIImage(named:"ic_like") : UIImage(named:"ic_dislike")
         cell.likeButton.setImage(likeImage, forState: UIControlState.Normal)
     
@@ -271,9 +310,6 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         types.append(FeedMenu(title: NSLocalizedString("Daily Chart", comment:""), type: FeedType.DAILY_CHART))
         return types
     }()
-    
-    private var userGroupSizingCell:DropbeatTrackTableViewCell! = nil;
-    private var onceToken:dispatch_once_t = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -523,11 +559,13 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         }
         switch(selectedFeedMenu.type) {
         case .FOLLOWING_TRACKS:
+            let track = tracks[indexPath.row]
             var height = self.view.bounds.width * 0.5 + 60
-            if tracks[indexPath.row].repostingUser != nil {
+            if track.repostingUser != nil {
                 height += 55
-            } else {
-                height += 55
+                if track.user == nil {
+                    height -= 48
+                }
             }
             return height
         case .NEW_UPLOADS:

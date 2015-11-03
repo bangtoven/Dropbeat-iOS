@@ -31,6 +31,9 @@ class FeedSelectTableViewCell: UITableViewCell {
 class RepostedTrackTableViewCell: DropbeatTrackTableViewCell {
     
     @IBOutlet weak var trackCellView: UIView!
+    @IBOutlet weak var authorInfoView: UIView!
+    @IBOutlet weak var authorInfoViewBottomMargin: NSLayoutConstraint!
+    
     @IBOutlet weak var reposterProfileImageView: UIImageView!
     @IBOutlet weak var reposterNameLabel: UILabel!
     @IBOutlet weak var repostedDateLabel: UILabel!
@@ -45,21 +48,6 @@ class RepostedTrackTableViewCell: DropbeatTrackTableViewCell {
         trackCellView.layer.cornerRadius = 2
         trackCellView.layer.borderColor = UIColor(white: 0.8, alpha: 1.0).CGColor
         trackCellView.layer.borderWidth = 0.5
-        
-        let authorName = "Bangtoven"
-        let attrString = NSMutableAttributedString(
-            string: "\(authorName) reposted",
-            attributes: [
-                NSForegroundColorAttributeName:UIColor.darkGrayColor(),
-                NSFontAttributeName:UIFont.systemFontOfSize(15)
-            ])
-        attrString.setAttributes([
-            NSForegroundColorAttributeName:UIColor.dropbeatColor(),
-            NSFontAttributeName:UIFont.boldSystemFontOfSize(15)
-            ], range: NSMakeRange(0, authorName.length))
-
-        reposterNameLabel.attributedText = attrString
-        //
     }
 }
 

@@ -397,7 +397,12 @@ class AddableTrackListViewController: GAITrackedViewController, AddableTrackCell
             NeedAuthViewController.showNeedAuthViewController(self)
             return
         }
-        performSegueWithIdentifier("PlaylistSelectSegue", sender: track)
+        
+        let playlistSelectVC = UIStoryboard(name: "Playlist", bundle: nil).instantiateViewControllerWithIdentifier("PlaylistSelect") as! PlaylistSelectViewController
+        playlistSelectVC.targetTrack = track
+        playlistSelectVC.fromSection = self.getSectionName()
+        playlistSelectVC.caller = self
+        self.presentViewController(playlistSelectVC, animated: true, completion: nil)
     }
     
     func onTrackMenuBtnClicked(sender: AddableTrackTableViewCell) {

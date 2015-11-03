@@ -33,7 +33,6 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
         
         refreshControl = UIRefreshControl()
         refreshControl.tintColor = UIColor(netHex:0xc380fc)
@@ -60,6 +59,11 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
         }
         
         self.refresh()
+    }
+    
+    @IBAction func showSearchViewController(sender: AnyObject) {
+        let tabBarController = self.tabBarController as! MainTabBarController
+        tabBarController.showSearchViewController()
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -115,11 +119,6 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         switch segue.identifier! {
-        case "PlaylistSelectSegue":
-            let playlistSelectVC = segue.destinationViewController as! PlaylistSelectViewController
-            playlistSelectVC.targetTrack = sender as? Track
-            playlistSelectVC.fromSection = "explore"
-            playlistSelectVC.caller = self
         case "showChannelInfo":
             let indexPath = self.trackTableView.indexPathOfCellContains(sender as! UIButton)
             let track = self.tracks[indexPath!.row]

@@ -128,13 +128,4 @@ class TrackSubViewController: AddableTrackListViewController, UITableViewDataSou
     override func getSectionName() -> String {
         return "user_\(self.user?.name)_\(self.title)"
     }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if segue.identifier == "PlaylistSelectSegue" {
-            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
-            playlistSelectVC.targetTrack = sender as? Track
-            playlistSelectVC.fromSection = "user view"
-            playlistSelectVC.caller = self
-        }
-    }
 }

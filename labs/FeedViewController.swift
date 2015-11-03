@@ -97,11 +97,6 @@ extension FeedViewController: ScrollPagerDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         switch segue.identifier! {
-        case "PlaylistSelectSegue":
-            let playlistSelectVC:PlaylistSelectViewController = segue.destinationViewController as! PlaylistSelectViewController
-            playlistSelectVC.targetTrack = sender as? Track
-            playlistSelectVC.fromSection = "feed_" + selectedFeedMenu.type.rawValue
-            playlistSelectVC.caller = self
         case "showUserInfo":
             handleShowUserInfoSegue(segue, sender: sender, showReposter: false)
         case "ShowReposterInfo":
@@ -313,6 +308,11 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         genreTableView.contentInset = insets
     }
     
+    @IBAction func showSearchViewController(sender: AnyObject) {
+        let tabBarController = self.tabBarController as! MainTabBarController
+        tabBarController.showSearchViewController()
+    }
+    
     func initialize() {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         initGenres { (error) -> Void in
@@ -346,7 +346,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             self.setNavigationBarBorderHidden(true)
         }
         
-        if self.tabBarController?.selectedIndex != 0 {
+        if self.tabBarController?.selectedTab != .Feed {
             feedTypeSelectTableView.reloadData()
             
             if selectedFeedMenu.type == .FOLLOWING_TRACKS {
@@ -476,7 +476,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
     }
     
     func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if tableView != self.trackTableView || tracks.count == 0 || self.tabBarController?.selectedIndex != 0 {
+        if tableView != self.trackTableView || tracks.count == 0 || self.tabBarController?.selectedTab != .Feed {
             return
         }
         var marginWidth:CGFloat = 36.0

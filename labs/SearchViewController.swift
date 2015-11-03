@@ -28,7 +28,9 @@ class SearchViewController: AddableTrackListViewController,
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.hidesBackButton = true
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
+        self.tabBarController?.tabBar.tintColor = UIColor.grayColor()
         
         // Search bar initialize as code 
         // cause in storyboard cannot set searchbar with full width
@@ -65,19 +67,13 @@ class SearchViewController: AddableTrackListViewController,
             self.trackTableView.reloadData()
         }
         
-        if let selectedTab = self.tabBarController?.selectedIndex
-            where !(selectedTab == 2 || selectedTab == 5){
-                searchBar.becomeFirstResponder()
+        if self.tabBarController?.selectedTab != .Search {
+            searchBar.becomeFirstResponder()
         }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         switch segue.identifier! {
-        case "PlaylistSelectSegue":
-            let playlistSelectVC = segue.destinationViewController as! PlaylistSelectViewController
-            playlistSelectVC.targetTrack = sender as? Track
-            playlistSelectVC.fromSection = "search"
-            playlistSelectVC.caller = self
         case "showChannelInfo":
             let cell = sender as! FollowInfoTableViewCell
             let indexPath = self.trackTableView.indexPathForSelectedRow

@@ -13,7 +13,7 @@ class NeedAuthViewController: GAITrackedViewController {
     
     class func showNeedAuthViewController(from: UIViewController!) {
         let storyboard: UIStoryboard = UIStoryboard(name: "Settings", bundle: nil)
-        let vc: UINavigationController = storyboard.instantiateViewControllerWithIdentifier("AccountRequired") as! UINavigationController
+        let vc = storyboard.instantiateViewControllerWithIdentifier("AccountRequired") as! UINavigationController
         from.presentViewController(vc, animated: true, completion: nil)
     }
     

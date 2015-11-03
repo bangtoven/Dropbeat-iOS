@@ -775,7 +775,6 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <connections>
                         <outlet property="loadingHeaderView" destination="hHE-VB-B2s" id="xz0-iH-y5s"/>
                         <outlet property="trackTableView" destination="B7N-EI-kd9" id="UwR-x6-IXd"/>
-                        <segue destination="daU-Ft-fj3" kind="custom" identifier="PlaylistSelectSegue" customClass="RBStoryboardModalSegue" id="1Ug-8x-1FD"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kgV-ih-hPd" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -803,41 +802,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     </variation>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-3032" y="1366"/>
-        </scene>
-        <!--Storyboard Link-->
-        <scene sceneID="O5x-k0-Rmj">
-            <objects>
-                <viewController id="daU-Ft-fj3" customClass="RBStoryboardLink" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="RdV-4K-Rrt"/>
-                        <viewControllerLayoutGuide type="bottom" id="VAK-pc-wgl"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="6yd-6S-yCT">
-                        <rect key="frame" x="0.0" y="0.0" width="200" height="100"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="PlaylistSelectSegue" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mdY-ZZ-z7R">
-                                <rect key="frame" x="16" y="28" width="152" height="21"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <animations/>
-                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="200" height="100"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Playlist"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="PlaylistSelect"/>
-                    </userDefinedRuntimeAttributes>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rGu-rB-Fsz" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3032" y="1721"/>
+            <point key="canvasLocation" x="-3014" y="1600"/>
         </scene>
         <!--Channel Sub View Controller-->
         <scene sceneID="bOq-ky-gkS">
@@ -1129,12 +1094,11 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                         <outlet property="loadMoreSpinnerWrapper" destination="iNe-oj-B0d" id="yWC-dP-z81"/>
                         <outlet property="sectionLabel" destination="kfP-4T-QRP" id="dqe-fh-eWS"/>
                         <outlet property="trackTableView" destination="sU8-KC-zct" id="2MN-qF-Y8w"/>
-                        <segue destination="daU-Ft-fj3" kind="custom" identifier="PlaylistSelectSegue" customClass="RBStoryboardModalSegue" id="oVv-0f-qoK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xFM-ei-Azc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2692" y="1366"/>
+            <point key="canvasLocation" x="-2674" y="1600"/>
         </scene>
         <!--Follow Info-->
         <scene sceneID="ePK-3w-M5m">
@@ -1443,7 +1407,7 @@ click below to discover your favorites</string>
                                         <rect key="frame" x="0.0" y="322" width="320" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CXO-Rc-ktN" id="dz0-4v-ZAn">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="45.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Progressive House" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4uB-VB-Hio">
@@ -1532,10 +1496,10 @@ click below to discover your favorites</string>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="image" rowHeight="140" id="6KP-ds-vBQ" customClass="EditImageTableViewCell" customModule="for_test" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="114" width="320" height="140"/>
+                                <rect key="frame" x="0.0" y="113.5" width="320" height="140"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6KP-ds-vBQ" id="IAV-OG-MIz">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="139"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="139.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_cover_big" translatesAutoresizingMaskIntoConstraints="NO" id="yG5-dT-TlU">
@@ -1604,10 +1568,10 @@ click below to discover your favorites</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="normalCell" id="p3P-zr-0sU">
-                                <rect key="frame" x="0.0" y="254" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="253.5" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p3P-zr-0sU" id="lpT-pY-biA">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <animations/>
                                 </tableViewCellContentView>
@@ -2415,7 +2379,6 @@ asdfasdfasdf</string>
                     <connections>
                         <outlet property="loadingHeaderView" destination="hys-cp-xv8" id="0sb-AG-vnS"/>
                         <outlet property="trackTableView" destination="ieg-rC-IHn" id="11I-ZM-Cd5"/>
-                        <segue destination="daU-Ft-fj3" kind="custom" identifier="PlaylistSelectSegue" customClass="RBStoryboardModalSegue" id="rMB-rs-qgN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VyX-8b-COK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2443,7 +2406,7 @@ asdfasdfasdf</string>
                     </variation>
                 </view>
             </objects>
-            <point key="canvasLocation" x="-3367" y="1366"/>
+            <point key="canvasLocation" x="-3349" y="1600"/>
         </scene>
     </scenes>
     <resources>
@@ -2465,7 +2428,6 @@ asdfasdfasdf</string>
     <inferredMetricsTieBreakers>
         <segue reference="iTT-98-t6f"/>
         <segue reference="Ebx-dM-Vob"/>
-        <segue reference="rMB-rs-qgN"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
 </document>

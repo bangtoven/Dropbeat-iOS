@@ -25,12 +25,25 @@ extension AddableTrackListViewController {
     }
 }
 
-class MainTabBarController: UITabBarController {
+enum TabBarIndex: Int {
+    case Feed = 0
+    case Expore
+    case Search
+    case Playlist
+    case Profile
+}
+
+extension UITabBarController {
+    var selectedTab: TabBarIndex? { return TabBarIndex(rawValue: self.selectedIndex) }
+}
+
+class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
 
     var playerView: PlayerViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.delegate = self
         
         self.tabBar.tintColor = UIColor.dropbeatColor(light: true)
         self.view.tintColor = UIColor.dropbeatColor()
@@ -255,6 +268,24 @@ class MainTabBarController: UITabBarController {
         }
         
         appDelegate.appLink = nil
+    }
+    
+    func showSearchViewController() {
+        if let navVC = self.selectedViewController as? UINavigationController {
+            let searchVC = self.storyboard?.instantiateViewControllerWithIdentifier("SearchViewController")
+            navVC.pushViewController(searchVC!, animated: false)
+//            self.tabBar.tintColor = UIColor.grayColor()
+        }
+    }
+    
+    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
+        self.tabBar.tintColor = UIColor.dropbeatColor(light: true)
+
+        if let navVC = viewController as? UINavigationController
+            where navVC.topViewController is SearchViewController {
+                print("pop search view controller")
+                navVC.popToRootViewControllerAnimated(false)
+        }
     }
     
     func showAuthViewController() {

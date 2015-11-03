@@ -9,7 +9,7 @@ enum HostType {
     case Coroutine
     case Monocheese
 }
-let hostType: HostType = .Coroutine
+let hostType: HostType = .Dropbeat
 
 public class ApiPath {
     static var host: String {

@@ -28,15 +28,30 @@ class FeedSelectTableViewCell: UITableViewCell {
 
 }
 
+extension User {
+    func titleWithReposted(withDate: NSDate? = nil) -> NSAttributedString {
+        let authorName = self.name
+        let dateString = ((withDate == nil) ? "" : withDate!.timeAgoSinceNow()).lowercaseString
+        let attrString = NSMutableAttributedString(
+            string: "\(authorName) reposted \(dateString)",
+            attributes: [
+                NSForegroundColorAttributeName:UIColor.darkGrayColor(),
+                NSFontAttributeName:UIFont.systemFontOfSize(16)
+            ])
+        attrString.setAttributes([
+            NSForegroundColorAttributeName:UIColor.dropbeatColor(),
+            NSFontAttributeName:UIFont.boldSystemFontOfSize(16)
+            ], range: NSMakeRange(0, authorName.length))
+        return attrString
+    }
+}
+
 class RepostedTrackTableViewCell: DropbeatTrackTableViewCell {
     
     @IBOutlet weak var trackCellView: UIView!
-    @IBOutlet weak var authorInfoView: UIView!
-    @IBOutlet weak var authorInfoViewBottomMargin: NSLayoutConstraint!
     
     @IBOutlet weak var reposterProfileImageView: UIImageView!
     @IBOutlet weak var reposterNameLabel: UILabel!
-    @IBOutlet weak var repostedDateLabel: UILabel!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -45,9 +60,24 @@ class RepostedTrackTableViewCell: DropbeatTrackTableViewCell {
         reposterProfileImageView.layer.borderWidth = 1
         reposterProfileImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
         
-        trackCellView.layer.cornerRadius = 2
+        trackCellView.layer.cornerRadius = 5
         trackCellView.layer.borderColor = UIColor(white: 0.8, alpha: 1.0).CGColor
         trackCellView.layer.borderWidth = 0.5
+    }
+    
+    override func setContentsWithTrack(track: Track, reposting: Bool) {
+        let cell = self
+        
+        let reposter = track.repostingUser!
+        cell.reposterNameLabel.attributedText = reposter.titleWithReposted(track.repostedDate)
+        
+        if let imageUrl = reposter.image {
+            cell.reposterProfileImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
+        } else {
+            cell.reposterProfileImageView.image = UIImage(named: "default_profile")
+        }
+        
+        super.setContentsWithTrack(track)
     }
 }
 
@@ -78,6 +108,40 @@ class DropbeatTrackTableViewCell: AddableTrackTableViewCell {
         trackInfoFrame.layer.borderWidth = 1
     }
     
+    func setContentsWithTrack(track: Track, reposting: Bool = false) {
+        let cell = self
+        
+        var user: BaseUser!
+        if reposting {
+            let reposter = track.repostingUser
+            user = reposter
+            cell.userNameView.attributedText = reposter?.titleWithReposted()
+            cell.releaseDateLabel.text = track.repostedDate?.timeAgoSinceNow()
+        } else {
+            user = track.user
+            cell.userNameView.text = user?.name
+            cell.releaseDateLabel.text = track.releaseDate?.timeAgoSinceNow()
+        }
+        
+        if let imageUrl = user?.image {
+            cell.userProfileImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
+        } else {
+            cell.userProfileImageView.image = UIImage(named: "default_profile")
+        }
+        
+        cell.nameView.text = track.title
+        cell.thumbView.setImageForTrack(track, size: .LARGE, needsHighDef: false)
+        
+        let likeImage = track.isLiked ? UIImage(named:"ic_like") : UIImage(named:"ic_dislike")
+        cell.likeButton.setImage(likeImage, forState: UIControlState.Normal)
+        
+        if let dropbeatTrack = track as? DropbeatTrack {
+            cell.genreView.hidden = false
+            cell.genreView.text = dropbeatTrack.genre
+        } else {
+            cell.genreView.hidden = true
+        }
+    }
 }
 
 class BpChartTrackTableViewCell: AddableTrackTableViewCell {

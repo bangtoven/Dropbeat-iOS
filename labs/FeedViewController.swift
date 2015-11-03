@@ -32,6 +32,28 @@ class FeedMenu {
 }
 
 extension FeedViewController: ScrollPagerDelegate {
+    func getFollowingFeedTrackCell(indexPath:NSIndexPath) -> AddableTrackTableViewCell {
+        let track = tracks[indexPath.row]
+        
+        if track.repostingUser != nil {
+            let identifier = (track.user == nil) ? "DropbeatTrackTableViewCell" : "RepostedTrackTableViewCell"
+            let cell = trackTableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! DropbeatTrackTableViewCell
+            cell.setContentsWithTrack(track, reposting: true)
+            cell.delegate = self
+            return cell
+        } else {
+            return getDropbeatTrackCell(indexPath)
+        }
+    }
+    
+    func getDropbeatTrackCell(indexPath:NSIndexPath) -> AddableTrackTableViewCell {
+        let cell = trackTableView.dequeueReusableCellWithIdentifier("DropbeatTrackTableViewCell", forIndexPath: indexPath) as! DropbeatTrackTableViewCell
+        cell.setContentsWithTrack(tracks[indexPath.row])
+        cell.delegate = self
+        
+        return cell
+    }
+    
     @IBAction func likeAction(sender: UIButton) {
         let indexPath = self.trackTableView.indexPathOfCellContains(sender)
         let track = self.tracks[indexPath!.row]
@@ -81,25 +103,42 @@ extension FeedViewController: ScrollPagerDelegate {
             playlistSelectVC.fromSection = "feed_" + selectedFeedMenu.type.rawValue
             playlistSelectVC.caller = self
         case "showUserInfo":
-            let indexPath = self.trackTableView.indexPathOfCellContains(sender as! UIButton)
-            let track = self.tracks[indexPath!.row]
-            
-            let mySegue = segue as! JHImageTransitionSegue
-            let sourceImageView = (self.trackTableView.cellForRowAtIndexPath(indexPath!) as! DropbeatTrackTableViewCell).userProfileImageView
-            
-            mySegue.setSourceImageView(sourceImageView)
-            mySegue.sourceRect = sourceImageView.convertRect(sourceImageView.bounds, toView: self.view)
-            mySegue.destinationRect = self.view.convertRect(UserHeaderView.profileImageRect(self), fromView: nil)
-            
-            let uvc = segue.destinationViewController as! UserViewController
-            uvc.resource = track.user?.resourceName
-            uvc.passedImage = sourceImageView.image
+            handleShowUserInfoSegue(segue, sender: sender, showReposter: false)
         case "ShowReposterInfo":
-            // TODO: asdfasdfasdf
-            break
+            handleShowUserInfoSegue(segue, sender: sender, showReposter: true)
         default:
             break
         }
+    }
+    
+    func handleShowUserInfoSegue(segue: UIStoryboardSegue, sender: AnyObject?, showReposter: Bool) {
+        let indexPath = self.trackTableView.indexPathOfCellContains(sender as! UIButton)
+        
+        let mySegue = segue as! JHImageTransitionSegue
+        var sourceImageView: UIImageView {
+            let cell = self.trackTableView.cellForRowAtIndexPath(indexPath!)
+            if showReposter {
+                return (cell as! RepostedTrackTableViewCell).reposterProfileImageView
+            } else {
+                return (cell as! DropbeatTrackTableViewCell).userProfileImageView
+            }
+        }
+        
+        mySegue.setSourceImageView(sourceImageView)
+        mySegue.sourceRect = sourceImageView.convertRect(sourceImageView.bounds, toView: self.view)
+        mySegue.destinationRect = self.view.convertRect(UserHeaderView.profileImageRect(self), fromView: nil)
+        
+        let track = self.tracks[indexPath!.row]
+        var user: BaseUser!
+        if showReposter || track.user == nil {
+            user = track.repostingUser
+        } else {
+            user = track.user
+        }
+        
+        let uvc = segue.destinationViewController as! UserViewController
+        uvc.resource = user?.resourceName
+        uvc.passedImage = sourceImageView.image
     }
     
     func updateTrackCellImageOffset(cell: DropbeatTrackTableViewCell) {
@@ -109,77 +148,6 @@ extension FeedViewController: ScrollPagerDelegate {
         let verticalOffset = imageOverflowHeight * (0.5 - cellOffset/maxOffset)
         
         cell.thumnailCenterConstraint.constant = verticalOffset
-    }
-    
-    func getRepostedTrackCell(indexPath:NSIndexPath) -> RepostedTrackTableViewCell {
-        let track = tracks[indexPath.row]
-        let reposter = track.repostingUser!
-        
-        let cell = trackTableView.dequeueReusableCellWithIdentifier(
-            "RepostedTrackTableViewCell", forIndexPath: indexPath) as! RepostedTrackTableViewCell
-        
-        let authorName = reposter.name
-        let attrString = NSMutableAttributedString(
-            string: "\(authorName) reposted",
-            attributes: [
-                NSForegroundColorAttributeName:UIColor.darkGrayColor(),
-                NSFontAttributeName:UIFont.systemFontOfSize(15)
-            ])
-        attrString.setAttributes([
-            NSForegroundColorAttributeName:UIColor.dropbeatColor(),
-            NSFontAttributeName:UIFont.boldSystemFontOfSize(15)
-            ], range: NSMakeRange(0, authorName.length))
-        
-        cell.reposterNameLabel.attributedText = attrString
-        
-        if let imageUrl = reposter.image {
-            cell.reposterProfileImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
-        } else {
-            cell.reposterProfileImageView.image = UIImage(named: "default_profile")
-        }
-        cell.repostedDateLabel.text = track.repostedDate?.timeAgoSinceNow()
-        
-        if track.user == nil {
-            cell.authorInfoView.hidden = true
-            cell.authorInfoViewBottomMargin.constant = 10
-        } else {
-            cell.authorInfoView.hidden = false
-            cell.authorInfoViewBottomMargin.constant = 58
-        }
-        
-        return cell
-    }
-    
-    func getDropbeatTrackCell(indexPath:NSIndexPath) -> AddableTrackTableViewCell {
-        let track = tracks[indexPath.row]
-        let cell = (track.repostingUser != nil) ? getRepostedTrackCell(indexPath) :
-            trackTableView.dequeueReusableCellWithIdentifier("DropbeatTrackTableViewCell", forIndexPath: indexPath) as! DropbeatTrackTableViewCell
-        cell.delegate = self
-        
-        if let user = track.user {
-            cell.userNameView.text = user.name
-            if let imageUrl = user.image {
-                cell.userProfileImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
-            } else {
-                cell.userProfileImageView.image = UIImage(named: "default_profile")
-            }
-        }
-        
-        cell.nameView.text = track.title
-        cell.releaseDateLabel.text = track.releaseDate?.timeAgoSinceNow()
-        cell.thumbView.setImageForTrack(track, size: .LARGE, needsHighDef: false)
-
-        let likeImage = track.isLiked ? UIImage(named:"ic_like") : UIImage(named:"ic_dislike")
-        cell.likeButton.setImage(likeImage, forState: UIControlState.Normal)
-    
-        if let dropbeatTrack = track as? DropbeatTrack {
-            cell.genreView.hidden = false
-            cell.genreView.text = dropbeatTrack.genre
-        } else {
-            cell.genreView.hidden = true
-        }
-        
-        return cell
     }
     
     func loadNewUploadsFeed(forceRefresh:Bool=false) {
@@ -560,12 +528,9 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         switch(selectedFeedMenu.type) {
         case .FOLLOWING_TRACKS:
             let track = tracks[indexPath.row]
-            var height = self.view.bounds.width * 0.5 + 60
-            if track.repostingUser != nil {
-                height += 55
-                if track.user == nil {
-                    height -= 48
-                }
+            var height = self.view.bounds.width * 0.5 + 68
+            if track.repostingUser != nil && track.user != nil {
+                height += 62
             }
             return height
         case .NEW_UPLOADS:
@@ -601,7 +566,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             var cell:AddableTrackTableViewCell!
             switch (selectedFeedMenu.type) {
             case .FOLLOWING_TRACKS:
-                cell = getDropbeatTrackCell(indexPath)
+                cell = getFollowingFeedTrackCell(indexPath)
             case .NEW_UPLOADS:
                 cell = getDropbeatTrackCell(indexPath)
             case .DAILY_CHART:

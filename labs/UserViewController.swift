@@ -90,7 +90,7 @@ class UserHeaderView: AXStretchableHeaderView {
 class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLabelDelegate {
     
     var user: BaseUser!
-    var resource: String!
+    var resource: String?
 
     var passedName: String?
     var passedImage: UIImage?

@@ -75,8 +75,13 @@ class BaseUser {
         }
     }
     
-    static func resolve(resource: String, callback:((user: BaseUser?, error: NSError?) -> Void)) {
-        Requests.sendGet(ApiPath.resolveResource, params:["url":"/r/"+resource], auth: false) { (result, error) -> Void in
+    static func resolve(resource: String?, callback:((user: BaseUser?, error: NSError?) -> Void)) {
+        guard resource != nil else {
+            callback(user: nil, error: NSError(domain: DropbeatRequestErrorDomain, code: -1, userInfo: nil))
+            return
+        }
+        
+        Requests.sendGet(ApiPath.resolveResource, params:["url":"/r/"+resource!], auth: false) { (result, error) -> Void in
             if (error != nil) {
                 callback(user: nil, error: error)
                 return

@@ -19,9 +19,6 @@ class ExploreTableViewCell: AddableTrackTableViewCell {
         self.channelImageView.layer.cornerRadius = 4
         self.channelImageView.layer.borderWidth = 1
         self.channelImageView.layer.borderColor = UIColor(white: 0.95, alpha: 1.0).CGColor
-        
-        self.layer.borderWidth = 4
-        self.layer.borderColor = UIColor(netHex: 0xE0DFEA).CGColor
     }
 }
 

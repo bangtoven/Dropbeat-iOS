@@ -227,6 +227,8 @@
 		73840F251BD9562F00BC8943 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73840F241BD9562F00BC8943 /* TTTAttributedLabel.m */; };
 		73840F261BD9562F00BC8943 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 73840F241BD9562F00BC8943 /* TTTAttributedLabel.m */; };
 		738646171BA7631D00C21650 /* GradientView.m in Sources */ = {isa = PBXBuildFile; fileRef = 738646161BA7631D00C21650 /* GradientView.m */; };
+		739ADF841BEA063F002BFAC8 /* FollowingFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739ADF831BEA063F002BFAC8 /* FollowingFeedViewController.swift */; };
+		739ADF851BEA063F002BFAC8 /* FollowingFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739ADF831BEA063F002BFAC8 /* FollowingFeedViewController.swift */; };
 		739B00AB1BD7ED7600EF126F /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739B00AA1BD7ED7600EF126F /* ImageUploader.swift */; };
 		739B00AC1BD7ED7900EF126F /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739B00AA1BD7ED7600EF126F /* ImageUploader.swift */; };
 		739C8F5F1BB340FE00BC9EB7 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */; };
@@ -535,6 +537,7 @@
 		73840F241BD9562F00BC8943 /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		738646151BA7631D00C21650 /* GradientView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GradientView.h; sourceTree = "<group>"; };
 		738646161BA7631D00C21650 /* GradientView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GradientView.m; sourceTree = "<group>"; };
+		739ADF831BEA063F002BFAC8 /* FollowingFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingFeedViewController.swift; sourceTree = "<group>"; };
 		739B00AA1BD7ED7600EF126F /* ImageUploader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ImageUploader.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ExploreViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		73A3559E1BCD97EB0002C00D /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
@@ -948,6 +951,7 @@
 				736D71DC1BCA90A100D54188 /* MainTabBarController.swift */,
 				73A661951BC6EC5F00DD1179 /* PlayerViewController.swift */,
 				5890D6151B0538CD00AAEAE5 /* SearchViewController.swift */,
+				739ADF831BEA063F002BFAC8 /* FollowingFeedViewController.swift */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -1390,6 +1394,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73A355AC1BCDBAC90002C00D /* EARestrictedScrollView.m in Sources */,
+				739ADF851BEA063F002BFAC8 /* FollowingFeedViewController.swift in Sources */,
 				734C7D6E1BB4C1DA0071678C /* SearchViewController.swift in Sources */,
 				734C7D6F1BB4C1DA0071678C /* Track.swift in Sources */,
 				7374F7301BD87DE3007802CC /* GKResizeableCropOverlayView.m in Sources */,
@@ -1523,6 +1528,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73A355AB1BCDBAC90002C00D /* EARestrictedScrollView.m in Sources */,
+				739ADF841BEA063F002BFAC8 /* FollowingFeedViewController.swift in Sources */,
 				5890D6161B0538CD00AAEAE5 /* SearchViewController.swift in Sources */,
 				734C7D611BB47D260071678C /* Track.swift in Sources */,
 				734C7D631BB47D470071678C /* Playlist.swift in Sources */,

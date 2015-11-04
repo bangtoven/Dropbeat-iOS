@@ -13,7 +13,6 @@ enum FeedType: String {
     case POPULAR_NOW = "popular_now"
     case NEW_RELEASE = "new_release"
     case DAILY_CHART = "daily_chart"
-    case FOLLOWING_TRACKS = "following_tracks"
 }
 
 enum ViewMode {
@@ -32,19 +31,6 @@ class FeedMenu {
 }
 
 extension FeedViewController: ScrollPagerDelegate {
-    func getFollowingFeedTrackCell(indexPath:NSIndexPath) -> AddableTrackTableViewCell {
-        let track = tracks[indexPath.row]
-        
-        if track.repostingUser != nil {
-            let identifier = (track.user == nil) ? "DropbeatTrackTableViewCell" : "RepostedTrackTableViewCell"
-            let cell = trackTableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! DropbeatTrackTableViewCell
-            cell.setContentsWithTrack(track, reposting: true)
-            cell.delegate = self
-            return cell
-        } else {
-            return getDropbeatTrackCell(indexPath)
-        }
-    }
     
     func getDropbeatTrackCell(indexPath:NSIndexPath) -> AddableTrackTableViewCell {
         let cell = trackTableView.dequeueReusableCellWithIdentifier("DropbeatTrackTableViewCell", forIndexPath: indexPath) as! DropbeatTrackTableViewCell
@@ -68,42 +54,24 @@ extension FeedViewController: ScrollPagerDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         switch segue.identifier! {
         case "showUserInfo":
-            handleShowUserInfoSegue(segue, sender: sender, showReposter: false)
-        case "ShowReposterInfo":
-            handleShowUserInfoSegue(segue, sender: sender, showReposter: true)
+            let indexPath = self.trackTableView.indexPathOfCellContains(sender as! UIButton)
+            
+            let mySegue = segue as! JHImageTransitionSegue
+            let sourceImageView = (self.trackTableView.cellForRowAtIndexPath(indexPath!) as! DropbeatTrackTableViewCell).userProfileImageView
+            
+            mySegue.setSourceImageView(sourceImageView)
+            mySegue.sourceRect = sourceImageView.convertRect(sourceImageView.bounds, toView: self.view)
+            mySegue.destinationRect = self.view.convertRect(UserHeaderView.profileImageRect(self), fromView: nil)
+            
+            let track = self.tracks[indexPath!.row]
+            let user = track.user
+
+            let uvc = segue.destinationViewController as! UserViewController
+            uvc.resource = user?.resourceName
+            uvc.passedImage = sourceImageView.image
         default:
             break
         }
-    }
-    
-    func handleShowUserInfoSegue(segue: UIStoryboardSegue, sender: AnyObject?, showReposter: Bool) {
-        let indexPath = self.trackTableView.indexPathOfCellContains(sender as! UIButton)
-        
-        let mySegue = segue as! JHImageTransitionSegue
-        var sourceImageView: UIImageView {
-            let cell = self.trackTableView.cellForRowAtIndexPath(indexPath!)
-            if showReposter {
-                return (cell as! RepostedTrackTableViewCell).reposterProfileImageView
-            } else {
-                return (cell as! DropbeatTrackTableViewCell).userProfileImageView
-            }
-        }
-        
-        mySegue.setSourceImageView(sourceImageView)
-        mySegue.sourceRect = sourceImageView.convertRect(sourceImageView.bounds, toView: self.view)
-        mySegue.destinationRect = self.view.convertRect(UserHeaderView.profileImageRect(self), fromView: nil)
-        
-        let track = self.tracks[indexPath!.row]
-        var user: BaseUser!
-        if showReposter || track.user == nil {
-            user = track.repostingUser
-        } else {
-            user = track.user
-        }
-        
-        let uvc = segue.destinationViewController as! UserViewController
-        uvc.resource = user?.resourceName
-        uvc.passedImage = sourceImageView.image
     }
     
     func updateTrackCellImageOffset(cell: DropbeatTrackTableViewCell) {
@@ -176,7 +144,7 @@ extension FeedViewController: ScrollPagerDelegate {
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         switch (selectedFeedMenu.type) {
-        case .NEW_UPLOADS, .FOLLOWING_TRACKS:
+        case .NEW_UPLOADS:
             for cell in self.trackTableView.visibleCells {
                 self.updateTrackCellImageOffset(cell as! DropbeatTrackTableViewCell)
             }
@@ -234,9 +202,6 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
     
     private let feedMenus:[FeedMenu] = {
         var types = [FeedMenu]()
-        if let user = Account.getCachedAccount()?.user where user.num_following > 0 {
-            types.append(FeedMenu(title: NSLocalizedString("Following Tracks", comment:""), type: FeedType.FOLLOWING_TRACKS))
-        }
         types.append(FeedMenu(title: NSLocalizedString("New Uploads", comment:""), type: FeedType.NEW_UPLOADS))
         types.append(FeedMenu(title: NSLocalizedString("Popular Now", comment:""), type: FeedType.POPULAR_NOW))
         types.append(FeedMenu(title: NSLocalizedString("New Releases", comment:""), type: FeedType.NEW_RELEASE))
@@ -318,11 +283,6 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         
         if self.tabBarController?.selectedTab != .Feed {
             feedTypeSelectTableView.reloadData()
-            
-            if selectedFeedMenu.type == .FOLLOWING_TRACKS {
-                self.nextPage = 0
-                loadFollowingTracks(true)
-            }
         }
     }
     
@@ -362,16 +322,10 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             prefix = NSLocalizedString("New Uploads", comment:"")
         case .DAILY_CHART:
             prefix = NSLocalizedString("Daily Chart", comment:"")
-            break
         case .NEW_RELEASE:
             prefix = NSLocalizedString("New Releases", comment:"")
-            break
         case .POPULAR_NOW:
             prefix = NSLocalizedString("Popular Now", comment:"")
-            break
-        case .FOLLOWING_TRACKS:
-            prefix = NSLocalizedString("Following Tracks", comment:"")
-            break
         }
         if prefix != nil && selectedGenre != nil {
             prefix! += " - \(selectedGenre!.name)"
@@ -386,7 +340,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
     override func allowedMenuActionsForTrack(track: Track) -> [MenuAction] {
         let actions = super.allowedMenuActionsForTrack(track)
         switch (selectedFeedMenu.type) {
-        case .NEW_UPLOADS, .FOLLOWING_TRACKS:
+        case .NEW_UPLOADS:
             return actions.filter({ $0 != .Like })
         default:
             return actions
@@ -482,7 +436,7 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             }
         case .DAILY_CHART:
             break
-        case .NEW_UPLOADS, .FOLLOWING_TRACKS:
+        case .NEW_UPLOADS:
             // for parallax effect
             let trackCell = cell as! DropbeatTrackTableViewCell
             self.updateTrackCellImageOffset(trackCell)
@@ -506,13 +460,6 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             return 60
         }
         switch(selectedFeedMenu.type) {
-        case .FOLLOWING_TRACKS:
-            let track = tracks[indexPath.row]
-            var height = self.view.bounds.width * 0.5 + 68
-            if track.repostingUser != nil && track.user != nil {
-                height += 62
-            }
-            return height
         case .NEW_UPLOADS:
             return self.view.bounds.width * 0.5 + 60
         case .POPULAR_NOW :
@@ -545,8 +492,6 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
 
             var cell:AddableTrackTableViewCell!
             switch (selectedFeedMenu.type) {
-            case .FOLLOWING_TRACKS:
-                cell = getFollowingFeedTrackCell(indexPath)
             case .NEW_UPLOADS:
                 cell = getDropbeatTrackCell(indexPath)
             case .DAILY_CHART:
@@ -802,8 +747,6 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
         self.lastContentOffset = CGPointZero
         
         switch(type) {
-        case .FOLLOWING_TRACKS:
-            loadFollowingTracks(forceRefresh)
         case .NEW_UPLOADS:
             loadNewUploadsFeed(forceRefresh)
         case .POPULAR_NOW:
@@ -812,72 +755,6 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             loadBeatportChartFeed(forceRefresh)
         case .NEW_RELEASE:
             loadNewReleaseFeed(forceRefresh)
-        }
-    }
-    
-    func loadFollowingTracks(forceRefresh:Bool=false) {
-        if isLoading {
-            return
-        }
-        
-        var progressHud:MBProgressHUD?
-        if !refreshControl.refreshing && nextPage <= 0 {
-            progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        }
-        Track.fetchFollowingTracks(nextPage) { (tracks, error) -> Void in
-            self.isLoading = false
-            progressHud?.hide(true)
-            if self.refreshControl.refreshing {
-                self.refreshControl.endRefreshing()
-            }
-            if (error != nil || tracks == nil) {
-                if (error != nil && error!.domain == NSURLErrorDomain &&
-                    error!.code == NSURLErrorNotConnectedToInternet) {
-                        ViewUtils.showNoticeAlert(self,
-                            title: NSLocalizedString("Failed to load", comment:""),
-                            message: NSLocalizedString("Internet is not connected", comment:""))
-                        return
-                }
-                let message = NSLocalizedString("Failed to load following tracks feed.", comment:"")
-                ViewUtils.showNoticeAlert(self, title: NSLocalizedString("Failed to load", comment:""), message: message)
-                return
-            }
-            
-            if tracks!.count == 0 {
-                self.nextPage = -1
-                self.loadMoreSpinner.stopAnimating()
-                self.loadMoreSpinnerWrapper.hidden = true
-                
-                self.trackTableView.tableHeaderView = self.followGuideHeaderView
-            } else {
-                // when the user only follows Dropbeat official
-                CheckOnlyFollowDropbeat: if (self.nextPage == 0) {
-                    guard let user = Account.getCachedAccount()?.user
-                        where user.num_following == 1 else {
-                            break CheckOnlyFollowDropbeat
-                    }
-                    
-                    guard let dropbeat = tracks![0].user as? User
-                        where dropbeat.resourceName == "dropbeat" else {
-                            break CheckOnlyFollowDropbeat
-                    }
-                    
-                    self.trackTableView.tableHeaderView = self.followGuideHeaderView
-                }
-
-                self.nextPage += 1
-            }
-            
-            if forceRefresh {
-                self.tracks.removeAll(keepCapacity: true)
-            }
-            for track in tracks! {
-                self.tracks.append(track)
-            }
-            self.updatePlaylist(false)
-            self.trackTableView.reloadData()
-            
-            self.trackChanged()
         }
     }
     

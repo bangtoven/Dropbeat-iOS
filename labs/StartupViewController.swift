@@ -9,11 +9,13 @@
 import UIKit
 import Raygun4iOS
 
-class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControllerDelegate {
+protocol AfterSignUpDelegate {
+    func signUpDidFinished()
+}
+
+class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControllerDelegate, AfterSignUpDelegate {
 
     @IBOutlet weak var activityIndicatorView: UIView!
-//    var playIndicator: VYPlayIndicator?
-//    private var progressHud:MBProgressHUD?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,27 +65,21 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         if segue.identifier == "need_email" {
             let vc = segue.destinationViewController as! FBEmailSubmitViewController
             vc.delegate = self
+        } else if segue.identifier == "ShowTutorial" {
+            let nav = segue.destinationViewController as! UINavigationController
+            let vc = nav.topViewController as! TutorialViewController
+            vc.delegate = self
         }
     }
     
     func checkVersion(callback: ()->Void) {
-//        self.playIndicator?.animatePlayback()
         Requests.getClientVersion { (result, error) -> Void in
             if (error != nil || result == nil) {
-//                var message:String?
-//                if (error != nil && error!.domain == NSURLErrorDomain &&
-//                        error!.code == NSURLErrorNotConnectedToInternet) {
-//                    message = NSLocalizedString("Internet is not connected. Please try again.", comment:"")
-//                } else {
-//                    message = NSLocalizedString("Failed to fetch version info.", comment:"")
-//                }
                 ViewUtils.showNoticeAlert(self,
                     title: "We're sorry.",//NSLocalizedString("Failed to fetch version info", comment:""),
                     message: "Please check your internet connection. \nLet's see if we can fix this together. Cross your fingers and hit the Retry.",//message!,
                     btnText: NSLocalizedString("Retry", comment:""),
                     callback: { () -> Void in
-//                        self.progressHud?.hide(true)
-//                        self.playIndicator?.stopPlayback()
                         self.checkVersion(callback)
                     })
                 return
@@ -96,8 +92,6 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                     message: NSLocalizedString("Improper data format", comment:""),
                     btnText: NSLocalizedString("Retry", comment:""),
                     callback: { () -> Void in
-//                        self.progressHud?.hide(true)
-//                        self.playIndicator?.stopPlayback()
                         self.checkVersion(callback)
                     })
                 return
@@ -113,7 +107,6 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                     message: NSLocalizedString("We have released a new version of DROPBEAT. Please download on AppStore", comment:""),
                     btnText: NSLocalizedString("Download", comment:""),
                     callback: { () -> Void in
-//                        self.progressHud?.hide(true)
                         let url = NSURL(string: "http://itunes.apple.com/app/id998263412")
                         (UIApplication).sharedApplication().openURL(url!)
                     })
@@ -124,7 +117,6 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     }
     
     func initialize() {
-//        self.playIndicator?.animatePlayback()
         Requests.getFeedGenre { (result, error) -> Void in
             if (error != nil) {
                     ViewUtils.showConfirmAlert(self,
@@ -156,13 +148,10 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                         message: message!,
                         btnText: NSLocalizedString("Retry", comment:""),
                         callback: { () -> Void in
-//                            self.playIndicator?.stopPlayback()
                             self.initialize()
                     })
                     return
                 }
-//                let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//                appDelegate.account = account
                 
                 if (account != nil) {
                     let email:String = account!.user!.email
@@ -178,31 +167,64 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         }
     }
     
+    func signUpDidFinished() {
+        self.dismissViewControllerAnimated(true) { () -> Void in
+            print("signUpDidFinished!!!!!!!!!!!!!!!!!!!!")
+            self.initialize()
+        }
+    }
+    
     func fetchUserInfo() {
-//        if Account.getCachedAccount() == nil {
-//            self.showMainController()
-//            return
-//        }
+        if Account.getCachedAccount() == nil {
+            self.showMainController()
+            return
+        }
         
         let account = Account.getCachedAccount()!
         
         let email = account.user!.email
         if email.indexOf("@dropbeat.net") > -1 {
-//            progressHud?.hide(true)
             performSegueWithIdentifier("need_email", sender: nil)
             return
         }
         
-        // Push Notification
-        UIApplication.sharedApplication().registerForRemoteNotifications()
+        let pushNotiGuideShown = "pushNotiGuideShown"
+        let pushNotiAllowed = "pushNotiAllowed"
+        let defaults = NSUserDefaults.standardUserDefaults()
+        if defaults.boolForKey(pushNotiGuideShown) != true {
+            defaults.setBool(true, forKey: pushNotiGuideShown)
+            
+            ViewUtils.showConfirmAlert(self,
+                title: "Get messages from Dropbeat",
+                message: "You will be asked for permission to receive push notifications.\n Push notifications let you know new posts from the artists you're following.",
+                positiveBtnText: "Allow",
+                positiveBtnCallback: { () -> Void in
+                    defaults.setBool(true, forKey: pushNotiAllowed)
+                    defaults.synchronize()
+                    
+                    let application = UIApplication.sharedApplication()
+                    application.registerForRemoteNotifications()
+                    application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Badge, .Alert, .Sound], categories: nil))
+                    
+                    self.showMainController()
+                }, negativeBtnCallback: { () -> Void in
+                    defaults.setBool(false, forKey: pushNotiAllowed)
+                    defaults.synchronize()
+                    
+                    self.showMainController()
+            })
+        } else {
+            if defaults.boolForKey(pushNotiAllowed) {
+                UIApplication.sharedApplication().registerForRemoteNotifications()
+            }
+            self.showMainController()
+        }
         
-        self.showMainController()
     }
     
     func showMainController() {
         let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) {
-//            self.progressHud?.hide(true)
             
             if Account.getCachedAccount() != nil {
                 let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
@@ -214,13 +236,6 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         }
     }
     
-    @IBAction func unwindFromTutorial(sender: UIStoryboardSegue) {
-        // asdfasdf
-    }
-    
-    @IBAction func unwindFromGenreTutorialToStart(sender: UIStoryboardSegue) {
-        print("unwindFromGenreTutorialToStart")
-    }
     
     func requestLikeInfos(callback:(data:[FBPage]?, error:NSError?) -> Void) {
         let request:FBSDKGraphRequest = FBSDKGraphRequest(graphPath: "me/likes", parameters: ["limit": 1000])

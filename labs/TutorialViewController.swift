@@ -81,6 +81,14 @@ class TutorialViewController: FBSigninableViewController, EAIntroDelegate {
             introView.skipButton = nil
         }
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let vc = segue.destinationViewController as? SignupWithEmailViewController {
+            vc.delegate = self.delegate
+        } else if let vc = segue.destinationViewController as? SigninWithEmailViewController {
+            vc.delegate = self.delegate
+        }
+    }
 
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
         return UIStatusBarStyle.LightContent

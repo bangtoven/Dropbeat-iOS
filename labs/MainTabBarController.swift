@@ -57,7 +57,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
 
         if Account.getCachedAccount() == nil {
             var exceptPlaylistTab = self.viewControllers
-            exceptPlaylistTab?.removeAtIndex(3)
+            exceptPlaylistTab?.removeAtIndex(TabBarIndex.Playlist.rawValue)
             self.setViewControllers(exceptPlaylistTab, animated: true)
         }
         

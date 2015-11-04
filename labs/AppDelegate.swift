@@ -96,9 +96,6 @@ extension AppDelegate {
                     print("Updated device token: \(result!)")
                 }
         }
-        
-        let settings: UIUserNotificationSettings = UIUserNotificationSettings( forTypes: [.Badge, .Alert, .Sound], categories: nil )
-        application.registerUserNotificationSettings(settings)
     }
     
     func application( application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError ) {

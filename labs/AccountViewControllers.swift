@@ -170,20 +170,22 @@ class FBSigninableViewController: GAITrackedViewController {
         })
     }
     
+    var delegate: AfterSignUpDelegate?
     
     func afterSignin(user:User, token:String) {
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
         keychainItemWrapper.resetKeychainItem()
         keychainItemWrapper.setObject(token, forKey: "auth_token")
         
-        self.dismissViewControllerAnimated(false, completion: nil)
-        self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
-        
-//        _PlayerViewController.sharedInstance!.resignObservers()
-        let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//        let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
-//        navController.popToRootViewControllerAnimated(false)
-        appDelegate.setRootViewToStartupViewController()
+        if delegate != nil {
+            delegate?.signUpDidFinished()
+        } else {
+            self.dismissViewControllerAnimated(false, completion: nil)
+            self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
+            
+            let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            appDelegate.setRootViewToStartupViewController()
+        }
         
         DropbeatPlayer.defaultPlayer.stop()
     }
@@ -393,19 +395,22 @@ class SigninWithEmailViewController: GAITrackedViewController, UIScrollViewDeleg
         }
     }
     
+    var delegate: AfterSignUpDelegate?
+    
     func afterSignin(token:String) {
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
         keychainItemWrapper.resetKeychainItem()
         keychainItemWrapper.setObject(token, forKey: "auth_token")
         
-        self.dismissViewControllerAnimated(false, completion: nil)
-        self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
-        
-//        _PlayerViewController.sharedInstance!.resignObservers()
-        let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//        let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
-//        navController.popToRootViewControllerAnimated(false)
-        appDelegate.setRootViewToStartupViewController()
+        if delegate != nil {
+            delegate?.signUpDidFinished()
+        } else {
+            self.dismissViewControllerAnimated(false, completion: nil)
+            self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
+            
+            let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            appDelegate.setRootViewToStartupViewController()
+        }
         
         DropbeatPlayer.defaultPlayer.stop()
     }
@@ -501,6 +506,12 @@ class SignupWithEmailViewController: GAITrackedViewController, UIScrollViewDeleg
         self.screenName = "SignupWithEmailViewScreen"
         
         self.navigationController?.setNavigationBarHidden(false, animated: true)
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let vc = segue.destinationViewController as? SigninWithEmailViewController {
+            vc.delegate = self.delegate
+        }
     }
     
     @IBAction func onTapped(sender: AnyObject) {
@@ -617,19 +628,22 @@ class SignupWithEmailViewController: GAITrackedViewController, UIScrollViewDeleg
         }
     }
     
+    var delegate: AfterSignUpDelegate?
+    
     func afterSignup(token:String) {
         let keychainItemWrapper = KeychainItemWrapper(identifier: "net.dropbeat.spark", accessGroup:nil)
         keychainItemWrapper.resetKeychainItem()
         keychainItemWrapper.setObject(token, forKey: "auth_token")
         
-        self.dismissViewControllerAnimated(false, completion: nil)
-        self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
-                
-//        _PlayerViewController.sharedInstance!.resignObservers()
-        let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//        let navController:UINavigationController = appDelegate.window?.rootViewController as! UINavigationController
-//        navController.popToRootViewControllerAnimated(false)
-        appDelegate.setRootViewToStartupViewController()
+        if delegate != nil {
+            delegate?.signUpDidFinished()
+        } else {
+            self.dismissViewControllerAnimated(false, completion: nil)
+            self.navigationController?.dismissViewControllerAnimated(false, completion: nil)
+            
+            let appDelegate:AppDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+            appDelegate.setRootViewToStartupViewController()
+        }
         
         DropbeatPlayer.defaultPlayer.stop()
     }

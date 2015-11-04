@@ -95,11 +95,17 @@ extension FeedViewController: ScrollPagerDelegate {
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
         DropbeatTrack.fetchNewUploads(order!, pageIdx: nextPage) { (tracks, error) -> Void in
+            guard self.selectedFeedMenu.type == .NEW_UPLOADS && self.newUploadsSelectedIndex == order?.rawValue else {
+                print("Tab changed. Ignore loadNewUploadsFeed")
+                return
+            }
+            
             self.isLoading = false
             progressHud?.hide(true)
             if self.refreshControl.refreshing {
                 self.refreshControl.endRefreshing()
             }
+            
             if (error != nil || tracks == nil) {
                 if (error != nil && error!.domain == NSURLErrorDomain &&
                     error!.code == NSURLErrorNotConnectedToInternet) {
@@ -772,6 +778,11 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
         Requests.getStreamTrending(selectedGenre!.key, pageIdx: nextPage) {(result, error) -> Void in
+            guard self.selectedFeedMenu.type == .POPULAR_NOW else {
+                print("Tab changed. Ignore loadTrendingFeed")
+                return
+            }
+            
             self.isLoading = false
             progressHud?.hide(true)
             if self.refreshControl.refreshing {
@@ -846,6 +857,11 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             genreKey = "TOP100"
         }
         Requests.fetchBeatportChart(genreKey) {(result, error) -> Void in
+            guard self.selectedFeedMenu.type == .DAILY_CHART else {
+                print("Tab changed. Ignore loadBeatportChartFeed")
+                return
+            }
+            
             progressHud?.hide(true)
             if self.refreshControl.refreshing {
                 self.refreshControl.endRefreshing()
@@ -896,6 +912,11 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
             progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         }
         Requests.getStreamNew(selectedGenre!.key, pageIdx: nextPage) {(result, error) -> Void in
+            guard self.selectedFeedMenu.type == .NEW_RELEASE else {
+                print("Tab changed. Ignore loadNewReleaseFeed")
+                return
+            }
+            
             self.isLoading = false
             progressHud?.hide(true)
             if self.refreshControl.refreshing {

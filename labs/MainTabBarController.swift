@@ -26,9 +26,9 @@ extension AddableTrackListViewController {
 }
 
 enum TabBarIndex: Int {
-    case Feed = 0
+    case Following = 0
+    case Feed
     case Expore
-    case Search
     case Playlist
     case Profile
 }

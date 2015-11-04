@@ -66,10 +66,6 @@ class SearchViewController: AddableTrackListViewController,
             }
             self.trackTableView.reloadData()
         }
-        
-        if self.tabBarController?.selectedTab != .Search {
-            searchBar.becomeFirstResponder()
-        }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

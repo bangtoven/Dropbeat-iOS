@@ -188,7 +188,12 @@ class FollowingFeedViewController: AddableTrackListViewController {
 }
 
 extension FollowingFeedViewController {
-
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        for cell in self.trackTableView.visibleCells {
+            self.updateTrackCellImageOffset(cell as! DropbeatTrackTableViewCell)
+        }
+    }
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tracks.count
     }

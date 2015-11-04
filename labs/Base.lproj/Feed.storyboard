@@ -41,7 +41,7 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView hidden="YES" autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Hdt-A9-DFu" userLabel="FeedSelectTableView">
+                            <tableView hidden="YES" autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Hdt-A9-DFu" userLabel="FeedSelectTableView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <animations/>
                                 <view key="tableHeaderView" contentMode="scaleToFill" id="pnU-8l-sSV">
@@ -122,7 +122,7 @@
                                     <outlet property="delegate" destination="iBA-aE-55u" id="thK-ib-91D"/>
                                 </connections>
                             </tableView>
-                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Jbs-qc-aEI" userLabel="GenreTableView">
+                            <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="50" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Jbs-qc-aEI" userLabel="GenreTableView">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="504"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -229,10 +229,10 @@
                                                                     <rect key="frame" x="0.0" y="0.0" width="288" height="153"/>
                                                                     <subviews>
                                                                         <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zTM-po-JqZ" customClass="GradientView">
-                                                                            <rect key="frame" x="0.0" y="78" width="288" height="74.5"/>
+                                                                            <rect key="frame" x="0.0" y="78" width="288" height="75"/>
                                                                             <subviews>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Progressive House" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pjd-gF-IsB">
-                                                                                    <rect key="frame" x="9" y="8" width="117.5" height="17"/>
+                                                                                    <rect key="frame" x="9" y="8" width="118" height="17"/>
                                                                                     <animations/>
                                                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
                                                                                     <color key="textColor" red="0.95686274510000002" green="0.21591749120000001" blue="0.68256611099999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -241,7 +241,7 @@
                                                                                     <size key="shadowOffset" width="-1" height="1"/>
                                                                                 </label>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ssibal ssibal ssibal ssibal ssibal " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TSO-UQ-OXG">
-                                                                                    <rect key="frame" x="8" y="27" width="188.5" height="39.5"/>
+                                                                                    <rect key="frame" x="8" y="27" width="189" height="40"/>
                                                                                     <animations/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="k6S-0d-ayA"/>
@@ -376,7 +376,7 @@
                                                             <color key="tintColor" red="0.61568627450000002" green="0.61568627450000002" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
                                                             <state key="normal" image="ic_header_dotdotdot_horizontal"/>
                                                             <connections>
-                                                                <action selector="moreAction:" destination="iBA-aE-55u" eventType="touchUpInside" id="nhB-XV-tYr"/>
+                                                                <action selector="onMenuBtnClicked:" destination="O2W-1L-bKl" eventType="touchUpInside" id="pCb-kp-EWa"/>
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I1R-g4-bbJ">
@@ -434,7 +434,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My name is jungho" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xjm-1q-bDI">
-                                                    <rect key="frame" x="64" y="20" width="139" height="19.5"/>
+                                                    <rect key="frame" x="64" y="20" width="139" height="20"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                                                     <color key="textColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -516,7 +516,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My name is jungho" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ab-Xp-uWp">
-                                                    <rect key="frame" x="58" y="12" width="164" height="19.5"/>
+                                                    <rect key="frame" x="58" y="12" width="164" height="20"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                                     <color key="textColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -575,10 +575,10 @@
                                                             <rect key="frame" x="0.0" y="0.0" width="300" height="150"/>
                                                             <subviews>
                                                                 <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NBH-jR-Rdx" customClass="GradientView">
-                                                                    <rect key="frame" x="0.0" y="75" width="300" height="74.5"/>
+                                                                    <rect key="frame" x="0.0" y="75" width="300" height="75"/>
                                                                     <subviews>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Progressive House" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="44v-cQ-Ilq">
-                                                                            <rect key="frame" x="9" y="8" width="117.5" height="17"/>
+                                                                            <rect key="frame" x="9" y="8" width="118" height="17"/>
                                                                             <animations/>
                                                                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
                                                                             <color key="textColor" red="0.95686274510000002" green="0.21591749120000001" blue="0.68256611099999998" alpha="1" colorSpace="calibratedRGB"/>
@@ -587,7 +587,7 @@
                                                                             <size key="shadowOffset" width="-1" height="1"/>
                                                                         </label>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ssibal ssibal ssibal ssibal ssibal " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZDD-go-KDV">
-                                                                            <rect key="frame" x="8" y="27" width="188.5" height="39.5"/>
+                                                                            <rect key="frame" x="8" y="27" width="189" height="40"/>
                                                                             <animations/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" relation="lessThanOrEqual" constant="60" id="NjX-TE-oY4"/>
@@ -672,7 +672,7 @@
                                                     <color key="tintColor" red="0.61568627450000002" green="0.61568627450000002" blue="0.61568627450000002" alpha="1" colorSpace="calibratedRGB"/>
                                                     <state key="normal" image="ic_header_dotdotdot_horizontal"/>
                                                     <connections>
-                                                        <action selector="moreAction:" destination="iBA-aE-55u" eventType="touchUpInside" id="MzE-8u-G9k"/>
+                                                        <action selector="onMenuBtnClicked:" destination="gDq-m1-YXD" eventType="touchUpInside" id="fiE-I8-lvO"/>
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FWD-m1-RfO">
@@ -1486,8 +1486,16 @@
                         <constraints>
                             <constraint firstItem="zAy-DT-AHo" firstAttribute="top" secondItem="SeY-V5-10D" secondAttribute="bottom" id="0X1-JZ-U68"/>
                             <constraint firstAttribute="trailing" secondItem="SeY-V5-10D" secondAttribute="trailing" id="3Vp-Qi-gO5"/>
+                            <constraint firstItem="zAy-DT-AHo" firstAttribute="top" secondItem="Hdt-A9-DFu" secondAttribute="bottom" id="JGr-Bh-V49"/>
+                            <constraint firstItem="zAy-DT-AHo" firstAttribute="top" secondItem="Jbs-qc-aEI" secondAttribute="bottom" id="NDD-6y-rzf"/>
+                            <constraint firstItem="Hdt-A9-DFu" firstAttribute="leading" secondItem="z4G-nX-pDa" secondAttribute="leading" id="dtu-63-I22"/>
                             <constraint firstItem="SeY-V5-10D" firstAttribute="leading" secondItem="z4G-nX-pDa" secondAttribute="leading" id="eex-JA-Zzz"/>
+                            <constraint firstItem="Jbs-qc-aEI" firstAttribute="top" secondItem="K0i-IN-wGn" secondAttribute="bottom" id="h5m-AM-lep"/>
                             <constraint firstItem="SeY-V5-10D" firstAttribute="top" secondItem="K0i-IN-wGn" secondAttribute="bottom" id="l1E-hT-vgp"/>
+                            <constraint firstAttribute="trailing" secondItem="Hdt-A9-DFu" secondAttribute="trailing" id="l74-CP-4Dd"/>
+                            <constraint firstAttribute="trailing" secondItem="Jbs-qc-aEI" secondAttribute="trailing" id="lNj-rH-7lf"/>
+                            <constraint firstItem="Hdt-A9-DFu" firstAttribute="top" secondItem="K0i-IN-wGn" secondAttribute="bottom" id="sED-Mk-7ac"/>
+                            <constraint firstItem="Jbs-qc-aEI" firstAttribute="leading" secondItem="z4G-nX-pDa" secondAttribute="leading" id="wXl-YB-Qia"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
@@ -1500,7 +1508,7 @@
                             </connections>
                         </barButtonItem>
                         <view key="titleView" contentMode="scaleToFill" id="FCw-ns-6Fd">
-                            <rect key="frame" x="96" y="5.5" width="128" height="33"/>
+                            <rect key="frame" x="96" y="6" width="128" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Oi-EH-L53">
@@ -1827,7 +1835,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Proximity" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ub-yB-nH2" userLabel="ChannelName">
-                                                    <rect key="frame" x="140" y="10" width="140" height="19.5"/>
+                                                    <rect key="frame" x="140" y="10" width="140" height="20"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
@@ -1855,7 +1863,7 @@
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2014-07-21" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5BB-na-eE6">
-                                                    <rect key="frame" x="140" y="28" width="140" height="13.5"/>
+                                                    <rect key="frame" x="140" y="28" width="140" height="14"/>
                                                     <animations/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                     <color key="textColor" red="0.56470588239999997" green="0.56470588239999997" blue="0.56470588239999997" alpha="1" colorSpace="calibratedRGB"/>
@@ -2000,7 +2008,7 @@
         <image name="ic_playing_indicator" width="104" height="104"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="1I7-D8-Ldf"/>
+        <segue reference="cFY-fQ-Xck"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
 </document>

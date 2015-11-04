@@ -114,7 +114,7 @@ class ProfileViewController: UserViewController {
                         appDelegate.setRootViewToStartupViewController()
                 })
         }))
-        self.showDetailViewController(actionSheet, sender: sender)//presentViewController(actionSheet, animated: true, completion: nil)
+        self.showActionSheet(actionSheet, sender: sender)
     }
     
     @IBAction func unwindFromEditProfile(sender: UIStoryboardSegue) {

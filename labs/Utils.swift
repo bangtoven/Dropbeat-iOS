@@ -14,7 +14,7 @@ extension UIViewController {
          return self.isViewLoaded() && (self.view.window != nil)
     }
     
-    func showActivityViewControllerWithShareURL(url: NSURL, string: String? = nil) {
+    func showActivityViewControllerWithShareURL(url: NSURL, string: String? = nil, sender: AnyObject?) {
         var items: [AnyObject] = [url]
         if string != nil {
             items.append(string!)
@@ -26,7 +26,24 @@ extension UIViewController {
             UIActivityTypeSaveToCameraRoll,
             UIActivityTypeAssignToContact
         ]
-        self.presentViewController(activityController, animated:true, completion: nil)
+        self.presentPopover(activityController, sender: sender)
+    }
+    
+    func showActionSheet(actionSheet: UIAlertController, sender: AnyObject?) {
+        self.presentPopover(actionSheet, sender: sender)
+    }
+    
+    func presentPopover(popover: UIViewController, sender: AnyObject?) {
+        if let view = sender as? UIView {
+            popover.popoverPresentationController?.sourceView = view
+        } else if let barButton = sender as? UIBarButtonItem {
+            popover.popoverPresentationController?.barButtonItem = barButton
+        } else if let tabBar = self.tabBarController?.tabBar {
+            popover.popoverPresentationController?.sourceView = tabBar
+        } else {
+            popover.popoverPresentationController?.sourceView = self.view
+        }
+        self.presentViewController(popover, animated:true, completion: nil)
     }
 }
 

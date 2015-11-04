@@ -65,36 +65,6 @@ extension FeedViewController: ScrollPagerDelegate {
         }
     }
     
-    @IBAction func moreAction(sender: UIButton) {
-        let indexPath = self.trackTableView.indexPathOfCellContains(sender)
-        let track = self.tracks[indexPath!.row]
-
-        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-        actionSheet.addAction(UIAlertAction(
-            title: NSLocalizedString("Add to playlist", comment:""),
-            style: .Default,
-            handler: { (action) -> Void in
-                self.onTrackAddBtnClicked(track)
-        }))
-        actionSheet.addAction(UIAlertAction(
-            title: NSLocalizedString("Repost", comment:""),
-            style: .Default,
-            handler: { (action) -> Void in
-                self.onTrackRepostAction(track)
-        }))
-        actionSheet.addAction(UIAlertAction(
-            title: NSLocalizedString("Share", comment:""),
-            style: .Default,
-            handler: { (action) -> Void in
-                self.onTrackShareBtnClicked(track)
-        }))
-        actionSheet.addAction(UIAlertAction(
-            title: NSLocalizedString("Cancel", comment:""),
-            style: .Cancel, handler: nil))
-        
-        self.presentViewController(actionSheet, animated: true, completion: nil)
-    }
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         switch segue.identifier! {
         case "showUserInfo":
@@ -411,6 +381,16 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
     
     override func getSectionName() -> String {
         return "feed_" + selectedFeedMenu.type.rawValue
+    }
+    
+    override func allowedMenuActionsForTrack(track: Track) -> [MenuAction] {
+        let actions = super.allowedMenuActionsForTrack(track)
+        switch (selectedFeedMenu.type) {
+        case .NEW_UPLOADS, .FOLLOWING_TRACKS:
+            return actions.filter({ $0 != .Like })
+        default:
+            return actions
+        }
     }
     
     func initGenres(callback:(error:NSError?) -> Void) {

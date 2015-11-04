@@ -320,7 +320,7 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
             style: .Default, handler: { (action) -> Void in
             UIApplication.sharedApplication().openURL(url)
         }))
-        self.presentViewController(actionSheet, animated: true, completion: nil)
+        self.showActionSheet(actionSheet, sender: label)
     }
     
     func showFacebookPage() {

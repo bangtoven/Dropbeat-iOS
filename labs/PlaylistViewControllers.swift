@@ -556,7 +556,7 @@ extension PlaylistViewController {
             if let uid = result!["obj"]["uid"].string {
                 let url = NSURL(string: "http://dropbeat.net/?playlist=\(uid)")
                 
-                self.showActivityViewControllerWithShareURL(url!, string: self.playlist.name)
+                self.showActivityViewControllerWithShareURL(url!, string: self.playlist.name, sender: sender)
             } else {
                 ViewUtils.showNoticeAlert(self,
                     title: NSLocalizedString("Failed to share", comment:""),
@@ -592,7 +592,7 @@ extension PlaylistViewController {
             title: NSLocalizedString("Share", comment:""),
             style: .Default,
             handler: { (action) -> Void in
-                self.onShareTrackBtnClicked(selectedTrack)
+                self.onShareTrackBtnClicked(selectedTrack, sender: sender)
         }))
         
         actionSheet.addAction(UIAlertAction(
@@ -607,7 +607,7 @@ extension PlaylistViewController {
             style: .Cancel,
             handler: nil))
         
-        self.presentViewController(actionSheet, animated: true, completion: nil)
+        self.showActionSheet(actionSheet, sender: sender)
     }
     
     func onTrackLikeBtnClicked(track:Track) {
@@ -658,7 +658,7 @@ extension PlaylistViewController {
         }
     }
     
-    func onShareTrackBtnClicked(track: Track) {
+    func onShareTrackBtnClicked(track: Track, sender: UIView) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
         track.shareTrack("playlist") { (error, sharedURL) -> Void in
             progressHud.hide(true)
@@ -670,7 +670,7 @@ extension PlaylistViewController {
                             message: NSLocalizedString("Internet is not connected.", comment:""),
                             positiveBtnText: NSLocalizedString("Retry", comment:""),
                             positiveBtnCallback: { () -> Void in
-                                self.onShareTrackBtnClicked(track)
+                                self.onShareTrackBtnClicked(track, sender: sender)
                             }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                         return
                 }
@@ -678,22 +678,12 @@ extension PlaylistViewController {
                     message: NSLocalizedString("Failed to share track", comment:""),
                     positiveBtnText: NSLocalizedString("Retry", comment:""),
                     positiveBtnCallback: { () -> Void in
-                        self.onShareTrackBtnClicked(track)
+                        self.onShareTrackBtnClicked(track, sender: sender)
                     }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
                 return
             }
             
-            let items:[AnyObject] = [sharedURL!]
-            
-            let activityController = UIActivityViewController(
-                activityItems: items, applicationActivities: nil)
-            activityController.excludedActivityTypes = [
-                UIActivityTypePrint,
-                UIActivityTypeSaveToCameraRoll,
-                UIActivityTypeAssignToContact
-            ]
-            activityController.popoverPresentationController?.sourceView = self.view
-            self.presentViewController(activityController, animated:true, completion: nil)
+            self.showActivityViewControllerWithShareURL(sharedURL!, sender: sender)
         }
     }
     

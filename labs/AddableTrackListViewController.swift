@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AVKit
 import AVFoundation
 import Foundation
 
@@ -184,15 +183,200 @@ extension AddableTrackListViewController: STKAudioPlayerDelegate {
     }
 }
 
-// MARK:
+// MARK: - Menu button actions
 
-class AddableTrackListViewController: GAITrackedViewController, AddableTrackCellDelegate, UIActionSheetDelegate {
+enum MenuAction {
+    case Like
+    case Repost
+    case Share
+    case Add
+}
+
+extension AddableTrackListViewController {
+    
+    func onTrackMenuBtnClicked(cell: AddableTrackTableViewCell, sender: UIView) {
+        guard let indexPath = trackTableView.indexPathForCell(cell) else {
+            return
+        }
+        let track = tracks[indexPath.row]
+        
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
+        let allowedMenuActions = self.allowedMenuActionsForTrack(track)
+
+        if allowedMenuActions.contains(.Like) {
+            actionSheet.addAction(UIAlertAction(
+                title: track.isLiked ? NSLocalizedString("Unlike", comment:"") : NSLocalizedString("Like", comment:""),
+                style: .Default,
+                handler: { (action) -> Void in
+                    self.onTrackLikeBtnClicked(track)
+            }))
+        }
+        
+        if allowedMenuActions.contains(.Repost) {
+            actionSheet.addAction(UIAlertAction(
+                title: NSLocalizedString("Repost", comment:""),
+                style: .Default,
+                handler: { (action) -> Void in
+                    self.onTrackRepostAction(track)
+            }))
+        }
+
+        if allowedMenuActions.contains(.Share) {
+            actionSheet.addAction(UIAlertAction(
+                title: NSLocalizedString("Share", comment:""),
+                style: .Default,
+                handler: { (action) -> Void in
+                    self.onTrackShareBtnClicked(track, sender: sender)
+            }))
+        }
+        
+        if allowedMenuActions.contains(.Add) {
+            actionSheet.addAction(UIAlertAction(
+                title: NSLocalizedString("Add to playlist", comment:""),
+                style: .Default,
+                handler: { (action) -> Void in
+                    self.onTrackAddBtnClicked(track)
+            }))
+        }
+        
+        actionSheet.addAction(UIAlertAction(
+            title: NSLocalizedString("Cancel", comment:""),
+            style: .Cancel, handler: nil))
+        
+        self.showActionSheet(actionSheet, sender: sender)
+    }
+    
+    func onTrackRepostAction(track:Track) {
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+        track.repostTrack { (data, error) -> Void in
+            if error != nil {
+                progressHud.hide(true)
+                if error!.domain == DropbeatRequestErrorDomain {
+                    ViewUtils.showToast(self, message: NSLocalizedString("Already reposted.", comment:""))
+                } else {
+                    var message = error!.localizedDescription
+                    if (error!.domain == NSURLErrorDomain &&
+                        error!.code == NSURLErrorNotConnectedToInternet) {
+                            message = NSLocalizedString("Internet is not connected.", comment:"")
+                    }
+                    ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to repost", comment:""),
+                        message: message,
+                        positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
+                            self.onTrackRepostAction(track)
+                    })
+                }
+                return
+            }
+            
+            progressHud.mode = MBProgressHUDMode.CustomView
+            progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark"))
+            progressHud.hide(true, afterDelay: 1)
+        }
+        return
+    }
+    
+    func onTrackShareBtnClicked(track:Track, sender: UIView) {
+        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+        let section = getSectionName()
+        track.shareTrack(section) { (error, sharedURL) -> Void in
+            progressHud.hide(true)
+            if error != nil {
+                if (error!.domain == NSURLErrorDomain &&
+                    error!.code == NSURLErrorNotConnectedToInternet) {
+                        ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
+                            message: NSLocalizedString("Internet is not connected.", comment:""),
+                            positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
+                                self.onTrackShareBtnClicked(track, sender: sender)
+                            }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
+                        return
+                }
+                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
+                    message: NSLocalizedString("Failed to share track", comment:""),
+                    positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
+                        self.onTrackShareBtnClicked(track, sender: sender)
+                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
+                return
+            }
+            
+            self.showActivityViewControllerWithShareURL(sharedURL!, string: track.title, sender: sender)
+        }
+    }
+    
+    func onTrackLikeBtnClicked(track:Track, onSuccess:(Void->Void)? = nil) {
+        if (Account.getCachedAccount() == nil) {
+            NeedAuthViewController.showNeedAuthViewController(self)
+            return
+        }
+        let progressHud = ViewUtils.showProgress(self, message: nil)
+        if track.isLiked {
+            Like.unlikeTrack(track) { (error) -> Void in
+                if error != nil {
+                    progressHud.hide(true)
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to save", comment: ""),
+                        message: NSLocalizedString("Failed to save dislike info.", comment:""),
+                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
+                        positiveBtnCallback: { () -> Void in
+                            self.onTrackLikeBtnClicked(track)
+                    })
+                    return
+                }
+                
+                onSuccess?()
+                
+                progressHud.mode = MBProgressHUDMode.CustomView
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike"))
+                progressHud.hide(true, afterDelay: 1)
+            }
+        } else {
+            Like.likeTrack(track) { (error) -> Void in
+                if error != nil {
+                    if error!.domain == NeedAuthViewController.NeedAuthErrorDomain {
+                        NeedAuthViewController.showNeedAuthViewController(self)
+                    }
+                    
+                    progressHud.hide(true)
+                    ViewUtils.showConfirmAlert(self,
+                        title: NSLocalizedString("Failed to save", comment: ""),
+                        message: NSLocalizedString("Failed to save like info.", comment:""),
+                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
+                        positiveBtnCallback: { () -> Void in
+                            self.onTrackLikeBtnClicked(track)
+                    })
+                    return
+                }
+                
+                onSuccess?()
+                
+                progressHud.mode = MBProgressHUDMode.CustomView
+                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like"))
+                progressHud.hide(true, afterDelay: 1)
+            }
+        }
+    }
+    
+    func onTrackAddBtnClicked(track:Track) {
+        if (Account.getCachedAccount() == nil) {
+            NeedAuthViewController.showNeedAuthViewController(self)
+            return
+        }
+        
+        let playlistSelectVC = UIStoryboard(name: "Playlist", bundle: nil).instantiateViewControllerWithIdentifier("PlaylistSelect") as! PlaylistSelectViewController
+        playlistSelectVC.targetTrack = track
+        playlistSelectVC.fromSection = self.getSectionName()
+        playlistSelectVC.caller = self
+        self.presentViewController(playlistSelectVC, animated: true, completion: nil)
+    }
+}
+
+// MARK: - AddableTrackListViewController
+
+class AddableTrackListViewController: GAITrackedViewController, AddableTrackCellDelegate {
     
     @IBOutlet weak var trackTableView: UITableView!
     
     var tracks:[Track] = [Track]()
-    var selectedTrack:Track?
-    
+
     var needsBigSizeDropButton = false
     
     private var dropPlayer: STKAudioPlayer?
@@ -263,195 +447,22 @@ class AddableTrackListViewController: GAITrackedViewController, AddableTrackCell
         return
     }
     
+    func allowedMenuActionsForTrack(track: Track) -> [MenuAction] {
+        if let author = track.user,
+            account = Account.getCachedAccount()?.user
+            where author.resourceName == account.resourceName {
+            return [.Like, .Share, .Add]    
+        } else {
+            return [.Like, .Repost, .Share, .Add]
+        }
+    }
+    
     func onTrackPlayBtnClicked(track:Track) {
-        var playlistId:String?
-        if tracks.count == 0 || getPlaylistId() == nil{
-            playlistId = nil
-        } else {
+        if tracks.count != 0 && getPlaylistId() != nil{
             updatePlaylist(true)
-            playlistId = DropbeatPlayer.defaultPlayer.currentPlaylist?.id
         }
-        var params: [String: AnyObject] = [
-            "track": track,
-        ]
-        if playlistId != nil {
-            params["playlistId"] = playlistId
-        }
-        params["section"] = getSectionName()
         
-        // TODO: playlist???
         DropbeatPlayer.defaultPlayer.play(track)
-    }
-    
-    func onTrackRepostAction(track:Track) {
-        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        track.repostTrack { (data, error) -> Void in
-            if error != nil {
-                progressHud.hide(true)
-                if error!.domain == DropbeatRequestErrorDomain {
-                    ViewUtils.showToast(self, message: NSLocalizedString("Already reposted.", comment:""))
-                } else {
-                    var message = error!.localizedDescription
-                    if (error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                            message = NSLocalizedString("Internet is not connected.", comment:"")
-                    }
-                    ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to repost", comment:""),
-                        message: message,
-                        positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                            self.onTrackRepostAction(track)
-                    })
-                }
-                return
-            }
-            
-            progressHud.mode = MBProgressHUDMode.CustomView
-            progressHud.customView = UIImageView(image: UIImage(named:"37x-Checkmark"))
-            progressHud.hide(true, afterDelay: 1)
-        }
-        return
-    }
-    
-    func onTrackShareBtnClicked(track:Track) {
-        let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
-        let section = getSectionName()
-        track.shareTrack(section) { (error, sharedURL) -> Void in
-            progressHud.hide(true)
-            if error != nil {
-                if (error!.domain == NSURLErrorDomain &&
-                        error!.code == NSURLErrorNotConnectedToInternet) {
-                    ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
-                        message: NSLocalizedString("Internet is not connected.", comment:""),
-                        positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                            self.onTrackShareBtnClicked(track)
-                        }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
-                    return
-                }
-                ViewUtils.showConfirmAlert(self, title: NSLocalizedString("Failed to share", comment:""),
-                    message: NSLocalizedString("Failed to share track", comment:""),
-                    positiveBtnText: NSLocalizedString("Retry", comment:""), positiveBtnCallback: { () -> Void in
-                        self.onTrackShareBtnClicked(track)
-                    }, negativeBtnText: NSLocalizedString("Cancel", comment:""), negativeBtnCallback: nil)
-                return
-            }
-            
-            self.showActivityViewControllerWithShareURL(sharedURL!, string: track.title)
-        }
-    }
-    
-    func onTrackLikeBtnClicked(track:Track, onSuccess:(Void->Void)? = nil) {
-        if (Account.getCachedAccount() == nil) {
-            NeedAuthViewController.showNeedAuthViewController(self)
-            return
-        }
-        let progressHud = ViewUtils.showProgress(self, message: nil)
-        if track.isLiked {
-            Like.unlikeTrack(track) { (error) -> Void in
-                if error != nil {
-                    progressHud.hide(true)
-                    ViewUtils.showConfirmAlert(self,
-                        title: NSLocalizedString("Failed to save", comment: ""),
-                        message: NSLocalizedString("Failed to save dislike info.", comment:""),
-                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
-                        positiveBtnCallback: { () -> Void in
-                            self.onTrackLikeBtnClicked(track)
-                    })
-                    return
-                }
-                
-                onSuccess?()
-                
-                progressHud.mode = MBProgressHUDMode.CustomView
-                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike"))
-                progressHud.hide(true, afterDelay: 1)
-            }
-        } else {
-            Like.likeTrack(track) { (error) -> Void in
-                if error != nil {
-                    if error!.domain == NeedAuthViewController.NeedAuthErrorDomain {
-                        NeedAuthViewController.showNeedAuthViewController(self)
-                    }
-                    
-                    progressHud.hide(true)
-                    ViewUtils.showConfirmAlert(self,
-                        title: NSLocalizedString("Failed to save", comment: ""),
-                        message: NSLocalizedString("Failed to save like info.", comment:""),
-                        positiveBtnText:  NSLocalizedString("Retry", comment: ""),
-                        positiveBtnCallback: { () -> Void in
-                            self.onTrackLikeBtnClicked(track)
-                    })
-                    return
-                }
-                
-                onSuccess?()
-                
-                progressHud.mode = MBProgressHUDMode.CustomView
-                progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like"))
-                progressHud.hide(true, afterDelay: 1)
-            }
-        }
-    }
-    
-    func onTrackAddBtnClicked(track:Track) {
-        if (Account.getCachedAccount() == nil) {
-            NeedAuthViewController.showNeedAuthViewController(self)
-            return
-        }
-        
-        let playlistSelectVC = UIStoryboard(name: "Playlist", bundle: nil).instantiateViewControllerWithIdentifier("PlaylistSelect") as! PlaylistSelectViewController
-        playlistSelectVC.targetTrack = track
-        playlistSelectVC.fromSection = self.getSectionName()
-        playlistSelectVC.caller = self
-        self.presentViewController(playlistSelectVC, animated: true, completion: nil)
-    }
-    
-    func onTrackMenuBtnClicked(sender: AddableTrackTableViewCell) {
-        let indexPath:NSIndexPath? = trackTableView.indexPathForCell(sender)
-        if indexPath == nil {
-            return
-        }
-        let track = tracks[indexPath!.row]
-        selectedTrack = track
-        
-        let actionSheet = UIActionSheet()
-        let actionSheetItemCount = getTrackActionSheetCount(track)
-        for idx in 0..<actionSheetItemCount {
-            actionSheet.addButtonWithTitle(getTrackActionSheetTitleAtPosition(track, index: idx))
-        }
-        let cancelBtnIdx = getTrackActionSheetCancelButtonIndex(track)
-        if cancelBtnIdx > -1 {
-            actionSheet.cancelButtonIndex = cancelBtnIdx
-        }
-        
-        let destructiveBtnIdx = getTrackActionSheetDestructiveButtonIndex(track)
-        if destructiveBtnIdx > -1 {
-            actionSheet.destructiveButtonIndex = destructiveBtnIdx
-        }
-        actionSheet.delegate = self
-        
-        actionSheet.showFromTabBar((self.tabBarController?.tabBar)!)
-//        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-//        actionSheet.showFromTabBar(appDelegate.centerContainer!.tabBar)
-    }
-    
-    func actionSheet(actionSheet: UIActionSheet, didDismissWithButtonIndex buttonIndex: Int) {
-        let track:Track? = selectedTrack
-        var foundIdx = -1
-        if track != nil {
-            for (idx, t)  in tracks.enumerate() {
-                if t.id == track!.id {
-                    foundIdx = idx
-                    break
-                }
-            }
-        }
-        if track == nil || foundIdx == -1 {
-            ViewUtils.showToast(self, message: NSLocalizedString("Track is not in list", comment:""))
-            return
-        }
-        
-        onTrackActionSheetClicked(selectedTrack!, buttonIndex: buttonIndex)
-        selectedTrack = nil
     }
     
     func trackChanged() {
@@ -481,55 +492,6 @@ class AddableTrackListViewController: GAITrackedViewController, AddableTrackCell
             }
         }
     }
-
-    //////////////////////////
-    // METHODS MAY OVERRIDE //
-    //////////////////////////
-    
-    func getTrackActionSheetTitleAtPosition(track: Track, index: Int) -> String {
-        switch(index) {
-        case 0:
-            return track.isLiked ? NSLocalizedString("Unlike", comment:"") :
-                NSLocalizedString("Like", comment:"")
-        case 1:
-            return NSLocalizedString("Add to playlist", comment:"")
-        case 2:
-            return NSLocalizedString("Repost", comment:"")
-        case 3:
-            return NSLocalizedString("Share", comment:"")
-        case 4:
-            return NSLocalizedString("Cancel", comment:"")
-        default:
-            return ""
-        }
-    }
-    
-    func getTrackActionSheetCount(track: Track) -> Int {
-        return 5
-    }
-    
-    func getTrackActionSheetCancelButtonIndex(track: Track) -> Int {
-        return 4
-    }
-    
-    func onTrackActionSheetClicked(targetTrack: Track, buttonIndex: Int) {
-        switch(buttonIndex) {
-        case 0:
-            onTrackLikeBtnClicked(targetTrack)
-        case 1:
-            onTrackAddBtnClicked(targetTrack)
-        case 2:
-            onTrackRepostAction(targetTrack)
-        case 3:
-            onTrackShareBtnClicked(targetTrack)
-        default:
-            break
-        }
-    }
-    
-    func getTrackActionSheetDestructiveButtonIndex(track:Track) -> Int {
-        return -1
-    }
     
     ////////////////////////////////////
     // METHODS SHOULD BE IMPLEMENTED  //
@@ -551,7 +513,7 @@ class AddableTrackListViewController: GAITrackedViewController, AddableTrackCell
 // MARK: - AddableTrackTableViewCell
 
 protocol AddableTrackCellDelegate {
-    func onTrackMenuBtnClicked(sender:AddableTrackTableViewCell)
+    func onTrackMenuBtnClicked(cell:AddableTrackTableViewCell, sender: UIView)
     func onTrackDropBtnClicked(sender:AddableTrackTableViewCell)
 }
 
@@ -585,7 +547,7 @@ class AddableTrackTableViewCell: UITableViewCell {
     }
     
     @IBAction func onMenuBtnClicked(sender: UIButton) {
-        delegate?.onTrackMenuBtnClicked(self)
+        delegate?.onTrackMenuBtnClicked(self, sender: sender)
     }
     
     @IBAction func onDropBtnClicked(sender: AnyObject) {

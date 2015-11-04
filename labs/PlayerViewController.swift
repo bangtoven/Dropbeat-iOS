@@ -438,7 +438,7 @@ class PlayerViewController: GAITrackedViewController {
                 return
             }
             
-            self.showActivityViewControllerWithShareURL(sharedURL!, string: track.title)
+            self.showActivityViewControllerWithShareURL(sharedURL!, string: track.title, sender: sender)
         }
     }
     

@@ -26,7 +26,7 @@ class RepostTrackTableViewwCell: TrackSubTableViewwCell {
 
 class RepostSubViewController: TrackSubViewController {
     
-    @IBAction func showUserAction(sender: UIButton) {
+    @IBAction func showUserInfo(sender: UIButton) {
         if let indexPath = self.trackTableView.indexPathOfCellContains(sender),
             resourceName = tracks[indexPath.row].user?.resourceName {
                 let userVC = self.storyboard?.instantiateViewControllerWithIdentifier("UserViewController") as! UserViewController
@@ -35,35 +35,8 @@ class RepostSubViewController: TrackSubViewController {
         }
     }
     
-    @IBAction func moreButtonAction(sender: UIButton) {
-        let indexPath = self.trackTableView.indexPathOfCellContains(sender)
-        let track = self.tracks[indexPath!.row]
-        
-        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .ActionSheet)
-        actionSheet.addAction(UIAlertAction(
-            title: track.isLiked ? NSLocalizedString("Unlike", comment:"") :
-                NSLocalizedString("Like", comment:""),
-            style: .Default,
-            handler: { (action) -> Void in
-                self.onTrackLikeBtnClicked(track)
-        }))
-        actionSheet.addAction(UIAlertAction(
-            title: NSLocalizedString("Add to playlist", comment:""),
-            style: .Default,
-            handler: { (action) -> Void in
-                self.onTrackAddBtnClicked(track)
-        }))
-        actionSheet.addAction(UIAlertAction(
-            title: NSLocalizedString("Share", comment:""),
-            style: .Default,
-            handler: { (action) -> Void in
-                self.onTrackShareBtnClicked(track)
-        }))
-        actionSheet.addAction(UIAlertAction(
-            title: NSLocalizedString("Cancel", comment:""),
-            style: .Cancel, handler: nil))
-        
-        self.presentViewController(actionSheet, animated: true, completion: nil)
+    override func allowedMenuActionsForTrack(track: Track) -> [MenuAction] {
+        return [.Like, .Share, .Add]
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -86,12 +59,6 @@ class RepostSubViewController: TrackSubViewController {
                 ], range: NSMakeRange(0, author.name.length))
             
             cell.authorNameButton.setAttributedTitle(attrString, forState: .Normal)
-//            cell.authorNameLabel.text = author.name
-//            if let imageUrl = author.image {
-//                cell.authorProfileImageView.sd_setImageWithURL(NSURL(string: imageUrl), placeholderImage: UIImage(named: "default_profile"))
-//            } else {
-//                cell.authorProfileImageView.image = UIImage(named: "default_profile")
-//            }
             
             cell.delegate = self
             cell.nameView.text = track.title

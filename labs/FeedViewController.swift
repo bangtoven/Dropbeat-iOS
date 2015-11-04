@@ -44,10 +44,23 @@ extension FeedViewController: ScrollPagerDelegate {
         let indexPath = self.trackTableView.indexPathOfCellContains(sender)
         let track = self.tracks[indexPath!.row]
         
-        self.onTrackLikeBtnClicked(track) {
-            let likeImage = track.isLiked ? UIImage(named:"ic_like") : UIImage(named:"ic_dislike")
-            let cell = self.trackTableView.cellForRowAtIndexPath(indexPath!) as! DropbeatTrackTableViewCell
-            cell.likeButton.setImage(likeImage, forState: UIControlState.Normal)
+        self.onTrackLikeBtnClicked(track)
+    }
+    
+    func updateLikeView(noti: NSNotification) {
+        guard selectedFeedMenu.type == .NEW_UPLOADS else {
+            return
+        }
+        
+        let track = noti.object as! Track
+        let likeImage = track.isLiked ? UIImage(named:"ic_like") : UIImage(named:"ic_dislike")
+        
+        for indexPath in trackTableView.indexPathsForVisibleRows ?? [] {
+            let t = tracks[indexPath.row]
+            if t.id == track.id {
+                let cell = self.trackTableView.cellForRowAtIndexPath(indexPath) as! DropbeatTrackTableViewCell
+                cell.likeButton.setImage(likeImage, forState: .Normal)
+            }
         }
     }
     
@@ -281,6 +294,8 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateLikeView:", name: NotifyKey.likeUpdated, object: nil)
+
         self.screenName = "FeedViewScreen"
 
         if selectedFeedMenu.type == .NEW_UPLOADS{
@@ -299,7 +314,8 @@ class FeedViewController: AddableTrackListViewController, UITableViewDelegate, U
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.likeUpdated, object: nil)
+
         if self.viewMode != .Normal {
             toFeedView(selectedFeedMenu.title)
         }

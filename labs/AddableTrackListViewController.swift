@@ -302,7 +302,7 @@ extension AddableTrackListViewController {
         }
     }
     
-    func onTrackLikeBtnClicked(track:Track, onSuccess:(Void->Void)? = nil) {
+    func onTrackLikeBtnClicked(track:Track) {
         if (Account.getCachedAccount() == nil) {
             NeedAuthViewController.showNeedAuthViewController(self)
             return
@@ -321,8 +321,6 @@ extension AddableTrackListViewController {
                     })
                     return
                 }
-                
-                onSuccess?()
                 
                 progressHud.mode = MBProgressHUDMode.CustomView
                 progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_unlike"))
@@ -345,8 +343,6 @@ extension AddableTrackListViewController {
                     })
                     return
                 }
-                
-                onSuccess?()
                 
                 progressHud.mode = MBProgressHUDMode.CustomView
                 progressHud.customView = UIImageView(image: UIImage(named:"ic_hud_like"))
@@ -386,7 +382,7 @@ class AddableTrackListViewController: GAITrackedViewController, AddableTrackCell
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.screenName = "PlayableViewScreen"
+//        self.screenName = "PlayableViewScreen"
         
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "trackChanged", name: DropbeatPlayerTrackChangedNotification, object: nil)

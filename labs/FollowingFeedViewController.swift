@@ -42,11 +42,18 @@ class FollowingFeedViewController: AddableTrackListViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateLikeView:", name: NotifyKey.likeUpdated, object: nil)
+        
         self.screenName = "FollowingFeedViewScreen"
 
         if self.tracks.count == 0 {
             refresh()
         }
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.likeUpdated, object: nil)
     }
     
     @IBAction func showSearchViewController(sender: AnyObject) {
@@ -191,6 +198,26 @@ extension FollowingFeedViewController {
     func scrollViewDidScroll(scrollView: UIScrollView) {
         for cell in self.trackTableView.visibleCells {
             self.updateTrackCellImageOffset(cell as! DropbeatTrackTableViewCell)
+        }
+    }
+    
+    @IBAction func likeAction(sender: UIButton) {
+        let indexPath = self.trackTableView.indexPathOfCellContains(sender)
+        let track = self.tracks[indexPath!.row]
+        
+        self.onTrackLikeBtnClicked(track) 
+    }
+    
+    func updateLikeView(noti: NSNotification) {
+        let track = noti.object as! Track
+        let likeImage = track.isLiked ? UIImage(named:"ic_like") : UIImage(named:"ic_dislike")
+        
+        for indexPath in trackTableView.indexPathsForVisibleRows ?? [] {
+            let t = tracks[indexPath.row]
+            if t.id == track.id {
+                let cell = self.trackTableView.cellForRowAtIndexPath(indexPath) as! DropbeatTrackTableViewCell
+                cell.likeButton.setImage(likeImage, forState: .Normal)
+            }
         }
     }
     

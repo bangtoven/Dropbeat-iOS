@@ -30,6 +30,8 @@ class ProfileViewController: UserViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateLikeView:", name: NotifyKey.likeUpdated, object: nil)
+        
         if self.isMovingToParentViewController() == false && presented == true {
             self.fetchUserInfo()
             if let subVC = self.selectedViewController as? AXSubViewController {
@@ -38,6 +40,11 @@ class ProfileViewController: UserViewController {
         }
         
         presented = true
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: NotifyKey.likeUpdated, object: nil)
     }
     
     override func preferredStatusBarStyle() -> UIStatusBarStyle {
@@ -115,6 +122,20 @@ class ProfileViewController: UserViewController {
                 })
         }))
         self.showActionSheet(actionSheet, sender: sender)
+    }
+    
+    func updateLikeView(noti: NSNotification) {
+        if let viewControllers = self.viewControllers,
+            likesSubView = viewControllers.last as? TrackSubViewController {
+                let track = noti.object as! Track
+                
+                if let index = likesSubView.tracks.indexOf({ $0.id == track.id })
+                    where track.isLiked == false {
+                        print("like updated")
+                        likesSubView.tracks.removeAtIndex(index)
+                        likesSubView.trackTableView.reloadData()
+                }
+        }
     }
     
     @IBAction func unwindFromEditProfile(sender: UIStoryboardSegue) {

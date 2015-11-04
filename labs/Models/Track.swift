@@ -694,6 +694,8 @@ class Like {
                    let account = Account.getCachedAccount()
                     account!.likes.append(like)
                     callback?(error:nil)
+                    
+                    postLikeUpdatedNotification(track)
                 }
             }
         default:
@@ -707,6 +709,8 @@ class Like {
                     let account = Account.getCachedAccount()
                     account!.likes.append(like)
                     callback?(error:nil)
+                    
+                    postLikeUpdatedNotification(track)
                 }
             }
         }
@@ -746,6 +750,8 @@ class Like {
                 
                 account.likes.removeAtIndex(foundIdx)
                 callback?(error:nil)
+                
+                postLikeUpdatedNotification(track)
             }
             break
         default:
@@ -765,8 +771,14 @@ class Like {
                 
                 account.likes.removeAtIndex(foundIdx)
                 callback?(error:nil)
+                
+                postLikeUpdatedNotification(track)
             }
         }
+    }
+    
+    static func postLikeUpdatedNotification(track: Track) {
+        NSNotificationCenter.defaultCenter().postNotificationName(NotifyKey.likeUpdated, object: track)
     }
     
 }

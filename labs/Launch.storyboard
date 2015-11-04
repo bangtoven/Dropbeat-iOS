@@ -395,7 +395,7 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="DROPBEAT" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Br-HT-DCf">
-                            <rect key="frame" x="77" y="88" width="166" height="41"/>
+                            <rect key="frame" x="77" y="88" width="165.5" height="41"/>
                             <animations/>
                             <fontDescription key="fontDescription" type="system" weight="light" pointSize="34"/>
                             <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -410,8 +410,8 @@
                                 <constraint firstAttribute="height" constant="3" id="wdm-f1-fMR"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jwX-sU-zc3">
-                            <rect key="frame" x="23" y="375" width="276" height="29"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jwX-sU-zc3">
+                            <rect key="frame" x="22.5" y="375" width="276" height="28.5"/>
                             <animations/>
                             <state key="normal">
                                 <attributedString key="attributedTitle">

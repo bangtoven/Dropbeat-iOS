@@ -227,7 +227,9 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         dispatch_after(popTime, dispatch_get_main_queue()) {
             
             if Account.getCachedAccount() != nil {
-                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                let application = UIApplication.sharedApplication()
+                application.applicationIconBadgeNumber = 0
+                let appDelegate = application.delegate as! AppDelegate
                 appDelegate.setRootViewToMainTabBarController()
             } else {
                 // tutorial

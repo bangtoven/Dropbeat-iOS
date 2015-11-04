@@ -39,7 +39,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rnG-HH-G81" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="518" y="-618"/>
+            <point key="canvasLocation" x="518" y="-686"/>
         </scene>
         <!--Main Tab Bar Controller-->
         <scene sceneID="2cq-gw-d7d">
@@ -65,7 +65,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lCq-0r-RCv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="903" y="-1263"/>
+            <point key="canvasLocation" x="1175" y="-1263"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Vv9-Mw-Eed">
@@ -85,7 +85,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4n7-aN-GGZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1306" y="-1263"/>
+            <point key="canvasLocation" x="1649" y="-1263"/>
         </scene>
         <!--Storyboard Link-->
         <scene sceneID="jG7-su-SAl">
@@ -119,7 +119,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZtQ-WG-i8B" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="173" y="-618"/>
+            <point key="canvasLocation" x="173" y="-686"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="yGL-1L-Up8">
@@ -130,11 +130,11 @@
                         <viewControllerLayoutGuide type="bottom" id="Btp-Vb-WVV"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="DUk-zN-s1T">
-                        <rect key="frame" x="0.0" y="64" width="320" height="367"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView hidden="YES" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" bouncesZoom="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Qli-Sc-q1N" userLabel="autocomplete view">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -172,17 +172,17 @@
                                 </connections>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3WY-tN-aLw" userLabel="search result">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                                 <subviews>
                                     <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No search results" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nkr-bD-dru" userLabel="No search results">
-                                        <rect key="frame" x="104" y="175" width="113" height="17"/>
+                                        <rect key="frame" x="104" y="222" width="113" height="17"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" red="0.56470588239999997" green="0.56470588239999997" blue="0.56470588239999997" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" bouncesZoom="NO" keyboardDismissMode="onDrag" dataMode="prototypes" style="grouped" separatorStyle="none" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="76" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="Ttt-gN-ZOc" userLabel="tracks view">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="367"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
                                         <animations/>
                                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                         <color key="sectionIndexColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -244,7 +244,7 @@
                                                     <outlet property="isFollowedImageView" destination="q65-w9-g7K" id="KAJ-1Y-i35"/>
                                                     <outlet property="nameLabel" destination="aIP-Z6-cwC" id="Vgs-iT-ENJ"/>
                                                     <outlet property="profileImageView" destination="8Au-Ef-V4M" id="ZMy-jJ-HP5"/>
-                                                    <segue destination="qd0-T9-4Xp" kind="custom" identifier="showChannelInfo" customClass="LinkedImageTransitionSegue" id="BKA-l4-SBR"/>
+                                                    <segue destination="5Ke-Pz-Z6K" kind="custom" identifier="showUserInfo" customClass="LinkedImageTransitionSegue" id="0SG-ZL-g0p"/>
                                                 </connections>
                                             </tableViewCell>
                                             <tableViewCell contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="AddableTrackTableViewCell" rowHeight="76" id="eYx-8G-TaG" customClass="AddableTrackTableViewCell" customModule="for_test" customModuleProvider="target">
@@ -403,6 +403,7 @@
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" id="jq4-xf-xcU">
                         <nil key="title"/>
+                        <barButtonItem key="backBarButtonItem" title=" " id="Rut-Zi-GcM"/>
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
@@ -419,41 +420,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="2201" y="-923"/>
-        </scene>
-        <!--Storyboard Link-->
-        <scene sceneID="eca-4k-cnZ">
-            <objects>
-                <viewController id="qd0-T9-4Xp" customClass="RBStoryboardLink" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="hay-sX-gUK"/>
-                        <viewControllerLayoutGuide type="bottom" id="sZq-Oy-gGd"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="cCD-S0-9od">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="User profile view" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n35-Be-eFr">
-                                <rect key="frame" x="16" y="28" width="128" height="21"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <animations/>
-                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                    </view>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="200"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Profile"/>
-                        <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="UserViewController"/>
-                    </userDefinedRuntimeAttributes>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="7ze-cs-ZdD" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2607" y="-923"/>
+            <point key="canvasLocation" x="2083" y="-686"/>
         </scene>
         <!--Storyboard Link-->
         <scene sceneID="zZM-Ms-sL6">
@@ -866,7 +833,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tnw-t1-G2s" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="355" y="-1263"/>
+            <point key="canvasLocation" x="518" y="-1263"/>
         </scene>
         <!--Storyboard Link-->
         <scene sceneID="gCw-un-Ow6">
@@ -975,7 +942,7 @@
         <scene sceneID="LCx-N4-Mc2">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6Yd-3V-c2J" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="" image="tabbar_feed" id="pHg-RO-aPm">
+                    <tabBarItem key="tabBarItem" title="" image="tabbar_explore" id="pHg-RO-aPm">
                         <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                     </tabBarItem>
                     <toolbarItems/>
@@ -999,7 +966,7 @@
         <scene sceneID="oy7-i0-31g">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xhj-Hh-FVv" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" tag="1" title="" image="tabbar_explore" id="ZRc-3T-fWd">
+                    <tabBarItem key="tabBarItem" tag="1" title="" image="tabbar_featured" id="ZRc-3T-fWd">
                         <inset key="imageInsets" minX="0.0" minY="4" maxX="0.0" maxY="-4"/>
                     </tabBarItem>
                     <toolbarItems/>
@@ -1067,10 +1034,9 @@
             </objects>
             <point key="canvasLocation" x="1709" y="-678"/>
         </scene>
-        <!--Following Feed View Controller-->
+        <!--Following feed-->
         <scene sceneID="Ep1-Jz-gcI">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="T95-Zu-VyC" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="FollowingFeedViewController" automaticallyAdjustsScrollViewInsets="NO" id="Asj-9X-deI" customClass="FollowingFeedViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="B0A-tD-hHl"/>
@@ -1310,8 +1276,8 @@
                                                             <state key="normal" image="ic_dislike"/>
                                                             <variation key="default">
                                                                 <mask key="constraints">
-                                                                    <exclude reference="bZy-a0-CcP"/>
                                                                     <exclude reference="275-dr-KTg"/>
+                                                                    <exclude reference="bZy-a0-CcP"/>
                                                                 </mask>
                                                             </variation>
                                                             <connections>
@@ -1606,8 +1572,8 @@
                                                     <state key="normal" image="ic_dislike"/>
                                                     <variation key="default">
                                                         <mask key="constraints">
-                                                            <exclude reference="Q2w-x4-7xo"/>
                                                             <exclude reference="EO5-jd-wRG"/>
+                                                            <exclude reference="Q2w-x4-7xo"/>
                                                         </mask>
                                                     </variation>
                                                     <connections>
@@ -1687,17 +1653,16 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="UOZ-dt-GxA">
-                        <nil key="title"/>
-                        <view key="titleView" contentMode="scaleToFill" id="f8Y-qD-W94">
-                            <rect key="frame" x="96" y="5.5" width="128" height="33"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <animations/>
-                        </view>
+                    <navigationItem key="navigationItem" title="Following feed" id="UOZ-dt-GxA">
+                        <barButtonItem key="backBarButtonItem" title=" " id="ffn-bX-5It"/>
+                        <barButtonItem key="leftBarButtonItem" image="ic_following" id="T3u-KK-DUr">
+                            <connections>
+                                <segue destination="Il6-kN-aA6" kind="custom" identifier="showFollowInfo" customClass="RBStoryboardPushSegue" id="Mn8-Hz-mVF"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="q8D-4C-YIe">
                             <connections>
-                                <action selector="showSearchViewController:" destination="Asj-9X-deI" id="Xwn-Ly-SS8"/>
-                                <segue destination="Bcu-6f-PCt" kind="show" id="Kvl-gR-rkH"/>
+                                <action selector="showSearchViewController:" destination="Asj-9X-deI" id="67x-U9-NSO"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -1709,6 +1674,7 @@
                         <outlet property="trackTableView" destination="6tJ-Pa-dXI" id="3vm-MC-ooc"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="T95-Zu-VyC" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <view contentMode="scaleToFill" id="k2t-n3-RW6">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="160"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -1773,11 +1739,12 @@
                     </constraints>
                 </view>
             </objects>
-            <point key="canvasLocation" x="1737" y="-1263"/>
+            <point key="canvasLocation" x="2083" y="-1263"/>
         </scene>
         <!--Storyboard Link-->
         <scene sceneID="6Zg-VI-qge">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hsq-Ty-Ug2" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="5Ke-Pz-Z6K" customClass="RBStoryboardLink" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="5ez-7g-EKL"/>
@@ -1805,9 +1772,42 @@
                         <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="UserViewController"/>
                     </userDefinedRuntimeAttributes>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Hsq-Ty-Ug2" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2201" y="-1443"/>
+            <point key="canvasLocation" x="2589" y="-879"/>
+        </scene>
+        <!--Storyboard Link-->
+        <scene sceneID="G1u-dU-qzh">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ppk-ns-7gC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="Il6-kN-aA6" customClass="RBStoryboardLink" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Nb0-Al-6rD"/>
+                        <viewControllerLayoutGuide type="bottom" id="tdE-v8-FoT"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="93O-bl-FIc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="320"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Following info view" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FTM-rt-con">
+                                <rect key="frame" x="16" y="28" width="145" height="21"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <animations/>
+                        <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="320" height="320"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="storyboardName" value="Profile"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="sceneIdentifier" value="FollowInfoViewController"/>
+                    </userDefinedRuntimeAttributes>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="2589" y="-1338"/>
         </scene>
     </scenes>
     <resources>
@@ -1834,6 +1834,7 @@
         <image name="ic_shuffle_gray" width="47" height="47"/>
         <image name="tabbar_bg_with_bar" width="49" height="49"/>
         <image name="tabbar_explore" width="25" height="25"/>
+        <image name="tabbar_featured" width="28" height="28"/>
         <image name="tabbar_feed" width="24" height="24"/>
         <image name="tabbar_playlist" width="24" height="24"/>
         <image name="tabbar_profile" width="25" height="25"/>

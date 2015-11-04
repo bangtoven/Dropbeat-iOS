@@ -54,11 +54,9 @@ class ExploreViewController: AddableTrackListViewController, UITableViewDelegate
         super.viewWillAppear(animated)
         self.screenName = "ExploreViewScreen"
         
-        if trackTableView.indexPathForSelectedRow != nil {
-            trackTableView.deselectRowAtIndexPath(trackTableView.indexPathForSelectedRow!, animated: false)
+        if self.tracks.count == 0 {
+            refresh()
         }
-        
-        self.refresh()
     }
     
     @IBAction func showSearchViewController(sender: AnyObject) {

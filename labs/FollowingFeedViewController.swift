@@ -9,34 +9,22 @@
 import UIKit
 
 class FollowingFeedViewController: AddableTrackListViewController {
-    func getFollowingFeedTrackCell(indexPath:NSIndexPath) -> AddableTrackTableViewCell {
-        let track = tracks[indexPath.row]
-        
-        if track.repostingUser != nil {
-            let identifier = (track.user == nil) ? "DropbeatTrackTableViewCell" : "RepostedTrackTableViewCell"
-            let cell = trackTableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! DropbeatTrackTableViewCell
-            cell.setContentsWithTrack(track, reposting: true)
-            cell.delegate = self
-            return cell
-        } else {
-            return getDropbeatTrackCell(indexPath)
-        }
-    }
+
+    private var nextPage:Int = 0
+    private var isLoading:Bool = false
+    private var refreshControl: UIRefreshControl!
     
-    func getDropbeatTrackCell(indexPath:NSIndexPath) -> AddableTrackTableViewCell {
-        let cell = trackTableView.dequeueReusableCellWithIdentifier("DropbeatTrackTableViewCell", forIndexPath: indexPath) as! DropbeatTrackTableViewCell
-        cell.setContentsWithTrack(tracks[indexPath.row])
-        cell.delegate = self
-        
-        return cell
-    }
+    @IBOutlet weak var loadMoreSpinner: UIActivityIndicatorView!
+    @IBOutlet weak var loadMoreSpinnerWrapper: UIView!
+    
+    @IBOutlet var followGuideHeaderView: UIView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         refreshControl = UIRefreshControl()
         refreshControl.tintColor = UIColor(netHex:0xc380fc)
-        refreshControl.addTarget(self, action: "refresh", forControlEvents: UIControlEvents.ValueChanged)
+        refreshControl.addTarget(self, action: "refresh", forControlEvents: .ValueChanged)
         
         let refreshControlTitle = NSAttributedString(
             string: NSLocalizedString("Pull to refresh", comment: ""),
@@ -55,113 +43,62 @@ class FollowingFeedViewController: AddableTrackListViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "FollowingFeedViewScreen"
-        self.loadFollowingTracks(true)
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let track = tracks[indexPath.row]
-        var height = self.view.bounds.width * 0.5 + 68
-        if track.repostingUser != nil && track.user != nil {
-            height += 62
-        }
-        return height
-    }
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            return tracks.count
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        self.needsBigSizeDropButton = true
-        let cell = getFollowingFeedTrackCell(indexPath)
-        
-        let track = tracks[indexPath.row]
-        if (getPlaylistId() == DropbeatPlayer.defaultPlayer.currentPlaylist?.id &&
-            DropbeatPlayer.defaultPlayer.currentTrack != nil &&
-            DropbeatPlayer.defaultPlayer.currentTrack!.id == track.id) {
-                cell.setSelected(true, animated: false)
-        }
-        
-        self.setDropButtonForCellWithTrack(cell, track: track)
-        
-        return cell
-    }
 
+        if self.tracks.count == 0 {
+            refresh()
+        }
+    }
+    
+    @IBAction func showSearchViewController(sender: AnyObject) {
+        let tabBarController = self.tabBarController as! MainTabBarController
+        tabBarController.showSearchViewController()
+    }
+    
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        if identifier == "showFollowInfo" {
+            return (Account.getCachedAccount()?.user != nil)
+        } else {
+            return super.shouldPerformSegueWithIdentifier(identifier, sender: sender)
+        }
+    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         switch segue.identifier! {
-        case "showUserInfo":
-            handleShowUserInfoSegue(segue, sender: sender, showReposter: false)
-        case "ShowReposterInfo":
-            handleShowUserInfoSegue(segue, sender: sender, showReposter: true)
+        case "showFollowInfo":
+            let followInfoVC = segue.destinationViewController as! FollowInfoViewController
+            followInfoVC.user = Account.getCachedAccount()!.user!
+            
+        case "showUserInfo", "ShowReposterInfo":
+            let indexPath = self.trackTableView.indexPathOfCellContains(sender as! UIButton)
+            
+            let mySegue = segue as! JHImageTransitionSegue
+            var sourceImageView: UIImageView {
+                let cell = self.trackTableView.cellForRowAtIndexPath(indexPath!)
+                if segue.identifier == "ShowReposterInfo" {
+                    return (cell as! RepostedTrackTableViewCell).reposterProfileImageView
+                } else {
+                    return (cell as! DropbeatTrackTableViewCell).userProfileImageView
+                }
+            }
+            
+            mySegue.setSourceImageView(sourceImageView)
+            mySegue.sourceRect = sourceImageView.convertRect(sourceImageView.bounds, toView: self.view)
+            mySegue.destinationRect = self.view.convertRect(UserHeaderView.profileImageRect(self), fromView: nil)
+            
+            let track = self.tracks[indexPath!.row]
+            var user: BaseUser!
+            if segue.identifier == "ShowReposterInfo" || track.user == nil {
+                user = track.repostingUser
+            } else {
+                user = track.user
+            }
+            
+            let uvc = segue.destinationViewController as! UserViewController
+            uvc.resource = user?.resourceName
+            uvc.passedImage = sourceImageView.image
         default:
             break
         }
-    }
-    
-    func handleShowUserInfoSegue(segue: UIStoryboardSegue, sender: AnyObject?, showReposter: Bool) {
-        let indexPath = self.trackTableView.indexPathOfCellContains(sender as! UIButton)
-        
-        let mySegue = segue as! JHImageTransitionSegue
-        var sourceImageView: UIImageView {
-            let cell = self.trackTableView.cellForRowAtIndexPath(indexPath!)
-            if showReposter {
-                return (cell as! RepostedTrackTableViewCell).reposterProfileImageView
-            } else {
-                return (cell as! DropbeatTrackTableViewCell).userProfileImageView
-            }
-        }
-        
-        mySegue.setSourceImageView(sourceImageView)
-        mySegue.sourceRect = sourceImageView.convertRect(sourceImageView.bounds, toView: self.view)
-        mySegue.destinationRect = self.view.convertRect(UserHeaderView.profileImageRect(self), fromView: nil)
-        
-        let track = self.tracks[indexPath!.row]
-        var user: BaseUser!
-        if showReposter || track.user == nil {
-            user = track.repostingUser
-        } else {
-            user = track.user
-        }
-        
-        let uvc = segue.destinationViewController as! UserViewController
-        uvc.resource = user?.resourceName
-        uvc.passedImage = sourceImageView.image
-    }
-    
-    
-    private var nextPage:Int = 0
-    private var isLoading:Bool = false
-    private var refreshControl: UIRefreshControl!
-    
-    @IBOutlet weak var loadMoreSpinner: UIActivityIndicatorView!
-    @IBOutlet weak var loadMoreSpinnerWrapper: UIView!
-    
-    @IBOutlet var followGuideHeaderView: UIView!
-    
-    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
-        if tableView != self.trackTableView || tracks.count == 0 || self.tabBarController?.selectedTab != .Feed {
-            return
-        }
-        let trackCell = cell as! DropbeatTrackTableViewCell
-        self.updateTrackCellImageOffset(trackCell)
-        
-        if indexPath.row == tracks.count - 1 {
-            if nextPage <= 0 || isLoading {
-                return
-            }
-            loadMoreSpinnerWrapper.hidden = false
-            loadMoreSpinner.startAnimating()
-            loadFollowingTracks()
-        }
-    }
-    
-    func updateTrackCellImageOffset(cell: DropbeatTrackTableViewCell) {
-        let imageOverflowHeight = cell.thumbView.frame.size.height / 3
-        let cellOffset = CGRectGetMaxY(cell.frame) - self.trackTableView.contentOffset.y
-        let maxOffset = self.trackTableView.frame.height + cell.frame.height
-        let verticalOffset = imageOverflowHeight * (0.5 - cellOffset/maxOffset)
-        
-        cell.thumnailCenterConstraint.constant = verticalOffset
     }
     
 
@@ -234,5 +171,88 @@ class FollowingFeedViewController: AddableTrackListViewController {
             self.trackChanged()
         }
     }
+    
+    
+    override func getPlaylistId() -> String? {
+        return "following_feed"
+    }
+    
+    override func getPlaylistName() -> String? {
+        return "Following feed"
+    }
+    
+    override func getSectionName() -> String {
+        return "following_feed"
+    }
 
+}
+
+extension FollowingFeedViewController {
+
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tracks.count
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        let track = tracks[indexPath.row]
+        var height = self.view.bounds.width * 0.5 + 68
+        if track.repostingUser != nil && track.user != nil {
+            height += 62
+        }
+        return height
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+         onTrackPlayBtnClicked(tracks[indexPath.row])
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        self.needsBigSizeDropButton = true
+        let track = tracks[indexPath.row]
+        
+        let reposting = (track.repostingUser != nil)
+        let identifier = (track.repostingUser != nil && track.user != nil) ?
+            "RepostedTrackTableViewCell" : "DropbeatTrackTableViewCell"
+        
+        let cell = trackTableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath) as! DropbeatTrackTableViewCell
+        cell.setContentsWithTrack(track, reposting: reposting)
+        cell.delegate = self
+        
+        if (getPlaylistId() == DropbeatPlayer.defaultPlayer.currentPlaylist?.id &&
+            DropbeatPlayer.defaultPlayer.currentTrack != nil &&
+            DropbeatPlayer.defaultPlayer.currentTrack!.id == track.id) {
+                cell.setSelected(true, animated: false)
+        }
+        
+        self.setDropButtonForCellWithTrack(cell, track: track)
+        
+        return cell
+    }
+
+    
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        if tableView != self.trackTableView || tracks.count == 0 || self.tabBarController?.selectedTab != .Feed {
+            return
+        }
+        let trackCell = cell as! DropbeatTrackTableViewCell
+        self.updateTrackCellImageOffset(trackCell)
+        
+        if indexPath.row == tracks.count - 1 {
+            if nextPage <= 0 || isLoading {
+                return
+            }
+            loadMoreSpinnerWrapper.hidden = false
+            loadMoreSpinner.startAnimating()
+            loadFollowingTracks()
+        }
+    }
+    
+    func updateTrackCellImageOffset(cell: DropbeatTrackTableViewCell) {
+        let imageOverflowHeight = cell.thumbView.frame.size.height / 3
+        let cellOffset = CGRectGetMaxY(cell.frame) - self.trackTableView.contentOffset.y
+        let maxOffset = self.trackTableView.frame.height + cell.frame.height
+        let verticalOffset = imageOverflowHeight * (0.5 - cellOffset/maxOffset)
+        
+        cell.thumnailCenterConstraint.constant = verticalOffset
+    }
 }

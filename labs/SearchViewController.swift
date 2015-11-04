@@ -74,7 +74,7 @@ class SearchViewController: AddableTrackListViewController,
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         switch segue.identifier! {
-        case "showChannelInfo":
+        case "showUserInfo":
             let cell = sender as! FollowInfoTableViewCell
             let indexPath = self.trackTableView.indexPathForSelectedRow
             let u = self.users[indexPath!.row]

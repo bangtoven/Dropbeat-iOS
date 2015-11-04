@@ -1182,13 +1182,14 @@
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="wyB-0l-mvf">
                         <nil key="title"/>
+                        <barButtonItem key="backBarButtonItem" title=" " id="iWY-X7-O7M"/>
                         <barButtonItem key="leftBarButtonItem" title="Genre" id="D8x-Nr-nwJ">
                             <connections>
                                 <action selector="onGenreBtnClicked:" destination="iBA-aE-55u" id="cIi-1U-Vua"/>
                             </connections>
                         </barButtonItem>
                         <view key="titleView" contentMode="scaleToFill" id="FCw-ns-6Fd">
-                            <rect key="frame" x="96" y="5.5" width="128" height="33"/>
+                            <rect key="frame" x="96" y="6" width="128" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1Oi-EH-L53">
@@ -1357,9 +1358,9 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5nm-qT-XH5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2074" y="-3228"/>
+            <point key="canvasLocation" x="2094" y="-2948"/>
         </scene>
-        <!--Explore-->
+        <!--Featured-->
         <scene sceneID="P5e-3v-TP6">
             <objects>
                 <viewController storyboardIdentifier="ExploreViewController" id="bcX-Up-44B" customClass="ExploreViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
@@ -1599,8 +1600,8 @@
                                             </constraints>
                                             <variation key="default">
                                                 <mask key="constraints">
-                                                    <exclude reference="MEI-ih-oyd"/>
                                                     <exclude reference="FQs-O9-Y08"/>
+                                                    <exclude reference="MEI-ih-oyd"/>
                                                     <exclude reference="j80-VY-T4c"/>
                                                     <exclude reference="WQd-4L-ozi"/>
                                                 </mask>
@@ -1635,7 +1636,8 @@
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
-                    <navigationItem key="navigationItem" title="Explore" id="Syj-po-wEo">
+                    <navigationItem key="navigationItem" title="Featured" id="Syj-po-wEo">
+                        <barButtonItem key="backBarButtonItem" title=" " id="DQo-cU-bYG"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="search" id="EjX-iN-xZq">
                             <connections>
                                 <action selector="showSearchViewController:" destination="bcX-Up-44B" id="RrU-Xd-Asd"/>
@@ -1688,7 +1690,7 @@
         <image name="ic_playing_indicator" width="104" height="104"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="cFY-fQ-Xck"/>
+        <segue reference="1I7-D8-Ldf"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.56078431370000004" green="0.17254901959999999" blue="0.93725490199999995" alpha="1" colorSpace="calibratedRGB"/>
 </document>

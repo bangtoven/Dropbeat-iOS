@@ -212,6 +212,7 @@
 		734C7DF61BB4C1DA0071678C /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 732717451BAC8836003E0B68 /* Profile.storyboard */; };
 		734C7DF91BB4C1DA0071678C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FCD1DA8E1B04CCB200F9EA70 /* Images.xcassets */; };
 		734C7DFA1BB4C1DA0071678C /* DateTools.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 585BACFA1B85ED9900FE137A /* DateTools.bundle */; };
+		73519AB01BE0045A008413B8 /* dropbeat.caf in Resources */ = {isa = PBXBuildFile; fileRef = 73519AAF1BE0045A008413B8 /* dropbeat.caf */; };
 		7361FCE41B9F5E7F00444179 /* EmailSubmitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7361FCE31B9F5E7F00444179 /* EmailSubmitViewController.swift */; };
 		7361FCF71B9F687E00444179 /* Settings.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7361FCF91B9F687E00444179 /* Settings.storyboard */; };
 		736D71DD1BCA90A100D54188 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 736D71DC1BCA90A100D54188 /* MainTabBarController.swift */; };
@@ -528,6 +529,7 @@
 		734C7D621BB47D470071678C /* Playlist.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Playlist.swift; path = Models/Playlist.swift; sourceTree = "<group>"; };
 		734C7D641BB47D750071678C /* Genre.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Genre.swift; path = Models/Genre.swift; sourceTree = "<group>"; };
 		734C7DFF1BB4C1DA0071678C /* for test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "for test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		73519AAF1BE0045A008413B8 /* dropbeat.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = dropbeat.caf; sourceTree = "<group>"; };
 		7361FCE31B9F5E7F00444179 /* EmailSubmitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailSubmitViewController.swift; sourceTree = "<group>"; };
 		7361FCE91B9F683100444179 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Feed.storyboard; sourceTree = "<group>"; };
 		7361FCF81B9F687E00444179 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Settings.storyboard; sourceTree = "<group>"; };
@@ -959,6 +961,7 @@
 		7361FCE51B9F628100444179 /* Model & etc */ = {
 			isa = PBXGroup;
 			children = (
+				73519AAF1BE0045A008413B8 /* dropbeat.caf */,
 				73AECBAA1BC5CF280040F0AF /* DropbeatPlayer.swift */,
 				734C7D6B1BB47F410071678C /* Models */,
 				FC0D9D581B0CC4DE00E048CC /* Constants.swift */,
@@ -1309,6 +1312,11 @@
 					FCD1DA811B04CCB200F9EA70 = {
 						CreatedOnToolsVersion = 6.0.1;
 						DevelopmentTeam = XGLQXMFR26;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -1380,6 +1388,7 @@
 				586F49C71B805D290039CC6B /* Localizable.stringsdict in Resources */,
 				FCD1DA921B04CCB200F9EA70 /* LaunchScreen.xib in Resources */,
 				737FAB191BCAAFC700C1347B /* Launch.storyboard in Resources */,
+				73519AB01BE0045A008413B8 /* dropbeat.caf in Resources */,
 				7327174A1BAC8836003E0B68 /* Profile.storyboard in Resources */,
 				FCD1DA8F1B04CCB200F9EA70 /* Images.xcassets in Resources */,
 				585BAD0C1B85ED9900FE137A /* DateTools.bundle in Resources */,
@@ -1870,7 +1879,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = "";
 				ENABLE_BITCODE = NO;
@@ -1901,7 +1910,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = "";
 				ENABLE_BITCODE = NO;

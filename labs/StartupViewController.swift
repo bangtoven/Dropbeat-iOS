@@ -179,10 +179,10 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     }
     
     func fetchUserInfo() {
-        if Account.getCachedAccount() == nil {
-            self.showMainController()
-            return
-        }
+//        if Account.getCachedAccount() == nil {
+//            self.showMainController()
+//            return
+//        }
         
         let account = Account.getCachedAccount()!
         

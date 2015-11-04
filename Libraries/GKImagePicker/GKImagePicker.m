@@ -128,6 +128,7 @@
         [alertController addAction:fromLibraryAction];
         [alertController addAction:fromCameraAction];
         
+        alertController.popoverPresentationController.sourceView = popoverView;
         [viewController presentViewController:alertController animated:YES completion:^{
             
         }];

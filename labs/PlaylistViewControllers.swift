@@ -574,7 +574,7 @@ extension PlaylistViewController {
         
         let selectedTrack = tracks[indexPath!.row]
         
-        let actionSheet = UIAlertController(title: selectedTrack.title, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.ActionSheet)
         
         if playlist.type != PlaylistType.USER {
             let title = selectedTrack.isLiked ?

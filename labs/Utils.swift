@@ -15,12 +15,12 @@ extension UIViewController {
     }
     
     func showActivityViewControllerWithShareURL(url: NSURL, string: String? = nil, sender: AnyObject?) {
-        var items: [AnyObject] = [url]
-        if string != nil {
-            items.append(string!)
-        }
+//        var items: [AnyObject] = [url]
+//        if string != nil {
+//            items.append(string!)
+//        }
         
-        let activityController = UIActivityViewController(activityItems: items, applicationActivities: nil)
+        let activityController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         activityController.excludedActivityTypes = [
             UIActivityTypePrint,
             UIActivityTypeSaveToCameraRoll,

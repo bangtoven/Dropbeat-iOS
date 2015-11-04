@@ -51,11 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         Raygun.sharedReporterWithApiKey("5vjswgUxxTkQxkoeNzkJeg==")
         
-        // Push Notification
-        let settings: UIUserNotificationSettings = UIUserNotificationSettings( forTypes: [.Badge, .Alert, .Sound], categories: nil )
-        application.registerUserNotificationSettings( settings )
-        application.registerForRemoteNotifications()
-        
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     
@@ -91,11 +86,23 @@ extension AppDelegate {
             .stringByReplacingOccurrencesOfString( " ", withString: "" ) as String
         
         print("Registered device token: \(deviceTokenString)")
-        Account.deviceID = deviceTokenString
+        
+        Requests.sendPost(ApiPath.userUpdateDeviceID,
+            params: ["key":deviceTokenString, "type":"IOS"],
+            auth: true) { (result, error) -> Void in
+                if error != nil {
+                    print("Update device token FAILED: \(error!)")
+                } else {
+                    print("Updated device token: \(result!)")
+                }
+        }
+        
+        let settings: UIUserNotificationSettings = UIUserNotificationSettings( forTypes: [.Badge, .Alert, .Sound], categories: nil )
+        application.registerUserNotificationSettings(settings)
     }
     
     func application( application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError ) {
-        print(error.localizedDescription)
+        print("Register device token FAILED: \(error.localizedDescription)")
     }
 }
 

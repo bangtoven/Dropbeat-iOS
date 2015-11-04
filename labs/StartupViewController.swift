@@ -193,6 +193,9 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
             return
         }
         
+        // Push Notification
+        UIApplication.sharedApplication().registerForRemoteNotifications()
+        
         self.showMainController()
     }
     

@@ -58,6 +58,8 @@ extension ApiPath {
     static let userChangeProfileImage = user + "change_profile_img/"
     static let userChangeCoverImage = user + "change_profile_cover_img/"
     
+    static let userUpdateDeviceID = user + "update_push_key/"
+    
     // Playlist
     static let playlist = hostV1 + "playlist/"
     static let playlistList = playlist + "list/"

@@ -125,8 +125,8 @@ class ProfileViewController: UserViewController {
     }
     
     func updateLikeView(noti: NSNotification) {
-        if let viewControllers = self.viewControllers,
-            likesSubView = viewControllers.last as? TrackSubViewController {
+        if let index = self.viewControllers.indexOf({ ($0 as! UIViewController).title == "Likes" }) {
+            if let likesSubView = viewControllers[index] as? TrackSubViewController {
                 let track = noti.object as! Track
                 
                 if let index = likesSubView.tracks.indexOf({ $0.id == track.id })
@@ -135,6 +135,7 @@ class ProfileViewController: UserViewController {
                         likesSubView.tracks.removeAtIndex(index)
                         likesSubView.trackTableView.reloadData()
                 }
+            }
         }
     }
     

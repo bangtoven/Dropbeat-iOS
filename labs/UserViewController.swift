@@ -172,17 +172,17 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
                         viewControllers.append(uploads)
                     }
                     
-                    let repost = self.storyboard?.instantiateViewControllerWithIdentifier("RepostSubViewController") as! RepostSubViewController
-                    repost.title = "Reposts"
-                    repost.user = user
-                    repost.fetchFunc = user.fetchReposts
-                    viewControllers.append(repost)
-                    
                     let likes = instantiateSubVC()
                     likes.title = "Likes"
                     likes.user = user
                     likes.fetchFunc = user.fetchTracksFromLikeList
                     viewControllers.append(likes)
+                    
+                    let repost = self.storyboard?.instantiateViewControllerWithIdentifier("RepostSubViewController") as! RepostSubViewController
+                    repost.title = "Reposts"
+                    repost.user = user
+                    repost.fetchFunc = user.fetchReposts
+                    viewControllers.append(repost)
                     
                     self.viewControllers = viewControllers
                 }

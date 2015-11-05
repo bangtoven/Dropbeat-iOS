@@ -3,12 +3,37 @@
   <testsuite name="run">
     
       
-      <testcase name="0: Verifying required fastlane version" time="0.000339">
+      <testcase name="0: Verifying required fastlane version" time="0.000253">
         
       </testcase>
     
       
-      <testcase name="1: default_platform" time="0.000501">
+      <testcase name="1: default_platform" time="0.000234">
+        
+      </testcase>
+    
+      
+      <testcase name="2: increment_build_number" time="0.917472">
+        
+      </testcase>
+    
+      
+      <testcase name="3: gym" time="135.282435">
+        
+      </testcase>
+    
+      
+      <testcase name="4: get_version_number" time="0.46432">
+        
+      </testcase>
+    
+      
+      <testcase name="5: get_build_number" time="0.378007">
+        
+      </testcase>
+    
+      
+      <testcase name="6: slack" time="1.518942">
         
       </testcase>
     

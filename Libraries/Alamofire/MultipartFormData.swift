@@ -256,9 +256,9 @@ public class MultipartFormData {
 
         var isReachable = true
 
-        if #available(iOS 8.0, *) {
+        //if #available(iOS 8.0, *) {
             isReachable = fileURL.checkPromisedItemIsReachableAndReturnError(nil)
-        }
+        //}
 
         guard isReachable else {
             let error = Error.errorWithCode(NSURLErrorBadURL, failureReason: "The file URL is not reachable: \(fileURL)")

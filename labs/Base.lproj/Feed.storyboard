@@ -32,7 +32,7 @@
         <!--Feed View Controller-->
         <scene sceneID="kuL-X5-dwd">
             <objects>
-                <viewController storyboardIdentifier="FeedViewController" automaticallyAdjustsScrollViewInsets="NO" id="iBA-aE-55u" customClass="FeedViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FeedViewController" automaticallyAdjustsScrollViewInsets="NO" id="iBA-aE-55u" customClass="FeedViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="K0i-IN-wGn"/>
                         <viewControllerLayoutGuide type="bottom" id="zAy-DT-AHo"/>
@@ -79,7 +79,7 @@
                                     </constraints>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeedSelectTableViewCell" rowHeight="60" id="iI8-jM-LpK" customClass="FeedSelectTableViewCell" customModule="for_test" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="FeedSelectTableViewCell" rowHeight="60" id="iI8-jM-LpK" customClass="FeedSelectTableViewCell" customModule="labs" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="117" width="320" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="iI8-jM-LpK" id="Nc1-mV-krp">
@@ -127,7 +127,7 @@
                                 <animations/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GenreTableViewCell" rowHeight="50" id="3XV-9n-Yzh" customClass="GenreTableViewCell" customModule="for_test" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="GenreTableViewCell" rowHeight="50" id="3XV-9n-Yzh" customClass="GenreTableViewCell" customModule="labs" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="22" width="320" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3XV-9n-Yzh" id="fHQ-NV-PBQ">
@@ -180,7 +180,7 @@
                                     </constraints>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="DropbeatTrackTableViewCell" rowHeight="228" id="gDq-m1-YXD" customClass="DropbeatTrackTableViewCell" customModule="for_test" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="DropbeatTrackTableViewCell" rowHeight="228" id="gDq-m1-YXD" customClass="DropbeatTrackTableViewCell" customModule="labs" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="22" width="320" height="228"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="gDq-m1-YXD" id="HDP-Oq-y33">
@@ -429,7 +429,7 @@
                                             <outlet property="userProfileImageView" destination="jBi-q1-tMP" id="OxK-Tt-SZ4"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="BpChartTrackTableViewCell" rowHeight="76" id="pw5-01-ELd" userLabel="Daily chart" customClass="BpChartTrackTableViewCell" customModule="for_test" customModuleProvider="target">
+                                    <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="BpChartTrackTableViewCell" rowHeight="76" id="pw5-01-ELd" userLabel="Daily chart" customClass="BpChartTrackTableViewCell" customModule="labs" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="250" width="320" height="76"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="pw5-01-ELd" id="xCE-8j-EbZ">
@@ -623,7 +623,7 @@
                                             <outlet property="thumbView" destination="6Sm-GE-OnJ" id="obT-CT-4mf"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="NewReleasedTrackTableViewCell" rowHeight="220" id="hXN-mX-uCg" userLabel="NewReleaseView" customClass="NewReleasedTrackTableViewCell" customModule="for_test" customModuleProvider="target">
+                                    <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="NewReleasedTrackTableViewCell" rowHeight="220" id="hXN-mX-uCg" userLabel="NewReleaseView" customClass="NewReleasedTrackTableViewCell" customModule="labs" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="326" width="320" height="220"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hXN-mX-uCg" id="wj1-56-Vf3">
@@ -790,7 +790,7 @@
                                             <outlet property="titleWrapper" destination="fsM-5O-E7c" id="BQV-wL-OpV"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="TrendingTrackTableViewCell" rowHeight="220" id="Qyf-U0-8FT" userLabel="TrendingChartView" customClass="TrendingTrackTableViewCell" customModule="for_test" customModuleProvider="target">
+                                    <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="TrendingTrackTableViewCell" rowHeight="220" id="Qyf-U0-8FT" userLabel="TrendingChartView" customClass="TrendingTrackTableViewCell" customModule="labs" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="546" width="320" height="220"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Qyf-U0-8FT" id="ree-gF-68T">
@@ -972,7 +972,7 @@
                                             <outlet property="titleWrapper" destination="Q12-m6-xfc" id="I6B-gd-mcl"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="BpTrendingTrackTableViewCell" rowHeight="256" id="psg-Rt-wvG" userLabel="TrendingBpChartView" customClass="BpTrendingTrackTableViewCell" customModule="for_test" customModuleProvider="target">
+                                    <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="gray" indentationWidth="8" reuseIdentifier="BpTrendingTrackTableViewCell" rowHeight="256" id="psg-Rt-wvG" userLabel="TrendingBpChartView" customClass="BpTrendingTrackTableViewCell" customModule="labs" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="766" width="320" height="256"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="psg-Rt-wvG" id="Y1E-VC-0He">
@@ -1234,7 +1234,7 @@
                         <outlet property="trackTableView" destination="SeY-V5-10D" id="XPB-iB-ZcH"/>
                     </connections>
                 </viewController>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7bO-4v-T9I" customClass="ScrollPager" customModule="for_test" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7bO-4v-T9I" customClass="ScrollPager" customModule="labs" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <animations/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -1363,7 +1363,7 @@
         <!--Featured-->
         <scene sceneID="P5e-3v-TP6">
             <objects>
-                <viewController storyboardIdentifier="ExploreViewController" id="bcX-Up-44B" customClass="ExploreViewController" customModule="for_test" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ExploreViewController" id="bcX-Up-44B" customClass="ExploreViewController" customModule="labs" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="SR6-c3-wkK"/>
                         <viewControllerLayoutGuide type="bottom" id="UgI-8C-ddR"/>
@@ -1451,14 +1451,14 @@
                                         </activityIndicatorView>
                                     </subviews>
                                     <animations/>
-                                    <color key="backgroundColor" red="0.87843137250000003" green="0.87450980389999999" blue="0.91764705879999997" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="centerY" secondItem="irY-AH-F2s" secondAttribute="centerY" id="lEj-to-anC"/>
                                         <constraint firstAttribute="centerX" secondItem="irY-AH-F2s" secondAttribute="centerX" id="wMk-df-LTT"/>
                                     </constraints>
                                 </view>
                                 <prototypes>
-                                    <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="8" shouldIndentWhileEditing="NO" reuseIdentifier="ExploreTableViewCell" rowHeight="112" id="b7x-4g-EJS" customClass="ExploreTableViewCell" customModule="for_test" customModuleProvider="target">
+                                    <tableViewCell opaque="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="8" shouldIndentWhileEditing="NO" reuseIdentifier="ExploreTableViewCell" rowHeight="112" id="b7x-4g-EJS" customClass="ExploreTableViewCell" customModule="labs" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="188" width="320" height="112"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="b7x-4g-EJS" id="DlD-63-ta8">

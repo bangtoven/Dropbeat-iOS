@@ -40,7 +40,6 @@ platform :ios do
       output_directory: "/Users/bangtoven/Dropbox",
       output_name: "labs",
       export_method: "ad-hoc",
-      silent: true,
       include_symbols: false
     )
   end
@@ -79,12 +78,18 @@ platform :ios do
     
     version     = get_version_number
     build       = get_build_number
+    date = Time.new.to_s
 
+    if lane == :dropbox then
+      sh "./gen_html.sh %s %s \"%s\"" % [version, build, date]
+      puts "asdfasdfasf"
+    end
+    
     slack(
       message: "<!here|here>: New build *#{version}* (#{build})! :rocket:",
       success: true,        # Optional, defaults to true.
       payload: {            # Optional, lets you specify any number of your own Slack attachments.
-        'Build Date' => Time.new.to_s,
+        'Build Date' => date,
         'Install' => 'https://dl.dropboxusercontent.com/s/a1apxzddt4f19ow/p2.html'
       },
       default_payloads: [] # Optional, lets you specify a whitelist of default payloads to include. Pass an empty array to suppress all the default payloads. Don't add this key, or pass nil, if you want all the default payloads. The available default payloads are: `lane`, `test_result`, `git_branch`, `git_author`, `last_git_commit`.

@@ -24,9 +24,13 @@ platform :ios do
   before_all do
     ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
     
+    increment_build_number(
+      xcodeproj: 'labs.xcodeproj' # (optional, you must specify the path to your main Xcode project if it is not in the project root directory)
+    )
+    commit_version_bump(
+      xcodeproj: 'labs.xcodeproj', # optional, if you have multiple Xcode project files, you must specify your main project here
+    )
     
-    increment_build_number
-
     # xctool # run the tests of your app
   end
 
@@ -36,6 +40,7 @@ platform :ios do
       output_directory: "/Users/bangtoven/Dropbox",
       output_name: "labs",
       export_method: "ad-hoc",
+      silent: true,
       include_symbols: false
     )
   end

@@ -137,7 +137,6 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         let pushNotiGuideShown = "pushNotiGuideShown"
         let pushNotiAllowed = "pushNotiAllowed"
         let defaults = NSUserDefaults.standardUserDefaults()
-        defaults.setBool(false, forKey: pushNotiGuideShown)
         if defaults.boolForKey(pushNotiGuideShown) != true {
             defaults.setBool(true, forKey: pushNotiGuideShown)
             

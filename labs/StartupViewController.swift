@@ -28,36 +28,22 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         self.activityIndicatorView.layer.addSublayer(playIndicator)
     }
     
-    override func viewDidAppear(animated: Bool) {
-        checkVersion() {
-            Track.loadSoundCloudKey({ (error: NSError) -> Void in
-                print("loadSoundCloudKey: "+error.description)
-            })
-            self.initialize()
-        }
-    }
-    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         self.screenName = "StartupScreen"
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "appDidBecomeActive:",
-            name: UIApplicationDidBecomeActiveNotification, object: nil)
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    override func viewDidDisappear(animated: Bool) {
-        let notificationCenter = NSNotificationCenter.defaultCenter()
-        notificationCenter.removeObserver(self, name: UIApplicationDidBecomeActiveNotification, object: nil)
-    }
-    
-    func appDidBecomeActive(noti:NSNotification) {
-        checkVersion() {
-            self.initialize()
+    var versionChecked = false
+    override func viewDidAppear(animated: Bool) {
+        if versionChecked != true {
+            checkVersion() {
+                self.versionChecked = true
+                
+                Track.loadSoundCloudKey({ (error: NSError) -> Void in
+                    print("loadSoundCloudKey: "+error.description)
+                })
+                self.initialize()
+            }
         }
     }
     
@@ -72,48 +58,14 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         }
     }
     
-    func checkVersion(callback: ()->Void) {
-        Requests.getClientVersion { (result, error) -> Void in
-            if (error != nil || result == nil) {
-                ViewUtils.showNoticeAlert(self,
-                    title: "We're sorry.",//NSLocalizedString("Failed to fetch version info", comment:""),
-                    message: "Please check your internet connection. \nLet's see if we can fix this together. Cross your fingers and hit the Retry.",//message!,
-                    btnText: NSLocalizedString("Retry", comment:""),
-                    callback: { () -> Void in
-                        self.checkVersion(callback)
-                    })
-                return
-            }
-            
-            let iosVersion = result!["ios_version"].string
-            if (iosVersion == nil) {
-                ViewUtils.showNoticeAlert(self,
-                    title: NSLocalizedString("Failed to fetch version info", comment:""),
-                    message: NSLocalizedString("Improper data format", comment:""),
-                    btnText: NSLocalizedString("Retry", comment:""),
-                    callback: { () -> Void in
-                        self.checkVersion(callback)
-                    })
-                return
-            }
-            let verObject: AnyObject? = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"]
-            let currVersion = verObject as? String
-            
-            let cmpResult = iosVersion!.compare(currVersion!, options:NSStringCompareOptions.NumericSearch)
-            if (cmpResult == NSComparisonResult.OrderedDescending) {
-                ViewUtils.showNoticeAlert(self,
-                    title: NSLocalizedString("Get new version", comment:""),
-                    
-                    message: NSLocalizedString("We have released a new version of DROPBEAT. Please download on AppStore", comment:""),
-                    btnText: NSLocalizedString("Download", comment:""),
-                    callback: { () -> Void in
-                        let url = NSURL(string: "http://itunes.apple.com/app/id998263412")
-                        (UIApplication).sharedApplication().openURL(url!)
-                    })
-                return
-            }
-            callback()
+    func signUpDidFinished() {
+        self.dismissViewControllerAnimated(true) { () -> Void in
+            self.initialize()
         }
+    }
+    
+    func onAfterEmailUpdate() {
+        fetchUserInfo()
     }
     
     func initialize() {
@@ -162,21 +114,15 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                     let userId:String = account!.user!.id!
                     tracker.set("&uid", value:userId)
                 }
+                
                 self.fetchUserInfo()
             })
         }
     }
     
-    func signUpDidFinished() {
-        self.dismissViewControllerAnimated(true) { () -> Void in
-            print("signUpDidFinished!!!!!!!!!!!!!!!!!!!!")
-            self.initialize()
-        }
-    }
-    
     func fetchUserInfo() {
         if Account.getCachedAccount() == nil {
-            self.showMainController()
+            self.performSegueWithIdentifier("ShowTutorial", sender: self)
             return
         }
         
@@ -191,6 +137,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         let pushNotiGuideShown = "pushNotiGuideShown"
         let pushNotiAllowed = "pushNotiAllowed"
         let defaults = NSUserDefaults.standardUserDefaults()
+        defaults.setBool(false, forKey: pushNotiGuideShown)
         if defaults.boolForKey(pushNotiGuideShown) != true {
             defaults.setBool(true, forKey: pushNotiGuideShown)
             
@@ -226,15 +173,10 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) {
             
-            if Account.getCachedAccount() != nil {
-                let application = UIApplication.sharedApplication()
-                application.applicationIconBadgeNumber = 0
-                let appDelegate = application.delegate as! AppDelegate
-                appDelegate.setRootViewToMainTabBarController()
-            } else {
-                // tutorial
-                self.performSegueWithIdentifier("ShowTutorial", sender: self)
-            }
+            let application = UIApplication.sharedApplication()
+            application.applicationIconBadgeNumber = 0
+            let appDelegate = application.delegate as! AppDelegate
+            appDelegate.setRootViewToMainTabBarController()
         }
     }
     
@@ -334,7 +276,47 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         
     }
     
-    func onAfterEmailUpdate() {
-        fetchUserInfo()
+    func checkVersion(callback: ()->Void) {
+        Requests.getClientVersion { (result, error) -> Void in
+            if (error != nil || result == nil) {
+                ViewUtils.showNoticeAlert(self,
+                    title: "We're sorry.",//NSLocalizedString("Failed to fetch version info", comment:""),
+                    message: "Please check your internet connection. \nLet's see if we can fix this together. Cross your fingers and hit the Retry.",//message!,
+                    btnText: NSLocalizedString("Retry", comment:""),
+                    callback: { () -> Void in
+                        self.checkVersion(callback)
+                })
+                return
+            }
+            
+            let iosVersion = result!["ios_version"].string
+            if (iosVersion == nil) {
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Failed to fetch version info", comment:""),
+                    message: NSLocalizedString("Improper data format", comment:""),
+                    btnText: NSLocalizedString("Retry", comment:""),
+                    callback: { () -> Void in
+                        self.checkVersion(callback)
+                })
+                return
+            }
+            let verObject: AnyObject? = NSBundle.mainBundle().infoDictionary?["CFBundleShortVersionString"]
+            let currVersion = verObject as? String
+            
+            let cmpResult = iosVersion!.compare(currVersion!, options:NSStringCompareOptions.NumericSearch)
+            if (cmpResult == NSComparisonResult.OrderedDescending) {
+                ViewUtils.showNoticeAlert(self,
+                    title: NSLocalizedString("Get new version", comment:""),
+                    
+                    message: NSLocalizedString("We have released a new version of DROPBEAT. Please download on AppStore", comment:""),
+                    btnText: NSLocalizedString("Download", comment:""),
+                    callback: { () -> Void in
+                        let url = NSURL(string: "http://itunes.apple.com/app/id998263412")
+                        (UIApplication).sharedApplication().openURL(url!)
+                })
+                return
+            }
+            callback()
+        }
     }
 }

@@ -105,6 +105,9 @@
 		739B00AB1BD7ED7600EF126F /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739B00AA1BD7ED7600EF126F /* ImageUploader.swift */; };
 		739C8F5F1BB340FE00BC9EB7 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */; };
 		73A33A091BED20AF00D53FE6 /* AFDropdownNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A33A081BED20AF00D53FE6 /* AFDropdownNotification.m */; };
+		73A33A0E1BED38DD00D53FE6 /* Bass.caf in Resources */ = {isa = PBXBuildFile; fileRef = 73A33A0B1BED38DD00D53FE6 /* Bass.caf */; };
+		73A33A0F1BED38DD00D53FE6 /* dripping.caf in Resources */ = {isa = PBXBuildFile; fileRef = 73A33A0C1BED38DD00D53FE6 /* dripping.caf */; };
+		73A33A101BED38DD00D53FE6 /* houseOrgan.caf in Resources */ = {isa = PBXBuildFile; fileRef = 73A33A0D1BED38DD00D53FE6 /* houseOrgan.caf */; };
 		73A3559F1BCD97EB0002C00D /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A3559E1BCD97EB0002C00D /* TutorialViewController.swift */; };
 		73A355A71BCDBAC90002C00D /* EAIntroPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A355A21BCDBAC90002C00D /* EAIntroPage.m */; };
 		73A355A91BCDBAC90002C00D /* EAIntroView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A355A41BCDBAC90002C00D /* EAIntroView.m */; };
@@ -368,6 +371,9 @@
 		739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ExploreViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		73A33A071BED20AF00D53FE6 /* AFDropdownNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFDropdownNotification.h; sourceTree = "<group>"; };
 		73A33A081BED20AF00D53FE6 /* AFDropdownNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFDropdownNotification.m; sourceTree = "<group>"; };
+		73A33A0B1BED38DD00D53FE6 /* Bass.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Bass.caf; sourceTree = "<group>"; };
+		73A33A0C1BED38DD00D53FE6 /* dripping.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = dripping.caf; sourceTree = "<group>"; };
+		73A33A0D1BED38DD00D53FE6 /* houseOrgan.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = houseOrgan.caf; sourceTree = "<group>"; };
 		73A3559E1BCD97EB0002C00D /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		73A355A11BCDBAC90002C00D /* EAIntroPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EAIntroPage.h; path = Libraries/EAIntroPage/EAIntroPage.h; sourceTree = SOURCE_ROOT; };
 		73A355A21BCDBAC90002C00D /* EAIntroPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EAIntroPage.m; path = Libraries/EAIntroPage/EAIntroPage.m; sourceTree = SOURCE_ROOT; };
@@ -704,6 +710,7 @@
 				73FC90CC1BAE5C9000284B8A /* KeychainItemWrapper.swift */,
 				732717421BAC8721003E0B68 /* ScrollPager.swift */,
 				732717011BAC8632003E0B68 /* SwiftyJSON.swift */,
+				73A33A0A1BED36FC00D53FE6 /* GradientView */,
 				73AB34781BB1D3580031E2CC /* ACEExpandableTextCell */,
 				73A33A061BED20AF00D53FE6 /* AFDropdownNotification */,
 				58BB0ADD1B12221B00B07279 /* Alamofire */,
@@ -767,6 +774,8 @@
 			children = (
 				73AECBAA1BC5CF280040F0AF /* DropbeatPlayer.swift */,
 				734C7D6B1BB47F410071678C /* Models */,
+				58EAB3DE1B0D11110075304E /* Utils.swift */,
+				587DCD121B6D91F900AF792D /* Extension.swift */,
 				FC0D9D581B0CC4DE00E048CC /* Constants.swift */,
 				FC766BEE1B050D51006FD4FB /* NetworkPath.swift */,
 				FC766BF41B051AA4006FD4FB /* NetworkRequests.swift */,
@@ -778,6 +787,7 @@
 		7361FCE61B9F631100444179 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				73A33A111BED38E300D53FE6 /* Alert Sound */,
 				FCD1DA8E1B04CCB200F9EA70 /* Images.xcassets */,
 				FCD1DA901B04CCB200F9EA70 /* LaunchScreen.xib */,
 				586F49C91B805D290039CC6B /* Localizable.stringsdict */,
@@ -888,6 +898,25 @@
 			name = AFDropdownNotification;
 			path = Libraries/AFDropdownNotification;
 			sourceTree = SOURCE_ROOT;
+		};
+		73A33A0A1BED36FC00D53FE6 /* GradientView */ = {
+			isa = PBXGroup;
+			children = (
+				738646151BA7631D00C21650 /* GradientView.h */,
+				738646161BA7631D00C21650 /* GradientView.m */,
+			);
+			name = GradientView;
+			sourceTree = "<group>";
+		};
+		73A33A111BED38E300D53FE6 /* Alert Sound */ = {
+			isa = PBXGroup;
+			children = (
+				73A33A0B1BED38DD00D53FE6 /* Bass.caf */,
+				73A33A0C1BED38DD00D53FE6 /* dripping.caf */,
+				73A33A0D1BED38DD00D53FE6 /* houseOrgan.caf */,
+			);
+			name = "Alert Sound";
+			sourceTree = "<group>";
 		};
 		73A355911BCD973B0002C00D /* EAIntroPage */ = {
 			isa = PBXGroup;
@@ -1052,10 +1081,6 @@
 			isa = PBXGroup;
 			children = (
 				73A661991BC9923200DD1179 /* LNPopupController.xcodeproj */,
-				58EAB3DE1B0D11110075304E /* Utils.swift */,
-				587DCD121B6D91F900AF792D /* Extension.swift */,
-				738646151BA7631D00C21650 /* GradientView.h */,
-				738646161BA7631D00C21650 /* GradientView.m */,
 				7361FCCC1B9F457C00444179 /* Libraries */,
 				F98F65D2D15412F7828AF298 /* Frameworks */,
 				58BB0B121B122DCB00B07279 /* labs-Bridging-Header.h */,
@@ -1149,6 +1174,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73A33A101BED38DD00D53FE6 /* houseOrgan.caf in Resources */,
 				586F49B71B7FE5010039CC6B /* Localizable.strings in Resources */,
 				587CDD241B0E4FA900D23CCC /* copyright.html in Resources */,
 				73A6864A1BA9A33600DA29DC /* Feed.storyboard in Resources */,
@@ -1156,10 +1182,12 @@
 				73AB34821BB2C7480031E2CC /* Playlist.storyboard in Resources */,
 				FCD1DA8D1B04CCB200F9EA70 /* Main.storyboard in Resources */,
 				586F49C71B805D290039CC6B /* Localizable.stringsdict in Resources */,
+				73A33A0F1BED38DD00D53FE6 /* dripping.caf in Resources */,
 				FCD1DA921B04CCB200F9EA70 /* LaunchScreen.xib in Resources */,
 				737FAB191BCAAFC700C1347B /* Launch.storyboard in Resources */,
 				7327174A1BAC8836003E0B68 /* Profile.storyboard in Resources */,
 				FCD1DA8F1B04CCB200F9EA70 /* Images.xcassets in Resources */,
+				73A33A0E1BED38DD00D53FE6 /* Bass.caf in Resources */,
 				585BAD0C1B85ED9900FE137A /* DateTools.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

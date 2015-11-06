@@ -172,9 +172,7 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) {
             
-            let application = UIApplication.sharedApplication()
-            application.applicationIconBadgeNumber = 0
-            let appDelegate = application.delegate as! AppDelegate
+            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
             appDelegate.setRootViewToMainTabBarController()
         }
     }

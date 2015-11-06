@@ -104,6 +104,7 @@
 		739ADF841BEA063F002BFAC8 /* FollowingFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739ADF831BEA063F002BFAC8 /* FollowingFeedViewController.swift */; };
 		739B00AB1BD7ED7600EF126F /* ImageUploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739B00AA1BD7ED7600EF126F /* ImageUploader.swift */; };
 		739C8F5F1BB340FE00BC9EB7 /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */; };
+		73A33A091BED20AF00D53FE6 /* AFDropdownNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A33A081BED20AF00D53FE6 /* AFDropdownNotification.m */; };
 		73A3559F1BCD97EB0002C00D /* TutorialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73A3559E1BCD97EB0002C00D /* TutorialViewController.swift */; };
 		73A355A71BCDBAC90002C00D /* EAIntroPage.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A355A21BCDBAC90002C00D /* EAIntroPage.m */; };
 		73A355A91BCDBAC90002C00D /* EAIntroView.m in Sources */ = {isa = PBXBuildFile; fileRef = 73A355A41BCDBAC90002C00D /* EAIntroView.m */; };
@@ -365,6 +366,8 @@
 		739ADF831BEA063F002BFAC8 /* FollowingFeedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowingFeedViewController.swift; sourceTree = "<group>"; };
 		739B00AA1BD7ED7600EF126F /* ImageUploader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ImageUploader.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		739C8F5E1BB340FE00BC9EB7 /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ExploreViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		73A33A071BED20AF00D53FE6 /* AFDropdownNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFDropdownNotification.h; sourceTree = "<group>"; };
+		73A33A081BED20AF00D53FE6 /* AFDropdownNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AFDropdownNotification.m; sourceTree = "<group>"; };
 		73A3559E1BCD97EB0002C00D /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		73A355A11BCDBAC90002C00D /* EAIntroPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EAIntroPage.h; path = Libraries/EAIntroPage/EAIntroPage.h; sourceTree = SOURCE_ROOT; };
 		73A355A21BCDBAC90002C00D /* EAIntroPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EAIntroPage.m; path = Libraries/EAIntroPage/EAIntroPage.m; sourceTree = SOURCE_ROOT; };
@@ -698,29 +701,30 @@
 		7361FCCC1B9F457C00444179 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				732717011BAC8632003E0B68 /* SwiftyJSON.swift */,
-				732717421BAC8721003E0B68 /* ScrollPager.swift */,
 				73FC90CC1BAE5C9000284B8A /* KeychainItemWrapper.swift */,
-				73840F221BD9562F00BC8943 /* TTTAttributedLabel */,
-				731EFBFB1BD7E56200DFF4E0 /* GKImagePicker */,
-				73A355911BCD973B0002C00D /* EAIntroPage */,
-				73AECBF31BC6B47D0040F0AF /* XCDYoutubeKit */,
-				73AECBA71BC5CE350040F0AF /* StreamingKit */,
+				732717421BAC8721003E0B68 /* ScrollPager.swift */,
+				732717011BAC8632003E0B68 /* SwiftyJSON.swift */,
 				73AB34781BB1D3580031E2CC /* ACEExpandableTextCell */,
-				7361FD111BA060F400444179 /* RBStoryboardLink */,
-				585BACF91B85ED9900FE137A /* DateTool */,
-				589413531B83C3F700395AFA /* TPKeyboardAvoiding */,
-				589F0F0A1B6A0DE6000851CC /* MarqueeLabel */,
-				587837A11B440225008DF480 /* Reachability */,
-				73A355BD1BCDC9B00002C00D /* VYPlayIndicator */,
-				588693BF1B13B7A800566124 /* MBProgressHUD */,
-				588693771B13B51300566124 /* SDWebImage */,
-				58BB0B111B122D8200B07279 /* GAI */,
+				73A33A061BED20AF00D53FE6 /* AFDropdownNotification */,
 				58BB0ADD1B12221B00B07279 /* Alamofire */,
-				732717231BAC8691003E0B68 /* UINavigationBar+Awesome */,
 				738BCA171BA4B07C00D00D34 /* AXStretchableHeader */,
+				585BACF91B85ED9900FE137A /* DateTool */,
 				732717271BAC86A8003E0B68 /* DYAlertPickView */,
+				73A355911BCD973B0002C00D /* EAIntroPage */,
+				58BB0B111B122D8200B07279 /* GAI */,
 				7327172A1BAC86A8003E0B68 /* GBFlatButton */,
+				731EFBFB1BD7E56200DFF4E0 /* GKImagePicker */,
+				589F0F0A1B6A0DE6000851CC /* MarqueeLabel */,
+				588693BF1B13B7A800566124 /* MBProgressHUD */,
+				7361FD111BA060F400444179 /* RBStoryboardLink */,
+				587837A11B440225008DF480 /* Reachability */,
+				588693771B13B51300566124 /* SDWebImage */,
+				73AECBA71BC5CE350040F0AF /* StreamingKit */,
+				589413531B83C3F700395AFA /* TPKeyboardAvoiding */,
+				73840F221BD9562F00BC8943 /* TTTAttributedLabel */,
+				732717231BAC8691003E0B68 /* UINavigationBar+Awesome */,
+				73A355BD1BCDC9B00002C00D /* VYPlayIndicator */,
+				73AECBF31BC6B47D0040F0AF /* XCDYoutubeKit */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -874,6 +878,16 @@
 			);
 			name = "User info";
 			sourceTree = "<group>";
+		};
+		73A33A061BED20AF00D53FE6 /* AFDropdownNotification */ = {
+			isa = PBXGroup;
+			children = (
+				73A33A071BED20AF00D53FE6 /* AFDropdownNotification.h */,
+				73A33A081BED20AF00D53FE6 /* AFDropdownNotification.m */,
+			);
+			name = AFDropdownNotification;
+			path = Libraries/AFDropdownNotification;
+			sourceTree = SOURCE_ROOT;
 		};
 		73A355911BCD973B0002C00D /* EAIntroPage */ = {
 			isa = PBXGroup;
@@ -1267,6 +1281,7 @@
 				731EFC0C1BD7E56200DFF4E0 /* GKImagePicker.m in Sources */,
 				73AECBA31BC5CE2F0040F0AF /* STKLocalFileDataSource.m in Sources */,
 				7327173E1BAC86BB003E0B68 /* AXTabBar.m in Sources */,
+				73A33A091BED20AF00D53FE6 /* AFDropdownNotification.m in Sources */,
 				585BAD0F1B85ED9900FE137A /* DTTimePeriod.m in Sources */,
 				73FC90BF1BAE4AFA00284B8A /* Alamofire.swift in Sources */,
 				585BAD121B85ED9900FE137A /* DTTimePeriodGroup.m in Sources */,

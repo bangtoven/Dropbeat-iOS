@@ -25,6 +25,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var networkStatus = NetworkStatus.NotReachable
     
     var appLink: AppLinkParam?
+    
+    var dropdownNotification: AFDropdownNotification?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         UINavigationBar.appearance().tintColor = UIColor.dropbeatColor()
@@ -67,15 +69,48 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationDidBecomeActive(application: UIApplication) {
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
         FBSDKAppEvents.activateApp()
     }
 }
 
 extension AppDelegate {
+    
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        completionHandler(UIBackgroundFetchResult.NewData)
+        completionHandler(UIBackgroundFetchResult.NoData)
+
+        guard application.applicationState == .Active else {
+            print("Become active via push notification click.")
+            return
+        }
         
-        print(userInfo)
+        UIApplication.sharedApplication().applicationIconBadgeNumber = 0
+        if let aps = userInfo["aps"], alert = aps["alert"] {
+            print("didReceiveRemoteNotification: \(alert)")
+
+            guard self.dropdownNotification == nil else {
+                return
+            }
+            
+            let dropdownNoti = AFDropdownNotification()
+//            dropdownNoti.titleText = "Dropbeat"
+            dropdownNoti.backgroundColor = UIColor.dropbeatColor(alpha: 0.1)
+            dropdownNoti.titleText = alert as! String
+            dropdownNoti.image = UIImage(named: "ic_notification")
+            dropdownNoti.dismissOnTap = true
+            dropdownNoti.listenEventsWithBlock({ (event) -> Void in
+                self.dropdownNotification = nil
+            })
+            
+            self.dropdownNotification = dropdownNoti
+            dropdownNoti.presentInView(self.window, withGravityAnimation: false)
+         
+            let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(3.0 * Double(NSEC_PER_SEC)));
+            dispatch_after(popTime, dispatch_get_main_queue(), {() -> Void in
+                self.dropdownNotification?.dismissWithGravityAnimation(false)
+                self.dropdownNotification = nil
+            })
+        }
     }
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
@@ -93,7 +128,7 @@ extension AppDelegate {
                 if error != nil {
                     print("Update device token FAILED: \(error!)")
                 } else {
-                    print("Updated device token: \(result!)")
+                    print("Updated device token")
                 }
         }
     }
@@ -128,7 +163,7 @@ extension AppDelegate {
                     }
                 case 4:
                     if let track = components.popLast(), user = components.popLast() {
-                        param = AppLinkParam.USER_TRACK(user: user, track: track)
+                        param = .USER_TRACK(user: user, track: track)
                     }
                 default:
                     break

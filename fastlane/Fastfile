@@ -66,8 +66,8 @@ platform :ios do
     # snapshot
   desc "** Full Markdown** Support: `code`"
     sigh
-    gym(scheme: "SSIBAL") # Build your app - more options available
-    # deliver(force: true)
+    gym
+    deliver(force: true)
     # frameit
   end
 

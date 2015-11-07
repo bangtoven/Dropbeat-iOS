@@ -374,6 +374,7 @@
 		73A33A0B1BED38DD00D53FE6 /* Bass.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Bass.caf; sourceTree = "<group>"; };
 		73A33A0C1BED38DD00D53FE6 /* dripping.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = dripping.caf; sourceTree = "<group>"; };
 		73A33A0D1BED38DD00D53FE6 /* houseOrgan.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = houseOrgan.caf; sourceTree = "<group>"; };
+		73A33A171BEDCC4200D53FE6 /* Fastfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; name = Fastfile; path = fastlane/Fastfile; sourceTree = SOURCE_ROOT; };
 		73A3559E1BCD97EB0002C00D /* TutorialViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialViewController.swift; sourceTree = "<group>"; };
 		73A355A11BCDBAC90002C00D /* EAIntroPage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EAIntroPage.h; path = Libraries/EAIntroPage/EAIntroPage.h; sourceTree = SOURCE_ROOT; };
 		73A355A21BCDBAC90002C00D /* EAIntroPage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EAIntroPage.m; path = Libraries/EAIntroPage/EAIntroPage.m; sourceTree = SOURCE_ROOT; };
@@ -1084,6 +1085,7 @@
 				7361FCCC1B9F457C00444179 /* Libraries */,
 				F98F65D2D15412F7828AF298 /* Frameworks */,
 				58BB0B121B122DCB00B07279 /* labs-Bridging-Header.h */,
+				73A33A171BEDCC4200D53FE6 /* Fastfile */,
 				FCD1DA861B04CCB200F9EA70 /* Info.plist */,
 				73338BA21BCC176E007A9D6C /* Info-SSIBAL.plist */,
 			);
@@ -1478,7 +1480,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 27;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1496,7 +1498,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.dropbeat.prod;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "39d384be-d1d7-4f1f-a367-b8b933a6cf4d";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/labs/labs-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "";
@@ -1509,7 +1511,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CURRENT_PROJECT_VERSION = 26;
+				CURRENT_PROJECT_VERSION = 27;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1527,7 +1529,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.dropbeat.prod;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "39d384be-d1d7-4f1f-a367-b8b933a6cf4d";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/labs/labs-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "";

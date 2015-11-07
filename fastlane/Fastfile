@@ -65,7 +65,8 @@ platform :ios do
   lane :deploy do
     # snapshot
   desc "** Full Markdown** Support: `code`"
-    gym
+    sigh
+    gym(scheme: "Dropbeat")
     deliver(force: true)
     # frameit
   end

@@ -21,88 +21,98 @@ fastlane_version "1.37.0"
 default_platform :ios
 
 platform :ios do
-  before_all do
-    ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
-    
-    increment_build_number(
-      xcodeproj: 'labs.xcodeproj' # (optional, you must specify the path to your main Xcode project if it is not in the project root directory)
-    )
-    commit_version_bump(
-      xcodeproj: 'labs.xcodeproj', # optional, if you have multiple Xcode project files, you must specify your main project here
-    )
-    
-    # xctool # run the tests of your app
-  end
-
-  lane :dropbox do
-    gym(
-      scheme: "Dropbeat",
-      output_directory: "/Users/bangtoven/Dropbox",
-      output_name: "labs",
-      export_method: "ad-hoc",
-      include_symbols: false
-    )
-  end
-
-  desc "Runs all the tests"
-  lane :test do
-    # snapshot
-  end
-
-  desc "Submit a new Beta Build to Apple TestFlight"
-  desc "This will also make sure the profile is up to date"
-  lane :beta do
-    # snapshot
-    sigh
-    gym(scheme: "SSIBAL") # Build your app - more options available
-    pilot
-
-    # sh "your_script.sh"
-    # You can also use other beta testing services here
-  end
-
-  desc "Deploy a new version to the App Store"
-  lane :deploy do
-    # snapshot
-  desc "** Full Markdown** Support: `code`"
-    sigh
-    gym(scheme: "Dropbeat")
-    deliver(force: true)
-    # frameit
-  end
-
-  # You can define as many lanes as you want
-
-  after_all do |lane|
-    # This block is called, only if the executed lane was successful
-    
-    version     = get_version_number
-    build       = get_build_number
-    date = Time.new.to_s
-
-    if lane == :dropbox then
-      sh "./gen_html.sh %s %s \"%s\"" % [version, build, date]
-
-        slack(
-        message: "<!here|here>: New build *#{version}* (#{build})! :rocket:",
-        success: true,        # Optional, defaults to true.
-        payload: {            # Optional, lets you specify any number of your own Slack attachments.
-        'Build Date' => date,
-        'Install' => 'https://dl.dropboxusercontent.com/s/a1apxzddt4f19ow/p2.html'
-        },
-        default_payloads: [] # Optional, lets you specify a whitelist of default payloads to include. Pass an empty array to suppress all the default payloads. Don't add this key, or pass nil, if you want all the default payloads. The available default payloads are: `lane`, `test_result`, `git_branch`, `git_author`, `last_git_commit`.
-        )
+    before_all do
+        ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
+        
+        increment_build_number(
+                               xcodeproj: 'labs.xcodeproj' # (optional, you must specify the path to your main Xcode project if it is not in the project root directory)
+                               )
+                               commit_version_bump(
+                                                   xcodeproj: 'labs.xcodeproj', # optional, if you have multiple Xcode project files, you must specify your main project here
+                                                   )
+                                                   
+                                                   # xctool # run the tests of your app
     end
-
-
-  end
-
-  error do |lane, exception|
-     slack(
-       message: exception.message,
-       success: false
-     )
-  end
+    
+    lane :dropbox do
+        gym(
+            scheme: "Dropbeat",
+            output_directory: "/Users/bangtoven/Dropbox",
+            output_name: "labs",
+            export_method: "ad-hoc",
+            include_symbols: false
+            )
+    end
+    
+    desc "Runs all the tests"
+    lane :test do
+        # snapshot
+    end
+    
+    desc "Submit a new Beta Build to Apple TestFlight"
+    desc "This will also make sure the profile is up to date"
+    lane :beta do
+        # snapshot
+        sigh
+        gym(scheme: "SSIBAL") # Build your app - more options available
+        pilot
+        
+        # sh "your_script.sh"
+        # You can also use other beta testing services here
+    end
+    
+    desc "Deploy a new version to the App Store"
+    lane :deploy do
+        # snapshot
+        desc "** Full Markdown** Support: `code`"
+        sigh
+        gym(scheme: "Dropbeat")
+        deliver(force: true)
+        # frameit
+    end
+    
+    # You can define as many lanes as you want
+    
+    after_all do |lane|
+        # This block is called, only if the executed lane was successful
+        
+        version     = get_version_number
+        build       = get_build_number
+        date = Time.new.to_s
+        
+        if lane == :dropbox then
+            sh "./gen_html.sh %s %s \"%s\"" % [version, build, date]
+            
+            slack(
+                  message: "<!here|here>: New build *#{version}* (#{build})! :rocket:",
+                  success: true,        # Optional, defaults to true.
+                  payload: {            # Optional, lets you specify any number of your own Slack attachments.
+                  'Build Date' => date,
+                  'Install' => 'https://dl.dropboxusercontent.com/s/a1apxzddt4f19ow/p2.html'
+                  },
+                  default_payloads: [] # Optional, lets you specify a whitelist of default payloads to include. Pass an empty array to suppress all the default payloads. Don't add this key, or pass nil, if you want all the default payloads. The available default payloads are: `lane`, `test_result`, `git_branch`, `git_author`, `last_git_commit`.
+                  )
+                  elsif lane == :deploy then
+                  slack(
+                        message: "*#{version}* (#{build}) iTunes Connect 올라감. :rocket:",
+                        success: true,        # Optional, defaults to true.
+                        payload: {            # Optional, lets you specify any number of your own Slack attachments.
+                        'Build Date' => date,
+                        },
+                        default_payloads: [] # Optional, lets you specify a whitelist of default payloads to include. Pass an empty array to suppress all the default payloads. Don't add this key, or pass nil, if you want all the default payloads. The available default payloads are: `lane`, `test_result`, `git_branch`, `git_author`, `last_git_commit`.
+                        )
+                        
+        end
+        
+        
+    end
+    
+    error do |lane, exception|
+        slack(
+              message: exception.message,
+              success: false
+              )
+    end
 end
 
 

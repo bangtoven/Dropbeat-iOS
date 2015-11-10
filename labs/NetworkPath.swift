@@ -25,7 +25,7 @@ public class ApiPath {
 }
 
 extension ApiPath {
-    static let youTubeResolve = "http://resolve.dropbeat.net:19001/resolve/"
+    static let youTubeResolve = "http://resolve.dropbeat.net/resolve/"
 }
 
 extension ApiPath {

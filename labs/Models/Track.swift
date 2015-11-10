@@ -108,59 +108,98 @@ extension UIImageView {
 // MARK: - YouTube track
 
 extension Track {
-    private var preferredQuality: [XCDYouTubeVideoQuality] {
-        get {
-            var preferredQuality: [XCDYouTubeVideoQuality] = [.Medium360, .Small240]
-            
-            let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-            if appDelegate.networkStatus == .ReachableViaWiFi {
-                preferredQuality.insert(.HD720, atIndex: 0)
-            }
-            
-            return preferredQuality
-        }
-    }
-    
-    private func qualityToString(quality: XCDYouTubeVideoQuality) -> String {
-        switch quality {
-        case .Small240: return "Small240"
-        case .Medium360: return "Medium360"
-        case .HD720: return "HD720"
-        case .HD1080: return "HD1080"
-        }
-    }
-    
     func getYouTubeStreamURL(callback:(streamURL:String?, duration:Double?, error:NSError?)->Void) {
         guard self.type == .YOUTUBE else {
-            let error = NSError(domain: "TrackYouTubeStreamURL", code: -1, userInfo: nil)
-            callback(streamURL: nil, duration: nil, error: error)
+            callback(streamURL: nil, duration: nil, error: NSError(domain: "TrackYouTubeStreamURL", code: -1, userInfo: nil))
             return
         }
         
         XCDYouTubeClient.defaultClient().getVideoWithIdentifier(self.id, completionHandler: {
             (video: XCDYouTubeVideo?, error: NSError?) -> Void in
             if error != nil {
-                callback(streamURL: nil, duration:nil, error: error)
+//                callback(streamURL: nil, duration:nil, error: error)
+                print("XCDYouTube can't fetch URLs. Try to resolve via Dropbeat.")
+                self.getYouTubeStreamURLFromDropbeat(callback)
                 return
             }
             
+            var preferredQuality: [XCDYouTubeVideoQuality] {
+                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                if appDelegate.networkStatus == .ReachableViaWiFi {
+                    return [.HD720, .Medium360, .Small240]
+                } else {
+                    return [.Medium360, .Small240]
+                }
+            }
+            
             var streamURL: NSURL?
-            for quality in self.preferredQuality {
+            for quality in preferredQuality {
                 if let url = video?.streamURLs[quality.rawValue] as? NSURL {
                     streamURL = url
                     break
                 } else {
-                    print("(\(self.title)) doesn't have \(self.qualityToString(quality)) stream url. try next quality.")
+                    var qualityString: String {
+                        switch quality {
+                        case .Small240: return "Small240"
+                        case .Medium360: return "Medium360"
+                        case .HD720: return "HD720"
+                        case .HD1080: return "HD1080"
+                        }
+                    }
+                    
+                    print("(\(self.title)) doesn't have \(qualityString) stream url. try next quality.")
                 }
             }
             
             if streamURL != nil {
                 callback(streamURL: streamURL!.absoluteString, duration:video?.duration, error: nil)
             } else {
-                let e = NSError(domain: "TrackYouTubeStreamURL", code: -2, userInfo: nil)
-                callback(streamURL: nil, duration:nil, error: e)
+                callback(streamURL: nil, duration:nil, error: NSError(domain: "TrackYouTubeStreamURL", code: -2, userInfo: nil))
             }
         })
+    }
+    
+    func getYouTubeStreamURLFromDropbeat(callback:(streamURL:String?, duration:Double?, error:NSError?)->Void) {
+        Requests.sendGet(ApiPath.youTubeResolve, params: ["uid": self.id, "t":"ios"], auth: false) { (result, error) -> Void in
+            if error != nil {
+                callback(streamURL: nil, duration:nil, error: error)
+                return
+            }
+            
+            guard let urls = result?["urls"] else {
+                callback(streamURL: nil, duration:nil, error: NSError(domain: "TrackYouTubeStreamURL", code: -3, userInfo: nil))
+                return
+            }
+            
+            var preferredQualityFromDropbeat: [String] {
+                let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+                if appDelegate.networkStatus == .ReachableViaWiFi {
+                    return ["high", "mid", "low"]
+                } else {
+                    return ["mid", "low"]
+                }
+            }
+            
+            var streamJson: JSON?
+            for quality in preferredQualityFromDropbeat {
+                if urls[quality] != JSON.null {
+                    streamJson = urls[quality]
+                    break
+                } else {
+                    print("(\(self.title)) doesn't have \(quality) stream url. try next quality.")
+                }
+            }
+            
+            if streamJson != nil {
+                callback(
+                    streamURL: streamJson!["url"].stringValue,
+                    duration:streamJson!["duration"].doubleValue,
+                    error: nil
+                )
+            } else {
+                callback(streamURL: nil, duration:nil, error: NSError(domain: "TrackYouTubeStreamURL", code: -4, userInfo: nil))
+            }
+        }
     }
 }
 

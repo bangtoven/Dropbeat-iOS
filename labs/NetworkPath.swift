@@ -25,6 +25,10 @@ public class ApiPath {
 }
 
 extension ApiPath {
+    static let youTubeResolve = "http://resolve.dropbeat.net:19001/resolve/"
+}
+
+extension ApiPath {
     static let hostV2 = host + "v2/"
 
     static let streamFollowing = hostV2 + "stream/following/"

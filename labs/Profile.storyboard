@@ -1310,7 +1310,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                             <rect key="frame" x="16" y="20" width="288" height="46"/>
                                             <animations/>
                                             <string key="text">Let us know
-your favorite EDM genres</string>
+your favorite genres</string>
                                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                             <color key="textColor" red="0.1996330492" green="0.1996330492" blue="0.1996330492" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
@@ -1330,7 +1330,7 @@ your favorite EDM genres</string>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="40" id="OO5-WB-gto"/>
                                             </constraints>
-                                            <string key="text">If you are not familiar with EDM genres, 
+                                            <string key="text">If you are not familiar with genres, 
 click below to discover your favorites</string>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
@@ -1407,7 +1407,7 @@ click below to discover your favorites</string>
                                         <rect key="frame" x="0.0" y="322" width="320" height="46"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="CXO-Rc-ktN" id="dz0-4v-ZAn">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="45"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="45.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Progressive House" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4uB-VB-Hio">
@@ -1496,10 +1496,10 @@ click below to discover your favorites</string>
                         <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="image" rowHeight="140" id="6KP-ds-vBQ" customClass="EditImageTableViewCell" customModule="labs" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="114" width="320" height="140"/>
+                                <rect key="frame" x="0.0" y="113.5" width="320" height="140"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="6KP-ds-vBQ" id="IAV-OG-MIz">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="139"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="139.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="default_cover_big" translatesAutoresizingMaskIntoConstraints="NO" id="yG5-dT-TlU">
@@ -1568,10 +1568,10 @@ click below to discover your favorites</string>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="normalCell" id="p3P-zr-0sU">
-                                <rect key="frame" x="0.0" y="254" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="253.5" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p3P-zr-0sU" id="lpT-pY-biA">
-                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <animations/>
                                 </tableViewCellContentView>

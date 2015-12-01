@@ -10,6 +10,9 @@ import UIKit
 import AVFoundation
 import Foundation
 
+import Fabric
+import Crashlytics
+
 // MARK: - Drop play extension
 
 enum DropPlayState {
@@ -383,7 +386,6 @@ class AddableTrackListViewController: GAITrackedViewController, AddableTrackCell
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
 //        self.screenName = "PlayableViewScreen"
-        
         NSNotificationCenter.defaultCenter().addObserver(
             self, selector: "trackChanged", name: DropbeatPlayerTrackChangedNotification, object: nil)
         
@@ -399,7 +401,9 @@ class AddableTrackListViewController: GAITrackedViewController, AddableTrackCell
     
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
+
+        Crashlytics.sharedInstance().recordCustomExceptionName(self.title ?? "No Title", reason: "Custom exception", frameArray: [])
+
         NSNotificationCenter.defaultCenter().removeObserver(self, name: DropbeatPlayerTrackChangedNotification, object: nil)
         
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationWillEnterForegroundNotification, object: nil)

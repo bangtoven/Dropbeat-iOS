@@ -69,7 +69,7 @@
                                                                                           action:@selector(_actionCancel)];
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Use", @"Use")
-                                                                              style:UIBarButtonItemStyleBordered 
+                                                                              style:UIBarButtonItemStylePlain
                                                                              target:self 
                                                                              action:@selector(_actionUse)];
 }

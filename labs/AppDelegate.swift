@@ -7,7 +7,9 @@
 //
 
 import UIKit
-import Raygun4iOS
+//import Raygun4iOS
+import Fabric
+import Crashlytics
 
 enum AppLinkParam {
     case SHARED_TRACK(String)
@@ -51,8 +53,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self, selector: "networkReachabilityChanged:", name: kReachabilityChangedNotification, object: reachability)
         reachability!.startNotifier()
         
-        Raygun.sharedReporterWithApiKey("5vjswgUxxTkQxkoeNzkJeg==")
+//        Raygun.sharedReporterWithApiKey("5vjswgUxxTkQxkoeNzkJeg==")
         
+        Fabric.with([Crashlytics.self])
+
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
     }
     

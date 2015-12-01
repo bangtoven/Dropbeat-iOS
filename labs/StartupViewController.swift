@@ -7,7 +7,9 @@
 //
 
 import UIKit
-import Raygun4iOS
+//import Raygun4iOS
+import Fabric
+import Crashlytics
 
 protocol AfterSignUpDelegate {
     func signUpDidFinished()
@@ -107,7 +109,9 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
                 
                 if (account != nil) {
                     let email:String = account!.user!.email
-                    Raygun.sharedReporter().identify(email)
+                    
+//                    Raygun.sharedReporter().identify(email)
+                    Crashlytics.sharedInstance().setUserEmail(email)
                     
                     // GA
                     let tracker = GAI.sharedInstance().defaultTracker

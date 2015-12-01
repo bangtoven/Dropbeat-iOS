@@ -9,7 +9,6 @@
 import UIKit
 import MediaPlayer
 import AVFoundation
-import Raygun4iOS
 
 public let DropbeatPlayerTrackChangedNotification = "TrackChangedNotification"
 public let DropbeatPlayerStateChangedNotification = "StateChangedNotification"
@@ -95,12 +94,6 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     
     func play(track: Track) {
         self.lastError = nil
-        if self.state == .Disposed {
-            let e = NSError(domain: "DropbeatPlayer", code: -713, userInfo: [NSLocalizedDescriptionKey:"플레이 요청하려 하는데 player가 dispose 되어 있는 상황이 실제로 발생합니다!"])
-            Raygun.sharedReporter().sendError(e, withTags: ["정호가 로그 받을라고 가라로 만든 거"], withUserCustomData: ["data":"레이건에서 이거 튀어나오면 대박ㅋㅋㅋ"])
-            self.player = STKAudioPlayer()
-            self.player.delegate = self
-        }
         
         if track.id == self.currentTrack?.id {
             self.currentTrack = track // to send notification

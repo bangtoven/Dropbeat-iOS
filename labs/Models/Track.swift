@@ -134,7 +134,7 @@ extension Track {
             
             var streamURL: NSURL?
             for quality in preferredQuality {
-                if let url = video?.streamURLs[quality.rawValue] as? NSURL {
+                if let url = video?.streamURLs[quality.rawValue] {
                     streamURL = url
                     break
                 } else {

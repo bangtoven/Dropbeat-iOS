@@ -1522,7 +1522,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.dropbeat.prod;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "39d384be-d1d7-4f1f-a367-b8b933a6cf4d";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/labs/labs-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1554,7 +1554,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.dropbeat.prod;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "39d384be-d1d7-4f1f-a367-b8b933a6cf4d";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "$(SRCROOT)/labs/labs-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";

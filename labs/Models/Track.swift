@@ -8,6 +8,9 @@
 
 import UIKit
 
+import Fabric
+import Crashlytics
+
 enum SourceType: String {
     case DROPBEAT = "dropbeat"
     case YOUTUBE = "youtube"
@@ -410,6 +413,8 @@ class Track {
     }
     
     func shareTrack(section:String, afterShare: (error:NSError?, sharedURL:NSURL?) -> Void) {
+        Answers.logShareWithMethod(nil, contentName: self.title, contentType: "Track", contentId: nil, customAttributes: nil)
+        
         Requests.shareTrack(self) { (result, error) -> Void in
             if error != nil {
                 afterShare(error: error, sharedURL: nil)

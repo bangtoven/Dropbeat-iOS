@@ -8,6 +8,9 @@
 
 import UIKit
 
+import Fabric
+import Crashlytics
+
 class PlaylistViewController: GAITrackedViewController {
 
     @IBOutlet weak var playlistTableView: UITableView!
@@ -534,6 +537,9 @@ extension PlaylistViewController {
     
     @IBAction func onSharePlaylistBtnClicked(sender: UIBarButtonItem) {
         let progressHud = ViewUtils.showProgress(self, message: NSLocalizedString("Loading..", comment:""))
+        
+        Answers.logShareWithMethod(nil, contentName: playlist.name, contentType: "Playlist", contentId: nil, customAttributes: nil)
+        
         Requests.sharePlaylist(playlist!) {(result, error) -> Void in
             progressHud.hide(true)
             var message:String = NSLocalizedString("Failed to share playlist.", comment:"")

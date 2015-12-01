@@ -11,6 +11,9 @@ import UIKit
 import Fabric
 import Crashlytics
 
+import Fabric
+import Crashlytics
+
 protocol AfterSignUpDelegate {
     func signUpDidFinished()
 }
@@ -61,6 +64,8 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     }
     
     func signUpDidFinished() {
+        Answers.logSignUpWithMethod(nil, success: nil, customAttributes: nil)
+        
         self.dismissViewControllerAnimated(true) { () -> Void in
             self.initialize()
         }
@@ -173,6 +178,8 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
     }
     
     func showMainController() {
+        Answers.logLoginWithMethod(nil, success: nil, customAttributes: nil)
+        
         let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) {
             

@@ -10,6 +10,9 @@ import UIKit
 import MediaPlayer
 import AVFoundation
 
+import Fabric
+import Crashlytics
+
 public let DropbeatPlayerTrackChangedNotification = "TrackChangedNotification"
 public let DropbeatPlayerStateChangedNotification = "StateChangedNotification"
 public let DropbeatPlayerErrorNotification = "ErrorNotification"
@@ -67,6 +70,8 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
         set {
             _copiedPlaylist = newValue?.copy()
             currentIndex = -1
+            
+            Answers.logCustomEventWithName("Playlist", customAttributes: ["Name" : _copiedPlaylist!.name, "Type": _copiedPlaylist!.type.hashValue])
         }
     }
     private var currentIndex = -1
@@ -93,6 +98,8 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
     }
     
     func play(track: Track) {
+        Answers.logCustomEventWithName("Play", customAttributes: ["Title" : track.title])
+        
         self.lastError = nil
         
         if track.id == self.currentTrack?.id {

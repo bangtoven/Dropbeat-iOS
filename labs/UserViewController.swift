@@ -8,6 +8,9 @@
 
 import UIKit
 
+import Fabric
+import Crashlytics
+
 extension UINavigationController {
     override public func preferredStatusBarStyle() -> UIStatusBarStyle {
         if let userVC = self.topViewController as? UserViewController {
@@ -103,6 +106,7 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title:" ", style:.Plain, target:nil, action:nil)
 
         self.view.addSubview(self.headerView!)
+        
     }
     
     func fetchUserInfo() {
@@ -136,6 +140,8 @@ class UserViewController: AXStretchableHeaderTabViewController, TTTAttributedLab
     }
     
     func applyFetchedInfoToView() {
+        Answers.logCustomEventWithName("User", customAttributes: ["Resource":self.user.resourceName,"UserType":self.user.userType.hashValue])
+        
         let header = self.headerView as! UserHeaderView
         header.aboutMeLabel.delegate = self
         

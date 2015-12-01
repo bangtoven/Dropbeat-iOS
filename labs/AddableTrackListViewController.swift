@@ -399,6 +399,12 @@ class AddableTrackListViewController: GAITrackedViewController, AddableTrackCell
         trackChanged()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        Answers.logContentViewWithName(self.title, contentType: NSStringFromClass(self.dynamicType), contentId: nil, customAttributes: nil)
+    }
+    
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
 

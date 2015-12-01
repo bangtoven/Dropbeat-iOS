@@ -8,6 +8,9 @@
 
 import UIKit
 
+import Fabric
+import Crashlytics
+
 class SearchResultUserCell: FollowInfoTableViewCell {
 //    @IBOutlet weak var isFollowedImageView: UIImageView!
 }
@@ -193,6 +196,8 @@ class SearchViewController: AddableTrackListViewController,
     }
     
     func doSearch(keyword:String) {
+        Answers.logSearchWithQuery(keyword, customAttributes: nil)
+        
         hideAutocomplete()
         
         // stop prev drop

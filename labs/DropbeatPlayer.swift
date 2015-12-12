@@ -71,7 +71,9 @@ class DropbeatPlayer: NSObject, STKAudioPlayerDelegate {
             _copiedPlaylist = newValue?.copy()
             currentIndex = -1
             
-            Answers.logCustomEventWithName("Playlist", customAttributes: ["Name" : _copiedPlaylist!.name, "Type": _copiedPlaylist!.type.hashValue])
+            if let p = _copiedPlaylist {
+                Answers.logCustomEventWithName("Playlist", customAttributes: ["Name" : p.name, "Type": p.type.hashValue])
+            }
         }
     }
     private var currentIndex = -1

@@ -183,8 +183,12 @@ class StartupViewController: GAITrackedViewController, FBEmailSubmitViewControll
         let popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue()) {
             
-            
-            if NSDate(timeIntervalSinceReferenceDate: 471830400.0).timeIntervalSinceNow < 0 &&
+            let date = NSDate(timeIntervalSinceReferenceDate: 472500000.0)
+            if let createdAt = Account.getCachedAccount()?.user?.createdAt where
+                date.timeIntervalSinceDate(createdAt) < 0 &&
+                    Int(arc4random_uniform(UInt32(3))) == 0 {
+                return
+            } else if date.timeIntervalSinceNow < 0 &&
                 Int(arc4random_uniform(UInt32(3))) == 0 {
                     return
             } else {

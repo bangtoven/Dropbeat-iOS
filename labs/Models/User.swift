@@ -169,6 +169,7 @@ class User: BaseUser {
     var num_followers: Int
     var tracks: [DropbeatTrack] = []
     var likes: [Like]?
+    var createdAt: NSDate?
     
     override init(json: JSON) {
         var userJson = json["user"]
@@ -209,6 +210,8 @@ class User: BaseUser {
             }
             self.tracks = tracks
         }
+        
+        self.createdAt = NSDate.dateFromString(userJson["created_at"].stringValue)
     }
     
     private func _fetchFollowInfo(type: FollowInfoType, callback:((users: [BaseUser]?, error: NSError?) -> Void)) {

@@ -83,25 +83,25 @@ platform :ios do
         if lane == :dropbox then
             sh "./gen_html.sh %s %s \"%s\"" % [version, build, date]
             
-            slack(
-                  message: "<!here|here>: New build *#{version}* (#{build})! :rocket:",
-                  success: true,        # Optional, defaults to true.
-                  payload: {            # Optional, lets you specify any number of your own Slack attachments.
-                  'Build Date' => date,
-                  'Install' => 'https://dl.dropboxusercontent.com/s/a1apxzddt4f19ow/p2.html'
-                  },
-                  default_payloads: [] # Optional, lets you specify a whitelist of default payloads to include. Pass an empty array to suppress all the default payloads. Don't add this key, or pass nil, if you want all the default payloads. The available default payloads are: `lane`, `test_result`, `git_branch`, `git_author`, `last_git_commit`.
-                  )
+#            slack(
+#                  message: "<!here|here>: New build *#{version}* (#{build})! :rocket:",
+#                  success: true,        # Optional, defaults to true.
+#                  payload: {            # Optional, lets you specify any number of your own Slack attachments.
+#                  'Build Date' => date,
+#                  'Install' => 'https://dl.dropboxusercontent.com/s/a1apxzddt4f19ow/p2.html'
+#                  },
+#                  default_payloads: [] # Optional, lets you specify a whitelist of default payloads to include. Pass an empty array to suppress all the default payloads. Don't add this key, or pass nil, if you want all the default payloads. The available default payloads are: `lane`, `test_result`, `git_branch`, `git_author`, `last_git_commit`.
+#                  )
                   elsif lane == :deploy then
-                  slack(
-                        message: "*#{version}* (#{build}) iTunes Connect 올라감. :rocket:",
-                        success: true,        # Optional, defaults to true.
-                        payload: {            # Optional, lets you specify any number of your own Slack attachments.
-                        'Build Date' => date,
-                        },
-                        default_payloads: [] # Optional, lets you specify a whitelist of default payloads to include. Pass an empty array to suppress all the default payloads. Don't add this key, or pass nil, if you want all the default payloads. The available default payloads are: `lane`, `test_result`, `git_branch`, `git_author`, `last_git_commit`.
-                        )
-                        
+#                  slack(
+#                        message: "*#{version}* (#{build}) iTunes Connect 올라감. :rocket:",
+#                        success: true,        # Optional, defaults to true.
+#                        payload: {            # Optional, lets you specify any number of your own Slack attachments.
+#                        'Build Date' => date,
+#                        },
+#                        default_payloads: [] # Optional, lets you specify a whitelist of default payloads to include. Pass an empty array to suppress all the default payloads. Don't add this key, or pass nil, if you want all the default payloads. The available default payloads are: `lane`, `test_result`, `git_branch`, `git_author`, `last_git_commit`.
+#                        )
+
         end
         
         
